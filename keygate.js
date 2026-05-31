@@ -92,7 +92,11 @@
     const storedKey = getStoredKey();
     if(storedKey){
       const result = await verifyKey(storedKey);
-      if(result.valid){ return; } // Already unlocked, don't show gate
+      if(result.valid){
+        const content = document.getElementById('ms-content');
+        if(content) content.style.display = 'block';
+        return;
+      } // Already unlocked, don't show gate
       else { localStorage.removeItem('ms_active_key'); }
     }
     // Show gate
@@ -132,6 +136,8 @@
       setTimeout(() => {
         document.getElementById('ms-gate').remove();
         document.body.style.overflow = '';
+        const content = document.getElementById('ms-content');
+        if(content) content.style.display = 'block';
       }, 800);
     } else {
       showErr(result.reason);
