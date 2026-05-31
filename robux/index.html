@@ -29,7 +29,7 @@ body{background:#111214;font-family:system-ui,sans-serif;display:flex;align-item
   <input id="keyInput" type="text" placeholder="EXT-XXXXX-XXXXX-XXXXX-XXXXX" maxlength="26" autocomplete="off" spellcheck="false">
   <div id="errMsg"></div>
   <button id="unlockBtn" onclick="verify()">Unlock</button>
-  <button onclick="debugTest()" style="background:#272930;color:#9a9fb0;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px;font-size:11px;cursor:pointer;width:100%">Debug Test</button>
+
   <div class="g-discord">No key? <a href="https://discord.gg/moneyscripts" target="_blank">discord.gg/moneyscripts</a></div>
 </div>
 
@@ -57,9 +57,8 @@ function getDevice(){
 
 async function checkKey(key){
   try{
-    const snap=await db.collection(COLLECTION).where('key','==',key).limit(1).get();
-    if(snap.empty) return {valid:false,reason:'Invalid key'};
-    const doc=snap.docs[0];
+    const doc=await db.collection(COLLECTION).doc(key).get();
+    if(!doc.exists) return {valid:false,reason:'Invalid key'};
     const d=doc.data();
     if(d.status==='disabled') return {valid:false,reason:'Key has been disabled'};
     if(d.expires&&d.expires.toDate&&d.expires.toDate()<new Date()) return {valid:false,reason:'Key has expired'};
@@ -104,19 +103,6 @@ async function verify(){
 function unlock(){
   const html=atob(ENCODED);
   document.open();document.write(html);document.close();
-}
-
-async function debugTest(){
-  try{
-    console.log('Testing Firestore connection...');
-    const snap = await db.collection(COLLECTION).get();
-    console.log('Total docs:', snap.size);
-    snap.forEach(d => console.log('Doc:', d.id, JSON.stringify(d.data())));
-    alert('Docs found: '+snap.size+'. Check console for details.');
-  }catch(e){
-    console.error('Firestore error:', e);
-    alert('Error: '+e.message);
-  }
 }
 
 function showErr(msg){
