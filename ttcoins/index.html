@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok – Get Coins</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #fe2c55;
+  --red-dark: #d4193f;
+  --red-light: #fff0f3;
+  --bg: #f2f2f2;
+  --card: #ffffff;
+  --text: #161823;
+  --muted: #888;
+  --border: #e5e5e5;
+  --radius: 14px;
+  --pp-blue: #003087;
+  --pp-light: #009cde;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); min-height: 100vh; color: var(--text); }
+
+/* NAV */
+nav { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 28px; height: 60px; gap: 20px; }
+.nav-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 20px; color: var(--text); text-decoration: none; }
+.nav-logo svg { width: 28px; height: 28px; }
+.nav-search { flex: 1; max-width: 360px; position: relative; }
+.nav-search input { width: 100%; height: 38px; border: 1px solid var(--border); border-radius: 999px; padding: 0 40px 0 16px; font-size: 14px; background: var(--bg); color: var(--text); outline: none; font-family: inherit; }
+.nav-search svg { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); opacity: .4; pointer-events: none; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+.nav-upload { display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 16px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; background: #fff; }
+.nav-avatar { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; }
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.page { max-width: 900px; margin: 36px auto; padding: 0 20px 60px; }
+.card { background: var(--card); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 16px; border: 1px solid var(--border); }
+
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.page-header h1 { font-size: 26px; font-weight: 700; }
+.txn-link { font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: underline; opacity: .6; }
+
+.search-label { font-size: 13px; color: var(--muted); font-weight: 500; margin-bottom: 10px; display: block; }
+.search-box { display: flex; gap: 10px; }
+.search-box input { flex: 1; height: 44px; border: 1px solid var(--border); border-radius: 10px; padding: 0 16px; font-size: 15px; font-family: inherit; background: var(--bg); color: var(--text); outline: none; transition: border .15s; }
+.search-box input:focus { border-color: var(--red); background: #fff; }
+.search-box button { height: 44px; padding: 0 22px; border: none; border-radius: 10px; background: var(--red); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 7px; font-family: inherit; transition: background .15s; white-space: nowrap; }
+.search-box button:hover { background: var(--red-dark); }
+.spin { display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+.loading .btn-icon { display: none; }
+.loading .spin { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.user-result { display: none; margin-top: 14px; background: var(--bg); border-radius: 12px; padding: 14px 18px; align-items: center; gap: 14px; border: 1px solid var(--border); }
+.user-result.show { display: flex; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; } }
+.user-result .avatar { width: 54px; height: 54px; border-radius: 50%; border: 2px solid var(--red); overflow: hidden; flex-shrink: 0; background: #eee; }
+.user-result .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.user-result .info { flex: 1; min-width: 0; }
+.uname { font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.umeta { font-size: 13px; color: var(--muted); margin-top: 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.verified-badge { background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+.balance-pill { display: flex; align-items: center; gap: 6px; background: #fff; border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; font-size: 13px; color: var(--muted); font-weight: 500; flex-shrink: 0; }
+.balance-pill img { width: 18px; height: 18px; }
+.error-msg { display: none; font-size: 13px; color: var(--red); margin-top: 10px; padding: 10px 14px; background: #fff0f3; border-radius: 8px; border: 1px solid #ffd0d9; }
+
+.invite-banner { background: #fff8f9; border: 1px solid #ffd0d9; border-radius: 10px; padding: 12px 18px; display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.invite-banner .tag { background: var(--red); color: #fff; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 3px 8px; white-space: nowrap; }
+.invite-banner span { font-size: 13px; }
+.invite-code { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--red); letter-spacing: 1px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.invite-code svg { width: 14px; height: 14px; opacity: .6; }
+
+.recharge-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 18px; }
+.recharge-header .label { font-size: 15px; font-weight: 600; }
+.recharge-header .note { font-size: 13px; color: var(--red); font-weight: 500; }
+
+.coins-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.coin-box { background: #fafafa; border: 1.5px solid var(--border); border-radius: 12px; padding: 18px 10px; cursor: pointer; text-align: center; transition: border-color .15s, background .15s, transform .1s; user-select: none; }
+.coin-box:hover { border-color: #ffb3c1; }
+.coin-box.active { border-color: var(--red); background: var(--red-light); }
+.coin-box:active { transform: scale(.97); }
+.coin-box .icon-row { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 2px; }
+.coin-box .icon-row img { width: 22px; height: 22px; }
+.coin-box .amount { font-size: 22px; font-weight: 700; }
+.coin-box .price { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.coin-box.custom .amount { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.custom-input-wrap { display: none; margin-top: 8px; }
+.coin-box.custom.active .custom-input-wrap { display: block; }
+.custom-input-wrap input { width: 100%; height: 36px; border: 1.5px solid var(--red); border-radius: 8px; padding: 0 10px; font-size: 15px; font-weight: 700; font-family: inherit; text-align: center; outline: none; background: #fff; color: var(--text); }
+.custom-input-wrap input::placeholder { font-weight: 400; color: #bbb; font-size: 13px; }
+.custom-price-display { font-size: 12px; color: var(--red); font-weight: 600; margin-top: 6px; min-height: 18px; }
+
+.special { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 28px; margin-bottom: 16px; }
+.special-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.special-header .title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.special-header .cashback { font-size: 13px; color: var(--red); font-weight: 500; }
+.special-body { background: var(--bg); border-radius: 10px; padding: 16px 18px; display: flex; align-items: center; gap: 16px; }
+.special-pct { font-size: 32px; font-weight: 800; color: var(--red); min-width: 52px; }
+.special-text p { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.special-text span { font-size: 12px; color: var(--muted); }
+.special-check { margin-left: auto; width: 26px; height: 26px; background: #1dc655; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.special-check svg { width: 14px; height: 14px; }
+
+/* CHECKOUT */
+.checkout-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
+.checkout-title { padding: 22px 28px 0; font-size: 17px; font-weight: 700; }
+
+.order-summary { padding: 16px 28px; border-bottom: 1px solid var(--border); }
+.order-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 6px 0; }
+.order-row .lbl { color: var(--muted); }
+.order-row .val { font-weight: 600; }
+.order-row.total-row { padding-top: 12px; margin-top: 6px; border-top: 1px dashed var(--border); }
+.order-row.total-row .lbl { font-size: 15px; font-weight: 600; color: var(--text); }
+.order-row.total-row .val { font-size: 22px; font-weight: 700; }
+.coins-detail { display: flex; align-items: center; gap: 5px; }
+.coins-detail img { width: 16px; height: 16px; }
+
+/* PAYPAL BUTTON SECTION */
+.paypal-section { padding: 24px 28px 28px; border-top: 1px solid var(--border); }
+.paypal-section .pp-label { font-size: 13px; color: var(--muted); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.paypal-section .pp-label svg { opacity: .45; }
+
+.pp-btn {
+  width: 100%; height: 54px;
+  background: #ffc439;
+  border: none; border-radius: 12px;
+  cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: background .15s, transform .1s;
+  font-size: 16px; font-weight: 700; color: #003087;
+}
+.pp-btn:hover { background: #f0b429; }
+.pp-btn:active { transform: scale(.99); }
+.pp-btn:disabled { background: #e8e8e8; color: #aaa; cursor: not-allowed; transform: none; }
+.pp-btn svg { flex-shrink: 0; }
+
+.pp-or { text-align: center; font-size: 12px; color: var(--muted); margin: 12px 0; position: relative; }
+.pp-or::before, .pp-or::after { content: ''; position: absolute; top: 50%; width: 44%; height: 1px; background: var(--border); }
+.pp-or::before { left: 0; }
+.pp-or::after { right: 0; }
+
+.pp-debit-btn {
+  width: 100%; height: 44px;
+  background: #0070ba; border: none; border-radius: 10px;
+  color: #fff; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: background .15s;
+}
+.pp-debit-btn:hover { background: #005fa3; }
+.pp-debit-btn:disabled { background: #e8e8e8; color: #aaa; cursor: not-allowed; }
+
+.pp-info { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 14px; font-size: 11px; color: var(--muted); }
+.pp-info svg { opacity: .5; }
+
+/* ======= PAYPAL MODAL OVERLAY ======= */
+.pp-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.55);
+  align-items: center; justify-content: center;
+  animation: overlayIn .2s ease;
+}
+.pp-overlay.show { display: flex; }
+@keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+
+.pp-modal {
+  width: 400px; max-width: calc(100vw - 32px);
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  animation: modalIn .25s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes modalIn { from { opacity: 0; transform: scale(.92) translateY(12px); } to { opacity: 1; transform: none; } }
+
+.pp-modal-header {
+  background: var(--pp-blue);
+  padding: 0 20px;
+  height: 58px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.pp-modal-header .pp-logo { display: flex; align-items: center; gap: 0; }
+.pp-modal-header .close-btn {
+  width: 28px; height: 28px; border: none; background: rgba(255,255,255,.15);
+  border-radius: 50%; color: #fff; font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.pp-modal-header .close-btn:hover { background: rgba(255,255,255,.25); }
+
+.pp-modal-body { padding: 28px 28px 24px; }
+
+/* PROCESSING STATE */
+.pp-state { display: none; flex-direction: column; align-items: center; text-align: center; }
+.pp-state.active { display: flex; }
+
+/* spinner */
+.pp-spinner {
+  width: 52px; height: 52px;
+  border: 4px solid #e0e0e0;
+  border-top-color: var(--pp-light);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin-bottom: 20px;
+}
+
+.pp-state h3 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.pp-state p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+/* progress bar */
+.pp-progress-wrap { width: 100%; height: 4px; background: #eee; border-radius: 2px; margin-top: 24px; overflow: hidden; }
+.pp-progress-bar { height: 100%; background: var(--pp-light); border-radius: 2px; width: 0%; transition: width .1s linear; }
+
+/* SUCCESS STATE */
+.pp-check-circle {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: #e6f9ef;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+  animation: popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.pp-check-circle svg { width: 30px; height: 30px; }
+
+.pp-success-amount { font-size: 32px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.pp-success-sub { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+
+.pp-receipt {
+  width: 100%; background: #f7f8fa;
+  border-radius: 10px; padding: 14px 16px;
+  margin-bottom: 22px;
+  text-align: left;
+}
+.pp-receipt-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+.pp-receipt-row .r-lbl { color: var(--muted); }
+.pp-receipt-row .r-val { font-weight: 600; color: var(--text); }
+.pp-receipt-row.divider { border-top: 1px solid #e5e5e5; margin-top: 6px; padding-top: 10px; }
+
+.pp-okay-btn {
+  width: 100%; height: 48px;
+  background: #0070ba; border: none; border-radius: 8px;
+  color: #fff; font-size: 16px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+  transition: background .15s;
+}
+.pp-okay-btn:hover { background: #005fa3; }
+
+.pp-footer { padding: 12px 20px; background: #f5f7fa; border-top: 1px solid #e8ebf0; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.pp-footer span { font-size: 11px; color: #8a9ab0; }
+.pp-footer svg { opacity: .5; }
+
+@media (max-width: 600px) {
+  .coins-grid { grid-template-columns: repeat(2, 1fr); }
+  .card { padding: 18px 16px; }
+  .checkout-title, .order-summary, .paypal-section { padding-left: 16px; padding-right: 16px; }
+  .page { padding: 0 12px 60px; margin: 16px auto; }
+  nav { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/></svg>
+    TikTok
+  </a>
+  <div class="nav-search">
+    <input type="text" placeholder="Search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </div>
+  <div class="nav-right">
+    <div class="nav-upload">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 5 5 12"/></svg>
+      Upload
+    </div>
+    <div class="nav-avatar"><img src="https://i.pravatar.cc/40?u=me" alt="me"></div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- USER SEARCH -->
+  <div class="card">
+    <div class="page-header">
+      <h1>Get Coins</h1>
+      <span class="txn-link">View transaction history</span>
+    </div>
+    <span class="search-label">Choose username — enter a TikTok username</span>
+    <div class="search-box">
+      <input id="usernameInput" type="text" placeholder="@username" autocomplete="off" />
+      <button id="searchBtn" onclick="searchUser()">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <div class="spin"></div>
+        Search
+      </button>
+    </div>
+    <p class="error-msg" id="errorMsg"></p>
+    <div class="user-result" id="userResult">
+      <div class="avatar"><img id="userAvatar" src="" alt="avatar" onerror="this.src='https://i.pravatar.cc/100?u=fb'"></div>
+      <div class="info">
+        <div class="uname" id="userName"></div>
+        <div class="umeta">
+          <span id="userHandle"></span>
+          <span class="verified-badge" id="verifiedBadge" style="display:none">✓ Verified</span>
+          <span id="userFollowers"></span>
+        </div>
+      </div>
+      <div class="balance-pill">
+        <img src="https://cdn.unipin.com/images/icon_product_pages/1749042852-icon-Tiktok.png" alt="coin">
+        <span>0</span>
+      </div>
+    </div>
+    <div class="invite-banner">
+      <span class="tag">Invite</span>
+      <span>Invite &amp; Get Rewards — share your code and earn coins</span>
+      <div class="invite-code" onclick="copyCode()">
+        YS3LC68Z
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- COINS GRID -->
+  <div class="card">
+    <div class="recharge-header">
+      <span class="label">Recharge:</span>
+      <span class="note">Save around 25% with a lower third-party service fee.</span>
+    </div>
+    <div class="coins-grid" id="coinsGrid"></div>
+  </div>
+
+  <!-- SPECIAL OFFER -->
+  <div class="special">
+    <div class="special-header">
+      <span class="title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Special offer
+      </span>
+      <span class="cashback">5% cash back on your next order</span>
+    </div>
+    <div class="special-body">
+      <span class="special-pct">5%</span>
+      <div class="special-text">
+        <p>Recharge once to unlock 5% cash back up to USD250 on your next order</p>
+        <span>From Invite &amp; Get Rewards · Default invitation code applied</span>
+      </div>
+      <div class="special-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT -->
+  <div class="checkout-card">
+    <div class="checkout-title">Order summary</div>
+
+    <div class="order-summary">
+      <div class="order-row">
+        <span class="lbl">Recipient</span>
+        <span class="val" id="summaryUser">—</span>
+      </div>
+      <div class="order-row">
+        <span class="lbl">Coins</span>
+        <span class="val coins-detail">
+          <img src="https://cdn.unipin.com/images/icon_product_pages/1749042852-icon-Tiktok.png" alt="">
+          <span id="summaryCoins">—</span>
+        </span>
+      </div>
+      <div class="order-row">
+        <span class="lbl">Subtotal</span>
+        <span class="val" id="summarySubtotal">—</span>
+      </div>
+      <div class="order-row">
+        <span class="lbl">Service fee</span>
+        <span class="val" id="summaryFee">—</span>
+      </div>
+      <div class="order-row total-row">
+        <span class="lbl">Total</span>
+        <span class="val" id="summaryTotal">—</span>
+      </div>
+    </div>
+
+    <div class="paypal-section">
+      <div class="pp-label">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Secure checkout via PayPal
+      </div>
+
+      <button class="pp-btn" id="ppBtn" onclick="startPayPal()" disabled>
+        <svg width="100" height="24" viewBox="0 0 100 24" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="20" font-family="Arial, sans-serif" font-weight="900" font-size="22" fill="#003087">Pay</text><text x="50" y="20" font-family="Arial, sans-serif" font-weight="900" font-size="22" fill="#009cde">Pal</text>
+        </svg>
+      </button>
+
+      <div class="pp-or">or</div>
+
+      <button class="pp-debit-btn" id="ppDebitBtn" onclick="startPayPal()" disabled>
+        Pay with Debit or Credit Card
+      </button>
+
+      <div class="pp-info">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>256-bit SSL encryption · Your data is never stored</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== PAYPAL MODAL ===== -->
+<div class="pp-overlay" id="ppOverlay">
+  <div class="pp-modal">
+
+    <div class="pp-modal-header">
+      <div class="pp-logo">
+        <svg width="110" height="26" viewBox="0 0 110 26" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="22" font-family="Arial, sans-serif" font-weight="900" font-size="24" fill="#ffffff">Pay</text><text x="55" y="22" font-family="Arial, sans-serif" font-weight="900" font-size="24" fill="#009cde">Pal</text>
+        </svg>
+      </div>
+      <button class="close-btn" id="closeModal" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="pp-modal-body">
+
+      <!-- PROCESSING -->
+      <div class="pp-state active" id="stateProcessing">
+        <div class="pp-spinner"></div>
+        <h3>Processing your payment…</h3>
+        <p>Please don't close this window.<br>This will only take a moment.</p>
+        <div class="pp-progress-wrap">
+          <div class="pp-progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="pp-state" id="stateSuccess">
+        <div class="pp-check-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1dc655" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="pp-success-amount" id="successAmount">$5.99 USD</div>
+        <div class="pp-success-sub">Payment successful</div>
+
+        <div class="pp-receipt">
+          <div class="pp-receipt-row">
+            <span class="r-lbl">Transaction ID</span>
+            <span class="r-val" id="txnId">—</span>
+          </div>
+          <div class="pp-receipt-row">
+            <span class="r-lbl">Date</span>
+            <span class="r-val" id="txnDate">—</span>
+          </div>
+          <div class="pp-receipt-row">
+            <span class="r-lbl">Recipient</span>
+            <span class="r-val" id="txnRecipient">—</span>
+          </div>
+          <div class="pp-receipt-row">
+            <span class="r-lbl">Coins delivered</span>
+            <span class="r-val coins-detail">
+              <img src="https://cdn.unipin.com/images/icon_product_pages/1749042852-icon-Tiktok.png" alt="" style="width:14px;height:14px">
+              <span id="txnCoins">—</span>
+            </span>
+          </div>
+          <div class="pp-receipt-row divider">
+            <span class="r-lbl" style="font-weight:600;color:var(--text)">Amount paid</span>
+            <span class="r-val" style="font-size:15px" id="txnAmount">—</span>
+          </div>
+        </div>
+
+        <button class="pp-okay-btn" onclick="closeModal()">Okay!</button>
+      </div>
+
+    </div>
+
+    <div class="pp-footer">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8a9ab0" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>Secured by PayPal · © 2025 PayPal, Inc.</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const COIN_ICON = 'https://cdn.unipin.com/images/icon_product_pages/1749042852-icon-Tiktok.png';
+const FEE_PCT = 0.08;
+const COINS = [
+  { coins: 30,  usd: 1.99 },
+  { coins: 40,  usd: 2.49 },
+  { coins: 60,  usd: 3.49 },
+  { coins: 100, usd: 5.99 },
+  { coins: 150, usd: 8.99 },
+  { coins: 200, usd: 11.99 },
+  { coins: 250, usd: 13.99 },
+  { custom: true }
+];
+
+let selectedCoins = 30;
+let selectedUSD = 1.99;
+let userFound = false;
+
+function coinsToUSD(n) {
+  const base = (n / 100) * (5.99 / 1.08);
+  return Math.round(base * 100) / 100;
+}
+
+function buildGrid() {
+  const grid = document.getElementById('coinsGrid');
+  COINS.forEach((opt, i) => {
+    const box = document.createElement('div');
+    box.className = 'coin-box' + (i === 0 ? ' active' : '') + (opt.custom ? ' custom' : '');
+    if (opt.custom) {
+      box.innerHTML = `
+        <div class="icon-row"><img src="${COIN_ICON}" alt="coin"></div>
+        <div class="amount">Custom</div>
+        <div class="price">Enter amount</div>
+        <div class="custom-input-wrap">
+          <input type="number" id="customCoinsInput" min="1" max="99999" placeholder="e.g. 500" oninput="onCustomInput(event)" onclick="event.stopPropagation()">
+          <div class="custom-price-display" id="customPriceDisplay"></div>
+        </div>`;
+      box.addEventListener('click', () => {
+        selectBox(box); selectedCoins = null; selectedUSD = null;
+        updateSummary(); updateBtn();
+        setTimeout(() => document.getElementById('customCoinsInput')?.focus(), 50);
+      });
+    } else {
+      box.innerHTML = `<div class="icon-row"><img src="${COIN_ICON}" alt="coin"><span class="amount">${opt.coins}</span></div><div class="price">$${opt.usd.toFixed(2)} USD</div>`;
+      box.addEventListener('click', () => {
+        selectBox(box); selectedCoins = opt.coins; selectedUSD = opt.usd;
+        updateSummary(); updateBtn();
+      });
+    }
+    grid.appendChild(box);
+  });
+  updateSummary();
+}
+
+function selectBox(box) {
+  document.querySelectorAll('.coin-box').forEach(b => b.classList.remove('active'));
+  box.classList.add('active');
+}
+
+function onCustomInput(e) {
+  e.stopPropagation();
+  const val = parseInt(e.target.value);
+  const display = document.getElementById('customPriceDisplay');
+  if (!val || val < 1) {
+    display.textContent = ''; selectedCoins = null; selectedUSD = null;
+  } else {
+    const base = coinsToUSD(val);
+    const fee = base * FEE_PCT;
+    const total = Math.round((base + fee) * 100) / 100;
+    selectedCoins = val; selectedUSD = total;
+    display.textContent = `≈ $${total.toFixed(2)} USD`;
+  }
+  updateSummary(); updateBtn();
+}
+
+function updateSummary() {
+  const user = document.getElementById('userName').textContent || '—';
+  document.getElementById('summaryUser').textContent = userFound ? user : '—';
+  if (!selectedCoins) {
+    ['summaryCoins','summarySubtotal','summaryFee','summaryTotal'].forEach(id => document.getElementById(id).textContent = '—');
+    return;
+  }
+  let base, fee, total;
+  const preset = COINS.find(c => c.coins === selectedCoins && !c.custom);
+  if (preset) {
+    total = preset.usd; fee = Math.round(total / (1 + FEE_PCT) * FEE_PCT * 100) / 100; base = Math.round((total - fee) * 100) / 100;
+  } else {
+    base = coinsToUSD(selectedCoins); fee = Math.round(base * FEE_PCT * 100) / 100; total = Math.round((base + fee) * 100) / 100;
+    selectedUSD = total;
+  }
+  document.getElementById('summaryCoins').textContent = selectedCoins.toLocaleString();
+  document.getElementById('summarySubtotal').textContent = `$${base.toFixed(2)}`;
+  document.getElementById('summaryFee').textContent = `$${fee.toFixed(2)}`;
+  document.getElementById('summaryTotal').textContent = `$${total.toFixed(2)}`;
+}
+
+function updateBtn() {
+  const ok = userFound && selectedCoins;
+  document.getElementById('ppBtn').disabled = !ok;
+  document.getElementById('ppDebitBtn').disabled = !ok;
+}
+
+async function searchUser() {
+  const raw = document.getElementById('usernameInput').value.trim().replace(/^@/, '');
+  const errEl = document.getElementById('errorMsg');
+  const resEl = document.getElementById('userResult');
+  const btn = document.getElementById('searchBtn');
+  errEl.style.display = 'none'; resEl.classList.remove('show');
+  if (!raw) { errEl.textContent = 'Please enter a username.'; errEl.style.display = 'block'; return; }
+  btn.classList.add('loading'); btn.disabled = true;
+  try {
+    const res = await fetch(`https://www.tikwm.com/api/user/info?unique_id=${encodeURIComponent(raw)}`);
+    const json = await res.json();
+    if (json.code === 0 && json.data && json.data.user) {
+      const u = json.data.user; const stats = json.data.stats;
+      document.getElementById('userAvatar').src = u.avatarLarger || u.avatarMedium || u.avatarThumb || '';
+      document.getElementById('userName').textContent = u.nickname || u.uniqueId;
+      document.getElementById('userHandle').textContent = '@' + u.uniqueId;
+      document.getElementById('verifiedBadge').style.display = u.verified ? 'inline-block' : 'none';
+      const followers = stats ? stats.followerCount : 0;
+      document.getElementById('userFollowers').textContent = followers > 0 ? formatNum(followers) + ' followers' : '';
+      resEl.classList.add('show'); userFound = true; updateSummary();
+    } else { throw new Error(); }
+  } catch {
+    errEl.textContent = `"@${raw}" not found or private. Try: khaby.lame, charlidamelio, bellapoarch, mrbeast`;
+    errEl.style.display = 'block'; userFound = false;
+  }
+  btn.classList.remove('loading'); btn.disabled = false; updateBtn();
+}
+
+function formatNum(n) {
+  if (n >= 1e9) return (n/1e9).toFixed(1)+'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
+  if (n >= 1e3) return (n/1e3).toFixed(1)+'K';
+  return n.toString();
+}
+
+// ===== PAYPAL MODAL =====
+let progressInterval = null;
+
+function startPayPal() {
+  if (!userFound || !selectedCoins) return;
+  // reset
+  document.getElementById('stateProcessing').classList.add('active');
+  document.getElementById('stateSuccess').classList.remove('active');
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('closeModal').style.display = 'flex';
+  document.getElementById('ppOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+
+  // animate progress bar over ~3 seconds
+  let progress = 0;
+  clearInterval(progressInterval);
+  progressInterval = setInterval(() => {
+    progress += (100 - progress) * 0.04;
+    document.getElementById('progressBar').style.width = Math.min(progress, 92) + '%';
+  }, 80);
+
+  setTimeout(() => {
+    clearInterval(progressInterval);
+    document.getElementById('progressBar').style.width = '100%';
+    setTimeout(() => showSuccess(), 300);
+  }, 3200);
+}
+
+function showSuccess() {
+  const total = document.getElementById('summaryTotal').textContent;
+  const user = document.getElementById('userName').textContent;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' · ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const txnId = 'PP-' + Math.random().toString(36).slice(2,8).toUpperCase() + Math.random().toString(36).slice(2,6).toUpperCase();
+
+  document.getElementById('successAmount').textContent = total;
+  document.getElementById('txnId').textContent = txnId;
+  document.getElementById('txnDate').textContent = dateStr;
+  document.getElementById('txnRecipient').textContent = user;
+  document.getElementById('txnCoins').textContent = selectedCoins.toLocaleString();
+  document.getElementById('txnAmount').textContent = total;
+  document.getElementById('closeModal').style.display = 'none';
+
+  document.getElementById('stateProcessing').classList.remove('active');
+  document.getElementById('stateSuccess').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('ppOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  clearInterval(progressInterval);
+}
+
+document.getElementById('ppOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('ppOverlay')) closeModal();
+});
+
+document.getElementById('usernameInput').addEventListener('keydown', e => { if (e.key === 'Enter') searchUser(); });
+
+function copyCode() {
+  navigator.clipboard?.writeText('YS3LC68Z').catch(()=>{});
+}
+
+buildGrid();
+</script>
+</body>
+</html>
