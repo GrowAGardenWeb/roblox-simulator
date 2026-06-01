@@ -485,15 +485,15 @@ nav { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1
 
 <script>
 const COIN_ICON = 'https://cdn.unipin.com/images/icon_product_pages/1749042852-icon-Tiktok.png';
-const FEE_PCT = 0.08;
+const RATE = 0.31 / 30; // $0.01033 per coin
 const COINS = [
-  { coins: 30,  usd: 1.99 },
-  { coins: 40,  usd: 2.49 },
-  { coins: 60,  usd: 3.49 },
-  { coins: 100, usd: 5.99 },
-  { coins: 150, usd: 8.99 },
-  { coins: 200, usd: 11.99 },
-  { coins: 250, usd: 13.99 },
+  { coins: 30,    usd: 0.31   },
+  { coins: 350,   usd: 3.65   },
+  { coins: 700,   usd: 7.25   },
+  { coins: 1400,  usd: 14.49  },
+  { coins: 3500,  usd: 36.20  },
+  { coins: 7000,  usd: 72.39  },
+  { coins: 17500, usd: 180.99 },
   { custom: true }
 ];
 
@@ -502,8 +502,7 @@ let selectedUSD = 1.99;
 let userFound = false;
 
 function coinsToUSD(n) {
-  const base = (n / 100) * (5.99 / 1.08);
-  return Math.round(base * 100) / 100;
+  return Math.round(n * RATE * 100) / 100;
 }
 
 function buildGrid() {
@@ -526,7 +525,7 @@ function buildGrid() {
         setTimeout(() => document.getElementById('customCoinsInput')?.focus(), 50);
       });
     } else {
-      box.innerHTML = `<div class="icon-row"><img src="${COIN_ICON}" alt="coin"><span class="amount">${opt.coins}</span></div><div class="price">$${opt.usd.toFixed(2)} USD</div>`;
+      box.innerHTML = `<div class="icon-row"><img src="${COIN_ICON}" alt="coin"><span class="amount">${opt.coins.toLocaleString()}</span></div><div class="price">$${opt.usd.toFixed(2)} USD</div>`;
       box.addEventListener('click', () => {
         selectBox(box); selectedCoins = opt.coins; selectedUSD = opt.usd;
         updateSummary(); updateBtn();
@@ -549,9 +548,7 @@ function onCustomInput(e) {
   if (!val || val < 1) {
     display.textContent = ''; selectedCoins = null; selectedUSD = null;
   } else {
-    const base = coinsToUSD(val);
-    const fee = base * FEE_PCT;
-    const total = Math.round((base + fee) * 100) / 100;
+    const total = coinsToUSD(val);
     selectedCoins = val; selectedUSD = total;
     display.textContent = `≈ $${total.toFixed(2)} USD`;
   }
@@ -565,14 +562,11 @@ function updateSummary() {
     ['summaryCoins','summarySubtotal','summaryFee','summaryTotal'].forEach(id => document.getElementById(id).textContent = '—');
     return;
   }
-  let base, fee, total;
   const preset = COINS.find(c => c.coins === selectedCoins && !c.custom);
-  if (preset) {
-    total = preset.usd; fee = Math.round(total / (1 + FEE_PCT) * FEE_PCT * 100) / 100; base = Math.round((total - fee) * 100) / 100;
-  } else {
-    base = coinsToUSD(selectedCoins); fee = Math.round(base * FEE_PCT * 100) / 100; total = Math.round((base + fee) * 100) / 100;
-    selectedUSD = total;
-  }
+  const total = preset ? preset.usd : coinsToUSD(selectedCoins);
+  selectedUSD = total;
+  const fee = Math.round(total * 0.05 * 100) / 100;
+  const base = Math.round((total - fee) * 100) / 100;
   document.getElementById('summaryCoins').textContent = selectedCoins.toLocaleString();
   document.getElementById('summarySubtotal').textContent = `$${base.toFixed(2)}`;
   document.getElementById('summaryFee').textContent = `$${fee.toFixed(2)}`;
