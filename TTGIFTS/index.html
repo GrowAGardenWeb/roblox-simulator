@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Donation Video Tester</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #eee; font-family: sans-serif; padding: 20px; }
+  h2 { font-size: 16px; font-weight: 500; margin-bottom: 10px; color: #aaa; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  button { padding: 8px 14px; font-size: 13px; border-radius: 8px; border: 1px solid #333; cursor: pointer; background: #1e1e1e; color: #eee; }
+  button.active { background: #185FA5; color: #fff; border-color: #185FA5; }
+  .stage { position: relative; width: 100%; height: 320px; border-radius: 12px; border: 1px solid #333; overflow: hidden; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+  video { position: absolute; width: 300px; height: 260px; object-fit: contain; }
+  .tag { position: absolute; bottom: 10px; left: 12px; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 99px; background: rgba(0,0,0,0.6); color: #fff; }
+  .row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .row label { font-size: 13px; color: #aaa; width: 70px; }
+  .row input[type=range] { flex: 1; }
+  .row span { font-size: 13px; font-weight: 500; min-width: 36px; }
+  .no-video { font-size: 13px; color: #666; text-align: center; }
+</style>
+</head>
+<body>
+
+<h2 style="margin-bottom:16px; font-size:18px; color:#fff;">🎬 Donation Video Tester</h2>
+
+<h2>Fondo del stage</h2>
+<div class="controls">
+  <button class="active" onclick="setBg('stream',this)">🎮 Stream verde</button>
+  <button onclick="setBg('dark',this)">⬛ Oscuro</button>
+  <button onclick="setBg('light',this)">⬜ Claro</button>
+  <button onclick="setBg('gradient',this)">🌈 Gradiente</button>
+  <button onclick="setBg('purple',this)">🟣 Morado</button>
+</div>
+
+<div class="stage" id="stage" style="background: #1a472a;">
+  <p class="no-video" id="no-vid">Pon <code>donationvideo.mp4</code> en la misma carpeta y abre este HTML localmente</p>
+  <video id="vid" src="donationvideo.mp4" autoplay loop muted playsinline
+    onerror="document.getElementById('no-vid').style.display='block'"
+    oncanplay="document.getElementById('no-vid').style.display='none'"
+    style="mix-blend-mode: screen;">
+  </video>
+  <span class="tag" id="mode-tag">screen</span>
+</div>
+
+<br>
+
+<h2>Blend mode</h2>
+<div class="controls" id="blend-btns">
+  <button class="active" onclick="setBlend('screen',this)">screen</button>
+  <button onclick="setBlend('lighten',this)">lighten</button>
+  <button onclick="setBlend('color-dodge',this)">color-dodge</button>
+  <button onclick="setBlend('multiply',this)">multiply</button>
+  <button onclick="setBlend('overlay',this)">overlay</button>
+  <button onclick="setBlend('hard-light',this)">hard-light</button>
+  <button onclick="setBlend('soft-light',this)">soft-light</button>
+  <button onclick="setBlend('luminosity',this)">luminosity</button>
+  <button onclick="setBlend('normal',this)">normal (sin blend)</button>
+</div>
+
+<div class="row">
+  <label>Opacidad</label>
+  <input type="range" min="10" max="100" value="100" step="1" oninput="setOpacity(this.value)">
+  <span id="op-val">100%</span>
+</div>
+
+<div class="row">
+  <label>Tamaño</label>
+  <input type="range" min="100" max="600" value="300" step="10" oninput="setSize(this.value)">
+  <span id="size-val">300px</span>
+</div>
+
+<script>
+  const vid = document.getElementById('vid');
+  const tag = document.getElementById('mode-tag');
+  const stage = document.getElementById('stage');
+
+  function setBlend(mode, btn) {
+    vid.style.mixBlendMode = mode;
+    tag.textContent = mode;
+    document.querySelectorAll('#blend-btns button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function setOpacity(val) {
+    vid.style.opacity = val / 100;
+    document.getElementById('op-val').textContent = val + '%';
+  }
+
+  function setSize(val) {
+    vid.style.width = val + 'px';
+    vid.style.height = (val * 0.85) + 'px';
+    document.getElementById('size-val').textContent = val + 'px';
+  }
+
+  const bgs = {
+    stream:   'background: #1a472a',
+    dark:     'background: #111214',
+    light:    'background: #e0e0e0',
+    gradient: 'background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%)',
+    purple:   'background: #2d1b69'
+  };
+
+  function setBg(type, btn) {
+    document.querySelectorAll('.controls button').forEach(b => {
+      if(['stream','dark','light','gradient','purple'].some(t => b.textContent.includes(t.charAt(0).toUpperCase() + t.slice(1)) || b.onclick?.toString().includes(t))) {}
+    });
+    document.querySelectorAll('.controls:first-of-type button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    stage.setAttribute('style', bgs[type]);
+  }
+</script>
+</body>
+</html>
