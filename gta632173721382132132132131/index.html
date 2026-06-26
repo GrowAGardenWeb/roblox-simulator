@@ -28,7 +28,7 @@
   nav a:hover { color: #fff; }
   .chevron { font-size: 10px; opacity: 0.7; }
   .gta-plus-link { color: #d4a8ff !important; }
-  .header-right { display: flex; align-items: center; gap: 18px; }
+  .header-right { display: flex; align-items: center; gap: 18px; position: relative; }
   .search-bar {
     display: flex; align-items: center; background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.15); border-radius: 999px;
@@ -263,10 +263,35 @@
       </svg>
       <input type="text" placeholder="Search">
     </div>
-    <div class="header-icon">
+    <div class="header-icon" id="person-icon-btn" onclick="togglePersonPanel(event)" style="position:relative">
       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
       </svg>
+    </div>
+    <!-- Person panel -->
+    <div id="person-panel" style="display:none;position:absolute;top:52px;right:0;width:300px;background:#1e1a2e;border:1px solid rgba(255,255,255,.12);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.7);z-index:200;padding:20px;font-family:Arial,sans-serif;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:14px">Payment Info</div>
+
+      <!-- Current card preview -->
+      <div style="background:#111827;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+        <div style="width:44px;height:28px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;padding:2px 4px;flex-shrink:0">
+          <img src="https://www.pngall.com/wp-content/uploads/2017/05/Visa-Logo-PNG-Pic.png" style="height:10px;object-fit:contain">
+        </div>
+        <div>
+          <div id="pp-display-name" style="font-size:13px;font-weight:700;color:#fff">James Mitchell</div>
+          <div id="pp-display-num" style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• 4512</div>
+        </div>
+      </div>
+
+      <!-- Name -->
+      <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">Cardholder Name</label>
+      <input id="pp-name-inp" type="text" value="James Mitchell" style="width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:7px;padding:10px 12px;color:#fff;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:12px" onfocus="this.style.borderColor='rgba(245,197,24,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.13)'">
+
+      <!-- Card number last 4 -->
+      <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">Card Number (last 4 digits)</label>
+      <input id="pp-num-inp" type="text" value="4512" maxlength="4" placeholder="4 digits" style="width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:7px;padding:10px 12px;color:#fff;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:16px" oninput="this.value=this.value.replace(/\D/g,'')" onfocus="this.style.borderColor='rgba(245,197,24,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.13)'">
+
+      <button onclick="applyPersonPanel()" style="width:100%;background:#f5c518;color:#111;font-size:14px;font-weight:800;padding:12px;border-radius:999px;border:none;cursor:pointer;transition:filter .15s" onmouseover="this.style.filter='brightness(1.08)'" onmouseout="this.style.filter=''">Apply</button>
     </div>
     <div class="header-icon">
       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
@@ -595,6 +620,36 @@
     });
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+
+function togglePersonPanel(e){
+  e.stopPropagation();
+  const p=document.getElementById('person-panel');
+  p.style.display=p.style.display==='none'?'block':'none';
+}
+function applyPersonPanel(){
+  const name=document.getElementById('pp-name-inp').value.trim()||'James Mitchell';
+  const num=document.getElementById('pp-num-inp').value.trim()||'4512';
+  document.getElementById('pp-display-name').textContent=name;
+  document.getElementById('pp-display-num').textContent='•••• •••• •••• '+num;
+  // Update the saved name/num used in checkout modals
+  window._savedCardName=name;
+  window._savedCardNum=num;
+  // Flash confirm
+  const btn=event.target;
+  btn.textContent='✓ Applied!';
+  btn.style.background='#22c55e';
+  btn.style.color='#fff';
+  setTimeout(()=>{btn.textContent='Apply';btn.style.background='#f5c518';btn.style.color='#111';},1500);
+  setTimeout(()=>{ document.getElementById('person-panel').style.display='none'; },1600);
+}
+document.addEventListener('click',(e)=>{
+  const p=document.getElementById('person-panel');
+  const btn=document.getElementById('person-icon-btn');
+  if(p && !p.contains(e.target) && !btn.contains(e.target)){
+    p.style.display='none';
+  }
+});
+
 </script>
 <!-- POPUP: single mount point, rendered on demand -->
 <div id="ov" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:900;" onclick="if(event.target===this)pcClose()"></div>
@@ -778,7 +833,7 @@ function showPsCheckout(){
     <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.35);text-transform:uppercase;margin:16px 0 8px">Payment Method</div>
     <div class="pm-row">
       <div class="pm-visa"><img src="${IMG_VISA}" style="height:10px;object-fit:contain"></div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">James Mitchell</div><div style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• 4512</div><div style="font-size:10px;color:rgba(255,255,255,.28)">Visa Secure enrolled</div></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">${window._savedCardName||"James Mitchell"}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• ${window._savedCardNum||"4512"}</div><div style="font-size:10px;color:rgba(255,255,255,.28)">Visa Secure enrolled</div></div>
       <span class="pm-chg">CHANGE</span>
     </div>
     <div class="sec-badge"><span style="color:#22c55e;font-size:14px">●</span><span style="font-size:12px;color:#4ade80">Protected by Visa Secure 3‑D Secure 2.2 authentication</span></div>
@@ -883,7 +938,7 @@ function showXbCheckout(){
     <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.35);text-transform:uppercase;margin:16px 0 8px">Payment Method</div>
     <div class="pm-row" style="background:#1a1a1a;border-color:rgba(255,255,255,.15)">
       <div class="pm-visa"><img src="${IMG_VISA}" style="height:10px;object-fit:contain"></div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">James Mitchell</div><div style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• 4821</div><div style="font-size:10px;color:rgba(255,255,255,.28)">Visa Secure enrolled</div></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">${window._savedCardName||"James Mitchell"}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• ${window._savedCardNum||"4821"}</div><div style="font-size:10px;color:rgba(255,255,255,.28)">Visa Secure enrolled</div></div>
       <span class="pm-chg">CHANGE</span>
     </div>
     <div class="sec-badge"><span style="color:#22c55e;font-size:14px">●</span><span style="font-size:12px;color:#4ade80">Protected by Visa Secure 3‑D Secure 2.2 authentication</span></div>
