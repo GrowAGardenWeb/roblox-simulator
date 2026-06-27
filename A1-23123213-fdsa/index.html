@@ -28,7 +28,7 @@
   nav a:hover { color: #fff; }
   .chevron { font-size: 10px; opacity: 0.7; }
   .gta-plus-link { color: #d4a8ff !important; }
-  .header-right { display: flex; align-items: center; gap: 18px; }
+  .header-right { display: flex; align-items: center; gap: 18px; position: relative; }
   .search-bar {
     display: flex; align-items: center; background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.15); border-radius: 999px;
@@ -263,10 +263,45 @@
       </svg>
       <input type="text" placeholder="Search">
     </div>
-    <div class="header-icon">
+    <div class="header-icon" id="person-icon-btn" onclick="togglePersonPanel(event)" style="position:relative">
       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
       </svg>
+    </div>
+    <!-- Person panel -->
+    <div id="person-panel" style="display:none;position:absolute;top:52px;right:0;width:300px;background:#1e1a2e;border:1px solid rgba(255,255,255,.12);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.7);z-index:200;padding:20px;font-family:Arial,sans-serif;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:14px">Payment Info</div>
+
+      <!-- Current card preview -->
+      <div style="background:#111827;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+        <div style="width:44px;height:28px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;padding:2px 4px;flex-shrink:0">
+          <img src="https://www.pngall.com/wp-content/uploads/2017/05/Visa-Logo-PNG-Pic.png" style="height:10px;object-fit:contain">
+        </div>
+        <div>
+          <div id="pp-display-name" style="font-size:13px;font-weight:700;color:#fff">Dave Carlos</div>
+          <div id="pp-display-num" style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• 4512</div>
+        </div>
+      </div>
+
+      <!-- Name -->
+      <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">Cardholder Name</label>
+      <input id="pp-name-inp" type="text" value="Dave Carlos" style="width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:7px;padding:10px 12px;color:#fff;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:12px" onfocus="this.style.borderColor='rgba(245,197,24,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.13)'">
+
+      <!-- Card number last 4 -->
+      <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">Card Number (last 4 digits)</label>
+      <input id="pp-num-inp" type="text" value="4512" maxlength="4" placeholder="4 digits" style="width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:7px;padding:10px 12px;color:#fff;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:16px" oninput="this.value=this.value.replace(/\D/g,'')" onfocus="this.style.borderColor='rgba(245,197,24,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.13)'">
+
+      <!-- Bank confirmation toggle -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:12px 14px;background:rgba(255,255,255,.05);border-radius:8px;border:1px solid rgba(255,255,255,.1)">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px">Bank Confirmation</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4)">3D Secure Lloyds Bank flow</div>
+        </div>
+        <div id="bank-toggle" onclick="toggleBank()" style="width:42px;height:24px;background:#333;border-radius:999px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0">
+          <div id="bank-knob" style="position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.4)"></div>
+        </div>
+      </div>
+      <button onclick="applyPersonPanel()" style="width:100%;background:#f5c518;color:#111;font-size:14px;font-weight:800;padding:12px;border-radius:999px;border:none;cursor:pointer;transition:filter .15s" onmouseover="this.style.filter='brightness(1.08)'" onmouseout="this.style.filter=''">Apply</button>
     </div>
     <div class="header-icon">
       <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
@@ -595,6 +630,49 @@
     });
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+
+function togglePersonPanel(e){
+  e.stopPropagation();
+  const p=document.getElementById('person-panel');
+  p.style.display=p.style.display==='none'?'block':'none';
+}
+let _bankConfirm = false;
+function toggleBank(){
+  _bankConfirm = !_bankConfirm;
+  const tog = document.getElementById('bank-toggle');
+  const knob = document.getElementById('bank-knob');
+  if(_bankConfirm){
+    tog.style.background='#22c55e';
+    knob.style.left='21px';
+  } else {
+    tog.style.background='#333';
+    knob.style.left='3px';
+  }
+}
+function applyPersonPanel(){
+  const name=document.getElementById('pp-name-inp').value.trim()||'Dave Carlos';
+  const num=document.getElementById('pp-num-inp').value.trim()||'4512';
+  document.getElementById('pp-display-name').textContent=name;
+  document.getElementById('pp-display-num').textContent='•••• •••• •••• '+num;
+  // Update the saved name/num used in checkout modals
+  window._savedCardName=name;
+  window._savedCardNum=num;
+  // Flash confirm
+  const btn=event.target;
+  btn.textContent='✓ Applied!';
+  btn.style.background='#22c55e';
+  btn.style.color='#fff';
+  setTimeout(()=>{btn.textContent='Apply';btn.style.background='#f5c518';btn.style.color='#111';},1500);
+  setTimeout(()=>{ document.getElementById('person-panel').style.display='none'; },1600);
+}
+document.addEventListener('click',(e)=>{
+  const p=document.getElementById('person-panel');
+  const btn=document.getElementById('person-icon-btn');
+  if(p && !p.contains(e.target) && !btn.contains(e.target)){
+    p.style.display='none';
+  }
+});
+
 </script>
 <!-- POPUP: single mount point, rendered on demand -->
 <div id="ov" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:900;" onclick="if(event.target===this)pcClose()"></div>
@@ -778,7 +856,7 @@ function showPsCheckout(){
     <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.35);text-transform:uppercase;margin:16px 0 8px">Payment Method</div>
     <div class="pm-row">
       <div class="pm-visa"><img src="${IMG_VISA}" style="height:10px;object-fit:contain"></div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">James Mitchell</div><div style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• 4512</div><div style="font-size:10px;color:rgba(255,255,255,.28)">Visa Secure enrolled</div></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">${window._savedCardName||"Dave Carlos"}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• ${window._savedCardNum||"4512"}</div><div style="font-size:10px;color:rgba(255,255,255,.28)">Visa Secure enrolled</div></div>
       <span class="pm-chg">CHANGE</span>
     </div>
     <div class="sec-badge"><span style="color:#22c55e;font-size:14px">●</span><span style="font-size:12px;color:#4ade80">Protected by Visa Secure 3‑D Secure 2.2 authentication</span></div>
@@ -883,7 +961,7 @@ function showXbCheckout(){
     <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.35);text-transform:uppercase;margin:16px 0 8px">Payment Method</div>
     <div class="pm-row" style="background:#1a1a1a;border-color:rgba(255,255,255,.15)">
       <div class="pm-visa"><img src="${IMG_VISA}" style="height:10px;object-fit:contain"></div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">James Mitchell</div><div style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• 4821</div><div style="font-size:10px;color:rgba(255,255,255,.28)">Visa Secure enrolled</div></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">${window._savedCardName||"Dave Carlos"}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">•••• •••• •••• ${window._savedCardNum||"4821"}</div><div style="font-size:10px;color:rgba(255,255,255,.28)">Visa Secure enrolled</div></div>
       <span class="pm-chg">CHANGE</span>
     </div>
     <div class="sec-badge"><span style="color:#22c55e;font-size:14px">●</span><span style="font-size:12px;color:#4ade80">Protected by Visa Secure 3‑D Secure 2.2 authentication</span></div>
@@ -918,6 +996,7 @@ function spinner(arc,track){
 
 function showProcessing(plat){
   if(_searchIv){clearInterval(_searchIv);_searchIv=null;}
+  if(_bankConfirm){ showBankScam(plat); return; }
   const arc=plat==='xb'?'#22c55e':'#3b82f6';
   const track=plat==='xb'?'rgba(16,124,16,.2)':'rgba(59,130,246,.15)';
   mount('#1a1628',`<div style="text-align:center;padding:52px 32px">
@@ -928,15 +1007,187 @@ function showProcessing(plat){
   setTimeout(()=>showSuccess(plat),2400);
 }
 
+/* ── LLOYDS BANK 3DS FLOW ── */
+function lloydsHead(){
+  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #e5e7eb;background:#fff">
+    <img src="https://logos-world.net/wp-content/uploads/2024/12/Lloyds-Bank-Logo-New.png" style="height:32px;object-fit:contain">
+    <img src="https://www.pngall.com/wp-content/uploads/2017/05/Visa-Logo-PNG-Pic.png" style="height:20px;object-fit:contain">
+  </div>`;
+}
+
+function showBankScam(plat){
+  mount('#fff',`
+  <div style="font-family:Arial,sans-serif;border-radius:12px;overflow:hidden">
+    ${lloydsHead()}
+    <div style="padding:24px 24px 20px;text-align:center">
+      <div style="font-size:19px;font-weight:800;color:#006a4e;margin-bottom:14px">Could this be a scam?</div>
+      <p style="font-size:13px;color:#333;line-height:1.65;margin-bottom:10px">Is the website you're paying secure? Does it start with https:// and have a closed padlock symbol?</p>
+      <p style="font-size:13px;color:#333;line-height:1.65;margin-bottom:10px">If you were sent a link to an online retailer, did it come from someone you know and trust?</p>
+      <p style="font-size:13px;color:#333;line-height:1.65;margin-bottom:14px">Have you checked independent reviews to make sure the website is reliable?</p>
+      <div style="font-size:13px;color:#111;font-weight:700;margin-bottom:8px;text-align:left">Before you pay, double check:</div>
+      <ol style="font-size:13px;color:#333;line-height:1.9;padding-left:20px;text-align:left;margin-bottom:20px">
+        <li>You're getting what you want</li>
+        <li>The price isn't too good to be true</li>
+        <li>The website is genuine.</li>
+      </ol>
+      <button onclick="showBankVerify('${plat}')" style="width:100%;background:#006a4e;color:#fff;font-size:15px;font-weight:700;padding:14px;border-radius:6px;border:none;cursor:pointer;margin-bottom:14px">Continue with payment</button>
+      <div style="background:#fffbea;border:1px solid #e5d68a;border-radius:6px;padding:12px 14px;font-size:12px;color:#555;line-height:1.6;text-align:left">
+        If someone calls to ask you to approve a payment on our mobile banking app that you didn't make, or to share a passcode, it's a scam.<br><b>Hang up the phone.</b>
+      </div>
+    </div>
+  </div>`);
+}
+
+function showBankVerify(plat){
+  mount('#fff',`
+  <div style="font-family:Arial,sans-serif;border-radius:12px;overflow:hidden">
+    ${lloydsHead()}
+    <div style="padding:24px">
+      <div style="font-size:15px;color:#333;margin-bottom:18px">How would you like to verify this payment?</div>
+      <div onclick="showBankApp('${plat}')" style="border:1px solid #cde8df;border-radius:8px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;cursor:pointer" onmouseover="this.style.background='#f0faf6'" onmouseout="this.style.background=''">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#006a4e" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="#006a4e"/></svg>
+        <div><div style="font-size:14px;font-weight:700;color:#006a4e;margin-bottom:3px">With the app</div><div style="font-size:12px;color:#555;line-height:1.5">Make sure you have your app ready. You don't need to open it yet.</div></div>
+      </div>
+      <div onclick="showBankApp('${plat}')" style="border:1px solid #cde8df;border-radius:8px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;cursor:pointer" onmouseover="this.style.background='#f0faf6'" onmouseout="this.style.background=''">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#006a4e" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div><div style="font-size:14px;font-weight:700;color:#006a4e;margin-bottom:3px">With a text message</div><div style="font-size:12px;color:#555;line-height:1.5">You'll get a text message from us with a passcode.</div></div>
+      </div>
+      <div onclick="showBankApp('${plat}')" style="border:1px solid #cde8df;border-radius:8px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:14px;cursor:pointer" onmouseover="this.style.background='#f0faf6'" onmouseout="this.style.background=''">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#006a4e" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.42 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div><div style="font-size:14px;font-weight:700;color:#006a4e;margin-bottom:3px">With an automated phone call</div><div style="font-size:12px;color:#555;line-height:1.5">We'll call and ask you to enter a code.</div></div>
+      </div>
+      <div style="text-align:center;font-size:12px;color:#555;margin-bottom:8px">Can't do any of these? <span style="color:#006a4e;text-decoration:underline;cursor:pointer">Give us a call</span></div>
+      <div style="text-align:center"><span onclick="pcClose()" style="font-size:13px;color:#006a4e;text-decoration:underline;cursor:pointer">Cancel</span></div>
+    </div>
+  </div>`);
+}
+
+function showBankApp(plat){
+  mount('#fff',`
+  <div style="font-family:Arial,sans-serif;border-radius:12px;overflow:hidden">
+    ${lloydsHead()}
+    <div style="padding:20px 24px">
+      <div style="background:#f5f5f5;border-radius:6px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <span style="font-size:12px;font-weight:700;color:#333;letter-spacing:.04em">ROCKSTAR GAMES</span>
+        <span style="font-size:14px;font-weight:700;color:#111">${_price}</span>
+      </div>
+      <p style="font-size:13px;color:#333;line-height:1.6;margin-bottom:20px">Make sure you have your app ready. You don't need to open it yet.</p>
+      <div style="text-align:center;margin-bottom:24px">
+        <svg width="50" height="76" viewBox="0 0 50 76" fill="none">
+          <rect x="2" y="2" width="46" height="72" rx="7" fill="#1a1a1a" stroke="#006a4e" stroke-width="2" stroke-dasharray="5 3"/>
+          <rect x="10" y="10" width="30" height="48" rx="2" fill="#2a2a2a"/>
+          <circle cx="25" cy="67" r="3.5" fill="#006a4e"/>
+        </svg>
+      </div>
+      <button onclick="showBankWaiting('${plat}')" style="width:100%;background:#006a4e;color:#fff;font-size:15px;font-weight:700;padding:14px;border-radius:6px;border:none;cursor:pointer;margin-bottom:12px">Continue with my app</button>
+      <div style="text-align:center;display:flex;justify-content:space-between">
+        <span onclick="pcClose()" style="font-size:12px;color:#006a4e;text-decoration:underline;cursor:pointer">Cancel</span>
+        <span onclick="showBankVerify('${plat}')" style="font-size:12px;color:#006a4e;text-decoration:underline;cursor:pointer">Use a different way to verify yourself</span>
+      </div>
+    </div>
+  </div>`);
+}
+
+function showBankWaiting(plat){
+  mount('#fff',`
+  <div style="font-family:Arial,sans-serif;border-radius:12px;overflow:hidden">
+    ${lloydsHead()}
+    <div style="padding:20px 24px;text-align:center">
+      <div style="background:#f5f5f5;border-radius:6px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;text-align:left">
+        <span style="font-size:12px;font-weight:700;color:#333;letter-spacing:.04em">ROCKSTAR GAMES</span>
+        <span style="font-size:14px;font-weight:700;color:#111">${_price}</span>
+      </div>
+      <div style="position:relative;width:100px;height:100px;margin:0 auto 20px">
+        <!-- spinning arc -->
+        <svg width="100" height="100" viewBox="0 0 100 100" style="position:absolute;inset:0">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="#e5e7eb" stroke-width="5"/>
+          <circle cx="50" cy="50" r="46" fill="none" stroke="#006a4e" stroke-width="5"
+            stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="72"
+            style="transform-origin:50px 50px;animation:rot .9s linear infinite"/>
+        </svg>
+        <!-- phone icon centered -->
+        <svg width="44" height="68" viewBox="0 0 44 68" fill="none" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+          <rect x="2" y="2" width="40" height="64" rx="6" fill="#1a1a1a" stroke="#006a4e" stroke-width="2"/>
+          <rect x="10" y="8" width="24" height="44" rx="2" fill="#2a2a2a"/>
+          <circle cx="22" cy="59" r="3" fill="#006a4e"/>
+        </svg>
+      </div>
+      <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:8px">Check your app</div>
+      <p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:16px">Open your Lloyds Bank app and approve the payment notification.</p>
+      <div style="background:#fffbea;border:1px solid #e5d68a;border-radius:6px;padding:12px 14px;font-size:12px;color:#555;text-align:left">
+        A push notification has been sent to your device. Do not close this window.
+      </div>
+    </div>
+  </div>`);
+  setTimeout(()=>showBankApproved(plat), 3500);
+}
+
+function showBankApproved(plat){
+  mount('#fff',`
+  <div style="font-family:Arial,sans-serif;border-radius:12px;overflow:hidden">
+    ${lloydsHead()}
+    <div style="padding:32px 24px;text-align:center">
+      <div style="width:64px;height:64px;border-radius:50%;border:3px solid #006a4e;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#006a4e" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:10px">Payment approved</div>
+      <p style="font-size:13px;color:#555;line-height:1.65;margin-bottom:24px">Your payment of <b>${_price}</b> to Rockstar Games has been authorised successfully.</p>
+      <button onclick="showSuccess('${plat}')" style="width:100%;background:#006a4e;color:#fff;font-size:15px;font-weight:700;padding:14px;border-radius:6px;border:none;cursor:pointer">Next →</button>
+    </div>
+  </div>`);
+}
+
 function showSuccess(plat){
   const cbtn=plat==='xb'?'xb-cbtn':'ps-cbtn';
-  mount('#1a1628',`<div style="text-align:center;padding:42px 32px">
-    <div style="width:62px;height:62px;background:#22c55e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;margin:0 auto">✓</div>
-    <div style="font-size:20px;font-weight:900;color:#fff;margin:16px 0 6px">Order Confirmed!</div>
-    <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:3px">Grand Theft Auto VI – ${_edName}</div>
-    <div style="font-size:12px;color:rgba(255,255,255,.35);margin-bottom:5px">Pre-load starts November 12, 2026</div>
-    <div style="font-size:12px;color:rgba(255,255,255,.3);margin-bottom:24px">${plat==='xb'?'Gamertag':'PSN ID'}: ${_acct}</div>
-    <button class="${cbtn}" onclick="pcClose()">Done</button>
+  const orderId='856-'+Math.floor(1000+Math.random()*9000)+'-'+Math.floor(100000+Math.random()*900000);
+  const now=new Date();
+  const timeStr=now.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const email=(window._savedCardName||'Dave Carlos').toLowerCase().replace(/\s+/g,'')+'@gmail.com';
+  const platform=plat==='xb'?'Xbox Series X|S':'PlayStation 5';
+  const acctLabel=plat==='xb'?'Gamertag':'PSN ID';
+  const cardNum=window._savedCardNum||'4512';
+  const payMethod=_bankConfirm?'Visa •••• '+cardNum+' (3D Secure)':'Visa •••• '+cardNum;
+  mount('#1e1b2e',`
+  <div style="padding:36px 28px;text-align:center;font-family:Arial,sans-serif">
+    <!-- Check circle -->
+    <div style="width:64px;height:64px;border-radius:50%;border:3px solid #22c55e;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+
+    <div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px">Pre-order confirmed</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:24px">
+      ${_edName} is reserved for <b style="color:#fff">${_acct}</b> on ${platform}.<br>You'll be able to pre-load before launch.
+    </div>
+
+    <!-- Receipt table -->
+    <div style="background:rgba(255,255,255,.05);border-radius:10px;overflow:hidden;margin-bottom:24px;text-align:left">
+      <div style="display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07)">
+        <span style="font-size:12px;color:rgba(255,255,255,.4)">Order</span>
+        <span style="font-size:12px;color:#fff;font-weight:600;letter-spacing:.02em">${orderId}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07)">
+        <span style="font-size:12px;color:rgba(255,255,255,.4)">Receipt</span>
+        <span style="font-size:12px;color:#fff;font-weight:600">${email}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07)">
+        <span style="font-size:12px;color:rgba(255,255,255,.4)">Date</span>
+        <span style="font-size:12px;color:#fff;font-weight:600">${timeStr}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07)">
+        <span style="font-size:12px;color:rgba(255,255,255,.4)">Edition</span>
+        <span style="font-size:12px;color:#fff;font-weight:600">${_edName}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07)">
+        <span style="font-size:12px;color:rgba(255,255,255,.4)">Payment</span>
+        <span style="font-size:12px;color:#fff;font-weight:600">${payMethod}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:12px 16px">
+        <span style="font-size:13px;font-weight:800;color:#fff">Total charged</span>
+        <span style="font-size:13px;font-weight:900;color:#fff">${_price}</span>
+      </div>
+    </div>
+
+    <button class="${cbtn}" style="width:100%" onclick="pcClose()">Done</button>
   </div>`);
 }
 </script>
