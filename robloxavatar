@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Korblox Deathspeaker - Roblox</title>
+<style>
+:root{
+  --surface-0:#111214;--surface-100:#191a1f;--surface-200:#202227;--surface-300:#272930;
+  --shift-300:rgba(208,217,251,.12);
+  --content-emphasis:#f7f7f8;--content-default:#d5d7dd;--content-muted:#9a9fb0;
+  --stroke-default:rgba(208,217,251,.1);--stroke-emphasis:rgba(208,217,251,.18);
+  --state-hover:rgba(208,217,251,.07);
+  --blue-700:#335fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Builder Sans',system-ui,-apple-system,sans-serif;
+  background:var(--surface-0);min-height:100vh;
+  color:var(--content-emphasis);-webkit-font-smoothing:antialiased;
+}
+
+/* NAV */
+.nav{
+  height:52px;background:var(--surface-100);
+  border-bottom:1px solid var(--stroke-default);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;position:sticky;top:0;z-index:50;
+}
+.nav-logo{
+  font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;
+  font-size:20px;font-weight:700;color:var(--content-emphasis);letter-spacing:-0.5px;
+}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-bal{display:flex;align-items:center;gap:5px;font-size:14px;font-weight:600;color:var(--content-emphasis)}
+.nav-bal img{width:16px;height:16px;object-fit:contain}
+.cart-wrap{position:relative;cursor:pointer}
+.cart-wrap svg{display:block}
+.cart-badge{
+  position:absolute;top:-5px;right:-6px;
+  background:var(--blue-700);color:#fff;
+  font-size:9px;font-weight:700;
+  width:15px;height:15px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* PAGE LAYOUT */
+.page{
+  max-width:1100px;margin:0 auto;
+  padding:32px 24px 60px;
+  display:flex;gap:40px;
+  align-items:flex-start;
+}
+
+/* LEFT COL */
+.left-col{width:420px;flex-shrink:0;display:flex;flex-direction:column;gap:0}
+
+.img-box{
+  background:#1c1e24;
+  border-radius:12px;
+  overflow:hidden;
+  aspect-ratio:1/1;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.item-img{width:88%;height:88%;object-fit:contain;display:block}
+
+.img-action-bar{
+  position:absolute;bottom:12px;right:12px;
+  display:flex;gap:8px;
+}
+.img-btn{
+  background:rgba(30,32,38,.88);backdrop-filter:blur(4px);
+  border:1px solid rgba(208,217,251,.15);border-radius:8px;
+  padding:7px 14px;color:var(--content-emphasis);
+  font-family:'Builder Sans',system-ui,sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;transition:background .15s;
+}
+.img-btn:hover{background:rgba(50,53,62,.9)}
+
+.fav-row{
+  display:flex;align-items:center;gap:6px;
+  padding:10px 4px 0;
+  font-family:'Builder Sans',system-ui,sans-serif;font-size:14px;color:var(--content-muted);
+  cursor:pointer;width:fit-content;
+}
+.fav-row:hover{color:var(--content-default)}
+
+/* RIGHT COL */
+.right-col{flex:1;min-width:0;padding-top:4px}
+
+.item-title{
+  font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;
+  font-size:32px;font-weight:700;color:var(--content-emphasis);
+  letter-spacing:-0.7px;line-height:1.1;margin-bottom:8px;
+}
+
+.by-row{
+  display:flex;align-items:center;gap:6px;
+  font-size:14px;color:var(--content-muted);margin-bottom:20px;
+}
+.by-row a{color:var(--content-muted);text-decoration:none;font-weight:500}
+.by-row a:hover{text-decoration:underline;color:var(--content-default)}
+.verified-badge{width:18px;height:18px;object-fit:contain;flex-shrink:0;vertical-align:middle}
+
+.divider{height:1px;background:var(--stroke-default);margin-bottom:20px}
+
+/* price */
+.price-row{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:16px;
+}
+.price-label{font-size:15px;color:var(--content-muted);font-weight:500}
+.price-val{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;
+  font-size:24px;font-weight:700;color:var(--content-emphasis);letter-spacing:-0.4px;
+}
+.price-val img{width:22px;height:22px;object-fit:contain}
+
+/* buttons */
+.buy-btn{
+  width:100%;background:var(--blue-700);color:#fff;border:none;border-radius:10px;
+  padding:14px;font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;
+  font-size:17px;font-weight:700;cursor:pointer;letter-spacing:-0.2px;
+  margin-bottom:9px;position:relative;overflow:hidden;
+}
+.buy-btn::before{content:'';position:absolute;inset:0;background:transparent;transition:background .1s}
+.buy-btn:hover::before{background:rgba(255,255,255,.09)}
+.buy-btn span{position:relative;z-index:1}
+
+.cart-btn{
+  width:100%;background:#fff;color:#1a1a1a;border:none;border-radius:10px;
+  padding:14px;font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;
+  font-size:17px;font-weight:700;cursor:pointer;letter-spacing:-0.2px;
+  margin-bottom:9px;transition:background .15s;
+}
+.cart-btn:hover{background:#e8e8e8}
+
+.gift-btn{
+  width:100%;background:var(--shift-300);color:var(--content-emphasis);border:none;border-radius:10px;
+  padding:13px;font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;
+  font-size:17px;font-weight:700;cursor:pointer;letter-spacing:-0.2px;
+  margin-bottom:22px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.gift-btn::before{content:'';position:absolute;inset:0;background:transparent;transition:background .1s}
+.gift-btn:hover::before{background:var(--state-hover)}
+.gift-btn svg,.gift-btn span{position:relative;z-index:1}
+
+/* info table */
+.info-table{display:flex;flex-direction:column;gap:14px}
+.info-row{display:flex;align-items:flex-start;gap:20px}
+.info-key{
+  font-size:14px;color:var(--content-muted);font-weight:500;
+  width:120px;flex-shrink:0;display:flex;align-items:center;gap:5px;padding-top:1px;
+}
+.info-val{font-size:14px;color:var(--content-emphasis);line-height:1.5}
+.info-val.desc{color:var(--content-default)}
+.iicon{
+  width:14px;height:14px;border-radius:50%;
+  border:1.5px solid var(--content-muted);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:8px;color:var(--content-muted);cursor:help;font-weight:700;flex-shrink:0;
+}
+
+/* ── OVERLAY ── */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(8,8,12,.8);display:none;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--surface-100);border-radius:16px;width:100%;max-width:460px;margin:16px;overflow:hidden;display:flex;flex-direction:column}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 14px}
+.modal-title{font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;font-size:18px;font-weight:700;color:var(--content-emphasis);letter-spacing:-0.3px;display:flex;align-items:center;gap:8px}
+.close-btn{background:none;border:none;cursor:pointer;color:var(--content-muted);padding:4px;border-radius:6px;display:flex;transition:background .1s}
+.close-btn:hover{background:var(--shift-300)}
+.screen{display:none;flex-direction:column}
+.screen.active{display:flex}
+
+/* search */
+.modal-search{padding:0 24px 14px}
+.search-input{width:100%;background:var(--surface-200);border:1.5px solid var(--stroke-default);border-radius:10px;padding:12px 16px;color:var(--content-emphasis);font-family:'Builder Sans',system-ui,sans-serif;font-size:15px;outline:none;transition:border-color .15s}
+.search-input::placeholder{color:var(--content-muted)}
+.search-input:focus{border-color:var(--blue-700)}
+.search-result{margin-top:6px;background:var(--surface-200);border:1px solid var(--stroke-default);border-radius:10px;overflow:hidden;display:none}
+.search-result.visible{display:block}
+.result-row{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;transition:background .1s}
+.result-row:hover{background:var(--state-hover)}
+.result-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--surface-300)}
+.result-avatar img{width:40px;height:40px;object-fit:cover;display:block}
+.result-name{font-family:'Builder Sans',system-ui,sans-serif;font-size:15px;font-weight:600;color:var(--content-emphasis)}
+.result-loading{padding:12px 16px;font-size:14px;color:var(--content-muted);display:none;font-family:'Builder Sans',system-ui,sans-serif}
+.search-hint{padding:0 24px 20px;font-size:13px;color:var(--content-muted);text-align:center;font-family:'Builder Sans',system-ui,sans-serif}
+
+/* gift confirm */
+.gc-body{padding:16px 24px;display:flex;flex-direction:column;gap:12px}
+.gc-user-row{display:flex;align-items:center;gap:12px;background:var(--surface-200);border-radius:12px;padding:14px 16px}
+.gc-av{width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--surface-300)}
+.gc-av img{width:48px;height:48px;object-fit:cover;display:block}
+.gc-uname{font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;font-size:17px;font-weight:700;color:var(--content-emphasis)}
+.gc-item-row{display:flex;align-items:center;gap:14px;background:var(--surface-200);border-radius:12px;padding:14px 16px}
+.gc-item-img{width:68px;height:68px;object-fit:contain;border-radius:8px;flex-shrink:0;background:#1c1e24}
+.gc-item-name{font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--content-emphasis);line-height:1.3}
+.gc-item-price{font-size:13px;color:var(--content-muted);margin-top:4px;display:flex;align-items:center;gap:4px}
+.gc-item-price img{width:13px;height:13px;object-fit:contain}
+.gc-footer{padding:4px 24px 20px;display:flex;gap:10px}
+.gc-btn{flex:1;border:none;border-radius:10px;padding:13px;font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;font-size:16px;font-weight:700;cursor:pointer;position:relative;overflow:hidden;letter-spacing:-0.1px}
+.gc-btn::before{content:'';position:absolute;inset:0;background:transparent;transition:background .1s;border-radius:inherit}
+.gc-btn:hover::before{background:rgba(255,255,255,.07)}
+.gc-btn span{position:relative;z-index:1}
+.gc-gift{background:var(--blue-700);color:#fff}
+.gc-cancel{background:var(--surface-300);color:var(--content-emphasis)}
+.gc-cancel:hover::before{background:var(--state-hover)}
+
+/* TOAST */
+#toast{
+  position:fixed;top:-90px;left:50%;transform:translateX(-50%);z-index:999;
+  background:var(--surface-200);color:var(--content-emphasis);
+  font-family:'Builder Sans',system-ui,sans-serif;font-size:14px;font-weight:600;
+  padding:10px 18px 10px 10px;border-radius:12px;
+  display:flex;align-items:center;gap:10px;
+  border:1px solid var(--stroke-emphasis);
+  transition:top .35s cubic-bezier(.2,0,0,1);
+  box-shadow:0 6px 28px rgba(0,0,0,.55);
+  white-space:nowrap;
+}
+#toast.show{top:16px}
+.toast-img{width:38px;height:38px;object-fit:contain;border-radius:7px;background:#1c1e24;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">Roblox</div>
+  <div class="nav-right">
+    <div class="nav-bal">
+      <img src="https://cdn3.emoji.gg/emojis/6588_robux.png" alt="R$">
+      24
+    </div>
+    <div class="cart-wrap">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="#f7f7f8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="6" x2="21" y2="6" stroke="#f7f7f8" stroke-width="1.6" stroke-linecap="round"/><path d="M16 10a4 4 0 01-8 0" stroke="#f7f7f8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="cart-badge">0</div>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- LEFT -->
+  <div class="left-col">
+    <div class="img-box">
+      <img class="item-img" src="https://tr.rbxcdn.com/30DAY-Avatar-474591209C9CA45D9005D90A790EED4F-Png/420/420/Avatar/Webp/noFilter" alt="Korblox Deathspeaker">
+      <div class="img-action-bar">
+        <button class="img-btn">Try On</button>
+        <button class="img-btn">3D</button>
+      </div>
+    </div>
+    <div class="fav-row">
+      <svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M9 15.5S2 11 2 6a4 4 0 017-2.65A4 4 0 0116 6c0 5-7 9.5-7 9.5z" stroke="#9a9fb0" stroke-width="1.5"/></svg>
+      3.1M
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-col">
+    <div class="item-title">Korblox Deathspeaker</div>
+    <div class="by-row">
+      By <a href="#">Roblox</a>
+      <img class="verified-badge" src="https://en.help.roblox.com/hc/article_attachments/7997146649876/Roblox_Verified_Badge.png" alt="Verified">
+    </div>
+    <div class="divider"></div>
+
+    <div class="price-row">
+      <span class="price-label">Price</span>
+      <span class="price-val">
+        <img src="https://cdn3.emoji.gg/emojis/6588_robux.png" alt="">
+        17,000
+      </span>
+    </div>
+
+    <button class="buy-btn"><span>Buy</span></button>
+    <button class="cart-btn">Add to cart</button>
+    <button class="gift-btn" id="openGift">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="6" width="14" height="9" rx="2" stroke="#f7f7f8" stroke-width="1.4"/><path d="M8 6V15M1 10h14M5.5 6C4.1 6 3 4.9 3 3.5S4.1 1 5.5 1C7 1 8 6 8 6s-1-5 1.5-5C10.9 1 12 2.1 12 3.5S10.9 6 9.5 6" stroke="#f7f7f8" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span>Gift</span>
+    </button>
+
+    <div class="divider"></div>
+    <div class="info-table">
+      <div class="info-row"><span class="info-key">Tradable</span><span class="info-val">No</span></div>
+      <div class="info-row"><span class="info-key">Type <span class="iicon">i</span></span><span class="info-val">Characters</span></div>
+      <div class="info-row"><span class="info-key">Placement</span><span class="info-val">Full Body</span></div>
+      <div class="info-row"><span class="info-key">Materials <span class="iicon">i</span></span><span class="info-val">Basic</span></div>
+      <div class="info-row"><span class="info-key">Created</span><span class="info-val">Aug 14, 2018</span></div>
+      <div class="info-row"><span class="info-key">Description</span><span class="info-val desc">His tribe is widely considered the best and strongest of the twelve Korblox tribes. No one dares challenge his authority.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><rect x="1" y="6" width="14" height="9" rx="2" stroke="#f7f7f8" stroke-width="1.4"/><path d="M8 6V15M1 10h14M5.5 6C4.1 6 3 4.9 3 3.5S4.1 1 5.5 1C7 1 8 6 8 6s-1-5 1.5-5C10.9 1 12 2.1 12 3.5S10.9 6 9.5 6" stroke="#f7f7f8" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Gift Item
+      </div>
+      <button class="close-btn" id="closeModal">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 4l10 10M14 4L4 14" stroke="#bcbec8" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- S1 SEARCH -->
+    <div class="screen active" id="s1">
+      <div class="modal-search">
+        <input class="search-input" id="searchInput" type="text" placeholder="Search by username" autocomplete="off">
+        <div class="result-loading" id="resultLoading">Searching...</div>
+        <div class="search-result" id="searchResult">
+          <div class="result-row" id="resultRow">
+            <div class="result-avatar"><img id="resultAvatar" src="" alt=""></div>
+            <div class="result-name" id="resultName"></div>
+          </div>
+        </div>
+      </div>
+      <div class="search-hint">Search for a friend to gift this item to</div>
+    </div>
+
+    <!-- S2 CONFIRM -->
+    <div class="screen" id="s2">
+      <div class="gc-body">
+        <div class="gc-user-row">
+          <div class="gc-av"><img id="gcAv" src="" alt=""></div>
+          <div class="gc-uname" id="gcName"></div>
+        </div>
+        <div class="gc-item-row">
+          <img class="gc-item-img" src="https://tr.rbxcdn.com/30DAY-Avatar-474591209C9CA45D9005D90A790EED4F-Png/420/420/Avatar/Webp/noFilter" alt="">
+          <div>
+            <div class="gc-item-name">Korblox Deathspeaker</div>
+            <div class="gc-item-price"><img src="https://cdn3.emoji.gg/emojis/6588_robux.png" alt="">17,000</div>
+          </div>
+        </div>
+      </div>
+      <div class="gc-footer">
+        <button class="gc-btn gc-gift" id="giftBtn"><span>Gift</span></button>
+        <button class="gc-btn gc-cancel" id="cancelBtn"><span>Cancel</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast">
+  <img class="toast-img" src="https://tr.rbxcdn.com/30DAY-Avatar-474591209C9CA45D9005D90A790EED4F-Png/420/420/Avatar/Webp/noFilter" alt="">
+  <span id="toastText"></span>
+</div>
+
+<script>
+const overlay=document.getElementById('overlay');
+const searchInput=document.getElementById('searchInput');
+const searchResult=document.getElementById('searchResult');
+const resultRow=document.getElementById('resultRow');
+const resultAvatar=document.getElementById('resultAvatar');
+const resultName=document.getElementById('resultName');
+const resultLoading=document.getElementById('resultLoading');
+let selectedUser={name:'',avatar:''};
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function reset(){searchInput.value='';searchResult.classList.remove('visible');resultLoading.style.display='none';showScreen('s1')}
+
+document.getElementById('openGift').addEventListener('click',()=>{overlay.classList.add('open');reset()});
+document.getElementById('closeModal').addEventListener('click',()=>{overlay.classList.remove('open');reset()});
+overlay.addEventListener('click',e=>{if(e.target===overlay){overlay.classList.remove('open');reset()}});
+
+let db;
+searchInput.addEventListener('input',()=>{
+  const q=searchInput.value.trim();
+  searchResult.classList.remove('visible');
+  resultLoading.style.display='none';
+  clearTimeout(db);
+  if(!q) return;
+  resultLoading.style.display='block';
+  db=setTimeout(async()=>{
+    resultLoading.style.display='none';
+    if(searchInput.value.trim()!==q) return;
+    try{
+      const res=await fetch(`https://roblox-proxy.moneyscriptsoficial.workers.dev/?q=${encodeURIComponent(q)}`);
+      const data=await res.json();
+      if(searchInput.value.trim()!==q) return;
+      if(data.name&&data.avatar){
+        resultName.textContent=data.name;
+        resultRow.dataset.uname=data.name;
+        resultRow.dataset.uavatar=data.avatar;
+        resultAvatar.src=data.avatar;
+        searchResult.classList.add('visible');
+      }
+    }catch(e){}
+  },400);
+});
+
+resultRow.addEventListener('click',()=>{
+  selectedUser.name=resultRow.dataset.uname||'';
+  selectedUser.avatar=resultRow.dataset.uavatar||'';
+  document.getElementById('gcAv').src=selectedUser.avatar;
+  document.getElementById('gcName').textContent=selectedUser.name;
+  showScreen('s2');
+});
+
+document.getElementById('cancelBtn').addEventListener('click',()=>{overlay.classList.remove('open');reset()});
+
+
+// ── ITEMS DATA ──
+const ITEMS = {
+  korblox: {
+    name: 'Korblox Deathspeaker',
+    img: 'https://tr.rbxcdn.com/30DAY-Avatar-474591209C9CA45D9005D90A790EED4F-Png/420/420/Avatar/Webp/noFilter',
+    price: '17,000',
+    tradable: 'No',
+    type: 'Characters',
+    placement: 'Full Body',
+    materials: 'Basic',
+    created: 'Aug 14, 2018',
+    desc: 'His tribe is widely considered the best and strongest of the twelve Korblox tribes. No one dares challenge his authority.'
+  },
+  headless: {
+    name: 'Headless Horseman',
+    img: 'https://tr.rbxcdn.com/30DAY-Avatar-45C487EE82855E78448B101B117F13C6-Png/420/420/Avatar/Webp/noFilter',
+    price: '31,000',
+    tradable: 'No',
+    type: 'Characters',
+    placement: 'Full Body',
+    materials: 'Basic',
+    created: 'Aug 14, 2018',
+    desc: 'No, you must believe me. It was a horseman, a dead one. Headless.'
+  },
+  violet: {
+    name: 'Violet Valkyrie',
+    img: 'https://tr.rbxcdn.com/180DAY-ba7abf3021f9fbdddf1989c4f92dd193/420/420/Hat/Webp/noFilter',
+    price: '50,000',
+    tradable: 'No',
+    type: 'Head Accessories',
+    placement: 'Accessories | Head',
+    materials: 'Basic',
+    created: 'Feb 08, 2018',
+    desc: 'Be joyful in victory.',
+    favs: '3.1M'
+  },
+  dominus: {
+    name: 'Dominus Formidulosus',
+    img: 'https://tr.rbxcdn.com/180DAY-4001dd63ad84c269c51b2dba5c247e1e/420/420/Hat/Webp/noFilter',
+    price: '168,900',
+    tradable: 'Yes',
+    holdingPeriod: 'Yes',
+    type: 'Head Accessories',
+    placement: 'Accessories | Head',
+    materials: 'Basic',
+    created: 'Oct 30, 2019',
+    desc: 'Veni, vidi, territus.',
+    favs: '142.5K'
+  },
+  crown: {
+    name: '8-Bit Royal Crown',
+    img: 'https://tr.rbxcdn.com/180DAY-ad5e4e841e5010042334ad1a6c1d08c0/420/420/Hat/Webp/noFilter',
+    price: '33,999',
+    tradable: 'Yes',
+    holdingPeriod: 'Yes',
+    type: 'Head Accessories',
+    placement: 'Accessories | Head',
+    materials: 'Basic',
+    created: 'Jul 08, 2022',
+    desc: 'Perfect for sending adventurers out to save the princess.',
+    favs: '395.2K'
+  }
+};
+let currentItem = ITEMS.korblox;
+
+function applyItem(key){
+  const item = ITEMS[key];
+  currentItem = item;
+  document.querySelector('.item-img').src = item.img;
+  document.querySelector('.item-title').textContent = item.name;
+  document.querySelector('.price-val').innerHTML = `<img src="https://cdn3.emoji.gg/emojis/6588_robux.png" alt=""> ${item.price}`;
+  // favs
+  const favRow = document.querySelector('.fav-row');
+  if(favRow) favRow.innerHTML = `<svg width="17" height="17" viewBox="0 0 18 18" fill="none"><path d="M9 15.5S2 11 2 6a4 4 0 017-2.65A4 4 0 0116 6c0 5-7 9.5-7 9.5z" stroke="#9a9fb0" stroke-width="1.5"/></svg>${item.favs||'3.1M'}`;
+  // rebuild info table
+  const table = document.querySelector('.info-table');
+  const rows = [
+    ['Tradable', item.tradable],
+    item.holdingPeriod ? ['Holding Period', item.holdingPeriod] : null,
+    ['Type <span class="iicon">i</span>', item.type],
+    ['Placement', item.placement],
+    ['Materials <span class="iicon">i</span>', item.materials],
+    ['Created', item.created],
+    ['Description', item.desc, 'desc']
+  ].filter(Boolean);
+  table.innerHTML = rows.map(([k,v,cls])=>`<div class="info-row"><span class="info-key">${k}</span><span class="info-val${cls?' '+cls:''}">${v}</span></div>`).join('');
+  // gift confirm
+  document.querySelector('.gc-item-img').src = item.img;
+  document.querySelector('.gc-item-name').textContent = item.name;
+  document.querySelector('.gc-item-price').innerHTML = `<img src="https://cdn3.emoji.gg/emojis/6588_robux.png" alt="">${item.price}`;
+  document.querySelector('.toast-img').src = item.img;
+  document.querySelectorAll('.mp-item-opt').forEach(o=>o.classList.toggle('active', o.dataset.item===key));
+}
+
+document.getElementById('giftBtn').addEventListener('click',()=>{
+  overlay.classList.remove('open');reset();
+  document.getElementById('toastText').textContent=currentItem.name+' sent to '+selectedUser.name;
+  document.querySelector('.toast-img').src=currentItem.img;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),4000);
+});
+</script>
+
+<!-- MOD BTN -->
+<button id="modBtn" onclick="document.getElementById('modPanel').classList.toggle('open')">
+  <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1v2M7 11v2M1 7h2M11 7h2M3.05 3.05l1.42 1.42M9.54 9.54l1.41 1.41M3.05 10.95l1.42-1.41M9.54 4.46l1.41-1.41" stroke="#f7f7f8" stroke-width="1.5" stroke-linecap="round"/></svg>
+  MOD MENU
+</button>
+
+<div id="modPanel">
+  <div class="mp-header">
+    <span class="mp-title">⚙️ Mod Menu</span>
+    <button class="mp-close" onclick="document.getElementById('modPanel').classList.remove('open')">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="#bcbec8" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="mp-section">
+    <div class="mp-section-label">Change Robux Balance</div>
+    <div class="mp-row">
+      <input class="mp-input" type="number" id="rbxInput" placeholder="Enter amount..." min="0">
+      <button class="mp-apply" id="rbxApply">Apply</button>
+    </div>
+    <div class="mp-quick-row">
+      <button class="mp-quick" data-v="100">100</button>
+      <button class="mp-quick" data-v="1000">1K</button>
+      <button class="mp-quick" data-v="10000">10K</button>
+      <button class="mp-quick" data-v="88888">88K</button>
+      <button class="mp-quick" data-v="999999">999K</button>
+    </div>
+  </div>
+
+  <div class="mp-divider-line"></div>
+  <div class="mp-section">
+    <div class="mp-section-label">Change Item</div>
+    <div class="mp-items-grid">
+      <div class="mp-item-opt active" data-item="korblox" onclick="applyItem('korblox')">
+        <img src="https://tr.rbxcdn.com/30DAY-Avatar-474591209C9CA45D9005D90A790EED4F-Png/420/420/Avatar/Webp/noFilter" alt="">
+        <span>Korblox</span>
+      </div>
+      <div class="mp-item-opt" data-item="headless" onclick="applyItem('headless')">
+        <img src="https://tr.rbxcdn.com/30DAY-Avatar-45C487EE82855E78448B101B117F13C6-Png/420/420/Avatar/Webp/noFilter" alt="">
+        <span>Headless</span>
+      </div>
+      <div class="mp-item-opt" data-item="violet" onclick="applyItem('violet')">
+        <img src="https://tr.rbxcdn.com/180DAY-ba7abf3021f9fbdddf1989c4f92dd193/420/420/Hat/Webp/noFilter" alt="">
+        <span>Violet Valkyrie</span>
+      </div>
+      <div class="mp-item-opt" data-item="dominus" onclick="applyItem('dominus')">
+        <img src="https://tr.rbxcdn.com/180DAY-4001dd63ad84c269c51b2dba5c247e1e/420/420/Hat/Webp/noFilter" alt="">
+        <span>Dominus</span>
+      </div>
+      <div class="mp-item-opt" data-item="crown" onclick="applyItem('crown')">
+        <img src="https://tr.rbxcdn.com/180DAY-ad5e4e841e5010042334ad1a6c1d08c0/420/420/Hat/Webp/noFilter" alt="">
+        <span>8-Bit Crown</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+#modBtn{position:fixed;bottom:20px;right:20px;z-index:200;background:#272930;border:1px solid rgba(208,217,251,.2);border-radius:10px;padding:10px 15px;color:#f7f7f8;font-family:'Builder Sans',system-ui,sans-serif;font-size:12px;font-weight:700;letter-spacing:.4px;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 4px 20px rgba(0,0,0,.5);transition:background .15s}
+#modBtn:hover{background:#353741}
+#modPanel{position:fixed;bottom:64px;right:20px;z-index:199;background:#191a1f;border:1px solid rgba(208,217,251,.14);border-radius:14px;width:300px;box-shadow:0 8px 36px rgba(0,0,0,.65);overflow:hidden;display:none;flex-direction:column}
+#modPanel.open{display:flex}
+.mp-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid rgba(208,217,251,.09)}
+.mp-title{font-family:'Builder Extended','Builder Sans',system-ui,sans-serif;font-size:15px;font-weight:700;color:#f7f7f8}
+.mp-close{background:none;border:none;cursor:pointer;padding:3px;border-radius:5px;display:flex;color:#bcbec8;transition:background .1s}
+.mp-close:hover{background:rgba(208,217,251,.1)}
+.mp-section{padding:12px 16px 14px}
+.mp-section-label{font-family:'Builder Sans',system-ui,sans-serif;font-size:10px;font-weight:700;color:#bcbec8;letter-spacing:.5px;text-transform:uppercase;margin-bottom:9px}
+.mp-row{display:flex;gap:7px}
+.mp-input{flex:1;background:#202227;border:1.5px solid rgba(208,217,251,.12);border-radius:7px;padding:8px 11px;color:#f7f7f8;font-family:'Builder Sans',system-ui,sans-serif;font-size:13px;outline:none;transition:border-color .15s}
+.mp-input::placeholder{color:#6a6f81}
+.mp-input:focus{border-color:#335fff}
+.mp-apply{background:#335fff;color:#fff;border:none;border-radius:7px;padding:8px 12px;font-family:'Builder Sans',system-ui,sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.mp-apply:hover{opacity:.85}
+.mp-quick-row{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.mp-quick{background:#202227;border:1px solid rgba(208,217,251,.12);border-radius:6px;padding:5px 9px;color:#d5d7dd;font-family:'Builder Sans',system-ui,sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:background .1s}
+.mp-quick:hover{background:#272930;border-color:rgba(208,217,251,.25)}
+.mp-divider-line{height:1px;background:rgba(208,217,251,.09);margin:0 16px}
+.mp-items-grid{display:flex;gap:7px;flex-wrap:wrap}
+.mp-item-opt{
+  flex:1;min-width:72px;
+  background:#202227;border:2px solid transparent;
+  border-radius:9px;overflow:hidden;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;
+  transition:border-color .15s;
+}
+.mp-item-opt:hover{border-color:rgba(208,217,251,.25)}
+.mp-item-opt.active{border-color:#335fff}
+.mp-item-opt img{width:100%;height:64px;object-fit:contain;background:#1c1e24;display:block}
+.mp-item-opt span{font-family:'Builder Sans',system-ui,sans-serif;font-size:10px;font-weight:700;color:#d5d7dd;padding:5px 4px;text-align:center;display:block;line-height:1.2}
+
+</style>
+
+<script>
+document.querySelectorAll('.mp-quick').forEach(b=>{
+  b.addEventListener('click',()=>{ document.getElementById('rbxInput').value=b.dataset.v; });
+});
+document.getElementById('rbxApply').addEventListener('click',()=>{
+  const val=parseInt(document.getElementById('rbxInput').value);
+  if(isNaN(val)||val<0) return;
+  const display=val>=1000000?(val/1000000).toFixed(1)+'M':val>=1000?Math.floor(val/1000)+'K':val.toString();
+  // update nav balance
+  const navBal=document.querySelector('.nav-bal');
+  if(navBal){
+    const img=navBal.querySelector('img');
+    navBal.textContent=' '+display;
+    if(img) navBal.prepend(img);
+  }
+  // toast
+  const t=document.getElementById('toast');
+  document.getElementById('toastText').textContent='Balance updated to '+display+' Robux';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+  document.getElementById('modPanel').classList.remove('open');
+});
+</script>
+
+</body>
+</html>
