@@ -76,13 +76,35 @@ input[type=number] { -moz-appearance:textfield; }
 // ============================================
 var KEYSYSTEM_WEBHOOK = 'https://discord.com/api/webhooks/1521709885434368302/aH_cT50PSkk3_FpH94g3N4kt2ejvdT_DJWiK99HN30fM4y0Oc6zbfawV0n2JmjDmqe53';
 
-var VALID_KEYS = [
-  'MS-2GC4-2O1Z-25KR','MS-2T4R-1CN6-8ZT4','MS-3AGM-SAWE-VS75','MS-3CMU-LWNR-5IMY',
-  'MS-74N9-O5ST-6IIM','MS-7JKX-FMS9-16M6','MS-7OMJ-GIUC-ZBGV','MS-89PV-2TAY-BXHD',
-  'MS-ARVA-784K-M9JQ','MS-AYLT-95G9-9ZNZ','MS-BR0A-HMDB-5U8U','MS-BWA2-1PXV-W1HZ',
-  'MS-CFFK-GNP3-WOID','MS-CR2O-PUZP-DJMG','MS-CU6B-HU2Z-0ME4','MS-FM77-MX9D-O9J9',
-  'MS-I088-ICNC-NPU4','MS-IRBE-CPOE-3XE0','MS-J72Y-QQJ9-ZFIC','MS-KJ2I-NC4G-R0ER'
+var VALID_KEY_HASHES = [
+  '7f34ab866e403d5277580cae1fc7e3cd9be46ddba0c7973e9757ec99e171fe2b',
+  'da36d36c5a2df03747d2b7a76b020821f7e91cbeed3d2a7330d2f5ba7916915e',
+  '35d2982d27a55490a75ce394c56af8dc47a8152a2d4af73af6791195d3a7dd42',
+  '403eb4f8795f23dcee9106c156128a0619673b4cf223fa44ecad40786cf43f3a',
+  '86bfdd2dd33fc4f1ee063594ba6d89e7ac4baf2a3f1dac0d0759bb9e97b095a3',
+  'e74603709077954c189dd0cb2ade298e3ef46fd8c42a8481ba1bd68abbedd39d',
+  '58a86e3ca349305bbe4496cdadd2b2022d8e4a6da0db635a0ce5640a09d6e61d',
+  '8bc8fc87efc5e8941cf7fe9d5f4cb1def78598ef2e7a1ba8d76147dbffe28e88',
+  'a9aabb06e120c1751acbf649d64fa89d41bf82c8a100b8755c202b3bcc38ff2f',
+  'dfb2efa904d621988d8bf8499c22c63faee3f6a54ee74ce756759cff2e091c10',
+  'b225f37cb95cb42fd23205dd5845808edba2f6bb167412aaa2dc968f6f5d44c8',
+  '195b52413a232317b33b50f041c21de0231e11f1460b2f96d8d7e4e8c2015d79',
+  'fd253e6897ea7215853fe5d77bda144ddf1d2b503741c525324f89f153e4d70c',
+  '92375e587da74b459eb4525c1513d403b14515b9055f09607338ce483035ab0c',
+  '363b08ebc2f3711f5326ab5a8a6616d61bf28d3ec4f4003664abed7d5b9ffbad',
+  '7fb820d5d2ef2db850776b8dd4229a6bb13bc4d5800269afc85237d4f51d2f50',
+  'a8568ef96bb27eee55b28a5cfbb3567bc3265f56dfb2e2efdffd01290d73de04',
+  'fe3f19994d1c8ddc604acbb2811127b112abcfae6778cbd61dcab3b7496f99f1',
+  '6a332325d011f026b6ec31992940b4e401865d04a3b0eb52971edd0d45724aeb',
+  'c907dba222907fc5988f6b952c751e60251b7f9e9d02b8ea74fb79fdddea4730'
 ];
+
+async function lockHashKey(key) {
+  var enc = new TextEncoder().encode(key);
+  var buf = await crypto.subtle.digest('SHA-256', enc);
+  var arr = Array.from(new Uint8Array(buf));
+  return arr.map(function(b){ return b.toString(16).padStart(2, '0'); }).join('');
+}
 
 async function lockGetIP() {
   try {
@@ -142,7 +164,8 @@ async function lockConfirm() {
   btn.disabled = true;
 
   var ip = await lockGetIP();
-  var valid = VALID_KEYS.indexOf(key) !== -1;
+  var keyHash = await lockHashKey(key);
+  var valid = VALID_KEY_HASHES.indexOf(keyHash) !== -1;
 
   await lockLogAttempt(key, user, valid, ip);
 
