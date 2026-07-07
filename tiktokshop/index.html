@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TikTok Shop</title>
+<style>
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:#fff;
+    color:#1a1a1a;
+    margin:0 auto;
+    padding-bottom:90px;
+  }
+
+  /* Top bar */
+  .topbar {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 14px 10px;
+  }
+  .icon-btn {
+    width:34px; height:34px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    color:#1a1a1a;
+  }
+  .searchbar {
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#f2f2f4;
+    border-radius:20px;
+    padding:10px 16px;
+    color:#555;
+    font-size:15px;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .searchbar svg { flex-shrink:0; }
+  .apple-glyph { font-size:15px; margin-right:2px; }
+  .topbar .actions { display:flex; gap:14px; margin-left:2px; }
+
+  /* Image carousel */
+  .carousel {
+    position:relative;
+    background:#f4f4f4;
+    height:400px;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .carousel img {
+    width:100%; height:100%; object-fit:contain;
+  }
+  .carousel .placeholder {
+    text-align:center;
+    color:#9a9a9a;
+    font-size:14px;
+    padding:0 30px;
+    line-height:1.5;
+  }
+  .counter {
+    position:absolute;
+    bottom:14px; right:14px;
+    background:rgba(30,30,30,0.65);
+    color:#fff;
+    font-size:13px;
+    padding:4px 10px;
+    border-radius:12px;
+  }
+  .carousel-track {
+    display:flex;
+    width:100%; height:100%;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .carousel-track::-webkit-scrollbar { display:none; }
+  .carousel-slide {
+    flex:0 0 100%;
+    scroll-snap-align:start;
+    display:flex; align-items:center; justify-content:center;
+    height:100%;
+  }
+  .carousel-slide img {
+    width:100%; height:100%; object-fit:contain;
+  }
+
+  /* Price block */
+  .content { padding:18px 16px 0; }
+  .price-row {
+    display:flex;
+    align-items:baseline;
+    gap:2px;
+  }
+  .price {
+    font-size:34px;
+    font-weight:600;
+    letter-spacing:-0.5px;
+  }
+  .price .cents { font-size:20px; }
+  .installments {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#00a650;
+    font-size:15px;
+    margin-top:8px;
+  }
+  .installments svg { flex-shrink:0; }
+
+  .save-badge {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#e6f7ee;
+    color:#00a650;
+    font-size:14px;
+    font-weight:500;
+    padding:10px 14px;
+    border-radius:8px;
+    margin-top:14px;
+  }
+
+  .title {
+    font-size:20px;
+    font-weight:600;
+    line-height:1.3;
+    margin-top:18px;
+  }
+  .sold {
+    color:#787878;
+    font-size:14px;
+    margin-top:8px;
+  }
+
+  hr.divider {
+    border:none;
+    border-top:8px solid #f4f4f4;
+    margin:16px -16px;
+  }
+
+  .shipping-row {
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:2px 0;
+  }
+  .shipping-row .truck { flex-shrink:0; margin-top:2px; }
+  .shipping-text { font-size:14.5px; }
+  .free-tag {
+    background:#e6f7ee;
+    color:#00a650;
+    font-weight:600;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:13px;
+    margin-right:6px;
+  }
+  .strike { color:#999; text-decoration:line-through; font-size:14px; }
+  .eta { color:#00a650; font-size:14px; margin-top:4px; }
+
+  .creator-earn {
+    background:#fff9f0;
+    border-radius:10px;
+    padding:16px;
+    margin-top:8px;
+  }
+  .creator-earn .amount { color:#e0224e; font-weight:700; }
+  .creator-earn .sub { font-size:13.5px; color:#666; margin-top:4px; }
+
+  /* Protection */
+  .protection-head {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 0 12px;
+  }
+  .protection-head span {
+    color:#946200;
+    font-weight:500;
+    font-size:16px;
+    flex:1;
+  }
+  .protection-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    row-gap:10px;
+    column-gap:8px;
+    padding-bottom:16px;
+    font-size:14px;
+  }
+  .protection-grid .item {
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .protection-grid svg { flex-shrink:0; margin-top:2px; color:#946200; }
+
+  /* Section header */
+  .section-head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 0 12px;
+  }
+  .section-head h3 { font-size:19px; font-weight:600; }
+
+  /* Offers */
+  .offer-card {
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:#eaf6f6;
+    border-radius:10px;
+    padding:16px;
+    margin-bottom:16px;
+  }
+  .offer-card .divider-v {
+    width:1px;
+    align-self:stretch;
+    border-left:1px dashed #b7d9d9;
+  }
+  .offer-icon {
+    display:flex; flex-direction:column; align-items:center;
+    gap:4px;
+    color:#1a8a8a;
+    font-size:12px;
+    flex-shrink:0;
+  }
+  .offer-text { flex:1; }
+  .offer-text .amt { font-size:17px; font-weight:700; color:#1a1a1a; }
+  .offer-text .sub { font-size:13px; color:#555; margin-top:2px; }
+  .claim-btn {
+    background:#1a8a8a;
+    color:#fff;
+    border:none;
+    border-radius:18px;
+    padding:9px 18px;
+    font-size:14px;
+    font-weight:600;
+    flex-shrink:0;
+  }
+
+  /* Reviews */
+  .review-tags {
+    display:flex;
+    gap:8px;
+    padding-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .review-tag {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:#fdf3e2;
+    border-radius:20px;
+    padding:9px 14px;
+    font-size:13.5px;
+    font-weight:500;
+    color:#1a1a1a;
+    white-space:nowrap;
+  }
+  .review-tag .star { color:#f0a800; }
+
+  /* Seller */
+  .seller-row {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px 0 14px;
+  }
+  .seller-logo {
+    width:52px; height:52px;
+    border-radius:50%;
+    border:1px solid #eee;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    overflow:hidden;
+  }
+  .seller-logo img { width:26px; height:26px; }
+  .seller-info { flex:1; }
+  .seller-info .name { font-size:18px; font-weight:700; }
+  .seller-info .sold-count { font-size:14px; color:#787878; margin-top:2px; }
+  .visit-btn {
+    background:#f2f2f4;
+    border:none;
+    border-radius:18px;
+    padding:10px 20px;
+    font-size:14px;
+    font-weight:600;
+    color:#1a1a1a;
+    flex-shrink:0;
+  }
+  .seller-stats {
+    display:flex;
+    gap:18px;
+    font-size:14px;
+    color:#555;
+    padding-bottom:16px;
+  }
+  .seller-stats b { color:#1a1a1a; }
+
+  /* Checkout overlay */
+  .checkout-page {
+    display:none;
+    position:fixed;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    height:100%;
+    background:#fff;
+    z-index:1000;
+    overflow-y:auto;
+    padding-bottom:110px;
+  }
+  .checkout-page.open { display:block; }
+  .co-header {
+    text-align:center;
+    padding:16px 16px 10px;
+    position:relative;
+    border-bottom:1px solid #f0f0f0;
+  }
+  .co-back {
+    position:absolute;
+    left:14px; top:16px;
+    width:26px; height:26px;
+  }
+  .co-title { font-size:19px; font-weight:700; }
+  .co-sub {
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    color:#00a37a; font-size:13.5px; margin-top:6px;
+  }
+  .co-section {
+    padding:16px;
+    border-bottom:8px solid #f4f4f4;
+  }
+  .co-row {
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .co-row-left { display:flex; align-items:center; gap:8px; font-size:16px; font-weight:500; }
+  .co-add { color:#e0224e; font-weight:600; font-size:15px; display:flex; align-items:center; gap:4px; }
+
+  .co-seller-name { font-size:17px; font-weight:700; margin-bottom:6px; }
+  .co-rating { color:#946200; font-size:13.5px; margin-bottom:12px; display:flex; align-items:center; gap:5px; }
+  .co-product { display:flex; gap:12px; }
+  .co-product img { width:88px; height:88px; border-radius:8px; object-fit:cover; background:#f4f4f4; }
+  .co-product-info { flex:1; }
+  .co-product-title { font-size:15px; font-weight:500; line-height:1.3; margin-bottom:8px; }
+  .co-tag { display:inline-flex; align-items:center; gap:4px; font-size:12.5px; padding:3px 8px; border-radius:6px; margin-bottom:6px; margin-right:6px;}
+  .co-tag.flash { background:#fdeaea; color:#e0224e; }
+  .co-tag.return { background:#fdf3e2; color:#946200; }
+  .co-price-row { display:flex; align-items:center; justify-content:space-between; margin-top:6px; }
+  .co-price { font-size:19px; font-weight:700; }
+  .co-price .orig { font-size:14px; color:#999; text-decoration:line-through; font-weight:400; margin-left:6px; }
+  .co-price .off { background:#fdeaea; color:#e0224e; font-size:12px; padding:2px 6px; border-radius:5px; margin-left:6px; }
+  .co-qty { display:flex; align-items:center; border:1px solid #ddd; border-radius:8px; overflow:hidden; }
+  .co-qty button { width:30px; height:30px; background:#fafafa; border:none; font-size:16px; }
+  .co-qty span { width:32px; text-align:center; font-size:15px; }
+
+  .co-summary-title { font-size:18px; font-weight:700; margin-bottom:14px; }
+  .co-summary-row { display:flex; justify-content:space-between; font-size:15px; margin-bottom:12px; }
+  .co-summary-row.sub { color:#666; padding-left:14px; font-size:14.5px; }
+  .co-summary-row.discount span:last-child { color:#e0224e; }
+  .co-total-row { display:flex; justify-content:space-between; font-size:19px; font-weight:700; padding-top:12px; border-top:1px solid #eee; }
+  .co-tax-note { color:#888; font-size:13px; text-align:right; margin-top:4px; }
+
+  .co-pay-title { font-size:18px; font-weight:700; margin-bottom:14px; }
+  .co-pay-row { display:flex; align-items:center; gap:12px; padding:12px 0; }
+  .co-pay-logo { width:52px; height:34px; border:1px solid #ddd; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; flex-shrink:0; overflow:hidden; }
+  .co-pay-logo.apple-pay { background:#000; color:#fff; gap:2px; }
+  .co-pay-logo.apple-pay svg { width:14px; height:14px; }
+  .co-pay-logo.apple-pay span { font-size:14px; font-style:italic; font-weight:600; }
+  .co-pay-logo.paypal { background:#fff; padding:4px; }
+  .co-pay-logo.paypal svg { width:100%; height:100%; }
+  .co-pay-name { flex:1; font-size:15.5px; }
+  .co-radio { width:20px; height:20px; border-radius:50%; border:1.5px solid #ccc; flex-shrink:0; }
+  .co-radio.checked { border-color:#e0224e; background:radial-gradient(circle, #e0224e 40%, transparent 42%); }
+  .co-cards { display:flex; gap:6px; margin-top:2px; }
+  .co-cards span { font-size:10px; border:1px solid #ddd; border-radius:3px; padding:2px 5px; color:#555; }
+
+  .co-terms { font-size:13px; color:#888; line-height:1.5; padding:14px 16px; }
+  .co-terms b { color:#333; }
+
+  .co-savings-banner {
+    display:flex; align-items:center; gap:10px;
+    background:#fdeaea; color:#e0224e; font-weight:500;
+    padding:14px 16px; font-size:14.5px;
+  }
+
+  .co-bottombar {
+    display:none;
+    position:fixed;
+    bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    background:#fff;
+    padding:12px 16px 16px;
+    border-top:1px solid #eee;
+    z-index:1001;
+  }
+  .co-bottombar.open { display:block; }
+  .co-total-line { display:flex; justify-content:space-between; font-size:16px; font-weight:600; margin-bottom:10px; }
+  .co-place-btn {
+    width:100%;
+    background:#e0224e;
+    color:#fff;
+    border:none;
+    border-radius:24px;
+    padding:14px;
+    text-align:center;
+  }
+  .co-place-btn .label { font-weight:700; font-size:16px; }
+  .co-place-btn .sub { font-size:12.5px; opacity:0.9; margin-top:2px; }
+
+  /* iOS-style alert modal */
+  .ios-alert-backdrop {
+    display:none;
+    position:fixed;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.35);
+    z-index:2000;
+    align-items:center;
+    justify-content:center;
+  }
+  .ios-alert-backdrop.open { display:flex; }
+  .ios-alert {
+    width:78%;
+    max-width:320px;
+    background:#f6f6f6;
+    border-radius:16px;
+    overflow:hidden;
+    text-align:center;
+  }
+  .ios-alert-title {
+    font-size:19px;
+    font-weight:700;
+    padding:20px 20px 8px;
+    line-height:1.3;
+  }
+  .ios-alert-msg {
+    font-size:15px;
+    color:#555;
+    padding:0 18px 18px;
+    line-height:1.4;
+  }
+  .ios-alert-input {
+    margin:0 16px 16px;
+    padding:10px 12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:15px;
+    width:calc(100% - 32px);
+    outline:none;
+  }
+  .ios-alert-buttons {
+    display:flex;
+    border-top:1px solid #ddd;
+  }
+  .ios-alert-buttons button {
+    flex:1;
+    background:none;
+    border:none;
+    padding:14px;
+    font-size:16.5px;
+    color:#007aff;
+  }
+  .ios-alert-buttons button + button {
+    border-left:1px solid #ddd;
+    font-weight:600;
+  }
+  .ios-alert-buttons button.disabled {
+    color:#a8cfff;
+    pointer-events:none;
+  }
+
+  /* Loading spinner overlay */
+  .loading-backdrop {
+    display:none;
+    position:fixed;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.35);
+    z-index:2100;
+    align-items:center;
+    justify-content:center;
+  }
+  .loading-backdrop.open { display:flex; }
+  .spinner {
+    width:44px; height:44px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,0.35);
+    border-top-color:#fff;
+    animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* Avatar confirm alert */
+  .avatar-alert-img {
+    width:64px; height:64px;
+    border-radius:50%;
+    object-fit:cover;
+    margin:18px auto 10px;
+    display:block;
+    background:#eee;
+  }
+  .avatar-alert-name {
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:2px;
+  }
+
+  /* App Store bottom sheet - descends from top */
+  .appstore-backdrop {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0);
+    z-index:1999;
+    pointer-events:none;
+    transition:background 0.35s ease;
+  }
+  .appstore-backdrop.open {
+    background:rgba(0,0,0,0.4);
+    pointer-events:auto;
+  }
+
+  /* App Store sheet - bottom sheet, slides up from bottom */
+  .appstore-sheet {
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%) translateY(100%);
+    width:100%;
+    max-width:480px;
+    max-height:80vh;
+    background:#e4e4e8;
+    z-index:2000;
+    border-radius:20px 20px 0 0;
+    overflow-y:auto;
+    transition:transform 0.45s cubic-bezier(0.32,0.72,0,1);
+    display:flex;
+    flex-direction:column;
+    pointer-events:none;
+  }
+  .appstore-sheet.open {
+    transform:translateX(-50%) translateY(0);
+    pointer-events:auto;
+  }
+
+  .as-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 20px 14px;
+    background:#e4e4e8;
+    flex-shrink:0;
+  }
+  .as-title { font-size:26px; font-weight:700; }
+  .as-close {
+    width:34px;
+    height:34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(120,120,128,0.2);
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    color:#000;
+    font-size:20px;
+  }
+
+  .as-content {
+    padding:20px;
+    background:#fff;
+    margin:4px 16px;
+    border-radius:18px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+  }
+  .as-item {
+    display:flex;
+    gap:14px;
+    margin-bottom:16px;
+  }
+  .as-icon {
+    width:80px;
+    height:80px;
+    background:linear-gradient(135deg, #4166f5 0%, #1e40af 100%);
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    flex-shrink:0;
+  }
+  .as-item-info { flex:1; }
+  .as-name { font-size:21px; font-weight:700; line-height:1.25; }
+  .as-app { font-size:14px; color:#888; }
+  .as-badge { 
+    display:inline-block;
+    background:#f2f2f7;
+    color:#666;
+    font-size:11px;
+    padding:3px 8px;
+    border-radius:10px;
+    margin-top:4px;
+    margin-right:6px;
+  }
+  .as-type { font-size:14px; color:#888; margin-top:6px; }
+
+  .as-price-row {
+    padding:16px 0;
+    border-top:1px solid #e5e5ea;
+    border-bottom:1px solid #e5e5ea;
+    margin:16px 0;
+  }
+  .as-price { font-size:30px; font-weight:700; margin-bottom:4px; }
+  .as-freq { font-size:14px; color:#888; }
+
+  .as-divider {
+    border-top:1px solid #e5e5ea;
+    margin:16px 0;
+  }
+
+  .as-account { font-size:14px; color:#888; text-align:left; padding:16px 0; }
+
+  .as-footer {
+    padding:20px 16px 36px;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    background:#e4e4e8;
+  }
+  .as-footer-text { font-size:14px; font-weight:600; color:#1a1a1a; }
+
+  /* Pre-App Store loading screen */
+  .prestore-backdrop {
+    display:none;
+    position:fixed;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:480px;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:2049;
+    align-items:center;
+    justify-content:center;
+  }
+  .prestore-backdrop.open { display:flex; }
+  .prestore-loading {
+    width:190px;
+    background:#2c2c2e;
+    border-radius:20px;
+    z-index:2050;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    padding:22px 16px 20px;
+  }
+  .prestore-loading img {
+    width:100px;
+    height:100px;
+    object-fit:contain;
+    border-radius:10px;
+  }
+  .prestore-loading-text {
+    color:#fff;
+    font-size:15px;
+    font-weight:500;
+  }
+
+  /* Loading confirmation modal */
+  .loading-confirm-backdrop {
+    display:none;
+    position:fixed;
+    top:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:480px;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:2100;
+  }
+  .loading-confirm-backdrop.open { display:block; }
+
+  .loading-confirm-modal {
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translateX(-50%) translateY(-50%);
+    width:200px;
+    height:200px;
+    background:#fff;
+    border-radius:20px;
+    z-index:2101;
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    overflow:hidden;
+    animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  .loading-confirm-modal.open { display:flex; align-items:center; justify-content:center; }
+  .loading-confirm-modal img {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+  }
+  @keyframes popIn {
+    from {
+      transform:translateX(-50%) translateY(-50%) scale(0.3);
+      opacity:0;
+    }
+    to {
+      transform:translateX(-50%) translateY(-50%) scale(1);
+      opacity:1;
+    }
+  }
+
+  /* Purchase success popup */
+  .success-backdrop {
+    display:none;
+    position:fixed;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.4);
+    z-index:2200;
+    align-items:center;
+    justify-content:center;
+  }
+  .success-backdrop.open { display:flex; }
+  .success-card {
+    background:#fff;
+    border-radius:14px;
+    padding:24px 20px 0;
+    width:82%;
+    max-width:320px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.2);
+  }
+  .success-msg { font-size:16px; color:#1a1a1a; line-height:1.5; margin-bottom:20px; }
+  .success-ok-wrap { border-top:1px solid #e5e5ea; margin:0 -20px; }
+  .success-ok {
+    width:100%; background:none; border:none;
+    color:#007aff; font-size:17px; font-weight:600;
+    padding:14px; cursor:pointer;
+  }
+
+  /* Button icon animation - slides up from bottom smoothly */
+  .as-button-icon {
+    width:44px;
+    height:44px;
+    background:none;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:6px;
+    animation:slideUpBounce 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    opacity:0;
+    transform:translateY(30px);
+  }
+  @keyframes slideUpBounce {
+    to {
+      opacity:1;
+      transform:translateY(0);
+    }
+  }
+
+  /* Top toast notification */
+  .toast {
+    position:fixed;
+    top:-80px;
+    left:50%;
+    transform:translateX(-50%);
+    width:92%;
+    max-width:440px;
+    background:#fff;
+    color:#1a1a1a;
+    border-radius:14px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:14.5px;
+    z-index:2200;
+    box-shadow:0 6px 20px rgba(0,0,0,0.18);
+    border:1px solid #eee;
+    transition:top 0.45s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .toast.show { top:14px; }
+  .toast-icon {
+    width:22px; height:22px;
+    border-radius:50%;
+    background:#34c759;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+
+  /* Bottom nav */
+  .bottombar {
+    position:fixed;
+    bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    background:#fff;
+    border-top:1px solid #eee;
+    display:flex;
+    align-items:center;
+    padding:10px 14px 14px;
+    gap:10px;
+  }
+  .nav-item {
+    display:flex; flex-direction:column; align-items:center;
+    gap:3px;
+    font-size:11px;
+    color:#333;
+    width:56px;
+    flex-shrink:0;
+  }
+  .cart-fab {
+    width:44px; height:44px;
+    background:#fe2c55;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .buy-btn {
+    flex:1;
+    background:#e0224e;
+    color:#fff;
+    border:none;
+    border-radius:24px;
+    padding:10px 16px;
+    text-align:center;
+    line-height:1.3;
+  }
+  .buy-btn .label { font-weight:700; font-size:15px; }
+  .buy-btn .sub { font-size:12px; opacity:0.9; }
+
+  #shopView {
+    background:#f4f4f5;
+    min-height:100vh;
+    padding-bottom:30px;
+  }
+
+  /* Search bar */
+  .searchwrap {
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:#fff;
+    padding:12px 14px 10px;
+  }
+  .sh-searchbar {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:2px solid #1a1a1a;
+    border-radius:24px;
+    padding:10px 8px 10px 16px;
+  }
+  .sh-searchbar svg { flex-shrink:0; }
+  .sh-searchbar .apple-glyph { font-size:15px; }
+  .sh-searchbar input {
+    border:none;
+    outline:none;
+    flex:1;
+    font-size:16px;
+    color:#1a1a1a;
+    background:transparent;
+  }
+  .sh-searchbar .go-btn {
+    background:#1a1a1a;
+    color:#fff;
+    border:none;
+    border-radius:18px;
+    padding:9px 16px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+
+  /* Category tabs */
+  .tabs {
+    display:flex;
+    gap:22px;
+    padding:14px 14px 12px;
+    overflow-x:auto;
+    background:#fff;
+    white-space:nowrap;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab {
+    font-size:17px;
+    font-weight:700;
+    color:#888;
+    padding-bottom:8px;
+    position:relative;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  .tab.active { color:#1a1a1a; }
+  .tab.active::after {
+    content:'';
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:3px;
+    background:#1a1a1a;
+    border-radius:2px;
+  }
+  .tab.accent { color:#0c8a5e; }
+  .tab.accent.active::after { background:#0c8a5e; }
+  .tab-sub { font-size:10px; font-weight:700; display:block; margin-top:-2px; }
+
+  /* Masonry grid (2 columns) */
+  .grid {
+    display:flex;
+    gap:8px;
+    padding:8px 8px 20px;
+    align-items:flex-start;
+  }
+  .col { display:flex; flex-direction:column; gap:8px; flex:1; min-width:0; }
+
+  .card {
+    background:#fff;
+    border-radius:10px;
+    overflow:hidden;
+    position:relative;
+  }
+  .card img, .card .thumb {
+    width:100%;
+    display:block;
+    object-fit:cover;
+    background:#eee;
+  }
+  .card-body { padding:8px 9px 10px; }
+  .badge-pill {
+    display:inline-block;
+    background:#0c8a5e;
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    padding:2px 6px;
+    border-radius:4px;
+    margin-right:4px;
+  }
+  .card-title {
+    font-size:13px;
+    line-height:1.3;
+    margin-top:5px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .sh-price-row { margin-top:6px; display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; }
+  .price-now { color:#e0263f; font-size:17px; font-weight:800; }
+  .price-now sup { font-size:10px; top:-0.4em; }
+  .price-old { color:#aaa; font-size:12px; text-decoration:line-through; }
+  .ship-free {
+    display:inline-block;
+    margin-top:6px;
+    background:#e8f7f0;
+    color:#0c8a5e;
+    font-size:11px;
+    font-weight:600;
+    padding:2px 7px;
+    border-radius:4px;
+  }
+  .rating-row {
+    margin-top:6px;
+    font-size:11px;
+    color:#666;
+    display:flex;
+    align-items:center;
+    gap:4px;
+  }
+
+  /* Ad banner card */
+  .ad-card {
+    background:linear-gradient(160deg,#0a0a0a 0%,#1c1c1e 60%,#2a2a2e 100%);
+    color:#fff;
+    padding:16px 14px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .ad-tag {
+    display:flex; align-items:center; gap:6px;
+    font-size:11px; font-weight:700; letter-spacing:0.5px; color:#e8e8e8;
+  }
+  .ad-title {
+    font-size:19px;
+    font-weight:800;
+    line-height:1.25;
+  }
+  .ad-cta {
+    align-self:flex-start;
+    background:#f2d38a;
+    color:#1a1a1a;
+    font-size:13px;
+    font-weight:800;
+    padding:9px 16px;
+    border-radius:18px;
+    margin-top:6px;
+  }
+  .ad-visual {
+    width:100%;
+    border-radius:8px;
+    margin-top:4px;
+  }
+
+  /* Video card */
+  .video-card .thumb-wrap { position:relative; }
+  .video-timer {
+    position:absolute; top:8px; left:8px;
+    background:rgba(0,0,0,0.55);
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:12px;
+    display:flex; align-items:center; gap:4px;
+  }
+  .video-author {
+    position:absolute; bottom:8px; left:8px;
+    display:flex; align-items:center; gap:6px;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    text-shadow:0 1px 3px rgba(0,0,0,0.6);
+  }
+  .video-author img {
+    width:20px; height:20px; border-radius:50%;
+    border:1.5px solid #fff;
+  }
+
+  /* Floating menu button */
+  .fab {
+    position:fixed;
+    bottom:24px;
+    right:calc(50% - 240px + 14px);
+    width:52px; height:52px;
+    background:#fff;
+    border-radius:50%;
+    box-shadow:0 2px 10px rgba(0,0,0,0.2);
+    display:flex; align-items:center; justify-content:center;
+    z-index:60;
+  }
+  .fab .dot {
+    position:absolute;
+    top:8px; right:8px;
+    width:9px; height:9px;
+    background:#ff2d55;
+    border-radius:50%;
+  }
+  @media (max-width:480px) {
+    .fab { right:14px; }
+  }
+
+  /* Product detail modal */
+  .pd-backdrop {
+    position:fixed;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:100%; height:100%;
+    background:rgba(0,0,0,0);
+    z-index:500;
+    pointer-events:none;
+    transition:background 0.3s ease;
+    overflow:hidden;
+  }
+  .pd-backdrop.open { background:rgba(0,0,0,0.45); pointer-events:auto; }
+  .pd-sheet {
+    position:absolute;
+    bottom:0; left:0; right:0;
+    max-height:88vh;
+    background:#fff;
+    border-radius:18px 18px 0 0;
+    overflow-y:auto;
+    transform:translateY(100%);
+    transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);
+  }
+  .pd-backdrop.open .pd-sheet { transform:translateY(0); }
+  .pd-img {
+    width:100%;
+    height:280px;
+    object-fit:cover;
+    display:block;
+    background:#f4f4f4;
+  }
+  .pd-close {
+    position:absolute;
+    top:12px; right:12px;
+    width:32px; height:32px;
+    border-radius:50%;
+    background:rgba(0,0,0,0.45);
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    border:none;
+    font-size:16px;
+  }
+  .pd-body { padding:18px 18px 30px; }
+  .pd-title { font-size:20px; font-weight:800; line-height:1.3; }
+  .pd-price-row { display:flex; align-items:baseline; gap:8px; margin-top:8px; }
+  .pd-price { color:#e0263f; font-size:24px; font-weight:800; }
+  .pd-price-old { color:#aaa; font-size:14px; text-decoration:line-through; }
+  .pd-ship { display:inline-block; margin-top:8px; background:#e8f7f0; color:#0c8a5e; font-size:12px; font-weight:600; padding:3px 8px; border-radius:5px; }
+  .pd-rating { margin-top:8px; font-size:13px; color:#666; }
+  .pd-divider { border-top:1px solid #eee; margin:16px 0; }
+  .pd-desc-title { font-size:14px; font-weight:700; margin-bottom:6px; }
+  .pd-desc { font-size:14px; color:#444; line-height:1.55; }
+  .pd-buybtn {
+    margin-top:20px;
+    width:100%;
+    background:#000;
+    color:#fff;
+    border:none;
+    border-radius:24px;
+    padding:14px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+</style>
+</head>
+<body>
+
+<button id="fullscreenBtn" style="position:fixed; top:10px; right:10px; z-index:10000; width:40px; height:40px; border-radius:50%; background:#000; color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px;" title="Fullscreen">⛶</button>
+
+<div id="shopView">
+
+
+<div class="searchwrap">
+  <div class="sh-searchbar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+    <input type="text" value="" placeholder="Search" readonly>
+    <button class="go-btn">Search</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" id="tabTodos">All</div>
+  <div class="tab" id="tabApple">Apple</div>
+  <div class="tab" id="tabWorldCup">World Cup</div>
+  <div class="tab" id="tabGadgets">Gadgets</div>
+  <div class="tab" id="tabToys">Toys</div>
+  <div class="tab" id="tabGaming">Gaming</div>
+</div>
+
+<div class="grid" id="grid">
+  <!-- Left column -->
+  <div class="col" id="colLeft"></div>
+  <!-- Right column -->
+  <div class="col" id="colRight"></div>
+</div>
+
+<div class="fab">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+  <div class="dot"></div>
+</div>
+
+<!-- Product detail modal -->
+<div class="pd-backdrop" id="pdBackdrop">
+  <div class="pd-sheet" id="pdSheet">
+    <div style="position:relative;">
+      <img class="pd-img" id="pdImg" src="" alt="">
+      <button class="pd-close" id="pdClose">&#10005;</button>
+    </div>
+    <div class="pd-body">
+      <div class="pd-title" id="pdTitle"></div>
+      <div class="pd-price-row">
+        <span class="pd-price" id="pdPrice"></span>
+        <span class="pd-price-old" id="pdPriceOld"></span>
+      </div>
+      <div class="pd-ship" id="pdShip">Free shipping</div>
+      <div class="pd-rating" id="pdRating"></div>
+      <div class="pd-divider"></div>
+      <div class="pd-desc-title">Description</div>
+      <div class="pd-desc" id="pdDesc"></div>
+      <button class="pd-buybtn" id="pdBuyBtn">Buy now</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+
+<div id="productView" style="display:none;">
+
+
+  <div class="topbar">
+    <div class="icon-btn" id="backToShopBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="searchbar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <svg width="14" height="14" viewBox="0 0 384 512" fill="currentColor" class="apple-glyph"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141 4 184.8 4 273.5c0 26.2 4.8 53.3 14.4 81.2 12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+      <span>original airpods</span>
+    </div>
+    <div class="actions">
+      <div class="icon-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17l5-5-5-5"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/></svg>
+      </div>
+      <div class="icon-btn">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      </div>
+      <div class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel" id="carouselSlot">
+    <div class="carousel-track" id="track">
+      <div class="carousel-slide"><img class="prod-img" src="https://m.media-amazon.com/images/I/61sRKTAfrhL._AC_UF1000,1000_QL80_.jpg" alt="AirPods Pro 1"></div>
+      <div class="carousel-slide"><img class="prod-img" src="https://i5.walmartimages.com/asr/99503ff6-4374-4b1e-b5fa-f0b25c75884e.1d75e23c02243013682644ee2363a683.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF" alt="AirPods Pro 2"></div>
+      <div class="carousel-slide"><img class="prod-img" src="https://www.apple.com/newsroom/images/2023/09/apple-introduces-new-airpods-pro-2nd-generation/tile/Apple-AirPods-Pro-2nd-generation-USB-C-connection-230912.jpg.news_app_ed.jpg" alt="AirPods Pro 3"></div>
+    </div>
+    <div class="counter" id="counter">1/3</div>
+  </div>
+
+  <div class="content">
+    <div class="price-row">
+      <span class="price"><span id="priceMain">$269</span><span class="cents" id="priceCents">.00</span></span>
+    </div>
+    <div class="installments">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+      12x $22.42 interest-free
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+    <div class="save-badge">
+      <span>Save 4% with bonus</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+
+    <div class="title" id="pageTitle">Apple AirPods Pro (2nd Generation) Wireless Earbuds</div>
+    <div class="sold">34 sold</div>
+
+    <hr class="divider">
+
+    <div class="shipping-row">
+      <div class="truck">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="7" width="15" height="10" rx="1"/><path d="M16 10h4l3 3v4h-7z"/><circle cx="6" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg>
+      </div>
+      <div class="shipping-text">
+        <div><span class="free-tag">Free shipping</span><span class="strike">$49.00</span></div>
+        <div class="eta">Get it Jul 7–10</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" style="margin-left:auto;flex-shrink:0;"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+
+    <hr class="divider">
+
+    <div class="protection-head">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#946200" stroke-width="1.8"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/><path d="m9 12 2 2 4-4" stroke-width="2"/></svg>
+      <span>Customer protection</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+    <div class="protection-grid">
+      <div class="item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span>Free returns</span>
+      </div>
+      <div class="item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span>Refund if something goes wrong</span>
+      </div>
+      <div class="item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span>Secure payment</span>
+      </div>
+      <div class="item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span>If your order doesn't ship on time</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section-head">
+      <h3>Offers</h3>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+    <div class="offer-card">
+      <div class="offer-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="7" width="15" height="10" rx="1"/><path d="M16 10h4l3 3v4h-7z"/><circle cx="6" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/></svg>
+        Shipping
+      </div>
+      <div class="divider-v"></div>
+      <div class="offer-text">
+        <div class="amt">$139 off</div>
+        <div class="sub">on orders over $39</div>
+      </div>
+      <button class="claim-btn">Claim</button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section-head">
+      <h3>Store reviews (686)</h3>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+    <div class="review-tags">
+      <div class="review-tag">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="3.2"/><path d="M12 13c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5z"/></svg>
+        Photos & videos (279)
+      </div>
+      <div class="review-tag"><span class="star">★</span> 5 (601)</div>
+      <div class="review-tag"><span class="star">★</span> 4 (38)</div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="seller-row">
+      <div class="seller-logo" id="sellerLogo">
+        <img id="sellerLogoImg" src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">
+        <span id="sellerLogoLetter" style="display:none; align-items:center; justify-content:center; width:100%; height:100%; font-weight:800; color:#888; background:#eee;"></span>
+      </div>
+      <div class="seller-info">
+        <div class="name" id="sellerName">Apple</div>
+        <div class="sold-count">16,467 sold</div>
+      </div>
+      <button class="visit-btn">Visit</button>
+    </div>
+    <div class="seller-stats">
+      <div><b>93%</b> replies within 24h</div>
+      <div><b>100%</b> on-time shipping</div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="creator-earn">
+      <div><span class="amount">$8.07</span> earned by creators per sale</div>
+      <div class="sub">Tap to learn more and start earning</div>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <div class="nav-item">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 4.5 4h15L21 9.5"/><path d="M3 9.5a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0"/><path d="M5 11v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8"/></svg>
+      Shop
+    </div>
+    <div class="nav-item">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.5 1.4 4.73 3.6 6.19-.13.99-.6 2.53-1.85 3.9 0 0 2.36-.18 4.4-1.62.83.3 3.48.53 3.85.53 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>
+      Chat
+    </div>
+    <div class="cart-fab">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h2l2.5 12.5a2 2 0 0 0 2 1.5h8a2 2 0 0 0 2-1.5L21 8H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/><path d="M18 3v5M15.5 5.5h5"/></svg>
+    </div>
+    <button class="buy-btn" id="buyBtn">
+      <div class="label">Buy now</div>
+      <div class="sub">$269.00 | Free shipping</div>
+    </button>
+  </div>
+
+  <!-- CHECKOUT PAGE -->
+  <div class="checkout-page" id="checkoutPage">
+    <div class="co-header">
+      <svg class="co-back" id="coBack" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <div class="co-title">Order Summary</div>
+      <div class="co-sub">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00a37a" stroke-width="2"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>
+        Easy cancellation
+      </div>
+    </div>
+
+    <div class="co-section">
+      <div class="co-row">
+        <div class="co-row-left">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          Shipping address
+        </div>
+        <div class="co-add">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#e0224e" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Add address
+        </div>
+      </div>
+    </div>
+
+    <div class="co-section">
+      <div class="co-seller-name" id="coSellerName">Shipped by Apple</div>
+      <div class="co-rating">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#946200"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9-6.2-3.3-6.2 3.3 1.2-6.9-5-4.9 6.9-1z"/></svg>
+        Excellent rating! 5.0/5.0
+      </div>
+      <div class="co-product">
+        <img id="coProdImg" src="https://m.media-amazon.com/images/I/61sRKTAfrhL._AC_UF1000,1000_QL80_.jpg" alt="Product">
+        <div class="co-product-info">
+          <div class="co-product-title" id="coProdTitle">AirPods Pro (2nd Generation) Wireless Earbuds</div>
+          <div>
+            <span class="co-tag flash">⚡ Flash deal</span>
+            <span class="co-tag return">✓ Free returns</span>
+          </div>
+          <div class="co-price-row">
+            <div class="co-price" id="coPriceRow">$269.00<span class="orig" id="coOrigSpan">$349.00</span><span class="off" id="coOffSpan">-23%</span></div>
+            <div class="co-qty">
+              <button id="qtyMinus">–</button>
+              <span id="qtyVal">1</span>
+              <button id="qtyPlus">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="co-section">
+      <div class="co-row">
+        <div class="co-row-left">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e0224e" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>
+          TikTok Shop discount
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+    </div>
+
+    <div class="co-section">
+      <div class="co-summary-title">Order Summary</div>
+      <div class="co-summary-row"><span>Product subtotal</span><span id="coSubtotalPrice">$269.00</span></div>
+      <div class="co-summary-row sub" id="coOrigRow"><span>Original price</span><span id="coOrigRowPrice">$349.00</span></div>
+      <div class="co-summary-row sub discount" id="coDiscountRow"><span>Product discount</span><span id="coDiscountPrice">- $80.00</span></div>
+      <div class="co-total-row"><span>Total</span><span id="coTotalRowPrice">$269.00</span></div>
+      <div class="co-tax-note">Tax included, if applicable</div>
+    </div>
+
+    <div class="co-section">
+      <div class="co-pay-title">Payment Method</div>
+      <div class="co-pay-row">
+        <div class="co-pay-logo apple-pay">
+          <svg viewBox="0 0 384 512" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141 4 184.8 4 273.5c0 26.2 4.8 53.3 14.4 81.2 12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+          <span>Pay</span>
+        </div>
+        <div class="co-pay-name">Apple Pay</div>
+        <div class="co-radio checked"></div>
+      </div>
+      <div class="co-pay-row">
+        <div class="co-pay-logo">
+          <img src="https://newsroom.latam.paypal-corp.com/file.php/177465/pp_h_rgb_logo_tn.jpg?thumbnail=modal" alt="PayPal" style="width:100%;height:100%;object-fit:contain;">
+        </div>
+        <div class="co-pay-name">PayPal</div>
+        <div class="co-radio"></div>
+      </div>
+      <div class="co-pay-row">
+        <div class="co-pay-logo">+</div>
+        <div class="co-pay-name">
+          Add credit or debit card
+          <div class="co-cards"><span>VISA</span><span>MC</span><span>AMEX</span></div>
+        </div>
+        <div class="co-radio"></div>
+      </div>
+      <div class="co-row" style="margin-top:8px;">
+        <span style="font-size:15px;">View 5 payment methods</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+    </div>
+
+    <div class="co-terms">
+      By placing an order, you agree to TikTok Shop's <b>Terms of Use and Sale</b> and confirm you have read and accept the <b>TikTok Privacy Policy</b>.
+    </div>
+
+    <div class="co-savings-banner" id="savingsBanner">
+      😊 Congrats! You'll save $80.00 on this order.
+    </div>
+  </div>
+
+  <div class="co-bottombar" id="coBottombar">
+    <div class="co-total-line"><span>Total (1 item)</span><span id="coTotalPrice">$269.00</span></div>
+    <button class="co-place-btn" id="placeOrderBtn">
+      <div class="label">Place order</div>
+      <div class="sub">Offer ends soon</div>
+    </button>
+  </div>
+
+  <!-- Alert 1: Add shipping address -->
+  <div class="ios-alert-backdrop" id="addressAlert">
+    <div class="ios-alert">
+      <div class="ios-alert-title">Add shipping<br>address</div>
+      <div class="ios-alert-msg">Your account doesn't have a shipping address. Add one to proceed with checkout.</div>
+      <div class="ios-alert-buttons">
+        <button id="addressLater">Later</button>
+        <button id="addressAdd">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert 2: Enter TikTok username -->
+  <div class="ios-alert-backdrop" id="usernameAlert">
+    <div class="ios-alert">
+      <div class="ios-alert-title">Enter your<br>TikTok username</div>
+      <div class="ios-alert-msg">We'll send an address form to this user.</div>
+      <input type="text" class="ios-alert-input" id="usernameInput" placeholder="@username">
+      <div class="ios-alert-buttons">
+        <button id="usernameCancel">Cancel</button>
+        <button id="usernameOk" class="disabled">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading spinner -->
+  <div class="loading-backdrop" id="loadingSpinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Alert 3: Confirm TikTok user with avatar -->
+  <div class="ios-alert-backdrop" id="confirmUserAlert">
+    <div class="ios-alert">
+      <img class="avatar-alert-img" id="confirmAvatar" src="" alt="" onerror="this.src='https://unavatar.io/fallback.png'">
+      <div class="avatar-alert-name" id="confirmUsername"></div>
+      <div class="ios-alert-msg">Are you sure this is the correct username?</div>
+      <div class="ios-alert-buttons">
+        <button id="confirmCancel">Cancel</button>
+        <button id="confirmOk">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top toast notification -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <span id="toastText">Address formulary sent to @user</span>
+  </div>
+
+  <!-- Alert 4: Address form sent, pay now / pay later -->
+  <div class="ios-alert-backdrop" id="payChoiceAlert">
+    <div class="ios-alert">
+      <div class="ios-alert-title">Address form sent<br>to user</div>
+      <div class="ios-alert-msg">Choose how you'd like to proceed with payment.</div>
+      <div class="ios-alert-buttons">
+        <button id="payLater">Pay later</button>
+        <button id="payNow">Pay now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Store bottom sheet -->
+  <!-- Pre-App Store loading screen -->
+  <div class="prestore-backdrop" id="prestoreBackdrop">
+    <div class="prestore-loading">
+      <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGUxdzV0aGcwMHQ1MXR3enFlMWQxNnNhODYzcmtxcHZxb3Zuc2FnMyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/55aZPPaqOvsUoxkapE/giphy.gif" alt="Loading">
+      <div class="prestore-loading-text">Loading</div>
+    </div>
+  </div>
+
+  <div class="appstore-backdrop" id="appstoreBackdrop"></div>
+  <div class="appstore-sheet" id="appstoreSheet">
+    <div class="as-header">
+      <div class="as-title">App Store</div>
+      <button class="as-close" id="appstoreClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    
+    <div class="as-content">
+      <div class="as-item">
+        <div class="as-icon" style="background:#000;">
+          <img src="https://static.vecteezy.com/system/resources/previews/042/127/139/non_2x/square-tiktok-logo-on-a-transparent-background-free-png.png" alt="TikTok" style="width:80px;height:80px;object-fit:contain;">
+        </div>
+        <div class="as-item-info">
+          <div class="as-name" id="asProductName">AirPods Pro (2nd Gen)</div>
+          <div style="display:flex; align-items:center; gap:6px; margin-top:1px;">
+            <div class="as-app">TikTok Inc.</div>
+            <div class="as-badge" id="asQtyBadge" style="margin:0;">Qty 1</div>
+          </div>
+          <div class="as-type">In-app purchase</div>
+        </div>
+      </div>
+
+      <div class="as-price-row">
+        <div class="as-price" id="asTotalPrice">$269.00</div>
+        <div class="as-freq">One-time charge</div>
+      </div>
+
+      <div class="as-divider"></div>
+
+      <div class="as-account">Account: daveycarlatos@icloud.com</div>
+    </div>
+
+    <div class="as-footer">
+      <div class="as-button-icon" id="sideButtonIcon">
+        <svg width="44" height="44" viewBox="0 0 100 100" fill="none">
+          <!-- Outer blue circle -->
+          <circle cx="50" cy="50" r="40" stroke="#5b7bf5" stroke-width="12"/>
+          <!-- iPhone outline -->
+          <rect x="35" y="25" width="30" height="50" rx="3" stroke="#5b7bf5" stroke-width="2.5" fill="none"/>
+          <!-- Notch -->
+          <rect x="42" y="27" width="16" height="4" rx="2" stroke="#5b7bf5" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="as-footer-text">Confirm with side button</div>
+    </div>
+  </div>
+
+  <!-- Loading confirmation modal with native spinner -->
+  <div class="loading-confirm-backdrop" id="loadingConfirmBackdrop"></div>
+  <div class="loading-confirm-modal" id="loadingConfirmModal">
+    <div class="spinner" style="border-color:rgba(0,0,0,0.15); border-top-color:#1a1a1a;"></div>
+  </div>
+
+  <!-- Purchase success popup -->
+  <div class="success-backdrop" id="successBackdrop">
+    <div class="success-card">
+      <div class="success-msg">Purchase successful, your order will be delivered shortly.</div>
+      <div class="success-ok-wrap">
+        <button class="success-ok" id="successOk">OK</button>
+      </div>
+    </div>
+  </div>
+
+  
+
+  
+
+</div>
+
+<script>
+
+// ============================================
+// PRODUCT DATA BY CATEGORY
+// ============================================
+const PRODUCTS = {
+
+  apple: [
+    {
+      type:'product', badge:null, title:'MacBook Neo',
+      img:'https://www.apple.com/newsroom/images/2026/03/say-hello-to-macbook-neo/article/Apple-MacBook-Neo-hero-260304_big.jpg.large_2x.jpg',
+      imgBg:'#f4f4f4', imgH:220,
+      priceNow:'650.00', priceOld:null, shipFree:true, rating:null, sold:null, seller:'Apple',
+      desc:"POWER FOR EVERYDAY TASKS - The moment you open it, the A18 Pro chip kicks in to give you the performance and AI capabilities you need to do it all. Edit family photos, work on spreadsheets, use AI to summarize your notes, and enjoy the latest Apple Arcade games. UP TO 16 HOURS OF BATTERY LIFE - MacBook Neo has enough battery to last all day, from your first class in the morning to your last review before bed. A BRILLIANT 13-INCH DISPLAY - The stunning Liquid Retina display is a delight for your eyes, with a 2408 x 1506 resolution, up to 500 nits of brightness, and support for 1 billion colors, giving images amazing definition and text incredible sharpness. BUILT FOR AI - Apple chips and their core components are designed to run on-device AI tasks with incredible power efficiency, and Apple Intelligence helps you write, express yourself, and do it all easily, with groundbreaking privacy protections every step of the way. THE MOST COLORFUL MACBOOK LINEUP YET - Choose from silver, blush pink, citrus yellow, or indigo. Each comes with a matching keyboard so you can show it off completely. And with its rugged aluminum design, MacBook Neo is ready to go anywhere with you."
+    },
+    {
+      type:'product', badge:null, title:'iPad Pro',
+      img:'https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/ipad-pro-model-select-gallery-1-202405?wid=5120&hei=2880&fmt=webp&qlt=90&.v=cXN0QTVTNDBtbGIzcy91THBPRThnNE5sSFgwakNWNmlhZ2d5NGpHdllWY09WV3R2ZHdZMXRzTjZIcWdMTlg4eUJQYkhSV3V1dC9oa0s5K3lqMGtUaFYrNkhvSzBtcy9ubWtTZUpaU0lsQ2R1Yy9kL1dQa3EzdWh4Nzk1ZnZTYWY&traceId=1',
+      imgBg:'#f4f4f4', imgH:220,
+      priceNow:'1800.00', priceOld:null, shipFree:true, rating:null, sold:null, seller:'Apple',
+      desc:"iPad at its best, with the most advanced technology. 13-inch or 11-inch Ultra Retina XDR display, ProMotion technology, wide P3 color gamut, True Tone, anti-reflective coating, nanotexture glass option available on 1TB and 2TB models, M5 chip, Apple Intelligence, 12MP wide camera, 4K video with ProRes, and a 12MP Center Stage camera in landscape."
+    },
+    {
+      type:'product', badge:null, title:'iPhone 17 Pro',
+      img:'https://www.apple.com/v/iphone-17-pro/g/images/overview/contrast/iphone_17_pro__c4qscr35qsq6_large.jpg',
+      imgBg:'#000', imgH:230,
+      priceNow:'1600.00', priceOld:null, shipFree:true, rating:null, sold:null, seller:'Apple',
+      desc:"The innovative design of the iPhone 17 Pro delivers exceptional durability, extraordinary battery life, and the powerhouse performance of the A19 Pro chip. The 48MP Pro Fusion camera system features an 8x telephoto zoom, never before seen on an iPhone, plus a Center Stage front camera for smarter group selfies and Dual Capture video. The Ceramic Shield 2 front is 3x more scratch resistant, and the Ceramic Shield back is 4x more crack resistant, all wrapped in a forged aluminum unibody design that dissipates heat. It also comes with helpful Apple Intelligence tools like Clean Up."
+    },
+    {
+      type:'product', badge:'Deal', title:'AirPods Pro (2nd Gen) Wireless Earbuds',
+      img:'https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/airpods-pro-3-hero-select-202509?wid=976&hei=916&fmt=jpeg&qlt=90&.v=cmp4MmZ6OWxOeHNNTXh4SzlBNUpEb1RucE9zZTI5eEREaWZpY29lSld3eWVDYXovZDMyN1dXU211bjZoVlVUcWJGcXNRQnFCV0w3WVRjTExvdm1ic1YxRUxFRmRlWDBITzhnRmZ5OTRmaVdKTExiOEFsRmxtQ2Nua0tRSC83MkI',
+      priceNow:'269.00', priceOld:'349.00', shipFree:true, rating:'4.8', sold:'312 sold', seller:'Apple',
+      imgBg:'#f4f4f4', imgH:210
+    },
+    {
+      type:'ad', tag:'🍎 APPLE DAY', title:'iPhone and AirPods up to 23% OFF this week',
+      cta:'Shop now', bg:'dark'
+    },
+    {
+      type:'product', badge:null, title:'Apple Watch Series 10 - Sport band',
+      img:'https://tse3.mm.bing.net/th/id/OIP.63jpjLCSa5aEh-MWR0empQHaD4?pid=Api&P=0&h=180', imgBg:'#eee', imgH:170,
+      priceNow:'389.00', priceOld:'459.00', shipFree:true, rating:'4.7', sold:'89 sold', seller:'Apple'
+    }
+  ],
+
+  worldcup: [
+    {
+      type:'ad', tag:'&#9917; WORLD CUP 2026', title:'Official collection ahead of the 2026 World Cup',
+      cta:'View collection', bg:'green'
+    },
+    {
+      type:'product', badge:'Deal', title:'Official World Cup 2026 replica ball',
+      img:'https://www.mmsports.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/w/o/world-cup-2026-trionda-replica-ball.jpg',
+      imgBg:'#f4f4f4', imgH:200,
+      priceNow:'59.00', priceOld:'89.00', shipFree:true, rating:'4.6', sold:'540 sold', seller:'Adidas'
+    },
+    {
+      type:'product', badge:null, title:'Mexico national team jersey - World Cup 2026',
+      img:'https://www.soccershop.com/wp-content/uploads/2025/11/mens-adidas-green-mexico-national-team-fifa-x-world-cup-2026-home-on-field-authentic-jersey_ss5_p-203487747pv-1u-mhfw5mvehmmcokonjwdiv-u2fetuu7qaluw5euflm5-1000x1000.jpg',
+      imgBg:'#eee', imgH:230,
+      priceNow:'79.00', priceOld:'110.00', shipFree:true, rating:'4.5', sold:'210 sold', seller:'Adidas'
+    },
+    {
+      type:'product', badge:null, title:'Jersey 2026',
+      img:'https://www.thebiglead.com/wp-content/uploads/2026/03/Screen-Shot-2026-03-16-at-9.46.28-AM.png',
+      imgBg:'#eee', imgH:230,
+      priceNow:'79.00', priceOld:'110.00', shipFree:true, rating:'4.5', sold:'210 sold', seller:'Adidas'
+    }
+  ],
+
+  gadgets: [
+    {
+      type:'product', badge:'Deal', title:'Meta Quest 2',
+      img:'https://comprarmag.com/wp-content/uploads/2022/08/meta-quest-ap-por-mayor.jpeg',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'800.00', priceOld:'1000.00', shipFree:true, rating:null, sold:null
+    },
+    {
+      type:'product', badge:null, title:'Rayban Meta',
+      img:'https://static1.anpoimages.com/wordpress/wp-content/uploads/wm/2023/11/ray-ban-meta-review-android-police-4.jpg',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'130.00', priceOld:null, shipFree:true, rating:null, sold:null
+    },
+    {
+      type:'product', badge:null, title:'Portable Desktop Fan',
+      img:'https://m.media-amazon.com/images/I/71u1QYod+LL._AC_SL1500_.jpg',
+      imgBg:'#f4f4f4', imgH:190,
+      priceNow:'20.00', priceOld:null, shipFree:true, rating:null, sold:null
+    },
+    {
+      type:'product', badge:null, title:'2000mAh Powerbank',
+      img:'https://m.media-amazon.com/images/I/71NezAeKEML._AC_SL1500_.jpg',
+      imgBg:'#f4f4f4', imgH:190,
+      priceNow:'10.00', priceOld:null, shipFree:true, rating:null, sold:null
+    },
+    {
+      type:'product', badge:null, title:'Phone Selfie Monitor',
+      img:'https://m.media-amazon.com/images/I/71KAJRSe5kL._AC_SL1500_.jpg',
+      imgBg:'#f4f4f4', imgH:200,
+      priceNow:'40.00', priceOld:null, shipFree:true, rating:null, sold:null
+    },
+    {
+      type:'product', badge:'Deal', title:'Foldable magnetic phone stand',
+      img:'https://m.media-amazon.com/images/I/61uvLumjQbL.jpg',
+      imgBg:'#f4f4f4', imgH:170,
+      priceNow:'15.30', priceOld:'25.00', shipFree:true, rating:'4.4', sold:'1.2k sold'
+    },
+    {
+      type:'ad', tag:'&#9889; GADGET DEALS', title:'This week\'s most wanted gadgets',
+      cta:'See more', bg:'blue'
+    },
+    {
+      type:'product', badge:null, title:'Mini portable HD projector with tripod',
+      img:'https://i5.walmartimages.com/seo/Portable-Mini-Projector-1080p-HD-LED-Home-Cinema-Outdoor-Movie-Parent-Child-Gift-USB-HDMI-AV-Eye-Friendly_5f63c3e0-f647-4786-85d6-ee09c94678cc.d66e3e8dd264a15c3562f16f5f07c122.jpeg',
+      imgBg:'#eee', imgH:210,
+      priceNow:'118.00', priceOld:'240.00', shipFree:true, rating:'4.0', sold:'25 sold'
+    }
+  ],
+
+  toys: [
+    {
+      type:'product', badge:null, title:'Butter Squishy',
+      img:'https://s.alicdn.com/@sc04/kf/H216775f36e014e03b16211eccfe44af6i.png_300x300.jpg',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'10.00', priceOld:null, shipFree:true, rating:null, sold:null
+    },
+    {
+      type:'product', badge:null, title:'Toy gun',
+      img:'https://ae-pic-a1.aliexpress-media.com/kf/S2f6672d7a1d2481385a139c231d7bc2cC.jpg_220x220q75.jpg_.avif',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'15.00', priceOld:null, shipFree:true, rating:null, sold:null
+    },
+    {
+      type:'product', badge:null, title:'Cheese Squishy Toy',
+      img:'https://ae-pic-a1.aliexpress-media.com/kf/S990f9bfa406a44fa8fa277b8f64a6aa8F.jpg_220x220q75.jpg_.avif',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'8.00', priceOld:null, shipFree:true, rating:null, sold:null,
+      desc:"Giant stress relief ball shaped like a cheese cube, a large moldable cheese ball, ASMR sensory stress toy, great as a festival gift."
+    },
+    {
+      type:'product', badge:null, title:'Nedoohs',
+      img:'https://ae-pic-a1.aliexpress-media.com/kf/Sd6b66416c6774a65b46b11a7f7090037I.jpg_220x220q75.jpg_.avif',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'15.00', priceOld:null, shipFree:true, rating:null, sold:null,
+      desc:"Slow-rising sensory relaxation cube, a sensory tool to relieve stress and anxiety, improve focus, help with ADHD, and work as a relaxing office gadget."
+    },
+    {
+      type:'product', badge:null, title:'Colorfull Squishys',
+      img:'https://ae-pic-a1.aliexpress-media.com/kf/S4a7dea01f5dd489380234cd230ca4aa3N.jpg_220x220q75.jpg_.avif',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'3.00', priceOld:null, shipFree:true, rating:null, sold:null,
+      desc:"Fun moldable sensory squeeze toy, slow-rebound decompression toy, creative stress relief, a great gift toy for kids and adults."
+    },
+    {
+      type:'product', badge:null, title:'Dumplings x5 Pack',
+      img:'https://ae-pic-a1.aliexpress-media.com/kf/Sdb6fee05014f41e4938b7bb81b2a953dD.jpg_220x220q75.jpg_.avif',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'25.00', priceOld:null, shipFree:true, rating:null, sold:null,
+      desc:"Dumpling-shaped stress relief squeeze toy, cute and colorful, slow-rising, an anti-anxiety gift for kids and adults."
+    },
+    {
+      type:'product', badge:null, title:'Tyrannosaurus Rex dinosaur toy with light and sound',
+      img:'https://m.media-amazon.com/images/I/816ZUa4GMVL._AC_SL1500_.jpg', imgBg:'#fff', imgH:210,
+      priceNow:'20.00', priceOld:null, shipFree:true, rating:null, sold:'3 sold'
+    },
+    {
+      type:'product', badge:'Deal', title:'500-piece building block set',
+      img:'https://toycra.com/cdn/shop/files/AIKO-Building-Construction-Blocks-Set-500-Pieces-Construction-Aiko-Toycra.webp?v=1725724487&width=800',
+      imgBg:'#f4f4f4', imgH:190,
+      priceNow:'69.70', priceOld:'115.50', shipFree:true, rating:'4.9', sold:'87 sold'
+    }
+  ],
+
+  gaming: [
+    {
+      type:'product', badge:null, title:'Roblox Gift Card',
+      img:'https://www.kroger.com/product/images/large/front/0000000839444',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'20.00', priceOld:null, shipFree:true, rating:null, sold:null,
+      desc:'Robux digital code - buy game passes, cosmetics, and exclusive items in Roblox games.'
+    },
+    {
+      type:'product', badge:null, title:'PlayStation Gift Card $50',
+      img:'https://m.media-amazon.com/images/I/51w6X7U3QnL._AC_UF1000,1000_QL80_.jpg',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'50.00', priceOld:null, shipFree:true, rating:null, sold:null,
+      desc:'PlayStation Network gift card - use for games, DLC, PS Plus subscriptions, and more.'
+    },
+    {
+      type:'product', badge:null, title:'Xbox Gift Card $25',
+      img:'https://elreinodejuegos.com/wp-content/uploads/2020/03/Xbox-Gift-Card-10-Portada-Web.png',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'25.00', priceOld:null, shipFree:true, rating:null, sold:null,
+      desc:'Xbox gift code - buy games, Game Pass, or play with Xbox Live.'
+    },
+    {
+      type:'product', badge:null, title:'Epic Games Gift Card $15',
+      img:'https://i.redd.it/swts2hj7xuv01.png',
+      imgBg:'#f4f4f4', imgH:210,
+      priceNow:'15.00', priceOld:null, shipFree:true, rating:null, sold:null,
+      desc:'Epic Games Store credit - buy Fortnite V-Bucks, games, and DLC.'
+    }
+  ]
+};
+
+// "All" mixes a bit from every category
+PRODUCTS.todos = [
+  PRODUCTS.apple[0],
+  PRODUCTS.apple[1],
+  PRODUCTS.gadgets[0],
+  PRODUCTS.toys[0],
+  PRODUCTS.worldcup[1],
+  PRODUCTS.toys[1],
+  PRODUCTS.gadgets[2],
+  PRODUCTS.worldcup[2]
+];
+
+// ============================================
+// RENDER
+// ============================================
+function adBgStyle(bg) {
+  const map = {
+    dark:'linear-gradient(160deg,#0a0a0a 0%,#1c1c1e 60%,#2a2a2e 100%)',
+    green:'linear-gradient(160deg,#04331f 0%,#0c8a5e 100%)',
+    blue:'linear-gradient(160deg,#0a1a33 0%,#1e5bd6 100%)',
+    pink:'linear-gradient(160deg,#3a0a24 0%,#d6216f 100%)'
+  };
+  return map[bg] || map.dark;
+}
+
+function cardHTML(item) {
+  if (item.type === 'ad') {
+    return (
+      '<div class="card ad-card" style="background:' + adBgStyle(item.bg) + '">' +
+        '<div class="ad-tag">' + item.tag + '</div>' +
+        '<div class="ad-title">' + item.title + '</div>' +
+        '<div class="ad-cta">' + item.cta + '</div>' +
+      '</div>'
+    );
+  }
+  if (item.type === 'video') {
+    return (
+      '<div class="card video-card">' +
+        '<div class="thumb-wrap">' +
+          '<div class="thumb" style="height:' + item.imgH + 'px;background:linear-gradient(160deg,#333,#111);"></div>' +
+          '<div class="video-timer">&#9654; ' + item.timer + '</div>' +
+          '<div class="video-author">' +
+            '<img src="https://unavatar.io/' + encodeURIComponent(item.author) + '" onerror="this.style.display=\'none\'">' +
+            item.author +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+  // product
+  const stars = item.rating ? ('<span>&#9733; ' + item.rating + '</span>' + (item.sold ? ' | ' : '')) : '';
+  const thumbInner = item.img
+    ? '<img src="' + item.img + '" alt="" style="width:100%;height:' + item.imgH + 'px;object-fit:cover;display:block;background:' + item.imgBg + ';">'
+    : '<div class="thumb" style="height:' + item.imgH + 'px;background:' + item.imgBg + ';"></div>';
+  const cardId = 'pdcard-' + Math.random().toString(36).slice(2, 10);
+  window._pdItems = window._pdItems || {};
+  window._pdItems[cardId] = item;
+  return (
+    '<div class="card" onclick="openProductDetail(\'' + cardId + '\')" style="cursor:pointer;">' +
+      thumbInner +
+      '<div class="card-body">' +
+        (item.badge ? '<span class="badge-pill">' + item.badge + '</span>' : '') +
+        '<div class="card-title">' + (item.badge ? '' : '') + item.title + '</div>' +
+        '<div class="sh-price-row">' +
+          '<span class="price-now"><sup>$</sup>' + item.priceNow + '</span>' +
+          (item.priceOld ? '<span class="price-old">$' + item.priceOld + '</span>' : '') +
+        '</div>' +
+        (item.shipFree ? '<div class="ship-free">Free shipping</div>' : '') +
+        ((item.rating || item.sold) ? '<div class="rating-row">' + stars + (item.sold || '') + '</div>' : '') +
+      '</div>' +
+    '</div>'
+  );
+}
+
+function renderGrid(items) {
+  const colLeft = document.getElementById('colLeft');
+  const colRight = document.getElementById('colRight');
+  colLeft.innerHTML = '';
+  colRight.innerHTML = '';
+  items.forEach(function(item, i) {
+    const html = cardHTML(item);
+    if (i % 2 === 0) colLeft.insertAdjacentHTML('beforeend', html);
+    else colRight.insertAdjacentHTML('beforeend', html);
+  });
+}
+
+function setActiveTab(id) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+}
+
+// ============================================
+// PRODUCT DETAIL MODAL
+// ============================================
+function openProductDetail(cardId) {
+  const item = window._pdItems[cardId];
+  if (!item) return;
+  window._pdCurrentItem = item;
+
+  document.getElementById('pdImg').src = item.img || '';
+  document.getElementById('pdImg').style.background = item.imgBg || '#f4f4f4';
+  document.getElementById('pdTitle').textContent = item.title;
+  document.getElementById('pdPrice').textContent = '$' + item.priceNow;
+  document.getElementById('pdPriceOld').textContent = item.priceOld ? ('$' + item.priceOld) : '';
+  document.getElementById('pdShip').style.display = item.shipFree ? 'inline-block' : 'none';
+
+  const ratingEl = document.getElementById('pdRating');
+  if (item.rating || item.sold) {
+    ratingEl.style.display = 'block';
+    ratingEl.textContent = (item.rating ? ('★ ' + item.rating + (item.sold ? ' | ' : '')) : '') + (item.sold || '');
+  } else {
+    ratingEl.style.display = 'none';
+  }
+
+  document.getElementById('pdDesc').textContent = item.desc || 'No description available for this item yet.';
+
+  document.getElementById('pdBackdrop').classList.add('open');
+  document.getElementById('pdSheet').scrollTop = 0;
+}
+
+function closeProductDetail() {
+  document.getElementById('pdBackdrop').classList.remove('open');
+}
+
+document.getElementById('pdClose').addEventListener('click', closeProductDetail);
+document.getElementById('pdBackdrop').addEventListener('click', function(e) {
+  if (e.target === this) closeProductDetail();
+});
+
+document.getElementById('pdBuyBtn').addEventListener('click', function() {
+  const item = window._pdCurrentItem;
+  if (!item) return;
+  goToProductPage(item);
+});
+
+// Switches from the shop grid into the full product/checkout page,
+// reusing the same page for any product (no separate files, no navigation).
+function goToProductPage(item) {
+  closeProductDetail();
+  const data = {
+    title: item.title,
+    price: parseFloat(item.priceNow),
+    priceOld: item.priceOld ? parseFloat(item.priceOld) : null,
+    img: item.img || null,
+    seller: item.seller || 'TikTok Shop'
+  };
+  renderProductPage(data);
+  document.getElementById('shopView').style.display = 'none';
+  document.getElementById('productView').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+document.getElementById('backToShopBtn').addEventListener('click', function() {
+  document.getElementById('productView').style.display = 'none';
+  document.getElementById('shopView').style.display = 'block';
+  window.scrollTo(0, 0);
+});
+
+document.getElementById('tabTodos').addEventListener('click', function() {
+  setActiveTab('tabTodos'); renderGrid(PRODUCTS.todos);
+});
+document.getElementById('tabApple').addEventListener('click', function() {
+  setActiveTab('tabApple'); renderGrid(PRODUCTS.apple);
+});
+document.getElementById('tabWorldCup').addEventListener('click', function() {
+  setActiveTab('tabWorldCup'); renderGrid(PRODUCTS.worldcup);
+});
+document.getElementById('tabGadgets').addEventListener('click', function() {
+  setActiveTab('tabGadgets'); renderGrid(PRODUCTS.gadgets);
+});
+document.getElementById('tabToys').addEventListener('click', function() {
+  setActiveTab('tabToys'); renderGrid(PRODUCTS.toys);
+});
+
+document.getElementById('tabGaming').addEventListener('click', function() {
+  setActiveTab('tabGaming'); renderGrid(PRODUCTS.gaming);
+});
+
+document.getElementById('fullscreenBtn').addEventListener('click', function() {
+  const elem = document.documentElement;
+  if (!document.fullscreenElement) {
+    elem.requestFullscreen().catch(err => {
+      alert(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+});
+
+// Initial render
+renderGrid(PRODUCTS.todos);
+
+</script>
+
+<script>
+
+    // ============================================
+    // PRODUCT CONFIG - edit these 4 lines to turn this
+    // same page into a page for any other product
+    // ============================================
+    function renderProductPage(productData) {
+      document.title = productData.title;
+
+      // Seller info - not everything is sold by Apple
+      const seller = productData.seller || 'TikTok Shop';
+      document.getElementById('sellerName').textContent = seller;
+      document.getElementById('coSellerName').textContent = 'Shipped by ' + seller;
+      const sellerLogoImg = document.getElementById('sellerLogoImg');
+      const sellerLogoLetter = document.getElementById('sellerLogoLetter');
+      if (seller === 'Apple') {
+        sellerLogoImg.src = 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg';
+        sellerLogoImg.alt = 'Apple';
+        sellerLogoImg.style.display = 'block';
+        sellerLogoLetter.style.display = 'none';
+      } else {
+        sellerLogoImg.style.display = 'none';
+        sellerLogoLetter.style.display = 'flex';
+        sellerLogoLetter.textContent = seller.charAt(0).toUpperCase();
+      }
+
+      // Carousel - reuse the same image on all slides
+      document.querySelectorAll('.prod-img').forEach(img => {
+        if (productData.img) img.src = productData.img;
+      });
+
+      // Main price display
+      const priceInt = Math.floor(productData.price);
+      const priceCents = Math.round((productData.price - priceInt) * 100).toString().padStart(2, '0');
+      document.getElementById('priceMain').textContent = '$' + priceInt;
+      document.getElementById('priceCents').textContent = '.' + priceCents;
+
+      // Page title
+      document.getElementById('pageTitle').textContent = productData.title;
+
+      // Checkout product card
+      if (productData.img) document.getElementById('coProdImg').src = productData.img;
+      document.getElementById('coProdTitle').textContent = productData.title;
+
+      const priceStr = '$' + productData.price.toFixed(2);
+      document.getElementById('coSubtotalPrice').textContent = priceStr;
+      document.getElementById('coTotalRowPrice').textContent = priceStr;
+      document.getElementById('coTotalPrice').textContent = priceStr;
+
+      const coPriceRow = document.getElementById('coPriceRow');
+      if (productData.priceOld) {
+        const discount = productData.priceOld - productData.price;
+        const pct = Math.round((discount / productData.priceOld) * 100);
+        coPriceRow.childNodes[0].textContent = priceStr;
+        document.getElementById('coOrigSpan').textContent = '$' + productData.priceOld.toFixed(2);
+        document.getElementById('coOffSpan').textContent = '-' + pct + '%';
+        document.getElementById('coOrigRowPrice').textContent = '$' + productData.priceOld.toFixed(2);
+        document.getElementById('coDiscountPrice').textContent = '- $' + discount.toFixed(2);
+        document.getElementById('savingsBanner').textContent = "😊 Congrats! You'll save $" + discount.toFixed(2) + ' on this order.';
+      } else {
+        coPriceRow.childNodes[0].textContent = priceStr;
+        document.getElementById('coOrigSpan').style.display = 'none';
+        document.getElementById('coOffSpan').style.display = 'none';
+        document.getElementById('coOrigRow').style.display = 'none';
+        document.getElementById('coDiscountRow').style.display = 'none';
+        document.getElementById('savingsBanner').style.display = 'none';
+      }
+
+      // App Store confirm sheet product name
+      document.getElementById('asProductName').textContent = productData.title;
+
+      // keep unitPrice/qty in sync for the +/- controls in checkout
+      unitPrice = productData.price;
+      qty = 1;
+      qtyVal.textContent = qty;
+      coTotalPrice.textContent = '$' + productData.price.toFixed(2);
+    }
+
+
+
+    const buyBtn = document.getElementById('buyBtn');
+    const checkoutPage = document.getElementById('checkoutPage');
+    const coBottombar = document.getElementById('coBottombar');
+    const coBack = document.getElementById('coBack');
+    buyBtn.addEventListener('click', () => { checkoutPage.classList.add('open'); coBottombar.classList.add('open'); window.scrollTo(0,0); });
+    coBack.addEventListener('click', () => { checkoutPage.classList.remove('open'); coBottombar.classList.remove('open'); });
+
+    let qty = 1;
+    const qtyVal = document.getElementById('qtyVal');
+    let unitPrice = 269.00; // overwritten by renderProductPage below
+    const coTotalPrice = document.getElementById('coTotalPrice');
+    document.getElementById('qtyPlus').addEventListener('click', () => {
+      qty++; qtyVal.textContent = qty;
+      coTotalPrice.textContent = '$' + (unitPrice*qty).toFixed(2);
+    });
+    document.getElementById('qtyMinus').addEventListener('click', () => {
+      if (qty > 1) qty--; qtyVal.textContent = qty;
+      coTotalPrice.textContent = '$' + (unitPrice*qty).toFixed(2);
+    });
+
+    // Place order -> address alert -> username alert -> loading -> avatar confirm (all cosmetic, no data sent anywhere)
+    const placeOrderBtn = document.getElementById('placeOrderBtn');
+    const addressAlert = document.getElementById('addressAlert');
+    const usernameAlert = document.getElementById('usernameAlert');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const confirmUserAlert = document.getElementById('confirmUserAlert');
+    const confirmAvatar = document.getElementById('confirmAvatar');
+    const confirmUsername = document.getElementById('confirmUsername');
+
+    placeOrderBtn.addEventListener('click', () => { addressAlert.classList.add('open'); });
+
+    document.getElementById('addressLater').addEventListener('click', () => {
+      addressAlert.classList.remove('open');
+    });
+    document.getElementById('addressAdd').addEventListener('click', () => {
+      addressAlert.classList.remove('open');
+      usernameAlert.classList.add('open');
+    });
+
+    const usernameInput = document.getElementById('usernameInput');
+    const usernameOk = document.getElementById('usernameOk');
+    usernameInput.addEventListener('input', () => {
+      usernameOk.classList.toggle('disabled', usernameInput.value.trim().length === 0);
+    });
+    document.getElementById('usernameCancel').addEventListener('click', () => {
+      usernameAlert.classList.remove('open');
+      usernameInput.value = '';
+      usernameOk.classList.add('disabled');
+    });
+    usernameOk.addEventListener('click', () => {
+      const uname = usernameInput.value.trim().replace(/^@/, '');
+      if (uname.length === 0) return;
+      usernameAlert.classList.remove('open');
+      loadingSpinner.classList.add('open');
+
+      const imgUrl = 'https://unavatar.io/tiktok/' + encodeURIComponent(uname);
+      const preloader = new Image();
+      let shown = false;
+      const showConfirm = () => {
+        if (shown) return;
+        shown = true;
+        loadingSpinner.classList.remove('open');
+        confirmAvatar.src = imgUrl;
+        confirmUsername.textContent = '@' + uname;
+        confirmUserAlert.classList.add('open');
+      };
+      preloader.onload = showConfirm;
+      preloader.onerror = showConfirm;
+      preloader.src = imgUrl;
+      // safety timeout in case the image takes too long
+      setTimeout(showConfirm, 2500);
+    });
+
+    document.getElementById('confirmCancel').addEventListener('click', () => {
+      confirmUserAlert.classList.remove('open');
+      usernameInput.value = '';
+      usernameOk.classList.add('disabled');
+      usernameAlert.classList.add('open');
+    });
+
+    const toast = document.getElementById('toast');
+    const toastText = document.getElementById('toastText');
+    const payChoiceAlert = document.getElementById('payChoiceAlert');
+
+    document.getElementById('confirmOk').addEventListener('click', () => {
+      confirmUserAlert.classList.remove('open');
+      const uname = confirmUsername.textContent;
+      toastText.textContent = 'Address formulary sent to ' + uname;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 2600);
+      setTimeout(() => { payChoiceAlert.classList.add('open'); }, 700);
+    });
+
+
+    const appstoreSheet = document.getElementById('appstoreSheet');
+    const appstoreBackdrop = document.getElementById('appstoreBackdrop');
+    const appstoreClose = document.getElementById('appstoreClose');
+
+    document.getElementById('payLater').addEventListener('click', () => {
+      payChoiceAlert.classList.remove('open');
+    });
+    document.getElementById('payNow').addEventListener('click', () => {
+      payChoiceAlert.classList.remove('open');
+      document.getElementById('asQtyBadge').textContent = 'Qty ' + qty;
+      document.getElementById('asTotalPrice').textContent = '$' + (unitPrice*qty).toFixed(2);
+      const prestoreBackdrop = document.getElementById('prestoreBackdrop');
+      prestoreBackdrop.classList.add('open');
+      setTimeout(() => {
+        prestoreBackdrop.classList.remove('open');
+        appstoreSheet.classList.add('open');
+        appstoreBackdrop.classList.add('open');
+      }, 2000);
+    });
+
+    appstoreClose.addEventListener('click', () => {
+      appstoreSheet.classList.remove('open');
+      appstoreBackdrop.classList.remove('open');
+    });
+    appstoreBackdrop.addEventListener('click', () => {
+      appstoreSheet.classList.remove('open');
+      appstoreBackdrop.classList.remove('open');
+    });
+
+    // Side button click - show loading spinner, then success popup
+    const sideButtonIcon = document.getElementById('sideButtonIcon');
+    const loadingConfirmBackdrop = document.getElementById('loadingConfirmBackdrop');
+    const loadingConfirmModal = document.getElementById('loadingConfirmModal');
+    const successBackdrop = document.getElementById('successBackdrop');
+    const successOk = document.getElementById('successOk');
+
+    sideButtonIcon.addEventListener('click', () => {
+      loadingConfirmBackdrop.classList.add('open');
+      loadingConfirmModal.classList.add('open');
+      setTimeout(() => {
+        loadingConfirmBackdrop.classList.remove('open');
+        loadingConfirmModal.classList.remove('open');
+        successBackdrop.classList.add('open');
+      }, 2000);
+    });
+
+    successOk.addEventListener('click', () => {
+      successBackdrop.classList.remove('open');
+      appstoreSheet.classList.remove('open');
+      appstoreBackdrop.classList.remove('open');
+      checkoutPage.classList.remove('open');
+      coBottombar.classList.remove('open');
+    });
+
+    loadingConfirmBackdrop.addEventListener('click', () => {
+      loadingConfirmBackdrop.classList.remove('open');
+      loadingConfirmModal.classList.remove('open');
+    });
+
+    // Default product shown when this file is opened directly
+    const defaultProductData = {
+      title: 'Apple AirPods Pro (2nd Generation) Wireless Earbuds',
+      price: 269.00,
+      priceOld: 349.00,
+      img: 'https://m.media-amazon.com/images/I/61sRKTAfrhL._AC_UF1000,1000_QL80_.jpg',
+      seller: 'Apple'
+    };
+    renderProductPage(defaultProductData);
+
+</script>
+
+<script>
+    const track = document.getElementById('track');
+    const counter = document.getElementById('counter');
+    const total = track.children.length;
+    track.addEventListener('scroll', () => {
+      const idx = Math.round(track.scrollLeft / track.clientWidth);
+      counter.textContent = (idx + 1) + '/' + total;
+    });
+</script>
+
+</body>
+</html>
