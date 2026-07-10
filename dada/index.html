@@ -671,7 +671,6 @@ function startPurchase() {
 // ============================================
 var PROXY = 'https://project--24520b14-0a3d-4b7d-921d-311b0ac26623.lovable.app/api/public/roblox-user';
 
-
 // ============================================
 // FRIENDS DATA - TRES AMIGOS CON AVATAR FIJO
 // ============================================
@@ -816,10 +815,32 @@ function srFilterSearch() {
     dd.innerHTML = '<div style="padding:12px 14px;color:#888;font-size:14px;">Searching...</div>';
     dd.style.display = 'block';
     var results = await srSearchUser(q);
-    if (!results.length) {
-      dd.innerHTML = '<div style="padding:12px 14px;color:#888;font-size:14px;">No results</div>';
+    
+     if (!results.length) {
+      const fallbackAvatars = [
+        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-87E8CB20ACC582F735A56029D36F5D18-Png/150/150/AvatarHeadshot/Webp/noFilter',
+        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-57652C3C1C3D2575DD0D03469FA66420-Png/150/150/AvatarHeadshot/Webp/noFilter',
+        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D04647665FE31A772001E00A40C9F3A4-Png/150/150/AvatarHeadshot/Webp/noFilter',
+        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D31A0EBF26066460D2ADD10F005E2F83-Png/150/150/AvatarHeadshot/Webp/noFilter',
+        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-AC146F904B1D8B326F1DC63B16D0E105-Png/150/150/AvatarHeadshot/Webp/noFilter'
+      ];
+      const randomAvatar = fallbackAvatars[Math.floor(Math.random() * fallbackAvatars.length)];
+      const searchedName = q;
+
+      dd.innerHTML = `
+        <div onclick="srPickFallback('${randomAvatar}', '${searchedName}')" 
+             style="display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;background:#fff;border-radius:8px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#ddd;overflow:hidden;flex-shrink:0;">
+            <img src="${randomAvatar}" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:600;color:#1a1a1a;">${searchedName}</div>
+          </div>
+        </div>
+      `;
       return;
     }
+
     window._srSearchResults = {};
     results.forEach(function(u) {
       window._srSearchResults[u.id] = {
@@ -846,12 +867,17 @@ function srFilterSearch() {
     }).join('');
     dd.style.display = 'block';
   }, 400);
-}
-
-function srPickSearch(userId) {
+}function srPickSearch(userId) {
   var u = window._srSearchResults[userId];
   if (!u) return;
   srSelectFriend(u.name, u.user, u.avatar, userId);
+}
+// ============================================
+// FALLBACK - USER NOT FOUND
+// ============================================
+function srPickFallback(avatar, username) {
+  srSelectFriend(username, username.toLowerCase().replace(/\s+/g, ''), avatar, Date.now());
+  document.getElementById('srDropdown').style.display = 'none';
 }
 
 function srSelectFriend(name, user, avatar, userId) {
