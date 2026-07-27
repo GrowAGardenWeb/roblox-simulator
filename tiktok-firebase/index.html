@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok Gifts Simulator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; font-family: 'DM Sans', sans-serif; padding: 20px 0 40px; }
+
+  .mod-btn { background: linear-gradient(135deg, #fe2c55, #ff6b35); color: #fff; border: none; border-radius: 20px; padding: 10px 24px; font-size: 14px; font-weight: 700; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(254,44,85,0.4); transition: all 0.2s; }
+  .mod-btn:hover { transform: translateY(-1px); }
+  .mod-btn:active { transform: scale(0.97); }
+
+  .phone { width: 375px; height: 812px; background: #000; border-radius: 28px; overflow: hidden; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.7); isolation: auto; transform: scale(0.8107, 0.6626); transform-origin: top left; }
+  .phone-scale-wrap { width: 304px; height: 538px; overflow: hidden; flex-shrink: 0; }
+
+  .stage { display: flex; flex-direction: row; align-items: flex-start; gap: 0; }
+
+  /* HOST GUEST PANEL */
+  .host-guest-panel { width: 251px; height: 538px; background: #000; border-radius: 14px; padding: 8px; box-shadow: 0 30px 80px rgba(0,0,0,0.7); position: relative; }
+  .guest-slots-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 8px; width: 100%; height: 100%; }
+  .guest-slot { position: relative; border-radius: 10px; overflow: hidden; background: #1c1c1e; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .guest-slot.empty { flex-direction: column; gap: 6px; color: rgba(255,255,255,0.35); }
+  .guest-slot.empty .guest-plus { font-size: 26px; font-weight: 300; line-height: 1; }
+  .guest-slot.empty .guest-request-label { font-size: 12px; color: rgba(255,255,255,0.35); }
+  .guest-slot.filled { cursor: default; }
+  .guest-slot.filled.is-cohost { box-shadow: inset 0 0 0 3px #5ce1f2; }
+  .guest-blur-bg { position: absolute; inset: -12px; background-size: cover; background-position: center; filter: blur(16px) brightness(0.65) saturate(1.1); transform: scale(1.1); }
+  .guest-avatar-circle { position: relative; z-index: 2; width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.5); box-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+  .guest-coin-badge { position: absolute; top: 6px; left: 6px; z-index: 3; display: flex; align-items: center; gap: 3px; background: rgba(0,0,0,0.45); border-radius: 20px; padding: 3px 8px 3px 4px; font-size: 11px; font-weight: 700; color: #fff; }
+  .coin-star-icon { width: 15px; height: 15px; border-radius: 50%; background: #74ade0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .coin-star-icon svg { width: 9px; height: 9px; }
+  .guest-coin-badge img { width: 14px; height: 14px; object-fit: contain; }
+  .cohost-dot-icon { width: 14px; height: 14px; border-radius: 50%; background: #5ce1f2; border: 2px solid #fff; box-sizing: border-box; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cohost-dot-icon::after { content: ''; width: 4px; height: 4px; border-radius: 50%; background: #fff; }
+  .guest-gift-flash { position: absolute; top: 6px; right: 6px; z-index: 4; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; animation: giftFlashPop 0.25s ease; }
+  .guest-gift-flash img { width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6)); }
+  @keyframes giftFlashPop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .guest-remove-btn { position: absolute; top: 6px; right: 6px; z-index: 3; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,0.55); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
+  .guest-cohost-btn { position: absolute; top: 30px; right: 6px; z-index: 3; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,0.55); color: rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; }
+  .guest-cohost-btn.active { background: #5ce1f2; color: #000; }
+  .guest-name-row { position: absolute; bottom: 6px; left: 6px; z-index: 3; display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.5); border-radius: 20px; padding: 3px 4px 3px 8px; max-width: calc(100% - 34px); }
+  .guest-name { font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 56px; }
+  .guest-name-plus { width: 15px; height: 15px; border-radius: 50%; background: rgba(255,255,255,0.25); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; line-height: 1; }
+  .guest-mic-btn { position: absolute; bottom: 6px; right: 6px; z-index: 3; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; cursor: pointer; }
+  .guest-quick-select { position: absolute; inset: 10px; z-index: 6; width: calc(100% - 20px); background: #18181b; color: #fff; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; font-size: 11px; font-family: 'DM Sans', sans-serif; padding: 4px; }
+  .guest-form { position: absolute; inset: 0; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; z-index: 4; }
+  .guest-form input { width: 100%; background: #242428; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 6px 8px; font-size: 11px; color: #fff; font-family: 'DM Sans', sans-serif; outline: none; }
+  .guest-form input:focus { border-color: #fe2c55; }
+  .guest-form-btns { display: flex; gap: 6px; width: 100%; }
+  .guest-form-btns button { flex: 1; border: none; border-radius: 8px; padding: 6px 0; font-size: 11px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .guest-form-confirm { background: #fe2c55; color: #fff; }
+  .guest-form-cancel { background: rgba(255,255,255,0.12); color: #fff; }
+
+  /* CO-HOST styling on the main phone tile */
+  .phone.cohost-active { border: 3px solid #5ce1f2; box-shadow: 0 0 0 1px rgba(92,225,242,0.4), 0 30px 80px rgba(0,0,0,0.7); }
+  .cohost-name-label { position: absolute; left: 12px; bottom: 12px; z-index: 26; color: #fff; font-size: 15px; font-weight: 700; text-shadow: 0 1px 4px rgba(0,0,0,0.7); display: none; }
+  .cohost-name-label.visible { display: block; }
+
+  /* LIVE BG - video or dark fallback */
+  .live-bg { position: absolute; inset: 0; background: #1a1a1a; z-index: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  #bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.9; display: block; }
+  .live-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 40%, rgba(0,0,0,0.4) 100%); pointer-events: none; z-index: 1; }
+
+  /* TOP BAR */
+  .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 10; padding: 14px 14px 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .streamer-info { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.4); border-radius: 30px; padding: 5px 12px 5px 5px; }
+  .s-avatar { width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.25); object-fit: cover; background: #333; display: block; flex-shrink: 0; }
+  .streamer-text { flex: 1; min-width: 0; }
+  .streamer-name { font-size: 13px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .streamer-likes { font-size: 11px; color: rgba(255,255,255,0.75); }
+  .topbar-right { display: flex; align-items: center; gap: 6px; }
+  .viewer-badge { background: rgba(255,255,255,0.18); border-radius: 12px; padding: 4px 8px; font-size: 11px; color: #fff; display: flex; align-items: center; gap: 3px; }
+  .close-x { width: 28px; height: 28px; background: rgba(255,255,255,0.18); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; cursor: pointer; }
+
+  /* LIVE BADGE */
+
+
+  /* GIFTS PANEL */
+  .gifts-panel { position: absolute; bottom: 0; left: 0; right: 0; background: #1a1a1a; border-radius: 20px 20px 0 0; z-index: 30; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+  .gifts-panel.hidden { transform: translateY(100%); }
+  .gifter-promo { display: flex; align-items: center; padding: 10px 14px; background: #242424; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+  /* GIFT TARGET PILL (a quién le estás mandando el regalo) */
+  .gift-target-pill { display: none; align-items: center; gap: 10px; padding: 8px 10px 8px 8px; background: #242424; border-bottom: 1px solid rgba(255,255,255,0.06); position: relative; }
+  .gift-target-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; background: #333; flex-shrink: 0; }
+  .gift-target-name { flex: 1; font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gift-target-switch { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; flex-shrink: 0; }
+  .gift-target-switcher { display: none; position: absolute; top: 100%; left: 8px; right: 8px; background: #242428; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 6px; z-index: 40; max-height: 220px; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  .switcher-item { display: flex; align-items: center; gap: 8px; padding: 6px; border-radius: 8px; cursor: pointer; }
+  .switcher-item:hover { background: rgba(255,255,255,0.06); }
+  .switcher-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; background: #333; flex-shrink: 0; }
+  .switcher-name { flex: 1; font-size: 13px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .switcher-mic { font-size: 12px; }
+
+  /* NOTIFICACIÓN DE DONACIÓN A INVITADO (posición configurable) */
+  .promo-avatar { width: 30px; height: 30px; border-radius: 50%; background: #444; object-fit: cover; flex-shrink: 0; }
+  .promo-text { flex: 1; font-size: 12px; color: rgba(255,255,255,0.85); }
+  .promo-arrow { font-size: 14px; color: rgba(255,255,255,0.35); }
+  .gifts-tabs { display: flex; padding: 0 14px; border-bottom: 1px solid rgba(255,255,255,0.08); gap: 20px; }
+  .gifts-tab { padding: 10px 0; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); cursor: pointer; position: relative; transition: color 0.2s; }
+  .gifts-tab.active { color: #fff; }
+  .gifts-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: #fe2c55; border-radius: 2px; }
+  .coin-bar { display: flex; align-items: center; gap: 6px; padding: 8px 14px 10px; }
+  .coin-icon-img { width: 22px; height: 22px; object-fit: contain; }
+  .coin-amount { font-size: 13px; font-weight: 700; color: #fff; }
+  .gift-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 8px 0 16px; max-height: 290px; overflow-y: auto; }
+  .gift-grid::-webkit-scrollbar { display: none; }
+  .gift-item { display: flex; flex-direction: column; align-items: center; padding: 8px 0 0px; border-radius: 0; cursor: pointer; position: relative; transition: all 0.15s; overflow: hidden; background: #1a1a1a; }
+
+  .gift-item.selected { background: rgba(0,0,0,0.2); border-radius: 8px; }
+  .gift-badge { position: absolute; top: 4px; right: 4px; background: #fe2c55; color: #fff; font-size: 8px; font-weight: 700; border-radius: 4px; padding: 1px 4px; z-index: 2; }
+  .gift-img-wrap { width: 58px; height: 58px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+  .gift-item.selected .gift-img-wrap { transform: scale(1.3); }
+  .gift-img { width: 52px; height: 52px; object-fit: contain; }
+  .gift-name { font-size: 11px; color: rgba(255,255,255,0.85); text-align: center; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70px; }
+  .gift-price { display: flex; align-items: center; gap: 3px; font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .gift-price-coin { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; }
+  .send-row { display: none; width: 100%; margin-top: 5px; animation: slideDown 0.15s ease; }
+  .gift-item.selected .send-row { display: block; }
+  .send-btn { background: #fe2c55; color: #fff; border: none; border-radius: 0 0 8px 8px; padding: 6px 0; font-size: 11px; font-weight: 700; font-family: 'DM Sans', sans-serif; cursor: pointer; width: 100%; display: block; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+
+  /* COMBO BUTTON */
+  .combo-wrap { position: absolute; top: 72%; right: 16px; transform: translateY(-50%); z-index: 25; display: none; flex-direction: column; align-items: center; gap: 8px; user-select: none; -webkit-user-select: none; }
+  .combo-wrap.visible { display: flex; }
+  .combo-ring { position: relative; width: 110px; height: 110px; cursor: pointer; transition: transform 0.1s cubic-bezier(0.34,1.56,0.64,1); }
+  .combo-ring.pop { transform: scale(1.12); }
+  .combo-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .combo-ring-track { fill: none; stroke: #111; stroke-width: 5; }
+  .combo-ring-fill { fill: none; stroke: #fe2c55; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 295; stroke-dashoffset: 0; transition: stroke-dashoffset 0.1s linear; }
+  .combo-inner { position: absolute; inset: 8px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #ff4d6d, #c9184a); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(254,44,85,0.5); pointer-events: none; }
+  .combo-label { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.95); letter-spacing: 0.02em; }
+  .combo-count-badge { width: 28px; height: 28px; background: #fe2c55; color: #fff; font-size: 13px; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1); }
+
+
+  /* BOTTOM BAR - shown when panel is hidden */
+  .bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; z-index: 19; display: none; flex-direction: column; padding-bottom: 8px; }
+  .bottom-bar.visible { display: flex; }
+  .bottom-bar-top { display: flex; align-items: center; justify-content: flex-end; padding: 6px 14px; gap: 10px; }
+  .viewers-pill { display: flex; align-items: center; gap: 5px; background: rgba(100,100,100,0.45); border-radius: 20px; padding: 5px 12px; font-size: 13px; color: #fff; font-weight: 600; }
+  .close-pill { width: 30px; height: 30px; background: rgba(100,100,100,0.45); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; cursor: pointer; }
+  .bottom-bar-actions { display: flex; align-items: center; padding: 8px 14px; gap: 8px; }
+  .comment-input-fake { flex: 1; background: rgba(100,100,100,0.45); border-radius: 20px; padding: 9px 16px; font-size: 13px; color: rgba(255,255,255,0.7); }
+  .action-btns { display: flex; gap: 6px; }
+  .action-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+  .action-btn-icon { width: 36px; height: 36px; background: rgba(100,100,100,0.45); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .action-btn-label { font-size: 10px; color: rgba(255,255,255,0.8); font-weight: 600; }
+
+
+
+
+  /* GIFT VIDEO OVERLAY */
+  .overlay-stage-outer {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .overlay-stage-box {
+    position: relative;
+    height: 100%;
+    max-width: 100%;
+    aspect-ratio: 375 / 812;
+  }
+  .gift-video-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .gift-video-overlay.visible { opacity: 1; }
+  #gift-canvas {
+    position: absolute;
+    bottom: 20px;
+    left: 60%;
+    transform: translateX(-50%);
+    width: 420%;
+    height: 80%;
+  }
+
+  /* NOTIFICACIÓN DEL DONADOR (solo overlay) */
+  .overlay-donor-notif {
+    position: absolute;
+    bottom: 320px;
+    left: 12px;
+    z-index: 28;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    min-width: 75px;
+    opacity: 0;
+    transform: translateX(-130%);
+    transition: transform 0.35s cubic-bezier(0.34,1.2,0.64,1), opacity 0.3s ease;
+  }
+  .overlay-donor-notif.visible { opacity: 1; transform: translateX(0); }
+  .overlay-donor-notif .odn-text { min-width: 0; }
+  .overlay-donor-notif .odn-text div { white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+  #odn-name { font-size: 12px; font-weight: 700; color: #fff; }
+  #odn-sent { font-size: 10px; color: rgba(255,255,255,0.8); }
+  .overlay-donor-notif img.odn-gift-img { width: 34px; height: 34px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+
+  /* MODO OVERLAY (para OBS / TikTok Live Studio): solo se ve la animación, todo lo demás oculto */
+  html { background: transparent; }
+  body.overlay-mode { background: transparent !important; }
+  body.overlay-mode #control-ui { display: none !important; }
+
+  /* SETTINGS PANEL (siempre visible, ya no es modal) */
+  .settings-panel { background: #18181b; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; width: 320px; height: 812px; overflow-y: auto; box-shadow: 0 30px 80px rgba(0,0,0,0.7); }
+
+  /* PANEL DE DONACIÓN RÁPIDA (al lado del mod panel) */
+  .quick-donate-panel { display: none; position: fixed; top: 50%; right: 16px; transform: translateY(-50%); background: #18181b; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 16px; width: 260px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 80px rgba(0,0,0,0.7); z-index: 500; }
+  .quick-donate-panel.open { display: block; }
+  .qdp-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .qdp-header img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: #333; flex-shrink: 0; }
+  #qdp-name { flex: 1; font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .qdp-close { width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; flex-shrink: 0; }
+  .qdp-list { display: flex; flex-direction: column; gap: 6px; }
+  .qdp-item { display: flex; align-items: center; gap: 8px; background: #242428; border-radius: 10px; padding: 6px 8px; cursor: pointer; transition: background 0.15s; }
+  .qdp-item:hover { background: #2f2f35; }
+  .qdp-item img { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
+  .qdp-item-name { flex: 1; font-size: 12px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .qdp-item-price { font-size: 11px; color: rgba(255,255,255,0.5); flex-shrink: 0; }
+  .mod-modal h2 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .mod-modal > p { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+  .mod-section { margin-bottom: 20px; }
+  .mod-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 8px; }
+  .mod-input { width: 100%; background: #242428; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 11px 14px; font-size: 14px; color: #fff; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; margin-bottom: 8px; }
+  .mod-input:last-child { margin-bottom: 0; }
+  .mod-input:focus { border-color: #fe2c55; }
+
+  .toggle-switch { position: relative; display: inline-block; width: 44px; height: 26px; flex-shrink: 0; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: rgba(255,255,255,0.15); transition: 0.2s; border-radius: 26px; }
+  .toggle-slider::before { content: ''; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: #fff; transition: 0.2s; border-radius: 50%; }
+  .toggle-switch input:checked + .toggle-slider { background: #fe2c55; }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+  input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 6px; background: rgba(255,255,255,0.15); outline: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #fe2c55; cursor: pointer; box-shadow: 0 2px 8px rgba(254,44,85,0.6); border: 2px solid #fff; }
+  input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fe2c55; cursor: pointer; box-shadow: 0 2px 8px rgba(254,44,85,0.6); border: 2px solid #fff; }
+
+  /* Invitados / Co-host manager dentro del panel de settings */
+  .guest-manage-item { display: flex; align-items: center; gap: 8px; background: #242428; border-radius: 10px; padding: 6px 8px; margin-bottom: 6px; }
+  .guest-manage-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: #333; flex-shrink: 0; }
+  .guest-manage-name { flex: 1; font-size: 12px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .guest-manage-btn { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; flex-shrink: 0; border: none; }
+  .guest-manage-btn.active { background: #5ce1f2; color: #000; }
+  .guest-manage-btn.remove:hover { background: #fe2c55; color: #fff; }
+  .guest-manage-empty { font-size: 12px; color: rgba(255,255,255,0.35); padding: 4px 2px; }
+
+  .avatar-preview { width: 64px; height: 64px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); object-fit: cover; background: #333; display: block; margin-bottom: 10px; }
+  .avatar-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+  .avatar-opt { width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); cursor: pointer; overflow: hidden; transition: border-color 0.15s; flex-shrink: 0; }
+  .avatar-opt img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-opt.active { border-color: #fe2c55; }
+  .upload-circle { width: 44px; height: 44px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; color: rgba(255,255,255,0.3); transition: all 0.15s; flex-shrink: 0; }
+  .upload-circle:hover { border-color: #fe2c55; color: #fe2c55; }
+
+  /* TikTok search result */
+  .tt-result { display: flex; align-items: center; gap: 10px; background: #242428; border-radius: 10px; padding: 10px 12px; margin-top: 8px; cursor: pointer; border: 1px solid rgba(255,255,255,0.08); transition: border-color 0.15s; }
+  .tt-result:hover { border-color: #fe2c55; }
+  .tt-result img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+  .tt-result-info { flex: 1; }
+  .tt-result-name { font-size: 13px; font-weight: 700; color: #fff; }
+  .tt-result-user { font-size: 11px; color: rgba(255,255,255,0.45); }
+  .tt-result-check { font-size: 16px; color: rgba(255,255,255,0.2); }
+  .tt-result.selected .tt-result-check { color: #fe2c55; }
+
+  /* Video upload area */
+  .video-drop { border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.15s; }
+  .video-drop:hover { border-color: #fe2c55; }
+  .video-drop p { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 6px; }
+  .video-drop span { font-size: 28px; }
+  .video-preview { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-top: 8px; display: none; }
+
+  .mod-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-apply { flex: 1; background: #fe2c55; color: #fff; border: none; border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 700; font-family: 'DM Sans', sans-serif; cursor: pointer; }
+  .btn-apply:hover { opacity: 0.9; }
+  .btn-cancel-mod { flex: 1; background: #242428; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; }
+
+  .search-spinner { font-size: 12px; color: rgba(255,255,255,0.4); padding: 8px 0; display: none; }
+
+  input[type=file] { display: none; }
+</style>
+</head>
+<body>
+
+<!-- OVERLAY STAGE (fuera del panel de control, solo se ve en modo overlay) -->
+<div class="overlay-stage-outer">
+  <div class="overlay-stage-box">
+    <div class="gift-video-overlay" id="gift-video-overlay">
+      <canvas id="gift-canvas"></canvas>
+      <video id="gift-video-player" playsinline muted style="display:none;position:absolute;"></video>
+    </div>
+    <div class="overlay-donor-notif" id="overlay-donor-notif">
+      <img class="odn-gift-img" id="odn-gift-img" src="" alt="">
+      <div class="odn-text">
+        <div id="odn-name">Carlos</div>
+        <div id="odn-sent">sent Rose</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="control-ui">
+
+<div class="stage">
+<div class="phone-scale-wrap">
+<div class="phone">
+  <!-- LIVE BG -->
+  <div class="live-bg" id="live-bg">
+    <video id="bg-video" autoplay loop muted playsinline></video>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="streamer-info" id="streamer-info-block">
+      <img class="s-avatar" id="streamer-avatar" src="https://api.dicebear.com/7.x/notionists/svg?seed=JessSea" alt="">
+      <div class="streamer-text">
+        <div class="streamer-name" id="streamer-name">JessSea</div>
+        <div class="streamer-likes" id="streamer-likes"><img src="like.png" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;"> 67.9K</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="viewer-badge" id="viewer-badge-block"><img src="people.png" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;"> <span id="viewer-count">197</span></div>
+      <div class="close-x" id="close-x-block">✕</div>
+    </div>
+  </div>
+
+  <!-- CO-HOST NAME LABEL -->
+  <div class="cohost-name-label" id="cohost-name-label"></div>
+
+  <!-- COMBO BUTTON -->
+  <div class="combo-wrap" id="combo-wrap">
+    <div class="combo-count-badge" id="combo-num">1</div>
+    <div class="combo-ring" id="combo-ring" onclick="comboClick()">
+      <svg viewBox="0 0 110 110" width="110" height="110">
+        <circle class="combo-ring-track" cx="55" cy="55" r="47"/>
+        <circle class="combo-ring-fill" id="combo-ring-fill" cx="55" cy="55" r="47"/>
+      </svg>
+      <div class="combo-inner">
+        <div class="combo-label">Combo</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar visible" id="bottom-bar">
+    <div class="bottom-bar-actions">
+      <div class="comment-input-fake" id="comment-input-block">Add comment...</div>
+      <div class="action-btns" id="action-btns-block">
+        <div class="action-btn">
+          <div class="action-btn-icon"><img src="report.png" style="width:20px;height:20px;object-fit:contain;"></div>
+          <div class="action-btn-label">Report</div>
+        </div>
+        <div class="action-btn">
+          <div class="action-btn-icon"><img src="https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp" style="width:20px;height:20px;object-fit:contain;"></div>
+          <div class="action-btn-label">Rose</div>
+        </div>
+        <div class="action-btn">
+          <div class="action-btn-icon" onclick="openGiftsPanelDefault()" style="cursor:pointer;"><img src="gift.png" style="width:20px;height:20px;object-fit:contain;"></div>
+          <div class="action-btn-label" onclick="openGiftsPanelDefault()" style="cursor:pointer;">Gift</div>
+        </div>
+        <div class="action-btn" id="share-action-btn">
+          <div class="action-btn-icon"><img src="share.png" style="width:20px;height:20px;object-fit:contain;"></div>
+          <div class="action-btn-label">4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GIFT NOTIFICATION -->
+
+  <div class="gift-notif-wrap" id="gift-notif" style="position:absolute;bottom:320px;left:12px;z-index:28;display:flex;align-items:center;gap:8px;transform:translateX(-110%);opacity:0;transition:transform 0.35s cubic-bezier(0.34,1.2,0.64,1),opacity 0.3s ease;pointer-events:none;">
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border-radius:30px;padding:7px 14px 7px 7px;min-width:75px;">
+      <img class="notif-avatar" id="notif-avatar" src="" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.3);">
+      <div style="min-width:0;">
+        <div id="notif-name" style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;">Carlos</div>
+        <div id="notif-sent" style="font-size:10px;color:rgba(255,255,255,0.65);white-space:nowrap;">sent Rose</div>
+      </div>
+      <img id="notif-gift-img" src="" alt="" style="width:30px;height:30px;object-fit:contain;flex-shrink:0;">
+    </div>
+    <div id="notif-combo" style="font-size:16px;font-weight:800;color:#fff;white-space:nowrap;transition:transform 0.15s cubic-bezier(0.34,1.56,0.64,1);">x1</div>
+  </div>
+
+  <!-- GIFTS PANEL -->
+  <div class="gifts-panel hidden">
+    <div class="gift-target-pill" id="gift-target-pill">
+      <img class="gift-target-avatar" id="gift-target-avatar" src="" alt="">
+      <div class="gift-target-name" id="gift-target-name"></div>
+      <div class="gift-target-switch" onclick="toggleTargetSwitcher()">⇄</div>
+      <div class="gift-target-switcher" id="gift-target-switcher"></div>
+    </div>
+    <div class="gifter-promo">
+      <img class="promo-avatar" id="gifter-avatar" src="https://api.dicebear.com/7.x/notionists/svg?seed=Carlos" alt="">
+      <div class="promo-text">Send a Gift to activate your gifter level and rewards</div>
+      <div class="promo-arrow">›</div>
+    </div>
+    <div class="gifts-tabs">
+      <div class="gifts-tab active" onclick="switchTab(this)">Gifts</div>
+      <div class="gifts-tab" onclick="switchTab(this)">Exclusive</div>
+      <div style="margin-left:auto;display:flex;align-items:center;padding-right:2px;"><span onclick="closeGiftsPanel()" style="cursor:pointer;font-size:16px;color:rgba(255,255,255,0.5);padding:8px 4px;">✕</span></div>
+    </div>
+    <div class="gift-grid" id="gift-grid"></div>
+    <div style="display:flex;justify-content:flex-end;align-items:center;padding:4px 14px 10px;gap:5px;">
+      <img style="width:18px;height:18px;object-fit:contain;" src="tiktokcoin.png" alt="coin">
+      <span style="font-size:12px;font-weight:700;color:#fff;" id="coin-display">0</span>
+      <span style="font-size:12px;color:rgba(255,255,255,0.4);">›</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- HOST GUEST PANEL -->
+<div class="host-guest-panel">
+  <div class="guest-slots-grid" id="host-guest-panel"></div>
+</div>
+
+<!-- SETTINGS PANEL (siempre visible) -->
+<div class="settings-panel">
+  <h2>⚙️ Mod Menu</h2>
+  <p>Personaliza tu live</p>
+  <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:-14px;margin-bottom:20px;">Cada regalo tiene su propio link de overlay más abajo, en su sección de video.</p>
+
+  <!-- INVITADOS / CO-HOST -->
+  <div class="mod-section">
+    <div class="mod-label">Invitados / Co-host</div>
+    <input class="mod-input" id="guest-add-user" type="text" placeholder="@usuario de TikTok (para la foto)">
+    <input class="mod-input" id="guest-add-displayname" type="text" placeholder="Nombre visible (ej: Pocoyo Robloxiano)">
+    <input class="mod-input" id="guest-add-coins" type="text" placeholder="Monedas (ej: 59900)">
+    <button class="mod-btn" style="width:100%;margin-bottom:10px;" onclick="addGuestFromPanel()">+ Agregar invitado</button>
+    <div id="guest-manage-list"></div>
+  </div>
+
+    <!-- PERSONA EN LIVE (streamer) -->
+    <div class="mod-section">
+      <div class="mod-label">Persona en Live (streamer)</div>
+      <input class="mod-input" id="mod-streamer-tt" type="text" placeholder="@usuario de TikTok" oninput="searchTikTok('streamer', this.value)">
+      <div class="search-spinner" id="spinner-streamer">Buscando...</div>
+      <div id="streamer-results"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+        <img class="avatar-preview" id="streamer-preview" src="https://api.dicebear.com/7.x/notionists/svg?seed=JessSea" alt="">
+        <div>
+          <div style="font-size:13px;color:#fff;font-weight:600;" id="streamer-display-name">JessSea</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);" id="streamer-display-user">@jesssea</div>
+        </div>
+      </div>
+      <div class="avatar-row">
+        <div class="upload-circle" onclick="document.getElementById('streamer-upload').click()">+</div>
+        <input type="file" id="streamer-upload" accept="image/*" onchange="uploadImg('streamer',this)">
+        <span style="font-size:12px;color:rgba(255,255,255,0.35);">O sube foto</span>
+      </div>
+      <input class="mod-input" id="mod-streamer-name" type="text" placeholder="Nombre a mostrar" value="JessSea">
+      <input class="mod-input" id="mod-streamer-likes" type="text" placeholder="Likes en número (ej: 67900)" value="67900">
+      <input class="mod-input" id="mod-viewers" type="text" placeholder="Viewers (ej: 197)" value="197">
+    </div>
+
+    <!-- MONEDAS -->
+    <div class="mod-section">
+      <div class="mod-label">Monedas TikTok</div>
+      <input class="mod-input" id="mod-coins" type="number" placeholder="Cantidad de monedas (ej: 80000000)" value="0">
+    </div>
+
+    <!-- COMBO -->
+    <div class="mod-section">
+      <div class="mod-label">Combo de regalos</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Activar combos al mandar regalos</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-combo-enabled" checked onchange="toggleComboSetting(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- MODO CO-HOST -->
+    <div class="mod-section">
+      <div class="mod-label">Modo co-host</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Borde celeste + tu nombre abajo a la izquierda</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-cohost-enabled" onchange="toggleCohostMode(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Solo mostrarlo cuando hables (detecta tu micrófono)</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-cohost-auto-enabled" onchange="toggleCohostAutoMode(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- OCULTAR INFO DEL LIVE -->
+    <div class="mod-section">
+      <div class="mod-label">Info del live</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Ocultar nombre, likes y compartir</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-hide-liveinfo" onchange="toggleHideLiveInfo(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- NOTIFICACIÓN DE DONACIÓN A INVITADOS -->
+    <div class="mod-section">
+      <div class="mod-label">Notificación de donación a invitados</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Mostrar el ícono del regalo en su cuadradito</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-guestnotif-enabled" checked onchange="toggleGuestNotifEnabled(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- CÁMARA DE PC -->
+    <div class="mod-section">
+      <div class="mod-label">Cámara de tu PC</div>
+      <button class="mod-btn" style="width:100%;margin-bottom:8px;" onclick="useWebcam()">🎥 Usar cámara de mi PC</button>
+      <select class="mod-input" id="mod-bgvideo-fit" onchange="setBgVideoFit(this.value)">
+        <option value="cover">Cover (llenar y recortar)</option>
+        <option value="contain">Contain (ajustar sin recortar)</option>
+        <option value="fill">Fill (estirar)</option>
+        <option value="scale-down">Scale-down</option>
+      </select>
+    </div>
+
+    <!-- VIDEO: INTERSTELLAR -->
+    <div class="mod-section">
+      <div class="mod-label">Video del regalo: Interstellar</div>
+      <button class="mod-btn" style="width:100%;margin-bottom:8px;" onclick="generateOverlayLinkForGift('Interstellar')">🔗 Generar link de overlay</button>
+      <input class="mod-input" id="overlay-link-input-interstellar" type="text" readonly placeholder="Todavía no generas el link">
+      <select class="mod-input" id="mod-fade-position-interstellar" onchange="setFadePosition('Interstellar', this.value)">
+        <option value="none">Ninguno</option>
+        <option value="top" selected>Arriba</option>
+        <option value="bottom">Abajo</option>
+        <option value="left">Izquierda</option>
+        <option value="right">Derecha</option>
+      </select>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Alcance del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-size-interstellar" min="0" max="100" value="45" style="flex:1;" oninput="setFadeSize('Interstellar', this.value, 'mod-fade-size-interstellar-val')">
+        <span id="mod-fade-size-interstellar-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">45%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Intensidad del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-strength-interstellar" min="0" max="100" value="100" style="flex:1;" oninput="setFadeStrength('Interstellar', this.value, 'mod-fade-strength-interstellar-val')">
+        <span id="mod-fade-strength-interstellar-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">100%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade in (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-in-interstellar" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeInSeconds('Interstellar', this.value, 'mod-fade-in-interstellar-val')">
+        <span id="mod-fade-in-interstellar-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade out (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-out-interstellar" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeOutSeconds('Interstellar', this.value, 'mod-fade-out-interstellar-val')">
+        <span id="mod-fade-out-interstellar-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Mostrar notificación del donador</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-donornotif-interstellar" checked onchange="setShowDonorNotif('Interstellar', this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <button class="mod-btn" style="width:100%;" onclick="playGiftVideo('Interstellar')">🔁 Probar animación</button>
+    </div>
+
+    <!-- VIDEO: ZEUS -->
+    <div class="mod-section">
+      <div class="mod-label">Video del regalo: Zeus</div>
+      <button class="mod-btn" style="width:100%;margin-bottom:8px;" onclick="generateOverlayLinkForGift('Zeus')">🔗 Generar link de overlay</button>
+      <input class="mod-input" id="overlay-link-input-zeus" type="text" readonly placeholder="Todavía no generas el link">
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Recorte del espacio vacío arriba</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-crop-top-zeus" min="0" max="70" value="0" style="flex:1;" oninput="setCropTop('Zeus', this.value, 'mod-crop-top-zeus-val')">
+        <span id="mod-crop-top-zeus-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Sensibilidad de detección de negro (ajústalo viendo el overlay en vivo)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-keythresh-zeus" min="10" max="150" value="56" style="flex:1;" oninput="setKeyThreshold('Zeus', this.value, 'mod-keythresh-zeus-val')">
+        <span id="mod-keythresh-zeus-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">56</span>
+      </div>
+      <select class="mod-input" id="mod-fade-position-zeus" onchange="setFadePosition('Zeus', this.value)">
+        <option value="none" selected>Sin fade</option>
+        <option value="top">Arriba</option>
+        <option value="bottom">Abajo</option>
+        <option value="left">Izquierda</option>
+        <option value="right">Derecha</option>
+      </select>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Alcance del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-size-zeus" min="0" max="100" value="0" style="flex:1;" oninput="setFadeSize('Zeus', this.value, 'mod-fade-size-zeus-val')">
+        <span id="mod-fade-size-zeus-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Intensidad del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-strength-zeus" min="0" max="100" value="100" style="flex:1;" oninput="setFadeStrength('Zeus', this.value, 'mod-fade-strength-zeus-val')">
+        <span id="mod-fade-strength-zeus-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">100%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade in (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-in-zeus" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeInSeconds('Zeus', this.value, 'mod-fade-in-zeus-val')">
+        <span id="mod-fade-in-zeus-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade out (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-out-zeus" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeOutSeconds('Zeus', this.value, 'mod-fade-out-zeus-val')">
+        <span id="mod-fade-out-zeus-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Mostrar notificación del donador</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-donornotif-zeus" checked onchange="setShowDonorNotif('Zeus', this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <button class="mod-btn" style="width:100%;" onclick="playGiftVideo('Zeus')">🔁 Probar animación</button>
+    </div>
+
+    <!-- VIDEO: UNICORN FANTASY -->
+    <div class="mod-section">
+      <div class="mod-label">Video del regalo: Unicorn Fantasy</div>
+      <button class="mod-btn" style="width:100%;margin-bottom:8px;" onclick="generateOverlayLinkForGift('Unicorn Fantasy')">🔗 Generar link de overlay</button>
+      <input class="mod-input" id="overlay-link-input-unicornfantasy" type="text" readonly placeholder="Todavía no generas el link">
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Recorte del espacio vacío arriba</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-crop-top-unicornfantasy" min="0" max="70" value="0" style="flex:1;" oninput="setCropTop('Unicorn Fantasy', this.value, 'mod-crop-top-unicornfantasy-val')">
+        <span id="mod-crop-top-unicornfantasy-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Sensibilidad de detección de negro (ajústalo viendo el overlay en vivo)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-keythresh-unicornfantasy" min="10" max="150" value="56" style="flex:1;" oninput="setKeyThreshold('Unicorn Fantasy', this.value, 'mod-keythresh-unicornfantasy-val')">
+        <span id="mod-keythresh-unicornfantasy-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">56</span>
+      </div>
+      <select class="mod-input" id="mod-fade-position-unicornfantasy" onchange="setFadePosition('Unicorn Fantasy', this.value)">
+        <option value="none" selected>Sin fade</option>
+        <option value="top">Arriba</option>
+        <option value="bottom">Abajo</option>
+        <option value="left">Izquierda</option>
+        <option value="right">Derecha</option>
+      </select>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Alcance del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-size-unicornfantasy" min="0" max="100" value="0" style="flex:1;" oninput="setFadeSize('Unicorn Fantasy', this.value, 'mod-fade-size-unicornfantasy-val')">
+        <span id="mod-fade-size-unicornfantasy-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Intensidad del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-strength-unicornfantasy" min="0" max="100" value="100" style="flex:1;" oninput="setFadeStrength('Unicorn Fantasy', this.value, 'mod-fade-strength-unicornfantasy-val')">
+        <span id="mod-fade-strength-unicornfantasy-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">100%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade in (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-in-unicornfantasy" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeInSeconds('Unicorn Fantasy', this.value, 'mod-fade-in-unicornfantasy-val')">
+        <span id="mod-fade-in-unicornfantasy-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade out (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-out-unicornfantasy" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeOutSeconds('Unicorn Fantasy', this.value, 'mod-fade-out-unicornfantasy-val')">
+        <span id="mod-fade-out-unicornfantasy-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Mostrar notificación del donador</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-donornotif-unicornfantasy" checked onchange="setShowDonorNotif('Unicorn Fantasy', this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <button class="mod-btn" style="width:100%;" onclick="playGiftVideo('Unicorn Fantasy')">🔁 Probar animación</button>
+    </div>
+
+    <!-- VIDEO: FIRE PHOENIX -->
+    <div class="mod-section">
+      <div class="mod-label">Video del regalo: Fire Phoenix</div>
+      <button class="mod-btn" style="width:100%;margin-bottom:8px;" onclick="generateOverlayLinkForGift('Fire Phoenix')">🔗 Generar link de overlay</button>
+      <input class="mod-input" id="overlay-link-input-firephoenix" type="text" readonly placeholder="Todavía no generas el link">
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Recorte del espacio vacío arriba</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-crop-top-firephoenix" min="0" max="70" value="0" style="flex:1;" oninput="setCropTop('Fire Phoenix', this.value, 'mod-crop-top-firephoenix-val')">
+        <span id="mod-crop-top-firephoenix-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Sensibilidad de detección de negro (ajústalo viendo el overlay en vivo)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-keythresh-firephoenix" min="10" max="150" value="56" style="flex:1;" oninput="setKeyThreshold('Fire Phoenix', this.value, 'mod-keythresh-firephoenix-val')">
+        <span id="mod-keythresh-firephoenix-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">56</span>
+      </div>
+      <select class="mod-input" id="mod-fade-position-firephoenix" onchange="setFadePosition('Fire Phoenix', this.value)">
+        <option value="none" selected>Sin fade</option>
+        <option value="top">Arriba</option>
+        <option value="bottom">Abajo</option>
+        <option value="left">Izquierda</option>
+        <option value="right">Derecha</option>
+      </select>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Alcance del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-size-firephoenix" min="0" max="100" value="0" style="flex:1;" oninput="setFadeSize('Fire Phoenix', this.value, 'mod-fade-size-firephoenix-val')">
+        <span id="mod-fade-size-firephoenix-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Intensidad del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-strength-firephoenix" min="0" max="100" value="100" style="flex:1;" oninput="setFadeStrength('Fire Phoenix', this.value, 'mod-fade-strength-firephoenix-val')">
+        <span id="mod-fade-strength-firephoenix-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">100%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade in (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-in-firephoenix" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeInSeconds('Fire Phoenix', this.value, 'mod-fade-in-firephoenix-val')">
+        <span id="mod-fade-in-firephoenix-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade out (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-out-firephoenix" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeOutSeconds('Fire Phoenix', this.value, 'mod-fade-out-firephoenix-val')">
+        <span id="mod-fade-out-firephoenix-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Mostrar notificación del donador</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-donornotif-firephoenix" checked onchange="setShowDonorNotif('Fire Phoenix', this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <button class="mod-btn" style="width:100%;" onclick="playGiftVideo('Fire Phoenix')">🔁 Probar animación</button>
+    </div>
+
+    <!-- VIDEO: LION -->
+    <div class="mod-section">
+      <div class="mod-label">Video del regalo: Lion</div>
+      <button class="mod-btn" style="width:100%;margin-bottom:8px;" onclick="generateOverlayLinkForGift('Lion')">🔗 Generar link de overlay</button>
+      <input class="mod-input" id="overlay-link-input-lion" type="text" readonly placeholder="Todavía no generas el link">
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Recorte del espacio vacío arriba</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-crop-top-lion" min="0" max="70" value="0" style="flex:1;" oninput="setCropTop('Lion', this.value, 'mod-crop-top-lion-val')">
+        <span id="mod-crop-top-lion-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Sensibilidad de detección de negro (ajústalo viendo el overlay en vivo)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-keythresh-lion" min="10" max="150" value="56" style="flex:1;" oninput="setKeyThreshold('Lion', this.value, 'mod-keythresh-lion-val')">
+        <span id="mod-keythresh-lion-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">56</span>
+      </div>
+      <select class="mod-input" id="mod-fade-position-lion" onchange="setFadePosition('Lion', this.value)">
+        <option value="none" selected>Sin fade</option>
+        <option value="top">Arriba</option>
+        <option value="bottom">Abajo</option>
+        <option value="left">Izquierda</option>
+        <option value="right">Derecha</option>
+      </select>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Alcance del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-size-lion" min="0" max="100" value="0" style="flex:1;" oninput="setFadeSize('Lion', this.value, 'mod-fade-size-lion-val')">
+        <span id="mod-fade-size-lion-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Intensidad del fade</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-strength-lion" min="0" max="100" value="100" style="flex:1;" oninput="setFadeStrength('Lion', this.value, 'mod-fade-strength-lion-val')">
+        <span id="mod-fade-strength-lion-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">100%</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade in (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <input type="range" id="mod-fade-in-lion" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeInSeconds('Lion', this.value, 'mod-fade-in-lion-val')">
+        <span id="mod-fade-in-lion-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:2px;">Fade out (segundos)</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="range" id="mod-fade-out-lion" min="0" max="3" step="0.1" value="0.6" style="flex:1;" oninput="setFadeOutSeconds('Lion', this.value, 'mod-fade-out-lion-val')">
+        <span id="mod-fade-out-lion-val" style="font-size:12px;color:#fff;min-width:34px;text-align:right;">0.6s</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Mostrar notificación del donador</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-donornotif-lion" checked onchange="setShowDonorNotif('Lion', this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Sonido</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-sound-lion" checked onchange="setMuted('Lion', !this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <button class="mod-btn" style="width:100%;" onclick="playGiftVideo('Lion')">🔁 Probar animación</button>
+    </div>
+
+    <!-- NOTIFICACIÓN EN TU PANEL (la de tu lado, no la del overlay) -->
+    <div class="mod-section">
+      <div class="mod-label">Notificación en tu panel</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);">Mostrar la notificación de "te mandaron X" en mi parte</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="mod-localnotif-enabled" checked onchange="toggleLocalNotif(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- PERSONA DEL GIFTER -->
+    <div class="mod-section">
+      <div class="mod-label">Gifter (panel inferior)</div>
+      <input class="mod-input" id="mod-gifter-tt" type="text" placeholder="@usuario de TikTok" oninput="searchTikTok('gifter', this.value)">
+      <div class="search-spinner" id="spinner-gifter">Buscando...</div>
+      <div id="gifter-results"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+        <img class="avatar-preview" id="gifter-preview" src="https://api.dicebear.com/7.x/notionists/svg?seed=Carlos" alt="">
+        <div>
+          <div style="font-size:13px;color:#fff;font-weight:600;" id="gifter-display-name">Carlos</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);" id="gifter-display-user">@carlos</div>
+        </div>
+      </div>
+      <div class="avatar-row">
+        <div class="upload-circle" onclick="document.getElementById('gifter-upload').click()">+</div>
+        <input type="file" id="gifter-upload" accept="image/*" onchange="uploadImg('gifter',this)">
+        <span style="font-size:12px;color:rgba(255,255,255,0.35);">O sube foto</span>
+      </div>
+    </div>
+
+    <!-- VIDEO DE FONDO -->
+    <div class="mod-section">
+      <div class="mod-label">Video de fondo del Live</div>
+      <div class="video-drop" onclick="document.getElementById('bg-upload').click()">
+        <span>🎬</span>
+        <p id="video-drop-label">Toca para subir video de fondo</p>
+      </div>
+      <input type="file" id="bg-upload" accept="video/*" onchange="uploadBg(this)">
+      <video class="video-preview" id="video-preview-mod" muted loop playsinline></video>
+    </div>
+
+    <div class="mod-actions">
+      <button class="btn-apply" style="width:100%;" onclick="applyMod()">✓ Aplicar cambios</button>
+    </div>
+</div>
+
+<!-- PANEL DE DONACIÓN RÁPIDA (al lado del mod panel, no se ve en el live) -->
+<div class="quick-donate-panel" id="quick-donate-panel">
+  <div class="qdp-header">
+    <img id="qdp-avatar" src="" alt="">
+    <div id="qdp-name">—</div>
+    <div class="qdp-close" onclick="closeQuickDonate()">✕</div>
+  </div>
+  <div class="qdp-list" id="qdp-list"></div>
+</div>
+
+</div>
+
+</div><!-- /control-ui -->
+
+<!-- Firebase (Realtime Database) para conectar el panel de control con el overlay -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyA23uS7Ae8wVe5zgadEIzN44hLeut4kmfc",
+    authDomain: "moneyscripts-overlay.firebaseapp.com",
+    databaseURL: "https://moneyscripts-overlay-default-rtdb.firebaseio.com",
+    projectId: "moneyscripts-overlay",
+    storageBucket: "moneyscripts-overlay.firebasestorage.app",
+    messagingSenderId: "1028614403663",
+    appId: "1:1028614403663:web:fa87cb6cccd03dc6c09c3a"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const isOverlayMode = urlParams.get('overlay') === '1';
+  const giftFromUrl = urlParams.get('gift');
+  const roomFromUrl = urlParams.get('room');
+
+  function slugForGift(giftName) {
+    return giftName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  }
+
+  function getRoomForGift(giftName) {
+    if (isOverlayMode && roomFromUrl) return roomFromUrl;
+    return localStorage.getItem('tiktokgifts-overlay-room-' + slugForGift(giftName));
+  }
+
+  function generateRoomForGift(giftName) {
+    const room = 'r' + Math.random().toString(36).slice(2, 10);
+    localStorage.setItem('tiktokgifts-overlay-room-' + slugForGift(giftName), room);
+    return room;
+  }
+
+  window.FirebaseSync = { db, getRoomForGift, generateRoomForGift, isOverlayMode, giftFromUrl };
+</script>
+<script src="gift-engine.js"></script>
+<script>
+  const gifts = [
+    { name: 'Rose', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp' },
+    { name: 'Maracas', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/00204efcf0573192ad5d872c7beeaf5b~tplv-obj.webp' },
+    { name: 'White Rose', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/a2d81f3847457be9083a9c76a59b08cb~tplv-obj.webp' },
+    { name: 'GG', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/3f02fa9594bd1495ff4e8aa5ae265eef~tplv-obj.webp' },
+    { name: 'TikTok', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/802a21ae29f9fae5abe3693de9f874bd~tplv-obj.webp' },
+    { name: 'Glow Stick', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/8e1a5d66370c5586545e358e37c10d25~tplv-obj.webp' },
+    { name: 'Guardian Wings', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/37e3125552d8c8f4f4e4ecb2d8a13f1d.png~tplv-obj.webp' },
+    { name: 'Pop', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/0b4f61e8ab637f11449300d03929ef87.png~tplv-obj.webp' },
+    { name: 'Oldies', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/77f6ab69b0b03bda98a0a3d2bfdeb46f.png~tplv-obj.webp' },
+    { name: 'Palm Leaf', price: 1, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/d26fdb5dbbee7f29ee6a39c04f06884e.png~tplv-obj.webp' },
+    { name: 'Spinning Soccer', price: 5, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/74a30ed3492d3e7d317efe7e10c3ba51.png~tplv-obj.webp' },
+    { name: 'Finger Heart', price: 5, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/a4c4dc437fd3a6632aba149769491f49.png~tplv-obj.webp' },
+    { name: 'Rosa', price: 10, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eb77ead5c3abb6da6034d3cf6cfeb438~tplv-obj.webp' },
+    { name: 'Heart', price: 10, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/98bea1b189fba75bf0ca766b4dc1976e.png~tplv-obj.webp' },
+    { name: 'Balloons', price: 10, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/c370d5c4ab6e5971b6b17de3eab6f6d4.png~tplv-obj.webp' },
+    { name: 'Perfume', price: 20, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/20b8f61246c7b6032777bb81bf4ee055~tplv-obj.webp' },
+    { name: 'Capybara', price: 30, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/6703facdac34caefbd0617a6321afe9b.png~tplv-obj.webp' },
+    { name: 'Doughnut', price: 30, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/4e7ad6bdf0a1d860c538f38026d4e812~tplv-obj.webp' },
+    { name: 'Paper Crane', price: 99, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/0f158a08f7886189cdabf496e8a07c21~tplv-obj.webp' },
+    { name: 'Game Controller', price: 100, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/20ec0eb50d82c2c445cb8391fd9fe6e2~tplv-obj.webp' },
+    { name: 'Mishka Bear', price: 100, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/d78ed6496fd57286b42ac033acbee299.png~tplv-obj.webp' },
+    { name: 'Hand Heart', price: 100, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/6cd022271dc4669d182cad856384870f~tplv-obj.webp' },
+    { name: 'Confetti', price: 100, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/cb4e11b3834e149f08e1cdcc93870b26~tplv-obj.webp' },
+    { name: 'Rose Hand', price: 159, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/805e6b8051d50ca6e6c9b74d5fc89045.png~tplv-obj.webp' },
+    { name: 'Night Star', price: 199, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/3d136834fe9964927d6b30499a68b741.png~tplv-obj.webp' },
+    { name: 'Coconut', price: 199, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eb0923dbab5251f4c2e0496b11b55c4f~tplv-obj.webp' },
+    { name: 'Panda Climb', price: 199, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/4673a50f307ef9735bb64b2f663b222f.png~tplv-obj.webp' },
+    { name: 'Gold Medal', price: 200, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/21549ba24f76a01d00373cb8e35660ae.png~tplv-obj.webp' },
+    { name: 'Rose Bear', price: 214, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/adf6e9bd6219788151edb9fa026a0481.png~tplv-obj.webp' },
+    { name: 'Corgi', price: 299, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/148eef0884fdb12058d1c6897d1e02b9~tplv-obj.webp' },
+    { name: 'Fruit Friends', price: 299, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/1153dd51308c556cb4fcc48c7d62209f.png~tplv-obj.webp' },
+    { name: 'Air Dancer', price: 300, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/97c975dcce2483027ececde2b6719761.png~tplv-obj.webp' },
+    { name: 'Forever Rosa', price: 399, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/863e7947bc793f694acbe970d70440a1.png~tplv-obj.webp' },
+    { name: 'Money Gun', price: 500, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/e0589e95a2b41970f0f30f6202f5fce6~tplv-obj.webp' },
+    { name: 'Goal', price: 500, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/65121229401460852dd3b4fa219516a3~tplv-obj.webp' },
+    { name: 'Hear it Out', price: 500, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/3b2a7f10c7db029726c1cf636106c969.png~tplv-obj.webp' },
+    { name: 'Swan', price: 699, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/97a26919dbf6afe262c97e22a83f4bf1~tplv-obj.webp' },
+    { name: 'Train', price: 899, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/4227ed71f2c494b554f9cbe2147d4899~tplv-obj.webp' },
+    { name: 'Puyo Shuffle!', price: 999, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/438a980bdb83101f60621e261fa06a29.png~tplv-obj.webp' },
+    { name: 'Galaxy', price: 1000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/79a02148079526539f7599150da9fd28.png~tplv-obj.webp' },
+    { name: 'Fireworks', price: 1088, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/9494c8a0bc5c03521ef65368e59cc2b8~tplv-obj.webp' },
+    { name: 'Wild Mic', price: 1500, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/61e7dc294d766a81abf7bce5591db60c.png~tplv-obj.webp' },
+    { name: 'Ignition Check', price: 1500, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/f260aeb10751f0ad9092e6c0c52c950e.png~tplv-obj.webp' },
+    { name: 'Under Control', price: 1500, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/af67b28480c552fd8e8c0ae088d07a1d.png~tplv-obj.webp' },
+    { name: 'Time Warp', price: 1500, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/4a9a2b3c9ae95efd305eee880ded9c54.png~tplv-obj.webp' },
+    { name: 'Viking Hammer', price: 1500, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/5b95101816bc9f61f65bd265641ef4d6.png~tplv-obj.webp' },
+    { name: 'Freestyle', price: 1800, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/f2e3e6c9dba93abe56ffbd2af60309d3.png~tplv-obj.webp' },
+    { name: 'Sages Coinbot', price: 2199, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/443c163954f4f7636909fb6980518745.png~tplv-obj.webp' },
+    { name: 'Wave Lights', price: 2200, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/5734e71ba84d872c08d8c68e94b5ce36.png~tplv-obj.webp' },
+    { name: 'Pink Dream', price: 2988, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/0de49ea9a79e65307c674596da517792.png~tplv-obj.webp' },
+    { name: 'Beach Day', price: 2999, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/8b87bbb88b80a5bf63abb6abcd4fa147.png~tplv-obj.webp' },
+    { name: 'Party Bus', price: 2999, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/719e1f271c29f2165bda5d787501c307.png~tplv-obj.webp' },
+    { name: 'Meteor Show', price: 3000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/71883933511237f7eaa1bf8cd12ed575~tplv-obj.webp' },
+    { name: 'Private Jet', price: 4888, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/airplane_icon_gold.png~tplv-obj.webp' },
+    { name: 'Flying Jets', price: 5000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/1d067d13988e8754ed6adbebd89b9ee8.png~tplv-obj.webp' },
+    { name: 'Unicorn Fantasy', price: 5000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/483c644e67e9bb1dd5970f2df00b7576~tplv-obj.webp' },
+    { name: 'Beach Hut', price: 5000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/b4050a485c3b8367e1a88f20342a6972~tplv-obj.webp' },
+    { name: 'Diamond Gun', price: 5000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/651e705c26b704d03bc9c06d841808f1.png~tplv-obj.webp' },
+    { name: 'Strong Finish', price: 6000, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/9ad035b088dfeaf298fdc9cd84d50000.png~tplv-obj.webp' },
+    { name: 'Future City', price: 6000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/963b7c25aa2cedc0de22358342645e87.png~tplv-obj.webp' },
+    { name: 'Crescent Sighting', price: 6999, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/4ad0bf2a9443bcc6862f786e49412800.png~tplv-obj.webp' },
+    { name: 'Sports Car', price: 7000, img: 'https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/e7ce188da898772f18aaffe49a7bd7db~tplv-obj.webp' },
+    { name: 'Leon and Lili', price: 9699, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/6958244f3eeb69ce754f735b5833a4aa.png~tplv-obj.webp' },
+    { name: 'Henry', price: 10000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/3cb4ecd1293e05cf5a0a3f42b27206dc.png~tplv-obj.webp' },
+    { name: 'Interstellar', price: 10000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/8520d47b59c202a4534c1560a355ae06~tplv-obj.webp' },
+    { name: 'Falcon', price: 10999, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/6026505eea9b9bce071dd699253abf6a~tplv-obj.webp' },
+    { name: 'Dolphin', price: 20000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/71d0cc716a6afd116a3714681022f58b.png~tplv-obj.webp' },
+    { name: 'Phoenix', price: 25999, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/ef248375c4167d70c1642731c732c982~tplv-obj.webp' },
+    { name: 'Griffin', price: 25999, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/711e54bfaf58888991c4ee6ff6953413~tplv-obj.webp' },
+    { name: 'Lion', price: 29000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/4fb89af2082a290b37d704e20f4fe729~tplv-obj.webp' },
+    { name: 'Zeus', price: 34000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/01793f9afe15f5037a9dc10435c37c85.png~tplv-obj.webp' },
+    { name: 'Leon and Lion', price: 34000, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/a291aedacf27d22c3fd2d83575d2bee9~tplv-obj.webp' },
+    { name: 'Thunder Falcon', price: 39999, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/26f3fbcda383e6093a19b8e7351a164c~tplv-obj.webp' },
+    { name: 'Fire Phoenix', price: 41999, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/bfb8425a7e8fa03f9fec05a973a4a506.png~tplv-obj.webp' },
+    { name: 'TikTok Universe', price: 44999, img: 'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/8f471afbcebfda3841a6cc515e381f58~tplv-obj.webp' },
+  ];
+
+  let state = {
+    streamerAvatar: 'https://api.dicebear.com/7.x/notionists/svg?seed=JessSea',
+    gifterAvatar: 'https://api.dicebear.com/7.x/notionists/svg?seed=Carlos',
+    bgVideoUrl: null
+  };
+
+  let searchTimers = {};
+
+  function renderGifts() {
+    const grid = document.getElementById('gift-grid');
+    grid.innerHTML = '';
+    gifts.forEach(g => {
+      const item = document.createElement('div');
+      item.className = 'gift-item' + (g.featured ? ' featured' : '');
+      item.onclick = (e) => {
+        if (e.target.classList.contains('send-btn') || e.target.classList.contains('view-btn')) return;
+        document.querySelectorAll('.gift-item').forEach(e => e.classList.remove('selected'));
+        item.classList.add('selected');
+      };
+      item.innerHTML = `
+        ${g.badge ? `<div class="gift-badge">${g.badge}</div>` : ''}
+        <div class="gift-img-wrap"><img class="gift-img" src="${g.img}" alt="${g.name}" onerror="this.style.opacity=0.3"></div>
+        <div class="gift-name">${g.name}</div>
+        <div class="gift-price"><img class="gift-price-coin" src="tiktokcoin.png" alt="coin">${g.price}</div>
+        <div class="send-row">
+          <button class="send-btn" onclick="sendGift('${g.name}', this)">Send</button>
+        </div>
+      `;
+      grid.appendChild(item);
+    });
+  }
+
+  // COMBO
+  let comboCount = 0;
+  let comboTimer = null;
+  let comboStart = null;
+  let comboEnabled = true;
+  let comboAnimFrame = null;
+  const CIRC = 295;
+
+
+  // ── GIFT VIDEO ENGINE ──
+  // El video de la animación NO se reproduce aquí en el panel (solo en el overlay).
+  // Esta función solo avisa por Firebase, al room específico de ese regalo.
+  function playGiftVideo(giftName) {
+    const room = window.FirebaseSync.getRoomForGift(giftName);
+    if (room) {
+      const gifterName = document.getElementById('gifter-display-name') ? document.getElementById('gifter-display-name').textContent : 'You';
+      window.FirebaseSync.db.ref('rooms/' + room).set({
+        gift: giftName,
+        gifterName: gifterName,
+        gifterAvatar: state.gifterAvatar || '',
+        ts: Date.now()
+      });
+    } else {
+      alert('Todavía no generaste el link de overlay para "' + giftName + '". Ve a esa sección en el Mod Menu y dale a "🔗 Generar link de overlay" primero.');
+    }
+  }
+
+  let currentGiftImg = '';
+  let currentGiftName = '';
+  let notifTimeout = null;
+
+  function sendGift(name, btn) {
+    const gift = gifts.find(g => g.name === name);
+    currentGiftName = name;
+    currentGiftImg = gift ? gift.img : '';
+
+    document.querySelector('.gifts-panel').classList.add('hidden');
+    document.getElementById('bottom-bar').classList.add('visible');
+    document.querySelectorAll('.gift-item').forEach(e => e.classList.remove('selected'));
+
+    if (comboEnabled) {
+      comboCount = Math.min((comboCount || 0) + 1, 99);
+      document.getElementById('combo-num').textContent = comboCount;
+      document.getElementById('combo-wrap').classList.add('visible');
+      const ring = document.getElementById('combo-ring');
+      ring.classList.add('pop');
+      setTimeout(() => ring.classList.remove('pop'), 150);
+      showNotif(name, currentGiftImg, comboCount);
+      startComboTimer();
+    } else {
+      comboCount = 1;
+      showNotif(name, currentGiftImg, 1);
+    }
+    if (currentGiftTarget) showGuestGiftNotif(currentGiftTarget, name, currentGiftImg);
+    playGiftVideo(name);
+  }
+
+  let localNotifEnabled = true;
+  function toggleLocalNotif(val) {
+    localNotifEnabled = val;
+    if (!val) {
+      const notif = document.getElementById('gift-notif');
+      notif.style.transform = 'translateX(-130%)';
+      notif.style.opacity = '0';
+    }
+  }
+
+  function showNotif(giftName, giftImg, combo) {
+    if (!localNotifEnabled) return;
+    const gifterName = document.getElementById('gifter-display-name') ? document.getElementById('gifter-display-name').textContent : 'You';
+    document.getElementById('notif-avatar').src = state.gifterAvatar || '';
+    document.getElementById('notif-name').textContent = gifterName;
+    document.getElementById('notif-sent').textContent = 'sent ' + giftName;
+    document.getElementById('notif-gift-img').src = giftImg;
+    document.getElementById('notif-combo').textContent = 'x' + combo;
+    const notif = document.getElementById('gift-notif');
+    notif.style.transform = 'translateX(0)';
+    notif.style.opacity = '1';
+    notif.style.pointerEvents = 'auto';
+    clearTimeout(notifTimeout);
+    // Only auto-hide if combo is NOT active
+    notifTimeout = setTimeout(() => {
+      if (!document.getElementById('combo-wrap').classList.contains('visible')) {
+        notif.style.transform = 'translateX(-130%)';
+      notif.style.opacity = '0';
+      }
+    }, 3500);
+  }
+
+  function popNotifCombo(combo) {
+    const el = document.getElementById('notif-combo');
+    el.textContent = 'x' + combo;
+    el.style.transform = 'scale(1.5)';
+    setTimeout(() => el.style.transform = '', 200);
+  }
+
+  function comboClick() {
+    if (!comboEnabled) return;
+    if (comboCount >= 99) return;
+    comboCount++;
+    const badge = document.getElementById('combo-num');
+    badge.textContent = comboCount;
+    badge.style.transform = 'scale(1.3)';
+    setTimeout(() => badge.style.transform = '', 150);
+    const ring = document.getElementById('combo-ring');
+    ring.classList.add('pop');
+    setTimeout(() => ring.classList.remove('pop'), 150);
+    popNotifCombo(comboCount);
+    if (currentGiftTarget) showGuestGiftNotif(currentGiftTarget, currentGiftName, currentGiftImg);
+    playGiftVideo(currentGiftName);
+    startComboTimer();
+  }
+
+  function startComboTimer() {
+    if (comboAnimFrame) cancelAnimationFrame(comboAnimFrame);
+    clearTimeout(comboTimer);
+    comboStart = performance.now();
+    animateRing();
+    comboTimer = setTimeout(hideCombo, 3000);
+  }
+
+  function animateRing() {
+    const elapsed = performance.now() - comboStart;
+    const progress = Math.min(elapsed / 3000, 1);
+    document.getElementById('combo-ring-fill').style.strokeDashoffset = CIRC * progress;
+    if (progress < 1) comboAnimFrame = requestAnimationFrame(animateRing);
+  }
+
+  function hideCombo() {
+    const wrap = document.getElementById('combo-wrap');
+    wrap.style.transition = 'opacity 0.3s';
+    wrap.style.opacity = '0';
+    setTimeout(() => {
+      wrap.classList.remove('visible');
+      wrap.style.opacity = '1';
+      wrap.style.transition = '';
+      comboCount = 0;
+      document.getElementById('combo-ring-fill').style.strokeDashoffset = 0;
+      // Hide notif smoothly after combo ends
+      setTimeout(() => {
+        const n = document.getElementById('gift-notif'); n.style.transform = 'translateX(-130%)'; n.style.opacity = '0';
+      }, 1000);
+      // Si el usuario ya reabrió el panel de regalos manualmente, no se lo cerramos de golpe
+      const panel = document.querySelector('.gifts-panel');
+      if (panel.classList.contains('hidden')) {
+        document.getElementById('bottom-bar').classList.add('visible');
+      } else {
+        document.getElementById('bottom-bar').classList.remove('visible');
+      }
+    }, 300);
+  }
+
+  function toggleComboSetting(val) {
+    comboEnabled = val;
+    if (!comboEnabled) {
+      clearTimeout(comboTimer);
+      if (comboAnimFrame) cancelAnimationFrame(comboAnimFrame);
+      document.getElementById('combo-wrap').classList.remove('visible');
+      comboCount = 0;
+    }
+  }
+
+  window.toggleComboSetting = toggleComboSetting;
+  window.comboClick = comboClick;
+  window.playGiftVideo = playGiftVideo;
+  window.showNotif = showNotif;
+  window.openGiftsPanel = openGiftsPanel;
+  window.openGiftsPanelDefault = openGiftsPanelDefault;
+  window.closeGiftsPanel = closeGiftsPanel;
+
+  function openGiftsPanel() {
+    document.querySelector('.gifts-panel').classList.remove('hidden');
+    document.getElementById('bottom-bar').classList.remove('visible');
+  }
+
+  function openGiftsPanelDefault() {
+    currentGiftTarget = null;
+    updateGiftTargetPill();
+    openGiftsPanel();
+  }
+
+  function closeGiftsPanel() {
+    document.querySelector('.gifts-panel').classList.add('hidden');
+    document.getElementById('bottom-bar').classList.add('visible');
+    document.getElementById('gift-target-switcher').style.display = 'none';
+  }
+
+  function switchTab(el) {
+    document.querySelectorAll('.gifts-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+
+  // ── TIKTOK AVATAR SEARCH via unavatar.io (no CORS) ──
+  async function searchTikTok(type, value) {
+    const clean = value.replace('@','').trim();
+    if (clean.length < 2) return;
+    clearTimeout(searchTimers[type]);
+    searchTimers[type] = setTimeout(async () => {
+      const spinner = document.getElementById(`spinner-${type}`);
+      const resultsEl = document.getElementById(`${type}-results`);
+      spinner.style.display = 'block';
+      resultsEl.innerHTML = '';
+
+      // Use unavatar.io — no CORS, pulls real TikTok profile pics
+      const avatarUrl = `https://unavatar.io/tiktok/${clean}`;
+
+      // Show as result
+      const previewId = `${type}-preview`;
+      document.getElementById(previewId).src = avatarUrl;
+      document.getElementById(`${type}-display-name`).textContent = clean;
+      document.getElementById(`${type}-display-user`).textContent = '@' + clean;
+
+      if (type === 'streamer') state.streamerAvatar = avatarUrl;
+      else state.gifterAvatar = avatarUrl;
+
+      spinner.style.display = 'none';
+
+      const card = document.createElement('div');
+      card.className = 'tt-result selected';
+      card.innerHTML = `
+        <img src="${avatarUrl}" onerror="this.src='https://api.dicebear.com/7.x/notionists/svg?seed=${clean}'">
+        <div class="tt-result-info">
+          <div class="tt-result-name">${clean}</div>
+          <div class="tt-result-user">@${clean}</div>
+        </div>
+        <div class="tt-result-check">✓</div>
+      `;
+      resultsEl.appendChild(card);
+    }, 600);
+  }
+
+  function uploadImg(type, input) {
+    const file = input.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    if (type === 'streamer') {
+      state.streamerAvatar = url;
+      document.getElementById('streamer-preview').src = url;
+    } else {
+      state.gifterAvatar = url;
+      document.getElementById('gifter-preview').src = url;
+    }
+  }
+
+  function uploadBg(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    state.bgVideoUrl = url;
+    const prev = document.getElementById('video-preview-mod');
+    prev.src = url;
+    prev.style.display = 'block';
+    prev.load();
+    prev.play().catch(()=>{});
+    document.getElementById('video-drop-label').textContent = file.name;
+  }
+
+  async function useWebcam() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      const vid = document.getElementById('bg-video');
+      vid.srcObject = stream;
+      vid.muted = true;
+      vid.play().catch(()=>{});
+    } catch (e) {
+      alert('No se pudo acceder a la cámara: ' + e.message);
+    }
+  }
+
+  function setBgVideoFit(val) {
+    document.getElementById('bg-video').style.objectFit = val;
+  }
+
+  // Wrappers al motor compartido (gift-engine.js) para el fade/crop manual
+  function setFadePosition(giftName, val) { window.GiftEngine.setFadePosition(giftName, val); }
+  function setFadeSize(giftName, val, labelId) { window.GiftEngine.setFadeSize(giftName, val, labelId); }
+  function setFadeStrength(giftName, val, labelId) { window.GiftEngine.setFadeStrength(giftName, val, labelId); }
+  function setCropTop(giftName, val, labelId) { window.GiftEngine.setCropTop(giftName, val, labelId); }
+  function setKeyThreshold(giftName, val, labelId) { window.GiftEngine.setKeyThreshold(giftName, val, labelId); }
+  function setShowDonorNotif(giftName, val) { window.GiftEngine.setShowDonorNotif(giftName, val); }
+  function setMuted(giftName, val) { window.GiftEngine.setMuted(giftName, val); }
+  function setFadeInSeconds(giftName, val, labelId) { window.GiftEngine.setFadeInSeconds(giftName, val, labelId); }
+  function setFadeOutSeconds(giftName, val, labelId) { window.GiftEngine.setFadeOutSeconds(giftName, val, labelId); }
+
+  function formatCoins(n) {
+    n = parseInt(n) || 0;
+    if (n >= 1000000000) return (n/1000000000).toFixed(1).replace('.0','') + 'B';
+    if (n >= 1000000) return (n/1000000).toFixed(1).replace('.0','') + 'M';
+    if (n >= 1000) return (n/1000).toFixed(1).replace('.0','') + 'K';
+    return n.toString();
+  }
+
+  function formatNum(n) {
+    n = parseFloat(n) || 0;
+    if (n >= 1000000000) return (n/1000000000).toFixed(1).replace('.0','') + 'B';
+    if (n >= 1000000) return (n/1000000).toFixed(1).replace('.0','') + 'M';
+    if (n >= 1000) return (n/1000).toFixed(1).replace('.0','') + 'K';
+    return n.toString();
+  }
+
+  function applyMod() {
+    // Streamer
+    document.getElementById('streamer-avatar').src = state.streamerAvatar;
+    document.getElementById('streamer-name').textContent = document.getElementById('mod-streamer-name').value || 'JessSea';
+    const cohostLabel = document.getElementById('cohost-name-label');
+    if (cohostLabel) cohostLabel.textContent = document.getElementById('streamer-name').textContent;
+    const rawLikes = document.getElementById('mod-streamer-likes').value || '67900';
+    document.getElementById('streamer-likes').innerHTML = '<img src="like.png" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;"> ' + formatNum(rawLikes);
+    const vc = document.getElementById('mod-viewers').value || '197';
+    document.getElementById('viewer-count').textContent = formatNum(vc);
+    const bbv = document.getElementById('bb-viewers'); if(bbv) bbv.textContent = vc;
+
+    // Gifter
+    document.getElementById('gifter-avatar').src = state.gifterAvatar;
+
+    // Coins
+    const coins = document.getElementById('mod-coins').value;
+    document.getElementById('coin-display').textContent = formatCoins(coins);
+
+    // BG video
+    if (state.bgVideoUrl) {
+      const vid = document.getElementById('bg-video');
+      vid.src = state.bgVideoUrl;
+      vid.load();
+      vid.play().catch(()=>{});
+    }
+  }
+
+  // ── GIFT TARGET (a quién le mandas el regalo: host o un invitado) ──
+  let currentGiftTarget = null; // null = host/streamer
+
+  function selectGiftTarget(i) {
+    const slot = guestSlots[i];
+    if (!slot || !slot.filled) return;
+    currentGiftTarget = { index: i, name: slot.name, avatar: slot.avatar, coins: slot.coins };
+    updateGiftTargetPill();
+    openGiftsPanel();
+  }
+
+  function updateGiftTargetPill() {
+    const pill = document.getElementById('gift-target-pill');
+    if (!pill) return;
+    if (!currentGiftTarget) { pill.style.display = 'none'; return; }
+    pill.style.display = 'flex';
+    document.getElementById('gift-target-avatar').src = currentGiftTarget.avatar;
+    document.getElementById('gift-target-name').textContent = currentGiftTarget.name;
+  }
+
+  function toggleTargetSwitcher() {
+    const sw = document.getElementById('gift-target-switcher');
+    if (!sw) return;
+    const isOpen = sw.style.display === 'block';
+    if (isOpen) { sw.style.display = 'none'; return; }
+    renderGiftTargetSwitcher();
+    sw.style.display = 'block';
+  }
+
+  function renderGiftTargetSwitcher() {
+    const sw = document.getElementById('gift-target-switcher');
+    if (!sw) return;
+    const streamerAvatar = document.getElementById('streamer-avatar').src;
+    const streamerName = document.getElementById('streamer-name').textContent;
+    let html = `
+      <div class="switcher-item" onclick="setGiftTargetHost()">
+        <img class="switcher-avatar" src="${streamerAvatar}" alt="">
+        <div class="switcher-name">${streamerName} (Host)</div>
+        <span class="switcher-mic">🔇</span>
+      </div>
+    `;
+    guestSlots.forEach((s, i) => {
+      if (!s.filled) return;
+      html += `
+        <div class="switcher-item" onclick="setGiftTargetGuest(${i})">
+          <img class="switcher-avatar" src="${s.avatar}" alt="">
+          <div class="switcher-name">${s.name}</div>
+          <span class="switcher-mic">🔇</span>
+        </div>
+      `;
+    });
+    sw.innerHTML = html;
+  }
+
+  function setGiftTargetHost() {
+    currentGiftTarget = null;
+    updateGiftTargetPill();
+    document.getElementById('gift-target-switcher').style.display = 'none';
+  }
+
+  function setGiftTargetGuest(i) {
+    selectGiftTarget(i);
+    document.getElementById('gift-target-switcher').style.display = 'none';
+  }
+
+  // ── NOTIFICACIÓN DE DONACIÓN A INVITADOS (ícono en su cuadradito + suma puntos) ──
+  let guestNotifEnabled = true;
+
+  function toggleGuestNotifEnabled(val) {
+    guestNotifEnabled = val;
+  }
+
+  function showGuestGiftNotif(target, giftName, giftImg) {
+    const slot = guestSlots[target.index];
+    if (!slot || !slot.filled) return;
+
+    // sumar los puntos del regalo a sus monedas
+    const gift = gifts.find(g => g.name === giftName);
+    const price = gift ? gift.price : 0;
+    slot.coins = (parseInt(slot.coins) || 0) + price;
+
+    // mostrar el ícono del regalo en la esquina de su cuadradito
+    if (guestNotifEnabled) {
+      slot.giftFlash = giftImg;
+      clearTimeout(slot.giftFlashTimeout);
+      slot.giftFlashTimeout = setTimeout(() => {
+        slot.giftFlash = null;
+        renderGuestSlots();
+      }, 1800);
+    }
+
+    renderGuestSlots();
+    renderGuestManageList();
+  }
+
+  // ── GUEST PANEL (siempre visible, solo muestra — se maneja todo desde settings) ──
+  const GUEST_SLOT_COUNT = 8;
+  let guestSlots = Array.from({length: GUEST_SLOT_COUNT}, () => ({ filled: false, avatar: '', name: '', coins: '', muted: false, cohost: false, giftFlash: null, giftFlashTimeout: null }));
+
+  let guestPickerOpenIndex = null;
+
+  function renderGuestSlots() {
+    const panel = document.getElementById('host-guest-panel');
+    if (!panel) return;
+    panel.innerHTML = '';
+    guestSlots.forEach((slot, i) => {
+      const el = document.createElement('div');
+      if (slot.filled) {
+        el.className = 'guest-slot filled' + (slot.cohost ? ' is-cohost' : '');
+        el.style.cursor = 'pointer';
+        el.onclick = () => openQuickDonate(i);
+        const badgeIcon = slot.cohost ? `<span class="cohost-dot-icon"></span>` : `<span class="coin-star-icon"><svg viewBox="0 0 24 24"><path fill="#fff" d="M12 1.5l2.9 6.6 7.1.7-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L1.9 8.8l7.1-.7z"/></svg></span>`;
+        const flashHtml = slot.giftFlash ? `<div class="guest-gift-flash"><img src="${slot.giftFlash}" alt=""></div>` : '';
+        el.innerHTML = `
+          <div class="guest-blur-bg" style="background-image:url('${slot.avatar}')"></div>
+          <img class="guest-avatar-circle" src="${slot.avatar}" alt="">
+          <div class="guest-coin-badge">${badgeIcon}${formatCoins(slot.coins)}</div>
+          ${flashHtml}
+          <div class="guest-name-row"><div class="guest-name">${slot.name}</div><div class="guest-name-plus">+</div></div>
+          <div class="guest-mic-btn"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V5a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2"/><path d="M19 12v0a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="1" y1="1" x2="23" y2="23"/></svg></div>
+        `;
+      } else {
+        el.className = 'guest-slot empty';
+        el.innerHTML = `<div class="guest-plus">+</div><div class="guest-request-label">Request</div>`;
+      }
+      panel.appendChild(el);
+    });
+  }
+
+  // Abre el panel de donación rápida AL LADO del mod panel (no se ve en el live,
+  // no se abre nada encima del cuadradito ni el panel grande de regalos).
+  function openQuickDonate(i) {
+    const slot = guestSlots[i];
+    if (!slot || !slot.filled) return;
+    guestPickerOpenIndex = i;
+    renderGuestSlots();
+
+    document.getElementById('qdp-avatar').src = slot.avatar;
+    document.getElementById('qdp-name').textContent = slot.name;
+    document.getElementById('qdp-list').innerHTML = gifts.map(g => `
+      <div class="qdp-item" onclick="quickDonateToGuest(${i}, '${g.name.replace(/'/g, "\\'")}')">
+        <img src="${g.img}" alt="">
+        <div class="qdp-item-name">${g.name}</div>
+        <div class="qdp-item-price">${formatCoins(g.price)}</div>
+      </div>
+    `).join('');
+    document.getElementById('quick-donate-panel').classList.add('open');
+  }
+
+  function closeQuickDonate() {
+    guestPickerOpenIndex = null;
+    document.getElementById('quick-donate-panel').classList.remove('open');
+    renderGuestSlots();
+  }
+
+  // Manda cualquier regalo directo a un invitado, SIN abrir el panel grande de regalos.
+  // Solo los regalos que tienen video configurado (giftVideos) disparan overlay real;
+  // el resto solo suma monedas + notificación local + el iconito en su cuadradito.
+  function quickDonateToGuest(i, giftName) {
+    const slot = guestSlots[i];
+    const gift = gifts.find(g => g.name === giftName);
+    closeQuickDonate();
+    if (!slot || !gift) return;
+
+    slot.coins = (parseInt(slot.coins) || 0) + gift.price;
+    slot.giftFlash = gift.img;
+    clearTimeout(slot.giftFlashTimeout);
+    slot.giftFlashTimeout = setTimeout(() => { slot.giftFlash = null; renderGuestSlots(); }, 1800);
+
+    renderGuestSlots();
+    renderGuestManageList();
+
+    if (window.GiftEngine.giftVideos[giftName]) {
+      const room = window.FirebaseSync.getRoomForGift(giftName);
+      if (room) {
+        const gifterName = document.getElementById('gifter-display-name') ? document.getElementById('gifter-display-name').textContent : 'You';
+        window.FirebaseSync.db.ref('rooms/' + room).set({
+          gift: giftName,
+          gifterName: gifterName,
+          gifterAvatar: state.gifterAvatar || '',
+          ts: Date.now()
+        });
+      }
+    }
+
+    showNotif(giftName, gift.img, 1);
+  }
+
+  function renderGuestManageList() {
+    const list = document.getElementById('guest-manage-list');
+    if (!list) return;
+    const filled = guestSlots.map((s, i) => ({...s, i})).filter(s => s.filled);
+    if (filled.length === 0) {
+      list.innerHTML = `<div class="guest-manage-empty">Todavía no hay invitados</div>`;
+      return;
+    }
+    list.innerHTML = filled.map(s => `
+      <div class="guest-manage-item">
+        <img class="guest-manage-avatar" src="${s.avatar}" alt="">
+        <div class="guest-manage-name">${s.name}</div>
+        <button class="guest-manage-btn remove" onclick="removeGuestSlot(${s.i})" title="Bajar invitado">✕</button>
+      </div>
+    `).join('');
+  }
+
+  function addGuestFromPanel() {
+    const userInput = document.getElementById('guest-add-user');
+    const nameInput = document.getElementById('guest-add-displayname');
+    const coinsInput = document.getElementById('guest-add-coins');
+    const clean = (userInput.value || '').replace('@','').trim();
+    if (clean.length < 2) return;
+    const emptyIndex = guestSlots.findIndex(s => !s.filled);
+    if (emptyIndex === -1) return; // panel lleno
+    const avatarUrl = `https://unavatar.io/tiktok/${clean}`;
+    const coins = coinsInput.value || '0';
+    const displayName = (nameInput.value || '').trim() || clean;
+    guestSlots[emptyIndex] = { filled: true, avatar: avatarUrl, handle: clean, name: displayName, coins, muted: false, cohost: false, giftFlash: null, giftFlashTimeout: null };
+    userInput.value = '';
+    nameInput.value = '';
+    coinsInput.value = '';
+    renderGuestSlots();
+    renderGuestManageList();
+    // Fallback avatar si no hay foto real
+    const testImg = new Image();
+    testImg.onerror = () => {
+      if (guestSlots[emptyIndex] && guestSlots[emptyIndex].handle === clean) {
+        guestSlots[emptyIndex].avatar = `https://api.dicebear.com/7.x/notionists/svg?seed=${clean}`;
+        renderGuestSlots();
+        renderGuestManageList();
+      }
+    };
+    testImg.src = avatarUrl;
+  }
+
+  function removeGuestSlot(i) {
+    guestSlots[i] = { filled: false, avatar: '', name: '', coins: '', muted: false, cohost: false, giftFlash: null, giftFlashTimeout: null };
+    renderGuestSlots();
+    renderGuestManageList();
+  }
+
+  function toggleGuestCohost(i) {
+    guestSlots[i].cohost = !guestSlots[i].cohost;
+    renderGuestSlots();
+    renderGuestManageList();
+  }
+
+  // ── CO-HOST MODE (tu propio tile del live) ──
+  function toggleCohostMode(val) {
+    const phone = document.querySelector('.phone');
+    const label = document.getElementById('cohost-name-label');
+    phone.classList.toggle('cohost-active', val);
+    label.classList.toggle('visible', val);
+    label.textContent = document.getElementById('streamer-name').textContent || 'Host';
+  }
+
+  // ── MODO CO-HOST AUTOMÁTICO: el borde solo aparece mientras hablas ──
+  let micStream = null;
+  let micAudioCtx = null;
+  let micAnalyser = null;
+  let micRafId = null;
+  let cohostAutoOn = false;
+
+  async function toggleCohostAutoMode(val) {
+    cohostAutoOn = val;
+    if (val) {
+      // El modo automático manda sobre el toggle manual mientras esté activo
+      document.getElementById('mod-cohost-enabled').checked = false;
+      document.getElementById('mod-cohost-enabled').disabled = true;
+      const phone = document.querySelector('.phone');
+      const label = document.getElementById('cohost-name-label');
+      phone.classList.remove('cohost-active');
+      label.classList.remove('visible');
+
+      try {
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        micAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const source = micAudioCtx.createMediaStreamSource(micStream);
+        micAnalyser = micAudioCtx.createAnalyser();
+        micAnalyser.fftSize = 512;
+        micAnalyser.smoothingTimeConstant = 0.6;
+        source.connect(micAnalyser);
+        const data = new Uint8Array(micAnalyser.frequencyBinCount);
+
+        let speaking = false;
+        const THRESHOLD_ON = 18;
+        const THRESHOLD_OFF = 12;
+
+        function checkVolume() {
+          if (!cohostAutoOn) return;
+          micAnalyser.getByteFrequencyData(data);
+          let sum = 0;
+          for (let i = 0; i < data.length; i++) sum += data[i];
+          const avg = sum / data.length;
+
+          if (!speaking && avg > THRESHOLD_ON) {
+            speaking = true;
+            phone.classList.add('cohost-active');
+            label.classList.add('visible');
+            label.textContent = document.getElementById('streamer-name').textContent || 'Host';
+          } else if (speaking && avg < THRESHOLD_OFF) {
+            speaking = false;
+            phone.classList.remove('cohost-active');
+            label.classList.remove('visible');
+          }
+          micRafId = requestAnimationFrame(checkVolume);
+        }
+        checkVolume();
+      } catch (e) {
+        alert('No se pudo acceder al micrófono: ' + e.message);
+        document.getElementById('mod-cohost-auto-enabled').checked = false;
+        document.getElementById('mod-cohost-enabled').disabled = false;
+        cohostAutoOn = false;
+      }
+    } else {
+      document.getElementById('mod-cohost-enabled').disabled = false;
+      if (micRafId) cancelAnimationFrame(micRafId);
+      if (micStream) micStream.getTracks().forEach(t => t.stop());
+      if (micAudioCtx) micAudioCtx.close();
+      micStream = null; micAudioCtx = null; micAnalyser = null; micRafId = null;
+      const phone = document.querySelector('.phone');
+      const label = document.getElementById('cohost-name-label');
+      phone.classList.remove('cohost-active');
+      label.classList.remove('visible');
+    }
+  }
+
+  // ── OCULTAR NOMBRE / LIKES / COMPARTIR ──
+  function toggleHideLiveInfo(val) {
+    const ids = ['streamer-info-block', 'viewer-badge-block', 'comment-input-block', 'action-btns-block', 'close-x-block'];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = val ? 'none' : '';
+    });
+  }
+
+  renderGifts();
+  renderGuestSlots();
+  renderGuestManageList();
+
+  // Cuando cambian fade/crop/notif desde settings, se guarda en Firebase
+  // (al room de ese regalo) para que el overlay lo aplique al toque.
+  window.GiftEngine.onConfigChange = function (giftName) {
+    const room = window.FirebaseSync.getRoomForGift(giftName);
+    if (!room) return;
+    const cfg = window.GiftEngine.exportConfig(giftName);
+    window.FirebaseSync.db.ref('roomConfig/' + room).set(cfg);
+  };
+
+  // ── MODO OVERLAY (para OBS / TikTok Live Studio) ──
+  // Cada overlay le pertenece a UN solo regalo (?overlay=1&gift=Interstellar&room=xxxx).
+  if (window.FirebaseSync.isOverlayMode) {
+    document.body.classList.add('overlay-mode');
+    const giftName = window.FirebaseSync.giftFromUrl;
+    const room = window.FirebaseSync.getRoomForGift(giftName || '');
+
+    if (giftName && room) {
+      // Config guardada (fade/crop/notif) -> se aplica siempre que cambie
+      window.FirebaseSync.db.ref('roomConfig/' + room).on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) window.GiftEngine.applyConfig(giftName, data);
+      });
+
+      // Evento de "manda el regalo" -> reproduce la animación
+      let firstSnapshot = true;
+      let lastTs = null;
+      window.FirebaseSync.db.ref('rooms/' + room).on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (!data) return;
+        if (firstSnapshot) { firstSnapshot = false; lastTs = data.ts; return; }
+        if (data.ts === lastTs) return;
+        lastTs = data.ts;
+
+        window.GiftEngine.playGiftVideo(data.gift);
+
+        const cfg = window.GiftEngine.giftVideos[data.gift];
+        if (cfg && cfg.showDonorNotif !== false) {
+          showOverlayDonorNotif(data.gifterName || 'Alguien', data.gift, data.gifterAvatar || '');
+        }
+      });
+    } else {
+      console.warn('Este link de overlay no tiene un regalo/room válido.');
+    }
+  }
+
+  function showOverlayDonorNotif(name, giftName, avatarUrl) {
+    const gift = gifts.find(g => g.name === giftName);
+    const notif = document.getElementById('overlay-donor-notif');
+    if (!notif) return;
+    document.getElementById('odn-name').textContent = name;
+    document.getElementById('odn-sent').textContent = 'sent ' + giftName;
+    document.getElementById('odn-gift-img').src = gift ? gift.img : '';
+    notif.classList.add('visible');
+    clearTimeout(showOverlayDonorNotif._t);
+    showOverlayDonorNotif._t = setTimeout(() => notif.classList.remove('visible'), 3500);
+  }
+
+  function generateOverlayLinkForGift(giftName) {
+    const room = window.FirebaseSync.generateRoomForGift(giftName);
+    // Guarda de una vez la configuración actual de ese regalo para que el overlay arranque igual
+    const cfg = window.GiftEngine.exportConfig(giftName);
+    window.FirebaseSync.db.ref('roomConfig/' + room).set(cfg);
+    renderOverlayLinkForGift(giftName);
+  }
+
+  function renderOverlayLinkForGift(giftName) {
+    const room = window.FirebaseSync.getRoomForGift(giftName);
+    const slug = giftName.toLowerCase().replace(/[^a-z0-9]+/g, '');
+    const input = document.getElementById('overlay-link-input-' + slug);
+    if (!input) return;
+    input.value = room
+      ? (window.location.origin + window.location.pathname + '?overlay=1&gift=' + encodeURIComponent(giftName) + '&room=' + room)
+      : '';
+    input.onclick = function () { input.select(); navigator.clipboard.writeText(input.value); };
+  }
+
+  ['Interstellar', 'Zeus', 'Unicorn Fantasy', 'Fire Phoenix', 'Lion'].forEach(renderOverlayLinkForGift);
+
+  window.generateOverlayLinkForGift = generateOverlayLinkForGift;
+  window.switchTab = switchTab;
+  window.selectGiftTarget = selectGiftTarget;
+  window.toggleTargetSwitcher = toggleTargetSwitcher;
+  window.setGiftTargetHost = setGiftTargetHost;
+  window.setGiftTargetGuest = setGiftTargetGuest;
+  window.toggleGuestNotifEnabled = toggleGuestNotifEnabled;
+  window.useWebcam = useWebcam;
+  window.setBgVideoFit = setBgVideoFit;
+  window.setFadePosition = setFadePosition;
+  window.setFadeSize = setFadeSize;
+  window.setFadeStrength = setFadeStrength;
+  window.setCropTop = setCropTop;
+  window.setKeyThreshold = setKeyThreshold;
+  window.setShowDonorNotif = setShowDonorNotif;
+  window.setMuted = setMuted;
+  window.toggleLocalNotif = toggleLocalNotif;
+  window.setFadeInSeconds = setFadeInSeconds;
+  window.setFadeOutSeconds = setFadeOutSeconds;
+  window.searchTikTok = searchTikTok;
+  window.uploadImg = uploadImg;
+  window.uploadBg = uploadBg;
+  window.applyMod = applyMod;
+  window.addGuestFromPanel = addGuestFromPanel;
+  window.removeGuestSlot = removeGuestSlot;
+  window.quickDonateToGuest = quickDonateToGuest;
+  window.openQuickDonate = openQuickDonate;
+  window.closeQuickDonate = closeQuickDonate;
+  window.toggleGuestCohost = toggleGuestCohost;
+  window.toggleCohostMode = toggleCohostMode;
+  window.toggleCohostAutoMode = toggleCohostAutoMode;
+  window.toggleHideLiveInfo = toggleHideLiveInfo;
+
+</script>
+</body>
+</html>
