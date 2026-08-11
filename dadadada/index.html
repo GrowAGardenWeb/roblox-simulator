@@ -817,13 +817,22 @@ function srFilterSearch() {
     var results = await srSearchUser(q);
     
      if (!results.length) {
-      const fallbackAvatars = [
-        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-87E8CB20ACC582F735A56029D36F5D18-Png/150/150/AvatarHeadshot/Webp/noFilter',
-        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-57652C3C1C3D2575DD0D03469FA66420-Png/150/150/AvatarHeadshot/Webp/noFilter',
-        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D04647665FE31A772001E00A40C9F3A4-Png/150/150/AvatarHeadshot/Webp/noFilter',
-        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D31A0EBF26066460D2ADD10F005E2F83-Png/150/150/AvatarHeadshot/Webp/noFilter',
-        'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-AC146F904B1D8B326F1DC63B16D0E105-Png/150/150/AvatarHeadshot/Webp/noFilter'
-      ];
+const fallbackAvatars = [
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-87E8CB20ACC582F735A56029D36F5D18-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-57652C3C1C3D2575DD0D03469FA66420-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D04647665FE31A772001E00A40C9F3A4-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D31A0EBF26066460D2ADD10F005E2F83-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-AC146F904B1D8B326F1DC63B16D0E105-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-FE39308D6449F85F24A2F77910D0CE8D-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D804A3CCDD4ACD64BA90EB3695E868A0-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-4D7DFD7F6C376A139D9A74B2A43D0291-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-4C5E4FA9E376D8821607BB1124135D7E-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-54B926BDCE69B1670B2AC219E6FEA4CF-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-B7B28FBAAD9D2CC1ADFB0986E1C014CD-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-A37E1F8C754FBF9B4E89BC8CDCEC5AFC-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-CB332831B66181C44977A92F3B9A13A2-Png/150/150/AvatarHeadshot/Webp/noFilter',
+  'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-DA5640FB9B7B2350E773158D836C873D-Png/150/150/AvatarHeadshot/Webp/noFilter'
+];
       const randomAvatar = fallbackAvatars[Math.floor(Math.random() * fallbackAvatars.length)];
       const searchedName = q;
 
