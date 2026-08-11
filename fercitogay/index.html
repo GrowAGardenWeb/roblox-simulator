@@ -6,7 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Roblox</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+*{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;-ms-overflow-style:none;}
+*::-webkit-scrollbar{display:none;width:0;height:0;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#fff;color:#1a1a1a;max-width:390px;margin:0 auto;min-height:100vh;padding-bottom:70px;}
 
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#fff;border-bottom:1px solid #ebebeb;position:sticky;top:0;z-index:100;}
@@ -23,7 +24,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-
 .username{font-size:16px;font-weight:700;}
 .rplus{width:20px;height:20px;object-fit:contain;}
 
-.friends-scroll{width:100%;overflow-x:scroll;overflow-y:visible;-webkit-overflow-scrolling:touch;padding:4px 14px 14px;}
+.friends-scroll{width:100%;overflow-x:scroll;overflow-y:visible;-webkit-overflow-scrolling:touch;padding:4px 14px 14px;scrollbar-width:none;-ms-overflow-style:none;}
+.friends-scroll::-webkit-scrollbar{display:none;}
 .friends-inner{display:inline-flex;flex-direction:row;gap:12px;align-items:flex-start;}
 .friend{text-align:center;width:78px;flex-shrink:0;}
 .friend-circle{width:72px;height:72px;border-radius:50%;overflow:hidden;margin:0 auto 5px;position:relative;}
@@ -51,6 +53,81 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
 input[type=number] { -moz-appearance:textfield; }
+
+/* ===== DARK MODE ===== */
+body.dark{background:#111 !important;color:#f2f2f2;}
+body.dark .topbar{background:#111;border-bottom-color:#2a2a2c;}
+body.dark .topbar-right svg{stroke:#f2f2f2;}
+body.dark .hamburger{color:#f2f2f2;}
+body.dark .bottom-nav{background:#111;border-top-color:#2a2a2c;}
+body.dark .nav-item.active{color:#fff;}
+body.dark .nav-item.active svg{fill:#fff;}
+body.dark .nav-pfp{border-color:#fff;}
+body.dark .addf-circle{background:#2c2c2e;}
+body.dark .friend-game{color:#9a9aa0;}
+body.dark .game-rating{color:#9a9aa0;}
+body.dark .online{border-color:#111;}
+body.dark [style*="background:#fff"]{background:#1c1c1e !important;}
+body.dark [style*="background: #fff"]{background:#1c1c1e !important;}
+body.dark [style*="background:#f2f2f7"]{background:#151517 !important;}
+body.dark [style*="background:#f4f4f4"]{background:#151517 !important;}
+body.dark [style*="background:#f0f0f0"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background:#e8e8ed"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background:#e0e0e0"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background:#e8e8e8"]{background:#2c2c2e !important;}
+body.dark [style*="background:#eee"]{background:#2c2c2e !important;}
+body.dark [style*="background:#ddd"]{background:#2c2c2e !important;}
+body.dark [style*="color:#1a1a1a"]{color:#f2f2f2 !important;}
+body.dark [style*="color:#555"]{color:#a5a5ab !important;}
+body.dark [style*="color:#666"]{color:#a5a5ab !important;}
+body.dark [style*="color:#888"]{color:#9a9aa0 !important;}
+body.dark svg[stroke="#1a1a1a"]{stroke:#f2f2f2;}
+body.dark svg [stroke="#1a1a1a"]{stroke:#f2f2f2;}
+body.dark svg[fill="#1a1a1a"]{fill:#f2f2f2;}
+body.dark svg [fill="#1a1a1a"]{fill:#f2f2f2;}
+body.dark svg [fill="#555"]{fill:#a5a5ab;}
+body.dark svg [fill="#666"]{fill:#a5a5ab;}
+body.dark [style*="linear-gradient(180deg,#d0d0d0"]{background:linear-gradient(180deg,#2a2a2c 0%,#1f1f21 60%,#1c1c1e 100%) !important;}
+body.dark [style*="border:1.5px solid #ddd"]{border-color:#3a3a3c !important;}
+body.dark [style*="border:2px solid #4060e8"]{background:#1c1c1e !important;}
+body.dark [style*="background:#e5e5ea"]{background:#2f2f31 !important;}
+body.dark input{color:#f2f2f2;}
+body.dark h1{color:#f2f2f2;}
+body.dark #robuxModal{color:#f2f2f2;}
+body.dark img[alt="Robux"],
+body.dark img[alt="Bell"],
+body.dark img[src^="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilA"],
+body.dark img[src^="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6"]{filter:brightness(0) invert(1);}
+/* fondos por ID (el JS re-serializa style y rompe los selectores [style*=]) */
+body.dark #robuxModal{background:#151517 !important;}
+body.dark #profileSheet #profilePanel{background:#1c1c1e !important;}
+body.dark #sendRobuxPanel{background:#151517 !important;}
+body.dark #modPanelInner{background:#1c1c1e !important;}
+body.dark #srDropdown{background:#1c1c1e !important;}
+body.dark #successPopup > div{background:#1c1c1e !important;}
+body.dark #appStoreModal [style*="background:#fff"],body.dark #appStoreModal [style*="background: #fff"]{background:#1c1c1e !important;}
+/* variantes con espacio (estilos tocados por JS) */
+body.dark [style*="background: #f4f4f4"]{background:#151517 !important;}
+body.dark [style*="background: #f2f2f7"]{background:#151517 !important;}
+body.dark [style*="background: #f0f0f0"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background: #e8e8ed"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background: #e0e0e0"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background: #e8e8e8"]{background:#2c2c2e !important;}
+body.dark [style*="background: #eee"]{background:#2c2c2e !important;}
+body.dark [style*="background: #ddd"]{background:#2c2c2e !important;}
+body.dark [style*="color: #1a1a1a"]{color:#f2f2f2 !important;}
+body.dark [style*="color: #555"]{color:#a5a5ab !important;}
+body.dark [style*="color: #666"]{color:#a5a5ab !important;}
+body.dark [style*="color: #888"]{color:#9a9aa0 !important;}
+body.dark .as-panel{background:#151517 !important;}
+body.dark [style*="background: rgb(242, 242, 247)"]{background:#151517 !important;}
+body.dark [style*="background: rgb(255, 255, 255)"]{background:#1c1c1e !important;}
+body.dark [style*="background:#ebebeb"],body.dark [style*="background: #ebebeb"]{background:#242426 !important;}
+body.dark [style*="background:#e5e5ea"],body.dark [style*="background: #e5e5ea"]{background:#3a3a3c !important;}
+
+
+
+
 </style>
 </head>
 <body>
@@ -86,11 +163,27 @@ input[type=number] { -moz-appearance:textfield; }
     </div>
     <div class="friend">
       <div class="friend-circle">
-        <img src="data:image/webp;base64,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" alt="Tony">
+        <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-33484AC7F062803457CDB6B265D4527A-Png-Background/150/150/AvatarHeadshot/Webp/noFilter" alt="DRAKONITE33">
         <span class="online"></span>
       </div>
-      <div class="friend-name">Tony Escuela</div>
+      <div class="friend-name">DRAKONITE33</div>
+      <div class="friend-game">Roba un Brainrot</div>
+    </div>
+    <div class="friend">
+      <div class="friend-circle">
+        <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F0E8E1826A30F37220303D7D52A0DB4A-Png-Background/150/150/AvatarHeadshot/Webp/noFilter" alt="FlowFlexx">
+        <span class="online"></span>
+      </div>
+      <div class="friend-name">FlowFlexx</div>
       <div class="friend-game">Grow a Garden 2</div>
+    </div>
+    <div class="friend">
+      <div class="friend-circle">
+        <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F66858B83F1A1BC7EAFC8277CA197F20-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="monooaxaco">
+        <span class="online"></span>
+      </div>
+      <div class="friend-name">monooaxaco</div>
+      <div class="friend-game">Escapa del Tecla...</div>
     </div>
     <div class="friend">
       <div class="friend-circle">
@@ -198,17 +291,33 @@ input[type=number] { -moz-appearance:textfield; }
   </div>
 </div>
 
+<div class="section" style="padding-top:20px;">
+  <div class="section-title">Recommended For You</div>
+  <div class="game-grid">
+    <div>
+      <div class="game-thumb" style="overflow:hidden"><img src="https://tr.rbxcdn.com/180DAY-cef311945d830e070e526fa290ebb70f/384/216/Image/Jpeg/noFilter" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      <div class="game-name">1.8 Arena</div>
+      <div class="game-rating" style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#555"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/></svg><span>78%</span></div>
+    </div>
+    <div>
+      <div class="game-thumb" style="overflow:hidden"><img src="https://tr.rbxcdn.com/180DAY-def097ab4ef9a4349c368ef1ea01c6d6/384/216/Image/Jpeg/noFilter" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      <div class="game-name">FortBlox</div>
+      <div class="game-rating" style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#555"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/></svg><span>88%</span></div>
+    </div>
+  </div>
+</div>
+
 <div class="bottom-nav">
   <div class="nav-item active">
     <svg viewBox="0 0 24 24" fill="#1a1a1a"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     Home
   </div>
-  <div class="nav-item">
+  <div class="nav-item" onclick="openModPanel()">
     <svg viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
     Charts
   </div>
   <div class="nav-item">
-    <div class="nav-pfp"><img src="data:image/webp;base64,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" alt="munfuja"></div>
+    <div class="nav-pfp"><img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-53B552FFAC50A478D30EEA5F217DA3DF-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="don_fercito"></div>
     Avatar
   </div>
   <div class="nav-item">
@@ -236,119 +345,114 @@ input[type=number] { -moz-appearance:textfield; }
   <div style="flex:1;overflow-y:auto;padding:0 16px 30px;">
     <h1 style="font-size:32px;font-weight:800;margin:10px 0 20px;">Buy Robux</h1>
 
-    <!-- Limited time -->
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-      <span style="font-size:16px;font-weight:700;">Limited-time avatar items</span>
-      <span style="background:#1a1a1a;color:#fff;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;">2 days left</span>
-    </div>
+<div style="font-size:18px;font-weight:800;margin-bottom:6px;">Robux packages</div>
+<div style="font-size:13px;color:#555;margin-bottom:16px;">By purchasing Robux, you agree to our <strong>Terms of Use</strong>, including the arbitration clause and revocation policy.</div>
+<div style="background:#fff;border-radius:16px;overflow:hidden;">
 
-    <!-- Arcane Fedora card -->
-    <div style="background:#e8e8ec;border-radius:16px;padding:14px;margin-bottom:14px;">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-        <img src="https://images.rbxcdn.com/5442dc833cd80a0c37333b0a5fcc3886bd7d956be2b184c23f2d84a222210f9b-arcane-fedora.gif" style="width:80px;height:80px;object-fit:contain;display:block">
-        <div>
-          <div style="font-size:16px;font-weight:700;">Arcane Fedora</div>
-          <div style="display:flex;align-items:center;gap:5px;margin-top:2px;">
-            <span style="font-size:13px;color:#555;">Roblox</span>
-            <img src="data:image/png;base64,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" style="width:16px;height:16px;object-fit:contain">
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;background:#c8c8ce;border-radius:0 0 14px 14px;padding:12px 14px;margin:-14px -14px -14px -14px;">
-        <div style="display:flex;align-items:center;gap:6px;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:20px;height:20px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">22,500</span>
-        </div>
-        <button onclick="showAppStore('22,500 Robux','$4,999.00',22500)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$4,999.00</button>
-      </div>
+  <!-- 22.500 (arriba) -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">22,500</span>
     </div>
-
-    <!-- Wings card -->
-    <div style="background:#e8e8ec;border-radius:16px;padding:14px;margin-bottom:24px;">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-        <img src="https://images.rbxcdn.com/79962e4120b5aeb2496b92b0c88053b0756d5e2cc51a77fbd947275b635158de-wings-of-the-sun-and-moon.gif" style="width:80px;height:80px;object-fit:contain;display:block">
-        <div>
-          <div style="font-size:16px;font-weight:700;">Wings of the Sun and Moon</div>
-          <div style="display:flex;align-items:center;gap:5px;margin-top:2px;">
-            <span style="font-size:13px;color:#555;">Roblox</span>
-            <img src="data:image/png;base64,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" style="width:16px;height:16px;object-fit:contain">
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;background:#c8c8ce;border-radius:0 0 14px 14px;padding:12px 14px;margin:-14px -14px -14px -14px;">
-        <div style="display:flex;align-items:center;gap:6px;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:20px;height:20px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">10,000</span>
-        </div>
-        <button onclick="showAppStore('10,000 Robux','$2,499.00',10000)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$2,499.00</button>
-      </div>
-    </div>
-
-    
-    <!-- Packages -->
-    <div style="font-size:18px;font-weight:800;margin-bottom:6px;">Robux packages</div>
-    <div style="font-size:13px;color:#555;margin-bottom:16px;">By purchasing Robux, you agree to our <strong>Terms of Use</strong>, including the arbitration clause and revocation policy.</div>
-    <div style="background:#fff;border-radius:16px;overflow:hidden;">
-<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">4,500</span>
-          
-        </div>
-        <button onclick="showAppStore('4,500 Robux','$1,299.00',4500)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$1,299.00</button>
-      </div><div style="height:1px;background:#e5e5ea;margin:0 16px;"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">3,150</span>
-          
-        </div>
-        <button onclick="showAppStore('3,150 Robux','$799.00',3150)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$799.00</button>
-      </div><div style="height:1px;background:#e5e5ea;margin:0 16px;"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">1,700</span>
-          
-        </div>
-        <button onclick="showAppStore('1,700 Robux','$499.00',1700)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$499.00</button>
-      </div><div style="height:1px;background:#e5e5ea;margin:0 16px;"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">1,200</span>
-          <span style="background:#f0f0f0;border:1px solid #ccc;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:500;color:#444;display:inline-flex;align-items:center;gap:4px;"><svg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='#888' stroke-width='2'><polygon points='12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26'/></svg> For you</span>
-        </div>
-        <button onclick="showAppStore('1,200 Robux','$299.00',1200)" style="background:#2563eb;color:#fff;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$299.00</button>
-      </div><div style="height:1px;background:#e5e5ea;margin:0 16px;"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">800</span>
-          
-        </div>
-        <button onclick="showAppStore('800 Robux','$249.00',800)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$249.00</button>
-      </div><div style="height:1px;background:#e5e5ea;margin:0 16px;"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">400</span>
-          
-        </div>
-        <button onclick="showAppStore('400 Robux','$129.00',400)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$129.00</button>
-      </div><div style="height:1px;background:#e5e5ea;margin:0 16px;"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">80</span>
-          
-        </div>
-        <button onclick="showAppStore('80 Robux','$25.00',80)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$25.00</button>
-      </div><div style="height:1px;background:#e5e5ea;margin:0 16px;"></div><div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
-          <span style="font-size:20px;font-weight:700;">40</span>
-          
-        </div>
-        <button onclick="showAppStore('40 Robux','$13.00',40)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$13.00</button>
-      </div>    </div>
+    <button onclick="showAppStore('22,500 Robux','$4,999.00',22500)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$4,999.00</button>
   </div>
+  <div style="height:1px;background:#e5e5ea;margin:0 16px;"></div>
+
+  <!-- 10.000 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">10,000</span>
+    </div>
+    <button onclick="showAppStore('10,000 Robux','$2,499.00',10000)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$2,499.00</button>
+  </div>
+  <div style="height:1px;background:#e5e5ea;margin:0 16px;"></div>
+
+  <!-- 4.500 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">4,500</span>
+    </div>
+    <button onclick="showAppStore('4,500 Robux','$1,299.00',4500)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$1,299.00</button>
+  </div>
+  <div style="height:1px;background:#e5e5ea;margin:0 16px;"></div>
+
+  <!-- 3.150 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">3,150</span>
+    </div>
+    <button onclick="showAppStore('3,150 Robux','$799.00',3150)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$799.00</button>
+  </div>
+  <div style="height:1px;background:#e5e5ea;margin:0 16px;"></div>
+
+  <!-- 1.700 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">1,700</span>
+    </div>
+    <button onclick="showAppStore('1,700 Robux','$499.00',1700)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$499.00</button>
+  </div>
+  <div style="height:1px;background:#e5e5ea;margin:0 16px;"></div>
+
+  <!-- 1.200 (con badge) -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">1,200</span>
+      <span style="background:#f0f0f0;border:1px solid #ccc;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:500;color:#444;display:inline-flex;align-items:center;gap:4px;"><svg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='#888' stroke-width='2'><polygon points='12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26'/></svg> For you</span>
+    </div>
+    <button onclick="showAppStore('1,200 Robux','$299.00',1200)" style="background:#2563eb;color:#fff;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$299.00</button>
+  </div>
+  <div style="height:1px;background:#e5e5ea;margin:0 16px;"></div>
+
+  <!-- 800 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">800</span>
+    </div>
+    <button onclick="showAppStore('800 Robux','$249.00',800)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$249.00</button>
+  </div>
+  <div style="height:1px;background:#e5e5ea;margin:0 16px;"></div>
+
+  <!-- 400 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">400</span>
+    </div>
+    <button onclick="showAppStore('400 Robux','$129.00',400)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$129.00</button>
+  </div>
+  <div style="height:1px;background:#e5e5ea;margin:0 16px;"></div>
+
+  <!-- 80 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">80</span>
+    </div>
+    <button onclick="showAppStore('80 Robux','$25.00',80)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$25.00</button>
+  </div>
+  <div style="height:1px;background:#e5e5ea;margin:0 16px;"></div>
+
+  <!-- 40 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAADAFBMVEU5Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz05Oz2zaNj6AAAA/3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAAB5ElEQVR4nO2WO0sDQRSFJ1EEQdCAVsFHEQgEGxtFEBFsgpGIRQo7BSsRJP/AwsouhZWkkxQKFiJY2lqlj1ZpRAxodNEiwR0zu/N+7UTxUeQ0yb3nfHtndjfZBcCoMgy0a04YBZnuu0RrUFC+C9SDiiqO6KKKIo24sCz+kgOJPQ6PImdp8k53uCW3qUJ7yGH6A41MytZRBN6m9qDOnrfgBWpdkNZxWKdIfUsj0l2jHjbFWn1qKqtBLzWL7MjX7B03xtTNtKGkR2r5Ylg5T1UZRSor6+S+U6+mQ5FuSGI1rN8oTIxtE4q0iUN5wjzx7IINRVoJc82gKPKDk1EoG4O/Kx0nuiTDvg1hWmaDONiN5cM/ATeBoB78f2HYg38TtujPYF8LO/4NxVD2TIbdRrdY1As/6kFnygXm5hTEB0YkmuFz9BmJ6bQVTeNUljLCcgAYN6L7JDIR1qPcWtfo/dTSodPEHcCN8JINEz9G/ISCltQ7Fdc5uQFAUUAbtO+pUe4sr0sb6+iUtOIs1g84ce8+cdILXwA8zYQdIKnCPNkK1NBsglOG4THZY9aB9tAdnRum12n73YQisV/WM+1tuKFIM9wl2kokD1l1EoUiXUGdPlxQcfH2K2DQ9ddRpG+gSHMB+WpJfAKfOZXcHABtUwAAAABJRU5ErkJggg==" style="width:22px;height:22px;object-fit:contain">
+      <span style="font-size:20px;font-weight:700;">40</span>
+    </div>
+    <button onclick="showAppStore('40 Robux','$13.00',40)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$13.00</button>
+  </div>
+
 </div>
 
+</div>
+</div>
 
 <div id="appStoreModal" onclick="closeAppStore()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);align-items:flex-end;justify-content:center;transition:background 0.3s,backdrop-filter 0.3s;">
   <div class="as-panel" style="background:#f2f2f7;border-radius:20px 20px 0 0;width:100%;padding:24px 20px 50px;box-shadow:0 -4px 30px rgba(0,0,0,0.15);transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);">
@@ -376,7 +480,7 @@ input[type=number] { -moz-appearance:textfield; }
         <div style="color:#888;font-size:13px;margin-top:2px;">Cobro único</div>
       </div>
       <div style="padding-top:14px;">
-        <div style="color:#888;font-size:14px;">Cuenta: donfercito99@icloud.com</div>
+        <div style="color:#888;font-size:14px;">Cuenta: jesuzflowflexx@icloud.com</div>
       </div>
     </div>
 
@@ -497,17 +601,17 @@ function startPurchase() {
         <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-53B552FFAC50A478D30EEA5F217DA3DF-Png/150/150/AvatarHeadshot/Webp/noFilter" style="width:64px;height:64px;border-radius:50%;object-fit:cover;background:#eee;">
         <div>
           <div style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:20px;font-weight:700;">DonFercito</span>
+            <span style="font-size:20px;font-weight:700;">don_fercito</span>
             <img src="data:image/webp;base64,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" style="width:20px;height:20px;object-fit:contain;">
           </div>
-          <div style="font-size:14px;color:#888;margin-top:2px;">@DonFercito</div>
+          <div style="font-size:14px;color:#888;margin-top:2px;">@don_fercito</div>
         </div>
       </div>
       <!-- Stats -->
       <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:nowrap;">
-        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;">581 Friends</div>
-        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;">2K Followers</div>
-        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;">0 Following</div>
+        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;"><span id="statFriends">581</span> Friends</div>
+        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;"><span id="statFollowers">2K</span> Followers</div>
+        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;"><span id="statFollowing">0</span> Following</div>
       </div>
 
       <!-- Buttons -->
@@ -555,7 +659,7 @@ function startPurchase() {
       </div>
 
       <!-- Friends list -->
-      <div style="font-size:14px;font-weight:700;margin-bottom:12px;">My friends (3)</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px;">My friends (<span id="statFriends2">581</span>)</div>
       <div id="srFriendList"></div>
     </div>
 
@@ -675,21 +779,27 @@ var PROXY = 'https://project--24520b14-0a3d-4b7d-921d-311b0ac26623.lovable.app/a
 // ============================================
 var SR_FRIENDS = [
   {
-    name: 'munfuja22',
-    user: 'munfuja22',
+    name: 'FlowFlexx',
+    user: 'FlowFlexx',
     id: 0,
-    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F10AB438444504197B54DAB3600A0374-Png/150/150/AvatarHeadshot/Webp/noFilter'
+    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F0E8E1826A30F37220303D7D52A0DB4A-Png-Background/150/150/AvatarHeadshot/Webp/noFilter'
   },
   {
-    name: 'tony_clix',
-    user: 'tony_clix',
+    name: 'munfuja',
+    user: 'munfuja',
     id: 1,
-    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-564024387102BD8D40417B552FEE2B05-Png/150/150/AvatarHeadshot/Webp/noFilter'
+    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D877AE421EFA468E8098B464716FC9F3-Png/150/150/AvatarHeadshot/Webp/noFilter'
+  },
+  {
+    name: 'DRAKONITE33',
+    user: 'DRAKONITE33',
+    id: 2,
+    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-33484AC7F062803457CDB6B265D4527A-Png-Background/150/150/AvatarHeadshot/Webp/noFilter'
   },
   {
     name: 'monooaxaco',
     user: 'monooaxaco',
-    id: 2,
+    id: 3,
     avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F66858B83F1A1BC7EAFC8277CA197F20-Png/150/150/AvatarHeadshot/Webp/noFilter'
   }
 ];
@@ -964,3 +1074,115 @@ function closeProfile() {
   setTimeout(function(){ sheet.style.display='none'; }, 350);
 }
 </script>
+
+<!-- ===== MOD PANEL (Charts) ===== -->
+<div id="modPanel" onclick="if(event.target===this)closeModPanel()" style="display:none;position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0);transition:background 0.3s;align-items:flex-end;justify-content:center;">
+  <div id="modPanelInner" style="background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:390px;padding:0 20px 30px;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);">
+    <div style="width:36px;height:4px;background:#ccc;border-radius:2px;margin:14px auto 16px;"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <span style="font-size:20px;font-weight:800;">Mod Panel</span>
+      <div onclick="closeModPanel()" style="cursor:pointer;font-size:20px;color:#888;">&#10005;</div>
+    </div>
+
+    <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;">Robux</label>
+    <input id="modRobux" type="number" inputmode="numeric" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;margin-bottom:14px;outline:none;box-sizing:border-box;color:#1a1a1a;background:#fff;">
+
+    <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;">Friends</label>
+    <input id="modFriends" type="text" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;margin-bottom:14px;outline:none;box-sizing:border-box;color:#1a1a1a;background:#fff;">
+
+    <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;">Followers</label>
+    <input id="modFollowers" type="text" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;margin-bottom:14px;outline:none;box-sizing:border-box;color:#1a1a1a;background:#fff;">
+
+    <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;">Following</label>
+    <input id="modFollowing" type="text" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;margin-bottom:20px;outline:none;box-sizing:border-box;color:#1a1a1a;background:#fff;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:4px 2px;">
+      <span style="font-size:15px;font-weight:700;">Modo oscuro</span>
+      <div id="darkToggle" onclick="toggleDark()" style="width:52px;height:30px;border-radius:15px;background:#d0d0d5;position:relative;cursor:pointer;transition:background 0.25s;flex-shrink:0;">
+        <div id="darkKnob" style="position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);transition:left 0.25s;"></div>
+      </div>
+    </div>
+
+    <button onclick="saveModPanel()" style="width:100%;background:#2563eb;color:#fff;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;">Guardar</button>
+  </div>
+</div>
+
+<script>
+var _statFriends = localStorage.getItem('statFriends') || '581';
+var _statFollowers = localStorage.getItem('statFollowers') || '2K';
+var _statFollowing = localStorage.getItem('statFollowing') || '0';
+
+function applyStats() {
+  var f = document.getElementById('statFriends');
+  var f2 = document.getElementById('statFriends2');
+  var fo = document.getElementById('statFollowers');
+  var fg = document.getElementById('statFollowing');
+  if (f) f.textContent = _statFriends;
+  if (f2) f2.textContent = _statFriends;
+  if (fo) fo.textContent = _statFollowers;
+  if (fg) fg.textContent = _statFollowing;
+}
+document.addEventListener('DOMContentLoaded', applyStats);
+
+function openModPanel() {
+  document.getElementById('modRobux').value = _robuxBal;
+  document.getElementById('modFriends').value = _statFriends;
+  document.getElementById('modFollowers').value = _statFollowers;
+  document.getElementById('modFollowing').value = _statFollowing;
+  var p = document.getElementById('modPanel');
+  p.style.display = 'flex';
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    p.style.background = 'rgba(0,0,0,0.4)';
+    document.getElementById('modPanelInner').style.transform = 'translateY(0)';
+  }); });
+}
+
+function closeModPanel() {
+  var p = document.getElementById('modPanel');
+  p.style.background = 'rgba(0,0,0,0)';
+  document.getElementById('modPanelInner').style.transform = 'translateY(100%)';
+  setTimeout(function(){ p.style.display = 'none'; }, 350);
+}
+
+function saveModPanel() {
+  var r = parseInt(document.getElementById('modRobux').value);
+  if (!isNaN(r) && r >= 0) {
+    _robuxBal = r;
+    localStorage.setItem('robuxBal', _robuxBal);
+    updateBalanceDisplay();
+    if (typeof srSyncBal === 'function') srSyncBal();
+  }
+  _statFriends = document.getElementById('modFriends').value || '0';
+  _statFollowers = document.getElementById('modFollowers').value || '0';
+  _statFollowing = document.getElementById('modFollowing').value || '0';
+  localStorage.setItem('statFriends', _statFriends);
+  localStorage.setItem('statFollowers', _statFollowers);
+  localStorage.setItem('statFollowing', _statFollowing);
+  applyStats();
+  closeModPanel();
+}
+
+// ===== DARK MODE =====
+var _darkMode = localStorage.getItem('darkMode') === '1';
+
+function applyDark() {
+  document.body.classList.toggle('dark', _darkMode);
+  var t = document.getElementById('darkToggle');
+  var k = document.getElementById('darkKnob');
+  if (t && k) {
+    t.style.background = _darkMode ? '#2563eb' : '#d0d0d5';
+    k.style.left = _darkMode ? '25px' : '3px';
+  }
+}
+
+function toggleDark() {
+  _darkMode = !_darkMode;
+  localStorage.setItem('darkMode', _darkMode ? '1' : '0');
+  applyDark();
+}
+
+document.addEventListener('DOMContentLoaded', applyDark);
+</script>
+
+</body>
+</html>
