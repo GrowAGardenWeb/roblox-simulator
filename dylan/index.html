@@ -6,7 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Roblox</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+*{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;-ms-overflow-style:none;}
+*::-webkit-scrollbar{display:none;width:0;height:0;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#fff;color:#1a1a1a;max-width:390px;margin:0 auto;min-height:100vh;padding-bottom:70px;}
 
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#fff;border-bottom:1px solid #ebebeb;position:sticky;top:0;z-index:100;}
@@ -23,7 +24,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-
 .username{font-size:16px;font-weight:700;}
 .rplus{width:20px;height:20px;object-fit:contain;}
 
-.friends-scroll{width:100%;overflow-x:scroll;overflow-y:visible;-webkit-overflow-scrolling:touch;padding:4px 14px 14px;}
+.friends-scroll{width:100%;overflow-x:scroll;overflow-y:visible;-webkit-overflow-scrolling:touch;padding:4px 14px 14px;scrollbar-width:none;-ms-overflow-style:none;}
+.friends-scroll::-webkit-scrollbar{display:none;}
 .friends-inner{display:inline-flex;flex-direction:row;gap:12px;align-items:flex-start;}
 .friend{text-align:center;width:78px;flex-shrink:0;}
 .friend-circle{width:72px;height:72px;border-radius:50%;overflow:hidden;margin:0 auto 5px;position:relative;}
@@ -51,6 +53,81 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
 input[type=number] { -moz-appearance:textfield; }
+
+/* ===== DARK MODE ===== */
+body.dark{background:#111 !important;color:#f2f2f2;}
+body.dark .topbar{background:#111;border-bottom-color:#2a2a2c;}
+body.dark .topbar-right svg{stroke:#f2f2f2;}
+body.dark .hamburger{color:#f2f2f2;}
+body.dark .bottom-nav{background:#111;border-top-color:#2a2a2c;}
+body.dark .nav-item.active{color:#fff;}
+body.dark .nav-item.active svg{fill:#fff;}
+body.dark .nav-pfp{border-color:#fff;}
+body.dark .addf-circle{background:#2c2c2e;}
+body.dark .friend-game{color:#9a9aa0;}
+body.dark .game-rating{color:#9a9aa0;}
+body.dark .online{border-color:#111;}
+body.dark [style*="background:#fff"]{background:#1c1c1e !important;}
+body.dark [style*="background: #fff"]{background:#1c1c1e !important;}
+body.dark [style*="background:#f2f2f7"]{background:#151517 !important;}
+body.dark [style*="background:#f4f4f4"]{background:#151517 !important;}
+body.dark [style*="background:#f0f0f0"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background:#e8e8ed"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background:#e0e0e0"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background:#e8e8e8"]{background:#2c2c2e !important;}
+body.dark [style*="background:#eee"]{background:#2c2c2e !important;}
+body.dark [style*="background:#ddd"]{background:#2c2c2e !important;}
+body.dark [style*="color:#1a1a1a"]{color:#f2f2f2 !important;}
+body.dark [style*="color:#555"]{color:#a5a5ab !important;}
+body.dark [style*="color:#666"]{color:#a5a5ab !important;}
+body.dark [style*="color:#888"]{color:#9a9aa0 !important;}
+body.dark svg[stroke="#1a1a1a"]{stroke:#f2f2f2;}
+body.dark svg [stroke="#1a1a1a"]{stroke:#f2f2f2;}
+body.dark svg[fill="#1a1a1a"]{fill:#f2f2f2;}
+body.dark svg [fill="#1a1a1a"]{fill:#f2f2f2;}
+body.dark svg [fill="#555"]{fill:#a5a5ab;}
+body.dark svg [fill="#666"]{fill:#a5a5ab;}
+body.dark [style*="linear-gradient(180deg,#d0d0d0"]{background:linear-gradient(180deg,#2a2a2c 0%,#1f1f21 60%,#1c1c1e 100%) !important;}
+body.dark [style*="border:1.5px solid #ddd"]{border-color:#3a3a3c !important;}
+body.dark [style*="border:2px solid #4060e8"]{background:#1c1c1e !important;}
+body.dark [style*="background:#e5e5ea"]{background:#2f2f31 !important;}
+body.dark input{color:#f2f2f2;}
+body.dark h1{color:#f2f2f2;}
+body.dark #robuxModal{color:#f2f2f2;}
+body.dark img[alt="Robux"],
+body.dark img[alt="Bell"],
+body.dark img[src^="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilA"],
+body.dark img[src^="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6"]{filter:brightness(0) invert(1);}
+/* fondos por ID (el JS re-serializa style y rompe los selectores [style*=]) */
+body.dark #robuxModal{background:#151517 !important;}
+body.dark #profileSheet #profilePanel{background:#1c1c1e !important;}
+body.dark #sendRobuxPanel{background:#151517 !important;}
+body.dark #modPanelInner{background:#1c1c1e !important;}
+body.dark #srDropdown{background:#1c1c1e !important;}
+body.dark #successPopup > div{background:#1c1c1e !important;}
+body.dark #appStoreModal [style*="background:#fff"],body.dark #appStoreModal [style*="background: #fff"]{background:#1c1c1e !important;}
+/* variantes con espacio (estilos tocados por JS) */
+body.dark [style*="background: #f4f4f4"]{background:#151517 !important;}
+body.dark [style*="background: #f2f2f7"]{background:#151517 !important;}
+body.dark [style*="background: #f0f0f0"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background: #e8e8ed"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background: #e0e0e0"]{background:#2c2c2e !important;color:#f2f2f2 !important;}
+body.dark [style*="background: #e8e8e8"]{background:#2c2c2e !important;}
+body.dark [style*="background: #eee"]{background:#2c2c2e !important;}
+body.dark [style*="background: #ddd"]{background:#2c2c2e !important;}
+body.dark [style*="color: #1a1a1a"]{color:#f2f2f2 !important;}
+body.dark [style*="color: #555"]{color:#a5a5ab !important;}
+body.dark [style*="color: #666"]{color:#a5a5ab !important;}
+body.dark [style*="color: #888"]{color:#9a9aa0 !important;}
+body.dark .as-panel{background:#151517 !important;}
+body.dark [style*="background: rgb(242, 242, 247)"]{background:#151517 !important;}
+body.dark [style*="background: rgb(255, 255, 255)"]{background:#1c1c1e !important;}
+body.dark [style*="background:#ebebeb"],body.dark [style*="background: #ebebeb"]{background:#242426 !important;}
+body.dark [style*="background:#e5e5ea"],body.dark [style*="background: #e5e5ea"]{background:#3a3a3c !important;}
+
+
+
+
 </style>
 </head>
 <body>
@@ -86,11 +163,27 @@ input[type=number] { -moz-appearance:textfield; }
     </div>
     <div class="friend">
       <div class="friend-circle">
-        <img src="data:image/webp;base64,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" alt="Tony">
+        <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-33484AC7F062803457CDB6B265D4527A-Png-Background/150/150/AvatarHeadshot/Webp/noFilter" alt="DRAKONITE33">
         <span class="online"></span>
       </div>
-      <div class="friend-name">Tony Escuela</div>
-      <div class="friend-game">Grow a Garden 2</div>
+      <div class="friend-name">DRAKONITE33</div>
+      <div class="friend-game">Roba un Brainrot</div>
+    </div>
+    <div class="friend">
+      <div class="friend-circle">
+        <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-C0574BFC598006666313373A5F6AD1C3-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="don_fercito">
+        <span class="online"></span>
+      </div>
+      <div class="friend-name">don_fercito</div>
+      <div class="friend-game">Murderers vs Survi...</div>
+    </div>
+    <div class="friend">
+      <div class="friend-circle">
+        <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F66858B83F1A1BC7EAFC8277CA197F20-Png/150/150/AvatarHeadshot/Webp/noFilter" alt="monooaxaco">
+        <span class="online"></span>
+      </div>
+      <div class="friend-name">monooaxaco</div>
+      <div class="friend-game">Escapa del Tecla...</div>
     </div>
     <div class="friend">
       <div class="friend-circle">
@@ -198,17 +291,33 @@ input[type=number] { -moz-appearance:textfield; }
   </div>
 </div>
 
+<div class="section" style="padding-top:20px;">
+  <div class="section-title">Recommended For You</div>
+  <div class="game-grid">
+    <div>
+      <div class="game-thumb" style="overflow:hidden"><img src="https://tr.rbxcdn.com/180DAY-cef311945d830e070e526fa290ebb70f/384/216/Image/Jpeg/noFilter" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      <div class="game-name">1.8 Arena</div>
+      <div class="game-rating" style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#555"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/></svg><span>78%</span></div>
+    </div>
+    <div>
+      <div class="game-thumb" style="overflow:hidden"><img src="https://tr.rbxcdn.com/180DAY-def097ab4ef9a4349c368ef1ea01c6d6/384/216/Image/Jpeg/noFilter" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      <div class="game-name">FortBlox</div>
+      <div class="game-rating" style="display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#555"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/></svg><span>88%</span></div>
+    </div>
+  </div>
+</div>
+
 <div class="bottom-nav">
   <div class="nav-item active">
     <svg viewBox="0 0 24 24" fill="#1a1a1a"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     Home
   </div>
-  <div class="nav-item">
+  <div class="nav-item" onclick="openModPanel()">
     <svg viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
     Charts
   </div>
   <div class="nav-item">
-    <div class="nav-pfp"><img src="data:image/webp;base64,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" alt="munfuja"></div>
+    <div class="nav-pfp"><img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F0E8E1826A30F37220303D7D52A0DB4A-Png-Background/150/150/AvatarHeadshot/Webp/noFilter" alt="FlowFlexx"></div>
     Avatar
   </div>
   <div class="nav-item">
@@ -340,6 +449,9 @@ input[type=number] { -moz-appearance:textfield; }
     <button onclick="showAppStore('40 Robux','$13.00',40)" style="background:#e8e8ed;color:#1a1a1a;border:none;border-radius:10px;padding:14px 22px;font-size:15px;font-weight:600;cursor:pointer;min-width:120px;">$13.00</button>
   </div>
 
+</div>
+
+</div>
 </div>
 
 <div id="appStoreModal" onclick="closeAppStore()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);align-items:flex-end;justify-content:center;transition:background 0.3s,backdrop-filter 0.3s;">
@@ -497,9 +609,9 @@ function startPurchase() {
       </div>
       <!-- Stats -->
       <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:nowrap;">
-        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;">654 Friends</div>
-        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;">14.8K Followers</div>
-        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;">0 Following</div>
+        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;"><span id="statFriends">654</span> Friends</div>
+        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;"><span id="statFollowers">14.8K</span> Followers</div>
+        <div style="background:#f0f0f0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;"><span id="statFollowing">0</span> Following</div>
       </div>
 
       <!-- Buttons -->
@@ -547,7 +659,7 @@ function startPurchase() {
       </div>
 
       <!-- Friends list -->
-      <div style="font-size:14px;font-weight:700;margin-bottom:12px;">My friends (654)</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px;">My friends (<span id="statFriends2">654</span>)</div>
       <div id="srFriendList"></div>
     </div>
 
@@ -667,21 +779,27 @@ var PROXY = 'https://project--24520b14-0a3d-4b7d-921d-311b0ac26623.lovable.app/a
 // ============================================
 var SR_FRIENDS = [
   {
-    name: 'munfuja22',
-    user: 'munfuja22',
+    name: 'don_fercito',
+    user: 'don_fercito',
     id: 0,
-    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F10AB438444504197B54DAB3600A0374-Png/150/150/AvatarHeadshot/Webp/noFilter'
+    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-C0574BFC598006666313373A5F6AD1C3-Png/150/150/AvatarHeadshot/Webp/noFilter'
   },
   {
-    name: 'tony_clix',
-    user: 'tony_clix',
+    name: 'munfuja',
+    user: 'munfuja',
     id: 1,
-    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-564024387102BD8D40417B552FEE2B05-Png/150/150/AvatarHeadshot/Webp/noFilter'
+    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-D877AE421EFA468E8098B464716FC9F3-Png/150/150/AvatarHeadshot/Webp/noFilter'
+  },
+  {
+    name: 'DRAKONITE33',
+    user: 'DRAKONITE33',
+    id: 2,
+    avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-33484AC7F062803457CDB6B265D4527A-Png-Background/150/150/AvatarHeadshot/Webp/noFilter'
   },
   {
     name: 'monooaxaco',
     user: 'monooaxaco',
-    id: 2,
+    id: 3,
     avatar: 'https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F66858B83F1A1BC7EAFC8277CA197F20-Png/150/150/AvatarHeadshot/Webp/noFilter'
   }
 ];
@@ -956,3 +1074,115 @@ function closeProfile() {
   setTimeout(function(){ sheet.style.display='none'; }, 350);
 }
 </script>
+
+<!-- ===== MOD PANEL (Charts) ===== -->
+<div id="modPanel" onclick="if(event.target===this)closeModPanel()" style="display:none;position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0);transition:background 0.3s;align-items:flex-end;justify-content:center;">
+  <div id="modPanelInner" style="background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:390px;padding:0 20px 30px;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);">
+    <div style="width:36px;height:4px;background:#ccc;border-radius:2px;margin:14px auto 16px;"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <span style="font-size:20px;font-weight:800;">Mod Panel</span>
+      <div onclick="closeModPanel()" style="cursor:pointer;font-size:20px;color:#888;">&#10005;</div>
+    </div>
+
+    <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;">Robux</label>
+    <input id="modRobux" type="number" inputmode="numeric" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;margin-bottom:14px;outline:none;box-sizing:border-box;color:#1a1a1a;background:#fff;">
+
+    <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;">Friends</label>
+    <input id="modFriends" type="text" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;margin-bottom:14px;outline:none;box-sizing:border-box;color:#1a1a1a;background:#fff;">
+
+    <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;">Followers</label>
+    <input id="modFollowers" type="text" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;margin-bottom:14px;outline:none;box-sizing:border-box;color:#1a1a1a;background:#fff;">
+
+    <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:6px;">Following</label>
+    <input id="modFollowing" type="text" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;margin-bottom:20px;outline:none;box-sizing:border-box;color:#1a1a1a;background:#fff;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:4px 2px;">
+      <span style="font-size:15px;font-weight:700;">Modo oscuro</span>
+      <div id="darkToggle" onclick="toggleDark()" style="width:52px;height:30px;border-radius:15px;background:#d0d0d5;position:relative;cursor:pointer;transition:background 0.25s;flex-shrink:0;">
+        <div id="darkKnob" style="position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);transition:left 0.25s;"></div>
+      </div>
+    </div>
+
+    <button onclick="saveModPanel()" style="width:100%;background:#2563eb;color:#fff;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;">Guardar</button>
+  </div>
+</div>
+
+<script>
+var _statFriends = localStorage.getItem('statFriends') || '654';
+var _statFollowers = localStorage.getItem('statFollowers') || '14.8K';
+var _statFollowing = localStorage.getItem('statFollowing') || '0';
+
+function applyStats() {
+  var f = document.getElementById('statFriends');
+  var f2 = document.getElementById('statFriends2');
+  var fo = document.getElementById('statFollowers');
+  var fg = document.getElementById('statFollowing');
+  if (f) f.textContent = _statFriends;
+  if (f2) f2.textContent = _statFriends;
+  if (fo) fo.textContent = _statFollowers;
+  if (fg) fg.textContent = _statFollowing;
+}
+document.addEventListener('DOMContentLoaded', applyStats);
+
+function openModPanel() {
+  document.getElementById('modRobux').value = _robuxBal;
+  document.getElementById('modFriends').value = _statFriends;
+  document.getElementById('modFollowers').value = _statFollowers;
+  document.getElementById('modFollowing').value = _statFollowing;
+  var p = document.getElementById('modPanel');
+  p.style.display = 'flex';
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    p.style.background = 'rgba(0,0,0,0.4)';
+    document.getElementById('modPanelInner').style.transform = 'translateY(0)';
+  }); });
+}
+
+function closeModPanel() {
+  var p = document.getElementById('modPanel');
+  p.style.background = 'rgba(0,0,0,0)';
+  document.getElementById('modPanelInner').style.transform = 'translateY(100%)';
+  setTimeout(function(){ p.style.display = 'none'; }, 350);
+}
+
+function saveModPanel() {
+  var r = parseInt(document.getElementById('modRobux').value);
+  if (!isNaN(r) && r >= 0) {
+    _robuxBal = r;
+    localStorage.setItem('robuxBal', _robuxBal);
+    updateBalanceDisplay();
+    if (typeof srSyncBal === 'function') srSyncBal();
+  }
+  _statFriends = document.getElementById('modFriends').value || '0';
+  _statFollowers = document.getElementById('modFollowers').value || '0';
+  _statFollowing = document.getElementById('modFollowing').value || '0';
+  localStorage.setItem('statFriends', _statFriends);
+  localStorage.setItem('statFollowers', _statFollowers);
+  localStorage.setItem('statFollowing', _statFollowing);
+  applyStats();
+  closeModPanel();
+}
+
+// ===== DARK MODE =====
+var _darkMode = localStorage.getItem('darkMode') === '1';
+
+function applyDark() {
+  document.body.classList.toggle('dark', _darkMode);
+  var t = document.getElementById('darkToggle');
+  var k = document.getElementById('darkKnob');
+  if (t && k) {
+    t.style.background = _darkMode ? '#2563eb' : '#d0d0d5';
+    k.style.left = _darkMode ? '25px' : '3px';
+  }
+}
+
+function toggleDark() {
+  _darkMode = !_darkMode;
+  localStorage.setItem('darkMode', _darkMode ? '1' : '0');
+  applyDark();
+}
+
+document.addEventListener('DOMContentLoaded', applyDark);
+</script>
+
+</body>
+</html>
