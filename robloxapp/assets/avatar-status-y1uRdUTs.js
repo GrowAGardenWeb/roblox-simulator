@@ -1,1 +1,0 @@
-import{t as e}from"./index-Bp1bDo_Z.js";export{e as avatarStatus};
