@@ -1,0 +1,3110 @@
+[
+ {
+  "name": "3d-cube-arrow-left",
+  "filled": true
+ },
+ {
+  "name": "5-g-signal-fair",
+  "filled": true
+ },
+ {
+  "name": "5-g-signal-good",
+  "filled": true
+ },
+ {
+  "name": "5-g-signal-poor",
+  "filled": true
+ },
+ {
+  "name": "amazon",
+  "filled": true
+ },
+ {
+  "name": "android",
+  "filled": true
+ },
+ {
+  "name": "apple",
+  "filled": true
+ },
+ {
+  "name": "arm-left",
+  "filled": true
+ },
+ {
+  "name": "arm-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-curl-to-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-curl-to-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-curved-path-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-curved-path-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-down-to-line",
+  "filled": true
+ },
+ {
+  "name": "arrow-large-down",
+  "filled": true
+ },
+ {
+  "name": "arrow-large-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-large-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-large-up",
+  "filled": true
+ },
+ {
+  "name": "arrow-medium-down",
+  "filled": true
+ },
+ {
+  "name": "arrow-medium-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-medium-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-medium-up",
+  "filled": true
+ },
+ {
+  "name": "arrow-progress-up",
+  "filled": true
+ },
+ {
+  "name": "arrow-right-from-portrait-rectangle",
+  "filled": true
+ },
+ {
+  "name": "arrow-right-to-portrait-rectangle",
+  "filled": true
+ },
+ {
+  "name": "arrow-rotate-down-dashed",
+  "filled": true
+ },
+ {
+  "name": "arrow-rotate-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-rotate-right-dashed",
+  "filled": true
+ },
+ {
+  "name": "arrow-small-down",
+  "filled": true
+ },
+ {
+  "name": "arrow-small-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-small-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-small-up",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-clockwise",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-clockwise-10",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-clockwise-15",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-clockwise-30",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-clockwise-dashed",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-clockwise-dashed-dot",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-counter-clockwise",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-counter-clockwise-10",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-counter-clockwise-15",
+  "filled": true
+ },
+ {
+  "name": "arrow-spin-counter-clockwise-30",
+  "filled": true
+ },
+ {
+  "name": "arrow-thick-to-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-thick-to-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-up-from-landscape-rectangle",
+  "filled": true
+ },
+ {
+  "name": "arrow-up-from-line",
+  "filled": true
+ },
+ {
+  "name": "arrow-up-right-from-square",
+  "filled": true
+ },
+ {
+  "name": "arrow-wide-down",
+  "filled": true
+ },
+ {
+  "name": "arrow-wide-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-wide-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-wide-short-down",
+  "filled": true
+ },
+ {
+  "name": "arrow-wide-short-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-wide-short-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-wide-short-up",
+  "filled": true
+ },
+ {
+  "name": "arrow-wide-up",
+  "filled": true
+ },
+ {
+  "name": "arrow-winding-down-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-winding-down-right",
+  "filled": true
+ },
+ {
+  "name": "arrow-winding-up-left",
+  "filled": true
+ },
+ {
+  "name": "arrow-winding-up-right",
+  "filled": true
+ },
+ {
+  "name": "arrows-small-directional",
+  "filled": true
+ },
+ {
+  "name": "at-sign",
+  "filled": true
+ },
+ {
+  "name": "audio-wave-dotted-line",
+  "filled": true
+ },
+ {
+  "name": "backpack",
+  "filled": true
+ },
+ {
+  "name": "beans",
+  "filled": true
+ },
+ {
+  "name": "beard",
+  "filled": true
+ },
+ {
+  "name": "bell",
+  "filled": true
+ },
+ {
+  "name": "bell-clock",
+  "filled": true
+ },
+ {
+  "name": "bell-plus",
+  "filled": true
+ },
+ {
+  "name": "bell-slash",
+  "filled": true
+ },
+ {
+  "name": "belt",
+  "filled": true
+ },
+ {
+  "name": "binoculars",
+  "filled": true
+ },
+ {
+  "name": "book-closed",
+  "filled": true
+ },
+ {
+  "name": "book-open",
+  "filled": true
+ },
+ {
+  "name": "bookmark",
+  "filled": true
+ },
+ {
+  "name": "bow-tie",
+  "filled": true
+ },
+ {
+  "name": "bug",
+  "filled": true
+ },
+ {
+  "name": "building-bank",
+  "filled": true
+ },
+ {
+  "name": "building-store",
+  "filled": true
+ },
+ {
+  "name": "bullet-flying",
+  "filled": true
+ },
+ {
+  "name": "butterfly-wings",
+  "filled": true
+ },
+ {
+  "name": "calendar",
+  "filled": true
+ },
+ {
+  "name": "calendar-plus",
+  "filled": true
+ },
+ {
+  "name": "calendar-star",
+  "filled": true
+ },
+ {
+  "name": "camera-slash",
+  "filled": true
+ },
+ {
+  "name": "camera-small",
+  "filled": true
+ },
+ {
+  "name": "caret-small-down",
+  "filled": true
+ },
+ {
+  "name": "caret-small-left",
+  "filled": true
+ },
+ {
+  "name": "caret-small-right",
+  "filled": true
+ },
+ {
+  "name": "caret-small-up",
+  "filled": true
+ },
+ {
+  "name": "chain-link",
+  "filled": true
+ },
+ {
+  "name": "chain-link-slash",
+  "filled": true
+ },
+ {
+  "name": "chart-four-vertical-bars",
+  "filled": true
+ },
+ {
+  "name": "chart-line",
+  "filled": true
+ },
+ {
+  "name": "chart-pie",
+  "filled": true
+ },
+ {
+  "name": "chart-scatter-plot",
+  "filled": true
+ },
+ {
+  "name": "chart-three-horizontal-bars",
+  "filled": true
+ },
+ {
+  "name": "chart-three-vertical-bars",
+  "filled": true
+ },
+ {
+  "name": "check",
+  "filled": true
+ },
+ {
+  "name": "check-large",
+  "filled": true
+ },
+ {
+  "name": "check-small",
+  "filled": true
+ },
+ {
+  "name": "checkmark-square",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-condense-down",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-condensed-up",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-down",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-down-to-line",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-left",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-left-to-line",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-right",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-right-to-line",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-up",
+  "filled": true
+ },
+ {
+  "name": "chevron-large-up-to-line",
+  "filled": true
+ },
+ {
+  "name": "chevron-small-down",
+  "filled": true
+ },
+ {
+  "name": "chevron-small-down-to-line",
+  "filled": true
+ },
+ {
+  "name": "chevron-small-left",
+  "filled": true
+ },
+ {
+  "name": "chevron-small-left-to-line",
+  "filled": true
+ },
+ {
+  "name": "chevron-small-right",
+  "filled": true
+ },
+ {
+  "name": "chevron-small-right-to-line",
+  "filled": true
+ },
+ {
+  "name": "chevron-small-up",
+  "filled": true
+ },
+ {
+  "name": "chevron-small-up-to-line",
+  "filled": true
+ },
+ {
+  "name": "circle",
+  "filled": true
+ },
+ {
+  "name": "circle-arrow-down",
+  "filled": true
+ },
+ {
+  "name": "circle-arrow-left",
+  "filled": true
+ },
+ {
+  "name": "circle-arrow-right",
+  "filled": true
+ },
+ {
+  "name": "circle-arrow-up",
+  "filled": true
+ },
+ {
+  "name": "circle-british-pound-sign",
+  "filled": true
+ },
+ {
+  "name": "circle-check",
+  "filled": true
+ },
+ {
+  "name": "circle-dashed",
+  "filled": true
+ },
+ {
+  "name": "circle-dashed-person",
+  "filled": true
+ },
+ {
+  "name": "circle-dollar-sign",
+  "filled": true
+ },
+ {
+  "name": "circle-face-emoji",
+  "filled": true
+ },
+ {
+  "name": "circle-i",
+  "filled": true
+ },
+ {
+  "name": "circle-line-target-cursor",
+  "filled": true
+ },
+ {
+  "name": "circle-minus",
+  "filled": true
+ },
+ {
+  "name": "circle-outline",
+  "filled": true
+ },
+ {
+  "name": "circle-person",
+  "filled": true
+ },
+ {
+  "name": "circle-person-three-horizontal-bars-wrapping-right",
+  "filled": true
+ },
+ {
+  "name": "circle-play",
+  "filled": true
+ },
+ {
+  "name": "circle-plus",
+  "filled": true
+ },
+ {
+  "name": "circle-question",
+  "filled": true
+ },
+ {
+  "name": "circle-slash",
+  "filled": true
+ },
+ {
+  "name": "circle-star",
+  "filled": true
+ },
+ {
+  "name": "circle-three-dots-horizontal",
+  "filled": true
+ },
+ {
+  "name": "circle-three-dots-vertical",
+  "filled": true
+ },
+ {
+  "name": "circle-x",
+  "filled": true
+ },
+ {
+  "name": "clipboard-pencil",
+  "filled": true
+ },
+ {
+  "name": "clock",
+  "filled": true
+ },
+ {
+  "name": "clock-dashed",
+  "filled": true
+ },
+ {
+  "name": "clock-spin-reverse",
+  "filled": true
+ },
+ {
+  "name": "clock-spin-reverse-dashed",
+  "filled": true
+ },
+ {
+  "name": "clothes-hanger",
+  "filled": true
+ },
+ {
+  "name": "cloud",
+  "filled": true
+ },
+ {
+  "name": "cloud-arrow-down",
+  "filled": true
+ },
+ {
+  "name": "code",
+  "filled": true
+ },
+ {
+  "name": "compact-makeup-brush",
+  "filled": true
+ },
+ {
+  "name": "compass",
+  "filled": true
+ },
+ {
+  "name": "computer-monitor",
+  "filled": true
+ },
+ {
+  "name": "constrain-x-center",
+  "filled": true
+ },
+ {
+  "name": "constrain-x-pin-both",
+  "filled": true
+ },
+ {
+  "name": "constrain-x-pin-end",
+  "filled": true
+ },
+ {
+  "name": "constrain-x-pin-scale",
+  "filled": true
+ },
+ {
+  "name": "constrain-x-pin-start",
+  "filled": true
+ },
+ {
+  "name": "constrain-x-scale-both",
+  "filled": true
+ },
+ {
+  "name": "constrain-x-scale-end",
+  "filled": true
+ },
+ {
+  "name": "constrain-x-scale-pin",
+  "filled": true
+ },
+ {
+  "name": "constrain-x-scale-start",
+  "filled": true
+ },
+ {
+  "name": "constrain-y-center",
+  "filled": true
+ },
+ {
+  "name": "constrain-y-pin-both",
+  "filled": true
+ },
+ {
+  "name": "constrain-y-pin-end",
+  "filled": true
+ },
+ {
+  "name": "constrain-y-pin-scale",
+  "filled": true
+ },
+ {
+  "name": "constrain-y-pin-start",
+  "filled": true
+ },
+ {
+  "name": "constrain-y-scale-both",
+  "filled": true
+ },
+ {
+  "name": "constrain-y-scale-end",
+  "filled": true
+ },
+ {
+  "name": "constrain-y-scale-pin",
+  "filled": true
+ },
+ {
+  "name": "constrain-y-scale-start",
+  "filled": true
+ },
+ {
+  "name": "controller",
+  "filled": true
+ },
+ {
+  "name": "controller-with-cog",
+  "filled": true
+ },
+ {
+  "name": "corner-radius-bottom-left",
+  "filled": true
+ },
+ {
+  "name": "corner-radius-bottom-right",
+  "filled": true
+ },
+ {
+  "name": "corner-radius-top-left",
+  "filled": true
+ },
+ {
+  "name": "corner-radius-top-right",
+  "filled": true
+ },
+ {
+  "name": "credit-card",
+  "filled": true
+ },
+ {
+  "name": "crop",
+  "filled": true
+ },
+ {
+  "name": "cross-frame",
+  "filled": true
+ },
+ {
+  "name": "crosshairs",
+  "filled": true
+ },
+ {
+  "name": "crosshairs-slash",
+  "filled": true
+ },
+ {
+  "name": "crown",
+  "filled": true
+ },
+ {
+  "name": "cube",
+  "filled": true
+ },
+ {
+  "name": "cube-question-mark",
+  "filled": true
+ },
+ {
+  "name": "cube-vertexes",
+  "filled": true
+ },
+ {
+  "name": "cursor",
+  "filled": true
+ },
+ {
+  "name": "cursor-stars",
+  "filled": true
+ },
+ {
+  "name": "curved-rectangle-megaphone",
+  "filled": true
+ },
+ {
+  "name": "design-assist",
+  "filled": true
+ },
+ {
+  "name": "diagonal-line-pattern",
+  "filled": true
+ },
+ {
+  "name": "diagonal-line-pattern-sticker",
+  "filled": true
+ },
+ {
+  "name": "diamond",
+  "filled": true
+ },
+ {
+  "name": "diamond-simplified",
+  "filled": true
+ },
+ {
+  "name": "discord",
+  "filled": true
+ },
+ {
+  "name": "disguise-nose-glasses",
+  "filled": true
+ },
+ {
+  "name": "document-circle-slash",
+  "filled": true
+ },
+ {
+  "name": "document-list-heart",
+  "filled": true
+ },
+ {
+  "name": "document-question-mark",
+  "filled": true
+ },
+ {
+  "name": "door-open-arrow-to-bottom-right",
+  "filled": true
+ },
+ {
+  "name": "dot-frame-head-blank",
+  "filled": true
+ },
+ {
+  "name": "dot-frame-person-standing",
+  "filled": true
+ },
+ {
+  "name": "dot-frame-tshirt",
+  "filled": true
+ },
+ {
+  "name": "double-chevron-large-condense-down",
+  "filled": true
+ },
+ {
+  "name": "double-chevron-large-condensed-up",
+  "filled": true
+ },
+ {
+  "name": "double-chevron-large-down",
+  "filled": true
+ },
+ {
+  "name": "double-chevron-large-left",
+  "filled": true
+ },
+ {
+  "name": "double-chevron-large-right",
+  "filled": true
+ },
+ {
+  "name": "double-chevron-large-up",
+  "filled": true
+ },
+ {
+  "name": "dress",
+  "filled": true
+ },
+ {
+  "name": "dual-arrows-horizontal",
+  "filled": true
+ },
+ {
+  "name": "dual-arrows-horizontal-text-v-a",
+  "filled": true
+ },
+ {
+  "name": "dual-arrows-large-horizontal",
+  "filled": true
+ },
+ {
+  "name": "dual-arrows-large-vertical",
+  "filled": true
+ },
+ {
+  "name": "dual-arrows-to-corners",
+  "filled": true
+ },
+ {
+  "name": "dual-arrows-vertical",
+  "filled": true
+ },
+ {
+  "name": "dual-arrows-vertical-four-horizontal-lines",
+  "filled": true
+ },
+ {
+  "name": "egg",
+  "filled": true
+ },
+ {
+  "name": "envelope",
+  "filled": true
+ },
+ {
+  "name": "eraser",
+  "filled": true
+ },
+ {
+  "name": "ethernet",
+  "filled": true
+ },
+ {
+  "name": "eye",
+  "filled": true
+ },
+ {
+  "name": "eye-slash",
+  "filled": true
+ },
+ {
+  "name": "eye-with-eyeliner",
+  "filled": true
+ },
+ {
+  "name": "eyebrows",
+  "filled": true
+ },
+ {
+  "name": "eyelashes",
+  "filled": true
+ },
+ {
+  "name": "face-winking",
+  "filled": true
+ },
+ {
+  "name": "facebook",
+  "filled": true
+ },
+ {
+  "name": "figma",
+  "filled": true
+ },
+ {
+  "name": "file-box",
+  "filled": true
+ },
+ {
+  "name": "fingerprint",
+  "filled": true
+ },
+ {
+  "name": "fish",
+  "filled": true
+ },
+ {
+  "name": "five-vertical-lines-wave",
+  "filled": true
+ },
+ {
+  "name": "flag",
+  "filled": true
+ },
+ {
+  "name": "flame",
+  "filled": true
+ },
+ {
+  "name": "floppy-disk",
+  "filled": true
+ },
+ {
+  "name": "folder",
+  "filled": true
+ },
+ {
+  "name": "folder-tabs",
+  "filled": true
+ },
+ {
+  "name": "folder-tilt",
+  "filled": true
+ },
+ {
+  "name": "fountain-pen-nib",
+  "filled": true
+ },
+ {
+  "name": "four-bars-horizontal-center-aligned",
+  "filled": true
+ },
+ {
+  "name": "four-bars-horizontal-chevron-left",
+  "filled": true
+ },
+ {
+  "name": "four-bars-horizontal-chevron-right",
+  "filled": true
+ },
+ {
+  "name": "four-bars-horizontal-justified-aligned",
+  "filled": true
+ },
+ {
+  "name": "four-bars-horizontal-left-aligned",
+  "filled": true
+ },
+ {
+  "name": "four-bars-horizontal-right-aligned",
+  "filled": true
+ },
+ {
+  "name": "four-rectangles-mason-grid",
+  "filled": true
+ },
+ {
+  "name": "four-squares-diamond-grid",
+  "filled": true
+ },
+ {
+  "name": "four-squares-grid",
+  "filled": true
+ },
+ {
+  "name": "frame-bubble-slash",
+  "filled": true
+ },
+ {
+  "name": "frame-bubble-soundwave",
+  "filled": true
+ },
+ {
+  "name": "frame-camera",
+  "filled": true
+ },
+ {
+  "name": "frame-camera-center",
+  "filled": true
+ },
+ {
+  "name": "frame-collapsed",
+  "filled": true
+ },
+ {
+  "name": "frame-corners",
+  "filled": true
+ },
+ {
+  "name": "frame-expanded",
+  "filled": true
+ },
+ {
+  "name": "frame-face",
+  "filled": true
+ },
+ {
+  "name": "frame-person-torso",
+  "filled": true
+ },
+ {
+  "name": "frame-record",
+  "filled": true
+ },
+ {
+  "name": "frame-single-bar-horizontal",
+  "filled": true
+ },
+ {
+  "name": "frame-small-diamond",
+  "filled": true
+ },
+ {
+  "name": "frame-soundwave",
+  "filled": true
+ },
+ {
+  "name": "frame-video-camera",
+  "filled": true
+ },
+ {
+  "name": "gear",
+  "filled": true
+ },
+ {
+  "name": "generic-dpad",
+  "filled": true
+ },
+ {
+  "name": "gift-box",
+  "filled": true
+ },
+ {
+  "name": "gift-card",
+  "filled": true
+ },
+ {
+  "name": "github",
+  "filled": true
+ },
+ {
+  "name": "glasses",
+  "filled": true
+ },
+ {
+  "name": "globe-detailed",
+  "filled": true
+ },
+ {
+  "name": "globe-simplified",
+  "filled": true
+ },
+ {
+  "name": "globe-simplipfied-speech-bubble",
+  "filled": true
+ },
+ {
+  "name": "google",
+  "filled": true
+ },
+ {
+  "name": "grid",
+  "filled": true
+ },
+ {
+  "name": "guilded",
+  "filled": true
+ },
+ {
+  "name": "hack-week",
+  "filled": true
+ },
+ {
+  "name": "hammer-code",
+  "filled": true
+ },
+ {
+  "name": "hand-arrow-down",
+  "filled": true
+ },
+ {
+  "name": "hand-curved-arrow-left",
+  "filled": true
+ },
+ {
+  "name": "hand-dual-arrows",
+  "filled": true
+ },
+ {
+  "name": "hand-ellipse",
+  "filled": true
+ },
+ {
+  "name": "hand-grip",
+  "filled": true
+ },
+ {
+  "name": "hand-grip-2x-text",
+  "filled": true
+ },
+ {
+  "name": "hand-half-ellipse",
+  "filled": true
+ },
+ {
+  "name": "hand-two-arrows-horizontal",
+  "filled": true
+ },
+ {
+  "name": "hashtag",
+  "filled": true
+ },
+ {
+  "name": "hat-fedora",
+  "filled": true
+ },
+ {
+  "name": "hat-toque",
+  "filled": true
+ },
+ {
+  "name": "head-blank",
+  "filled": true
+ },
+ {
+  "name": "head-blush",
+  "filled": true
+ },
+ {
+  "name": "head-female",
+  "filled": true
+ },
+ {
+  "name": "head-freckles",
+  "filled": true
+ },
+ {
+  "name": "head-lips",
+  "filled": true
+ },
+ {
+  "name": "head-male",
+  "filled": true
+ },
+ {
+  "name": "headphones",
+  "filled": true
+ },
+ {
+  "name": "headphones-arrow-up",
+  "filled": true
+ },
+ {
+  "name": "headphones-arrow-up-lock",
+  "filled": true
+ },
+ {
+  "name": "headphones-slash",
+  "filled": true
+ },
+ {
+  "name": "headphones-x",
+  "filled": true
+ },
+ {
+  "name": "headphones-x-lock",
+  "filled": true
+ },
+ {
+  "name": "heart",
+  "filled": true
+ },
+ {
+  "name": "hexagon-binding-complex",
+  "filled": true
+ },
+ {
+  "name": "hexagon-dot",
+  "filled": true
+ },
+ {
+  "name": "horiztonal-lines-descending-rectangle",
+  "filled": true
+ },
+ {
+  "name": "house",
+  "filled": true
+ },
+ {
+  "name": "image",
+  "filled": true
+ },
+ {
+  "name": "image-circle-slash",
+  "filled": true
+ },
+ {
+  "name": "image-person",
+  "filled": true
+ },
+ {
+  "name": "image-stacked",
+  "filled": true
+ },
+ {
+  "name": "instagram",
+  "filled": true
+ },
+ {
+  "name": "jacket",
+  "filled": true
+ },
+ {
+  "name": "key",
+  "filled": true
+ },
+ {
+  "name": "key-alt",
+  "filled": true
+ },
+ {
+  "name": "key-apostrophe",
+  "filled": true
+ },
+ {
+  "name": "key-arrow-down",
+  "filled": true
+ },
+ {
+  "name": "key-arrow-left",
+  "filled": true
+ },
+ {
+  "name": "key-arrow-right",
+  "filled": true
+ },
+ {
+  "name": "key-arrow-up",
+  "filled": true
+ },
+ {
+  "name": "key-asterisk",
+  "filled": true
+ },
+ {
+  "name": "key-backspace",
+  "filled": true
+ },
+ {
+  "name": "key-caps-lock",
+  "filled": true
+ },
+ {
+  "name": "key-caret",
+  "filled": true
+ },
+ {
+  "name": "key-comma",
+  "filled": true
+ },
+ {
+  "name": "key-command",
+  "filled": true
+ },
+ {
+  "name": "key-control",
+  "filled": true
+ },
+ {
+  "name": "key-grave-accent",
+  "filled": true
+ },
+ {
+  "name": "key-period",
+  "filled": true
+ },
+ {
+  "name": "key-return",
+  "filled": true
+ },
+ {
+  "name": "key-shift",
+  "filled": true
+ },
+ {
+  "name": "key-shift-down",
+  "filled": true
+ },
+ {
+  "name": "key-shift-right-chevron",
+  "filled": true
+ },
+ {
+  "name": "key-space",
+  "filled": true
+ },
+ {
+  "name": "key-tab",
+  "filled": true
+ },
+ {
+  "name": "keyboard",
+  "filled": true
+ },
+ {
+  "name": "lab-beaker",
+  "filled": true
+ },
+ {
+  "name": "language-characters",
+  "filled": true
+ },
+ {
+  "name": "leg-left",
+  "filled": true
+ },
+ {
+  "name": "leg-right",
+  "filled": true
+ },
+ {
+  "name": "lightning-bolt",
+  "filled": true
+ },
+ {
+  "name": "line-frame-plus",
+  "filled": true
+ },
+ {
+  "name": "line-horizontal",
+  "filled": true
+ },
+ {
+  "name": "line-segment-horizontal",
+  "filled": true
+ },
+ {
+  "name": "line-segment-vertical",
+  "filled": true
+ },
+ {
+  "name": "line-vertical",
+  "filled": true
+ },
+ {
+  "name": "linkedin",
+  "filled": true
+ },
+ {
+  "name": "lips",
+  "filled": true
+ },
+ {
+  "name": "lips-lipstick-makeup-brush",
+  "filled": true
+ },
+ {
+  "name": "lipstick",
+  "filled": true
+ },
+ {
+  "name": "list-bulleted",
+  "filled": true
+ },
+ {
+  "name": "list-numbered",
+  "filled": true
+ },
+ {
+  "name": "location-pin",
+  "filled": true
+ },
+ {
+  "name": "location-pin-map",
+  "filled": true
+ },
+ {
+  "name": "lock-closed",
+  "filled": true
+ },
+ {
+  "name": "lollipop",
+  "filled": true
+ },
+ {
+  "name": "luau",
+  "filled": true
+ },
+ {
+  "name": "magnifying-glass",
+  "filled": true
+ },
+ {
+  "name": "magnifying-glass-minus",
+  "filled": true
+ },
+ {
+  "name": "magnifying-glass-plus",
+  "filled": true
+ },
+ {
+  "name": "mascara",
+  "filled": true
+ },
+ {
+  "name": "megaphone",
+  "filled": true
+ },
+ {
+  "name": "megaphone-cheer",
+  "filled": true
+ },
+ {
+  "name": "memory-card",
+  "filled": true
+ },
+ {
+  "name": "messenger",
+  "filled": true
+ },
+ {
+  "name": "meta",
+  "filled": true
+ },
+ {
+  "name": "microphone",
+  "filled": true
+ },
+ {
+  "name": "microphone-slash",
+  "filled": true
+ },
+ {
+  "name": "microphone-text-box",
+  "filled": true
+ },
+ {
+  "name": "microphone-triangle-exclamation",
+  "filled": true
+ },
+ {
+  "name": "microsoft",
+  "filled": true
+ },
+ {
+  "name": "middle-dot",
+  "filled": true
+ },
+ {
+  "name": "milk",
+  "filled": true
+ },
+ {
+  "name": "minus",
+  "filled": true
+ },
+ {
+  "name": "minus-small",
+  "filled": true
+ },
+ {
+  "name": "mirror-standing",
+  "filled": true
+ },
+ {
+  "name": "moments",
+  "filled": true
+ },
+ {
+  "name": "moon",
+  "filled": true
+ },
+ {
+  "name": "moon-with-stars",
+  "filled": true
+ },
+ {
+  "name": "mouse-button-center",
+  "filled": true
+ },
+ {
+  "name": "mouse-button-left",
+  "filled": true
+ },
+ {
+  "name": "mouse-button-right",
+  "filled": true
+ },
+ {
+  "name": "mouse-scrollwheel",
+  "filled": true
+ },
+ {
+  "name": "music-note",
+  "filled": true
+ },
+ {
+  "name": "nebula",
+  "filled": true
+ },
+ {
+  "name": "necklace",
+  "filled": true
+ },
+ {
+  "name": "nexus",
+  "filled": true
+ },
+ {
+  "name": "nine-dots-grid",
+  "filled": true
+ },
+ {
+  "name": "ninja",
+  "filled": true
+ },
+ {
+  "name": "nose",
+  "filled": true
+ },
+ {
+  "name": "octogon",
+  "filled": true
+ },
+ {
+  "name": "page",
+  "filled": true
+ },
+ {
+  "name": "paint-brush",
+  "filled": true
+ },
+ {
+  "name": "paint-bucket",
+  "filled": true
+ },
+ {
+  "name": "pants",
+  "filled": true
+ },
+ {
+  "name": "pants-2d-text",
+  "filled": true
+ },
+ {
+  "name": "paper-airplane",
+  "filled": true
+ },
+ {
+  "name": "paragraph",
+  "filled": true
+ },
+ {
+  "name": "parrot",
+  "filled": true
+ },
+ {
+  "name": "pause-large",
+  "filled": true
+ },
+ {
+  "name": "pause-small",
+  "filled": true
+ },
+ {
+  "name": "peanut",
+  "filled": true
+ },
+ {
+  "name": "pencil",
+  "filled": true
+ },
+ {
+  "name": "pencil-square",
+  "filled": true
+ },
+ {
+  "name": "person",
+  "filled": true
+ },
+ {
+  "name": "person-arrow-from-bottom-right",
+  "filled": true
+ },
+ {
+  "name": "person-check",
+  "filled": true
+ },
+ {
+  "name": "person-circle-slash",
+  "filled": true
+ },
+ {
+  "name": "person-climbing",
+  "filled": true
+ },
+ {
+  "name": "person-clock",
+  "filled": true
+ },
+ {
+  "name": "person-crouching",
+  "filled": true
+ },
+ {
+  "name": "person-falling",
+  "filled": true
+ },
+ {
+  "name": "person-graduate",
+  "filled": true
+ },
+ {
+  "name": "person-jumping",
+  "filled": true
+ },
+ {
+  "name": "person-magnifying-glass",
+  "filled": true
+ },
+ {
+  "name": "person-photo-camera",
+  "filled": true
+ },
+ {
+  "name": "person-play",
+  "filled": true
+ },
+ {
+  "name": "person-play-clock",
+  "filled": true
+ },
+ {
+  "name": "person-plus",
+  "filled": true
+ },
+ {
+  "name": "person-racing",
+  "filled": true
+ },
+ {
+  "name": "person-rectangle-horizontal-line",
+  "filled": true
+ },
+ {
+  "name": "person-running",
+  "filled": true
+ },
+ {
+  "name": "person-standing",
+  "filled": true
+ },
+ {
+  "name": "person-standing-arrow-reverse",
+  "filled": true
+ },
+ {
+  "name": "person-standing-dual-arrows-vertical",
+  "filled": true
+ },
+ {
+  "name": "person-standing-gear",
+  "filled": true
+ },
+ {
+  "name": "person-swimming",
+  "filled": true
+ },
+ {
+  "name": "person-teleport",
+  "filled": true
+ },
+ {
+  "name": "person-trash-can",
+  "filled": true
+ },
+ {
+  "name": "person-walking",
+  "filled": true
+ },
+ {
+  "name": "person-walking-dual-chevrons-horizontal",
+  "filled": true
+ },
+ {
+  "name": "person-with-smaller-person",
+  "filled": true
+ },
+ {
+  "name": "phone",
+  "filled": true
+ },
+ {
+  "name": "phone-arrow-diagonal-down",
+  "filled": true
+ },
+ {
+  "name": "phone-arrow-diagonal-up",
+  "filled": true
+ },
+ {
+  "name": "phone-down",
+  "filled": true
+ },
+ {
+  "name": "phone-plus",
+  "filled": true
+ },
+ {
+  "name": "phone-triangle-exclamation",
+  "filled": true
+ },
+ {
+  "name": "phone-volume",
+  "filled": true
+ },
+ {
+  "name": "phone-x",
+  "filled": true
+ },
+ {
+  "name": "photo-camera",
+  "filled": true
+ },
+ {
+  "name": "photo-camera-face",
+  "filled": true
+ },
+ {
+  "name": "photo-camera-face-lightning-bolt",
+  "filled": true
+ },
+ {
+  "name": "photo-camera-slash",
+  "filled": true
+ },
+ {
+  "name": "picture-in-picture",
+  "filled": true
+ },
+ {
+  "name": "pig",
+  "filled": true
+ },
+ {
+  "name": "pin",
+  "filled": true
+ },
+ {
+  "name": "pin-slash",
+  "filled": true
+ },
+ {
+  "name": "pistachio",
+  "filled": true
+ },
+ {
+  "name": "play-large",
+  "filled": true
+ },
+ {
+  "name": "play-small",
+  "filled": true
+ },
+ {
+  "name": "play-xlarge",
+  "filled": true
+ },
+ {
+  "name": "playstation",
+  "filled": true
+ },
+ {
+  "name": "playstation-circle",
+  "filled": true
+ },
+ {
+  "name": "plus-large",
+  "filled": true
+ },
+ {
+  "name": "plus-small",
+  "filled": true
+ },
+ {
+  "name": "premium",
+  "filled": true
+ },
+ {
+  "name": "ps-circle",
+  "filled": true
+ },
+ {
+  "name": "ps-circle-pressed",
+  "filled": true
+ },
+ {
+  "name": "ps-circle-unpressed",
+  "filled": true
+ },
+ {
+  "name": "ps-dpad",
+  "filled": true
+ },
+ {
+  "name": "ps-dpad-down",
+  "filled": true
+ },
+ {
+  "name": "ps-dpad-left",
+  "filled": true
+ },
+ {
+  "name": "ps-dpad-right",
+  "filled": true
+ },
+ {
+  "name": "ps-dpad-up",
+  "filled": true
+ },
+ {
+  "name": "ps-l1",
+  "filled": true
+ },
+ {
+  "name": "ps-l2",
+  "filled": true
+ },
+ {
+  "name": "ps-l3",
+  "filled": true
+ },
+ {
+  "name": "ps-r1",
+  "filled": true
+ },
+ {
+  "name": "ps-r2",
+  "filled": true
+ },
+ {
+  "name": "ps-r3",
+  "filled": true
+ },
+ {
+  "name": "ps-square",
+  "filled": true
+ },
+ {
+  "name": "ps-square-pressed",
+  "filled": true
+ },
+ {
+  "name": "ps-square-unpressed",
+  "filled": true
+ },
+ {
+  "name": "ps-stick-left",
+  "filled": true
+ },
+ {
+  "name": "ps-stick-right",
+  "filled": true
+ },
+ {
+  "name": "ps-triagle",
+  "filled": true
+ },
+ {
+  "name": "ps-triangle-pressed",
+  "filled": true
+ },
+ {
+  "name": "ps-triangle-unpressed",
+  "filled": true
+ },
+ {
+  "name": "ps-x",
+  "filled": true
+ },
+ {
+  "name": "ps-x-pressed",
+  "filled": true
+ },
+ {
+  "name": "ps-x-unpressed",
+  "filled": true
+ },
+ {
+  "name": "ps4-options",
+  "filled": true
+ },
+ {
+  "name": "ps4-share",
+  "filled": true
+ },
+ {
+  "name": "ps4-touchpad",
+  "filled": true
+ },
+ {
+  "name": "ps5-options",
+  "filled": true
+ },
+ {
+  "name": "ps5-share",
+  "filled": true
+ },
+ {
+  "name": "ps5-touchpad",
+  "filled": true
+ },
+ {
+  "name": "pumpkin",
+  "filled": true
+ },
+ {
+  "name": "purse",
+  "filled": true
+ },
+ {
+  "name": "quotation",
+  "filled": true
+ },
+ {
+  "name": "react",
+  "filled": true
+ },
+ {
+  "name": "rectangle-cursor",
+  "filled": true
+ },
+ {
+  "name": "rectangle-line-divider",
+  "filled": true
+ },
+ {
+  "name": "rectangle-list",
+  "filled": true
+ },
+ {
+  "name": "rectangle-list-pencil",
+  "filled": true
+ },
+ {
+  "name": "rectangle-numbers-counting",
+  "filled": true
+ },
+ {
+  "name": "rectangle-person-with-three-horizontal-lines",
+  "filled": true
+ },
+ {
+  "name": "rectangle-play-stacked",
+  "filled": true
+ },
+ {
+  "name": "rectangle-right-pane-chevron-left",
+  "filled": true
+ },
+ {
+  "name": "rectangle-right-pane-chevron-right",
+  "filled": true
+ },
+ {
+  "name": "rectangle-two-chevrons-fill-x",
+  "filled": true
+ },
+ {
+  "name": "rectangle-two-chevrons-fill-y",
+  "filled": true
+ },
+ {
+  "name": "rectangle-two-chevrons-fit-x",
+  "filled": true
+ },
+ {
+  "name": "rectangle-two-chevrons-fit-y",
+  "filled": true
+ },
+ {
+  "name": "rectangle-two-chevrons-x-axis",
+  "filled": true
+ },
+ {
+  "name": "rectangle-two-chevrons-y-axis",
+  "filled": true
+ },
+ {
+  "name": "ro-gro",
+  "filled": true
+ },
+ {
+  "name": "roblox-classic",
+  "filled": true
+ },
+ {
+  "name": "roblox-plus",
+  "filled": true
+ },
+ {
+  "name": "robux",
+  "filled": true
+ },
+ {
+  "name": "rosette-seven-point",
+  "filled": true
+ },
+ {
+  "name": "rosette-ten-point",
+  "filled": true
+ },
+ {
+  "name": "ruler",
+  "filled": true
+ },
+ {
+  "name": "sesame-seeds",
+  "filled": true
+ },
+ {
+  "name": "seven-point-rosette",
+  "filled": false
+ },
+ {
+  "name": "shield-check",
+  "filled": true
+ },
+ {
+  "name": "shield-lock",
+  "filled": true
+ },
+ {
+  "name": "shirt",
+  "filled": true
+ },
+ {
+  "name": "shirt-2d-text",
+  "filled": true
+ },
+ {
+  "name": "shirt-pants",
+  "filled": true
+ },
+ {
+  "name": "shoe-left",
+  "filled": true
+ },
+ {
+  "name": "shoe-right",
+  "filled": true
+ },
+ {
+  "name": "shopping-basket",
+  "filled": true
+ },
+ {
+  "name": "shopping-basket-check",
+  "filled": true
+ },
+ {
+  "name": "shopping-cart",
+  "filled": true
+ },
+ {
+  "name": "shorts",
+  "filled": true
+ },
+ {
+  "name": "shrimp",
+  "filled": true
+ },
+ {
+  "name": "sidebar",
+  "filled": true
+ },
+ {
+  "name": "sidebar-right",
+  "filled": true
+ },
+ {
+  "name": "signal-exclamation",
+  "filled": true
+ },
+ {
+  "name": "six-dots-two-column-grid",
+  "filled": true
+ },
+ {
+  "name": "skip-end-large",
+  "filled": true
+ },
+ {
+  "name": "skip-end-small",
+  "filled": true
+ },
+ {
+  "name": "skip-next-large",
+  "filled": true
+ },
+ {
+  "name": "skip-next-small",
+  "filled": true
+ },
+ {
+  "name": "skip-previous-large",
+  "filled": true
+ },
+ {
+  "name": "skip-previous-small",
+  "filled": true
+ },
+ {
+  "name": "skip-start-large",
+  "filled": true
+ },
+ {
+  "name": "skip-start-small",
+  "filled": true
+ },
+ {
+  "name": "skip-to-first-frame-large",
+  "filled": true
+ },
+ {
+  "name": "skip-to-first-frame-small",
+  "filled": true
+ },
+ {
+  "name": "skip-to-last-frame-large",
+  "filled": true
+ },
+ {
+  "name": "skip-to-last-frame-small",
+  "filled": true
+ },
+ {
+  "name": "slack",
+  "filled": true
+ },
+ {
+  "name": "small-square-over-dashed-large-square",
+  "filled": true
+ },
+ {
+  "name": "smartphone-portrait",
+  "filled": true
+ },
+ {
+  "name": "speaker",
+  "filled": true
+ },
+ {
+  "name": "speaker-slash",
+  "filled": true
+ },
+ {
+  "name": "speaker-triangle-exclamation",
+  "filled": true
+ },
+ {
+  "name": "speaker-x",
+  "filled": true
+ },
+ {
+  "name": "speech-bubble-align-center",
+  "filled": true
+ },
+ {
+  "name": "speech-bubble-align-left",
+  "filled": true
+ },
+ {
+  "name": "speech-bubble-exclamation",
+  "filled": true
+ },
+ {
+  "name": "speech-bubble-round",
+  "filled": true
+ },
+ {
+  "name": "speedometer",
+  "filled": true
+ },
+ {
+  "name": "square",
+  "filled": true
+ },
+ {
+  "name": "square-arrow-rotate-bottom-left",
+  "filled": true
+ },
+ {
+  "name": "square-arrow-rotate-bottom-right",
+  "filled": true
+ },
+ {
+  "name": "square-arrow-rotate-top-left",
+  "filled": true
+ },
+ {
+  "name": "square-arrow-rotate-top-right",
+  "filled": true
+ },
+ {
+  "name": "square-bar-graph",
+  "filled": true
+ },
+ {
+  "name": "square-bone",
+  "filled": true
+ },
+ {
+  "name": "square-books",
+  "filled": true
+ },
+ {
+  "name": "square-check",
+  "filled": true
+ },
+ {
+  "name": "square-clipping-circle",
+  "filled": true
+ },
+ {
+  "name": "square-code",
+  "filled": true
+ },
+ {
+  "name": "square-corner-line",
+  "filled": true
+ },
+ {
+  "name": "square-corner-line-small",
+  "filled": true
+ },
+ {
+  "name": "square-dashed-person-standing",
+  "filled": true
+ },
+ {
+  "name": "square-dots-increasing-size",
+  "filled": true
+ },
+ {
+  "name": "square-dual-arrows-horizontal",
+  "filled": true
+ },
+ {
+  "name": "square-dual-arrows-to-corner",
+  "filled": true
+ },
+ {
+  "name": "square-face-emoji",
+  "filled": true
+ },
+ {
+  "name": "square-face-sound",
+  "filled": true
+ },
+ {
+  "name": "square-face-waving-hand",
+  "filled": true
+ },
+ {
+  "name": "square-face-winking",
+  "filled": true
+ },
+ {
+  "name": "square-minus",
+  "filled": true
+ },
+ {
+  "name": "square-person",
+  "filled": true
+ },
+ {
+  "name": "square-small",
+  "filled": true
+ },
+ {
+  "name": "square-text-alt",
+  "filled": true
+ },
+ {
+  "name": "square-text-esc",
+  "filled": true
+ },
+ {
+  "name": "square-text-fix-width",
+  "filled": true
+ },
+ {
+  "name": "square-text-ip",
+  "filled": true
+ },
+ {
+  "name": "square-text-l",
+  "filled": true
+ },
+ {
+  "name": "square-text-r",
+  "filled": true
+ },
+ {
+  "name": "square-thick-line-bottom",
+  "filled": true
+ },
+ {
+  "name": "square-thick-line-frame",
+  "filled": true
+ },
+ {
+  "name": "square-thick-line-left",
+  "filled": true
+ },
+ {
+  "name": "square-thick-line-right",
+  "filled": true
+ },
+ {
+  "name": "square-thick-line-top",
+  "filled": true
+ },
+ {
+  "name": "square-two-parallel-thick-lines-left-right",
+  "filled": true
+ },
+ {
+  "name": "square-two-parallel-thick-lines-top-bottom",
+  "filled": true
+ },
+ {
+  "name": "squares-grid-plus",
+  "filled": true
+ },
+ {
+  "name": "squares-grid-qr",
+  "filled": true
+ },
+ {
+  "name": "stackable-check",
+  "filled": true
+ },
+ {
+  "name": "stackable-exclamation",
+  "filled": true
+ },
+ {
+  "name": "stackable-i",
+  "filled": true
+ },
+ {
+  "name": "stackable-star",
+  "filled": true
+ },
+ {
+  "name": "stackable-x",
+  "filled": true
+ },
+ {
+  "name": "stacked-squares-arrow-down-left",
+  "filled": true
+ },
+ {
+  "name": "stacked-squares-arrow-up-right",
+  "filled": true
+ },
+ {
+  "name": "stacked-squares-plus",
+  "filled": true
+ },
+ {
+  "name": "star",
+  "filled": true
+ },
+ {
+  "name": "star-three-vertical-bars",
+  "filled": true
+ },
+ {
+  "name": "stop-large",
+  "filled": true
+ },
+ {
+  "name": "stop-small",
+  "filled": true
+ },
+ {
+  "name": "studio",
+  "filled": true
+ },
+ {
+  "name": "sun",
+  "filled": true
+ },
+ {
+  "name": "sweater",
+  "filled": true
+ },
+ {
+  "name": "sword",
+  "filled": true
+ },
+ {
+  "name": "tag",
+  "filled": true
+ },
+ {
+  "name": "tag-arrow-up",
+  "filled": true
+ },
+ {
+  "name": "tag-sparkle",
+  "filled": true
+ },
+ {
+  "name": "tag-sparkle-arrow-up",
+  "filled": true
+ },
+ {
+  "name": "teletype",
+  "filled": true
+ },
+ {
+  "name": "tencent-qq",
+  "filled": true
+ },
+ {
+  "name": "text-b-bold",
+  "filled": true
+ },
+ {
+  "name": "text-box-microphone",
+  "filled": true
+ },
+ {
+  "name": "text-ff-farm",
+  "filled": true
+ },
+ {
+  "name": "text-g-arrow-down",
+  "filled": true
+ },
+ {
+  "name": "text-h-humane",
+  "filled": true
+ },
+ {
+  "name": "text-h-subscript-1",
+  "filled": true
+ },
+ {
+  "name": "text-h-subscript-2",
+  "filled": true
+ },
+ {
+  "name": "text-h-subscript-3",
+  "filled": true
+ },
+ {
+  "name": "text-hl-halal",
+  "filled": true
+ },
+ {
+  "name": "text-i-italic",
+  "filled": true
+ },
+ {
+  "name": "text-in-balance",
+  "filled": true
+ },
+ {
+  "name": "text-lc-local",
+  "filled": true
+ },
+ {
+  "name": "text-o-organic",
+  "filled": true
+ },
+ {
+  "name": "text-s-seafood",
+  "filled": true
+ },
+ {
+  "name": "text-s-strikethrough",
+  "filled": true
+ },
+ {
+  "name": "text-sd-supplier-diversity",
+  "filled": true
+ },
+ {
+  "name": "text-t-serif",
+  "filled": true
+ },
+ {
+  "name": "text-u-underline",
+  "filled": true
+ },
+ {
+  "name": "text-uppercase-a-lowercase-a",
+  "filled": true
+ },
+ {
+  "name": "text-v-vegetarian",
+  "filled": true
+ },
+ {
+  "name": "text-vg-vegan",
+  "filled": true
+ },
+ {
+  "name": "text-x-subscript-2",
+  "filled": true
+ },
+ {
+  "name": "text-x-superscript-2",
+  "filled": true
+ },
+ {
+  "name": "three-bars-horizontal",
+  "filled": true
+ },
+ {
+  "name": "three-bars-horizontal-chevron-left",
+  "filled": true
+ },
+ {
+  "name": "three-bars-horizontal-narrowing",
+  "filled": true
+ },
+ {
+  "name": "three-bars-horizontal-triangles-vertical",
+  "filled": true
+ },
+ {
+  "name": "three-bars-vertical-triangles-horizontal",
+  "filled": true
+ },
+ {
+  "name": "three-bars-x-aligned-center",
+  "filled": true
+ },
+ {
+  "name": "three-bars-x-aligned-left",
+  "filled": true
+ },
+ {
+  "name": "three-bars-x-aligned-right",
+  "filled": true
+ },
+ {
+  "name": "three-bars-y-aligned-bottom",
+  "filled": true
+ },
+ {
+  "name": "three-bars-y-aligned-center",
+  "filled": true
+ },
+ {
+  "name": "three-bars-y-aligned-top",
+  "filled": true
+ },
+ {
+  "name": "three-box-flowchart",
+  "filled": true
+ },
+ {
+  "name": "three-chevrons-enlarging-down",
+  "filled": true
+ },
+ {
+  "name": "three-chevrons-enlarging-up",
+  "filled": true
+ },
+ {
+  "name": "three-dots-horizontal",
+  "filled": true
+ },
+ {
+  "name": "three-dots-vertical",
+  "filled": true
+ },
+ {
+  "name": "three-horizontal-bars-wrapping-right",
+  "filled": true
+ },
+ {
+  "name": "three-people",
+  "filled": true
+ },
+ {
+  "name": "three-ring-note",
+  "filled": true
+ },
+ {
+  "name": "three-sliders-horizontal",
+  "filled": true
+ },
+ {
+  "name": "three-small-squares",
+  "filled": true
+ },
+ {
+  "name": "three-stacked-squares-tilted",
+  "filled": true
+ },
+ {
+  "name": "thumb-down",
+  "filled": true
+ },
+ {
+  "name": "thumb-up",
+  "filled": true
+ },
+ {
+  "name": "tik-tok",
+  "filled": true
+ },
+ {
+  "name": "tilt",
+  "filled": true
+ },
+ {
+  "name": "toggle-left",
+  "filled": true
+ },
+ {
+  "name": "toggle-right",
+  "filled": true
+ },
+ {
+  "name": "torso",
+  "filled": true
+ },
+ {
+  "name": "trash-can",
+  "filled": true
+ },
+ {
+  "name": "triangle",
+  "filled": true
+ },
+ {
+  "name": "triangle-exclamation",
+  "filled": true
+ },
+ {
+  "name": "triple-chevron-large-condense-down",
+  "filled": true
+ },
+ {
+  "name": "triple-chevron-large-condensed-up",
+  "filled": true
+ },
+ {
+  "name": "trophy",
+  "filled": true
+ },
+ {
+  "name": "tshirt",
+  "filled": true
+ },
+ {
+  "name": "tshirt-2d-text",
+  "filled": true
+ },
+ {
+  "name": "tshirt-dual-arrows",
+  "filled": true
+ },
+ {
+  "name": "tshirt-play",
+  "filled": true
+ },
+ {
+  "name": "twitch",
+  "filled": true
+ },
+ {
+  "name": "twitter",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-branch-right",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-down-and-up",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-down-and-up-to-center",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-from-center",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-left-and-right-to-center",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-left-right",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-loop-clockwise",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-loop-clockwise-1",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-loop-clockwise-infinity",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-spin-clockwise",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-spin-clockwise-plus",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-switch-right",
+  "filled": true
+ },
+ {
+  "name": "two-arrows-to-center",
+  "filled": true
+ },
+ {
+  "name": "two-bars-x-aligned-center-to-line",
+  "filled": true
+ },
+ {
+  "name": "two-bars-x-aligned-left-to-line",
+  "filled": true
+ },
+ {
+  "name": "two-bars-x-aligned-right-to-line",
+  "filled": true
+ },
+ {
+  "name": "two-bars-y-aligned-bottom-to-line",
+  "filled": true
+ },
+ {
+  "name": "two-bars-y-aligned-center-to-line",
+  "filled": true
+ },
+ {
+  "name": "two-bars-y-aligned-top-to-line",
+  "filled": true
+ },
+ {
+  "name": "two-carets-bar-horizontal-flip",
+  "filled": true
+ },
+ {
+  "name": "two-carets-bar-vertical-flip",
+  "filled": true
+ },
+ {
+  "name": "two-controllers-curved-arrow-right",
+  "filled": true
+ },
+ {
+  "name": "two-folders",
+  "filled": true
+ },
+ {
+  "name": "two-horizontal-bars-dot",
+  "filled": true
+ },
+ {
+  "name": "two-location-pins-connecting-arrow",
+  "filled": true
+ },
+ {
+  "name": "two-makeup-brushes",
+  "filled": true
+ },
+ {
+  "name": "two-people",
+  "filled": true
+ },
+ {
+  "name": "two-people-speech-bubble",
+  "filled": true
+ },
+ {
+  "name": "two-rulers-cursor",
+  "filled": true
+ },
+ {
+  "name": "two-sliders-horizontal",
+  "filled": true
+ },
+ {
+  "name": "two-sliders-vertical",
+  "filled": true
+ },
+ {
+  "name": "two-speech-bubbles",
+  "filled": true
+ },
+ {
+  "name": "two-squares-arrow-down",
+  "filled": true
+ },
+ {
+  "name": "two-squares-arrow-left",
+  "filled": true
+ },
+ {
+  "name": "two-stacked-squares",
+  "filled": true
+ },
+ {
+  "name": "two-stacked-squares-code",
+  "filled": true
+ },
+ {
+  "name": "two-switches-horizontal",
+  "filled": true
+ },
+ {
+  "name": "two-vertical-bars-dot",
+  "filled": true
+ },
+ {
+  "name": "two-vertical-bars-text-auto-width",
+  "filled": true
+ },
+ {
+  "name": "verified-backplate",
+  "filled": true
+ },
+ {
+  "name": "verified-check",
+  "filled": true
+ },
+ {
+  "name": "verified-mono",
+  "filled": true
+ },
+ {
+  "name": "video-camera",
+  "filled": true
+ },
+ {
+  "name": "video-camera-arrow-to-bottom-left",
+  "filled": true
+ },
+ {
+  "name": "video-camera-arrow-to-top-right",
+  "filled": true
+ },
+ {
+  "name": "video-camera-slash",
+  "filled": true
+ },
+ {
+  "name": "video-camera-triangle-exclamation",
+  "filled": true
+ },
+ {
+  "name": "video-camera-x",
+  "filled": true
+ },
+ {
+  "name": "wallet",
+  "filled": true
+ },
+ {
+  "name": "we-chat",
+  "filled": true
+ },
+ {
+  "name": "whatsapp",
+  "filled": true
+ },
+ {
+  "name": "wheat",
+  "filled": true
+ },
+ {
+  "name": "wifi-signal-fair",
+  "filled": true
+ },
+ {
+  "name": "wifi-signal-good",
+  "filled": true
+ },
+ {
+  "name": "wifi-signal-poor",
+  "filled": true
+ },
+ {
+  "name": "windows-app-close",
+  "filled": true
+ },
+ {
+  "name": "windows-app-fullscreen",
+  "filled": true
+ },
+ {
+  "name": "windows-app-minimize",
+  "filled": true
+ },
+ {
+  "name": "windows-app-restore",
+  "filled": true
+ },
+ {
+  "name": "x",
+  "filled": true
+ },
+ {
+  "name": "x-small",
+  "filled": true
+ },
+ {
+  "name": "xbox",
+  "filled": true
+ },
+ {
+  "name": "xbox-a",
+  "filled": true
+ },
+ {
+  "name": "xbox-a-pressed",
+  "filled": true
+ },
+ {
+  "name": "xbox-a-unpressed",
+  "filled": true
+ },
+ {
+  "name": "xbox-b",
+  "filled": true
+ },
+ {
+  "name": "xbox-b-pressed",
+  "filled": true
+ },
+ {
+  "name": "xbox-b-unpressed",
+  "filled": true
+ },
+ {
+  "name": "xbox-dpad",
+  "filled": true
+ },
+ {
+  "name": "xbox-dpad-down",
+  "filled": true
+ },
+ {
+  "name": "xbox-dpad-left",
+  "filled": true
+ },
+ {
+  "name": "xbox-dpad-right",
+  "filled": true
+ },
+ {
+  "name": "xbox-dpad-up",
+  "filled": true
+ },
+ {
+  "name": "xbox-lb",
+  "filled": true
+ },
+ {
+  "name": "xbox-lt",
+  "filled": true
+ },
+ {
+  "name": "xbox-menu",
+  "filled": true
+ },
+ {
+  "name": "xbox-rb",
+  "filled": true
+ },
+ {
+  "name": "xbox-rt",
+  "filled": true
+ },
+ {
+  "name": "xbox-stick-left",
+  "filled": true
+ },
+ {
+  "name": "xbox-stick-left-directional",
+  "filled": true
+ },
+ {
+  "name": "xbox-stick-left-horizontal",
+  "filled": true
+ },
+ {
+  "name": "xbox-stick-left-vertical",
+  "filled": true
+ },
+ {
+  "name": "xbox-stick-right",
+  "filled": true
+ },
+ {
+  "name": "xbox-stick-right-directional",
+  "filled": true
+ },
+ {
+  "name": "xbox-stick-right-horizontal",
+  "filled": true
+ },
+ {
+  "name": "xbox-stick-right-vertical",
+  "filled": true
+ },
+ {
+  "name": "xbox-view",
+  "filled": true
+ },
+ {
+  "name": "xbox-x",
+  "filled": true
+ },
+ {
+  "name": "xbox-x-pressed",
+  "filled": true
+ },
+ {
+  "name": "xbox-x-unpressed",
+  "filled": true
+ },
+ {
+  "name": "xbox-y",
+  "filled": true
+ },
+ {
+  "name": "xbox-y-pressed",
+  "filled": true
+ },
+ {
+  "name": "xbox-y-unpressed",
+  "filled": true
+ },
+ {
+  "name": "xr-headset",
+  "filled": true
+ },
+ {
+  "name": "youtube",
+  "filled": true
+ }
+]

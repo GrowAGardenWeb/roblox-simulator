@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" style="--app-h: 100%; background: #fff">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Robiox</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <script src="/draco_decoder.js"></script>
+    <script>
+      // The engine does `await DracoDecoderModule()` once per mesh. Older
+      // Emscripten Draco builds return a self-resolving thenable (then(cb)
+      // calls cb(Module) and Module still has .then), so that await loops
+      // forever and freezes the main thread. Hand out a real Promise of a
+      // single shared instance with any .then stripped; this also avoids
+      // instantiating the wasm again for every mesh.
+      ;(function () {
+        var create = window.DracoDecoderModule
+        if (!create) return
+        var ready = null
+        window.DracoDecoderModule = function (opts) {
+          if (!ready) {
+            ready = new Promise(function (resolve) {
+              create(opts).then(function (mod) {
+                if (mod && typeof mod.then === 'function') delete mod.then
+                resolve(mod)
+              })
+            })
+          }
+          return ready
+        }
+      })()
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
