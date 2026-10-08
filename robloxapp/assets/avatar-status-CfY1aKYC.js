@@ -1,1 +1,0 @@
-import{t as e}from"./index-BDs-n3Dn.js";export{e as avatarStatus};
