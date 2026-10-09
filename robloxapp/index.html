@@ -14,6 +14,10 @@
     <link rel="apple-touch-icon" href="/robloxapp/favicon.png" />
     <script src="/robloxapp/draco_decoder.js"></script>
     <script>
+      // Apply the saved theme before first paint so dark mode doesn't flash white.
+      try { localStorage.getItem('theme.v1') === 'dark' && document.documentElement.classList.add('dark') } catch (e) {}
+    </script>
+    <script>
       // The engine does `await DracoDecoderModule()` once per mesh. Older
       // Emscripten Draco builds return a self-resolving thenable (then(cb)
       // calls cb(Module) and Module still has .then), so that await loops
@@ -36,13 +40,13 @@
           return ready
         }
       })()
-    </script>
+    </script>
     <meta name="description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Figma Make App">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-Er6yuoLO.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-DBXqsAq0.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-CNi8IEIL.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-DB_Lkggx.css">
   </head>
   <body>
     <div id="root"></div>
