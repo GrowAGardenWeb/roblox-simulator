@@ -13,7 +13,7 @@ const STRIPE_API_VERSION = '2026-03-25.dahlia; custom_checkout_payment_form_prev
 // Fill in headless.price once the Headless Gifter product/price exists in Stripe.
 const PRODUCTS = {
   mobile: { price: 'price_1UOVQQFva0TXUXnXNyHGeQDm', mode: 'subscription' },
-  headless: { price: 'price_REPLACE_ME', mode: 'payment' },
+  headless: { price: 'price_1UOVSIFva0TXUXnXTPQT9iq6', mode: 'payment' },
 };
 
 const ALLOWED_ORIGINS = new Set([
