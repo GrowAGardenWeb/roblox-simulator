@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" style="--app-h: 100%; background: #fff">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Robiox</title>
+    <link rel="icon" type="image/png" href="/robloxapp/favicon.png" />
+    <link rel="apple-touch-icon" href="/robloxapp/favicon.png" />
+    <script src="/robloxapp/draco_decoder.js"></script>
+    <script>
+      // Apply the saved theme before first paint so dark mode doesn't flash white.
+      try { localStorage.getItem('theme.v1') === 'dark' && document.documentElement.classList.add('dark') } catch (e) {}
+    </script>
+    <script>
+      // The engine does `await DracoDecoderModule()` once per mesh. Older
+      // Emscripten Draco builds return a self-resolving thenable (then(cb)
+      // calls cb(Module) and Module still has .then), so that await loops
+      // forever and freezes the main thread. Hand out a real Promise of a
+      // single shared instance with any .then stripped; this also avoids
+      // instantiating the wasm again for every mesh.
+      ;(function () {
+        var create = window.DracoDecoderModule
+        if (!create) return
+        var ready = null
+        window.DracoDecoderModule = function (opts) {
+          if (!ready) {
+            ready = new Promise(function (resolve) {
+              create(opts).then(function (mod) {
+                if (mod && typeof mod.then === 'function') delete mod.then
+                resolve(mod)
+              })
+            })
+          }
+          return ready
+        }
+      })()
+    </script>
+    <meta name="description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:title" content="Figma Make App">
+    <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
+    <script type="module" crossorigin src="/robloxapp/assets/index-D45W5eIv.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-Bphe83Pg.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
