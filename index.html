@@ -25,6 +25,8 @@
   --warn:#ffc33d;
   --warn-bg:rgba(255,195,61,.09);
   --warn-border:rgba(255,195,61,.3);
+  --glass-bg:rgba(255,255,255,.055);
+  --glass-border:rgba(255,255,255,.14);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -56,8 +58,23 @@ a{color:inherit;text-decoration:none}
   background-size:100% 900px;
 }
 
+/* glass background blobs — give the backdrop-blur glass surfaces something colorful to refract */
+.bg-blob{position:fixed;z-index:0;pointer-events:none;border-radius:50%;filter:blur(110px)}
+.blob-a{width:480px;height:480px;background:rgba(10,132,255,.4);top:-180px;left:-160px}
+.blob-b{width:420px;height:420px;background:rgba(124,61,255,.32);top:140px;right:-180px}
+.blob-c{width:440px;height:440px;background:rgba(255,92,168,.2);bottom:-220px;left:15%}
+
+/* liquid-glass surface */
+.glass{
+  background:var(--glass-bg);
+  -webkit-backdrop-filter:blur(26px) saturate(170%);
+  backdrop-filter:blur(26px) saturate(170%);
+  border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22), inset 0 0 0 1px rgba(255,255,255,.03), 0 14px 34px -14px rgba(0,0,0,.5);
+}
+
 /* NAV */
-.nav{position:sticky;top:0;z-index:100;background:rgba(7,7,12,.75);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,7,12,.55);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border-bottom:1px solid var(--glass-border);box-shadow:inset 0 -1px 0 rgba(255,255,255,.05)}
 .nav-inner{max-width:720px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:11px}
 .nav-logo{width:38px;height:38px;border-radius:11px;overflow:hidden;background:linear-gradient(135deg,var(--blue),#7c3dff);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
 .nav-logo img{width:100%;height:100%;object-fit:cover;display:block}
@@ -76,12 +93,14 @@ a{color:inherit;text-decoration:none}
 .hero h1{font-size:clamp(28px,6vw,40px);font-weight:800;line-height:1.08;letter-spacing:-.02em}
 .hero-note{display:flex;align-items:center;gap:7px;margin-top:14px;font-size:12.5px;color:var(--text-dim)}
 .hero-note b{color:var(--warn)}
+.ic-warn{color:var(--warn);flex-shrink:0}
 
 /* SEARCH */
 .search-wrap{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 20px 16px}
 .search-row{display:flex;gap:10px}
 .search-input{
-  flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  flex:1;background:var(--glass-bg);-webkit-backdrop-filter:blur(26px) saturate(170%);backdrop-filter:blur(26px) saturate(170%);
+  border:1px solid var(--glass-border);border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
   padding:14px 18px;color:var(--text);font-size:15px;outline:none;transition:border-color .15s;
 }
 .search-input::placeholder{color:var(--text-faint)}
@@ -96,7 +115,8 @@ a{color:inherit;text-decoration:none}
 .pills-wrap{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 20px 30px;overflow-x:auto}
 .pills-row{display:flex;gap:9px;width:max-content}
 .pill{
-  background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
+  background:var(--glass-bg);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);
+  border:1px solid var(--glass-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.15);color:var(--text-dim);
   font-size:13px;font-weight:600;padding:9px 16px;border-radius:30px;cursor:pointer;
   white-space:nowrap;transition:border-color .15s,color .15s,background .15s;
 }
@@ -109,33 +129,40 @@ a{color:inherit;text-decoration:none}
 .app-list{display:flex;flex-direction:column;gap:16px}
 
 .app-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:22px;
+  border-radius:24px;
   padding:20px;transition:border-color .15s,transform .15s;
 }
 .app-card:hover{border-color:var(--border-hi);transform:translateY(-2px)}
 .app-top{display:flex;gap:13px;align-items:flex-start}
 .app-icon{
-  width:60px;height:60px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,var(--blue),#7c3dff);font-weight:800;font-size:22px;overflow:hidden;
+  width:62px;height:62px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--blue),#7c3dff);overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3);
 }
 .app-icon img{width:100%;height:100%;object-fit:cover;display:block}
 .app-icon.pink{background:linear-gradient(135deg,#ff5ca8,#ff9f45)}
 .app-meta{flex:1;min-width:0}
-.app-name-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.app-name{font-size:16.5px;font-weight:800}
-.app-price{
-  background:var(--blue);color:#fff;font-size:13px;font-weight:700;
-  padding:6px 14px;border-radius:20px;white-space:nowrap;flex-shrink:0;
+.app-name{font-size:16.5px;font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.app-tagline{font-size:13px;color:var(--text-dim);margin-top:2px}
+.larp-chip{
+  display:inline-flex;align-items:center;gap:4px;color:var(--warn);background:var(--warn-bg);
+  border:1px solid var(--warn-border);font-size:9.5px;font-weight:700;letter-spacing:.04em;
+  padding:3px 8px;border-radius:7px;flex-shrink:0;
 }
-.app-rating{display:flex;align-items:center;gap:5px;margin-top:3px;font-size:12.5px;color:var(--text-dim)}
-.app-stars{color:var(--star);letter-spacing:1px;font-size:11px}
-.app-desc{font-size:13.5px;color:var(--text-dim);line-height:1.55;margin-top:9px}
-.app-badges{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
-.badge{
-  background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);
-  font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:5px 10px;border-radius:7px;
-}
-.badge.larp{color:var(--warn);border-color:var(--warn-border);background:var(--warn-bg)}
+.app-desc{font-size:13.5px;color:var(--text-dim);line-height:1.55;margin-top:12px}
+
+.app-buy-row{display:flex;align-items:center;gap:12px;margin-top:16px}
+.app-price-lg{font-size:24px;font-weight:800;white-space:nowrap}
+.app-price-lg span{font-size:13px;font-weight:600;color:var(--text-dim);margin-left:2px}
+.app-cta{flex:1;background:var(--blue);color:#fff;border:none;border-radius:13px;padding:13px;font-size:14.5px;font-weight:700;cursor:pointer;transition:background .15s}
+.app-cta:hover{background:var(--blue-hi)}
+.secure-line{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11.5px;color:var(--text-faint)}
+
+.app-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--border)}
+.stat-label{font-size:9.5px;font-weight:700;letter-spacing:.07em;color:var(--text-faint);margin-bottom:5px}
+.stat-value{font-size:14px;font-weight:700;display:flex;align-items:center;gap:4px}
+.stat-stars{display:flex;gap:1px;margin-top:4px}
+.stat-sub{font-size:11.5px;color:var(--text-dim);margin-top:1px}
 
 .shots-row{display:flex;gap:10px;margin-top:16px;overflow-x:auto}
 .shot{
@@ -150,9 +177,6 @@ a{color:inherit;text-decoration:none}
 .shot5{background:linear-gradient(160deg,#3a1c2c,#ff5ca8 140%)}
 .shot6{background:linear-gradient(160deg,#2c2c1c,#ffd43d 140%)}
 
-.app-cta{width:100%;margin-top:16px;background:var(--blue);color:#fff;border:none;border-radius:13px;padding:13px;font-size:14.5px;font-weight:700;cursor:pointer;transition:background .15s}
-.app-cta:hover{background:var(--blue-hi)}
-
 /* FOOTER */
 footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:26px 20px;text-align:center}
 footer p{font-size:11px;color:var(--text-faint);line-height:1.75;max-width:680px;margin:0 auto}
@@ -161,7 +185,7 @@ footer strong{color:#7a7a86}
 /* MODAL */
 .overlay{position:fixed;inset:0;z-index:300;background:rgba(2,2,4,.82);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px}
 .overlay.open{display:flex}
-.modal{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--border-hi);border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:15px;position:relative}
+.modal{width:100%;max-width:400px;background:#121219;-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);border:1px solid var(--glass-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 20px 50px -14px rgba(0,0,0,.6);border-radius:24px;padding:26px;display:flex;flex-direction:column;gap:15px;position:relative}
 .modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center}
 .modal-close:hover{color:var(--text)}
 .modal h3{font-size:18px;text-align:center;font-weight:800}
@@ -184,6 +208,9 @@ footer strong{color:#7a7a86}
 </style>
 </head>
 <body>
+<div class="bg-blob blob-a"></div>
+<div class="bg-blob blob-b"></div>
+<div class="bg-blob blob-c"></div>
 <div class="stars"></div>
 
 <div class="nav">
@@ -204,7 +231,7 @@ footer strong{color:#7a7a86}
 <!-- HERO -->
 <header class="hero">
   <h1>LARP APPS FOR<br>ROBLOX CREATORS</h1>
-  <div class="hero-note"><b>⚠️ 100% LARP</b> — every app below is a fake simulator. No real items, Robux, or account changes, ever.</div>
+  <div class="hero-note"><svg class="ic-warn" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3L2 20h20L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1" fill="currentColor"/></svg><b>100% LARP</b> — every app below is a fake simulator. No real items, Robux, or account changes, ever.</div>
 </header>
 
 <!-- SEARCH -->
@@ -233,58 +260,108 @@ footer strong{color:#7a7a86}
   <h2>Featured larp apps</h2>
   <div class="app-list">
 
-    <article class="app-card" data-name="roblox mobile larp" data-tags="mobile avatar">
+    <article class="app-card glass" data-name="roblox mobile larp" data-tags="mobile avatar">
       <div class="app-top">
-        <div class="app-icon">📱</div>
+        <div class="app-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="3" stroke="white" stroke-width="1.6"/><path d="M10 19h4" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
         <div class="app-meta">
-          <div class="app-name-row">
-            <div>
-              <div class="app-name">Roblox Mobile LARP</div>
-              <div class="app-rating"><span class="app-stars">★★★★★</span> 5.0</div>
-            </div>
-            <div class="app-price">$10/mo</div>
+          <div class="app-name">
+            Roblox Mobile LARP
+            <span class="larp-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M12 3L2 20h20L12 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1.1" fill="currentColor"/></svg>LARP ONLY</span>
           </div>
-          <div class="app-desc">A pixel-accurate fake mobile Roblox app shell — catalog, avatar editor, friends list and gifting flows, rebuilt for your phone.</div>
-          <div class="app-badges">
-            <div class="badge">MOBILE</div>
-            <div class="badge">iOS &amp; ANDROID</div>
-            <div class="badge larp">⚠️ LARP ONLY</div>
-          </div>
+          <div class="app-tagline">Browse, "gift" &amp; flex — the fake way</div>
         </div>
       </div>
+      <div class="app-desc">A pixel-accurate fake mobile Roblox app shell — catalog, avatar editor, friends list and gifting flows, rebuilt for your phone. No real Roblox account is ever accessed.</div>
+
+      <div class="app-buy-row">
+        <div class="app-price-lg">$10<span>/mo</span></div>
+        <button class="app-cta" onclick="openCheckout('Roblox Mobile LARP','$10/month')">Subscribe</button>
+      </div>
+      <div class="secure-line">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.6"/></svg>
+        Checkout via Discord ticket · crypto or card
+      </div>
+
+      <div class="app-stats">
+        <div class="stat">
+          <div class="stat-label">312 RATINGS</div>
+          <div class="stat-value">5.0</div>
+          <div class="stat-stars">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg><svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg><svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg><svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg><svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">DEVELOPER</div>
+          <div class="stat-value">@carlatosisback
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#0a84ff"><path d="M12 2l2.4 1.9 3-.5 1 2.9 2.9 1-.5 3L23 12l-1.9 2.4.5 3-2.9 1-1 2.9-3-.5L12 23l-2.4-1.9-3 .5-1-2.9-2.9-1 .5-3L1 12l1.9-2.4-.5-3 2.9-1 1-2.9 3 .5L12 2z"/><path d="M8.5 12.2l2.2 2.3 4.6-5" stroke="white" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">PLATFORM</div>
+          <div class="stat-value">iOS &amp; Android</div>
+          <div class="stat-sub">Mobile</div>
+        </div>
+      </div>
+
       <div class="shots-row">
         <div class="shot shot1"><span>Browse the catalog</span></div>
         <div class="shot shot2"><span>Fake avatar editor</span></div>
         <div class="shot shot3"><span>Fake "gift sent" flow</span></div>
       </div>
-      <button class="app-cta" onclick="openCheckout('Roblox Mobile LARP','$10/month')">Get — $10/mo</button>
     </article>
 
-    <article class="app-card" data-name="headless gifter" data-tags="mobile gifting vip">
+    <article class="app-card glass" data-name="headless gifter" data-tags="mobile gifting vip">
       <div class="app-top">
-        <div class="app-icon pink">🎁</div>
+        <div class="app-icon pink">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M20 12v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8" stroke="white" stroke-width="1.6"/><rect x="2" y="7" width="20" height="5" rx="1" stroke="white" stroke-width="1.6"/><path d="M12 7v15M12 7c-1.4-3-6-3-6 0s4.4 0 6 0zm0 0c1.4-3 6-3 6 0s-4.4 0-6 0z" stroke="white" stroke-width="1.6"/></svg>
+        </div>
         <div class="app-meta">
-          <div class="app-name-row">
-            <div>
-              <div class="app-name">Headless Gifter</div>
-              <div class="app-rating"><span class="app-stars">★★★★★</span> 5.0</div>
-            </div>
-            <div class="app-price">$20</div>
+          <div class="app-name">
+            Headless Gifter
+            <span class="larp-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M12 3L2 20h20L12 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1.1" fill="currentColor"/></svg>LARP ONLY</span>
           </div>
-          <div class="app-desc">Simulate gifting the Headless Horseman to any username, with a realistic catalog page and "sent!" confirmation. Pay once, keep forever.</div>
-          <div class="app-badges">
-            <div class="badge">MOBILE</div>
-            <div class="badge">VIP</div>
-            <div class="badge larp">⚠️ LARP ONLY</div>
-          </div>
+          <div class="app-tagline">Gift the Headless — the fake way</div>
         </div>
       </div>
+      <div class="app-desc">Simulate gifting the Headless Horseman to any username, with a realistic catalog page and "sent!" confirmation. Pay once, keep forever. No real item is ever sent.</div>
+
+      <div class="app-buy-row">
+        <div class="app-price-lg">$20<span>one-time</span></div>
+        <button class="app-cta" onclick="openCheckout('Headless Gifter','$20 one-time')">Get</button>
+      </div>
+      <div class="secure-line">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.6"/></svg>
+        Checkout via Discord ticket · crypto or card
+      </div>
+
+      <div class="app-stats">
+        <div class="stat">
+          <div class="stat-label">189 RATINGS</div>
+          <div class="stat-value">5.0</div>
+          <div class="stat-stars">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg><svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg><svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg><svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg><svg width="10" height="10" viewBox="0 0 24 24" fill="#ffb400"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.9L5.8 21l1.6-7L2 9.2l7.1-.6L12 2z"/></svg>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">DEVELOPER</div>
+          <div class="stat-value">@carlatosisback
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#0a84ff"><path d="M12 2l2.4 1.9 3-.5 1 2.9 2.9 1-.5 3L23 12l-1.9 2.4.5 3-2.9 1-1 2.9-3-.5L12 23l-2.4-1.9-3 .5-1-2.9-2.9-1 .5-3L1 12l1.9-2.4-.5-3 2.9-1 1-2.9 3 .5L12 2z"/><path d="M8.5 12.2l2.2 2.3 4.6-5" stroke="white" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">PLATFORM</div>
+          <div class="stat-value">iOS &amp; Android</div>
+          <div class="stat-sub">Mobile</div>
+        </div>
+      </div>
+
       <div class="shots-row">
         <div class="shot shot4"><span>Headless item page</span></div>
         <div class="shot shot5"><span>Enter any username</span></div>
         <div class="shot shot6"><span>"Sent!" confirmation</span></div>
       </div>
-      <button class="app-cta" onclick="openCheckout('Headless Gifter','$20 one-time')">Get — $20 one-time</button>
     </article>
 
   </div>
@@ -305,7 +382,8 @@ footer strong{color:#7a7a86}
     <h3 id="checkoutTitle">Get Access</h3>
     <div class="modal-price" id="checkoutPrice"></div>
     <div class="warning-banner">
-      ⚠️ <span><b>Please read before continuing:</b> this app is a <b>FAKE LARP / SIMULATOR</b> made for entertainment only. No real Robux, items, or Roblox account changes ever occur. You are paying only for access to the roleplay experience — not for anything real.</span>
+      <svg class="ic-warn" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3L2 20h20L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1" fill="currentColor"/></svg>
+      <span><b>Please read before continuing:</b> this app is a <b>FAKE LARP / SIMULATOR</b> made for entertainment only. No real Robux, items, or Roblox account changes ever occur. You are paying only for access to the roleplay experience — not for anything real.</span>
     </div>
     <div class="steps">
       <div class="step"><div class="step-num">1</div><div class="step-text">Join our Discord — <b>discord.gg/moneyscripts</b></div></div>
