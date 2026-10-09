@@ -3,248 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roblox Mobile LARP — VIP Access · MoneyScripts</title>
-<meta name="description" content="Roblox Mobile LARP and Headless Gifter — VIP access passes to fully disclosed fake Roblox simulators. No real items, Robux, or account changes, ever.">
+<title>MoneyScripts — Roblox LARP Apps</title>
+<meta name="description" content="Roblox Mobile LARP and Headless Gifter — fully disclosed fake Roblox simulators, App Store style. No real items, Robux, or account changes, ever.">
 <link rel="icon" href="favicon.ico">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root{
-  --bg:#060605;
-  --surface:#0e0d0b;
-  --surface-2:#161411;
-  --surface-3:#1e1b16;
-  --border:rgba(232,196,104,.14);
-  --border-hi:rgba(232,196,104,.32);
-  --text:#f6f3ea;
-  --text-dim:#a39d8c;
-  --text-faint:#5c584c;
-  --gold:#e8c468;
-  --gold-bright:#ffe3a3;
-  --gold-deep:#a8842f;
-  --ink:#c2402f;
+  --bg:#07070c;
+  --surface:#121219;
+  --surface-2:#191922;
+  --surface-3:#21212c;
+  --border:rgba(255,255,255,.08);
+  --border-hi:rgba(255,255,255,.16);
+  --text:#f5f5f7;
+  --text-dim:#92929e;
+  --text-faint:#55555f;
+  --blue:#0a84ff;
+  --blue-hi:#3d9bff;
+  --star:#ffb400;
+  --warn:#ffc33d;
+  --warn-bg:rgba(255,195,61,.09);
+  --warn-border:rgba(255,195,61,.3);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   background:var(--bg);
   color:var(--text);
-  font-family:'Inter',system-ui,sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter',system-ui,sans-serif;
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
-  background-image:radial-gradient(circle at 15% 8%, rgba(232,196,104,.08), transparent 40%),
-                    radial-gradient(circle at 85% 0%, rgba(232,196,104,.05), transparent 35%);
+  position:relative;
 }
-h1,h2,h3{font-family:'Space Grotesk','Inter',system-ui,sans-serif;letter-spacing:-.02em}
-.mono{font-family:'Space Mono',monospace}
-.display{font-family:'Bebas Neue',sans-serif;letter-spacing:.06em}
-a{color:inherit}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
 
-/* grain */
-.grain{
-  position:fixed;inset:0;pointer-events:none;opacity:.045;mix-blend-mode:overlay;z-index:1;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* starfield */
+.stars{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:
+    radial-gradient(1.4px 1.4px at 10% 15%, #fff 0, transparent 60%),
+    radial-gradient(1.2px 1.2px at 30% 45%, #fff 0, transparent 60%),
+    radial-gradient(1.6px 1.6px at 55% 10%, #fff 0, transparent 60%),
+    radial-gradient(1.2px 1.2px at 70% 60%, #fff 0, transparent 60%),
+    radial-gradient(1.4px 1.4px at 85% 25%, #fff 0, transparent 60%),
+    radial-gradient(1.2px 1.2px at 20% 75%, #fff 0, transparent 60%),
+    radial-gradient(1.6px 1.6px at 45% 85%, #fff 0, transparent 60%),
+    radial-gradient(1.2px 1.2px at 92% 70%, #fff 0, transparent 60%),
+    radial-gradient(1.2px 1.2px at 5% 55%, #fff 0, transparent 60%),
+    radial-gradient(1.4px 1.4px at 62% 35%, #fff 0, transparent 60%);
+  background-size:100% 900px;
 }
 
 /* NAV */
-.nav{
-  position:sticky;top:0;z-index:100;
-  background:rgba(6,6,5,.78);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-}
-.nav-inner{max-width:1080px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:12px}
-.nav-logo{width:30px;height:30px;border-radius:8px;overflow:hidden;background:var(--surface-2);flex-shrink:0;border:1px solid var(--border)}
+.nav{position:sticky;top:0;z-index:100;background:rgba(7,7,12,.75);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:720px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:11px}
+.nav-logo{width:38px;height:38px;border-radius:11px;overflow:hidden;background:linear-gradient(135deg,var(--blue),#7c3dff);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
 .nav-logo img{width:100%;height:100%;object-fit:cover;display:block}
-.nav-word{font-weight:700;font-size:15.5px;letter-spacing:-.01em}
-.nav-word b{color:var(--gold)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-names{display:flex;flex-direction:column;gap:1px}
+.nav-word{font-weight:800;font-size:15px;letter-spacing:-.01em}
+.nav-sub{font-size:10px;font-weight:700;color:var(--text-faint);letter-spacing:.08em}
+.nav-right{margin-left:auto}
 .nav-discord{
-  display:flex;align-items:center;justify-content:center;width:34px;height:34px;
-  background:var(--surface-2);border:1px solid var(--border);border-radius:9px;transition:border-color .15s,transform .15s;
+  width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#5865f2,#7983f5);
+  display:flex;align-items:center;justify-content:center;transition:transform .15s;
 }
-.nav-discord:hover{border-color:var(--border-hi);transform:translateY(-1px)}
+.nav-discord:hover{transform:scale(1.06)}
 
 /* HERO */
-.hero{position:relative;padding:96px 24px 64px;text-align:center}
-.seal{
-  width:92px;height:92px;margin:0 auto 26px;border-radius:50%;position:relative;
-  background:conic-gradient(from 90deg,var(--gold-deep),var(--gold-bright),var(--gold-deep),var(--gold),var(--gold-deep));
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 0 1px rgba(232,196,104,.25),0 20px 50px -18px rgba(232,196,104,.5);
-}
-.seal::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--bg);border:1px dashed rgba(232,196,104,.5)}
-.seal-text{position:relative;z-index:1;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.14em;color:var(--gold-bright);line-height:1.15;text-align:center}
-.eyebrow{
-  display:inline-flex;align-items:center;gap:8px;color:var(--text-dim);
-  font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
-  margin-bottom:20px;
-}
-.eyebrow::before,.eyebrow::after{content:"";width:22px;height:1px;background:var(--border-hi)}
-.hero h1{font-size:clamp(42px,7.5vw,74px);font-weight:800;line-height:1.0;margin-bottom:20px}
-.hero h1 .gold{color:var(--gold);font-style:italic}
-.hero-sub{font-size:16.5px;color:var(--text-dim);line-height:1.65;max-width:520px;margin:0 auto 34px}
-.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:'Space Grotesk','Inter',sans-serif;font-weight:700;font-size:14.5px;
-  padding:14px 28px;border-radius:10px;cursor:pointer;border:1px solid transparent;
-  text-decoration:none;transition:transform .15s,box-shadow .15s,background .15s,border-color .15s;
-}
-.btn-gold{background:linear-gradient(100deg,var(--gold-deep),var(--gold-bright));color:#1a1300;box-shadow:0 10px 26px -12px rgba(232,196,104,.65)}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 32px -12px rgba(232,196,104,.8)}
-.btn-line{background:transparent;border-color:var(--border-hi);color:var(--text)}
-.btn-line:hover{background:var(--surface-2)}
+.hero{position:relative;z-index:1;padding:40px 20px 28px;max-width:720px;margin:0 auto}
+.hero h1{font-size:clamp(28px,6vw,40px);font-weight:800;line-height:1.08;letter-spacing:-.02em}
+.hero-note{display:flex;align-items:center;gap:7px;margin-top:14px;font-size:12.5px;color:var(--text-dim)}
+.hero-note b{color:var(--warn)}
 
-/* TRUST STRIP */
-.trust{padding:4px 24px 76px}
-.trust-inner{
-  max-width:760px;margin:0 auto;display:flex;gap:16px;align-items:flex-start;
-  background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 24px;
+/* SEARCH */
+.search-wrap{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 20px 16px}
+.search-row{display:flex;gap:10px}
+.search-input{
+  flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:14px 18px;color:var(--text);font-size:15px;outline:none;transition:border-color .15s;
 }
-.trust-ic{
-  width:34px;height:34px;flex-shrink:0;border-radius:9px;background:var(--surface-3);
-  display:flex;align-items:center;justify-content:center;color:var(--gold);
+.search-input::placeholder{color:var(--text-faint)}
+.search-input:focus{border-color:var(--border-hi)}
+.search-btn{
+  width:52px;height:52px;flex-shrink:0;border-radius:16px;border:none;cursor:pointer;
+  background:var(--blue);display:flex;align-items:center;justify-content:center;transition:background .15s;
 }
-.trust h3{font-size:14.5px;margin-bottom:5px;color:var(--text)}
-.trust p{font-size:13px;color:var(--text-dim);line-height:1.65}
-.trust strong{color:var(--gold-bright)}
+.search-btn:hover{background:var(--blue-hi)}
 
-/* SECTION HEAD */
-.sec-head{text-align:center;max-width:540px;margin:0 auto 46px}
-.sec-tag{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px}
-.sec-head h2{font-size:clamp(26px,4vw,36px);font-weight:800}
-
-/* PASSES */
-.passes{padding:10px 24px 110px}
-.pass-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;max-width:940px;margin:0 auto}
-@media(max-width:760px){.pass-grid{grid-template-columns:1fr}}
-
-.pass{
-  position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;
-  overflow:hidden;transition:transform .2s,border-color .2s;
+/* PILLS */
+.pills-wrap{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 20px 30px;overflow-x:auto}
+.pills-row{display:flex;gap:9px;width:max-content}
+.pill{
+  background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
+  font-size:13px;font-weight:600;padding:9px 16px;border-radius:30px;cursor:pointer;
+  white-space:nowrap;transition:border-color .15s,color .15s,background .15s;
 }
-.pass:hover{transform:translateY(-5px);border-color:var(--border-hi)}
-.pass-foil{
-  height:7px;width:100%;
-  background:linear-gradient(90deg,#e8c468,#ff9fd0,#8fd9ff,#c6ff8f,#e8c468,#ff9fd0);
-  background-size:300% 100%;
-  animation:foil 6s linear infinite;
-}
-@keyframes foil{0%{background-position:0% 0}100%{background-position:300% 0}}
+.pill:hover{color:var(--text);border-color:var(--border-hi)}
+.pill.active{background:var(--text);color:#000;border-color:var(--text)}
 
-.pass-watermark{
-  position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.05;
-  background-image:repeating-linear-gradient(-28deg,transparent 0 46px, rgba(232,196,104,.6) 46px 47px);
-}
+/* FEATURED */
+.featured{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:4px 20px 60px}
+.featured h2{font-size:19px;font-weight:800;margin-bottom:16px}
+.app-list{display:flex;flex-direction:column;gap:16px}
 
-.pass-stamp{
-  position:absolute;top:60px;right:-34px;z-index:2;
-  width:160px;text-align:center;padding:7px 0;
-  transform:rotate(18deg);
-  border:2px solid rgba(194,64,47,.75);border-radius:6px;
-  color:rgba(194,64,47,.85);font-family:'Space Mono',monospace;font-weight:700;
-  font-size:11px;letter-spacing:.12em;line-height:1.5;
-  mix-blend-mode:screen;
-  box-shadow:inset 0 0 0 1px rgba(194,64,47,.3);
+.app-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:22px;
+  padding:20px;transition:border-color .15s,transform .15s;
 }
+.app-card:hover{border-color:var(--border-hi);transform:translateY(-2px)}
+.app-top{display:flex;gap:13px;align-items:flex-start}
+.app-icon{
+  width:60px;height:60px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--blue),#7c3dff);font-weight:800;font-size:22px;overflow:hidden;
+}
+.app-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.app-icon.pink{background:linear-gradient(135deg,#ff5ca8,#ff9f45)}
+.app-meta{flex:1;min-width:0}
+.app-name-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.app-name{font-size:16.5px;font-weight:800}
+.app-price{
+  background:var(--blue);color:#fff;font-size:13px;font-weight:700;
+  padding:6px 14px;border-radius:20px;white-space:nowrap;flex-shrink:0;
+}
+.app-rating{display:flex;align-items:center;gap:5px;margin-top:3px;font-size:12.5px;color:var(--text-dim)}
+.app-stars{color:var(--star);letter-spacing:1px;font-size:11px}
+.app-desc{font-size:13.5px;color:var(--text-dim);line-height:1.55;margin-top:9px}
+.app-badges{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+.badge{
+  background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);
+  font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:5px 10px;border-radius:7px;
+}
+.badge.larp{color:var(--warn);border-color:var(--warn-border);background:var(--warn-bg)}
 
-.pass-body{position:relative;z-index:1;padding:26px 26px 4px}
-.pass-kicker{
-  display:inline-flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;
-  font-size:10.5px;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;
-  border:1px solid var(--border-hi);border-radius:20px;padding:4px 11px;margin-bottom:16px;
+.shots-row{display:flex;gap:10px;margin-top:16px;overflow-x:auto}
+.shot{
+  width:118px;aspect-ratio:9/16;flex-shrink:0;border-radius:14px;position:relative;overflow:hidden;
+  border:1px solid var(--border);display:flex;align-items:flex-end;padding:10px;
 }
-.pass-title{font-size:24px;font-weight:700;margin-bottom:10px}
-.pass-desc{font-size:13.5px;color:var(--text-dim);line-height:1.6;margin-bottom:16px}
-.pass-features{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:6px}
-.pass-features li{font-size:12.5px;color:var(--text-dim);display:flex;gap:8px;align-items:flex-start}
-.pass-features li::before{content:"◆";color:var(--gold);font-size:8px;margin-top:4px;flex-shrink:0}
+.shot span{font-size:11px;font-weight:700;color:#fff;line-height:1.3;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.shot1{background:linear-gradient(160deg,#1c2c52,#0a84ff 140%)}
+.shot2{background:linear-gradient(160deg,#2a1c4a,#7c3dff 140%)}
+.shot3{background:linear-gradient(160deg,#1c3a2c,#17c26b 140%)}
+.shot4{background:linear-gradient(160deg,#4a2a1c,#ff8a3d 140%)}
+.shot5{background:linear-gradient(160deg,#3a1c2c,#ff5ca8 140%)}
+.shot6{background:linear-gradient(160deg,#2c2c1c,#ffd43d 140%)}
 
-.pass-perf{position:relative;height:0;margin:22px 0 0;border-top:2px dashed var(--border-hi)}
-.pass-perf::before,.pass-perf::after{
-  content:"";position:absolute;top:-11px;width:22px;height:22px;border-radius:50%;background:var(--bg);
-}
-.pass-perf::before{left:-37px}
-.pass-perf::after{right:-37px}
-
-.pass-stub{position:relative;z-index:1;padding:22px 26px 26px;display:flex;flex-direction:column;gap:14px}
-.pass-price-row{display:flex;align-items:baseline;justify-content:space-between}
-.pass-price{font-family:'Bebas Neue',sans-serif;font-size:46px;color:var(--gold-bright);letter-spacing:.02em;line-height:1}
-.pass-price span{font-family:'Space Mono',monospace;font-size:12px;color:var(--text-dim);letter-spacing:0;margin-left:6px}
-.pass-serial{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-faint);letter-spacing:.06em;text-align:right}
-.pass-stub .btn{width:100%;justify-content:center}
-.pass-barcode{
-  height:30px;margin-top:4px;border-radius:4px;opacity:.55;
-  background:repeating-linear-gradient(90deg,var(--text-dim) 0 2px, transparent 2px 5px, var(--text-dim) 5px 6px, transparent 6px 10px, var(--text-dim) 10px 13px, transparent 13px 15px);
-}
-
-/* FAQ */
-.faq{padding:10px 24px 110px}
-.faq-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
-details{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:4px 20px;transition:border-color .15s}
-details[open]{border-color:var(--border-hi)}
-summary{padding:16px 0;cursor:pointer;font-weight:700;font-size:14.5px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-size:19px;color:var(--gold);transition:transform .2s;flex-shrink:0}
-details[open] summary::after{transform:rotate(45deg)}
-details p{padding-bottom:18px;color:var(--text-dim);font-size:13.5px;line-height:1.65}
-
-/* CTA */
-.cta-banner{padding:0 24px 110px;text-align:center}
-.cta-inner{
-  max-width:680px;margin:0 auto;padding:52px 32px;border-radius:22px;position:relative;overflow:hidden;
-  background:var(--surface);border:1px solid var(--border-hi);
-}
-.cta-inner::before{
-  content:"";position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 0%, rgba(232,196,104,.14), transparent 60%);
-}
-.cta-inner h2{font-size:clamp(22px,4vw,30px);margin-bottom:10px;position:relative}
-.cta-inner p{color:var(--text-dim);margin-bottom:24px;font-size:13.5px;position:relative}
-.cta-inner .btn{position:relative}
+.app-cta{width:100%;margin-top:16px;background:var(--blue);color:#fff;border:none;border-radius:13px;padding:13px;font-size:14.5px;font-weight:700;cursor:pointer;transition:background .15s}
+.app-cta:hover{background:var(--blue-hi)}
 
 /* FOOTER */
-footer{border-top:1px solid var(--border);padding:30px 24px;text-align:center}
-footer p{font-size:11.5px;color:var(--text-faint);line-height:1.8;max-width:760px;margin:0 auto}
-footer strong{color:#86806d}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:26px 20px;text-align:center}
+footer p{font-size:11px;color:var(--text-faint);line-height:1.75;max-width:680px;margin:0 auto}
+footer strong{color:#7a7a86}
 
 /* MODAL */
-.overlay{position:fixed;inset:0;z-index:300;background:rgba(2,2,2,.82);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px}
+.overlay{position:fixed;inset:0;z-index:300;background:rgba(2,2,4,.82);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px}
 .overlay.open{display:flex}
-.modal{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border-hi);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:16px;position:relative}
-.modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s}
-.modal-close:hover{border-color:var(--border-hi);color:var(--text)}
-.modal-kicker{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;text-align:center}
-.modal h3{font-size:19px;text-align:center}
-.modal .modal-price{text-align:center;font-size:13px;color:var(--text-dim);font-weight:600;margin-top:-8px}
-.warning-banner{display:flex;gap:9px;align-items:flex-start;font-size:12px;line-height:1.55;color:var(--text-dim);background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:13px 14px}
-.warning-banner b{color:var(--gold-bright)}
+.modal{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--border-hi);border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:15px;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{color:var(--text)}
+.modal h3{font-size:18px;text-align:center;font-weight:800}
+.modal-price{text-align:center;font-size:13px;color:var(--text-dim);font-weight:600;margin-top:-9px}
+.warning-banner{display:flex;gap:9px;align-items:flex-start;font-size:12px;line-height:1.55;color:var(--text-dim);background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:14px;padding:13px 14px}
+.warning-banner b{color:var(--warn)}
 .steps{display:flex;flex-direction:column;gap:8px}
-.step{display:flex;gap:11px;align-items:center;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px 13px}
-.step-num{width:24px;height:24px;border-radius:50%;background:var(--gold);color:#1a1300;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step{display:flex;gap:11px;align-items:center;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:11px 13px}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .step-text{font-size:13px;font-weight:600}
-.step-text b{color:var(--gold-bright)}
+.step-text b{color:var(--blue-hi)}
 .confirm-row{display:flex;gap:9px;align-items:flex-start}
-.confirm-row input{margin-top:3px;width:16px;height:16px;flex-shrink:0;accent-color:var(--gold)}
+.confirm-row input{margin-top:3px;width:16px;height:16px;flex-shrink:0;accent-color:var(--blue)}
 .confirm-row label{font-size:12px;color:var(--text-dim);line-height:1.45;cursor:pointer}
-.discord-btn{width:100%;justify-content:center;background:#5865f2;color:#fff;text-decoration:none;border-radius:10px;padding:14px;font-weight:700;font-size:14px;display:flex;align-items:center;gap:9px;transition:background .15s;font-family:'Inter',sans-serif}
+.discord-btn{width:100%;justify-content:center;background:#5865f2;color:#fff;text-decoration:none;border-radius:13px;padding:14px;font-weight:700;font-size:14px;display:flex;align-items:center;gap:9px;transition:background .15s}
 .discord-btn:hover{background:#4752d9}
 .discord-btn[disabled]{opacity:.35;cursor:not-allowed;pointer-events:none}
 
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
-.reveal.in{opacity:1;transform:translateY(0)}
+.hidden{display:none !important}
 </style>
 </head>
 <body>
-<div class="grain"></div>
+<div class="stars"></div>
 
 <div class="nav">
   <div class="nav-inner">
-    <div class="nav-logo"><img src="icon.png" alt="" onerror="this.style.display='none'"></div>
-    <div class="nav-word">Money<b>Scripts</b></div>
+    <div class="nav-logo"><img src="icon.png" alt="" onerror="this.parentElement.textContent='M'"></div>
+    <div class="nav-names">
+      <div class="nav-word">MoneyScripts</div>
+      <div class="nav-sub">BY MONEYSCRIPTS.SHOP</div>
+    </div>
     <div class="nav-right">
       <a class="nav-discord" href="https://discord.gg/moneyscripts" target="_blank" aria-label="Discord">
-        <svg width="18" height="14" viewBox="0 0 71 55" fill="#e8c468"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.7.3a.2.2 0 0 0-.2.1 40.8 40.8 0 0 0-1.8 3.7 54 54 0 0 0-16.2 0A37.4 37.4 0 0 0 25.7.4a.2.2 0 0 0-.2-.1A58.4 58.4 0 0 0 11 4.9a.2.2 0 0 0-.1.1C1.6 18.7-.9 32.1.3 45.4a.2.2 0 0 0 .1.1 58.8 58.8 0 0 0 17.7 9 .2.2 0 0 0 .2-.1 42 42 0 0 0 3.6-5.9.2.2 0 0 0-.1-.3 38.7 38.7 0 0 1-5.5-2.6.2.2 0 0 1 0-.4l1.1-.8a.2.2 0 0 1 .2 0c11.5 5.3 23.9 5.3 35.3 0a.2.2 0 0 1 .2 0l1.1.8a.2.2 0 0 1 0 .4 36.2 36.2 0 0 1-5.5 2.6.2.2 0 0 0-.1.3 47.1 47.1 0 0 0 3.6 5.9.2.2 0 0 0 .2.1 58.6 58.6 0 0 0 17.8-9 .2.2 0 0 0 .1-.1c1.5-15.2-2.5-28.5-10.5-40.3a.2.2 0 0 0-.1-.1zM23.7 37.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2z"/></svg>
+        <svg width="17" height="13" viewBox="0 0 71 55" fill="white"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.7.3a.2.2 0 0 0-.2.1 40.8 40.8 0 0 0-1.8 3.7 54 54 0 0 0-16.2 0A37.4 37.4 0 0 0 25.7.4a.2.2 0 0 0-.2-.1A58.4 58.4 0 0 0 11 4.9a.2.2 0 0 0-.1.1C1.6 18.7-.9 32.1.3 45.4a.2.2 0 0 0 .1.1 58.8 58.8 0 0 0 17.7 9 .2.2 0 0 0 .2-.1 42 42 0 0 0 3.6-5.9.2.2 0 0 0-.1-.3 38.7 38.7 0 0 1-5.5-2.6.2.2 0 0 1 0-.4l1.1-.8a.2.2 0 0 1 .2 0c11.5 5.3 23.9 5.3 35.3 0a.2.2 0 0 1 .2 0l1.1.8a.2.2 0 0 1 0 .4 36.2 36.2 0 0 1-5.5 2.6.2.2 0 0 0-.1.3 47.1 47.1 0 0 0 3.6 5.9.2.2 0 0 0 .2.1 58.6 58.6 0 0 0 17.8-9 .2.2 0 0 0 .1-.1c1.5-15.2-2.5-28.5-10.5-40.3a.2.2 0 0 0-.1-.1zM23.7 37.3c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2zm23.6 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2z"/></svg>
       </a>
     </div>
   </div>
@@ -252,131 +203,96 @@ footer strong{color:#86806d}
 
 <!-- HERO -->
 <header class="hero">
-  <div class="seal"><div class="seal-text">VIP<br>ACCESS</div></div>
-  <div class="eyebrow">Members-Only LARP Passes</div>
-  <h1>Roblox Mobile <span class="gold">LARP</span></h1>
-  <p class="hero-sub">Two collectible access passes to the most realistic fake Roblox experience ever built. Flex it, film it, screenshot it — it just isn't real.</p>
-  <div class="hero-cta">
-    <a href="#passes" class="btn btn-gold">Claim a Pass →</a>
-    <a href="#trust" class="btn btn-line">What's a LARP?</a>
-  </div>
+  <h1>LARP APPS FOR<br>ROBLOX CREATORS</h1>
+  <div class="hero-note"><b>⚠️ 100% LARP</b> — every app below is a fake simulator. No real items, Robux, or account changes, ever.</div>
 </header>
 
-<!-- TRUST -->
-<section id="trust" class="trust reveal">
-  <div class="trust-inner">
-    <div class="trust-ic">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="1.6"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div>
-      <h3>Full disclosure, before you read anything else</h3>
-      <p>Every pass on this page is a <strong>LARP</strong> — a fake, cosmetic simulation of Roblox's mobile app and its gifting flow. <strong>No real Robux, limiteds, or Roblox account changes are ever involved.</strong> You're paying for access to the roleplay experience itself, nothing that touches a real account.</p>
-    </div>
+<!-- SEARCH -->
+<div class="search-wrap">
+  <div class="search-row">
+    <input class="search-input" id="searchInput" type="text" placeholder="Search in 2 larp apps" oninput="filterApps()">
+    <button class="search-btn" aria-label="Search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="white" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
   </div>
-</section>
+</div>
 
-<!-- PASSES -->
-<section id="passes" class="passes">
-  <div class="sec-head reveal">
-    <div class="sec-tag">Access Passes</div>
-    <h2>Pick your pass</h2>
+<!-- PILLS -->
+<div class="pills-wrap">
+  <div class="pills-row" id="pillsRow">
+    <div class="pill active" data-filter="all" onclick="setFilter('all')">All</div>
+    <div class="pill" data-filter="mobile" onclick="setFilter('mobile')">Mobile</div>
+    <div class="pill" data-filter="avatar" onclick="setFilter('avatar')">Avatar</div>
+    <div class="pill" data-filter="gifting" onclick="setFilter('gifting')">Gifting</div>
+    <div class="pill" data-filter="vip" onclick="setFilter('vip')">VIP</div>
   </div>
+</div>
 
-  <div class="pass-grid">
+<!-- FEATURED -->
+<section class="featured">
+  <h2>Featured larp apps</h2>
+  <div class="app-list">
 
-    <article class="pass reveal">
-      <div class="pass-foil"></div>
-      <div class="pass-watermark"></div>
-      <div class="pass-stamp">LARP ONLY<br>NOT REAL</div>
-      <div class="pass-body">
-        <div class="pass-kicker">Monthly Pass</div>
-        <div class="pass-title">Roblox Mobile LARP</div>
-        <p class="pass-desc">The full fake mobile Roblox app shell — catalog, avatar editor, friends list and gifting flows, rebuilt pixel-for-pixel.</p>
-        <ul class="pass-features">
-          <li>Realistic mobile Roblox UI shell</li>
-          <li>Fake Robux balance &amp; purchase flow</li>
-          <li>Avatar editor, catalog &amp; friends list</li>
-          <li>Monthly updates as Roblox's UI changes</li>
-        </ul>
-      </div>
-      <div class="pass-perf"></div>
-      <div class="pass-stub">
-        <div class="pass-price-row">
-          <div class="pass-price">$10<span>/ month</span></div>
-          <div class="pass-serial mono">NO. MS-0010-M</div>
+    <article class="app-card" data-name="roblox mobile larp" data-tags="mobile avatar">
+      <div class="app-top">
+        <div class="app-icon">📱</div>
+        <div class="app-meta">
+          <div class="app-name-row">
+            <div>
+              <div class="app-name">Roblox Mobile LARP</div>
+              <div class="app-rating"><span class="app-stars">★★★★★</span> 5.0</div>
+            </div>
+            <div class="app-price">$10/mo</div>
+          </div>
+          <div class="app-desc">A pixel-accurate fake mobile Roblox app shell — catalog, avatar editor, friends list and gifting flows, rebuilt for your phone.</div>
+          <div class="app-badges">
+            <div class="badge">MOBILE</div>
+            <div class="badge">iOS &amp; ANDROID</div>
+            <div class="badge larp">⚠️ LARP ONLY</div>
+          </div>
         </div>
-        <button class="btn btn-gold" onclick="openCheckout('Roblox Mobile LARP','$10/month')">Claim Pass →</button>
-        <div class="pass-barcode"></div>
       </div>
+      <div class="shots-row">
+        <div class="shot shot1"><span>Browse the catalog</span></div>
+        <div class="shot shot2"><span>Fake avatar editor</span></div>
+        <div class="shot shot3"><span>Fake "gift sent" flow</span></div>
+      </div>
+      <button class="app-cta" onclick="openCheckout('Roblox Mobile LARP','$10/month')">Get — $10/mo</button>
     </article>
 
-    <article class="pass reveal">
-      <div class="pass-foil"></div>
-      <div class="pass-watermark"></div>
-      <div class="pass-stamp">LARP ONLY<br>NOT REAL</div>
-      <div class="pass-body">
-        <div class="pass-kicker">Lifetime Pass</div>
-        <div class="pass-title">Headless Gifter</div>
-        <p class="pass-desc">Simulate gifting the Headless Horseman to any username, with a realistic catalog page and "sent!" confirmation.</p>
-        <ul class="pass-features">
-          <li>Realistic Headless item page</li>
-          <li>Enter any username, see a fake "gift sent" flow</li>
-          <li>Pay once — permanent access, no renewals</li>
-          <li>Works inside the Mobile LARP shell too</li>
-        </ul>
-      </div>
-      <div class="pass-perf"></div>
-      <div class="pass-stub">
-        <div class="pass-price-row">
-          <div class="pass-price">$20<span>one-time</span></div>
-          <div class="pass-serial mono">NO. MS-0020-P</div>
+    <article class="app-card" data-name="headless gifter" data-tags="mobile gifting vip">
+      <div class="app-top">
+        <div class="app-icon pink">🎁</div>
+        <div class="app-meta">
+          <div class="app-name-row">
+            <div>
+              <div class="app-name">Headless Gifter</div>
+              <div class="app-rating"><span class="app-stars">★★★★★</span> 5.0</div>
+            </div>
+            <div class="app-price">$20</div>
+          </div>
+          <div class="app-desc">Simulate gifting the Headless Horseman to any username, with a realistic catalog page and "sent!" confirmation. Pay once, keep forever.</div>
+          <div class="app-badges">
+            <div class="badge">MOBILE</div>
+            <div class="badge">VIP</div>
+            <div class="badge larp">⚠️ LARP ONLY</div>
+          </div>
         </div>
-        <button class="btn btn-gold" onclick="openCheckout('Headless Gifter','$20 one-time')">Claim Pass →</button>
-        <div class="pass-barcode"></div>
       </div>
+      <div class="shots-row">
+        <div class="shot shot4"><span>Headless item page</span></div>
+        <div class="shot shot5"><span>Enter any username</span></div>
+        <div class="shot shot6"><span>"Sent!" confirmation</span></div>
+      </div>
+      <button class="app-cta" onclick="openCheckout('Headless Gifter','$20 one-time')">Get — $20 one-time</button>
     </article>
 
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="faq">
-  <div class="sec-head reveal">
-    <div class="sec-tag">FAQ</div>
-    <h2>Before you LARP</h2>
-  </div>
-  <div class="faq-list">
-    <details class="reveal">
-      <summary>Is this real? Will I actually receive Robux or items?</summary>
-      <p>No. Nothing on this site ever touches a real Roblox account, sends real Robux, or transfers a real item. Every "gift", balance, and confirmation screen is a cosmetic simulation built to look realistic — that's the entire product.</p>
-    </details>
-    <details class="reveal">
-      <summary>Then what am I actually paying for?</summary>
-      <p>Access to the LARP experience itself: a realistic fake mobile Roblox app and gifting flow you can use for content, pranks, or just the flex — nothing more.</p>
-    </details>
-    <details class="reveal">
-      <summary>Is MoneyScripts affiliated with Roblox Corporation?</summary>
-      <p>No. This is an unofficial, fan-made simulator. All Roblox names, logos and UI references are used solely to make the LARP look realistic and are property of their respective owners.</p>
-    </details>
-    <details class="reveal">
-      <summary>How do I pay / get access?</summary>
-      <p>Click "Claim Pass" on either card, confirm you understand it's a LARP, then join our Discord and open a ticket — payment methods are handled there.</p>
-    </details>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-banner reveal">
-  <div class="cta-inner">
-    <h2>Ready to LARP?</h2>
-    <p>Join the Discord, claim your pass, start flexing in minutes.</p>
-    <a class="btn btn-gold" href="#passes">Choose a pass →</a>
   </div>
 </section>
 
 <footer>
   <p>
-    This website is a <strong>fan-made LARP / simulator</strong> and is not affiliated with, endorsed by, or associated with Roblox Corporation in any way. All Roblox-related names, logos, images and trademarks are the property of their respective owners and are used here solely for illustrative purposes. <strong>Roblox Mobile LARP ($10/month)</strong> and <strong>Headless Gifter ($20 one-time)</strong> are both 100% fake simulators — no real Robux, items, or Roblox account changes are ever delivered, under any circumstance. <strong>moneyscripts.shop</strong>
+    This website is a <strong>fan-made LARP / simulator</strong> and is not affiliated with, endorsed by, or associated with Roblox Corporation, Apple Inc., or the App Store in any way. All Roblox-related names, logos, images and trademarks are the property of their respective owners and are used here solely for illustrative purposes. <strong>Roblox Mobile LARP ($10/month)</strong> and <strong>Headless Gifter ($20 one-time)</strong> are both 100% fake simulators — no real Robux, items, or Roblox account changes are ever delivered, under any circumstance. <strong>moneyscripts.shop</strong>
   </p>
 </footer>
 
@@ -386,15 +302,14 @@ footer strong{color:#86806d}
     <button class="modal-close" onclick="closeCheckout()">
       <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
     </button>
-    <div class="modal-kicker">Confirm Pass</div>
     <h3 id="checkoutTitle">Get Access</h3>
     <div class="modal-price" id="checkoutPrice"></div>
     <div class="warning-banner">
-      ⚠️ <span><b>Please read before continuing:</b> this pass is a <b>FAKE LARP / SIMULATOR</b> made for entertainment only. No real Robux, items, or Roblox account changes ever occur. You are paying only for access to the roleplay experience — not for anything real.</span>
+      ⚠️ <span><b>Please read before continuing:</b> this app is a <b>FAKE LARP / SIMULATOR</b> made for entertainment only. No real Robux, items, or Roblox account changes ever occur. You are paying only for access to the roleplay experience — not for anything real.</span>
     </div>
     <div class="steps">
       <div class="step"><div class="step-num">1</div><div class="step-text">Join our Discord — <b>discord.gg/moneyscripts</b></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-text">Create a <b>ticket</b> and name the pass</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Create a <b>ticket</b> and name the app</div></div>
       <div class="step"><div class="step-num">3</div><div class="step-text">Ask for <b>payment methods</b> to finish checkout</div></div>
     </div>
     <div class="confirm-row">
@@ -422,11 +337,21 @@ document.getElementById('checkoutOverlay').addEventListener('click', function(e)
   if(e.target === document.getElementById('checkoutOverlay')) closeCheckout();
 });
 
-var revealEls = document.querySelectorAll('.reveal');
-var io = new IntersectionObserver(function(entries){
-  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-}, { threshold: 0.12 });
-revealEls.forEach(function(el){ io.observe(el); });
+var activeFilter = 'all';
+function setFilter(f){
+  activeFilter = f;
+  document.querySelectorAll('.pill').forEach(function(p){ p.classList.toggle('active', p.dataset.filter === f); });
+  applyFilters();
+}
+function filterApps(){ applyFilters(); }
+function applyFilters(){
+  var q = document.getElementById('searchInput').value.trim().toLowerCase();
+  document.querySelectorAll('.app-card').forEach(function(card){
+    var matchesTag = activeFilter === 'all' || card.dataset.tags.split(' ').indexOf(activeFilter) !== -1;
+    var matchesSearch = !q || card.dataset.name.indexOf(q) !== -1;
+    card.classList.toggle('hidden', !(matchesTag && matchesSearch));
+  });
+}
 </script>
 </body>
 </html>
