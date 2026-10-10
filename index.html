@@ -283,7 +283,7 @@ footer strong{color:#7a7a86}
 
       <div class="app-buy-row">
         <div class="app-price-lg">$10<span>/mo</span></div>
-        <button class="app-cta" onclick="openCheckout('Roblox Mobile LARP','$10/month','mobile')">Subscribe</button>
+        <button class="app-cta" id="buyBtn-mobile" data-product="mobile" data-name="Roblox Mobile LARP" data-price="$10/month" data-label="Subscribe" onclick="handleAppCta(this)">Subscribe</button>
       </div>
       <div class="secure-line">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.6"/></svg>
@@ -335,7 +335,7 @@ footer strong{color:#7a7a86}
 
       <div class="app-buy-row">
         <div class="app-price-lg">$20<span>one-time</span></div>
-        <button class="app-cta" onclick="openCheckout('Headless Gifter','$20 one-time','headless')">Get</button>
+        <button class="app-cta" id="buyBtn-headless" data-product="headless" data-name="Headless Gifter" data-price="$20 one-time" data-label="Get" onclick="handleAppCta(this)">Get</button>
       </div>
       <div class="secure-line">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.6"/></svg>
@@ -421,6 +421,8 @@ var CHECKOUT_WORKER_URL = 'https://moneyscripts-stripe.pamelalunaescuela.workers
 var GOOGLE_CLIENT_ID = '308338292645-4u30h18t29b9nacbdusd43fivcl2bf47.apps.googleusercontent.com';
 
 var activeProduct = null;
+var APP_URLS = { mobile: 'https://moneyscripts.shop/robloxapp/', headless: 'https://moneyscripts.shop/headless/' };
+var ownedProducts = [];
 
 // --- Google Sign-In ---
 function getSessionToken(){ return localStorage.getItem('ms_session'); }
@@ -488,6 +490,43 @@ function updateAuthUI(){
     signedIn.classList.add('hidden');
   }
   refreshCheckoutAuthGate();
+  refreshOwnedProducts();
+}
+
+async function refreshOwnedProducts(){
+  var token = getSessionToken();
+  if(!token){ ownedProducts = []; applyOwnedButtons(); return; }
+  try{
+    var res = await fetch(CHECKOUT_WORKER_URL + '/me', { headers: { Authorization: 'Bearer ' + token } });
+    if(!res.ok){ ownedProducts = []; applyOwnedButtons(); return; }
+    var data = await res.json();
+    ownedProducts = data.products || [];
+  }catch(e){
+    ownedProducts = [];
+  }
+  applyOwnedButtons();
+}
+
+function applyOwnedButtons(){
+  document.querySelectorAll('[data-product]').forEach(function(btn){
+    var product = btn.dataset.product;
+    if(ownedProducts.indexOf(product) !== -1){
+      btn.textContent = 'Open';
+      btn.dataset.owned = '1';
+    }else{
+      btn.textContent = btn.dataset.label;
+      btn.dataset.owned = '0';
+    }
+  });
+}
+
+function handleAppCta(btn){
+  var product = btn.dataset.product;
+  if(btn.dataset.owned === '1' && APP_URLS[product]){
+    window.location.href = APP_URLS[product];
+    return;
+  }
+  openCheckout(btn.dataset.name, btn.dataset.price, product);
 }
 
 function refreshCheckoutAuthGate(){
