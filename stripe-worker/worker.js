@@ -16,6 +16,11 @@
 //   POST /create-checkout-session   { product } (Authorization: Bearer <session>) -> { url }
 //   POST /webhook                   Stripe webhook receiver (signature-verified)
 //   POST /notify-blocked            { product } (Authorization: Bearer <session>) -> { ok }
+//   GET  /admin/whitelist/list      ?secret=ADMIN_SECRET -> { entries: [{email,product,expiresAt,addedAt}] }
+//   POST /admin/whitelist/add       { secret, email, product, days? } -> { ok }
+//                                   product: 'mobile' | 'headless' | 'all'
+//                                   days: optional — omit/0 for permanent, e.g. 30 for one month
+//   POST /admin/whitelist/remove    { secret, email } -> { ok }
 //
 // Requires a KV namespace bound as MS_KV (Settings -> Bindings -> KV Namespace).
 //
@@ -23,6 +28,12 @@
 // Cloudflare dashboard -> Settings -> Variables and Secrets -> Secret) to get
 // a Discord message on sign-ins, purchases, and blocked access attempts. If
 // it's not set, these notifications are silently skipped.
+//
+// Set ADMIN_SECRET as a Worker secret to manage the free-access whitelist
+// from /admin/ (a page in the main site repo) without editing/redeploying
+// this file. Pick a long random password — anyone with it can grant free
+// access to a specific product (or all of them), permanently or for a set
+// number of days — e.g. for customers who pay via crypto outside Stripe.
 
 const SITE_URL = 'https://moneyscripts.shop';
 
@@ -81,6 +92,15 @@ export default {
       }
       if (url.pathname === '/notify-blocked' && request.method === 'POST') {
         return await handleNotifyBlocked(request, env, origin);
+      }
+      if (url.pathname === '/admin/whitelist/list' && request.method === 'GET') {
+        return await handleWhitelistList(request, env, origin);
+      }
+      if (url.pathname === '/admin/whitelist/add' && request.method === 'POST') {
+        return await handleWhitelistAdd(request, env, origin);
+      }
+      if (url.pathname === '/admin/whitelist/remove' && request.method === 'POST') {
+        return await handleWhitelistRemove(request, env, origin);
       }
       return new Response('Not found', { status: 404, headers: corsHeaders(origin) });
     } catch (err) {
@@ -220,11 +240,23 @@ async function handleGoogleAuth(request, env, origin) {
     return json({ error: 'Invalid Google token: ' + err.message }, 401, origin);
   }
 
+  const emailLower = claims.email.toLowerCase();
+  // Remember which Google "sub" this email last signed in with, so an admin
+  // whitelist grant made while they're not actively signing in can still be
+  // applied to their account right away (see handleWhitelistAdd).
+  await env.MS_KV.put(`sub-by-email:${emailLower}`, claims.sub);
+
   if (ADMIN_EMAILS.has(claims.email)) {
-    await env.MS_KV.put(
-      `access:${claims.sub}`,
-      JSON.stringify({ products: Object.keys(PRODUCTS), email: claims.email, updatedAt: Date.now(), admin: true })
-    );
+    for (const p of Object.keys(PRODUCTS)) {
+      await applyGrant(env, claims.sub, claims.email, p, null, 'admin');
+    }
+  } else {
+    const wlRaw = await env.MS_KV.get(`wl:${emailLower}`);
+    if (wlRaw) {
+      let entry = null;
+      try { entry = JSON.parse(wlRaw); } catch {}
+      if (entry) await applyWhitelistEntryToSub(env, claims.sub, claims.email, entry);
+    }
   }
 
   const token = randomToken();
@@ -260,8 +292,21 @@ async function handleMe(request, env, origin) {
   const session = await getSession(request, env);
   if (!session) return json({ error: 'Not signed in' }, 401, origin);
   const accessRaw = await env.MS_KV.get(`access:${session.sub}`);
-  const access = accessRaw ? JSON.parse(accessRaw) : { products: [] };
-  return json({ email: session.email, name: session.name, picture: session.picture, products: access.products }, 200, origin);
+  const access = accessRaw ? JSON.parse(accessRaw) : {};
+  const now = Date.now();
+
+  let products;
+  if (access.grants) {
+    products = Object.keys(access.grants).filter((p) => {
+      const g = access.grants[p];
+      return !g.expiresAt || g.expiresAt > now;
+    });
+  } else {
+    // Back-compat with the old { products: [...] } shape (permanent grants).
+    products = access.products || [];
+  }
+
+  return json({ email: session.email, name: session.name, picture: session.picture, products }, 200, origin);
 }
 
 async function handleNotifyBlocked(request, env, origin) {
@@ -273,6 +318,137 @@ async function handleNotifyBlocked(request, env, origin) {
   const product = body.product || 'unknown';
 
   await notifyDiscord(env, `🔴 **Blocked access attempt** — ${session.email} tried **${product}** without purchasing`);
+  return json({ ok: true }, 200, origin);
+}
+
+function checkAdminSecret(env, provided) {
+  return !!env.ADMIN_SECRET && typeof provided === 'string' && provided === env.ADMIN_SECRET;
+}
+
+// Merge a candidate grant into an account's access record for one product,
+// never downgrading an existing permanent grant to a temporary one and
+// always keeping the longer expiry when both are temporary.
+async function applyGrant(env, sub, email, product, expiresAt, source) {
+  const key = `access:${sub}`;
+  const raw = await env.MS_KV.get(key);
+  const access = raw ? JSON.parse(raw) : {};
+  if (!access.grants) access.grants = {};
+
+  const existing = access.grants[product];
+  const now = Date.now();
+  const existingExpired = existing && existing.expiresAt && existing.expiresAt < now;
+  const candidate = { source, expiresAt };
+
+  if (!existing || existingExpired) {
+    access.grants[product] = candidate;
+  } else if (!existing.expiresAt) {
+    // Existing grant is already permanent — don't downgrade it.
+  } else if (!candidate.expiresAt || candidate.expiresAt > existing.expiresAt) {
+    access.grants[product] = candidate;
+  }
+
+  if (email) access.email = email;
+  access.updatedAt = Date.now();
+  await env.MS_KV.put(key, JSON.stringify(access));
+}
+
+async function applyWhitelistEntryToSub(env, sub, email, entry) {
+  if (entry.expiresAt && entry.expiresAt < Date.now()) return; // expired, nothing to apply
+  const products = entry.product === 'all' ? Object.keys(PRODUCTS) : [entry.product];
+  for (const p of products) {
+    await applyGrant(env, sub, email, p, entry.expiresAt || null, 'whitelist');
+  }
+}
+
+async function handleWhitelistList(request, env, origin) {
+  const secret = new URL(request.url).searchParams.get('secret');
+  if (!checkAdminSecret(env, secret)) return json({ error: 'Invalid admin secret' }, 401, origin);
+
+  const entries = [];
+  let cursor;
+  do {
+    const page = await env.MS_KV.list({ prefix: 'wl:', cursor });
+    for (const k of page.keys) {
+      const raw = await env.MS_KV.get(k.name);
+      let entry = { product: 'all', expiresAt: null, addedAt: null };
+      try { entry = { ...entry, ...JSON.parse(raw) }; } catch {}
+      entries.push({ email: k.name.slice(3), product: entry.product, expiresAt: entry.expiresAt, addedAt: entry.addedAt });
+    }
+    cursor = page.cursor;
+  } while (cursor);
+
+  return json({ entries }, 200, origin);
+}
+
+async function handleWhitelistAdd(request, env, origin) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
+  if (!checkAdminSecret(env, body.secret)) return json({ error: 'Invalid admin secret' }, 401, origin);
+
+  const email = (body.email || '').trim().toLowerCase();
+  if (!email || email.indexOf('@') === -1) return json({ error: 'Invalid email' }, 400, origin);
+
+  const product = body.product;
+  if (product !== 'all' && !PRODUCTS[product]) {
+    return json({ error: `product must be one of: ${Object.keys(PRODUCTS).join(', ')}, all` }, 400, origin);
+  }
+
+  let days = null;
+  if (body.days !== undefined && body.days !== null && body.days !== '') {
+    days = Number(body.days);
+    if (!Number.isFinite(days) || days <= 0) {
+      return json({ error: 'days must be a positive number, or omit it for permanent access' }, 400, origin);
+    }
+  }
+  const expiresAt = days ? Date.now() + days * 24 * 60 * 60 * 1000 : null;
+
+  const entry = { product, expiresAt, addedAt: Date.now() };
+  await env.MS_KV.put(`wl:${email}`, JSON.stringify(entry));
+
+  // If this person already has an active account (signed in before), apply
+  // the grant immediately instead of waiting for their next sign-in.
+  const sub = await env.MS_KV.get(`sub-by-email:${email}`);
+  if (sub) await applyWhitelistEntryToSub(env, sub, email, entry);
+
+  const durationLabel = expiresAt ? `${days} day(s)` : 'permanent';
+  await notifyDiscord(env, `⚪ **Whitelisted** — ${email} → **${product}** (${durationLabel})`);
+  return json({ ok: true }, 200, origin);
+}
+
+async function handleWhitelistRemove(request, env, origin) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
+  if (!checkAdminSecret(env, body.secret)) return json({ error: 'Invalid admin secret' }, 401, origin);
+  const email = (body.email || '').trim().toLowerCase();
+  if (!email) return json({ error: 'Invalid email' }, 400, origin);
+
+  const raw = await env.MS_KV.get(`wl:${email}`);
+  await env.MS_KV.delete(`wl:${email}`);
+
+  // Revoke whatever access this whitelist entry granted (but never touch a
+  // grant that came from an actual Stripe purchase).
+  if (raw) {
+    let entry = null;
+    try { entry = JSON.parse(raw); } catch {}
+    const sub = await env.MS_KV.get(`sub-by-email:${email}`);
+    if (entry && sub) {
+      const key = `access:${sub}`;
+      const accessRaw = await env.MS_KV.get(key);
+      if (accessRaw) {
+        const access = JSON.parse(accessRaw);
+        if (access.grants) {
+          const products = entry.product === 'all' ? Object.keys(PRODUCTS) : [entry.product];
+          for (const p of products) {
+            if (access.grants[p] && access.grants[p].source === 'whitelist') {
+              delete access.grants[p];
+            }
+          }
+          await env.MS_KV.put(key, JSON.stringify(access));
+        }
+      }
+    }
+  }
+
   return json({ ok: true }, 200, origin);
 }
 
@@ -352,14 +528,8 @@ async function handleWebhook(request, env) {
     const sub = session.client_reference_id;
     const product = session.metadata && session.metadata.product;
     if (sub && product) {
-      const key = `access:${sub}`;
-      const existingRaw = await env.MS_KV.get(key);
-      const existing = existingRaw ? JSON.parse(existingRaw) : { products: [] };
-      if (existing.products.indexOf(product) === -1) existing.products.push(product);
-      const email = session.customer_details?.email || existing.email;
-      existing.email = email;
-      existing.updatedAt = Date.now();
-      await env.MS_KV.put(key, JSON.stringify(existing));
+      const email = session.customer_details?.email;
+      await applyGrant(env, sub, email, product, null, 'stripe');
 
       const amount = typeof session.amount_total === 'number' ? (session.amount_total / 100).toFixed(2) : '?';
       const currency = (session.currency || 'usd').toUpperCase();

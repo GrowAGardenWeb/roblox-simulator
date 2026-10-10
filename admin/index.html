@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>MoneyScripts Admin</title>
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#0a0a0f;color:#fff;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px;}
+  h1{font-size:18px;margin:0 0 4px;}
+  p.sub{color:#999;font-size:13px;margin:0 0 20px;}
+  .card{background:#14141c;border:1px solid #26262f;border-radius:12px;padding:18px;max-width:520px;margin-bottom:20px;}
+  label{display:block;font-size:12px;color:#aaa;margin:12px 0 4px;}
+  input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #2e2e38;background:#0e0e14;color:#fff;font-size:14px;}
+  button{margin-top:16px;width:100%;padding:11px;border:none;border-radius:8px;background:#5b8cff;color:#fff;font-weight:600;font-size:14px;cursor:pointer;}
+  button.danger{background:#ff5b6a;}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+  #secretBar{max-width:520px;margin-bottom:20px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;max-width:720px;}
+  th,td{text-align:left;padding:8px;border-bottom:1px solid #22222c;}
+  th{color:#888;font-weight:600;}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#22304f;color:#8fb6ff;font-size:11px;}
+  .pill.expired{background:#4a2222;color:#ff9393;}
+  .remove-btn{background:#2a2a35;color:#ff9393;border:1px solid #3a2a2a;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;}
+  #status{font-size:13px;margin-top:10px;min-height:16px;}
+  #status.err{color:#ff8080;}
+  #status.ok{color:#7fe08a;}
+</style>
+</head>
+<body>
+  <h1>MoneyScripts — Admin</h1>
+  <p class="sub">Da acceso manual (ej. pagos por crypto) a un producto especifico, permanente o por X dias.</p>
+
+  <div class="card" id="secretBar">
+    <label>Admin secret</label>
+    <input id="secretInput" type="password" placeholder="ADMIN_SECRET" autocomplete="off" />
+  </div>
+
+  <div class="card">
+    <label>Correo</label>
+    <input id="emailInput" type="email" placeholder="cliente@correo.com" autocomplete="off" />
+    <label>Producto</label>
+    <select id="productInput">
+      <option value="mobile">Roblox Mobile LARP</option>
+      <option value="headless">Headless Gifter</option>
+      <option value="all">Ambos (all)</option>
+    </select>
+    <label>Duracion (dias) — vacio = permanente</label>
+    <input id="daysInput" type="number" min="1" placeholder="ej. 30 para 1 mes" />
+    <button id="addBtn" onclick="addWhitelist()">Dar acceso</button>
+    <div id="status"></div>
+  </div>
+
+  <div class="card" style="max-width:720px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <strong style="font-size:14px;">Whitelist actual</strong>
+      <button style="width:auto;padding:6px 14px;font-size:12px;" onclick="loadList()">Refrescar</button>
+    </div>
+    <table id="listTable">
+      <thead><tr><th>Correo</th><th>Producto</th><th>Vence</th><th></th></tr></thead>
+      <tbody id="listBody"></tbody>
+    </table>
+  </div>
+
+<script>
+var WORKER_URL = 'https://moneyscripts-stripe.pamelalunaescuela.workers.dev';
+
+function getSecret() {
+  var s = document.getElementById('secretInput').value.trim();
+  try { if (s) localStorage.setItem('ms_admin_secret', s); } catch (e) {}
+  return s;
+}
+
+(function restoreSecret() {
+  try {
+    var saved = localStorage.getItem('ms_admin_secret');
+    if (saved) document.getElementById('secretInput').value = saved;
+  } catch (e) {}
+})();
+
+function setStatus(msg, ok) {
+  var el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = ok ? 'ok' : 'err';
+}
+
+async function addWhitelist() {
+  var secret = getSecret();
+  var email = document.getElementById('emailInput').value.trim();
+  var product = document.getElementById('productInput').value;
+  var days = document.getElementById('daysInput').value.trim();
+
+  if (!secret) { setStatus('Falta el admin secret', false); return; }
+  if (!email) { setStatus('Falta el correo', false); return; }
+
+  var btn = document.getElementById('addBtn');
+  btn.disabled = true;
+  setStatus('Guardando...', true);
+
+  try {
+    var res = await fetch(WORKER_URL + '/admin/whitelist/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: secret, email: email, product: product, days: days || null }),
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+    setStatus('Listo: ' + email + ' -> ' + product + (days ? ' (' + days + ' dias)' : ' (permanente)'), true);
+    document.getElementById('emailInput').value = '';
+    document.getElementById('daysInput').value = '';
+    loadList();
+  } catch (err) {
+    setStatus('Error: ' + err.message, false);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function removeWhitelist(email) {
+  var secret = getSecret();
+  if (!secret) { setStatus('Falta el admin secret', false); return; }
+  if (!confirm('Quitar acceso whitelist de ' + email + '?')) return;
+
+  try {
+    var res = await fetch(WORKER_URL + '/admin/whitelist/remove', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: secret, email: email }),
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+    setStatus('Removido: ' + email, true);
+    loadList();
+  } catch (err) {
+    setStatus('Error: ' + err.message, false);
+  }
+}
+
+async function loadList() {
+  var secret = getSecret();
+  if (!secret) return;
+  var body = document.getElementById('listBody');
+  body.innerHTML = '<tr><td colspan="4">Cargando...</td></tr>';
+
+  try {
+    var res = await fetch(WORKER_URL + '/admin/whitelist/list?secret=' + encodeURIComponent(secret));
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+
+    if (!data.entries || !data.entries.length) {
+      body.innerHTML = '<tr><td colspan="4">Sin entradas</td></tr>';
+      return;
+    }
+
+    body.innerHTML = data.entries.map(function (e) {
+      var expired = e.expiresAt && e.expiresAt < Date.now();
+      var expiresLabel = e.expiresAt
+        ? new Date(e.expiresAt).toLocaleDateString()
+        : 'Permanente';
+      return '<tr>' +
+        '<td>' + escapeHtml(e.email) + '</td>' +
+        '<td>' + escapeHtml(e.product) + '</td>' +
+        '<td><span class="pill' + (expired ? ' expired' : '') + '">' + expiresLabel + (expired ? ' (vencido)' : '') + '</span></td>' +
+        '<td><button class="remove-btn" onclick="removeWhitelist(\'' + escapeHtml(e.email).replace(/'/g, "\\'") + '\')">Quitar</button></td>' +
+        '</tr>';
+    }).join('');
+  } catch (err) {
+    body.innerHTML = '<tr><td colspan="4">Error: ' + escapeHtml(err.message) + '</td></tr>';
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+document.getElementById('secretInput').addEventListener('change', loadList);
+if (document.getElementById('secretInput').value) loadList();
+</script>
+</body>
+</html>
