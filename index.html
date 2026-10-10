@@ -215,6 +215,7 @@ footer strong{color:#7a7a86}
 
 .hidden{display:none !important}
 </style>
+<script src="/add-to-home.js"></script>
 </head>
 <body>
 <div class="stars"></div>
@@ -362,9 +363,9 @@ footer strong{color:#7a7a86}
       </div>
 
       <div class="shots-row">
-        <div class="shot shot4"><span>Headless item page</span></div>
-        <div class="shot shot5"><span>Enter any username</span></div>
-        <div class="shot shot6"><span>"Sent!" confirmation</span></div>
+        <div class="shot"><img src="shot-hg-marketplace.jpg" alt=""><span>Browse the marketplace</span></div>
+        <div class="shot"><img src="shot-hg-gift.jpg" alt=""><span>Fake "gift with Plus" flow</span></div>
+        <div class="shot"><img src="shot-hg-accessories.jpg" alt=""><span>Headless, horns &amp; more</span></div>
       </div>
     </article>
 
@@ -523,7 +524,12 @@ function applyOwnedButtons(){
 function handleAppCta(btn){
   var product = btn.dataset.product;
   if(btn.dataset.owned === '1' && APP_URLS[product]){
-    window.location.href = APP_URLS[product];
+    window.MS_REQUIRED_PRODUCT = product;
+    if(typeof window.MS_showOnboarding === 'function'){
+      window.MS_showOnboarding(function(){ window.location.href = APP_URLS[product]; });
+    }else{
+      window.location.href = APP_URLS[product];
+    }
     return;
   }
   openCheckout(btn.dataset.name, btn.dataset.price, product);

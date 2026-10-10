@@ -47,14 +47,12 @@
         bounceToStore();
         return;
       }
-      // Authorized. Reveal the page — if the onboarding script loaded, it
-      // shows a full-screen "add to home screen" walkthrough first (its
-      // own opaque overlay covers the real content), then calls back here.
+      // Authorized. Reveal the page. The "add to home screen" tutorial is
+      // shown earlier, on the storefront, right when the Open button is
+      // clicked — showing it here would mean waiting on this (heavy) app
+      // to finish loading first.
       window.MS_ACCESS_STATE = 'granted';
       document.documentElement.style.visibility = 'visible';
-      if (typeof window.MS_showOnboarding === 'function') {
-        window.MS_showOnboarding(function () {});
-      }
     } catch (err) {
       bounceToStore();
     }
