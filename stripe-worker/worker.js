@@ -46,23 +46,34 @@ export default {
       return new Response(null, { headers: corsHeaders(origin) });
     }
 
-    if (url.pathname === '/auth/google' && request.method === 'POST') {
-      return handleGoogleAuth(request, env, origin);
+    // Catch-all: any uncaught exception below would otherwise produce
+    // Cloudflare's default error page, which has no CORS headers — the
+    // browser then reports that to fetch() as an opaque network failure
+    // instead of a readable error. Wrapping it means real failures (a
+    // missing KV binding, a bad Google token, a Stripe error, etc.) show
+    // up as an actual error message on the site instead of "could not
+    // reach the server".
+    try {
+      if (url.pathname === '/auth/google' && request.method === 'POST') {
+        return await handleGoogleAuth(request, env, origin);
+      }
+      if (url.pathname === '/auth/signout' && request.method === 'POST') {
+        return await handleSignOut(request, env, origin);
+      }
+      if (url.pathname === '/me' && request.method === 'GET') {
+        return await handleMe(request, env, origin);
+      }
+      if (url.pathname === '/create-checkout-session' && request.method === 'POST') {
+        return await handleCreateSession(request, env, origin);
+      }
+      if (url.pathname === '/webhook' && request.method === 'POST') {
+        return await handleWebhook(request, env);
+      }
+      return new Response('Not found', { status: 404, headers: corsHeaders(origin) });
+    } catch (err) {
+      console.error('Unhandled worker error:', err && err.stack ? err.stack : err);
+      return json({ error: 'Server error: ' + (err && err.message ? err.message : String(err)) }, 500, origin);
     }
-    if (url.pathname === '/auth/signout' && request.method === 'POST') {
-      return handleSignOut(request, env, origin);
-    }
-    if (url.pathname === '/me' && request.method === 'GET') {
-      return handleMe(request, env, origin);
-    }
-    if (url.pathname === '/create-checkout-session' && request.method === 'POST') {
-      return handleCreateSession(request, env, origin);
-    }
-    if (url.pathname === '/webhook' && request.method === 'POST') {
-      return handleWebhook(request, env);
-    }
-
-    return new Response('Not found', { status: 404 });
   },
 };
 
