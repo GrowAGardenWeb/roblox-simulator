@@ -40,9 +40,14 @@
         bounceToStore();
         return;
       }
-      // Authorized — reveal the real page.
+      // Authorized. Reveal the page — if the onboarding script loaded, it
+      // shows a full-screen "add to home screen" walkthrough first (its
+      // own opaque overlay covers the real content), then calls back here.
       window.MS_ACCESS_STATE = 'granted';
       document.documentElement.style.visibility = 'visible';
+      if (typeof window.MS_showOnboarding === 'function') {
+        window.MS_showOnboarding(function () {});
+      }
     } catch (err) {
       bounceToStore();
     }
