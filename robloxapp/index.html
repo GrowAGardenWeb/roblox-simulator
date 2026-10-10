@@ -12,6 +12,9 @@
     <title>Robiox</title>
     <link rel="icon" type="image/png" href="/robloxapp/favicon.png" />
     <link rel="apple-touch-icon" href="/robloxapp/favicon.png" />
+    <link rel="manifest" href="/robloxapp/manifest.json" />
+    <script>window.MS_REQUIRED_PRODUCT = 'mobile';</script>
+    <script src="/access-gate.js"></script>
     <script src="/robloxapp/draco_decoder.js"></script>
     <script>
       // Apply the saved theme before first paint so dark mode doesn't flash white.
@@ -40,7 +43,7 @@
           return ready
         }
       })()
-    </script>
+    </script>
     <meta name="description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Figma Make App">
@@ -50,5 +53,6 @@
   </head>
   <body>
     <div id="root"></div>
+    <script src="/add-to-home.js"></script>
   </body>
 </html>

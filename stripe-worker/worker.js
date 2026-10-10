@@ -26,6 +26,10 @@ const GOOGLE_CLIENT_ID = '308338292645-4u30h18t29b9nacbdusd43fivcl2bf47.apps.goo
 
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
 
+// Emails that always get full access to every product on sign-in, no
+// purchase needed — for the site owner's own testing/admin account.
+const ADMIN_EMAILS = new Set(['munfuja11@gmail.com']);
+
 // Fill in headless.price once the Headless Gifter product/price exists in Stripe.
 const PRODUCTS = {
   mobile: { price: 'price_1UOVQQFva0TXUXnXNyHGeQDm', mode: 'subscription' },
@@ -190,6 +194,13 @@ async function handleGoogleAuth(request, env, origin) {
     claims = await verifyGoogleIdToken(body.id_token);
   } catch (err) {
     return json({ error: 'Invalid Google token: ' + err.message }, 401, origin);
+  }
+
+  if (ADMIN_EMAILS.has(claims.email)) {
+    await env.MS_KV.put(
+      `access:${claims.sub}`,
+      JSON.stringify({ products: Object.keys(PRODUCTS), email: claims.email, updatedAt: Date.now(), admin: true })
+    );
   }
 
   const token = randomToken();

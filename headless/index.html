@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#07070c">
+<title>Headless Gifter</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="../roblox-app-icon.png">
+<link rel="apple-touch-icon" href="../roblox-app-icon.png">
+<script>window.MS_REQUIRED_PRODUCT = 'headless';</script>
+<script src="../access-gate.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{
+  --bg:#07070c; --surface:#121219; --surface-2:#191922; --border:rgba(255,255,255,.09); --border-hi:rgba(255,255,255,.18);
+  --text:#f5f5f7; --text-dim:#92929e; --text-faint:#55555f; --blue:#0a84ff; --blue-hi:#3d9bff;
+  --warn:#ffc33d; --warn-bg:rgba(255,195,61,.09); --warn-border:rgba(255,195,61,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;min-height:100vh;min-height:100dvh}
+.nav{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border)}
+.nav-icon{width:30px;height:30px;border-radius:9px;overflow:hidden;flex-shrink:0}
+.nav-icon img{width:100%;height:100%;object-fit:cover;display:block}
+.nav-title{font-weight:800;font-size:15px}
+.nav-back{margin-left:auto;font-size:12.5px;color:var(--text-dim);text-decoration:none}
+
+.wrap{max-width:440px;margin:0 auto;padding:28px 20px 60px}
+.item-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;text-align:center}
+.item-icon{width:84px;height:84px;margin:0 auto 16px;border-radius:20px;background:linear-gradient(160deg,#2a2a1c,#3a3418);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.item-name{font-size:19px;font-weight:800;margin-bottom:4px}
+.item-sub{font-size:12.5px;color:var(--text-dim);margin-bottom:16px}
+.item-price{font-size:28px;font-weight:800}
+.item-price span{font-size:13px;color:var(--text-dim);font-weight:600;margin-left:4px}
+
+.form-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;margin-top:16px}
+.form-label{font-size:12px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;margin-bottom:9px}
+.form-input{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:13px 15px;
+  color:var(--text);font-size:15px;outline:none}
+.form-input::placeholder{color:var(--text-faint)}
+.form-input:focus{border-color:var(--border-hi)}
+.send-btn{width:100%;margin-top:14px;background:var(--blue);color:#fff;border:none;border-radius:13px;padding:14px;
+  font-size:15px;font-weight:700;cursor:pointer;transition:background .15s}
+.send-btn:hover{background:var(--blue-hi)}
+.send-btn[disabled]{opacity:.55;cursor:not-allowed}
+
+.larp-note{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;color:var(--text-dim);background:var(--warn-bg);
+  border:1px solid var(--warn-border);border-radius:12px;padding:11px 13px;margin-top:16px}
+.larp-note b{color:var(--warn)}
+
+.result{display:none;text-align:center;padding:40px 20px}
+.result.show{display:block}
+.result-check{width:72px;height:72px;margin:0 auto 18px;border-radius:50%;background:rgba(10,132,255,.14);
+  border:1px solid rgba(10,132,255,.4);display:flex;align-items:center;justify-content:center}
+.result h2{font-size:20px;font-weight:800;margin-bottom:8px}
+.result p{font-size:13.5px;color:var(--text-dim);margin-bottom:22px}
+.result p b{color:var(--text)}
+.again-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:12px;
+  padding:11px 22px;font-size:13.5px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-icon"><img src="../roblox-app-icon.png" alt=""></div>
+  <div class="nav-title">Headless Gifter</div>
+  <a class="nav-back" href="https://moneyscripts.shop/">← Store</a>
+</div>
+
+<div class="wrap">
+
+  <div id="giftFlow">
+    <div class="item-card">
+      <div class="item-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M12 2a6 6 0 00-6 6v4a6 6 0 0012 0V8a6 6 0 00-6-6z" stroke="#ffc33d" stroke-width="1.6"/><circle cx="9" cy="10" r="1" fill="#ffc33d"/><circle cx="15" cy="10" r="1" fill="#ffc33d"/><path d="M9 14h6" stroke="#ffc33d" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </div>
+      <div class="item-name">Headless Horseman</div>
+      <div class="item-sub">Limited · Fake simulator item</div>
+      <div class="item-price">27,900<span>Robux (fake)</span></div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-label">Gift to username</div>
+      <input class="form-input" id="giftUsername" type="text" placeholder="Enter any Roblox username">
+      <button class="send-btn" id="sendBtn" onclick="sendGift()">Send Gift</button>
+      <div class="larp-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px"><path d="M12 3L2 20h20L12 3z" stroke="#ffc33d" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4" stroke="#ffc33d" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1" fill="#ffc33d"/></svg>
+        <span><b>FAKE LARP / SIMULATOR.</b> No real item, Robux, or Roblox account change ever happens — this is a cosmetic roleplay flow only.</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="giftResult" class="result">
+    <div class="result-check">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0a84ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2>Gift sent!</h2>
+    <p>Sent the Headless Horseman to <b id="resultUsername"></b>. (Not real — fake simulator, for the flex.)</p>
+    <button class="again-btn" onclick="resetGift()">Send another</button>
+  </div>
+
+</div>
+
+<script src="../add-to-home.js"></script>
+<script>
+function sendGift(){
+  var input = document.getElementById('giftUsername');
+  var name = input.value.trim();
+  if(!name){ input.focus(); return; }
+  var btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  setTimeout(function(){
+    document.getElementById('resultUsername').textContent = '@' + name.replace(/^@/, '');
+    document.getElementById('giftFlow').style.display = 'none';
+    document.getElementById('giftResult').classList.add('show');
+  }, 1100);
+}
+function resetGift(){
+  document.getElementById('giftUsername').value = '';
+  var btn = document.getElementById('sendBtn');
+  btn.disabled = false;
+  btn.textContent = 'Send Gift';
+  document.getElementById('giftResult').classList.remove('show');
+  document.getElementById('giftFlow').style.display = '';
+}
+</script>
+</body>
+</html>
