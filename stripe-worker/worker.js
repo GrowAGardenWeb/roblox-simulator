@@ -5,10 +5,15 @@
 // static site at moneyscripts.shop, which cannot safely hold a secret key itself.
 //
 // Routes:
-//   POST /create-checkout-session   { product: "mobile" | "headless" } -> { client_secret }
+//   POST /create-checkout-session   { product: "mobile" | "headless" } -> { url }
 //   POST /webhook                   Stripe webhook receiver (signature-verified)
+//
+// Uses standard hosted Stripe Checkout (checkout.stripe.com), not the
+// "custom_checkout_payment_form" preview/beta — that beta was returning 404s
+// from Stripe's own init endpoint in production, so this sticks to the
+// stable, well-supported redirect flow instead.
 
-const STRIPE_API_VERSION = '2026-03-25.dahlia; custom_checkout_payment_form_preview=v1';
+const SITE_URL = 'https://moneyscripts.shop';
 
 // Fill in headless.price once the Headless Gifter product/price exists in Stripe.
 const PRODUCTS = {
@@ -80,21 +85,17 @@ async function handleCreateSession(request, env, origin) {
 
   const params = new URLSearchParams();
   params.set('mode', product.mode);
-  params.set('ui_mode', 'form');
   params.set('line_items[0][price]', product.price);
   params.set('line_items[0][quantity]', '1');
   params.set('billing_address_collection', 'auto');
-  params.set('submit_type', 'auto');
-  if (product.mode === 'subscription') {
-    params.set('payment_method_collection', 'always');
-  }
+  params.set('success_url', `${SITE_URL}/?checkout=success`);
+  params.set('cancel_url', `${SITE_URL}/?checkout=cancelled`);
 
   const resp = await fetch('https://api.stripe.com/v1/checkout/sessions', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Stripe-Version': STRIPE_API_VERSION,
     },
     body: params.toString(),
   });
@@ -104,7 +105,7 @@ async function handleCreateSession(request, env, origin) {
     return json({ error: data.error?.message || 'Stripe error' }, 500, origin);
   }
 
-  return json({ client_secret: data.client_secret }, 200, origin);
+  return json({ url: data.url }, 200, origin);
 }
 
 async function handleWebhook(request, env) {

@@ -6,7 +6,6 @@
 <title>MoneyScripts — Roblox LARP Apps</title>
 <meta name="description" content="Roblox Mobile LARP and Headless Gifter — fully disclosed fake Roblox simulators, App Store style. No real items, Robux, or account changes, ever.">
 <link rel="icon" href="favicon.ico">
-<script src="https://js.stripe.com/dahlia/stripe.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -202,6 +201,7 @@ footer strong{color:#7a7a86}
 
 .checkout-locked{text-align:center;font-size:12.5px;color:var(--text-faint);padding:10px 0}
 .checkout-form-wrap{min-height:40px}
+.checkout-form-wrap .app-cta[disabled]{opacity:.6;cursor:not-allowed}
 .checkout-form-error{margin-top:10px;font-size:12.5px;color:#ff6b6b;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:10px;padding:10px 12px}
 .modal-support{text-align:center;font-size:11.5px;color:var(--text-faint);margin-top:2px}
 .modal-support a{color:var(--blue-hi);font-weight:600}
@@ -387,7 +387,7 @@ footer strong{color:#7a7a86}
 
     <div id="checkoutLocked" class="checkout-locked">Check the box above to continue to payment.</div>
     <div id="checkoutFormWrap" class="checkout-form-wrap hidden">
-      <div id="checkout-form"></div>
+      <button class="app-cta" id="checkoutPayBtn" onclick="goToPayment()">Continue to secure payment</button>
       <div id="checkoutFormError" class="checkout-form-error hidden"></div>
     </div>
 
@@ -399,25 +399,20 @@ footer strong{color:#7a7a86}
 
 <script>
 // --- Stripe config ---
-// TODO: replace with the real publishable key (safe to expose client-side; never the secret key).
-var STRIPE_PUBLISHABLE_KEY = 'pk_live_51Tcrk6FvaDdMVYC9VSAF5fdnBc4uHiU61hy7qYSslE9ygmAZYUdqxlkmRJUvUvSrAJSEEV81DvLzmpnvA2PUgslu00F0fPHjBG';
 var CHECKOUT_WORKER_URL = 'https://moneyscripts-stripe.pamelalunaescuela.workers.dev';
 
-var stripe = null;
 var activeProduct = null;
-var formMounted = false;
 
 function openCheckout(name, price, product){
   document.getElementById('checkoutTitle').textContent = 'Get ' + name;
   document.getElementById('checkoutPrice').textContent = price;
   activeProduct = product;
-  formMounted = false;
 
   var check = document.getElementById('checkoutConfirm');
   check.checked = false;
   document.getElementById('checkoutLocked').classList.remove('hidden');
   document.getElementById('checkoutFormWrap').classList.add('hidden');
-  document.getElementById('checkout-form').innerHTML = '';
+  resetPayBtn();
   hideFormError();
 
   document.getElementById('checkoutOverlay').classList.add('open');
@@ -435,9 +430,6 @@ function onConfirmToggle(checked){
   }
   document.getElementById('checkoutLocked').classList.add('hidden');
   document.getElementById('checkoutFormWrap').classList.remove('hidden');
-  if(!formMounted){
-    mountStripeForm(activeProduct);
-  }
 }
 
 function showFormError(msg){
@@ -448,61 +440,37 @@ function showFormError(msg){
 function hideFormError(){
   document.getElementById('checkoutFormError').classList.add('hidden');
 }
+function resetPayBtn(){
+  var btn = document.getElementById('checkoutPayBtn');
+  btn.disabled = false;
+  btn.textContent = 'Continue to secure payment';
+}
 
-async function mountStripeForm(product){
-  if(STRIPE_PUBLISHABLE_KEY.indexOf('REPLACE_ME') !== -1 || CHECKOUT_WORKER_URL.indexOf('REPLACE-ME') !== -1){
+async function goToPayment(){
+  if(CHECKOUT_WORKER_URL.indexOf('REPLACE-ME') !== -1){
     showFormError('Payments are not configured yet. Ask on Discord for now.');
     return;
   }
+  hideFormError();
+  var btn = document.getElementById('checkoutPayBtn');
+  btn.disabled = true;
+  btn.textContent = 'Loading…';
   try{
-    if(!stripe){
-      stripe = Stripe(STRIPE_PUBLISHABLE_KEY, { betas: ['custom_checkout_payment_form_1'] });
-    }
-
     var res = await fetch(CHECKOUT_WORKER_URL + '/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ product: product })
+      body: JSON.stringify({ product: activeProduct })
     });
     var data = await res.json();
-    if(!res.ok || !data.client_secret){
+    if(!res.ok || !data.url){
       showFormError(data.error || 'Could not start checkout. Try again in a moment.');
+      resetPayBtn();
       return;
     }
-
-    var appearance = {
-      theme: 'night',
-      labels: 'auto',
-      inputs: 'spaced',
-      variables: {
-        borderRadius: '10px',
-        colorBackground: '#191922',
-        colorText: '#f5f5f7',
-        colorPrimary: '#0a84ff',
-        colorDanger: '#ff6b6b',
-        fontFamily: '-apple-system, BlinkMacSystemFont, Inter, system-ui, sans-serif',
-        fontSizeBase: '15px',
-        spacingUnit: '4px'
-      }
-    };
-
-    var checkout = stripe.initCheckoutFormSdk({ clientSecret: data.client_secret, appearance: appearance });
-    var form = checkout.createForm({ layout: 'expanded' });
-    form.mount('#checkout-form');
-    formMounted = true;
-
-    var loadActionsResult = await checkout.loadActions();
-    if(loadActionsResult.type === 'success'){
-      form.on('confirm', async function(event){
-        try{
-          await loadActionsResult.actions.confirm({ formConfirmEvent: event });
-        }catch(err){
-          showFormError('Payment failed: ' + (err && err.message ? err.message : 'please try again.'));
-        }
-      });
-    }
+    window.location.href = data.url;
   }catch(err){
-    showFormError('Could not load the payment form. Try again in a moment.');
+    showFormError('Could not reach the payment server. Try again in a moment.');
+    resetPayBtn();
   }
 }
 
