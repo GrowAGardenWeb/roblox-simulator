@@ -15,8 +15,14 @@
 //   GET  /me                        (Authorization: Bearer <session>) -> { email, products }
 //   POST /create-checkout-session   { product } (Authorization: Bearer <session>) -> { url }
 //   POST /webhook                   Stripe webhook receiver (signature-verified)
+//   POST /notify-blocked            { product } (Authorization: Bearer <session>) -> { ok }
 //
 // Requires a KV namespace bound as MS_KV (Settings -> Bindings -> KV Namespace).
+//
+// Optional: set DISCORD_WEBHOOK_URL as a Worker secret (wrangler secret put /
+// Cloudflare dashboard -> Settings -> Variables and Secrets -> Secret) to get
+// a Discord message on sign-ins, purchases, and blocked access attempts. If
+// it's not set, these notifications are silently skipped.
 
 const SITE_URL = 'https://moneyscripts.shop';
 
@@ -73,6 +79,9 @@ export default {
       if (url.pathname === '/webhook' && request.method === 'POST') {
         return await handleWebhook(request, env);
       }
+      if (url.pathname === '/notify-blocked' && request.method === 'POST') {
+        return await handleNotifyBlocked(request, env, origin);
+      }
       return new Response('Not found', { status: 404, headers: corsHeaders(origin) });
     } catch (err) {
       console.error('Unhandled worker error:', err && err.stack ? err.stack : err);
@@ -100,6 +109,21 @@ function json(obj, status, origin) {
 function randomToken() {
   const bytes = crypto.getRandomValues(new Uint8Array(32));
   return Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Fire-and-forget Discord notification. Never throws — a Discord outage or
+// missing webhook should never break sign-in/checkout/etc.
+async function notifyDiscord(env, content) {
+  if (!env.DISCORD_WEBHOOK_URL) return;
+  try {
+    await fetch(env.DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content }),
+    });
+  } catch (err) {
+    console.error('Discord notify failed:', err && err.message ? err.message : err);
+  }
 }
 
 async function getSession(request, env) {
@@ -210,6 +234,15 @@ async function handleGoogleAuth(request, env, origin) {
     { expirationTtl: SESSION_TTL_SECONDS }
   );
 
+  const seenKey = `seenuser:${claims.sub}`;
+  const seenBefore = await env.MS_KV.get(seenKey);
+  if (!seenBefore) {
+    await env.MS_KV.put(seenKey, '1');
+    await notifyDiscord(env, `🆕 **New sign-in** — ${claims.email}`);
+  } else {
+    await notifyDiscord(env, `🔵 Sign-in — ${claims.email}`);
+  }
+
   return json(
     { session: token, email: claims.email, name: claims.name, picture: claims.picture },
     200,
@@ -229,6 +262,18 @@ async function handleMe(request, env, origin) {
   const accessRaw = await env.MS_KV.get(`access:${session.sub}`);
   const access = accessRaw ? JSON.parse(accessRaw) : { products: [] };
   return json({ email: session.email, name: session.name, picture: session.picture, products: access.products }, 200, origin);
+}
+
+async function handleNotifyBlocked(request, env, origin) {
+  const session = await getSession(request, env);
+  if (!session) return json({ error: 'Not signed in' }, 401, origin);
+
+  let body = {};
+  try { body = await request.json(); } catch {}
+  const product = body.product || 'unknown';
+
+  await notifyDiscord(env, `🔴 **Blocked access attempt** — ${session.email} tried **${product}** without purchasing`);
+  return json({ ok: true }, 200, origin);
 }
 
 async function handleCreateSession(request, env, origin) {
@@ -311,9 +356,14 @@ async function handleWebhook(request, env) {
       const existingRaw = await env.MS_KV.get(key);
       const existing = existingRaw ? JSON.parse(existingRaw) : { products: [] };
       if (existing.products.indexOf(product) === -1) existing.products.push(product);
-      existing.email = session.customer_details?.email || existing.email;
+      const email = session.customer_details?.email || existing.email;
+      existing.email = email;
       existing.updatedAt = Date.now();
       await env.MS_KV.put(key, JSON.stringify(existing));
+
+      const amount = typeof session.amount_total === 'number' ? (session.amount_total / 100).toFixed(2) : '?';
+      const currency = (session.currency || 'usd').toUpperCase();
+      await notifyDiscord(env, `🟢 **Purchase** — ${email || 'unknown'} bought **${product}** (${amount} ${currency})`);
     }
   }
 

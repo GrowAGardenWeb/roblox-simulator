@@ -9,3 +9,4 @@ kv_namespaces = [
 # Secrets (never put these here — set via `wrangler secret put`):
 #   STRIPE_SECRET_KEY     — from https://dashboard.stripe.com/apikeys
 #   STRIPE_WEBHOOK_SECRET — from the webhook endpoint you create in the Stripe dashboard
+#   DISCORD_WEBHOOK_URL   — optional; Discord channel webhook for sign-in/purchase/blocked-access alerts

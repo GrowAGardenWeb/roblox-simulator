@@ -37,6 +37,13 @@
       }
       var data = await res.json();
       if (!data.products || data.products.indexOf(PRODUCT) === -1) {
+        // Signed in but hasn't bought this — worth a heads-up notification.
+        // Don't let a slow/failed request delay the redirect.
+        fetch(CHECKOUT_WORKER_URL + '/notify-blocked', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+          body: JSON.stringify({ product: PRODUCT }),
+        }).catch(function () {});
         bounceToStore();
         return;
       }
