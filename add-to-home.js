@@ -9,6 +9,18 @@
     return /iphone|ipad|ipod/i.test(navigator.userAgent);
   }
 
+  // True once this page is actually launched from a home-screen icon
+  // (standalone mode, no browser chrome) — at that point there's nothing
+  // left to walk the visitor through, so never show the tutorial again,
+  // even if localStorage got cleared or this is a different browser.
+  function isStandalone() {
+    try {
+      if (window.navigator.standalone) return true; // iOS Safari
+      if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+    } catch (e) {}
+    return false;
+  }
+
   window.MS_showOnboarding = function (onDone) {
     var FLAG = 'ms_seen_a2hs_' + (window.MS_REQUIRED_PRODUCT || 'app');
     function seen() {
@@ -18,7 +30,7 @@
       try { localStorage.setItem(FLAG, '1'); } catch (e) {}
     }
 
-    if (seen() || window.innerWidth > 640) { onDone(); return; }
+    if (isStandalone() || seen() || window.innerWidth > 640) { onDone(); return; }
 
     var ios = isIOS();
     var steps = ios
