@@ -2,6 +2,10 @@ name = "moneyscripts-stripe"
 main = "worker.js"
 compatibility_date = "2024-11-01"
 
+kv_namespaces = [
+  { binding = "MS_KV", id = "6ae66a224d054263b7054da11cd62347" }
+]
+
 # Secrets (never put these here — set via `wrangler secret put`):
 #   STRIPE_SECRET_KEY     — from https://dashboard.stripe.com/apikeys
 #   STRIPE_WEBHOOK_SECRET — from the webhook endpoint you create in the Stripe dashboard
