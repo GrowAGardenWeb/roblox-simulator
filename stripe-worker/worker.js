@@ -38,8 +38,8 @@ const ADMIN_EMAILS = new Set(['munfuja11@gmail.com']);
 
 // Fill in headless.price once the Headless Gifter product/price exists in Stripe.
 const PRODUCTS = {
-  mobile: { price: 'price_1UOVQQFva0TXUXnXNyHGeQDm', mode: 'subscription' },
-  headless: { price: 'price_1UOVSIFva0TXUXnXTPQT9iq6', mode: 'payment' },
+  mobile: { price: 'price_1UP7I9FvaDdMVYC9aNf1fQ4J', mode: 'subscription' },
+  headless: { price: 'price_1UP7I9FvaDdMVYC9kNeu3VG9', mode: 'payment' },
 };
 
 const ALLOWED_ORIGINS = new Set([
