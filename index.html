@@ -400,9 +400,8 @@ footer strong{color:#7a7a86}
 <script>
 // --- Stripe config ---
 // TODO: replace with the real publishable key (safe to expose client-side; never the secret key).
-var STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_ME';
-// TODO: replace with the deployed Cloudflare Worker URL (see stripe-worker/README.md).
-var CHECKOUT_WORKER_URL = 'https://REPLACE-ME.workers.dev';
+var STRIPE_PUBLISHABLE_KEY = 'pk_live_51Tcrk6FvaDdMVYC9VSAF5fdnBc4uHiU61hy7qYSslE9ygmAZYUdqxlkmRJUvUvSrAJSEEV81DvLzmpnvA2PUgslu00F0fPHjBG';
+var CHECKOUT_WORKER_URL = 'https://moneyscripts-stripe.pamelalunaescuela.workers.dev';
 
 var stripe = null;
 var activeProduct = null;
