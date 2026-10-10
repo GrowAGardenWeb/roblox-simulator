@@ -35,14 +35,14 @@
     var ios = isIOS();
     var steps = ios
       ? [
-          { icon: '&#8679;', text: 'Tap the <b>Share</b> icon (the square with an arrow up) in Safari’s toolbar below.' },
-          { icon: '&#10133;', text: 'Scroll down the menu and tap <b>"Add to Home Screen"</b>.' },
-          { icon: '&#9989;', text: 'Tap <b>Add</b>. The icon now opens full-screen, like a real app — no browser bar.' },
+          { icon: '&#8679;', text: 'Toca el ícono de <b>Compartir</b> (el cuadrado con la flecha hacia arriba) en la barra de abajo.', arrow: 'bottom' },
+          { icon: '&#10133;', text: 'Baja en el menú y toca <b>"Agregar a Inicio"</b>.', arrow: 'bottom' },
+          { icon: '&#9989;', text: 'Toca <b>Agregar</b> arriba a la derecha. El ícono ahora abre a pantalla completa, como una app real — sin barra del navegador.', arrow: 'top-right' },
         ]
       : [
-          { icon: '&#8942;', text: 'Tap the <b>⋮</b> menu (three dots), top right of Chrome.' },
-          { icon: '&#10133;', text: 'Tap <b>"Add to Home screen"</b> (or "Install app").' },
-          { icon: '&#9989;', text: 'Confirm. The icon now opens full-screen, like a real app — no browser bar.' },
+          { icon: '&#8942;', text: 'Toca el menú <b>⋮</b> (tres puntos), arriba a la derecha.', arrow: 'top-right' },
+          { icon: '&#10133;', text: 'Toca <b>"Agregar a pantalla de inicio"</b> (o "Instalar app").', arrow: 'top-right' },
+          { icon: '&#9989;', text: 'Confirma. El ícono ahora abre a pantalla completa, como una app real — sin barra del navegador.', arrow: null },
         ];
 
     var style = document.createElement('style');
@@ -60,7 +60,12 @@
       '.ms-ob-text b{color:#fff}' +
       '.ms-ob-row{display:flex;flex-direction:column;gap:10px;width:100%;max-width:280px}' +
       '.ms-ob-continue{background:#0a84ff;color:#fff;border:none;border-radius:13px;padding:14px;font-size:15px;font-weight:700;cursor:pointer}' +
-      '.ms-ob-skip{background:none;border:none;color:#55555f;font-size:13px;padding:8px;cursor:pointer}';
+      '.ms-ob-skip{background:none;border:none;color:#55555f;font-size:13px;padding:8px;cursor:pointer}' +
+      '.ms-ob-arrow{position:fixed;font-size:38px;line-height:1;color:#0a84ff;text-shadow:0 0 14px rgba(10,132,255,.6);' +
+      'pointer-events:none;z-index:1000000;animation:msObBounce 1.1s ease-in-out infinite}' +
+      '.ms-ob-arrow.bottom{left:50%;bottom:14px;transform:translateX(-50%)}' +
+      '.ms-ob-arrow.top-right{right:16px;top:14px}' +
+      '@keyframes msObBounce{0%,100%{opacity:.55}50%{opacity:1}}';
     document.head.appendChild(style);
 
     var overlay = document.createElement('div');
@@ -71,14 +76,18 @@
     function render() {
       var step = steps[idx];
       var dots = steps.map(function (_, i) { return '<div class="ms-ob-dot' + (i === idx ? ' on' : '') + '"></div>'; }).join('');
+      var arrowHtml = step.arrow
+        ? '<div class="ms-ob-arrow ' + step.arrow + '">' + (step.arrow === 'bottom' ? '&#8595;' : '&#8593;') + '</div>'
+        : '';
       overlay.innerHTML =
+        arrowHtml +
         '<div class="ms-ob-dots">' + dots + '</div>' +
         '<div class="ms-ob-icon">' + step.icon + '</div>' +
-        '<div class="ms-ob-kicker">Make this feel like a real app</div>' +
+        '<div class="ms-ob-kicker">Hazlo sentir como una app real</div>' +
         '<div class="ms-ob-text">' + step.text + '</div>' +
         '<div class="ms-ob-row">' +
-        '<button class="ms-ob-continue" id="msObContinue">' + (idx === steps.length - 1 ? 'Done' : 'Continue') + '</button>' +
-        '<button class="ms-ob-skip" id="msObSkip">Skip</button>' +
+        '<button class="ms-ob-continue" id="msObContinue">' + (idx === steps.length - 1 ? 'Listo' : 'Continuar') + '</button>' +
+        '<button class="ms-ob-skip" id="msObSkip">Omitir</button>' +
         '</div>';
       document.getElementById('msObContinue').onclick = function () {
         if (idx === steps.length - 1) { finish(); } else { idx++; render(); }
