@@ -22,7 +22,7 @@ const SITE_URL = 'https://moneyscripts.shop';
 
 // TODO: replace with the real Google OAuth Client ID (safe to expose — it's
 // public, not a secret) once it's created in Google Cloud Console.
-const GOOGLE_CLIENT_ID = 'REPLACE_ME.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '308338292645-4u30h18t29b9nacbdusd43fivcl2bf47.apps.googleusercontent.com';
 
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
 
