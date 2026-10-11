@@ -4,3 +4,4 @@ html.dark .cz-box{background:#242429!important}
 html.dark .cz-ico{background-color:#4a4a52!important}
 html.dark .name-badge-ico{background-color:var(--primary)!important;filter:invert() hue-rotate(180deg)}
 html.dark .av-view{background-image:url("/robloxapp/site-assets/avatar-scene-dark.png")!important;filter:invert() hue-rotate(180deg)}
+html.dark .av-engine{filter:invert() hue-rotate(180deg)}html.dark .av-engine canvas,html.dark .av-engine img,html.dark .av-img{filter:none!important}
