@@ -182,7 +182,7 @@ Este sitio muestra anuncios de terceros (Google AdSense) que pueden usar cookies
 <script src="{root}guias/anuncios.js"></script></body></html>
 """
 
-root = "/"
+root = "../"  # rutas relativas: funciona en el servidor y abriendo los archivos en tu compu
 cards = []
 destacado = ""
 for i, a in enumerate(ARTS):
