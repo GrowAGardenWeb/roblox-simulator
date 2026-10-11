@@ -3,26 +3,57 @@ import os, sys
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.abspath(__file__))
 SITE = "RoGuías"
 ARTS = [
- dict(slug="evento-halloween-roblox-2026", emoji="🎃", color="#ffe3c7", tag="Evento", destacado=True,
+ dict(slug="evento-halloween-roblox-2026", emoji="🎃", color="#ffe3c7", tag="Evento", destacado=True, imagen="halloween-2026.jpg",
   title="Evento de Halloween Roblox 2026",
   desc="Todo lo que necesitas para aprovechar los eventos de Halloween de este octubre en Roblox.",
   body="""
-<p>¡Llegó octubre y Roblox se llena de calabazas, fantasmas y objetos de edición limitada! Muchos de los juegos más populares lanzan actualizaciones de Halloween con misiones, monedas especiales y recompensas que solo están disponibles por unas semanas.</p>
-<div class="box"><b>Actualizaremos esta guía</b> conforme se anuncien los eventos oficiales y las recompensas de cada juego.</div>
+<p>¡Llegó octubre y Roblox se llena de calabazas, fantasmas y objetos de edición limitada! Cada año, la temporada de Halloween es una de las épocas más esperadas por la comunidad: los juegos más populares lanzan actualizaciones especiales, aparecen accesorios temáticos para tu avatar y los mapas se transforman en cementerios, casas embrujadas y bosques llenos de niebla.</p>
+<p>En esta guía te contamos todo lo que suele traer la temporada, cómo prepararte, cómo conseguir el máximo de recompensas y cómo evitar las estafas que aparecen cada año en estas fechas.</p>
+<div class="box"><b>Actualizaremos esta guía</b> conforme se anuncien los eventos oficiales y las recompensas de cada juego. Guarda esta página y vuelve seguido.</div>
+<h2>¿Cuándo empieza el Halloween en Roblox?</h2>
+<p>No hay una sola fecha: cada juego lanza su propia actualización. Lo normal es que las primeras aparezcan a mediados de octubre y que la mayoría de los eventos terminen a principios de noviembre. Los desarrolladores suelen anunciar las fechas en sus grupos de Roblox, en su servidor de Discord y en sus redes sociales unos días antes.</p>
+<!--AD-->
 <h2>Qué esperar este Halloween</h2>
 <ul>
-<li><b>Actualizaciones temáticas</b> en juegos como Grow a Garden, Adopt Me!, Brookhaven y más: mapas decorados, misiones y mascotas o semillas de temporada.</li>
-<li><b>Objetos gratis para tu avatar:</b> revisa el Marketplace filtrando por precio “Gratis”; en temporada suelen aparecer accesorios de Halloween.</li>
-<li><b>Monedas de evento</b> (dulces, calabazas, almas…) que se cambian por recompensas exclusivas antes de que termine el evento.</li>
+<li><b>Actualizaciones temáticas</b> en juegos como Grow a Garden, Adopt Me!, Brookhaven, Blox Fruits y muchos más: mapas decorados, misiones nuevas y mascotas, semillas u objetos de temporada.</li>
+<li><b>Objetos gratis para tu avatar:</b> revisa el Marketplace filtrando por precio “Gratis” y por la categoría de accesorios. En temporada suelen aparecer sombreros, máscaras y caras de Halloween.</li>
+<li><b>Monedas de evento</b> (dulces, calabazas, almas, huesos…) que se ganan jugando y se cambian por recompensas exclusivas antes de que termine el evento.</li>
+<li><b>Jefes y misiones especiales:</b> muchos juegos agregan enemigos de Halloween que sueltan objetos raros.</li>
+<li><b>Ofertas en la tienda:</b> algunos juegos ponen descuentos en pases o paquetes durante el evento.</li>
 </ul>
+<h2>Juegos que suelen tener evento de Halloween</h2>
+<h3>🌱 Grow a Garden</h3>
+<p>En temporadas pasadas el juego ha agregado semillas, mascotas y climas especiales. Si hay mutaciones de temporada, aprovecha para dejar tu jardín lleno mientras el evento está activo: las frutas mutadas valen mucho más. <a href="grow-a-garden-principiantes.html">Lee nuestra guía para principiantes</a>.</p>
+<h3>🐶 Adopt Me!</h3>
+<p>Es uno de los juegos con eventos de Halloween más elaborados: minijuegos, dulces como moneda y mascotas de temporada que después ya no se pueden conseguir.</p>
+<h3>🏡 Brookhaven</h3>
+<p>El mapa suele decorarse con calabazas y niebla, y aparecen casas y vehículos temáticos para hacer tus propias historias de terror con amigos.</p>
 <!--AD-->
+<h2>Cómo prepararte antes de que empiece</h2>
+<ol>
+<li><b>Libera espacio en tu inventario</b> en los juegos que tienen límite de objetos o mascotas.</li>
+<li><b>Ahorra la moneda normal del juego</b>: a veces los objetos del evento también se compran con ella.</li>
+<li><b>Únete a los grupos oficiales</b> de tus juegos favoritos: algunos dan recompensas solo a miembros.</li>
+<li><b>Revisa tu configuración de seguridad</b>: activa la verificación en dos pasos (<a href="consejos-seguridad-cuenta.html">te explicamos cómo</a>).</li>
+</ol>
 <h2>Consejos para sacarle el máximo provecho</h2>
 <ol>
-<li>Entra todos los días: muchos eventos dan recompensas diarias o por racha.</li>
-<li>Gasta tus monedas de evento antes de que termine: normalmente desaparecen o dejan de servir.</li>
-<li>Sigue los grupos oficiales y las redes de tus juegos favoritos para enterarte de códigos y fechas.</li>
+<li><b>Entra todos los días:</b> muchos eventos dan recompensas diarias o por racha de días seguidos.</li>
+<li><b>Juega con amigos:</b> algunos eventos dan más monedas en equipo o tienen misiones cooperativas.</li>
+<li><b>Gasta tus monedas de evento antes de que termine:</b> normalmente desaparecen o dejan de servir.</li>
+<li><b>Prioriza lo exclusivo:</b> primero consigue lo que solo estará disponible este año; lo demás puede esperar.</li>
+<li><b>Sigue a los desarrolladores</b> para enterarte de códigos promocionales y horarios de eventos en vivo.</li>
 </ol>
-<div class="box warn"><b>Cuidado:</b> en temporada de eventos aumentan las estafas de “objetos gratis” y “Robux gratis”. Nunca escribas tu contraseña fuera de roblox.com. <a href="robux-gratis-estafas.html">Aprende a reconocerlas aquí</a>.</div>
+<!--AD-->
+<h2>Disfraza tu avatar sin gastar Robux</h2>
+<p>No necesitas gastar para tener un avatar de Halloween. Combina objetos gratis del Marketplace con lo que ya tienes: ropa oscura, una cara de zombi o un accesorio de calabaza son suficientes. También puedes usar los colores de piel del editor de avatar (verde para zombi, blanco para fantasma) que son totalmente gratis.</p>
+<h2>¿Quieres Robux para el evento?</h2>
+<p>Si quieres comprar objetos de temporada, la única forma segura es conseguir Robux por los medios oficiales. <a href="robux-gratis-formas-oficiales.html">Aquí te explicamos todas las formas reales de conseguirlos</a>.</p>
+<div class="box warn"><b>Cuidado:</b> en temporada de eventos aumentan muchísimo las páginas de “Robux gratis por Halloween” que piden tu usuario o te ponen una barra de carga. Son estafas: los Robux nunca llegan y muchas veces terminan robando cuentas. Nunca escribas tu contraseña fuera de roblox.com. <a href="robux-gratis-estafas.html">Aprende a reconocerlas aquí</a>.</div>
+<h2>Preguntas frecuentes</h2>
+<p><b>¿Los objetos de Halloween vuelven el próximo año?</b><br>Depende del juego. Muchos son exclusivos de la temporada, por eso conviene conseguirlos mientras el evento está activo.</p>
+<p><b>¿Puedo jugar los eventos desde el celular?</b><br>Sí, los eventos funcionan igual en celular, tablet, computadora y consola.</p>
+<p><b>¿Hay que pagar para participar?</b><br>No. Los eventos se pueden jugar gratis; los pases o paquetes de pago son opcionales.</p>
 """),
  dict(slug="robux-gratis-formas-oficiales", emoji="💰", color="#fff4c2", tag="Guías",
   title="Robux gratis: las formas reales y oficiales de conseguirlos",
@@ -155,7 +186,7 @@ root = "/"
 cards = []
 destacado = ""
 for i, a in enumerate(ARTS):
-    cards.append(f"""<a class="card" href="{a['slug']}.html"><div class="img" style="background:{a['color']}">{a['emoji']}</div>
+    cards.append(f"""<a class="card" href="{a['slug']}.html">{('<img class="img" src="'+a['imagen']+'" alt="">') if a.get('imagen') else '<div class="img" style="background:'+a['color']+'">'+a['emoji']+'</div>'}
 <div class="body"><span class="tag">{a['tag']}</span><h2>{a['title']}</h2><p>{a['desc']}</p></div></a>""")
     if a.get("destacado"):
         destacado = cards.pop().replace('class="card"', 'class="card destacado"')
@@ -163,7 +194,8 @@ for i, a in enumerate(ARTS):
         cards.append('<div class="ad" data-slot="medio" style="grid-column:1/-1;margin:0"></div>')
     body = a["body"].replace("<!--AD-->", '<div class="ad" data-slot="medio"></div>')
     page = head(f"{a['title']} | {SITE}", a["desc"], root) + f"""<div class="wrap"><main><article>
-<span class="tag">{a['tag']}</span><h1>{a['title']}</h1><div class="meta">Por el equipo de {SITE} · Lectura de 3 min</div>
+<span class="tag">{a['tag']}</span><h1>{a['title']}</h1><div class="meta">Por el equipo de {SITE} · Lectura de {max(3, len(a['body'].split())//200)} min</div>
+{('<img class="portada" src="'+a['imagen']+'" alt="'+a['title']+'">') if a.get('imagen') else ''}
 {body}
 <div class="ad" data-slot="medio"></div>
 <p><a href="./">← Volver a todas las guías</a></p></article></main>{side(root, a['slug'])}</div>""" + foot(root)

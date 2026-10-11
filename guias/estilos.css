@@ -36,3 +36,7 @@ footer{border-top:1px solid var(--line);margin-top:30px;padding:24px 16px;text-a
 .destacado{flex-direction:row;margin-bottom:8px}.destacado .img{height:auto;min-height:200px;flex:0 0 40%;font-size:90px}
 .destacado .body{padding:22px;align-self:center}.destacado h2{font-size:clamp(22px,3vw,30px)}.destacado p{font-size:16px}
 @media (max-width:600px){.destacado{flex-direction:column}.destacado .img{min-height:150px}}
+img.img{width:100%;object-fit:cover;display:block}.destacado img.img{flex:0 0 50%;width:50%;min-height:220px}
+@media (max-width:600px){.destacado img.img{width:100%;min-height:0;aspect-ratio:2/1}}
+.portada{width:100%;border-radius:12px;display:block;margin:4px 0 16px}
+article h3{margin:18px 0 4px;font-size:18px}
