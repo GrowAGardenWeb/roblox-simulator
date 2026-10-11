@@ -23,7 +23,7 @@ ARTS = [
 </ul>
 <h2>Juegos que suelen tener evento de Halloween</h2>
 <h3>🌱 Grow a Garden</h3>
-<p>En temporadas pasadas el juego ha agregado semillas, mascotas y climas especiales. Si hay mutaciones de temporada, aprovecha para dejar tu jardín lleno mientras el evento está activo: las frutas mutadas valen mucho más. <a href="grow-a-garden-principiantes.html">Lee nuestra guía para principiantes</a>.</p>
+<p>En temporadas pasadas el juego ha agregado semillas, mascotas y climas especiales. Si hay mutaciones de temporada, aprovecha para dejar tu jardín lleno mientras el evento está activo: las frutas mutadas valen mucho más. Lee nuestra guía para principiantes.</p>
 <h3>🐶 Adopt Me!</h3>
 <p>Es uno de los juegos con eventos de Halloween más elaborados: minijuegos, dulces como moneda y mascotas de temporada que después ya no se pueden conseguir.</p>
 <h3>🏡 Brookhaven</h3>
@@ -34,7 +34,7 @@ ARTS = [
 <li><b>Libera espacio en tu inventario</b> en los juegos que tienen límite de objetos o mascotas.</li>
 <li><b>Ahorra la moneda normal del juego</b>: a veces los objetos del evento también se compran con ella.</li>
 <li><b>Únete a los grupos oficiales</b> de tus juegos favoritos: algunos dan recompensas solo a miembros.</li>
-<li><b>Revisa tu configuración de seguridad</b>: activa la verificación en dos pasos (<a href="consejos-seguridad-cuenta.html">te explicamos cómo</a>).</li>
+<li><b>Revisa tu configuración de seguridad</b>: activa la verificación en dos pasos.</li>
 </ol>
 <h2>Consejos para sacarle el máximo provecho</h2>
 <ol>
@@ -47,7 +47,7 @@ ARTS = [
 <!--AD-->
 <h2>Disfraza tu avatar sin gastar Robux</h2>
 <p>No necesitas gastar para tener un avatar de Halloween. Combina objetos gratis del Marketplace con lo que ya tienes: ropa oscura, una cara de zombi o un accesorio de calabaza son suficientes. También puedes usar los colores de piel del editor de avatar (verde para zombi, blanco para fantasma) que son totalmente gratis.</p>
-<div class="box warn"><b>Cuidado:</b> en temporada de eventos aumentan muchísimo las páginas de “Robux gratis por Halloween” que piden tu usuario o te ponen una barra de carga. Son estafas: los Robux nunca llegan y muchas veces terminan robando cuentas. Nunca escribas tu contraseña fuera de roblox.com. <a href="consejos-seguridad-cuenta.html">Protege tu cuenta aquí</a>.</div>
+<div class="box warn"><b>Cuidado:</b> en temporada de eventos aumentan muchísimo las páginas de “Robux gratis por Halloween” que piden tu usuario o te ponen una barra de carga. Son estafas: los Robux nunca llegan y muchas veces terminan robando cuentas. Nunca escribas tu contraseña fuera de roblox.com. <a href="hacker-8-agosto-2027.html">Así proteges tu cuenta</a>.</div>
 <h2>Preguntas frecuentes</h2>
 <p><b>¿Los objetos de Halloween vuelven el próximo año?</b><br>Depende del juego. Muchos son exclusivos de la temporada, por eso conviene conseguirlos mientras el evento está activo.</p>
 <p><b>¿Puedo jugar los eventos desde el celular?</b><br>Sí, los eventos funcionan igual en celular, tablet, computadora y consola.</p>
@@ -82,83 +82,54 @@ ARTS = [
 <h2>Los avatares a lo largo del tiempo</h2>
 <p>El clásico personaje amarillo, azul y verde, al que la comunidad llama cariñosamente “noob”, es casi un símbolo de Roblox. Con los años los avatares pasaron de ser piezas simples a tener cuerpos con más articulaciones, ropa en capas, accesorios creados por la comunidad (UGC) y animaciones faciales. Aun así, muchos jugadores siguen usando el estilo clásico como homenaje.</p>
 <h2>Juegos que marcaron cada época</h2>
-<p>Parte de la magia de Roblox es que sus juegos más famosos no los hizo la empresa, sino la comunidad. Títulos de rol, simuladores, obbies, juegos de terror y de mascotas han marcado distintas generaciones de jugadores. En los últimos años, juegos como <a href="grow-a-garden-principiantes.html">Grow a Garden</a> han llegado a romper récords de jugadores conectados al mismo tiempo.</p>
+<p>Parte de la magia de Roblox es que sus juegos más famosos no los hizo la empresa, sino la comunidad. Títulos de rol, simuladores, obbies, juegos de terror y de mascotas han marcado distintas generaciones de jugadores. En los últimos años, juegos como Grow a Garden han llegado a romper récords de jugadores conectados al mismo tiempo.</p>
 <!--AD-->
 <h2>Cómo celebrar los 20 años</h2>
 <ol>
 <li><b>Ponle a tu avatar un look clásico:</b> los colores del noob original son gratis en el editor de avatar.</li>
 <li><b>Busca experiencias de aniversario:</b> revisa la página de inicio y el Marketplace por si aparecen eventos u objetos conmemorativos.</li>
 <li><b>Vuelve a jugar tus clásicos favoritos</b> con amigos.</li>
-<li><b>Crea algo propio:</b> la mejor forma de celebrar una plataforma hecha por creadores es crear. <a href="crear-juego-roblox-studio.html">Aprende a hacer tu primer juego</a>.</li>
+<li><b>Crea algo propio:</b> la mejor forma de celebrar una plataforma hecha por creadores es crear. Aprende a hacer tu primer juego.</li>
 </ol>
 <div class="box"><b>Actualizaremos esta guía</b> si Roblox anuncia eventos u objetos oficiales por su 20 aniversario.</div>
-<div class="box warn"><b>Cuidado:</b> en fechas especiales aparecen muchas páginas falsas de “regalos de aniversario” que piden tu usuario o contraseña. Roblox nunca te pedirá tu contraseña fuera de roblox.com. <a href="consejos-seguridad-cuenta.html">Protege tu cuenta aquí</a>.</div>
+<div class="box warn"><b>Cuidado:</b> en fechas especiales aparecen muchas páginas falsas de “regalos de aniversario” que piden tu usuario o contraseña. Roblox nunca te pedirá tu contraseña fuera de roblox.com. <a href="hacker-8-agosto-2027.html">Así proteges tu cuenta</a>.</div>
 <h2>Preguntas frecuentes</h2>
 <p><b>¿Cuándo se lanzó Roblox?</b><br>El lanzamiento oficial fue en 2006, después de una etapa de pruebas con el nombre DynaBlocks.</p>
 <p><b>¿Quién creó Roblox?</b><br>David Baszucki y Erik Cassel.</p>
 <p><b>¿Qué significa “Roblox”?</b><br>Viene de la combinación de “robots” y “blocks” (bloques).</p>
 """),
- dict(slug="grow-a-garden-principiantes", emoji="🌱", color="#dff5e3", tag="Guías",
-  title="Grow a Garden: guía para principiantes",
-  desc="Qué plantar primero, cómo ganar dinero rápido y errores que debes evitar.",
+ dict(slug="hacker-8-agosto-2027", emoji="👾", color="#e6dcff", tag="Rumores", destacado=True, imagen="hacker-8-agosto-2027.jpg",
+  title="El “hacker del 8 de agosto de 2027”: ¿es real?",
+  desc="Circula el rumor de que un hacker romperá Roblox y borrará cuentas. Te explicamos qué hay de cierto.",
   body="""
-<p><i>Grow a Garden</i> es uno de los juegos más populares de Roblox. La idea es simple: plantas semillas, esperas a que crezcan, cosechas y vendes para comprar semillas mejores.</p>
-<h2>Tus primeros minutos</h2>
-<ul>
-<li>Empieza con semillas baratas que crecen rápido: te dan dinero constante.</li>
-<li>Planta en todo tu terreno; un espacio vacío es dinero que no ganas.</li>
-<li>Vuelve a revisar la tienda seguido: el inventario de semillas cambia cada cierto tiempo.</li>
-</ul>
+<p>En TikTok, YouTube y en los chats de Roblox se está compartiendo un mensaje que dice que el <b>8 de agosto de 2027</b> un hacker va a “romper el sistema” de Roblox y <b>eliminar las cuentas</b> de los jugadores. Muchos jugadores están preocupados, así que te explicamos qué es este rumor y qué debes hacer.</p>
+<h2>¿Qué dice el rumor?</h2>
+<p>Las versiones cambian, pero casi siempre dicen lo mismo: que en esa fecha un hacker (a veces con nombre, a veces anónimo) entrará a Roblox, borrará cuentas, robará objetos o hará que el juego “se rompa”. Muchas terminan pidiendo que compartas el mensaje con todos tus amigos.</p>
 <!--AD-->
-<h2>Mutaciones y clima</h2>
-<p>Algunos eventos de clima pueden darle mutaciones a tus plantas, lo que aumenta mucho su valor de venta. Si hay un evento activo, ¡conéctate y deja tu jardín lleno!</p>
-<h2>Mascotas</h2>
-<p>Las mascotas dan bonificaciones pasivas (crecimiento más rápido, mejores cosechas, etc.). Vale la pena ahorrar para un huevo cuando ya tengas ingresos estables.</p>
-<div class="box"><b>Consejo:</b> no vendas todo de inmediato. Las frutas con mutaciones raras valen mucho más; revisa su valor antes de venderlas.</div>
-"""),
- dict(slug="crear-juego-roblox-studio", emoji="🛠️", color="#e1ebfd", tag="Creadores",
-  title="Cómo crear tu primer juego en Roblox Studio",
-  desc="Desde instalar Studio hasta publicar tu primer obby.",
-  body="""
-<p>Cualquier persona con una cuenta de Roblox puede crear juegos gratis usando <b>Roblox Studio</b>. Así puedes empezar.</p>
-<h2>1. Instala Roblox Studio</h2>
-<p>Descárgalo desde la página oficial de creadores de Roblox e inicia sesión con tu cuenta.</p>
-<h2>2. Elige una plantilla</h2>
-<p>Para tu primer proyecto usa la plantilla <b>Baseplate</b> u <b>Obby</b>. Ya trae lo básico para empezar a construir.</p>
-<!--AD-->
-<h2>3. Construye</h2>
+<h2>¿Es real?</h2>
+<p><b>No hay ninguna prueba de que sea real.</b> Roblox no ha anunciado nada sobre esa fecha. Este tipo de mensajes existe desde hace muchos años en Roblox: cada cierto tiempo aparece una fecha nueva con un “hacker” que va a destruir todo, y el día llega sin que pase nada.</p>
+<p>Estos rumores funcionan como las cadenas: dan miedo, se comparten rápido y la gente gana vistas y seguidores hablando de ellos.</p>
+<h2>El verdadero peligro: los estafadores</h2>
+<p>El rumor en sí no puede hacerte daño, pero algunas personas lo aprovechan. Ten cuidado si alguien:</p>
 <ul>
-<li>Usa <b>Part</b> para agregar bloques y las herramientas Mover, Escalar y Rotar.</li>
-<li>Activa <b>Anchored</b> en las piezas para que no se caigan.</li>
-<li>Prueba tu juego con el botón <b>Play</b> todas las veces que quieras.</li>
+<li>te dice que puede “proteger tu cuenta del hacker” si le das tu usuario y contraseña;</li>
+<li>te manda un link para “verificar” tu cuenta antes de esa fecha;</li>
+<li>te pide que pegues un código en tu navegador o descargues un programa.</li>
 </ul>
-<h2>4. Un script sencillo</h2>
-<p>Agrega un Script dentro de una pieza para que elimine al jugador que la toque (ideal para un obby):</p>
-<pre style="background:var(--bg);padding:12px;border-radius:8px;overflow:auto"><code>script.Parent.Touched:Connect(function(hit)
-  local hum = hit.Parent:FindFirstChild("Humanoid")
-  if hum then hum.Health = 0 end
-end)</code></pre>
-<h2>5. Publica</h2>
-<p>Ve a <b>Archivo → Publicar en Roblox</b>, ponle nombre y descripción, y compártelo con tus amigos.</p>
-"""),
- dict(slug="consejos-seguridad-cuenta", emoji="🔐", color="#f1e3fb", tag="Seguridad",
-  title="7 consejos para mantener tu cuenta de Roblox segura",
-  desc="Configuraciones que todos los jugadores (y padres) deberían activar.",
-  body="""
-<p>Perder una cuenta con años de objetos es terrible. Estos pasos toman cinco minutos y la protegen muchísimo.</p>
+<p>Todo eso son trucos para robar cuentas.</p>
+<!--AD-->
+<h2>Cómo proteger tu cuenta de verdad</h2>
 <ol>
-<li><b>Verificación en dos pasos:</b> agrega una capa extra al iniciar sesión.</li>
-<li><b>Correo verificado:</b> sirve para recuperar la cuenta si olvidas la contraseña.</li>
-<li><b>Contraseña única:</b> no uses la misma de otros sitios.</li>
+<li>Activa la <b>verificación en dos pasos</b> en la configuración de seguridad.</li>
+<li>Verifica tu correo para poder recuperar la cuenta.</li>
+<li>Usa una contraseña única que no uses en otros sitios.</li>
+<li>Nunca compartas tu contraseña ni códigos, ni con amigos.</li>
+<li>Escribe tu contraseña solo en roblox.com o en la app oficial.</li>
 </ol>
-<!--AD-->
-<ol start="4">
-<li><b>Revisa tus sesiones:</b> en Configuración puedes cerrar sesión en todos los dispositivos.</li>
-<li><b>No instales “exploits”:</b> muchos programas de trucos contienen virus que roban cuentas.</li>
-<li><b>Controles parentales:</b> los padres pueden limitar el chat y los gastos.</li>
-<li><b>Reporta:</b> usa el botón de reportar si alguien te pide datos personales.</li>
-</ol>
-<div class="box">Si te roban la cuenta, contacta al soporte oficial de Roblox lo antes posible.</div>
+<div class="box"><b>Si ves el mensaje:</b> no lo compartas, no te asustes y repórtalo si viene con un link sospechoso.</div>
+<h2>Preguntas frecuentes</h2>
+<p><b>¿Van a borrar mi cuenta el 8 de agosto de 2027?</b><br>No hay ninguna razón para creerlo. Es un rumor sin pruebas.</p>
+<p><b>¿Debo compartir el mensaje para avisar a mis amigos?</b><br>No. Compartirlo solo ayuda a que el rumor siga creciendo.</p>
 """),
 ]
 
@@ -171,7 +142,7 @@ def head(title, desc, root):
 <link rel="icon" href="{root}favicon-32x32.png"><link rel="stylesheet" href="{root}guias/estilos.css">
 </head><body>
 <header class="top"><div class="in"><a class="logo" href="{root}guias/">Ro<b>Guías</b></a>
-<nav><a href="{root}guias/">Inicio</a><a href="{root}guias/consejos-seguridad-cuenta.html">Seguridad</a><a href="{root}guias/grow-a-garden-principiantes.html">Guías</a><a href="{root}guias/crear-juego-roblox-studio.html">Creadores</a></nav></div></header>
+<nav><a href="{root}guias/">Inicio</a><a href="{root}guias/evento-halloween-roblox-2026.html">🎃 Halloween</a><a href="{root}guias/roblox-20-aniversario.html">20 años</a><a href="{root}guias/hacker-8-agosto-2027.html">Hacker 2027</a></nav></div></header>
 <div class="ad-top"><div class="ad" data-slot="arriba"></div></div>
 """
 
@@ -207,7 +178,7 @@ for i, a in enumerate(ARTS):
     open(os.path.join(OUT, a["slug"] + ".html"), "w").write(page)
 
 index = head(f"{SITE} — Guías, noticias y consejos de Roblox", "Guías, trucos y consejos de seguridad para jugadores de Roblox.", root) + f"""<div class="wrap"><main>
-<section class="hero"><h1>Guías y consejos de Roblox</h1><p>Aprende a jugar mejor, crear tus propios juegos y mantener tu cuenta segura.</p></section>
+<section class="hero"><h1>Noticias y eventos de Roblox</h1><p>Eventos, noticias y rumores de Roblox explicados.</p></section>
 {destacado}
 <div class="ad" data-slot="medio"></div>
 <div class="grid">{''.join(cards)}</div></main>{side(root)}</div>""" + foot(root)
