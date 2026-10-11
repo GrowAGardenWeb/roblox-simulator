@@ -47,53 +47,56 @@ ARTS = [
 <!--AD-->
 <h2>Disfraza tu avatar sin gastar Robux</h2>
 <p>No necesitas gastar para tener un avatar de Halloween. Combina objetos gratis del Marketplace con lo que ya tienes: ropa oscura, una cara de zombi o un accesorio de calabaza son suficientes. También puedes usar los colores de piel del editor de avatar (verde para zombi, blanco para fantasma) que son totalmente gratis.</p>
-<h2>¿Quieres Robux para el evento?</h2>
-<p>Si quieres comprar objetos de temporada, la única forma segura es conseguir Robux por los medios oficiales. <a href="robux-gratis-formas-oficiales.html">Aquí te explicamos todas las formas reales de conseguirlos</a>.</p>
-<div class="box warn"><b>Cuidado:</b> en temporada de eventos aumentan muchísimo las páginas de “Robux gratis por Halloween” que piden tu usuario o te ponen una barra de carga. Son estafas: los Robux nunca llegan y muchas veces terminan robando cuentas. Nunca escribas tu contraseña fuera de roblox.com. <a href="robux-gratis-estafas.html">Aprende a reconocerlas aquí</a>.</div>
+<div class="box warn"><b>Cuidado:</b> en temporada de eventos aumentan muchísimo las páginas de “Robux gratis por Halloween” que piden tu usuario o te ponen una barra de carga. Son estafas: los Robux nunca llegan y muchas veces terminan robando cuentas. Nunca escribas tu contraseña fuera de roblox.com. <a href="consejos-seguridad-cuenta.html">Protege tu cuenta aquí</a>.</div>
 <h2>Preguntas frecuentes</h2>
 <p><b>¿Los objetos de Halloween vuelven el próximo año?</b><br>Depende del juego. Muchos son exclusivos de la temporada, por eso conviene conseguirlos mientras el evento está activo.</p>
 <p><b>¿Puedo jugar los eventos desde el celular?</b><br>Sí, los eventos funcionan igual en celular, tablet, computadora y consola.</p>
 <p><b>¿Hay que pagar para participar?</b><br>No. Los eventos se pueden jugar gratis; los pases o paquetes de pago son opcionales.</p>
 """),
- dict(slug="robux-gratis-formas-oficiales", emoji="💰", color="#fff4c2", tag="Guías",
-  title="Robux gratis: las formas reales y oficiales de conseguirlos",
-  desc="Sin generadores ni estafas: así es como de verdad se consiguen Robux sin pagar.",
+ dict(slug="roblox-20-aniversario", emoji="🎂", color="#dbe7ff", tag="Noticias", destacado=True, imagen="roblox-20-aniversario.jpg",
+  title="Roblox cumple 20 años: la historia de 2006 a 2026",
+  desc="De un pequeño proyecto llamado DynaBlocks a una de las plataformas de juegos más grandes del mundo.",
   body="""
-<p>No existe ningún “generador de Robux”. Pero sí hay formas oficiales de conseguir Robux sin gastar tu dinero. Requieren algo de tiempo o creatividad, pero funcionan y no ponen en riesgo tu cuenta.</p>
-<h2>1. Crea y vende ropa o accesorios</h2>
-<p>Con Roblox Studio puedes diseñar camisetas, pantalones o accesorios (UGC) y venderlos en el Marketplace. Cada venta te deja una parte en Robux.</p>
-<h2>2. Crea un juego con Game Passes</h2>
-<p>Si haces un juego, puedes vender pases (por ejemplo, velocidad doble o un área VIP). <a href="crear-juego-roblox-studio.html">Aquí te enseñamos a crear tu primer juego</a>.</p>
+<p>En 2026 Roblox celebra <b>20 años</b> desde su lanzamiento oficial en 2006. Lo que empezó como un pequeño proyecto de física para computadora se convirtió en una plataforma donde millones de personas juegan, crean y se juntan con sus amigos todos los días. Repasamos su historia y lo que significa este cumpleaños para la comunidad.</p>
+<h2>Los orígenes: DynaBlocks</h2>
+<p>Roblox fue creado por <b>David Baszucki</b> y <b>Erik Cassel</b>, quienes antes habían trabajado juntos en un programa educativo de física. A principios de los 2000 empezaron a desarrollar una versión beta llamada <b>DynaBlocks</b>, que poco después cambió su nombre a <b>Roblox</b>, una mezcla de las palabras en inglés “robots” y “blocks” (bloques).</p>
+<p>La plataforma se lanzó oficialmente en <b>2006</b>. Los gráficos eran muy simples, pero la idea ya estaba ahí: un mundo hecho de bloques donde los propios jugadores construían los juegos.</p>
 <!--AD-->
-<h2>3. Únete a un grupo que pague a sus miembros</h2>
-<p>Los dueños de grupos pueden repartir Robux a sus miembros (por ejemplo, a quienes ayudan a construir o moderar). Solo acepta pagos dentro de Roblox, nunca des tu contraseña.</p>
-<h2>4. Tarjetas de regalo</h2>
-<p>Pídelas como regalo de cumpleaños o fiestas. Algunos programas de recompensas de tiendas o empresas a veces ofrecen tarjetas de Roblox; usa solo programas conocidos y oficiales.</p>
-<h2>5. Programa de afiliados de Roblox</h2>
-<p>Si compartes enlaces de juegos y nuevas personas se registran con ellos, Roblox puede darte Robux cuando ellos hagan compras (revisa las condiciones vigentes en el sitio oficial).</p>
-<div class="box warn"><b>Regla de oro:</b> si una página te pide tu contraseña, descargar algo o “verificar que eres humano” para darte Robux, es una estafa. <a href="robux-gratis-estafas.html">Así se reconocen</a>.</div>
-"""),
- dict(slug="robux-gratis-estafas", emoji="🛡️", color="#fde2e1", tag="Seguridad",
-  title="¿Robux gratis? Cómo reconocer las estafas en Roblox",
-  desc="Las trampas más comunes para robar cuentas y cómo protegerte.",
-  body="""
-<p>Si buscas “Robux gratis” vas a encontrar cientos de páginas que prometen regalarte miles. Casi todas son estafas. Aquí te explicamos cómo funcionan y cómo evitarlas.</p>
-<h2>Las estafas más comunes</h2>
+<h2>Los primeros años</h2>
 <ul>
-<li><b>Generadores de Robux:</b> te piden tu usuario y contraseña, o que completes “verificaciones humanas”. Los Robux nunca llegan.</li>
-<li><b>Links falsos de inicio de sesión:</b> páginas que copian el diseño de Roblox para robar tu contraseña.</li>
-<li><b>“Pega este código en la consola”:</b> te hacen copiar un script en el navegador que entrega tu sesión a otra persona.</li>
-<li><b>Intercambios “confiables”:</b> alguien te pide que le des tus objetos primero y luego desaparece.</li>
+<li><b>2007:</b> llega el Builders Club, la primera membresía de pago, y aparecen los Robux como moneda de la plataforma, junto con los “Tix” (Tickets), que se ganaban jugando.</li>
+<li><b>Años 2010:</b> Roblox crece rápidamente gracias a juegos creados por la comunidad y a los primeros desarrolladores que empiezan a ganar dinero con sus creaciones.</li>
+<li><b>2012:</b> llega la app para celulares iOS, y después para Android. Jugar desde el celular cambió por completo el tamaño de la comunidad.</li>
+<li><b>2013:</b> se crea el programa Developer Exchange (DevEx), que permite a los creadores cambiar sus Robux ganados por dinero real.</li>
+</ul>
+<h2>El gran crecimiento</h2>
+<ul>
+<li><b>2015:</b> Roblox llega a Xbox One.</li>
+<li><b>2016:</b> se eliminan los Tix y se agrega soporte para realidad virtual.</li>
+<li><b>2019:</b> el Builders Club se reemplaza por <b>Roblox Premium</b>, la membresía que existe hoy.</li>
+<li><b>2020:</b> durante la pandemia, millones de personas usan Roblox para verse con sus amigos y la plataforma vive su mayor crecimiento.</li>
+<li><b>2021:</b> Roblox empieza a cotizar en la bolsa de valores de Nueva York.</li>
+<li><b>2023:</b> llega a PlayStation y Meta Quest.</li>
 </ul>
 <!--AD-->
-<h2>Cómo protegerte</h2>
+<h2>Los avatares a lo largo del tiempo</h2>
+<p>El clásico personaje amarillo, azul y verde, al que la comunidad llama cariñosamente “noob”, es casi un símbolo de Roblox. Con los años los avatares pasaron de ser piezas simples a tener cuerpos con más articulaciones, ropa en capas, accesorios creados por la comunidad (UGC) y animaciones faciales. Aun así, muchos jugadores siguen usando el estilo clásico como homenaje.</p>
+<h2>Juegos que marcaron cada época</h2>
+<p>Parte de la magia de Roblox es que sus juegos más famosos no los hizo la empresa, sino la comunidad. Títulos de rol, simuladores, obbies, juegos de terror y de mascotas han marcado distintas generaciones de jugadores. En los últimos años, juegos como <a href="grow-a-garden-principiantes.html">Grow a Garden</a> han llegado a romper récords de jugadores conectados al mismo tiempo.</p>
+<!--AD-->
+<h2>Cómo celebrar los 20 años</h2>
 <ol>
-<li>Activa la <b>verificación en dos pasos</b> en la configuración de seguridad de tu cuenta.</li>
-<li>Escribe tu contraseña solo en <b>roblox.com</b> o en la app oficial.</li>
-<li>Nunca compartas tu contraseña ni códigos de verificación, ni con amigos.</li>
-<li>Desconfía de cualquier oferta que parezca demasiado buena.</li>
+<li><b>Ponle a tu avatar un look clásico:</b> los colores del noob original son gratis en el editor de avatar.</li>
+<li><b>Busca experiencias de aniversario:</b> revisa la página de inicio y el Marketplace por si aparecen eventos u objetos conmemorativos.</li>
+<li><b>Vuelve a jugar tus clásicos favoritos</b> con amigos.</li>
+<li><b>Crea algo propio:</b> la mejor forma de celebrar una plataforma hecha por creadores es crear. <a href="crear-juego-roblox-studio.html">Aprende a hacer tu primer juego</a>.</li>
 </ol>
-<div class="box warn"><b>Recuerda:</b> los Robux solo se obtienen de forma oficial: comprándolos, con una membresía o ganándolos al vender tus propias creaciones.</div>
+<div class="box"><b>Actualizaremos esta guía</b> si Roblox anuncia eventos u objetos oficiales por su 20 aniversario.</div>
+<div class="box warn"><b>Cuidado:</b> en fechas especiales aparecen muchas páginas falsas de “regalos de aniversario” que piden tu usuario o contraseña. Roblox nunca te pedirá tu contraseña fuera de roblox.com. <a href="consejos-seguridad-cuenta.html">Protege tu cuenta aquí</a>.</div>
+<h2>Preguntas frecuentes</h2>
+<p><b>¿Cuándo se lanzó Roblox?</b><br>El lanzamiento oficial fue en 2006, después de una etapa de pruebas con el nombre DynaBlocks.</p>
+<p><b>¿Quién creó Roblox?</b><br>David Baszucki y Erik Cassel.</p>
+<p><b>¿Qué significa “Roblox”?</b><br>Viene de la combinación de “robots” y “blocks” (bloques).</p>
 """),
  dict(slug="grow-a-garden-principiantes", emoji="🌱", color="#dff5e3", tag="Guías",
   title="Grow a Garden: guía para principiantes",
@@ -163,10 +166,12 @@ def head(title, desc, root):
     return f"""<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title}</title><meta name="description" content="{desc}">
+<meta name="google-adsense-account" content="ca-pub-9660503457209327">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9660503457209327" crossorigin="anonymous"></script>
 <link rel="icon" href="{root}favicon-32x32.png"><link rel="stylesheet" href="{root}guias/estilos.css">
 </head><body>
 <header class="top"><div class="in"><a class="logo" href="{root}guias/">Ro<b>Guías</b></a>
-<nav><a href="{root}guias/">Inicio</a><a href="{root}guias/robux-gratis-estafas.html">Seguridad</a><a href="{root}guias/grow-a-garden-principiantes.html">Guías</a><a href="{root}guias/crear-juego-roblox-studio.html">Creadores</a></nav></div></header>
+<nav><a href="{root}guias/">Inicio</a><a href="{root}guias/consejos-seguridad-cuenta.html">Seguridad</a><a href="{root}guias/grow-a-garden-principiantes.html">Guías</a><a href="{root}guias/crear-juego-roblox-studio.html">Creadores</a></nav></div></header>
 <div class="ad-top"><div class="ad" data-slot="arriba"></div></div>
 """
 
@@ -184,13 +189,13 @@ Este sitio muestra anuncios de terceros (Google AdSense) que pueden usar cookies
 
 root = "../"  # rutas relativas: funciona en el servidor y abriendo los archivos en tu compu
 cards = []
-destacado = ""
+destacado = ""  # uno o más artículos grandes arriba, en el orden de ARTS
 for i, a in enumerate(ARTS):
     cards.append(f"""<a class="card" href="{a['slug']}.html">{('<img class="img" src="'+a['imagen']+'" alt="">') if a.get('imagen') else '<div class="img" style="background:'+a['color']+'">'+a['emoji']+'</div>'}
 <div class="body"><span class="tag">{a['tag']}</span><h2>{a['title']}</h2><p>{a['desc']}</p></div></a>""")
     if a.get("destacado"):
-        destacado = cards.pop().replace('class="card"', 'class="card destacado"')
-    if i == 2:
+        destacado += cards.pop().replace('class="card"', 'class="card destacado"')
+    if i == 3:
         cards.append('<div class="ad" data-slot="medio" style="grid-column:1/-1;margin:0"></div>')
     body = a["body"].replace("<!--AD-->", '<div class="ad" data-slot="medio"></div>')
     page = head(f"{a['title']} | {SITE}", a["desc"], root) + f"""<div class="wrap"><main><article>
