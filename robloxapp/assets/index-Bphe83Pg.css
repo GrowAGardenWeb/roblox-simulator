@@ -2,7 +2,6 @@
 html.dark .il-ltd,html.dark .cz-plus,html.dark .dr-badge,html.dark .ep-btn,html.dark .ep-seg button.on,html.dark .gs-play,html.dark .ip-cta,html.dark .a-view,html.dark .a-dialog button,html.dark .ps-primary,html.dark .sra-next,html.dark .sre-ok,html.dark .srv-send,html.dark .bi-price,html.dark .bi-buy,html.dark .mi-empty{filter:invert() hue-rotate(180deg)}
 html.dark .cz-box{background:#242429!important}
 html.dark .cz-ico{background-color:#4a4a52!important;filter:invert() hue-rotate(180deg)}
-html.dark .name-badge-ico{background-color:var(--primary)!important;filter:invert() hue-rotate(180deg)}
 html.dark .av-view{background-image:url("/robloxapp/site-assets/avatar-scene-dark.png")!important;filter:invert() hue-rotate(180deg)}
 html.dark .av-engine{filter:invert() hue-rotate(180deg)}
 html.dark .page.login{filter:invert() hue-rotate(180deg)}
