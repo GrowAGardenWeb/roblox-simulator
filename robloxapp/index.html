@@ -190,6 +190,19 @@
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
+    <!-- Launch screen: full screen, always light (outside #root, so no theme
+         or dark mode touches it), shown for 2s on every app start. -->
+    <div id="splash" style="position:fixed;inset:0;z-index:2147483647;background:#f6f6f6;display:flex;align-items:center;justify-content:center;transition:opacity .25s ease">
+      <img src="/robloxapp/site-assets/splash-logo.png" alt="Roblox" draggable="false" style="width:222px;height:auto;margin-bottom:4.6vh;pointer-events:none">
+    </div>
+    <script>
+      setTimeout(function () {
+        var s = document.getElementById('splash')
+        if (!s) return
+        s.style.opacity = '0'
+        setTimeout(function () { s.remove() }, 260)
+      }, 2000)
+    </script>
     <div id="root"></div>
   </body>
 </html>
