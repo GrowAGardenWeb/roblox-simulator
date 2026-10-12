@@ -100,8 +100,8 @@
               return neutral(c) ? css(map(c), a) : m
             })
         }
-        // brand buttons/badges keep their original colours, text included
-        var KEEP = /\.(bi-buy|bi-price|bi-manage|a-view|ep-btn|ps-primary|ip-cta|gs-play|sra-next|sre-ok|srv-send|il-ltd|cz-plus|dr-badge|dr-buy|ep-sw)\b|\.a-dialog button|\.ep-seg button\.on/
+        // brand buttons/badges and the game (test zone) keep their original colours, text included
+        var KEEP = /\.(bi-buy|bi-price|bi-manage|a-view|ep-btn|ps-primary|ip-cta|gs-play|sra-next|sre-ok|srv-send|il-ltd|cz-plus|dr-badge|dr-buy|ep-sw)\b|\.a-dialog button|\.ep-seg button\.on|\.(pt|pm|pa)(-[\w-]*)?(?![\w-])/
         function appSheet() {
           var link = document.querySelector('link[rel=stylesheet][href*="/assets/index-"]')
           try { return link && link.sheet && link.sheet.cssRules && link.sheet } catch (e) { return null }
@@ -185,8 +185,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-v9aee2a09.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v9aee2a09.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-v4058a439.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v4058a439.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
