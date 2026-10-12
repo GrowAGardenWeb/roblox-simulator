@@ -18,11 +18,14 @@
     <script src="/access-gate.js"></script>
     <script src="/robloxapp/draco_decoder.js"></script>
     <script>
-      // Themes: light, dark, or custom. Dark mode is invert(.93)+hue-rotate(180deg)
-      // on #root. A custom theme is one SVG colour matrix on #root (#thF) that maps
-      // the app's whites/greys/blacks onto shades of the chosen colour; images,
-      // canvas and brand buttons get the exact inverse (#thI) so they keep their
-      // real colours. Applied here, before first paint, so nothing flashes.
+      // Themes: light, dark, or custom. A custom theme rewrites the app
+      // stylesheet's neutral colours (greys/white/black: backgrounds, cards,
+      // borders, text) into shades of the chosen colour and injects that as an
+      // override stylesheet. Saturated colours (blue buttons, badges…) and
+      // images are never touched. Light colours give a light UI with no filter
+      // at all; dark colours sit on top of the normal dark mode (whose page
+      // filter is invert(.93) hue-rotate(180deg)), so their greys are written as
+      // the pre-image that comes out tinted after that filter.
       ;(function () {
         var HUE180 = [[-0.574, 1.43, 0.144], [0.426, 0.43, 0.144], [0.426, 1.43, -0.856]]
         var root = document.documentElement
@@ -49,45 +52,59 @@
                   [B / det, (a * i - c * g) / det, (c * d - a * f) / det],
                   [C / det, (b * g - a * h) / det, (a * e - b * d) / det]]
         }
-        function apply3(t, c) {
-          return [0, 1, 2].map(function (r) { return t[0][r][0] * c[0] + t[0][r][1] * c[1] + t[0][r][2] * c[2] + t[1][r] })
-        }
+        var HUE180_INV = inv3(HUE180)
         function clamp01(c) { return c.map(function (v) { return Math.max(0, Math.min(1, v)) }) }
-        // Affine colour map {m: 3x3, b: offset} for the chosen page colour (and
-        // optional bottom-bar colour, which is always darker than the page).
+        // colour x such that the dark-mode page filter turns it into c
+        function darkPreimage(c) {
+          return clamp01(HUE180_INV.map(function (row) {
+            return (0.93 - (row[0] * c[0] + row[1] * c[1] + row[2] * c[2])) / 0.86
+          }))
+        }
+        // {dark, bg, nav (as written in CSS), map(neutral rgb) -> rgb (as written)}
         function build(color, navColor) {
-          var hsl = toHsl(rgb(color)), dark = hsl[2] < 0.5, m, b, bg, nav
+          var hsl = toHsl(rgb(color)), dark = hsl[2] < 0.5, bg, nav, map
           if (dark) {
             bg = hsl[2] <= 0.25 ? rgb(color) : fromHsl(hsl[0], hsl[1], 0.22)
-            var bgL = toHsl(bg)
-            nav = navColor ? rgb(navColor) : fromHsl(bgL[0], bgL[1], bgL[2] * 0.72)
-            // the darkest the filter can output is what page white maps to, so map
-            // white -> bar colour and lift the page background to the chosen colour
-            var ink = fromHsl(hsl[0], Math.min(hsl[1], 0.35), 0.95)
-            m = []; b = []
-            for (var r = 0; r < 3; r++) {
-              var q = (ink[r] - nav[r]) / 0.86, p = nav[r] - 0.07 * q
-              m.push(HUE180[r].map(function (v) { return -0.86 * q * v }))
-              b.push(p + 0.93 * q)
+            var bh = toHsl(bg), ink = fromHsl(hsl[0], Math.min(hsl[1], 0.35), 0.95)
+            nav = navColor ? rgb(navColor) : fromHsl(bh[0], bh[1], bh[2] * 0.72)
+            // white -> page colour, black -> near-white tint (dark UI)
+            map = function (c) {
+              var t = 1 - (c[0] + c[1] + c[2]) / 3
+              return darkPreimage(bg.map(function (v, i) { return v + (ink[i] - v) * t }))
             }
-          } else {
-            bg = hsl[2] >= 0.8 ? rgb(color) : fromHsl(hsl[0], hsl[1], 0.9)
-            var bgH = toHsl(bg)
-            nav = navColor ? rgb(navColor) : fromHsl(bgH[0], Math.min(1, bgH[1] + 0.05), Math.max(0, bgH[2] - 0.11))
-            var dk = fromHsl(hsl[0], Math.min(hsl[1], 0.5), 0.1)
-            m = [0, 1, 2].map(function (r) { return [0, 1, 2].map(function (c) { return r === c ? bg[r] - dk[r] : 0 }) })
-            b = dk
+            return { dark: true, bg: bg, nav: darkPreimage(nav), map: map }
           }
-          var mi = inv3(m), bi = mi.map(function (row) { return -(row[0] * b[0] + row[1] * b[1] + row[2] * b[2]) })
-          var inv = [mi, bi]
-          // pre-filter colours for the page background and the bottom bar
-          return { dark: dark, bg: bg, fwd: [m, b], inv: inv,
-                   pagePre: clamp01(apply3(inv, bg)), navPre: clamp01(apply3(inv, nav)) }
+          bg = hsl[2] >= 0.8 ? rgb(color) : fromHsl(hsl[0], hsl[1], 0.9)
+          var bh2 = toHsl(bg), dk = fromHsl(hsl[0], Math.min(hsl[1], 0.5), 0.1)
+          nav = navColor ? rgb(navColor) : fromHsl(bh2[0], Math.min(1, bh2[1] + 0.05), Math.max(0, bh2[2] - 0.11))
+          // white -> page colour, black -> very dark tint (light UI)
+          map = function (c) { return c.map(function (v, i) { return dk[i] + (bg[i] - dk[i]) * v }) }
+          return { dark: false, bg: bg, nav: nav, map: map }
         }
-        function values(t) {
-          var out = []
-          for (var r = 0; r < 3; r++) out.push(t[0][r][0], t[0][r][1], t[0][r][2], 0, t[1][r])
-          return out.concat([0, 0, 0, 1, 0]).map(function (v) { return +v.toFixed(5) }).join(' ')
+        function css(c, a) {
+          var v = c.map(function (x) { return Math.round(x * 255) }).join(', ')
+          return a == null ? 'rgb(' + v + ')' : 'rgba(' + v + ', ' + a + ')'
+        }
+        // only neutral colours are themed; anything with real colour is kept
+        function recolor(text, map) {
+          var neutral = function (c) { return Math.max.apply(0, c) - Math.min.apply(0, c) <= 0.1 }
+          return text
+            .replace(/rgba?\((\d+), (\d+), (\d+)(?:, ([\d.]+))?\)/g, function (m, r, g, b, a) {
+              var c = [r / 255, g / 255, b / 255]
+              return neutral(c) ? css(map(c), a) : m
+            })
+            // custom properties (e.g. --bg:#fff) keep the hex they were written with
+            .replace(/#([0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b/gi, function (m, h) {
+              if (h.length < 6) h = h.split('').map(function (x) { return x + x }).join('')
+              var c = rgb(h.slice(0, 6)), a = h.length === 8 ? +(parseInt(h.slice(6), 16) / 255).toFixed(3) : null
+              return neutral(c) ? css(map(c), a) : m
+            })
+        }
+        // brand buttons/badges keep their original colours, text included
+        var KEEP = /\.(bi-buy|bi-price|bi-manage|a-view|ep-btn|ps-primary|ip-cta|gs-play|sra-next|sre-ok|srv-send|il-ltd|cz-plus|dr-badge|dr-buy|ep-sw)\b|\.a-dialog button|\.ep-seg button\.on/
+        function appSheet() {
+          var link = document.querySelector('link[rel=stylesheet][href*="/assets/index-"]')
+          try { return link && link.sheet && link.sheet.cssRules && link.sheet } catch (e) { return null }
         }
         var state = { mode: 'light', color: '#ede6ff', nav: '#d6c3fe' }
         try {
@@ -100,14 +117,28 @@
           var custom = state.mode === 'custom', t = custom && build(state.color, state.nav)
           root.classList.toggle('custom', !!custom)
           root.classList.toggle('dark', state.mode === 'dark' || (custom && t.dark))
-          if (!custom) return ['--th-bg', '--th-page-pre', '--th-nav-pre'].forEach(function (v) { root.style.removeProperty(v) })
-          var css = function (c) { return 'rgb(' + c.map(function (v) { return Math.round(v * 255) }).join(',') + ')' }
+          var style = document.getElementById('th-css')
+          if (!custom) {
+            if (style) style.remove()
+            return ['--th-bg', '--th-nav'].forEach(function (v) { root.style.removeProperty(v) })
+          }
           root.style.setProperty('--th-bg', css(t.bg))
-          root.style.setProperty('--th-page-pre', css(t.pagePre))
-          root.style.setProperty('--th-nav-pre', css(t.navPre))
-          var f = document.querySelector('#thF feColorMatrix'), i = document.querySelector('#thI feColorMatrix')
-          if (f) f.setAttribute('values', values(t.fwd))
-          if (i) i.setAttribute('values', values(t.inv))
+          root.style.setProperty('--th-nav', css(t.nav))
+          var sheet = appSheet()
+          if (!sheet) return
+          var out = []
+          for (var i = 0; i < sheet.cssRules.length; i++) {
+            var rule = sheet.cssRules[i], txt = rule.cssText
+            if (rule.selectorText && KEEP.test(rule.selectorText)) continue
+            var re = recolor(txt, t.map)
+            if (re !== txt) out.push(re)
+          }
+          if (!style) {
+            style = document.createElement('style')
+            style.id = 'th-css'
+            document.head.appendChild(style)
+          }
+          style.textContent = out.join('\n')
         }
         window.__theme = {
           get: function () { return { mode: state.mode, color: state.color, nav: state.nav } },
@@ -154,14 +185,10 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-ve25c0735.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-ve25c0735.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-vded69e3a.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vded69e3a.css">
   </head>
   <body>
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-      <filter id="thF" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" /></filter>
-      <filter id="thI" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" /></filter>
-    </svg>
     <script>window.__theme && window.__theme.apply()</script>
     <div id="root"></div>
   </body>
