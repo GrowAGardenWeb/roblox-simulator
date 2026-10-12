@@ -49,56 +49,76 @@
                   [B / det, (a * i - c * g) / det, (c * d - a * f) / det],
                   [C / det, (b * g - a * h) / det, (a * e - b * d) / det]]
         }
-        // Affine colour map {m: 3x3, b: offset} for the chosen colour.
-        function build(color) {
-          var hsl = toHsl(rgb(color)), dark = hsl[2] < 0.5, m, b, bg
+        function apply3(t, c) {
+          return [0, 1, 2].map(function (r) { return t[0][r][0] * c[0] + t[0][r][1] * c[1] + t[0][r][2] * c[2] + t[1][r] })
+        }
+        function clamp01(c) { return c.map(function (v) { return Math.max(0, Math.min(1, v)) }) }
+        // Affine colour map {m: 3x3, b: offset} for the chosen page colour (and
+        // optional bottom-bar colour, which is always darker than the page).
+        function build(color, navColor) {
+          var hsl = toHsl(rgb(color)), dark = hsl[2] < 0.5, m, b, bg, nav
           if (dark) {
-            // dark UI: page white -> the colour (kept dark), page black -> near-white tint
-            bg = fromHsl(hsl[0], hsl[1], Math.min(hsl[2], 0.22))
+            bg = hsl[2] <= 0.25 ? rgb(color) : fromHsl(hsl[0], hsl[1], 0.22)
+            var bgL = toHsl(bg)
+            nav = navColor ? rgb(navColor) : fromHsl(bgL[0], bgL[1], bgL[2] * 0.72)
+            // the darkest the filter can output is what page white maps to, so map
+            // white -> bar colour and lift the page background to the chosen colour
             var ink = fromHsl(hsl[0], Math.min(hsl[1], 0.35), 0.95)
             m = []; b = []
             for (var r = 0; r < 3; r++) {
-              var q = (ink[r] - bg[r]) / 0.86, p = bg[r] - 0.07 * q
+              var q = (ink[r] - nav[r]) / 0.86, p = nav[r] - 0.07 * q
               m.push(HUE180[r].map(function (v) { return -0.86 * q * v }))
               b.push(p + 0.93 * q)
             }
           } else {
-            // light UI: page white -> pale tint of the colour, page black -> very dark tint
-            bg = fromHsl(hsl[0], hsl[1], Math.max(hsl[2], 0.9))
+            bg = hsl[2] >= 0.8 ? rgb(color) : fromHsl(hsl[0], hsl[1], 0.9)
+            var bgH = toHsl(bg)
+            nav = navColor ? rgb(navColor) : fromHsl(bgH[0], Math.min(1, bgH[1] + 0.05), Math.max(0, bgH[2] - 0.11))
             var dk = fromHsl(hsl[0], Math.min(hsl[1], 0.5), 0.1)
             m = [0, 1, 2].map(function (r) { return [0, 1, 2].map(function (c) { return r === c ? bg[r] - dk[r] : 0 }) })
             b = dk
           }
           var mi = inv3(m), bi = mi.map(function (row) { return -(row[0] * b[0] + row[1] * b[1] + row[2] * b[2]) })
-          return { dark: dark, bg: bg, fwd: [m, b], inv: [mi, bi] }
+          var inv = [mi, bi]
+          // pre-filter colours for the page background and the bottom bar
+          return { dark: dark, bg: bg, fwd: [m, b], inv: inv,
+                   pagePre: clamp01(apply3(inv, bg)), navPre: clamp01(apply3(inv, nav)) }
         }
         function values(t) {
           var out = []
           for (var r = 0; r < 3; r++) out.push(t[0][r][0], t[0][r][1], t[0][r][2], 0, t[1][r])
           return out.concat([0, 0, 0, 1, 0]).map(function (v) { return +v.toFixed(5) }).join(' ')
         }
-        var state = { mode: 'light', color: '#1b3358' }
+        var state = { mode: 'light', color: '#ede6ff', nav: '#d6c3fe' }
         try {
           var saved = localStorage.getItem('theme.v1')
           if (saved === 'dark' || saved === 'custom') state.mode = saved
           state.color = localStorage.getItem('theme.color.v1') || state.color
+          state.nav = localStorage.getItem('theme.nav.v1') || ''
         } catch (e) {}
         function apply() {
-          var custom = state.mode === 'custom', t = custom && build(state.color)
+          var custom = state.mode === 'custom', t = custom && build(state.color, state.nav)
           root.classList.toggle('custom', !!custom)
           root.classList.toggle('dark', state.mode === 'dark' || (custom && t.dark))
-          if (!custom) return root.style.removeProperty('--th-bg')
-          root.style.setProperty('--th-bg', 'rgb(' + t.bg.map(function (v) { return Math.round(v * 255) }).join(',') + ')')
+          if (!custom) return ['--th-bg', '--th-page-pre', '--th-nav-pre'].forEach(function (v) { root.style.removeProperty(v) })
+          var css = function (c) { return 'rgb(' + c.map(function (v) { return Math.round(v * 255) }).join(',') + ')' }
+          root.style.setProperty('--th-bg', css(t.bg))
+          root.style.setProperty('--th-page-pre', css(t.pagePre))
+          root.style.setProperty('--th-nav-pre', css(t.navPre))
           var f = document.querySelector('#thF feColorMatrix'), i = document.querySelector('#thI feColorMatrix')
           if (f) f.setAttribute('values', values(t.fwd))
           if (i) i.setAttribute('values', values(t.inv))
         }
         window.__theme = {
-          get: function () { return { mode: state.mode, color: state.color } },
-          set: function (mode, color) {
+          get: function () { return { mode: state.mode, color: state.color, nav: state.nav } },
+          set: function (mode, color, nav) {
             state.mode = mode
-            if (color) state.color = color
-            try { localStorage.setItem('theme.v1', mode); localStorage.setItem('theme.color.v1', state.color) } catch (e) {}
+            if (color) { state.color = color; state.nav = nav || '' }
+            try {
+              localStorage.setItem('theme.v1', mode)
+              localStorage.setItem('theme.color.v1', state.color)
+              localStorage.setItem('theme.nav.v1', state.nav)
+            } catch (e) {}
             apply()
           },
           apply: apply
@@ -134,8 +154,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-v9546f726.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v9546f726.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-ve25c0735.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-ve25c0735.css">
   </head>
   <body>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
