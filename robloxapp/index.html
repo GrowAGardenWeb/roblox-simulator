@@ -100,8 +100,8 @@
               return neutral(c) ? css(map(c), a) : m
             })
         }
-        // brand buttons/badges and the game (test zone) keep their original colours, text included
-        var KEEP = /\.(bi-buy|bi-price|bi-manage|a-view|ep-btn|ps-primary|ip-cta|gs-play|sra-next|sre-ok|srv-send|il-ltd|cz-plus|dr-badge|dr-buy|ep-sw|v-rtxt)\b|\.a-dialog button|\.ep-seg button\.on|\.(pt|pm|pa)(-[\w-]*)?(?![\w-])/
+        // brand buttons/badges, the patches drawn over screenshot pages (Robux balance) and the game (test zone) keep their original colours, text included
+        var KEEP = /\.(rx-bal|rx-send-ico|bi-buy|bi-price|bi-manage|a-view|ep-btn|ps-primary|ip-cta|gs-play|sra-next|sre-ok|srv-send|il-ltd|cz-plus|dr-badge|dr-buy|ep-sw|v-rtxt)\b|\.a-dialog button|\.ep-seg button\.on|\.(pt|pm|pa)(-[\w-]*)?(?![\w-])/
         function appSheet() {
           var link = document.querySelector('link[rel=stylesheet][href*="/assets/index-"]')
           try { return link && link.sheet && link.sheet.cssRules && link.sheet } catch (e) { return null }
@@ -126,13 +126,29 @@
           root.style.setProperty('--th-nav', css(t.nav))
           var sheet = appSheet()
           if (!sheet) return
-          var out = []
-          for (var i = 0; i < sheet.cssRules.length; i++) {
-            var rule = sheet.cssRules[i], txt = rule.cssText
-            if (rule.selectorText && KEEP.test(rule.selectorText)) continue
-            var re = recolor(txt, t.map)
-            if (re !== txt) out.push(re)
+          // only the colour declarations are written again (never positions or sizes):
+          // re-emitting whole rules at the end let them override later rules of the
+          // same weight, e.g. a second row of text jumping onto the first one
+          function walk(rules, out) {
+            for (var i = 0; i < rules.length; i++) {
+              var rule = rules[i]
+              if (rule.style && rule.selectorText != null) {
+                if (KEEP.test(rule.selectorText)) continue
+                var decl = []
+                for (var j = 0; j < rule.style.length; j++) {
+                  var p = rule.style[j], v = rule.style.getPropertyValue(p), nv = recolor(v, t.map)
+                  if (nv !== v) decl.push(p + ':' + nv + (rule.style.getPropertyPriority(p) ? ' !important' : ''))
+                }
+                if (decl.length) out.push(rule.selectorText + '{' + decl.join(';') + '}')
+              } else if (rule.cssRules && rule.conditionText != null) {
+                var inner = []
+                walk(rule.cssRules, inner)
+                if (inner.length) out.push('@' + (rule.constructor.name === 'CSSSupportsRule' ? 'supports ' : 'media ') + rule.conditionText + '{' + inner.join('\n') + '}')
+              }
+            }
+            return out
           }
+          var out = walk(sheet.cssRules, [])
           if (!style) {
             style = document.createElement('style')
             style.id = 'th-css'
@@ -185,8 +201,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-v2a70aef9.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v2a70aef9.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-v31762fc8.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v31762fc8.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
