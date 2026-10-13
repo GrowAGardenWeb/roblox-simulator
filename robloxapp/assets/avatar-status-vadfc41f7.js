@@ -1,0 +1,1 @@
+import{t as e}from"./index-vadfc41f7.js";export{e as avatarStatus};
