@@ -712,4 +712,8 @@ app.addEventListener('click',function(e){if(Date.now()-lpFired<700)return;var b=
 addEventListener('keydown',function(e){if(e.key==='Escape'){if(typeof NAV!=='undefined'&&NAV.length){fpop();return}closeSheets();if(drawerOpen)drawer(false);if(cashOpen)cash(false);plusMenu(false);openAcc(false)}});
 tickEls.forEach(paint);
 restoreUI();
+(function(){try{var m=document.createElement('meta');m.name='color-scheme';m.content='dark';document.head.appendChild(m);document.documentElement.style.setProperty('color-scheme','dark','important')}catch(e){}
+function dk(e){var x=e.target;if(x&&x.tagName==='INPUT'){x.style.setProperty('color-scheme','dark','important');x.setAttribute('enterkeyhint','search')}}
+['touchstart','pointerdown','focusin'].forEach(function(ev){document.addEventListener(ev,dk,true)});
+document.querySelectorAll('input').forEach(function(i){i.style.setProperty('color-scheme','dark','important')})})();
 </script></body></html>
