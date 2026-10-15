@@ -249,8 +249,8 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 .kp button{width:var(--k);height:var(--k);border-radius:50%;background:#3b3c50;border:1px solid rgba(255,255,255,.07);color:#fff;font:inherit;font-size:4.7cqw;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:transform .12s,background-color .15s;-webkit-tap-highlight-color:transparent}
 .kp button:active{transform:scale(.93);background:#2f3043}.kp button svg{width:34%;height:34%}.kp button:focus-visible{outline:2px solid #fff}
 #amtp .sgo{position:relative;left:auto;top:auto;margin-top:auto;width:52cqw;height:15.2cqw}
-#amtp.dim:after,#amtp.dim:before{content:''}
-#amtp.dim:after{position:absolute;inset:0;background:rgba(12,12,28,.6);animation:fadeIn .3s both;z-index:5}
+#amtp.dim:before,#reqp.dim:before{content:''}
+#amtp.dim:after,#reqp.dim:after{content:'';position:absolute;inset:0;background:rgba(12,12,28,.6);animation:fadeIn .3s both;z-index:5}
 #cfmp{aspect-ratio:921/1185;z-index:8}
 .cdots{position:absolute;right:6.6cqw;top:8.6cqw;display:flex;gap:.9cqw}.cdots i{width:1.1cqw;height:1.1cqw;border-radius:50%;background:#fff}
 .cfv{position:absolute;left:0;right:0;top:10.5cqw;display:flex;align-items:baseline;justify-content:center;font-weight:700;color:#fff;line-height:1;gap:.5cqw}
@@ -281,6 +281,42 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 #coinp .cbody{transition:padding-top .4s}#coinp.pend .cbody{padding-top:11.5cqw}
 .tr .bd.pd{letter-spacing:.2cqw;font-size:2.6cqw;font-weight:700;width:7cqw;right:-3cqw}
 @media (prefers-reduced-motion:reduce){.cpill .sp{animation-duration:2s}}
+
+#profp{height:95%;max-height:none;display:flex;flex-direction:column;align-items:center}
+.pav{width:27.2cqw;height:27.2cqw;margin-top:17cqw;flex:none}.pav svg{width:100%;height:100%;display:block}
+.pname{margin-top:5.5cqw;width:80%;background:none;border:0;border-bottom:1px solid transparent;outline:0;color:#fff;font:inherit;font-size:5.2cqw;font-weight:500;text-align:center;padding:.5cqw 0;transition:border-color .2s;touch-action:auto}
+.pname:focus{border-bottom-color:rgba(160,140,255,.6)}.pname::placeholder{color:#6d6d84}
+.prows{width:100%;margin-top:6cqw}
+.prow{display:flex;align-items:center;width:100%;box-sizing:border-box;padding:0 4.6cqw;height:13.2cqw;background:none;border:0;color:#fff;font:inherit;position:relative;text-align:left}
+button.prow{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .2s}button.prow:active{background:rgba(255,255,255,.05)}button.prow:focus-visible{outline:2px solid #fff;outline-offset:-2px}
+.prow .ic{width:5.4cqw;height:5.4cqw;color:#c6c6d6;margin-right:7cqw;display:flex;flex:none}.prow .ic svg{width:100%;height:100%}
+.prow .pl{flex:1;font-size:3.5cqw;font-weight:500}.prow .pv{font-size:3.5cqw;color:#8e8ea4}
+.prow:after{content:'';position:absolute;left:17cqw;right:4.6cqw;bottom:0;height:1px;background:rgba(255,255,255,.09)}.prow.last:after{display:none}
+.prow .chv{width:4cqw;height:4cqw;color:#8e8ea4;margin-right:.6cqw}.chv svg{width:100%;height:100%}
+.tog{position:relative;width:12.6cqw;height:6.5cqw;border-radius:99px;background:#44455a;border:1px solid rgba(255,255,255,.16);cursor:pointer;padding:0;transition:background-color .25s;-webkit-tap-highlight-color:transparent}
+.tog i{position:absolute;left:.6cqw;top:.6cqw;width:8.4cqw;height:4.8cqw;border-radius:99px;background:#fff;transition:transform .25s cubic-bezier(.3,.8,.3,1)}
+.tog.on{background:#5b49bd}.tog.on i{transform:translateX(2.9cqw)}.tog:focus-visible{outline:2px solid #fff}
+.tiles{display:flex;gap:2.6cqw;width:100%;box-sizing:border-box;padding:0 4.9cqw;margin-top:8.4cqw}
+.tile{flex:1;height:19.6cqw;border-radius:5.4cqw;background:#3a3b4f;border:1px solid rgba(255,255,255,.08);color:#fff;font:inherit;font-size:3.2cqw;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8cqw;cursor:pointer;transition:background-color .2s;-webkit-tap-highlight-color:transparent}
+.tile:active{background:#2e2f42}.tile svg{width:7cqw;height:7cqw}.tile:focus-visible{outline:2px solid #fff}
+.pfoot{margin-top:auto;padding:0 9cqw 8cqw;text-align:center;font-size:2.7cqw;line-height:1.4;color:#7c7c92}
+#reqp{height:97%;max-height:none;display:flex;flex-direction:column;align-items:center;box-sizing:border-box}
+#reqp .fback{top:8cqw}#reqp .ftitle{top:9.4cqw}
+#reqp .amtv{margin-top:34cqw}
+.caret{display:inline-block;width:.35cqw;height:calc(13cqw*var(--sc,1));background:#5a5b72;margin-left:1.2cqw;align-self:center;animation:blink 1.05s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.renter{margin-top:6cqw;font-size:3.5cqw;color:#8e8ea4}
+#reqp .kp{margin-top:6cqw}
+.rfoot{position:absolute;left:0;right:0;bottom:10cqw;text-align:center;font-size:2.9cqw;line-height:1.35;color:#8a8aa0;transition:opacity .3s}.rfoot.hide{opacity:0}
+.sgo.grn{color:#fff;border-color:rgba(170,240,120,.5);background:radial-gradient(120% 170% at 20% 15%,#27b312 0%,#17960a 50%,#52ad22 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 4cqw rgba(120,230,60,.35),0 2cqw 5cqw rgba(30,120,10,.35)}
+#rGo{left:24cqw;top:auto;bottom:7cqw;width:52cqw;height:15.2cqw;opacity:0;pointer-events:none;transition:opacity .3s,transform .15s}#rGo.show{opacity:1;pointer-events:auto}
+#qrp{aspect-ratio:921/1284;z-index:8}
+#qrp .qrcard{left:19.3cqw;top:10cqw;width:61.3cqw;height:61.3cqw;border-radius:7cqw}
+.qlogo{position:absolute;left:50%;top:50%;width:9.6cqw;height:9.6cqw;transform:translate(-50%,-50%);background:#fff;border-radius:2cqw;display:flex;align-items:center;justify-content:center}.qlogo svg{width:84%;height:84%}
+.qamt{position:absolute;left:50%;top:77.6cqw;transform:translateX(-50%);height:10.4cqw;padding:0 6cqw;border-radius:99px;background:#3b3c50;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;font-size:4.7cqw;font-weight:500;color:#fff;white-space:nowrap}
+.qtit{position:absolute;left:0;right:0;top:90.2cqw;text-align:center;font-size:5.3cqw;font-weight:600;color:#fff;padding:0 6cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
+.qsub{position:absolute;left:0;right:0;top:100.6cqw;text-align:center;font-size:3.1cqw;color:#a9a9bd}
+#qShare{left:8.9cqw;top:115.5cqw;width:82.2cqw;height:15cqw}
 </style></head><body>
 <div id="phone"></div>
 <script src="cfg.js"></script>
@@ -318,6 +354,9 @@ const coinp=$('<div id="coinp"><div class="cgrab"></div><div class="cpill"><span
 const recvp=$('<div id="recvp" class="fsheet"><div class="cgrab"></div><button class="fback" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><div class="ftitle"></div><div class="qrcard"><svg viewBox="0 0 37 37" aria-hidden="true"></svg><img alt=""></div><div class="addr"><div class="al"></div><div class="av"></div><button class="cp" type="button" aria-label="Copy address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M15 9V6.5A2.5 2.5 0 0 0 12.5 4H6.5A2.5 2.5 0 0 0 4 6.5v6A2.5 2.5 0 0 0 6.5 15H9"/></svg></button></div><button class="fshare" type="button">Share</button></div>');P.appendChild(recvp);const sendp=$('<div id="sendp" class="fsheet"><div class="cgrab"></div><button class="fback" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><button class="fscan" type="button" aria-label="Scan QR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/></svg></button><img class="sbig" alt=""><div class="stit"></div><div class="sinw"><textarea class="sin" id="sAddr" rows="2" autocomplete="off" autocapitalize="off" spellcheck="false"></textarea><span class="sck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></div><button class="sgo" id="sGo" type="button"><span>Continue</span></button></div>');P.appendChild(sendp);
 const amtp=$('<div id="amtp" class="fsheet tall"><div class="cgrab"></div><button class="fback" type="button" aria-label="Back" id="aBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><div class="amtv" id="aVal"><span class="d">$</span><span class="n">0</span></div><div class="amtb" id="aBtc"><img alt=""><span>0 BTC</span></div><div class="chips"><div class="chip2"><i class="hexav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"/></svg></i><span id="aAddr"></span></div><div class="chip2"><b id="aAvail"></b><span>Available</span></div></div><div class="kp"><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" data-k=".">.</button><button type="button" data-k="0">0</button><button type="button" data-k="del" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-6-6z"/><path d="M13 10l4 4M17 10l-4 4"/></svg></button></div><button class="sgo" id="aSend" type="button"><span>Send</span></button></div>');P.appendChild(amtp);
 const cfmp=$('<div id="cfmp" class="fsheet"><div class="cgrab"></div><div class="cdots"><i></i><i></i><i></i></div><div class="cfv"><span class="d">$</span><span id="cV"></span></div><div class="cdot d1"><i></i><i></i><i></i></div><div class="cto">to</div><div class="cdot d2"><i></i><i></i><i></i></div><div class="cchip"><i class="hexav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"/></svg></i><span id="cAddr"></span></div><div class="crow2 r1"><span>Asset</span><span class="cr"><b id="cAsset"></b><img alt=""></span></div><div class="sep"></div><div class="crow2 r2"><span>Estimated network fee</span><span class="feepill" id="cFee"></span></div><div class="sltrack" id="slTrack"><div class="sltxt">Slide to confirm</div><div class="slchev"><i></i><i></i></div><div class="slthumb" id="slThumb"><span class="grip"><i></i><i></i><i></i></span></div></div><div class="cfoot">Transaction is final once confirmed.</div></div>');P.appendChild(cfmp);
+const profp=$('<div id="profp" class="fsheet"><div class="cgrab"></div><div class="pav"><svg viewBox="0 0 253 253" aria-hidden="true"><defs><clipPath id="avc"><circle cx="126.5" cy="126.5" r="125"/></clipPath></defs><circle cx="126.5" cy="126.5" r="125" fill="#5547b4" stroke="#7c70d6" stroke-width="2"/><g clip-path="url(#avc)"><path d="M30 253V228Q126 150 222 228V253Z" fill="#7466d4"/></g><path d="M42 83H100L126 116L152 83H209L126 162Z" fill="#9a8cf0"/></svg></div><input class="pname" maxlength="24" autocomplete="off" spellcheck="false" placeholder="Your name" aria-label="Name"><div class="prows"><div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><span class="pl">Phone number</span><span class="pv"></span></div><div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M14.6 9.2c-.4-1-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 2s1 1.7 2.6 2 2.6.8 2.6 2-1.1 2-2.6 2c-1.2 0-2.3-.6-2.7-1.6M12 6v1.7M12 16.3V18"/></svg></span><span class="pl">Use Pay as default</span><button class="tog" type="button" role="switch" aria-checked="false" aria-label="Use Pay as default"><i></i></button></div><button class="prow" id="pSet" type="button"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></span><span class="pl">Settings</span><span class="chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></button><button class="prow last" id="pSup" type="button"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6"/><path d="M5.6 5.6l3.9 3.9M18.4 5.6l-3.9 3.9M5.6 18.4l3.9-3.9M18.4 18.4l-3.9-3.9"/></svg></span><span class="pl">Support</span><span class="chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></button></div><div class="tiles"><button class="tile" type="button"><svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="mk1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8f6bf0"/><stop offset="1" stop-color="#4d48c4"/></linearGradient><linearGradient id="mk2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6cc7ff"/><stop offset="1" stop-color="#2a8fe0"/></linearGradient></defs><rect x="5" y="6" width="26" height="36" rx="5" fill="url(#mk1)"/><rect x="33" y="6" width="10" height="36" rx="4" fill="url(#mk2)"/><path d="M8 36l8-9 6 5 7-12" fill="none" stroke="#ffd35a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 42V34l8-7 6 5v10z" fill="#f5b83a" opacity=".9"/></svg>Markets</button><button class="tile" type="button"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M17 4l3.2 9.8L30 17l-9.8 3.2L17 30l-3.2-9.8L4 17l9.8-3.2z" fill="#ffd35a"/><path d="M32 18l4.4 13.2L49 35.6 36.4 40 32 53 27.6 40 15 35.6l12.6-4.4z" fill="#46b8ff" transform="translate(-1 -10) scale(.9)"/></svg>Predictions</button></div><div class="pfoot">Balances and cash references reflect digital assets held in your self-custodial account.</div></div>');P.appendChild(profp);
+const reqp=$('<div id="reqp" class="fsheet"><div class="cgrab"></div><button class="fback" type="button" aria-label="Back" id="rBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><div class="ftitle">Request</div><div class="amtv" id="rVal"><span class="d">$</span><span class="n">0</span><i class="caret"></i></div><div class="renter">Enter amount</div><div class="kp" id="rKp"><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" data-k=".">.</button><button type="button" data-k="0">0</button><button type="button" data-k="del" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-6-6z"/><path d="M13 10l4 4M17 10l-4 4"/></svg></button></div><div class="rfoot" id="rFoot">Funds are converted to digital assets<br>held in your self-custodial account.</div><button class="sgo grn" id="rGo" type="button"><span>Continue</span></button></div>');P.appendChild(reqp);
+const qrp=$('<div id="qrp" class="fsheet"><div class="cgrab"></div><div class="qrcard"><svg viewBox="0 0 37 37" aria-hidden="true"></svg><div class="qlogo"><svg viewBox="0 0 24 24" fill="none" stroke="#12121f" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/><path d="M14.2 9.6c-.3-.8-1.1-1.2-2.1-1.2-1.3 0-2.2.7-2.2 1.7s.8 1.4 2.2 1.7 2.2.7 2.2 1.7-.9 1.7-2.2 1.7c-1 0-1.9-.5-2.2-1.3M12 7v1.4M12 15.6V17"/></svg></div></div><div class="qamt" id="qAmt"></div><div class="qtit" id="qTit"></div><div class="qsub">Get paid with your phone number too.</div><button class="sgo grn" id="qShare" type="button"><span>Share</span></button></div>');P.appendChild(qrp);
 const assp=$('<div id="assp"><div class="cgrab"></div><div class="ahead">Select Asset<button type="button" id="asBtn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></div><div class="asearch" id="asSearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="asIn" placeholder="Search" autocomplete="off"></div><div class="abody" id="asBody"></div></div>');P.appendChild(assp);
 const scrim=document.getElementById('scrim');
 let openEl=null;
@@ -325,12 +364,12 @@ function go(k){Object.entries(scr).forEach(([n,s])=>s.classList.toggle('on',n===
   nav.dataset.t=k;if(k!=='wallet')nav.classList.remove('away');if(k==='cash')startHL();
   if(typeof swRender==='function'){if(k==='swap')swRender();else{S.mode=null;S.usd=0;swRender()}}}
 function openSheet(el){openEl=el;scrim.classList.add('on');el.classList.add('on')}
-function closeSheet(){scrim.classList.remove('on');port.classList.remove('on');addp.classList.remove('on');coinp.classList.remove('on');assp.classList.remove('on');recvp.classList.remove('on');sendp.classList.remove('on');amtp.classList.remove('on','dim');cfmp.classList.remove('on');openEl=null}
+function closeSheet(){scrim.classList.remove('on');port.classList.remove('on');addp.classList.remove('on');coinp.classList.remove('on');assp.classList.remove('on');recvp.classList.remove('on');sendp.classList.remove('on');amtp.classList.remove('on','dim');cfmp.classList.remove('on');profp.classList.remove('on');reqp.classList.remove('on','dim');qrp.classList.remove('on');openEl=null}
 const openPort=()=>openSheet(port);
 scrim.onclick=closeSheet;
-[port,addp,coinp,assp,recvp,sendp,amtp,cfmp].forEach(el=>{ // drag the sheet down to close, tap the handle to close
+[port,addp,coinp,assp,recvp,sendp,amtp,cfmp,profp,reqp,qrp].forEach(el=>{ // drag the sheet down to close, tap the handle to close
   let y0=null,dy=0;
-  el.addEventListener('pointerdown',e=>{e.stopPropagation();if(e.target.closest&&e.target.closest('.pm,.cbody,.cact,.abody,.asearch,input,textarea,button,.sltrack,.kp'))return;y0=e.clientY;dy=0;el.classList.add('drag');el.setPointerCapture&&el.setPointerCapture(e.pointerId)});
+  el.addEventListener('pointerdown',e=>{e.stopPropagation();if(e.target.closest&&e.target.closest('.pm,.cbody,.cact,.abody,.asearch,input,textarea,button,.sltrack,.kp,.hs'))return;y0=e.clientY;dy=0;el.classList.add('drag');el.setPointerCapture&&el.setPointerCapture(e.pointerId)});
   el.addEventListener('pointermove',e=>{if(y0==null)return;dy=Math.max(0,e.clientY-y0);el.style.transform=dy?`translateY(${dy}px)`:''});
   const end=e=>{if(y0==null)return;const tap=Math.abs(e.clientY-y0)<6&&e.clientY-el.getBoundingClientRect().top<120;
     el.classList.remove('drag');el.style.transform='';if(dy>90||tap){if(el._close)el._close();else closeSheet()}y0=null};
@@ -340,7 +379,7 @@ const nav=$('<div class="nav" data-t="wallet"><img class="iw" src="'+imgSrc('nav
 [['wallet','Wallet',0],['swap','Swap',33.3],['cash','Cash',66.6]].forEach(([k,l,x])=>{const b=$('<button type="button" aria-label="'+l+'"></button>');b.style.left=x+'%';b.onclick=()=>go(k);nav.appendChild(b)});
 P.appendChild(nav);
 hs(W.content,130,250,800,925,openPort,CH);
-hs(W.content,30,125,118,215,openPort,CH);
+hs(W.content,30,125,118,215,()=>openProfile(),CH);
 (()=>{let last=0;W.scroller.addEventListener('scroll',()=>{const y=W.scroller.scrollTop;
   if(y>last+4&&y>150)nav.classList.add('away');else if(y<last-4||y<150)nav.classList.remove('away');last=y},{passive:true})})();
 hs(scr.cash,326,997,595,1078,()=>openSheet(addp));
@@ -362,9 +401,9 @@ const TYPES={send:'Enviado',recv:'Recibido',swapout:'Swap hacia otra moneda',swa
 const DEFTX=()=>[{id:1,sym:'BTC',type:'send',other:'',amt:0.00040189,usd:33.62,ts:new Date(2026,9,11,12,30).getTime()},
  {id:2,sym:'BTC',type:'swapin',other:'LTC',amt:0.00057,usd:46.72,ts:new Date(2026,9,11,14,19).getTime()},
  {id:3,sym:'LTC',type:'swapout',other:'BTC',amt:0.7877,usd:46.72,ts:new Date(2026,9,11,14,19).getTime()}];
-const DEF=()=>({cash:0,age:4,c:Object.fromEntries(COINS.map(([s,n,a,p])=>[s,{amt:a,price:p}])),tx:DEFTX()});
+const DEF=()=>({cash:0,age:4,name:'Munfuja',phone:'7124',pay:false,c:Object.fromEntries(COINS.map(([s,n,a,p])=>[s,{amt:a,price:p}])),tx:DEFTX()});
 let D=DEF();
-try{const s=JSON.parse(localStorage.getItem('walletui2')||'null');if(s){D.cash=num(s.cash);if(s.age!=null)D.age=Math.floor(num(s.age));
+try{const s=JSON.parse(localStorage.getItem('walletui2')||'null');if(s){D.cash=num(s.cash);if(s.age!=null)D.age=Math.floor(num(s.age));if(typeof s.name==='string')D.name=s.name.slice(0,24);if(typeof s.phone==='string')D.phone=s.phone.replace(/\D/g,'').slice(0,4);D.pay=!!s.pay;
   for(const k in D.c)if(s.c&&s.c[k])D.c[k]={amt:num(s.c[k].amt),price:num(s.c[k].price),addr:typeof s.c[k].addr==='string'?s.c[k].addr.slice(0,120):''};
   if(Array.isArray(s.tx))D.tx=s.tx.filter(t=>t&&D.c[t.sym]&&TYPES[t.type]).map(t=>({id:t.id||Math.random(),sym:t.sym,type:t.type,other:D.c[t.other]?t.other:'',amt:num(t.amt),usd:num(t.usd),ts:+t.ts||Date.now(),pending:!!t.pending&&Date.now()-(+t.ts||0)<9000}))}}catch(e){}
 const money=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -485,7 +524,9 @@ COINS.forEach(([s])=>{const h=$('<div class="rowhit" role="button" tabindex="0">
 const edit=$(`<div id="edit"><div class="sheet"><div class="grab"></div><h2>Ajustes</h2>
 <div class="tot">Total en wallet <b id="eTot">$0.00</b></div>
 <div class="g"><label for="eCash">Cash ($)<input id="eCash" inputmode="decimal" autocomplete="off"></label>
-<label for="eAge">Portfolio age (días)<input id="eAge" inputmode="numeric" autocomplete="off"></label></div>
+<label for="eAge">Portfolio age (días)<input id="eAge" inputmode="numeric" autocomplete="off"></label>
+<label for="eName">Nombre<input id="eName" maxlength="24" autocomplete="off"></label>
+<label for="ePhone">Teléfono (últimos 4)<input id="ePhone" inputmode="numeric" maxlength="4" autocomplete="off"></label></div>
 <h3>Monedas</h3><div id="eCoins"></div>
 <h3>Transferencias</h3><div id="eTx"></div>
 <div class="g" id="tForm">
@@ -527,7 +568,7 @@ function addTx(){
   $e('tAmt').value='';$e('tUsd').value='';drawTx();return true}
 $e('tAdd').onclick=addTx;
 function openEdit(o){o=o&&o.coin!==undefined||o&&o.tx?o:{};
-  $e('eCash').value=D.cash;$e('eAge').value=D.age;COINS.forEach(([s])=>{$e('e'+s+'amt').value=D.c[s].amt;$e('e'+s+'price').value=D.c[s].price;$e('e'+s+'addr').value=D.c[s].addr||''});
+  $e('eCash').value=D.cash;$e('eAge').value=D.age;$e('eName').value=D.name;$e('ePhone').value=D.phone;COINS.forEach(([s])=>{$e('e'+s+'amt').value=D.c[s].amt;$e('e'+s+'price').value=D.c[s].price;$e('e'+s+'addr').value=D.c[s].addr||''});
   draftTx=D.tx.map(t=>Object.assign({},t));drawTx();preview();
   const n=new Date();$e('tDate').value=dIn(n);$e('tTime').value=tIn(n);
   $e('tSym').value=o.coin||'BTC';$e('tType').value=o.tx||'send';$e('tOther').value=COINS.find(c=>c[0]!==$e('tSym').value)[0];swapT();
@@ -540,7 +581,7 @@ edit.addEventListener('pointerdown',e=>e.stopPropagation());
 edit.addEventListener('focusin',()=>requestAnimationFrame(()=>{P.scrollTop=0;P.scrollLeft=0}));
 edit.addEventListener('click',e=>{if(e.target===edit)closeEdit()});
 $e('eSave').onclick=()=>{if(num($e('tAmt').value)||num($e('tUsd').value))addTx();
-  D.cash=num($e('eCash').value);D.age=Math.floor(num($e('eAge').value));COINS.forEach(([s])=>{D.c[s]={amt:num($e('e'+s+'amt').value),price:num($e('e'+s+'price').value),addr:$e('e'+s+'addr').value.trim().slice(0,120)}});D.tx=draftTx;
+  D.cash=num($e('eCash').value);D.age=Math.floor(num($e('eAge').value));D.name=$e('eName').value.trim().slice(0,24);D.phone=$e('ePhone').value.replace(/\D/g,'').slice(0,4);COINS.forEach(([s])=>{D.c[s]={amt:num($e('e'+s+'amt').value),price:num($e('e'+s+'price').value),addr:$e('e'+s+'addr').value.trim().slice(0,120)}});D.tx=draftTx;
   try{localStorage.setItem('walletui2',JSON.stringify(D))}catch(e){}render();closeEdit()};
 $e('eReset').onclick=()=>{D=DEF();try{localStorage.removeItem('walletui2')}catch(e){}render();closeEdit()};
 W.extra.querySelector('.addmore').onclick=()=>openEdit();
@@ -719,6 +760,38 @@ sendp.addEventListener('focusin',()=>requestAnimationFrame(()=>{P.scrollTop=0}))
 hs(W.content,246,997,472,1078,()=>openAssets('recv'),CH);
 hs(W.content,489,997,680,1078,()=>openAssets('send'),CH);
 
+/* ---------- profile, request, scan-to-pay ---------- */
+const pq=s=>profp.querySelector(s),pn=pq('.pname');
+const saveD=()=>{try{localStorage.setItem('walletui2',JSON.stringify(D))}catch(e){}};
+function profFill(){pn.value=D.name;pq('.pv').textContent='\u00b7\u00b7 '+D.phone;const t=pq('.tog');t.setAttribute('aria-checked',String(D.pay));t.classList.toggle('on',D.pay)}
+function openProfile(){profFill();openSheet(profp)}
+pn.addEventListener('input',()=>{D.name=pn.value.slice(0,24);saveD()});
+pn.addEventListener('focus',()=>pn.select());pn.addEventListener('keydown',e=>{if(e.key==='Enter')pn.blur()});
+pq('.tog').onclick=()=>{D.pay=!D.pay;saveD();profFill()};
+document.getElementById('pSet').onclick=()=>{closeSheet();setTimeout(()=>openEdit(),150)};
+profp.addEventListener('focusin',()=>requestAnimationFrame(()=>{P.scrollTop=0}));
+hs(scr.cash,32,130,115,213,()=>openProfile());
+const rqq=s=>reqp.querySelector(s);let rStr='';
+const fmtAmt=s=>{if(!s)return '0';const [i,f]=s.split('.');return Number(i||0).toLocaleString('en-US')+(f!==undefined?'.'+f:'')};
+function rRender(){rqq('.amtv .n').textContent=fmtAmt(rStr);fit(rqq('.amtv'),84);const on=num(rStr)>0;$e('rGo').classList.toggle('show',on);$e('rFoot').classList.toggle('hide',on)}
+function openRequest(){rStr='';rRender();openSheet(reqp)}
+$e('rKp').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;let s=rStr;
+  if(k==='del')s=s.slice(0,-1);
+  else if(k==='.'){if(s.includes('.'))return;s=(s||'0')+'.'}
+  else{if(s==='0')s='';if(s.includes('.')&&s.split('.')[1].length>=2)return;if(s.replace('.','').length>=9)return;s+=k}
+  rStr=s;rRender()});
+document.addEventListener('keydown',e=>{if(!reqp.classList.contains('on')||qrp.classList.contains('on'))return;
+  if(/^[0-9.]$/.test(e.key)||e.key==='Backspace'){const b=rqq('.kp [data-k="'+(e.key==='Backspace'?'del':e.key)+'"]');if(b)b.click()}});
+$e('rBack').onclick=()=>{closeSheet();setTimeout(()=>openSheet(addp),150)};
+qrp._close=()=>{qrp.classList.remove('on');reqp.classList.remove('dim')};
+$e('rGo').onclick=()=>{const v=num(rStr);if(!(v>0))return;const who=D.name.trim()||'me';
+  qrp.querySelector('.qrcard svg').innerHTML=qrSvg('pay:'+who+':'+v.toFixed(2));
+  $e('qAmt').textContent='$'+money(v);$e('qTit').textContent='Scan to pay '+who;reqp.classList.add('dim');qrp.classList.add('on')};
+$e('qShare').onclick=()=>{const who=D.name.trim()||'me',txt=who+' is requesting $'+money(num(rStr));
+  fcopy(txt,$e('qShare'),()=>{const s=$e('qShare').firstChild;s.textContent='Copied';setTimeout(()=>s.textContent='Share',1400)})};
+const rqRow=document.createElement('div');rqRow.className='hs';rqRow.setAttribute('role','button');rqRow.setAttribute('aria-label','Request');
+Object.assign(rqRow.style,{left:'0',top:'15.5%',width:'100%',height:'13.5%'});addS.appendChild(rqRow);
+rqRow.onclick=()=>{closeSheet();setTimeout(openRequest,150)};
 /* ---------- hold the screen 1.5 s to open the editor ---------- */
 let timer=null,sx=0,sy=0,suppress=false;
 const cancel=()=>{clearTimeout(timer);timer=null};
