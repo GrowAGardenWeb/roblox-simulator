@@ -15,8 +15,12 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 .content{position:relative;width:100%}
 .tx[data-hidden]{display:none}
 .hid .tx[data-hidden]{display:flex}.hid .tx[data-k=bal],.hid .tx[data-k=amt]{display:none}
-.nav{position:absolute;left:20.4%;width:59.4%;bottom:3.45%;aspect-ratio:547/151;border-radius:999px;overflow:hidden;z-index:3;transition:transform .3s ease,opacity .3s;pointer-events:none}
-.nav img{width:100%;height:100%;display:block}
+.nav{position:absolute;left:20.4%;width:59.4%;bottom:3.45%;aspect-ratio:547/151;border-radius:999px;z-index:3;transition:transform .3s ease,opacity .3s}
+.nav img{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
+.nav[data-t=wallet] .iw,.nav[data-t=swap] .is,.nav[data-t=cash] .ic{opacity:1}
+.nav.gone{display:none}
+.nav button{position:absolute;top:0;height:100%;width:33.4%;border:0;background:none;padding:0;cursor:pointer;border-radius:999px;-webkit-tap-highlight-color:transparent}
+.nav button:focus-visible{outline:2px solid #fff}
 .nav.away{transform:translateY(160%);opacity:0}
 .tx{position:absolute;display:flex;align-items:center;white-space:pre;line-height:1.15;color:#fff;pointer-events:none}
 .tx.l{justify-content:flex-start}.tx.c{justify-content:center;text-align:center}.tx.r{justify-content:flex-end;text-align:right}
@@ -50,6 +54,7 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 <div id="phone"></div>
 <script src="cfg.js"></script>
 <script>
+const imgSrc=k=>'img/'+k+'.webp';
 const P=document.getElementById('phone');
 const $=(h)=>{const d=document.createElement('div');d.innerHTML=h;return d.firstElementChild};
 function build(key,parent){
@@ -57,7 +62,7 @@ function build(key,parent){
   let host=s;
   if(key==='wallet'){const sc=$('<div class="scroller"></div>');host=$('<div class="content"></div>');
     host.style.aspectRatio=c.ar;sc.appendChild(host);s.appendChild(sc);s.scroller=sc;s.content=host}
-  host.appendChild($('<img src="img/'+key+'.webp" alt="" draggable="false">'));
+  host.appendChild($('<img src="'+imgSrc(key)+'" alt="" draggable="false">'));
   c.items.forEach(it=>{
     if(!it.runs.length)return;
     const d=$('<div class="tx '+it.a+'"></div>');
@@ -74,21 +79,20 @@ const scr={};['wallet','cash','swap','add'].forEach(k=>scr[k]=build(k,P));
 P.appendChild($('<div id="scrim"></div>'));
 const port=$('<div id="port"></div>');P.appendChild(port);const portS=build('port',port);
 const scrim=document.getElementById('scrim');
-function go(k){Object.entries(scr).forEach(([n,s])=>s.classList.toggle('on',n===k));closeSheet()}
+function go(k){Object.entries(scr).forEach(([n,s])=>s.classList.toggle('on',n===k));closeSheet();
+  nav.dataset.t=k==='add'?'cash':k;nav.classList.toggle('gone',k==='add');if(k!=='wallet')nav.classList.remove('away')}
 function openPort(){scrim.classList.add('on');port.classList.add('on')}
 function closeSheet(){scrim.classList.remove('on');port.classList.remove('on')}
 scrim.onclick=closeSheet;portS.addEventListener('click',e=>{if(e.clientY-port.getBoundingClientRect().top<120)closeSheet()});
-['cash','swap'].forEach(k=>{
-  hs(scr[k],240,1800,345,1910,()=>go('wallet'));hs(scr[k],410,1800,510,1910,()=>go('swap'));hs(scr[k],570,1800,690,1910,()=>go('cash'))});
-// wallet: long page + floating tab bar
 const W=scr.wallet,CH=921/CFG.wallet.ar;
-const nav=$('<div class="nav"><img src="img/nav.webp" alt="" draggable="false"></div>');W.appendChild(nav);
-hs(W,240,1800,345,1910,()=>go('wallet'));hs(W,410,1800,510,1910,()=>go('swap'));hs(W,570,1800,690,1910,()=>go('cash'));
+const nav=$('<div class="nav" data-t="wallet"><img class="iw" src="'+imgSrc('navw')+'" alt=""><img class="ic" src="'+imgSrc('navc')+'" alt=""><img class="is" src="'+imgSrc('navs')+'" alt=""></div>');
+[['wallet','Wallet',0],['swap','Swap',33.3],['cash','Cash',66.6]].forEach(([k,l,x])=>{const b=$('<button type="button" aria-label="'+l+'"></button>');b.style.left=x+'%';b.onclick=()=>go(k);nav.appendChild(b)});
+P.appendChild(nav);
 hs(W.content,130,250,800,925,()=>W.content.classList.toggle('hid'),CH);
 hs(W.content,30,125,118,215,openPort,CH);
 (()=>{let last=0;W.scroller.addEventListener('scroll',()=>{const y=W.scroller.scrollTop;
   if(y>last+4&&y>150)nav.classList.add('away');else if(y<last-4||y<150)nav.classList.remove('away');last=y},{passive:true})})();
-hs(scr.cash,326,997,595,1078,()=>{Object.values(scr).forEach(s=>s.classList.remove('on'));scr.add.classList.add('on')});
+hs(scr.cash,326,997,595,1078,()=>go('add'));
 hs(scr.add,0,0,921,1075,()=>go('cash'));
 
 /* ---------- editable balances ---------- */
