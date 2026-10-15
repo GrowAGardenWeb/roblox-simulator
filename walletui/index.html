@@ -183,6 +183,53 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 .acash .n{flex:1;font-size:3.9cqw;font-weight:500}
 .acash button{border:1px solid rgba(190,255,150,.45);color:#fff;font:inherit;font-size:3.5cqw;font-weight:500;border-radius:99px;padding:0 4.4cqw;height:8.8cqw;cursor:pointer;background:linear-gradient(180deg,#2f9f12,#168a05);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
 @media (prefers-reduced-motion:reduce){.swbtn:before{animation:none;left:60%}}
+
+.fsheet{position:absolute;left:0;right:0;bottom:0;z-index:6;transform:translateY(105%);transition:transform .45s cubic-bezier(.22,.9,.28,1);container-type:inline-size;touch-action:none;background:#323344;border-radius:6.7cqw 6.7cqw 0 0;border:1px solid #46475f;border-bottom:0;overflow:hidden;max-height:96%}
+.fsheet.on{transform:none}.fsheet.drag{transition:none}
+#recvp{aspect-ratio:921/1360}#sendp{aspect-ratio:921/1000}
+.fsheet .cgrab{width:8.2cqw;height:1.1cqw;border-radius:1cqw;background:#5a5b72;margin:1.6cqw auto 0}
+.fback,.fscan{position:absolute;top:6cqw;width:7cqw;height:7cqw;display:flex;align-items:center;justify-content:center;background:none;border:0;color:#fff;padding:0;cursor:pointer;border-radius:50%;-webkit-tap-highlight-color:transparent}
+.fback,.fscan{z-index:2}.fback{left:4.4cqw}.fscan{right:4.4cqw}.fback svg,.fscan svg{width:5.2cqw;height:5.2cqw}
+.fback:focus-visible,.fscan:focus-visible{outline:2px solid #fff}
+.ftitle{pointer-events:none;position:absolute;left:0;right:0;top:7.2cqw;text-align:center;font-size:3.7cqw;font-weight:500;color:#a9a9bd}
+.qrcard{position:absolute;left:13.7cqw;top:17.9cqw;width:72.6cqw;height:72.7cqw;border-radius:6.7cqw;background:#fff;display:flex;align-items:center;justify-content:center}
+.qrcard svg{width:92%;height:92%;display:block}
+.qrcard img{position:absolute;left:50%;top:50%;width:8cqw;transform:translate(-50%,-50%);clip-path:polygon(50% 1%,98% 26%,98% 74%,50% 99%,2% 74%,2% 26%)}
+.addr{position:absolute;left:9.45cqw;top:94.8cqw;width:79.4cqw;height:22.5cqw;border-radius:5.65cqw;background:#3b3c50;border:1px solid #4a4b62;box-sizing:border-box}
+.addr .al{position:absolute;left:4.6cqw;top:3.6cqw;font-size:3.3cqw;font-weight:500;color:#fff}
+.addr .av{position:absolute;left:4.6cqw;top:9.4cqw;width:63cqw;font-size:3.15cqw;line-height:1.45;color:#e6e6f0;word-break:break-all;user-select:text;-webkit-user-select:text}
+.addr .cp{position:absolute;right:3.2cqw;top:50%;transform:translateY(-50%);width:9cqw;height:9cqw;display:flex;align-items:center;justify-content:center;background:none;border:0;color:#fff;cursor:pointer;border-radius:50%;padding:0}
+.addr .cp svg{width:4.6cqw;height:4.6cqw}.addr .cp:focus-visible{outline:2px solid #fff}
+.fshare{position:absolute;left:8.9cqw;top:124.5cqw;width:82.2cqw;height:15cqw;border-radius:7.6cqw;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#fff;font:inherit;font-size:3.7cqw;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color .2s}
+.fshare:active{background:rgba(255,255,255,.12)}.fshare:focus-visible{outline:2px solid #fff}
+.s1,.s2{position:absolute;inset:0;transition:opacity .3s,transform .35s}
+.s2{opacity:0;pointer-events:none;transform:translateX(8cqw)}
+#sendp.two .s1{opacity:0;pointer-events:none;transform:translateX(-8cqw)}#sendp.two .s2{opacity:1;pointer-events:auto;transform:none}
+.sbig{position:absolute;left:50%;top:18.8cqw;width:19.8cqw;transform:translateX(-50%);clip-path:polygon(50% 1%,98% 26%,98% 74%,50% 99%,2% 74%,2% 26%)}
+.stit{pointer-events:none;position:absolute;left:0;right:0;top:51.8cqw;text-align:center;font-size:5.2cqw;font-weight:600;color:#fff}
+.sin{position:absolute;left:4.9cqw;top:64.4cqw;width:90.3cqw;height:14.3cqw;border-radius:5.4cqw;background:#3b3c50;border:1px solid #4a4b62;box-sizing:border-box;color:#fff;font:inherit;font-size:3.3cqw;padding:0 3.8cqw;outline:0}
+.sin::placeholder{color:#8e8ea4}.sin:focus{border-color:rgba(160,140,255,.7)}
+.sgo{position:absolute;left:8.1cqw;top:85.4cqw;width:83.9cqw;height:15cqw;border-radius:99px;border:1px solid rgba(190,182,255,.3);color:#7f7ba8;font:inherit;font-size:3.7cqw;font-weight:600;cursor:pointer;overflow:hidden;
+ background:radial-gradient(120% 170% at 22% 15%,#453e82,#3b3570 55%,#463f86);transition:color .3s,border-color .3s,background .3s,box-shadow .3s;-webkit-tap-highlight-color:transparent}
+.sgo span{position:relative;z-index:2}
+.sgo.ready{color:#fff;border-color:rgba(190,182,255,.5);background:radial-gradient(120% 170% at 22% 15%,#5a4bc2 0%,#4a3ba8 52%,#5b49bd 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 0 4cqw rgba(140,120,255,.4),0 2.4cqw 6cqw rgba(60,40,170,.4)}
+.sgo:before{content:'';position:absolute;top:-25%;bottom:-25%;width:19%;left:-28%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.58) 50%,rgba(255,255,255,0));filter:blur(1.1cqw);transform:skewX(-16deg);opacity:0;z-index:1}
+.sgo.ready:before{opacity:1;animation:swshine 2.3s ease-in-out infinite}
+.sgo:active{transform:scale(.98)}.sgo:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.s2 .t2{pointer-events:none;position:absolute;left:0;right:0;top:7.2cqw;text-align:center;font-size:3.7cqw;font-weight:500;color:#a9a9bd}
+.s2 .chip{position:absolute;left:50%;top:16cqw;transform:translateX(-50%);max-width:70cqw;padding:1.6cqw 3.6cqw;border-radius:99px;background:#3b3c50;border:1px solid #4a4b62;font-size:3cqw;color:#c6c6d6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s2 .amt{position:absolute;left:0;right:0;top:27cqw;display:flex;justify-content:center;align-items:baseline;gap:1cqw;font-weight:700;color:#fff}
+.s2 .amt span{font-size:7cqw;color:#8e8ea4}.s2 .amt input{width:50cqw;background:none;border:0;outline:0;color:#fff;font:inherit;font-size:11cqw;font-weight:700;text-align:left;padding:0}
+.s2 .amt input::placeholder{color:#6d6d84}
+.s2 .eq{pointer-events:none;position:absolute;left:0;right:0;top:44cqw;text-align:center;font-size:3.4cqw;color:#8e8ea4}
+.s2 .av2{position:absolute;left:8cqw;top:57.4cqw;font-size:3.2cqw;color:#8e8ea4}
+.s2 .mx{position:absolute;right:8cqw;top:55cqw;height:7.6cqw;padding:0 4cqw;border-radius:99px;background:#2b2d40;border:1px solid rgba(255,255,255,.1);color:#fff;font:inherit;font-size:3.3cqw;cursor:pointer}
+.asearch.big{display:block;position:relative;margin:0 4.6cqw 1cqw}
+.asearch.big input{padding:0 4cqw 0 12cqw;height:13.5cqw;background:#3a3b4f;border:1px solid rgba(255,255,255,.07);border-radius:4.8cqw;font-size:3.7cqw}
+.asearch.big svg{position:absolute;left:4.4cqw;top:50%;transform:translateY(-50%);width:5cqw;height:5cqw;color:#fff}
+#assp.pick .ahead button{display:none}
+#assp.pick .abody{top:33cqw}
+.anone{color:#8a8aa0;font-size:3.4cqw;padding:4cqw 1cqw}
 </style></head><body>
 <div id="phone"></div>
 <script src="cfg.js"></script>
@@ -217,19 +264,20 @@ const portS=build('ptop',port);const pm=$('<div class="pm"></div>');port.appendC
 [portS,portB].forEach(s=>{s.style.aspectRatio=CFG[s.dataset.k].ar});
 const addp=$('<div id="addp"></div>');P.appendChild(addp);const addS=build('add',addp);
 const coinp=$('<div id="coinp"><div class="cgrab"></div><div class="cbody"><div class="ctop"><img class="cic" alt=""><span class="cname"></span><span class="cchg"></span></div><div class="cprice"><span class="d">$</span><span class="i"></span><span class="f"></span></div><div class="live"><i></i>Live</div><div class="chart"><svg viewBox="0 0 400 180" aria-hidden="true"></svg><span class="hi"></span><span class="lo"></span></div><div class="csum"><div><b class="a"></b><span class="s"></span></div><div><b class="v"></b><span>Value</span></div></div><div class="ctx"></div></div><div class="cfade"></div><div class="cact"><button type="button" data-a="buy"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v14M6 13l6 6 6-6"/></svg></span>Buy / Sell</button><button type="button" data-a="swap"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg></span>Swap</button><button type="button" data-a="send"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></span>Send</button><button type="button" data-a="recv"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17M15 17H7V9"/></svg></span>Receive</button></div></div>');P.appendChild(coinp);
-const assp=$('<div id="assp"><div class="cgrab"></div><div class="ahead">Select Asset<button type="button" id="asBtn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></div><div class="asearch" id="asSearch"><input id="asIn" placeholder="Search" autocomplete="off"></div><div class="abody" id="asBody"></div></div>');P.appendChild(assp);
+const recvp=$('<div id="recvp" class="fsheet"><div class="cgrab"></div><button class="fback" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><div class="ftitle"></div><div class="qrcard"><svg viewBox="0 0 37 37" aria-hidden="true"></svg><img alt=""></div><div class="addr"><div class="al"></div><div class="av"></div><button class="cp" type="button" aria-label="Copy address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M15 9V6.5A2.5 2.5 0 0 0 12.5 4H6.5A2.5 2.5 0 0 0 4 6.5v6A2.5 2.5 0 0 0 6.5 15H9"/></svg></button></div><button class="fshare" type="button">Share</button></div>');P.appendChild(recvp);const sendp=$('<div id="sendp" class="fsheet"><div class="cgrab"></div><div class="s1"><button class="fback" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><button class="fscan" type="button" aria-label="Scan QR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/></svg></button><img class="sbig" alt=""><div class="stit"></div><input class="sin" id="sAddr" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="sgo" id="sGo" type="button"><span>Continue</span></button></div><div class="s2"><button class="fback" type="button" aria-label="Back" id="sBack2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><div class="t2"></div><div class="chip"></div><div class="amt"><span>$</span><input id="sUsd" inputmode="decimal" autocomplete="off" placeholder="0.00"></div><div class="eq"></div><div class="av2"></div><button class="mx" type="button" id="sMax">Max</button><button class="sgo" id="sSend" type="button"><span>Send</span></button></div></div>');P.appendChild(sendp);
+const assp=$('<div id="assp"><div class="cgrab"></div><div class="ahead">Select Asset<button type="button" id="asBtn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></div><div class="asearch" id="asSearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="asIn" placeholder="Search" autocomplete="off"></div><div class="abody" id="asBody"></div></div>');P.appendChild(assp);
 const scrim=document.getElementById('scrim');
 let openEl=null;
 function go(k){Object.entries(scr).forEach(([n,s])=>s.classList.toggle('on',n===k));closeSheet();
   nav.dataset.t=k;if(k!=='wallet')nav.classList.remove('away');if(k==='cash')startHL();
   if(typeof swRender==='function'){if(k==='swap')swRender();else{S.mode=null;S.usd=0;swRender()}}}
 function openSheet(el){openEl=el;scrim.classList.add('on');el.classList.add('on')}
-function closeSheet(){scrim.classList.remove('on');port.classList.remove('on');addp.classList.remove('on');coinp.classList.remove('on');assp.classList.remove('on');openEl=null}
+function closeSheet(){scrim.classList.remove('on');port.classList.remove('on');addp.classList.remove('on');coinp.classList.remove('on');assp.classList.remove('on');recvp.classList.remove('on');sendp.classList.remove('on');openEl=null}
 const openPort=()=>openSheet(port);
 scrim.onclick=closeSheet;
-[port,addp,coinp,assp].forEach(el=>{ // drag the sheet down to close, tap the handle to close
+[port,addp,coinp,assp,recvp,sendp].forEach(el=>{ // drag the sheet down to close, tap the handle to close
   let y0=null,dy=0;
-  el.addEventListener('pointerdown',e=>{e.stopPropagation();if(e.target.closest&&e.target.closest('.pm,.cbody,.cact,.abody,.asearch'))return;y0=e.clientY;dy=0;el.classList.add('drag');el.setPointerCapture&&el.setPointerCapture(e.pointerId)});
+  el.addEventListener('pointerdown',e=>{e.stopPropagation();if(e.target.closest&&e.target.closest('.pm,.cbody,.cact,.abody,.asearch,input,button'))return;y0=e.clientY;dy=0;el.classList.add('drag');el.setPointerCapture&&el.setPointerCapture(e.pointerId)});
   el.addEventListener('pointermove',e=>{if(y0==null)return;dy=Math.max(0,e.clientY-y0);el.style.transform=dy?`translateY(${dy}px)`:''});
   const end=e=>{if(y0==null)return;const tap=Math.abs(e.clientY-y0)<6&&e.clientY-el.getBoundingClientRect().top<120;
     el.classList.remove('drag');el.style.transform='';if(dy>90||tap)closeSheet();y0=null};
@@ -368,7 +416,7 @@ function fillCoin(sym){
 function openCoin(sym){fillCoin(sym);cq('.cbody').scrollTop=0;openSheet(coinp)}
 cq('.cact').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const s=coinp.dataset.s,a=b.dataset.a;
   if(a==='swap'){S.from=s;if(S.to===s)S.to=s==='LTC'?'BTC':'LTC';go('swap');return}
-  if(a==='buy')openEdit({coin:s});else openEdit({tx:a,coin:s})});
+  if(a==='buy')openEdit({coin:s});else{closeSheet();setTimeout(()=>a==='send'?openSend(s):openRecv(s),140)}});
 /* press a coin row: it dims smoothly, tap opens its panel */
 COINS.forEach(([s])=>{const h=$('<div class="rowhit" role="button" tabindex="0"></div>');h.setAttribute('aria-label',s);
   h.style.cssText=`left:${33/9.21}%;top:${(ROWB[s]-45)/CH*100}%;width:${855/9.21}%;height:${165/CH*100}%`;
@@ -504,7 +552,10 @@ swBtn.onclick=()=>{const c=swCalc();if(!(c.a>0))return;const f=D.c[S.from],t=D.c
   S.mode=null;S.usd=0;render();swRender();go('wallet')};
 /* asset picker */
 let asSide='from';
-function openAssets(side){asSide=side;$e('asIn').value='';$e('asSearch').classList.remove('on');$e('asBody').classList.remove('s');drawAssets('');assp.querySelector('.abody').scrollTop=0;openSheet(assp)}
+function openAssets(side){asSide=side;const pick=side==='recv'||side==='send';
+  assp.classList.toggle('pick',pick);$e('asIn').value='';$e('asSearch').classList.toggle('on',false);$e('asSearch').classList.toggle('big',pick);$e('asBody').classList.remove('s');
+  assp.querySelector('.ahead').firstChild.textContent='Select Asset';
+  drawAssets('');assp.querySelector('.abody').scrollTop=0;openSheet(assp)}
 function drawAssets(q){
   const body=$e('asBody');body.textContent='';q=q.trim().toLowerCase();
   const match=m=>!q||m[1].toLowerCase().includes(q)||m[0].toLowerCase().includes(q);
@@ -512,7 +563,12 @@ function drawAssets(q){
     r.querySelector('img').src=imgSrc('ic_'+m[0]);r.querySelector('.n').textContent=m[1];
     const y=r.querySelector('.y');if(own){y.textContent=amt(D.c[m[0]].amt)+' '+m[0];const sm=document.createElement('small');sm.textContent='$'+money(val(m[0]));y.appendChild(sm)}else y.textContent=m[0];
     if(m[0]===(asSide==='from'?S.from:S.to))r.classList.add('sel');
-    r.onclick=()=>{const other=asSide==='from'?'to':'from';if(m[0]===S[other])S[other]=S[asSide];S[asSide]=m[0];closeSheet();swRender()};return r};
+    r.onclick=()=>{if(asSide==='recv'||asSide==='send'){const f=asSide==='recv'?openRecv:openSend,s=m[0];closeSheet();setTimeout(()=>f(s),140);return}
+      const other=asSide==='from'?'to':'from';if(m[0]===S[other])S[other]=S[asSide];S[asSide]=m[0];closeSheet();swRender()};return r};
+  const flat=asSide==='recv'||asSide==='send';
+  if(flat){const list=COINS.filter(m=>match(m)&&(asSide==='recv'||D.c[m[0]].amt>0)).sort((a,b)=>val(b[0])-val(a[0])||COINS.indexOf(a)-COINS.indexOf(b));
+    list.forEach(m=>body.appendChild(row(m,D.c[m[0]].amt>0)));
+    if(!list.length){const n=$('<div class="anone"></div>');n.textContent=asSide==='send'&&!q?'You have no assets to send yet.':'No results';body.appendChild(n)}return}
   if(!q){const c=$('<div class="acash"><div class="ci">$</div><div class="n">Cash</div><button type="button">+ Add money</button></div>');
     c.querySelector('button').onclick=()=>{closeSheet();setTimeout(()=>openSheet(addp),120)};body.appendChild(c)}
   const owned=COINS.filter(m=>D.c[m[0]].amt>0&&match(m)).sort((a,b)=>val(b[0])-val(a[0]));
@@ -524,6 +580,56 @@ $e('asBtn').onclick=()=>{const on=$e('asSearch').classList.toggle('on');$e('asBo
 $e('asIn').addEventListener('input',()=>drawAssets($e('asIn').value));
 assp.addEventListener('focusin',()=>requestAnimationFrame(()=>{P.scrollTop=0}));
 swRender();
+
+/* ---------- receive & send ---------- */
+const CHARS32='qpzry9x8gf2tvdw0s3jn54khce6mua7l',B58='123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+function addrFor(sym){const c=D.c[sym];if(c&&c.addr)return c.addr;let h=7;for(const ch of sym)h=(h*131+ch.charCodeAt(0))|0;const r=rng(h^0x5bd1e995);
+  const pick=(set,n)=>{let o='';for(let i=0;i<n;i++)o+=set[Math.floor(r()*set.length)];return o};
+  if(sym==='BTC')return 'bc1q'+pick(CHARS32,38);if(sym==='LTC')return 'ltc1q'+pick(CHARS32,38);
+  if(['ETH','USDT','USDC','BNB'].includes(sym))return '0x'+pick('0123456789abcdef',40);
+  if(sym==='XRP')return 'r'+pick(B58,33);if(sym==='SOL')return pick(B58,44);if(sym==='TRX')return 'T'+pick(B58,33);
+  if(sym==='DOGE')return 'D'+pick(B58,33);return 'addr1'+pick(CHARS32,54)}
+function qrSvg(text){const N=33,r=rng([...text].reduce((a,c)=>(a*31+c.charCodeAt(0))|0,11));let o='';const q=(x,y)=>(x<8&&y<8)||(x>=N-8&&y<8)||(x<8&&y>=N-8)||(Math.abs(x-16)<=4&&Math.abs(y-16)<=4);
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){if(q(x,y))continue;if(r()<.5)o+=`<circle cx="${x+.5}" cy="${y+.5}" r=".42"/>`}
+  const fin=(x,y)=>`<rect x="${x+.3}" y="${y+.3}" width="6.4" height="6.4" rx="2" fill="#12121f"/><rect x="${x+1.45}" y="${y+1.45}" width="4.1" height="4.1" rx="1.2" fill="#fff"/><rect x="${x+2.1}" y="${y+2.1}" width="2.8" height="2.8" rx="1.1" fill="#12121f"/>`;
+  return `<g fill="#12121f" transform="translate(2 2)">${o}${fin(0,0)}${fin(N-7,0)}${fin(0,N-7)}</g>`}
+const fcopy=async(text,btn,done)=>{try{await navigator.clipboard.writeText(text)}catch(e){try{const t=document.createElement('textarea');t.value=text;t.style.cssText='position:fixed;opacity:0';document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}catch(e2){}}
+  done();};
+const rq=s=>recvp.querySelector(s),sq=s=>sendp.querySelector(s);
+let rsSym='BTC';
+function openRecv(sym){rsSym=sym;const m=COINS.find(c=>c[0]===sym),ad=addrFor(sym);
+  rq('.ftitle').textContent='Receive '+m[1];rq('.al').textContent='Your '+sym+' Address';rq('.av').textContent=ad;
+  rq('.qrcard svg').innerHTML=qrSvg(ad);rq('.qrcard img').src=imgSrc('ic_'+sym);rq('.cp').innerHTML=COPYI;rq('.fshare').textContent='Share';
+  openSheet(recvp)}
+const COPYI=recvp.querySelector('.cp').innerHTML,CHECKI='<svg viewBox="0 0 24 24" fill="none" stroke="#6bd62a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+rq('.cp').onclick=()=>fcopy(addrFor(rsSym),rq('.cp'),()=>{rq('.cp').innerHTML=CHECKI;setTimeout(()=>rq('.cp').innerHTML=COPYI,1400)});
+rq('.fshare').onclick=()=>fcopy(addrFor(rsSym),rq('.fshare'),()=>{rq('.fshare').textContent='Copied';setTimeout(()=>rq('.fshare').textContent='Share',1400)});
+rq('.fback').onclick=()=>{closeSheet();setTimeout(()=>openAssets('recv'),140)};
+let snd={sym:'BTC',addr:''};
+const sShort=a=>a.length>20?a.slice(0,10)+'\u2026'+a.slice(-8):a;
+function sReady(){const ok=$e('sAddr').value.trim().length>=10;$e('sGo').classList.toggle('ready',ok);return ok}
+function sCalc(){const c=D.c[snd.sym],usd=num($e('sUsd').value),coin=c.price>0?Math.min(usd/c.price,c.amt):0;return{usd,coin,c}}
+function sUpd(){const k=sCalc();sq('.eq').textContent='\u2248 '+amt8(k.coin)+' '+snd.sym+(k.c.price>0&&k.usd/k.c.price>k.c.amt?'  (max available)':'');
+  $e('sSend').classList.toggle('ready',k.coin>0)}
+function openSend(sym){snd.sym=sym;const m=COINS.find(c=>c[0]===sym);
+  sendp.classList.remove('two');sq('.sbig').src=imgSrc('ic_'+sym);sq('.stit').textContent='Send '+m[1];$e('sAddr').placeholder='Tap to paste '+sym+' address';$e('sAddr').value='';sReady();
+  sq('.t2').textContent='Send '+m[1];$e('sUsd').value='';sUpd();openSheet(sendp)}
+$e('sAddr').addEventListener('input',sReady);
+$e('sAddr').addEventListener('focus',async()=>{if($e('sAddr').value)return;try{const t=(await navigator.clipboard.readText()||'').trim();if(t.length>=10&&t.length<=120){$e('sAddr').value=t;sReady()}}catch(e){}});
+$e('sGo').onclick=()=>{if(!sReady()){$e('sAddr').focus({preventScroll:true});return}
+  snd.addr=$e('sAddr').value.trim();const c=D.c[snd.sym];
+  sq('.chip').textContent=sShort(snd.addr);sq('.av2').textContent='Available: '+amt8(c.amt)+' '+snd.sym+' ($'+money(c.amt*c.price)+')';sUpd();sendp.classList.add('two')};
+$e('sUsd').addEventListener('input',sUpd);
+$e('sMax').onclick=()=>{const c=D.c[snd.sym];$e('sUsd').value=(c.amt*c.price).toFixed(2);sUpd()};
+$e('sBack2').onclick=()=>sendp.classList.remove('two');
+sendp.querySelector('.s1 .fback').onclick=()=>{closeSheet();setTimeout(()=>openAssets('send'),140)};
+$e('sSend').onclick=()=>{const k=sCalc();if(!(k.coin>0))return;const now=Date.now();
+  D.c[snd.sym].amt=Math.max(0,D.c[snd.sym].amt-k.coin);D.tx.push({id:now+Math.random(),sym:snd.sym,type:'send',other:'',amt:k.coin,usd:k.coin*k.c.price,ts:now});
+  try{localStorage.setItem('walletui2',JSON.stringify(D))}catch(e){}render();closeSheet()};
+sendp.addEventListener('focusin',()=>requestAnimationFrame(()=>{P.scrollTop=0}));
+// wallet pills: Receive / Send
+hs(W.content,246,997,472,1078,()=>openAssets('recv'),CH);
+hs(W.content,489,997,680,1078,()=>openAssets('send'),CH);
 
 /* ---------- hold the screen 1.5 s to open the editor ---------- */
 let timer=null,sx=0,sy=0,suppress=false;
