@@ -311,7 +311,7 @@ function keypad(p,xs,ys,wt,fn){['1','2','3','4','5','6','7','8','9','.','0','<']
 function bottomRow(p,y,xs,w,h,labels,onPct,onReview){var pcs=labels.map(function(v,i){return bt(p,xs[i],y,w,h,'pc',v[0],function(){onPct(v[1])})});var rv=bt(p,xs[0],y,xs[2]+w-xs[0],h,'rv','Review',onReview);rv.hidden=true;return{show:function(has,ok,label){pcs.forEach(function(b){b.hidden=has});rv.hidden=!has;rv.classList.toggle('dis',!ok);rv.textContent=label}}}
 // ---- tokens
 var PR={ETH:2451.8,SOL:105.7,Cash:1,CASH:1,USDC:1,USDT:1,jlUSDC:1.04,PUMP:0.0031,cbBTC:82200,EURCV:1.16};
-var TI={ETH:'ic_eth.png',SOL:'ic_sol.png',Cash:'ic_cash.png',CASH:'ic_CASH.png',USDC:'ic_usdc.png',USDT:'ic_usdt.png',jlUSDC:'ic_jlusdc.png',PUMP:'ic_pump.png',cbBTC:'ic_cbbtc.png',EURCV:'ic_eurcv.png'};
+var TI={ETH:'ic_eth.png',SOL:'ic_sol.png',Cash:'ic_cash.png',CASH:'ic_cashusd.png',USDC:'ic_usdc.png',USDT:'ic_usdt.png',jlUSDC:'ic_jlusdc.png',PUMP:'ic_pump.png',cbBTC:'ic_cbbtc.png',EURCV:'ic_eurcv.png'};
 var TN={ETH:'Ethereum',SOL:'Solana'};
 var TCH={ETH:['Ethereum'],SOL:['Solana'],Cash:['Solana','Ethereum'],CASH:['Solana'],USDC:['Solana','Ethereum'],USDT:['Solana','Ethereum'],jlUSDC:['Solana'],PUMP:['Solana'],cbBTC:['Solana','Bitcoin'],EURCV:['Solana','Ethereum']};
 function tval(s){return s==='ETH'?num(DATA.eth_val):s==='SOL'?num(DATA.sol_val):s==='Cash'?num(DATA.cash):0}
