@@ -11,11 +11,11 @@
 <meta name="apple-mobile-web-app-title" content="Phantom">
 <style>
 :root{--bg:#000;--sheet:#171717;--line:#2a2a2a;--chip:#1b1b1b;--accent:#ab9ff2;--fg:#fff;--mute:#a0a0a0;color-scheme:dark}
-html,body{margin:0;background:var(--bg)}
+html,body{margin:0;background:var(--bg);height:100%;overflow:hidden;overscroll-behavior:none}
 [hidden]{display:none!important}
 html:root,body{color-scheme:dark}
 input,textarea,select{color-scheme:dark}
-body{min-height:100vh}
+body{position:fixed;inset:0;width:100%;touch-action:manipulation}
 #app{--u:1px;position:relative;margin:0 auto;overflow:hidden;background:#000;color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none;border-radius:calc(var(--u)*100)}
 .screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .22s ease}
 .screen.on{opacity:1;pointer-events:auto}
@@ -267,7 +267,7 @@ var li=lockInfo(),FACE_OK=false;
 function tryUnlock(lk){if(!navigator.credentials||!window.PublicKeyCredential)return;
  navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{id:unb64(li.id),type:'public-key',transports:['internal']}],userVerification:'required',timeout:60000}}).then(function(){lk.classList.add('out');setTimeout(function(){if(lk.parentNode)lk.parentNode.removeChild(lk)},450)},function(e){if(!e||e.name!=='NotAllowedError'){try{localStorage.removeItem(LKKEY)}catch(x){}lk.classList.add('out');setTimeout(function(){if(lk.parentNode)lk.parentNode.removeChild(lk)},450)}})}
 try{PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(function(v){FACE_OK=!!v;if(FACE_OK&&li&&li.id){var lk=el('div','lockscr');lk.id='lockscr';lk.innerHTML='<img src="logo.png" alt="Phantom">';app.appendChild(lk);lk.addEventListener('click',function(){tryUnlock(lk)});setTimeout(function(){tryUnlock(lk)},900)}},function(){})}catch(e){}
-function vvGlue(){var vv=window.visualViewport;if(!vv)return;var y=Math.max(0,vv.pageTop||0);app.style.transform=y>1?'translateY('+y+'px)':''}
+function vvGlue(){}
 if(window.visualViewport){visualViewport.addEventListener('scroll',vvGlue);visualViewport.addEventListener('resize',vvGlue)}
 function px(v,tot){return (v/tot*100)+'%'}
 function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
