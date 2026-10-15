@@ -5,6 +5,8 @@
 :root{--bg:#000;--sheet:#171717;--line:#2a2a2a;--chip:#1b1b1b;--accent:#ab9ff2;--fg:#fff;--mute:#a0a0a0;color-scheme:dark}
 html,body{margin:0;background:var(--bg)}
 [hidden]{display:none!important}
+html:root,body{color-scheme:dark}
+input,textarea,select{color-scheme:dark}
 body{min-height:100vh}
 #app{--u:1px;position:relative;margin:0 auto;overflow:hidden;background:#000;color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none;border-radius:calc(var(--u)*100)}
 .screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .22s ease}
@@ -178,7 +180,7 @@ body{min-height:100vh}
 .qrlogo{position:absolute;border-radius:calc(var(--u)*30);background:#1b1b1b;border:1px solid #2c2c2c;display:flex;align-items:center;justify-content:center}
 .qrlogo img{width:70%;height:70%;border-radius:20%}
 .sbar{position:absolute;left:calc(var(--u)*42);width:calc(var(--u)*837);height:calc(var(--u)*98);top:calc(var(--u)*1830);display:flex;align-items:center;gap:calc(var(--u)*18);padding:0 calc(var(--u)*16) 0 calc(var(--u)*34);box-sizing:border-box;border-radius:999px;background:#121212;border:1px solid #232323;transition:top .32s cubic-bezier(.25,.8,.3,1);z-index:2}
-.sbar.up{top:calc(var(--u)*1229)}
+.sbar.up{top:calc(var(--u)*980)}
 .sbar.snap{transition:none}
 .sbar .si{width:calc(var(--u)*40);height:calc(var(--u)*40);flex:none}
 .sin{flex:1;min-width:0;background:transparent;border:0;outline:none;color:#fff;font:inherit;font-size:max(16px,calc(var(--u)*38));font-weight:500;caret-color:#4f6cff;padding:0;letter-spacing:-.01em}
@@ -479,7 +481,7 @@ var st=mkPage('send','f_sendto.png');var sd={to:'',tok:'ETH',amt:''};
 tx(st,152,166,300,48,'Send',44,'#fff',600);
 var stAcc=tx(st,42,284,300,50,'Accounts',38,'#fff',600);
 var stList=el('div','sl');place(stList,0,360,921,1440);st.el.appendChild(stList);
-function sbarTop(){var vv=window.visualViewport,u=app.clientWidth/921;if(vv&&u>0&&vv.height<window.innerHeight-120){return Math.max(420,Math.min(1229,vv.height/u+120-98-28))}return 1229}
+function sbarTop(){var vv=window.visualViewport,u=app.clientWidth/921;if(vv&&u>0&&vv.height<window.innerHeight-120){return Math.max(420,Math.min(980,vv.height/u+120-98-28))}return 980}
 function stLayout(up){stAcc.style.top=px(284,2001);if(up){var tp=sbarTop();sbar.style.top=px(tp,2001);place(stList,0,360,921,tp-390)}else{sbar.style.top='';place(stList,0,360,921,1440)}}
 ht(st,42,147,84,84,fclose,'Cerrar',42);ht(st,795,147,84,84,function(){say('Agregar contacto · próximamente')},'Agregar',42);
 var sbar=el('div','sbar');sbar.innerHTML='<svg class="si" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="#bdbdbd" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="#bdbdbd" stroke-width="2" stroke-linecap="round"/></svg>';
