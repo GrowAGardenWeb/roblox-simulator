@@ -332,6 +332,48 @@ button.prow{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:ba
 #actp .tr{cursor:pointer;transition:opacity .2s}#actp .tr:active{opacity:.6}
 .anone2{padding:8cqw 0;text-align:center;color:#8a8aa0;font-size:3.4cqw}
 @media (prefers-reduced-motion:reduce){#actp{transition-duration:.01s}}
+
+#bsp{position:absolute;inset:0;z-index:4;container-type:inline-size;background:linear-gradient(180deg,#232440,#20213a 55%,#1e1f36);transform:translateY(103%);transition:transform .5s cubic-bezier(.22,.9,.28,1);touch-action:none;overflow:hidden;font-family:inherit;--p:0}
+#bsp.on{transform:none}
+.bstop{position:relative;width:100%;aspect-ratio:921/880}
+.bsdome{position:absolute;inset:0;clip-path:circle(142.9cqw at 50% -62cqw);background:linear-gradient(180deg,#2a2c62 0%,#343887 60%,#3b3b97 100%)}
+.bsdome:after{content:'';position:absolute;inset:0;opacity:var(--p);background:radial-gradient(ellipse 70% 60% at 88% 100%,#8b6bf3 0%,rgba(139,107,243,0) 70%),radial-gradient(ellipse 80% 70% at 50% 100%,#5a52de 0%,rgba(90,82,222,0) 75%),linear-gradient(180deg,rgba(80,70,200,.55),rgba(110,90,230,.55))}
+.bsfx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.bsticks{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.bsback{position:absolute;left:3.2cqw;top:13.8cqw;width:10cqw;height:10cqw;display:flex;align-items:center;justify-content:center;background:none;border:0;color:#fff;cursor:pointer;padding:0;z-index:3}.bsback svg{width:5.4cqw;height:5.4cqw}
+.bsback:focus-visible{outline:2px solid #fff;border-radius:50%}
+.bsseg{position:absolute;left:34.1%;top:14.8%;width:31.8%;height:8.3%;border-radius:99px;background:rgba(22,23,48,.72);display:flex;z-index:3}
+.bsseg .th{position:absolute;left:0;top:0;width:50%;height:100%;border-radius:99px;background:#7455f0;transition:transform .35s cubic-bezier(.3,.8,.3,1)}
+#bsp[data-m=sell] .bsseg .th{transform:translateX(100%)}
+.bsseg button{position:relative;flex:1;background:none;border:0;color:#a9a9d6;font:inherit;font-size:3.4cqw;cursor:pointer;transition:color .25s;-webkit-tap-highlight-color:transparent}
+#bsp[data-m=buy] .bsseg [data-m=buy],#bsp[data-m=sell] .bsseg [data-m=sell]{color:#fff}
+.bscoin{position:absolute;left:36.7%;top:31%;width:26.6%;height:11.7%;border-radius:99px;background:rgba(22,23,48,.55);border:0;color:#fff;font:inherit;display:flex;align-items:center;justify-content:center;gap:2.4cqw;cursor:pointer;z-index:3;-webkit-tap-highlight-color:transparent}
+.bscoin img{width:7.4cqw}.bscoin span{font-size:4.9cqw;font-weight:500}.bscoin svg{width:2.8cqw;height:2.8cqw;color:#8e8ec0}
+.bsamt{position:absolute;left:0;right:0;top:47.4%;height:15%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;line-height:1;gap:.8cqw;z-index:2}
+.bsamt .d,.bsamt .n{font-size:calc(11.9cqw*var(--sc,1))}.bsamt .d{display:var(--dd,inline)}
+#bsp[data-m=sell] .bsamt .d{display:none}#bsp[data-m=sell] .bsamt{color:#f5c842}
+.bsamt input{position:absolute;inset:0;width:100%;height:100%;opacity:0;background:transparent;border:0;outline:0;color:inherit;font:inherit;font-size:11.9cqw;text-align:center;caret-color:#fff}
+.bsamt.edit input{opacity:1}.bsamt.edit .d,.bsamt.edit .n{opacity:0}
+.bsrcv{position:absolute;left:0;right:0;top:63.4%;text-align:center;font-size:3.6cqw;z-index:2;pointer-events:none}
+.bsrcv .l{color:#a8a6e0;margin-right:1.2cqw}.bsrcv b{font-weight:500;color:#f5c842}#bsp[data-m=sell] .bsrcv b{color:#fff;font-weight:600}
+.bshandle{position:absolute;left:0;top:0;width:16.3%;height:13.6%;margin:-6.8% 0 0 -8.15%;z-index:4;pointer-events:none;border-radius:44% / 52%;
+ background:radial-gradient(120% 110% at 30% 20%,#ffffff 0%,#ecebf3 45%,#c9c8da 100%);box-shadow:0 1.6cqw 3.2cqw rgba(15,10,60,.45),inset 0 -.8cqw 1.4cqw rgba(110,100,170,.35),inset 0 .5cqw .8cqw #fff}
+.bshandle i{position:absolute;left:11%;top:13%;right:11%;bottom:20%;border-radius:44% / 52%;background:linear-gradient(160deg,#fbfbff,#dcdbe8);box-shadow:inset 0 -.6cqw 1cqw rgba(120,110,180,.3)}
+.bsdial{position:absolute;left:0;right:0;top:66%;height:30%;z-index:3;cursor:grab;touch-action:none}
+.bslab{position:absolute;top:89.6%;font-size:2.8cqw;color:#55567a;transition:color .25s;pointer-events:none}.bslab.a{left:5.8%}.bslab.b{right:5.6%}.bslab.on{color:#fff}
+.bswarn{position:absolute;left:3.6cqw;right:3.6cqw;top:97.4cqw;min-height:14cqw;border-radius:7cqw;padding:3cqw 5cqw 3cqw 5.6cqw;box-sizing:border-box;display:flex;align-items:center;gap:3.4cqw;font-size:3.4cqw;line-height:1.3;color:#fff;background:linear-gradient(100deg,#4a1ea6,#3b1b8c 55%,#2f1b78);opacity:0;pointer-events:none;transition:opacity .3s}
+.bswarn.on{opacity:1}.bswarn svg{width:6.4cqw;height:6.4cqw;flex:none}
+.bspay{position:absolute;left:50%;bottom:27.7cqw;transform:translateX(-50%);height:14cqw;padding:0 5cqw;border-radius:3.4cqw;background:rgba(36,37,58,.85);display:flex;align-items:center;gap:1.8cqw;font-size:3.5cqw;color:#a9a9c8;white-space:nowrap}
+.bspay .cardi{width:6.4cqw;display:flex}.bspay .cardi svg{width:100%}
+.bspay .chv{width:2.6cqw;color:#5d5e7d;display:flex;margin:0 1.6cqw 0 .6cqw}.chv svg{width:100%}
+.bspay .sep{width:1px;height:4cqw;background:rgba(255,255,255,.1);margin:0 2.6cqw 0 .6cqw}
+.bspay .prov{width:6.8cqw;height:6.8cqw;background:none;border:0;padding:0;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.prov span{position:absolute;inset:0;transition:opacity .25s}.prov span svg{width:100%;height:100%;display:block}.prov .pb{opacity:0}
+#bsp[data-pv="1"] .prov .pa{opacity:0}#bsp[data-pv="1"] .prov .pb{opacity:1}
+.bspay .prov:focus-visible{outline:2px solid #fff;border-radius:50%}
+.bsgo{position:absolute;left:6.8cqw;width:86.4cqw;bottom:7.8cqw;height:15.2cqw;border-radius:99px;border:0;color:#d9d3ff;font:inherit;font-size:3.7cqw;font-weight:500;cursor:pointer;background:linear-gradient(180deg,#7551f0,#4f3cbb);box-shadow:inset 0 1px 0 rgba(255,255,255,.2);transition:opacity .3s,transform .15s;-webkit-tap-highlight-color:transparent}
+.bsgo:active{transform:scale(.98)}.bsgo.off{opacity:.5;pointer-events:none}.bsgo.hide{opacity:0;pointer-events:none}.bsgo:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){#bsp,.bsseg .th{transition-duration:.01s}}
 </style></head><body>
 <div id="phone"></div>
 <script src="cfg.js"></script>
@@ -373,6 +415,7 @@ const profp=$('<div id="profp" class="fsheet"><div class="cgrab"></div><div clas
 const reqp=$('<div id="reqp" class="fsheet"><div class="cgrab"></div><button class="fback" type="button" aria-label="Back" id="rBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><div class="ftitle">Request</div><div class="amtv" id="rVal"><span class="d">$</span><span class="n">0</span><i class="caret"></i></div><div class="renter">Enter amount</div><div class="kp" id="rKp"><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" data-k=".">.</button><button type="button" data-k="0">0</button><button type="button" data-k="del" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-6-6z"/><path d="M13 10l4 4M17 10l-4 4"/></svg></button></div><div class="rfoot" id="rFoot">Funds are converted to digital assets<br>held in your self-custodial account.</div><button class="sgo grn" id="rGo" type="button"><span>Continue</span></button></div>');P.appendChild(reqp);
 const qrp=$('<div id="qrp" class="fsheet"><div class="cgrab"></div><div class="qrcard"><svg viewBox="0 0 37 37" aria-hidden="true"></svg><div class="qlogo"><svg viewBox="0 0 24 24" fill="none" stroke="#12121f" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/><path d="M14.2 9.6c-.3-.8-1.1-1.2-2.1-1.2-1.3 0-2.2.7-2.2 1.7s.8 1.4 2.2 1.7 2.2.7 2.2 1.7-.9 1.7-2.2 1.7c-1 0-1.9-.5-2.2-1.3M12 7v1.4M12 15.6V17"/></svg></div></div><div class="qamt" id="qAmt"></div><div class="qtit" id="qTit"></div><div class="qsub">Get paid with your phone number too.</div><button class="sgo grn" id="qShare" type="button"><span>Share</span></button></div>');P.appendChild(qrp);
 const actp=$('<div id="actp"><div class="cgrab"></div><div class="ahead">Activity<button type="button" id="acBtn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></div><div class="asearch" id="acSearch"><input id="acIn" placeholder="Search" autocomplete="off"></div><div class="chipsrow" id="acChips"></div><div class="abody" id="acBody"></div></div>');P.appendChild(actp);
+const bsp=$('<div id="bsp"><div class="bstop"><div class="bsdome"></div><canvas class="bsfx"></canvas><svg class="bsticks" viewBox="0 0 921 880" aria-hidden="true"></svg><button class="bsback" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><div class="bsseg"><i class="th"></i><button type="button" data-m="buy">Buy</button><button type="button" data-m="sell">Sell</button></div><button class="bscoin" type="button" aria-label="Choose asset"><img alt=""><span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button><div class="bsamt" id="bsAmt"><span class="d">$</span><span class="n"></span><input id="bsIn" inputmode="decimal" autocomplete="off" aria-label="Amount"></div><div class="bsrcv"><span class="l">Receive</span><b id="bsRcv"></b></div><div class="bshandle" id="bsHandle"><i></i></div><div class="bsdial" id="bsDial"></div><span class="bslab a" id="bsLa">$50</span><span class="bslab b" id="bsLb">$500</span></div><div class="bswarn" id="bsWarn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2L22 20.5H2z" fill="#7c3cf0" stroke="#7c3cf0" stroke-width="2" stroke-linejoin="round"/><path d="M12 9.5v5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.2" fill="#fff"/></svg><span></span></div><div class="bspay"><span id="bsPayL">Pay with</span><span class="cardi"><svg viewBox="0 0 60 40" aria-hidden="true"><defs><linearGradient id="cdg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b8cf5"/><stop offset="1" stop-color="#6f4ff0"/></linearGradient></defs><rect x="2" y="2" width="56" height="36" rx="5" fill="url(#cdg)"/><rect x="9" y="8" width="9" height="7" rx="1.5" fill="#f6c453"/><text x="12" y="31" font-size="5.5" fill="#dfe6ff" font-family="monospace">•••• 1234</text></svg></span><span class="chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span><i class="sep"></i><button class="prov" type="button" aria-label="Payment provider"><span class="pa"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#fff"/><circle cx="16" cy="20" r="7.5" fill="#1fa86a" opacity=".92"/><circle cx="24.5" cy="20" r="7.5" fill="#0b6b46" opacity=".8"/></svg></span><span class="pb"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#fff"/><path d="M26.5 12.5a9.6 9.6 0 1 0 1.6 13.2 7.6 7.6 0 0 1-1.6-13.2z" fill="#6a2cf0"/><circle cx="27.6" cy="13" r="2.4" fill="#6a2cf0"/></svg></span></button><span class="chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></div><button class="bsgo" id="bsGo" type="button">Continue</button></div>');P.appendChild(bsp);
 const assp=$('<div id="assp"><div class="cgrab"></div><div class="ahead">Select Asset<button type="button" id="asBtn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></div><div class="asearch" id="asSearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="asIn" placeholder="Search" autocomplete="off"></div><div class="abody" id="asBody"></div></div>');P.appendChild(assp);
 const scrim=document.getElementById('scrim');
 let openEl=null;
@@ -413,7 +456,7 @@ const COINS=[['BTC','Bitcoin',0.00015,81582,'#f5c842',2.8],['LTC','Litecoin',0.1
  ['USDT','Tether USD',0,0.9991,'#2fbfa9',0.9],['BNB','BNB',0,727.43,'#f0b90b',-0.5],['XRP','XRP',0,1.32,'#1e90d6',-1.4],['USDC','USDC',0,0.9996,'#3b82f6',0.2],
  ['SOL','Solana',0,104.18,'#9945ff',0.5],['TRX','Tron',0,0.3299,'#d63a3a',-0.1],['DOGE','Dogecoin',0,0.0794,'#c2a633',-2.6],['ADA','Cardano',0,0.2255,'#2a4fd6',-0.9]];
 const ROWB={BTC:1167,LTC:1342,ETH:1517,USDT:1692.5,BNB:1868.5,XRP:2044.5,USDC:2220.5,SOL:2396.5,TRX:2572.5,DOGE:2749,ADA:2925};
-const TYPES={send:'Enviado',recv:'Recibido',buy:'Comprado',swapout:'Swap hacia otra moneda',swapin:'Swap desde otra moneda'};
+const TYPES={send:'Enviado',recv:'Recibido',buy:'Comprado',sell:'Vendido',swapout:'Swap hacia otra moneda',swapin:'Swap desde otra moneda'};
 const atDay=(off,hh,mm)=>{const d=new Date();d.setDate(d.getDate()+off);d.setHours(hh,mm,0,0);return d.getTime()};
 const DEFTX=()=>[{id:1,sym:'BTC',type:'send',other:'',amt:0.00040189,usd:33.62,ts:new Date(2026,9,11,12,30).getTime()},
  {id:2,sym:'BTC',type:'swapin',other:'LTC',amt:0.00057,usd:46.72,ts:new Date(2026,9,11,12,19).getTime()},
@@ -439,7 +482,7 @@ const R={
  pCash:find(portS,t=>t==='$0'),pCashP:find(portS,t=>t==='0%'),pWal:find(portS,(t,d)=>d.children.length===1&&t==='$17.88'),pWalP:find(portS,t=>t==='100%'),
  pAge:find(portB,t=>t.startsWith('Portfolio Age'))};
 const setT=(d,t)=>{d.children[0].textContent=t};
-function fit(d,cq){d.style.setProperty('--sc',1);const sw=d.closest('.screen,.fsheet').getBoundingClientRect().width;if(!sw)return;
+function fit(d,cq){d.style.setProperty('--sc',1);const sw=d.closest('.screen,.fsheet,#bsp').getBoundingClientRect().width;if(!sw)return;
   const w=[...d.children].reduce((s,e)=>s+e.getBoundingClientRect().width,0);
   d.style.setProperty('--sc',w?Math.max(.28,Math.min(1,cq/100*sw/w)):1)}
 /* coin ring around the balance: one arc per coin, sized by its value */
@@ -486,7 +529,7 @@ function render(){
 
 /* ---------- coin panel ---------- */
 const cq=s=>coinp.querySelector(s);
-const ICON={buy:'<path d="M12 5v14M6 13l6 6 6-6"/>',send:'<path d="M7 17 17 7M9 7h8v8"/>',recv:'<path d="M17 7 7 17M15 17H7V9"/>',swap:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>'};
+const ICON={sell:'<path d="M12 19V5M6 11l6-6 6 6"/>',buy:'<path d="M12 5v14M6 13l6 6 6-6"/>',send:'<path d="M7 17 17 7M9 7h8v8"/>',recv:'<path d="M17 7 7 17M15 17H7V9"/>',swap:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>'};
 const svgI=p=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
 const dLabel=ts=>{const d=new Date(ts),y=d.getFullYear()!==new Date().getFullYear();return d.toLocaleDateString('en-US',y?{month:'short',day:'numeric',year:'numeric'}:{month:'short',day:'numeric'})};
 const tLabel=ts=>new Date(ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
@@ -509,7 +552,7 @@ function drawChart(sym,price){
 function txRow(t){
   const r=$('<div class="tr"><div class="ti"><img alt=""><span class="bd"></span></div><div class="tm"><div class="tn"></div><div class="tt"></div></div><div class="tv"></div></div>');
   r.querySelector('img').src=imgSrc('ic_'+t.sym);
-  if(t.pending){const b=r.querySelector('.bd');b.classList.add('pd');b.textContent='\u2022\u2022\u2022'}else r.querySelector('.bd').innerHTML=svgI(ICON[t.type==='send'||t.type==='recv'||t.type==='buy'?t.type:'swap']);
+  if(t.pending){const b=r.querySelector('.bd');b.classList.add('pd');b.textContent='\u2022\u2022\u2022'}else r.querySelector('.bd').innerHTML=svgI(ICON[t.type==='send'||t.type==='recv'||t.type==='buy'||t.type==='sell'?t.type:'swap']);
   r.querySelector('.tn').textContent=t.type==='swapin'?'Swapped from '+t.other:t.type==='swapout'?'Swapped to '+t.other:amt8(t.amt)+' '+t.sym;
   r.querySelector('.tt').textContent=tLabel(t.ts);
   const pos=t.type==='recv'||t.type==='swapin'||t.type==='buy',v=r.querySelector('.tv');v.textContent=(pos?'+':'')+'$'+money(t.usd);if(pos)v.classList.add('pos');
@@ -531,7 +574,7 @@ function fillCoin(sym){
 function openCoin(sym){fillCoin(sym);cq('.cbody').scrollTop=0;openSheet(coinp)}
 cq('.cact').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const s=coinp.dataset.s,a=b.dataset.a;
   if(a==='swap'){S.from=s;if(S.to===s)S.to=s==='LTC'?'BTC':'LTC';go('swap');return}
-  if(a==='buy')openEdit({coin:s});else{closeSheet();setTimeout(()=>a==='send'?openSend(s):openRecv(s),140)}});
+  if(a==='buy'){closeSheet();setTimeout(()=>openBS('buy',s),150)}else{closeSheet();setTimeout(()=>a==='send'?openSend(s):openRecv(s),140)}});
 /* press a coin row: it dims smoothly, tap opens its panel */
 COINS.forEach(([s])=>{const h=$('<div class="rowhit" role="button" tabindex="0"></div>');h.setAttribute('aria-label',s);
   h.style.cssText=`left:${33/9.21}%;top:${(ROWB[s]-45)/CH*100}%;width:${855/9.21}%;height:${165/CH*100}%`;
@@ -669,9 +712,9 @@ swBtn.onclick=()=>{const c=swCalc();if(!(c.a>0))return;const f=D.c[S.from],t=D.c
   S.mode=null;S.usd=0;render();swRender();go('wallet')};
 /* asset picker */
 let asSide='from';
-function openAssets(side){asSide=side;const pick=side==='recv'||side==='send'||side==='view';
+function openAssets(side){asSide=side;const pick=side==='recv'||side==='send'||side==='view'||side==='bsbuy'||side==='bssell';
   assp.classList.toggle('pick',pick);$e('asIn').value='';$e('asSearch').classList.toggle('on',false);$e('asSearch').classList.toggle('big',pick);$e('asBody').classList.remove('s');
-  assp.querySelector('.ahead').firstChild.textContent='Select Asset';
+  assp.querySelector('.ahead').firstChild.textContent=side==='bssell'?'Sell':'Select Asset';
   drawAssets('');assp.querySelector('.abody').scrollTop=0;openSheet(assp)}
 function drawAssets(q){
   const body=$e('asBody');body.textContent='';q=q.trim().toLowerCase();
@@ -680,12 +723,14 @@ function drawAssets(q){
     r.querySelector('img').src=imgSrc('ic_'+m[0]);r.querySelector('.n').textContent=m[1];
     const y=r.querySelector('.y');if(own){y.textContent=amt(D.c[m[0]].amt)+' '+m[0];const sm=document.createElement('small');sm.textContent='$'+money(val(m[0]));y.appendChild(sm)}else y.textContent=m[0];
     if(m[0]===(asSide==='from'?S.from:S.to))r.classList.add('sel');
-    r.onclick=()=>{if(asSide==='recv'||asSide==='send'||asSide==='view'){const f=asSide==='recv'?openRecv:asSide==='send'?openSend:openCoin,s=m[0];closeSheet();setTimeout(()=>f(s),140);return}
+    r.onclick=()=>{if(asSide==='bsbuy'||asSide==='bssell'){BS.sym=m[0];BS.usd=Math.min(BS.usd,500);BS.coin=0;closeSheet();bsRender();return}
+      if(asSide==='recv'||asSide==='send'||asSide==='view'){const f=asSide==='recv'?openRecv:asSide==='send'?openSend:openCoin,s=m[0];closeSheet();setTimeout(()=>f(s),140);return}
       const other=asSide==='from'?'to':'from';if(m[0]===S[other])S[other]=S[asSide];S[asSide]=m[0];closeSheet();swRender()};return r};
-  const flat=asSide==='recv'||asSide==='send'||asSide==='view';
-  if(flat){const list=COINS.filter(m=>match(m)&&(asSide!=='send'||D.c[m[0]].amt>0)).sort((a,b)=>val(b[0])-val(a[0])||COINS.indexOf(a)-COINS.indexOf(b));
+  const flat=asSide==='recv'||asSide==='send'||asSide==='view'||asSide==='bsbuy'||asSide==='bssell';
+  if(flat){const list=COINS.filter(m=>match(m)&&(asSide!=='send'&&asSide!=='bssell'||D.c[m[0]].amt>0)).sort((a,b)=>val(b[0])-val(a[0])||COINS.indexOf(a)-COINS.indexOf(b));
+    if(asSide==='bssell'&&list.length){const s=$('<div class="asec"></div>');s.textContent='Available Assets';body.appendChild(s)}
     list.forEach(m=>body.appendChild(row(m,D.c[m[0]].amt>0)));
-    if(!list.length){const n=$('<div class="anone"></div>');n.textContent=asSide==='send'&&!q?'You have no assets to send yet.':'No results';body.appendChild(n)}return}
+    if(!list.length){const n=$('<div class="anone"></div>');n.textContent=(asSide==='send'||asSide==='bssell')&&!q?'You have no assets to '+(asSide==='send'?'send':'sell')+' yet.':'No results';body.appendChild(n)}return}
   if(!q){const c=$('<div class="acash"><div class="ci">$</div><div class="n">Cash</div><button type="button">+ Add money</button></div>');
     c.querySelector('button').onclick=()=>{closeSheet();setTimeout(()=>openSheet(addp),120)};body.appendChild(c)}
   const owned=COINS.filter(m=>D.c[m[0]].amt>0&&match(m)).sort((a,b)=>val(b[0])-val(a[0]));
@@ -816,7 +861,7 @@ Object.assign(rqRow.style,{left:'0',top:'15.5%',width:'100%',height:'13.5%'});ad
 rqRow.onclick=()=>{closeSheet();setTimeout(openRequest,150)};
 /* ---------- activity ---------- */
 let actF='all',actQ='';
-const FIL={all:()=>true,swap:t=>t.type==='swapin'||t.type==='swapout',send:t=>t.type==='send',recv:t=>t.type==='recv',buy:t=>t.type==='buy'};
+const FIL={all:()=>true,swap:t=>t.type==='swapin'||t.type==='swapout',send:t=>t.type==='send'||t.type==='sell',recv:t=>t.type==='recv',buy:t=>t.type==='buy'};
 const dayStart=ts=>{const d=new Date(ts);d.setHours(0,0,0,0);return d.getTime()};
 const relDay=ts=>{const t0=dayStart(Date.now()),d=dayStart(ts);return d===t0?'Today':d===t0-864e5?'Yesterday':dLabel(ts)};
 function drawAct(){
@@ -836,6 +881,83 @@ actp.addEventListener('focusin',()=>requestAnimationFrame(()=>{P.scrollTop=0}));
 function openActivity(){actQ='';$e('acIn').value='';$e('acSearch').classList.remove('on');$e('acBody').classList.remove('s');drawAct();$e('acBody').scrollTop=0;openSheet(actp)}
 hs(W.content,806,130,889,213,()=>openActivity(),CH);
 hs(W.content,712,130,795,213,()=>openAssets('view'),CH);
+/* ---------- buy / sell ---------- */
+const BS={mode:'buy',sym:'BTC',usd:50,coin:0,typing:false},MIN_USD=20,BS_MIN=50,BS_MAX=500;
+const bq=s=>bsp.querySelector(s),R_=1316,CX_=460.5,CY_=-571,X0_=95,X1_=828;
+const arcY=x=>CY_+Math.sqrt(R_*R_-(x-CX_)*(x-CX_));
+const ticks=bq('.bsticks');
+(function(){let o='';for(let i=0,x=93;x<=832;x+=35,i++){const y=arcY(x)+8,c=Math.abs(x-460)<18,len=c?56:(i%2?34:42);o+=`<line x1="${x}" y1="${y.toFixed(1)}" x2="${x}" y2="${(y+len).toFixed(1)}" stroke="${c?'#7a7b9a':'#585979'}" stroke-width="3.2" stroke-linecap="round"/>`}ticks.innerHTML=o})();
+const fx=bq('.bsfx'),fxc=fx.getContext('2d');let parts=[],raf=0;
+const reduceM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function fxSize(){const r=fx.getBoundingClientRect(),d=devicePixelRatio||1;fx.width=Math.max(1,r.width*d);fx.height=Math.max(1,r.height*d)}
+function fxSpawn(n,p){if(reduceM)return;if(!fx.width||fx.width<10)fxSize();const w=fx.width,h=fx.height;
+  for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,d=(.1+Math.random()*.42)*w;parts.push({x:w*.5+Math.cos(a)*d,y:h*.8+Math.sin(a)*d*.55,a,v:(1.5+Math.random()*3.5)*(devicePixelRatio||1),l:(14+Math.random()*44)*(devicePixelRatio||1),life:1,al:.35+p*.5})}
+  if(!raf)raf=requestAnimationFrame(fxTick)}
+function fxTick(){fxc.clearRect(0,0,fx.width,fx.height);parts=parts.filter(q=>q.life>0);
+  fxc.lineWidth=2*(devicePixelRatio||1);fxc.lineCap='round';
+  parts.forEach(q=>{q.x+=Math.cos(q.a)*q.v;q.y+=Math.sin(q.a)*q.v*.6;q.life-=.028;fxc.strokeStyle=`rgba(200,190,255,${Math.max(0,q.life*q.al)})`;
+    fxc.beginPath();fxc.moveTo(q.x,q.y);fxc.lineTo(q.x-Math.cos(q.a)*q.l,q.y-Math.sin(q.a)*q.l*.6);fxc.stroke()});
+  raf=parts.length?requestAnimationFrame(fxTick):0}
+const bsCoin=()=>COINS.find(c=>c[0]===BS.sym),bsPrice=()=>D.c[BS.sym].price,bsBal=()=>D.c[BS.sym].amt;
+const minCoin=()=>bsPrice()>0?Math.ceil(MIN_USD/bsPrice()*1e6)/1e6:0;
+function bsCalc(){const pr=bsPrice();
+  if(BS.mode==='buy'){const usd=BS.usd,coin=pr>0?usd/pr:0,p=Math.max(0,Math.min(1,(usd-BS_MIN)/(BS_MAX-BS_MIN)));
+    return{p,usd,coin,ok:usd>=MIN_USD,warn:usd<MIN_USD?'Amount must be at least $'+MIN_USD.toFixed(2):''}}
+  const bal=bsBal(),coin=BS.coin,min=minCoin(),p=bal>0?Math.max(0,Math.min(1,coin/bal)):0;
+  const inRange=coin>=min&&coin<=bal+1e-12,usd=inRange?coin*pr:0;
+  let warn='';if(bal<min)warn='Minimum sell is currently '+amt(min)+'. Add more '+BS.sym+' to continue.';else if(coin>bal+1e-12)warn='You only have '+amt(bal)+' '+BS.sym+'.';else if(coin<min)warn='Minimum sell is currently '+amt(min)+'. Add more '+BS.sym+' to continue.';
+  return{p,usd,coin,ok:inRange,warn}}
+function bsRender(){
+  const c=bsCalc(),m=BS.mode;bsp.dataset.m=m;bsp.style.setProperty('--p',c.p.toFixed(3));
+  bq('.bscoin img').src=imgSrc('ic_'+BS.sym);bq('.bscoin span').textContent=BS.sym;
+  const n=bq('.bsamt .n');
+  if(!bq('.bsamt').classList.contains('edit')){n.textContent=m==='buy'?(BS.usd%1?money(BS.usd):BS.usd.toLocaleString('en-US')):amt(BS.coin);}
+  fit(bq('.bsamt'),72);
+  bq('#bsRcv').textContent=m==='buy'?amt(c.coin)+' '+BS.sym:'$'+money(c.usd);
+  bq('.bsrcv .l').style.color='';
+  bq('#bsLa').textContent=m==='buy'?'$'+BS_MIN:'MIN';bq('#bsLb').textContent=m==='buy'?'$'+BS_MAX:'MAX';
+  bq('#bsLa').classList.toggle('on',c.p<.5);bq('#bsLb').classList.toggle('on',c.p>=.5);
+  const x=X0_+c.p*(X1_-X0_),th=Math.asin((x-CX_)/R_);
+  const hd=bq('#bsHandle'),W_=bq('.bstop').clientWidth||430;
+  hd.style.left=(x/9.21)+'%';hd.style.top=(arcY(x)/8.8)+'%';hd.style.transform='rotate('+(-th*180/Math.PI).toFixed(2)+'deg)';
+  const w=bq('#bsWarn');w.classList.toggle('on',!!c.warn);if(c.warn)w.querySelector('span').textContent=c.warn;
+  bq('#bsPayL').textContent=m==='buy'?'Pay with':'Receive via';
+  const go=bq('#bsGo');go.classList.toggle('off',m==='buy'&&!c.ok);go.classList.toggle('hide',m==='sell'&&!c.ok)}
+function openBS(mode,sym){BS.mode=mode;if(sym)BS.sym=sym;
+  if(mode==='sell'&&!(bsBal()>0)){const f=COINS.find(k=>D.c[k[0]].amt>0);if(f)BS.sym=f[0]}
+  BS.usd=BS_MIN;BS.coin=0;bq('.bsamt').classList.remove('edit');bsRender();bsp.classList.add('on');setTimeout(fxSize,60)}
+function closeBS(){bsp.classList.remove('on')}
+bq('.bsback').onclick=closeBS;
+bq('.bsseg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const m=b.dataset.m;if(m===BS.mode)return;
+  BS.mode=m;if(m==='sell'&&!(bsBal()>0)){const f=COINS.find(k=>D.c[k[0]].amt>0);if(f)BS.sym=f[0]}BS.usd=BS_MIN;BS.coin=0;bsRender();fxSpawn(14,.4)});
+bq('.bscoin').onclick=()=>openAssets(BS.mode==='buy'?'bsbuy':'bssell');
+bq('.prov').onclick=()=>{bsp.dataset.pv=bsp.dataset.pv==='1'?'0':'1'};
+/* drag the dial */
+const dial=bq('#bsDial');let dragging=false,lastP=0;
+function bsDrag(e){const r=bq('.bstop').getBoundingClientRect(),ux=(e.clientX-r.left)/r.width*921,p=Math.max(0,Math.min(1,(ux-X0_)/(X1_-X0_)));
+  if(BS.mode==='buy')BS.usd=Math.round(BS_MIN+p*(BS_MAX-BS_MIN));else BS.coin=Number((p*bsBal()).toFixed(6));
+  fxSpawn(Math.round(Math.abs(p-lastP)*60)+(p>.02?1:0),p);lastP=p;bsRender()}
+dial.addEventListener('pointerdown',e=>{dragging=true;dial.setPointerCapture(e.pointerId);bq('.bsamt').classList.remove('edit');bsDrag(e)});
+dial.addEventListener('pointermove',e=>{if(dragging)bsDrag(e)});
+['pointerup','pointercancel'].forEach(n=>dial.addEventListener(n,()=>{dragging=false}));
+/* type an amount */
+const bsIn=bq('#bsIn');
+bq('.bsamt').addEventListener('click',()=>{bq('.bsamt').classList.add('edit');bsIn.value=BS.mode==='buy'?(BS.usd||''):(BS.coin||'');bsIn.focus({preventScroll:true});bsIn.select()});
+bsIn.addEventListener('input',()=>{const v=num(bsIn.value);if(BS.mode==='buy')BS.usd=v;else BS.coin=v;const n=bq('.bsamt .n');n.textContent=bsIn.value||'0';bsRender();bq('.bsamt .n').textContent=bsIn.value||'0'});
+bsIn.addEventListener('blur',()=>{bq('.bsamt').classList.remove('edit');bsRender()});
+bsIn.addEventListener('keydown',e=>{if(e.key==='Enter')bsIn.blur()});
+bsp.addEventListener('focusin',()=>requestAnimationFrame(()=>{P.scrollTop=0}));
+/* run the purchase / sale */
+function runFlow(sym,label,mutate,t){closeBS();closeSheet();pillT.forEach(clearTimeout);pillT=[];
+  setTimeout(()=>{openCoin(sym);pill.className='cpill';pill.querySelector('.pt').textContent=label;coinp.classList.add('pend');void pill.offsetWidth;pill.classList.add('on');
+    pillT.push(setTimeout(()=>{mutate();D.tx.push(t);try{localStorage.setItem('walletui2',JSON.stringify(D))}catch(e){}render();pill.classList.add('ok');
+      pillT.push(setTimeout(()=>{pill.classList.remove('on','ok');coinp.classList.remove('pend')},1700));
+      pillT.push(setTimeout(()=>{t.pending=false;try{localStorage.setItem('walletui2',JSON.stringify(D))}catch(e){}render()},8000))},1500))},350)}
+bq('#bsGo').onclick=()=>{const c=bsCalc();if(!c.ok)return;const sym=BS.sym,now=Date.now();
+  if(BS.mode==='buy')runFlow(sym,'Buy $'+(c.usd%1?money(c.usd):c.usd),()=>{D.c[sym].amt+=c.coin},{id:now+Math.random(),sym,type:'buy',other:'',amt:c.coin,usd:c.usd,ts:now,pending:true});
+  else runFlow(sym,'Sell $'+money(c.usd),()=>{D.c[sym].amt=Math.max(0,D.c[sym].amt-c.coin);D.cash+=c.usd},{id:now+Math.random(),sym,type:'sell',other:'',amt:c.coin,usd:c.usd,ts:now,pending:true})};
+hs(W.content,62,997,230,1078,()=>openBS('buy'),CH);
+hs(W.content,696,997,860,1078,()=>openBS('sell'),CH);
 /* ---------- hold the screen 1.5 s to open the editor ---------- */
 let timer=null,sx=0,sy=0,suppress=false;
 const cancel=()=>{clearTimeout(timer);timer=null};
