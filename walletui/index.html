@@ -497,7 +497,7 @@ function fit(d,cq){d.style.setProperty('--sc',1);const sw=d.closest('.screen,.fs
   const w=[...d.children].reduce((s,e)=>s+e.getBoundingClientRect().width,0);
   d.style.setProperty('--sc',w?Math.max(.28,Math.min(1,cq/100*sw/w)):1)}
 /* coin ring around the balance: one arc per coin, sized by its value */
-const RING={cx:340,cy:340,r:329.3,sw:14};
+const RING={cx:340,cy:340,r:330.5,sw:11};
 const ringSvg=$('<svg id="ring" viewBox="0 0 680 680" fill="none" stroke-linecap="round" aria-hidden="true"></svg>');
 ringSvg.style.cssText=`left:${(460.5-340)/9.21}%;top:${(590.3-340)/CH*100}%;width:${680/9.21}%;height:${680/CH*100}%`;
 W.content.appendChild(ringSvg);
@@ -507,7 +507,7 @@ function arc(a0,a1,col){const p=document.createElementNS(NS,'path'),pt=a=>[RING.
   p.setAttribute('stroke',col);p.setAttribute('stroke-width',RING.sw);ringSvg.appendChild(p)}
 function drawRing(list,total){
   ringSvg.textContent='';
-  const cap=RING.sw/2/RING.r,gap=cap*2+7/RING.r;
+  const cap=RING.sw/2/RING.r,gap=9/RING.r;
   if(!(total>0)){arc(gap/2,2*Math.PI-gap/2,'rgba(255,255,255,.14)');return}
   const n=list.length,avail=2*Math.PI-n*gap;let a=gap/2;
   list.forEach(o=>{const len=o.v/total*avail;
