@@ -312,7 +312,7 @@ const DEFTX=()=>[{id:1,sym:'BTC',type:'send',other:'',amt:0.00040189,usd:33.62,t
 const DEF=()=>({cash:0,age:4,c:Object.fromEntries(COINS.map(([s,n,a,p])=>[s,{amt:a,price:p}])),tx:DEFTX()});
 let D=DEF();
 try{const s=JSON.parse(localStorage.getItem('walletui2')||'null');if(s){D.cash=num(s.cash);if(s.age!=null)D.age=Math.floor(num(s.age));
-  for(const k in D.c)if(s.c&&s.c[k])D.c[k]={amt:num(s.c[k].amt),price:num(s.c[k].price)};
+  for(const k in D.c)if(s.c&&s.c[k])D.c[k]={amt:num(s.c[k].amt),price:num(s.c[k].price),addr:typeof s.c[k].addr==='string'?s.c[k].addr.slice(0,120):''};
   if(Array.isArray(s.tx))D.tx=s.tx.filter(t=>t&&D.c[t.sym]&&TYPES[t.type]).map(t=>({id:t.id||Math.random(),sym:t.sym,type:t.type,other:D.c[t.other]?t.other:'',amt:num(t.amt),usd:num(t.usd),ts:+t.ts||Date.now()}))}}catch(e){}
 const money=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const amt=n=>String(Number(n.toFixed(6)));
@@ -446,7 +446,7 @@ const edit=$(`<div id="edit"><div class="sheet"><div class="grab"></div><h2>Ajus
 <div class="b"><button id="eReset" type="button">Restablecer</button><button id="eSave" class="p" type="button">Guardar</button></div></div></div>`);
 P.appendChild(edit);
 const $e=id=>document.getElementById(id);
-COINS.forEach(([s,n])=>{const b=$('<div class="cb"><div class="ch"><div class="t"></div></div><div class="g"><label>Cantidad<input data-f="amt" inputmode="decimal" autocomplete="off"></label><label>Precio ($)<input data-f="price" inputmode="decimal" autocomplete="off"></label></div></div>');
+COINS.forEach(([s,n])=>{const b=$('<div class="cb"><div class="ch"><div class="t"></div></div><div class="g"><label>Cantidad<input data-f="amt" inputmode="decimal" autocomplete="off"></label><label>Precio ($)<input data-f="price" inputmode="decimal" autocomplete="off"></label><label class="w">Direcci\u00f3n para Receive (opcional)<input data-f="addr" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Se genera una autom\u00e1tica"></label></div></div>');
   b.dataset.s=s;b.querySelector('.t').textContent=n;const i=document.createElement('i');i.textContent=s;b.querySelector('.t').appendChild(i);
   b.querySelectorAll('input').forEach(inp=>{inp.id='e'+s+inp.dataset.f;inp.addEventListener('input',preview)});$e('eCoins').appendChild(b)});
 const opt=(v,t)=>{const o=document.createElement('option');o.value=v;o.textContent=t;return o};
@@ -473,7 +473,7 @@ function addTx(){
   $e('tAmt').value='';$e('tUsd').value='';drawTx();return true}
 $e('tAdd').onclick=addTx;
 function openEdit(o){o=o&&o.coin!==undefined||o&&o.tx?o:{};
-  $e('eCash').value=D.cash;$e('eAge').value=D.age;COINS.forEach(([s])=>{$e('e'+s+'amt').value=D.c[s].amt;$e('e'+s+'price').value=D.c[s].price});
+  $e('eCash').value=D.cash;$e('eAge').value=D.age;COINS.forEach(([s])=>{$e('e'+s+'amt').value=D.c[s].amt;$e('e'+s+'price').value=D.c[s].price;$e('e'+s+'addr').value=D.c[s].addr||''});
   draftTx=D.tx.map(t=>Object.assign({},t));drawTx();preview();
   const n=new Date();$e('tDate').value=dIn(n);$e('tTime').value=tIn(n);
   $e('tSym').value=o.coin||'BTC';$e('tType').value=o.tx||'send';$e('tOther').value=COINS.find(c=>c[0]!==$e('tSym').value)[0];swapT();
@@ -486,7 +486,7 @@ edit.addEventListener('pointerdown',e=>e.stopPropagation());
 edit.addEventListener('focusin',()=>requestAnimationFrame(()=>{P.scrollTop=0;P.scrollLeft=0}));
 edit.addEventListener('click',e=>{if(e.target===edit)closeEdit()});
 $e('eSave').onclick=()=>{if(num($e('tAmt').value)||num($e('tUsd').value))addTx();
-  D.cash=num($e('eCash').value);D.age=Math.floor(num($e('eAge').value));COINS.forEach(([s])=>{D.c[s]={amt:num($e('e'+s+'amt').value),price:num($e('e'+s+'price').value)}});D.tx=draftTx;
+  D.cash=num($e('eCash').value);D.age=Math.floor(num($e('eAge').value));COINS.forEach(([s])=>{D.c[s]={amt:num($e('e'+s+'amt').value),price:num($e('e'+s+'price').value),addr:$e('e'+s+'addr').value.trim().slice(0,120)}});D.tx=draftTx;
   try{localStorage.setItem('walletui2',JSON.stringify(D))}catch(e){}render();closeEdit()};
 $e('eReset').onclick=()=>{D=DEF();try{localStorage.removeItem('walletui2')}catch(e){}render();closeEdit()};
 W.extra.querySelector('.addmore').onclick=()=>openEdit();
