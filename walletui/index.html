@@ -28,9 +28,20 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 .hs{position:absolute;cursor:pointer;border-radius:12px}
 #scrim{position:absolute;inset:0;background:rgba(5,5,15,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:5}
 #scrim.on{opacity:1;pointer-events:auto}
-#port{position:absolute;left:0;right:0;bottom:0;aspect-ratio:1320/1798;z-index:6;transform:translateY(105%);transition:transform .3s ease;container-type:inline-size}
-#port.on{transform:none}
-#port>.screen{opacity:1;pointer-events:auto}
+#port,#addp{position:absolute;left:0;right:0;bottom:0;z-index:6;transform:translateY(105%);transition:transform .45s cubic-bezier(.22,.9,.28,1);container-type:inline-size;touch-action:none}
+#port{aspect-ratio:1320/1798}#addp{aspect-ratio:1320/1327}
+#port.on,#addp.on{transform:none}
+#port.drag,#addp.drag{transition:none}
+#port>.screen,#addp>.screen{opacity:1;pointer-events:auto}
+.hl{position:absolute;left:0;width:100%;top:calc(630/2001*100%);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.hl div{font-size:6.73cqw;line-height:8.03cqw;font-weight:700;white-space:nowrap;letter-spacing:-.01em}
+.hl .a{color:#fff}.hl .b{color:#a0a3ad}
+.hl.in .a,.hl.in .b{animation:hlIn .65s cubic-bezier(.2,.8,.2,1) both}
+.hl.in .b{animation-delay:.12s}
+.hl.out div{animation:hlOut .35s ease-in both}
+@keyframes hlIn{from{opacity:0;transform:translateY(.55em);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes hlOut{to{opacity:0;transform:translateY(-.4em);filter:blur(5px)}}
+@media (prefers-reduced-motion:reduce){.hl div{animation-duration:.01s!important;animation-delay:0s!important}#port,#addp{transition-duration:.01s}}
 #ring{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid #a78bfa;opacity:0;pointer-events:none;z-index:9;transform:scale(.4)}
 #ring.go{animation:rg 1.5s linear forwards}
 @keyframes rg{0%{opacity:.9;transform:scale(1.3)}100%{opacity:0;transform:scale(.4)}}
@@ -75,15 +86,25 @@ function build(key,parent){
 function hs(s,x0,y0,x1,y1,fn,H=2001){const h=$('<div class="hs"></div>');
   h.style.cssText=`left:${x0/9.21}%;top:${y0/H*100}%;width:${(x1-x0)/9.21}%;height:${(y1-y0)/H*100}%`;
   h.addEventListener('click',e=>{e.stopPropagation();fn()});s.appendChild(h)}
-const scr={};['wallet','cash','swap','add'].forEach(k=>scr[k]=build(k,P));
+const scr={};['wallet','cash','swap'].forEach(k=>scr[k]=build(k,P));
 P.appendChild($('<div id="scrim"></div>'));
 const port=$('<div id="port"></div>');P.appendChild(port);const portS=build('port',port);
+const addp=$('<div id="addp"></div>');P.appendChild(addp);const addS=build('add',addp);
 const scrim=document.getElementById('scrim');
+let openEl=null;
 function go(k){Object.entries(scr).forEach(([n,s])=>s.classList.toggle('on',n===k));closeSheet();
-  nav.dataset.t=k==='add'?'cash':k;nav.classList.toggle('gone',k==='add');if(k!=='wallet')nav.classList.remove('away')}
-function openPort(){scrim.classList.add('on');port.classList.add('on')}
-function closeSheet(){scrim.classList.remove('on');port.classList.remove('on')}
-scrim.onclick=closeSheet;portS.addEventListener('click',e=>{if(e.clientY-port.getBoundingClientRect().top<120)closeSheet()});
+  nav.dataset.t=k;if(k!=='wallet')nav.classList.remove('away');if(k==='cash')startHL()}
+function openSheet(el){openEl=el;scrim.classList.add('on');el.classList.add('on')}
+function closeSheet(){scrim.classList.remove('on');port.classList.remove('on');addp.classList.remove('on');openEl=null}
+const openPort=()=>openSheet(port);
+scrim.onclick=closeSheet;
+[port,addp].forEach(el=>{ // drag the sheet down to close, tap the handle to close
+  let y0=null,dy=0;
+  el.addEventListener('pointerdown',e=>{e.stopPropagation();y0=e.clientY;dy=0;el.classList.add('drag');el.setPointerCapture&&el.setPointerCapture(e.pointerId)});
+  el.addEventListener('pointermove',e=>{if(y0==null)return;dy=Math.max(0,e.clientY-y0);el.style.transform=dy?`translateY(${dy}px)`:''});
+  const end=e=>{if(y0==null)return;const tap=Math.abs(e.clientY-y0)<6&&e.clientY-el.getBoundingClientRect().top<120;
+    el.classList.remove('drag');el.style.transform='';if(dy>90||tap)closeSheet();y0=null};
+  el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end)});
 const W=scr.wallet,CH=921/CFG.wallet.ar;
 const nav=$('<div class="nav" data-t="wallet"><img class="iw" src="'+imgSrc('navw')+'" alt=""><img class="ic" src="'+imgSrc('navc')+'" alt=""><img class="is" src="'+imgSrc('navs')+'" alt=""></div>');
 [['wallet','Wallet',0],['swap','Swap',33.3],['cash','Cash',66.6]].forEach(([k,l,x])=>{const b=$('<button type="button" aria-label="'+l+'"></button>');b.style.left=x+'%';b.onclick=()=>go(k);nav.appendChild(b)});
@@ -92,9 +113,15 @@ hs(W.content,130,250,800,925,()=>W.content.classList.toggle('hid'),CH);
 hs(W.content,30,125,118,215,openPort,CH);
 (()=>{let last=0;W.scroller.addEventListener('scroll',()=>{const y=W.scroller.scrollTop;
   if(y>last+4&&y>150)nav.classList.add('away');else if(y<last-4||y<150)nav.classList.remove('away');last=y},{passive:true})})();
-hs(scr.cash,326,997,595,1078,()=>go('add'));
-hs(scr.add,0,0,921,1075,()=>go('cash'));
+hs(scr.cash,326,997,595,1078,()=>openSheet(addp));
 
+/* ---------- rotating headline on Cash ---------- */
+const HL=[['Earn rewards','on your activity'],['Earn rewards','as you spend'],['Send money','with no fees'],['Send money','to anyone'],['Spend cash','with your card'],['Spend cash','everywhere']];
+const hl=$('<div class="hl in"><div class="a"></div><div class="b"></div></div>');scr.cash.appendChild(hl);
+let hi=0,hlT=null;
+function setHL(){hl.children[0].textContent=HL[hi][0];hl.children[1].textContent=HL[hi][1];hl.className='hl';void hl.offsetWidth;hl.className='hl in'}
+function startHL(){clearInterval(hlT);setHL();hlT=setInterval(()=>{if(!scr.cash.classList.contains('on')){clearInterval(hlT);return}
+  hl.className='hl out';setTimeout(()=>{hi=(hi+1)%HL.length;setHL()},360)},3600)}
 /* ---------- editable balances ---------- */
 const DEF={cash:0,btc:0.00015,btcP:81582,ltc:0.100129,ltcP:59.31};
 let D=Object.assign({},DEF);
