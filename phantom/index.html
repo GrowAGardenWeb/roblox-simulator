@@ -649,7 +649,7 @@ document.getElementById('res').addEventListener('click',function(e){var li=e.tar
 document.getElementById('res').addEventListener('keydown',function(e){if(e.key==='Enter'){var li=e.target.closest('li[data-n]');if(li)li.click()}});
 sheetP.addEventListener('click',function(e){var b=e.target.closest('button');if(b){closeSheets();say(b.dataset.t+' · próximamente')}});
 
-function say(m){toast.textContent=m;toast.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){toast.classList.remove('on')},1700)}
+function say(m){}
 function closeSheets(){back.classList.remove('on');sheetS.classList.remove('on');sheetP.classList.remove('on');sheetE.classList.remove('on');if(typeof sheetT!=='undefined')sheetT.classList.remove('on')}
 function openSheet(s){closeSheets();back.classList.add('on');s.classList.add('on');if(s===sheetS){var q=document.getElementById('q');q.value='';renderRes('');setTimeout(function(){try{q.focus({preventScroll:true})}catch(e){}},250)}}
 back.addEventListener('click',closeSheets);
