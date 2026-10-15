@@ -389,6 +389,13 @@ button.prow{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:ba
 <div id="phone"></div>
 <script src="cfg.js"></script>
 <script>
+(function(){var p=document.getElementById('phone');
+function fh(){var h=innerHeight,sa=(navigator.standalone||matchMedia('(display-mode: standalone)').matches),sh=Math.max(screen.height,screen.width);
+if(sa&&innerHeight<innerWidth*1.2===false&&sh>h&&sh-h<120)h=sh;
+p.style.bottom='auto';p.style.height=h+'px'}
+fh();addEventListener('resize',fh);addEventListener('orientationchange',function(){setTimeout(fh,300)});addEventListener('pageshow',fh)})();
+</script>
+<script>
 const imgSrc=k=>'img/'+k+'.webp';
 const P=document.getElementById('phone');
 const $=(h)=>{const d=document.createElement('div');d.innerHTML=h;return d.firstElementChild};
