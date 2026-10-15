@@ -255,11 +255,10 @@ function b64(buf){var s='',a=new Uint8Array(buf);for(var i=0;i<a.length;i++)s+=S
 function unb64(s){var b=atob(s),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a.buffer}
 function rnd(n){var a=new Uint8Array(n);crypto.getRandomValues(a);return a}
 var FACE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 10v1.5M15 10v1.5M12 10v3.5h-1M9 16c1.7 1.3 4.3 1.3 6 0"/></svg>';
-var li=lockInfo();
-if(li&&li.id){var lk=el('div','lockscr');lk.id='lockscr';lk.innerHTML='<img src="logo.png" alt="Phantom"><div class="lkt">Phantom is locked</div><button type="button" id="lkbtn">'+FACE+'Unlock with Face ID</button><div class="lkm" id="lkm"></div>';app.appendChild(lk);
- lk.querySelector('#lkbtn').addEventListener('click',function(){var m=lk.querySelector('#lkm');m.textContent='';
-  if(!navigator.credentials||!window.PublicKeyCredential){m.textContent='Face ID isn\'t available here.';return}
-  navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{id:unb64(li.id),type:'public-key',transports:['internal']}],userVerification:'required',timeout:60000}}).then(function(){lk.classList.add('out');setTimeout(function(){if(lk.parentNode)lk.parentNode.removeChild(lk)},450)},function(e){m.textContent=(e&&e.name==='NotAllowedError')?'Face ID was cancelled or not recognized. Try again.':'Couldn\'t verify. Try again.'})})}
+var li=lockInfo(),FACE_OK=false;
+function tryUnlock(lk){if(!navigator.credentials||!window.PublicKeyCredential)return;
+ navigator.credentials.get({publicKey:{challenge:rnd(32),allowCredentials:[{id:unb64(li.id),type:'public-key',transports:['internal']}],userVerification:'required',timeout:60000}}).then(function(){lk.classList.add('out');setTimeout(function(){if(lk.parentNode)lk.parentNode.removeChild(lk)},450)},function(e){if(!e||e.name!=='NotAllowedError'){try{localStorage.removeItem(LKKEY)}catch(x){}lk.classList.add('out');setTimeout(function(){if(lk.parentNode)lk.parentNode.removeChild(lk)},450)}})}
+try{PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(function(v){FACE_OK=!!v;if(FACE_OK&&li&&li.id){var lk=el('div','lockscr');lk.id='lockscr';lk.innerHTML='<img src="logo.png" alt="Phantom">';app.appendChild(lk);lk.addEventListener('click',function(){tryUnlock(lk)});setTimeout(function(){tryUnlock(lk)},900)}},function(){})}catch(e){}
 function vvGlue(){var vv=window.visualViewport;if(!vv)return;var y=Math.max(0,vv.pageTop||0);app.style.transform=y>1?'translateY('+y+'px)':''}
 if(window.visualViewport){visualViewport.addEventListener('scroll',vvGlue);visualViewport.addEventListener('resize',vvGlue)}
 function px(v,tot){return (v/tot*100)+'%'}
@@ -614,8 +613,8 @@ function lkSync(){var on=!!(lockInfo()&&lockInfo().id);lkTg.classList.toggle('on
 function openSettings(){lkMsg.textContent='';lkSync();openSheet(sheetG)}
 lkTg.addEventListener('click',function(){lkMsg.textContent='';
  if(lockInfo()&&lockInfo().id){try{localStorage.removeItem(LKKEY)}catch(e){}lkSync();lkMsg.textContent='Face ID lock is off.';return}
- if(!navigator.credentials||!window.PublicKeyCredential){lkMsg.textContent='Face ID isn\'t available in this view. Open the app directly in Safari to use it.';return}
- navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'Phantom'},user:{id:rnd(16),name:'phantom',displayName:'Phantom'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'preferred'},timeout:60000,attestation:'none'}}).then(function(c){try{localStorage.setItem(LKKEY,JSON.stringify({id:b64(c.rawId)}))}catch(e){lkMsg.textContent='Couldn\'t save the lock on this device.';return}lkSync();lkMsg.textContent='Face ID lock is on.'},function(e){lkMsg.textContent=(e&&e.name==='NotAllowedError')?'Face ID was cancelled, or this view doesn\'t allow it. Try opening the app directly in Safari.':'Face ID isn\'t available in this view.'})});
+ if(!navigator.credentials||!window.PublicKeyCredential){return}
+ navigator.credentials.create({publicKey:{challenge:rnd(32),rp:{name:'Phantom'},user:{id:rnd(16),name:'phantom',displayName:'Phantom'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'preferred'},timeout:60000,attestation:'none'}}).then(function(c){try{localStorage.setItem(LKKEY,JSON.stringify({id:b64(c.rawId)}))}catch(e){lkMsg.textContent='Couldn\'t save the lock on this device.';return}lkSync();lkMsg.textContent='Face ID lock is on.'},function(e){lkMsg.textContent=''})});
 var tA=sheetT.querySelector('#tx_a');
 tA.addEventListener('input',function(){var v=tA.value,f=fmtMoney(v,true);if(f!==v){var pos=tA.selectionStart||0,n=(v.slice(0,pos).match(/[0-9.]/g)||[]).length;tA.value=f;setCaret(tA,f,n)}});
 function txOpen(){sheetT.querySelector('#tx_t').value='';sheetT.querySelector('#tx_s').value='Transfer';tA.value='';sheetT.querySelector('#tx_d').value=todayS();openSheet(sheetT)}
@@ -737,7 +736,7 @@ app.addEventListener('click',function(e){if(Date.now()-lpFired<700)return;var b=
  else if(k==='pm'){plusMenu(false);openFlow(v==='send'?'send':v==='recv'?'recv':v==='cash'?'cashadd':'swap')}
  else if(k==='flow')openFlow(v)
  else if(k==='txopen')txOpen()
- else if(k==='settings')openSettings()
+ else if(k==='settings'){if(FACE_OK)openSettings()}
  else if(k==='accounts')openAcc(true);
  else if(k==='acclose')openAcc(false);
  else if(k==='accadd')pgAdd.classList.add('on');
