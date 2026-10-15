@@ -136,6 +136,7 @@ const W=scr.wallet,CH=921/CFG.wallet.ar;
 const nav=$('<div class="nav" data-t="wallet"><img class="iw" src="'+imgSrc('navw')+'" alt=""><img class="ic" src="'+imgSrc('navc')+'" alt=""><img class="is" src="'+imgSrc('navs')+'" alt=""></div>');
 [['wallet','Wallet',0],['swap','Swap',33.3],['cash','Cash',66.6]].forEach(([k,l,x])=>{const b=$('<button type="button" aria-label="'+l+'"></button>');b.style.left=x+'%';b.onclick=()=>go(k);nav.appendChild(b)});
 P.appendChild(nav);
+hs(W.content,130,250,800,925,openPort,CH);
 hs(W.content,30,125,118,215,openPort,CH);
 (()=>{let last=0;W.scroller.addEventListener('scroll',()=>{const y=W.scroller.scrollTop;
   if(y>last+4&&y>150)nav.classList.add('away');else if(y<last-4||y<150)nav.classList.remove('away');last=y},{passive:true})})();
