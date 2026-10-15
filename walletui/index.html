@@ -13,8 +13,9 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 .scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .scroller::-webkit-scrollbar{display:none}
 .content{position:relative;width:100%}
-.tx[data-hidden]{display:none}
-.hid .tx[data-hidden]{display:flex}.hid .tx[data-k=bal]{display:none}
+#ring{position:absolute;pointer-events:none;overflow:visible}
+#ring.in{animation:ringIn .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes ringIn{from{opacity:0;transform:rotate(-40deg) scale(.96)}to{opacity:1;transform:none}}
 .nav{position:absolute;left:20.4%;width:59.4%;bottom:3.45%;aspect-ratio:547/151;border-radius:999px;z-index:3;transition:transform .3s ease,opacity .3s}
 .nav img{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
 .nav[data-t=wallet] .iw,.nav[data-t=swap] .is,.nav[data-t=cash] .ic{opacity:1}
@@ -101,9 +102,9 @@ function build(key,parent){
   c.items.forEach(it=>{
     if(!it.runs.length)return;
     const d=$('<div class="tx '+it.a+'"></div>');
-    if(it.k)d.dataset.k=it.k;if(it.s)d.dataset.s=it.s;if(it.hid)d.dataset.hidden='1';
+    if(it.k)d.dataset.k=it.k;if(it.s)d.dataset.s=it.s;
     d.style.cssText=`left:${it.box[0]}%;top:${it.box[1]}%;width:${it.box[2]}%;height:${it.box[3]}%;opacity:${it.op}`;
-    it.runs.forEach(r=>{const e=document.createElement('span');e.textContent=r.t;e.style.cssText=`font-size:${r.s}cqw;color:${r.c};font-weight:${r.w}`;d.appendChild(e)});
+    it.runs.forEach(r=>{const e=document.createElement('span');e.textContent=r.t;e.style.cssText=`font-size:calc(${r.s}cqw*var(--sc,1));color:${r.c};font-weight:${r.w}`;d.appendChild(e)});
     host.appendChild(d)});
   parent.appendChild(s);return s}
 // hotspots in 921x2000 space
@@ -135,7 +136,6 @@ const W=scr.wallet,CH=921/CFG.wallet.ar;
 const nav=$('<div class="nav" data-t="wallet"><img class="iw" src="'+imgSrc('navw')+'" alt=""><img class="ic" src="'+imgSrc('navc')+'" alt=""><img class="is" src="'+imgSrc('navs')+'" alt=""></div>');
 [['wallet','Wallet',0],['swap','Swap',33.3],['cash','Cash',66.6]].forEach(([k,l,x])=>{const b=$('<button type="button" aria-label="'+l+'"></button>');b.style.left=x+'%';b.onclick=()=>go(k);nav.appendChild(b)});
 P.appendChild(nav);
-hs(W.content,130,250,800,925,()=>{W.content.classList.toggle('hid');render()},CH);
 hs(W.content,30,125,118,215,openPort,CH);
 (()=>{let last=0;W.scroller.addEventListener('scroll',()=>{const y=W.scroller.scrollTop;
   if(y>last+4&&y>150)nav.classList.add('away');else if(y<last-4||y<150)nav.classList.remove('away');last=y},{passive:true})})();
@@ -166,13 +166,32 @@ const R={
  pBal:find(portS,(t,d)=>d.children.length===3&&d.children[1].textContent==='17'),
  pCash:find(portS,t=>t==='$0'),pCashP:find(portS,t=>t==='0%'),pWal:find(portS,(t,d)=>d.children.length===1&&t==='$17.88'),pWalP:find(portS,t=>t==='100%')};
 const setT=(d,t)=>{d.children[0].textContent=t};
+function fit(d,cq){d.style.setProperty('--sc',1);const sw=d.closest('.screen').getBoundingClientRect().width;if(!sw)return;
+  const w=[...d.children].reduce((s,e)=>s+e.getBoundingClientRect().width,0);
+  d.style.setProperty('--sc',w?Math.max(.28,Math.min(1,cq/100*sw/w)):1)}
+/* coin ring around the balance: one arc per coin, sized by its value */
+const RING={cx:340,cy:340,r:329.3,sw:14};
+const ringSvg=$('<svg id="ring" viewBox="0 0 680 680" fill="none" stroke-linecap="round" aria-hidden="true"></svg>');
+ringSvg.style.cssText=`left:${(460.5-340)/9.21}%;top:${(590.3-340)/CH*100}%;width:${680/9.21}%;height:${680/CH*100}%`;
+W.content.appendChild(ringSvg);
+const NS='http://www.w3.org/2000/svg';
+function arc(a0,a1,col){const p=document.createElementNS(NS,'path'),pt=a=>[RING.cx+RING.r*Math.sin(a),RING.cy-RING.r*Math.cos(a)];
+  const [x0,y0]=pt(a0),[x1,y1]=pt(a1);p.setAttribute('d',`M${x0} ${y0}A${RING.r} ${RING.r} 0 ${a1-a0>Math.PI?1:0} 1 ${x1} ${y1}`);
+  p.setAttribute('stroke',col);p.setAttribute('stroke-width',RING.sw);ringSvg.appendChild(p)}
+function drawRing(list,total){
+  ringSvg.textContent='';
+  const cap=RING.sw/2/RING.r,gap=cap*2+7/RING.r;
+  if(!(total>0)){arc(gap/2,2*Math.PI-gap/2,'rgba(255,255,255,.14)');return}
+  const n=list.length,avail=2*Math.PI-n*gap;let a=gap/2;
+  list.forEach(o=>{const len=o.v/total*avail;
+    if(len<=cap*2)arc(a+len/2,a+len/2+.0001,o.col);else arc(a+cap,a+len-cap,o.col);a+=len+gap});
+  ringSvg.classList.remove('in');void ringSvg.getBoundingClientRect();ringSvg.classList.add('in')}
 const val=s=>D.c[s].amt*D.c[s].price;
 function render(){
-  const hidden=W.content.classList.contains('hid');
   const w=COINS.reduce((x,[s])=>x+val(s),0),all=w+D.cash,sp=n=>{const s=money(n).split('.');return[s[0],'.'+s[1]]};
   const bw=sp(w);R.wBal.children[1].textContent=bw[0];R.wBal.children[2].textContent=bw[1];
   const ba=sp(all);R.pBal.children[1].textContent=ba[0];R.pBal.children[2].textContent=ba[1];
-  COINS.forEach(([s])=>{const c=D.c[s],r=RW[s],show=c.amt>0&&!hidden;
+  COINS.forEach(([s])=>{const c=D.c[s],r=RW[s],show=c.amt>0;
     r.price.children[0].textContent='$'+fmtP(c.price)+' ';
     r.amt.children[0].textContent=amt(c.amt)+' '+s;r.fiat.children[0].textContent='$'+money(c.amt*c.price);
     r.amt.style.display=r.fiat.style.display=show?'':'none';r.sym.style.display=show?'none':''});
@@ -180,6 +199,7 @@ function render(){
   const pc=x=>all>0?Math.round(x/all*100)+'%':'0%';setT(R.pCashP,pc(D.cash));setT(R.pWalP,pc(w));
   pm.textContent='';
   const own=COINS.map(([s,n,,,col])=>({s,n,col,v:val(s)})).filter(o=>o.v>0).sort((a,b)=>b.v-a.v);
+  drawRing(own,w);fit(R.wBal,52);fit(R.pBal,64);
   if(!own.length){const e=$('<div class="none"></div>');e.textContent='Sin monedas todavía';pm.appendChild(e)}
   own.forEach(o=>{const r=$('<div class="pr"><img alt=""><div class="n"></div><div class="s"></div><div class="bar"><i></i></div><div class="p"></div><div class="u"></div></div>');
     const q=x=>r.querySelector(x),pct=o.v/w*100;
@@ -212,6 +232,7 @@ $e('eSave').onclick=()=>{D.cash=num($e('eCash').value);COINS.forEach(([s])=>{D.c
 $e('eReset').onclick=()=>{D=DEF();try{localStorage.removeItem('walletui2')}catch(e){}render();closeEdit()};
 W.extra.querySelector('.addmore').onclick=()=>openEdit();
 render();
+addEventListener('resize',render);
 
 /* ---------- hold the screen 1.5 s to open the editor ---------- */
 let timer=null,sx=0,sy=0,suppress=false;
