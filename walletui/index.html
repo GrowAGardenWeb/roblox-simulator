@@ -317,6 +317,21 @@ button.prow{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:ba
 .qtit{position:absolute;left:0;right:0;top:90.2cqw;text-align:center;font-size:5.3cqw;font-weight:600;color:#fff;padding:0 6cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
 .qsub{position:absolute;left:0;right:0;top:100.6cqw;text-align:center;font-size:3.1cqw;color:#a9a9bd}
 #qShare{left:8.9cqw;top:115.5cqw;width:82.2cqw;height:15cqw}
+
+#actp{position:absolute;left:0;right:0;bottom:0;height:94%;z-index:6;transform:translateY(105%);transition:transform .45s cubic-bezier(.22,.9,.28,1);container-type:inline-size;touch-action:none;background:#2e2f41;border-radius:7cqw 7cqw 0 0;border:1px solid #444560;border-bottom:0;overflow:hidden}
+#actp.on{transform:none}#actp.drag{transition:none}
+#actp .cgrab{width:11cqw;height:1.1cqw;border-radius:1cqw;background:#5a5b72;margin:2.2cqw auto 0}
+#actp .ahead{position:relative}
+.chipsrow{display:flex;gap:1.9cqw;overflow-x:auto;padding:0 4.8cqw;scrollbar-width:none;touch-action:pan-x;margin-top:1cqw}.chipsrow::-webkit-scrollbar{display:none}
+.fchip{flex:none;height:8.8cqw;padding:0 5.4cqw;border-radius:99px;background:#3a3b4f;border:1px solid rgba(255,255,255,.08);color:#e6e6f0;font:inherit;font-size:3.3cqw;cursor:pointer;transition:background-color .25s,color .25s;-webkit-tap-highlight-color:transparent}
+.fchip.on{background:#fff;color:#1b1b2b;font-weight:500}.fchip:focus-visible{outline:2px solid #fff;outline-offset:2px}
+#actp .abody{position:absolute;left:0;right:0;top:34cqw;bottom:0;overflow-y:auto;padding:1cqw 4.8cqw 12cqw;touch-action:pan-y;scrollbar-width:none;transition:top .25s}
+#actp .abody.s{top:47cqw}#actp .abody::-webkit-scrollbar{display:none}
+#actp .tv{color:#b4b4c6}#actp .tv.pos{color:#22d822}
+#actp .cdate{margin:5cqw 0 1cqw}#actp .cdate:first-child{margin-top:3cqw}
+#actp .tr{cursor:pointer;transition:opacity .2s}#actp .tr:active{opacity:.6}
+.anone2{padding:8cqw 0;text-align:center;color:#8a8aa0;font-size:3.4cqw}
+@media (prefers-reduced-motion:reduce){#actp{transition-duration:.01s}}
 </style></head><body>
 <div id="phone"></div>
 <script src="cfg.js"></script>
@@ -357,6 +372,7 @@ const cfmp=$('<div id="cfmp" class="fsheet"><div class="cgrab"></div><div class=
 const profp=$('<div id="profp" class="fsheet"><div class="cgrab"></div><div class="pav"><svg viewBox="0 0 253 253" aria-hidden="true"><defs><clipPath id="avc"><circle cx="126.5" cy="126.5" r="125"/></clipPath></defs><circle cx="126.5" cy="126.5" r="125" fill="#5547b4" stroke="#7c70d6" stroke-width="2"/><g clip-path="url(#avc)"><path d="M30 253V228Q126 150 222 228V253Z" fill="#7466d4"/></g><path d="M42 83H100L126 116L152 83H209L126 162Z" fill="#9a8cf0"/></svg></div><input class="pname" maxlength="24" autocomplete="off" spellcheck="false" placeholder="Your name" aria-label="Name"><div class="prows"><div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><span class="pl">Phone number</span><span class="pv"></span></div><div class="prow"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M14.6 9.2c-.4-1-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 2s1 1.7 2.6 2 2.6.8 2.6 2-1.1 2-2.6 2c-1.2 0-2.3-.6-2.7-1.6M12 6v1.7M12 16.3V18"/></svg></span><span class="pl">Use Pay as default</span><button class="tog" type="button" role="switch" aria-checked="false" aria-label="Use Pay as default"><i></i></button></div><button class="prow" id="pSet" type="button"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></span><span class="pl">Settings</span><span class="chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></button><button class="prow last" id="pSup" type="button"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6"/><path d="M5.6 5.6l3.9 3.9M18.4 5.6l-3.9 3.9M5.6 18.4l3.9-3.9M18.4 18.4l-3.9-3.9"/></svg></span><span class="pl">Support</span><span class="chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></button></div><div class="tiles"><button class="tile" type="button"><img class="tic" alt="" src="'+imgSrc('ic_markets')+'">Markets</button><button class="tile" type="button"><img class="tic" alt="" src="'+imgSrc('ic_predictions')+'">Predictions</button></div><div class="pfoot">Balances and cash references reflect digital assets held in your self-custodial account.</div></div>');P.appendChild(profp);
 const reqp=$('<div id="reqp" class="fsheet"><div class="cgrab"></div><button class="fback" type="button" aria-label="Back" id="rBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><div class="ftitle">Request</div><div class="amtv" id="rVal"><span class="d">$</span><span class="n">0</span><i class="caret"></i></div><div class="renter">Enter amount</div><div class="kp" id="rKp"><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" data-k=".">.</button><button type="button" data-k="0">0</button><button type="button" data-k="del" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-6-6z"/><path d="M13 10l4 4M17 10l-4 4"/></svg></button></div><div class="rfoot" id="rFoot">Funds are converted to digital assets<br>held in your self-custodial account.</div><button class="sgo grn" id="rGo" type="button"><span>Continue</span></button></div>');P.appendChild(reqp);
 const qrp=$('<div id="qrp" class="fsheet"><div class="cgrab"></div><div class="qrcard"><svg viewBox="0 0 37 37" aria-hidden="true"></svg><div class="qlogo"><svg viewBox="0 0 24 24" fill="none" stroke="#12121f" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/><path d="M14.2 9.6c-.3-.8-1.1-1.2-2.1-1.2-1.3 0-2.2.7-2.2 1.7s.8 1.4 2.2 1.7 2.2.7 2.2 1.7-.9 1.7-2.2 1.7c-1 0-1.9-.5-2.2-1.3M12 7v1.4M12 15.6V17"/></svg></div></div><div class="qamt" id="qAmt"></div><div class="qtit" id="qTit"></div><div class="qsub">Get paid with your phone number too.</div><button class="sgo grn" id="qShare" type="button"><span>Share</span></button></div>');P.appendChild(qrp);
+const actp=$('<div id="actp"><div class="cgrab"></div><div class="ahead">Activity<button type="button" id="acBtn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></div><div class="asearch" id="acSearch"><input id="acIn" placeholder="Search" autocomplete="off"></div><div class="chipsrow" id="acChips"></div><div class="abody" id="acBody"></div></div>');P.appendChild(actp);
 const assp=$('<div id="assp"><div class="cgrab"></div><div class="ahead">Select Asset<button type="button" id="asBtn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button></div><div class="asearch" id="asSearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="asIn" placeholder="Search" autocomplete="off"></div><div class="abody" id="asBody"></div></div>');P.appendChild(assp);
 const scrim=document.getElementById('scrim');
 let openEl=null;
@@ -364,12 +380,12 @@ function go(k){Object.entries(scr).forEach(([n,s])=>s.classList.toggle('on',n===
   nav.dataset.t=k;if(k!=='wallet')nav.classList.remove('away');if(k==='cash')startHL();
   if(typeof swRender==='function'){if(k==='swap')swRender();else{S.mode=null;S.usd=0;swRender()}}}
 function openSheet(el){openEl=el;scrim.classList.add('on');el.classList.add('on')}
-function closeSheet(){scrim.classList.remove('on');port.classList.remove('on');addp.classList.remove('on');coinp.classList.remove('on');assp.classList.remove('on');recvp.classList.remove('on');sendp.classList.remove('on');amtp.classList.remove('on','dim');cfmp.classList.remove('on');profp.classList.remove('on');reqp.classList.remove('on','dim');qrp.classList.remove('on');openEl=null}
+function closeSheet(){scrim.classList.remove('on');port.classList.remove('on');addp.classList.remove('on');coinp.classList.remove('on');assp.classList.remove('on');recvp.classList.remove('on');sendp.classList.remove('on');amtp.classList.remove('on','dim');cfmp.classList.remove('on');profp.classList.remove('on');reqp.classList.remove('on','dim');qrp.classList.remove('on');actp.classList.remove('on');openEl=null}
 const openPort=()=>openSheet(port);
 scrim.onclick=closeSheet;
-[port,addp,coinp,assp,recvp,sendp,amtp,cfmp,profp,reqp,qrp].forEach(el=>{ // drag the sheet down to close, tap the handle to close
+[port,addp,coinp,assp,recvp,sendp,amtp,cfmp,profp,reqp,qrp,actp].forEach(el=>{ // drag the sheet down to close, tap the handle to close
   let y0=null,dy=0;
-  el.addEventListener('pointerdown',e=>{e.stopPropagation();if(e.target.closest&&e.target.closest('.pm,.cbody,.cact,.abody,.asearch,input,textarea,button,.sltrack,.kp,.hs'))return;y0=e.clientY;dy=0;el.classList.add('drag');el.setPointerCapture&&el.setPointerCapture(e.pointerId)});
+  el.addEventListener('pointerdown',e=>{e.stopPropagation();if(e.target.closest&&e.target.closest('.pm,.cbody,.cact,.abody,.asearch,input,textarea,button,.sltrack,.kp,.hs,.chipsrow'))return;y0=e.clientY;dy=0;el.classList.add('drag');el.setPointerCapture&&el.setPointerCapture(e.pointerId)});
   el.addEventListener('pointermove',e=>{if(y0==null)return;dy=Math.max(0,e.clientY-y0);el.style.transform=dy?`translateY(${dy}px)`:''});
   const end=e=>{if(y0==null)return;const tap=Math.abs(e.clientY-y0)<6&&e.clientY-el.getBoundingClientRect().top<120;
     el.classList.remove('drag');el.style.transform='';if(dy>90||tap){if(el._close)el._close();else closeSheet()}y0=null};
@@ -397,10 +413,15 @@ const COINS=[['BTC','Bitcoin',0.00015,81582,'#f5c842',2.8],['LTC','Litecoin',0.1
  ['USDT','Tether USD',0,0.9991,'#2fbfa9',0.9],['BNB','BNB',0,727.43,'#f0b90b',-0.5],['XRP','XRP',0,1.32,'#1e90d6',-1.4],['USDC','USDC',0,0.9996,'#3b82f6',0.2],
  ['SOL','Solana',0,104.18,'#9945ff',0.5],['TRX','Tron',0,0.3299,'#d63a3a',-0.1],['DOGE','Dogecoin',0,0.0794,'#c2a633',-2.6],['ADA','Cardano',0,0.2255,'#2a4fd6',-0.9]];
 const ROWB={BTC:1167,LTC:1342,ETH:1517,USDT:1692.5,BNB:1868.5,XRP:2044.5,USDC:2220.5,SOL:2396.5,TRX:2572.5,DOGE:2749,ADA:2925};
-const TYPES={send:'Enviado',recv:'Recibido',swapout:'Swap hacia otra moneda',swapin:'Swap desde otra moneda'};
+const TYPES={send:'Enviado',recv:'Recibido',buy:'Comprado',swapout:'Swap hacia otra moneda',swapin:'Swap desde otra moneda'};
+const atDay=(off,hh,mm)=>{const d=new Date();d.setDate(d.getDate()+off);d.setHours(hh,mm,0,0);return d.getTime()};
 const DEFTX=()=>[{id:1,sym:'BTC',type:'send',other:'',amt:0.00040189,usd:33.62,ts:new Date(2026,9,11,12,30).getTime()},
- {id:2,sym:'BTC',type:'swapin',other:'LTC',amt:0.00057,usd:46.72,ts:new Date(2026,9,11,14,19).getTime()},
- {id:3,sym:'LTC',type:'swapout',other:'BTC',amt:0.7877,usd:46.72,ts:new Date(2026,9,11,14,19).getTime()}];
+ {id:2,sym:'BTC',type:'swapin',other:'LTC',amt:0.00057,usd:46.72,ts:new Date(2026,9,11,12,19).getTime()},
+ {id:3,sym:'LTC',type:'swapout',other:'BTC',amt:0.7877,usd:46.72,ts:new Date(2026,9,11,12,19).getTime()},
+ {id:4,sym:'LTC',type:'recv',other:'',amt:0.27842227,usd:17.98,ts:new Date(2026,9,11,10,58,30).getTime()},
+ {id:5,sym:'LTC',type:'recv',other:'',amt:0.46396535,usd:29.97,ts:new Date(2026,9,11,10,58,0).getTime()},
+ {id:6,sym:'LTC',type:'recv',other:'',amt:0.32894736,usd:19.48,ts:atDay(-1,6,45)},
+ {id:7,sym:'LTC',type:'send',other:'',amt:0.22880684,usd:13.77,ts:atDay(0,7,19)}];
 const DEF=()=>({cash:0,age:4,name:'Munfuja',phone:'7124',pay:false,c:Object.fromEntries(COINS.map(([s,n,a,p])=>[s,{amt:a,price:p}])),tx:DEFTX()});
 let D=DEF();
 try{const s=JSON.parse(localStorage.getItem('walletui2')||'null');if(s){D.cash=num(s.cash);if(s.age!=null)D.age=Math.floor(num(s.age));if(typeof s.name==='string')D.name=s.name.slice(0,24);if(typeof s.phone==='string')D.phone=s.phone.replace(/\D/g,'').slice(0,4);D.pay=!!s.pay;
@@ -460,11 +481,12 @@ function render(){
     q('.bar i').style.cssText='width:'+pct+'%;background:'+o.col;q('.p').textContent=pct.toFixed(1)+'%';q('.u').textContent='$'+money(o.v);
     pm.appendChild(r)});
   if(coinp.classList.contains('on'))fillCoin(coinp.dataset.s);
+  if(typeof actp!=='undefined'&&actp.classList.contains('on'))drawAct();
 }
 
 /* ---------- coin panel ---------- */
 const cq=s=>coinp.querySelector(s);
-const ICON={send:'<path d="M7 17 17 7M9 7h8v8"/>',recv:'<path d="M17 7 7 17M15 17H7V9"/>',swap:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>'};
+const ICON={buy:'<path d="M12 5v14M6 13l6 6 6-6"/>',send:'<path d="M7 17 17 7M9 7h8v8"/>',recv:'<path d="M17 7 7 17M15 17H7V9"/>',swap:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>'};
 const svgI=p=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
 const dLabel=ts=>{const d=new Date(ts),y=d.getFullYear()!==new Date().getFullYear();return d.toLocaleDateString('en-US',y?{month:'short',day:'numeric',year:'numeric'}:{month:'short',day:'numeric'})};
 const tLabel=ts=>new Date(ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
@@ -487,10 +509,10 @@ function drawChart(sym,price){
 function txRow(t){
   const r=$('<div class="tr"><div class="ti"><img alt=""><span class="bd"></span></div><div class="tm"><div class="tn"></div><div class="tt"></div></div><div class="tv"></div></div>');
   r.querySelector('img').src=imgSrc('ic_'+t.sym);
-  if(t.pending){const b=r.querySelector('.bd');b.classList.add('pd');b.textContent='\u2022\u2022\u2022'}else r.querySelector('.bd').innerHTML=svgI(ICON[t.type==='send'||t.type==='recv'?t.type:'swap']);
+  if(t.pending){const b=r.querySelector('.bd');b.classList.add('pd');b.textContent='\u2022\u2022\u2022'}else r.querySelector('.bd').innerHTML=svgI(ICON[t.type==='send'||t.type==='recv'||t.type==='buy'?t.type:'swap']);
   r.querySelector('.tn').textContent=t.type==='swapin'?'Swapped from '+t.other:t.type==='swapout'?'Swapped to '+t.other:amt8(t.amt)+' '+t.sym;
   r.querySelector('.tt').textContent=tLabel(t.ts);
-  const pos=t.type==='recv'||t.type==='swapin',v=r.querySelector('.tv');v.textContent=(pos?'+':'')+'$'+money(t.usd);if(pos)v.classList.add('pos');
+  const pos=t.type==='recv'||t.type==='swapin'||t.type==='buy',v=r.querySelector('.tv');v.textContent=(pos?'+':'')+'$'+money(t.usd);if(pos)v.classList.add('pos');
   return r}
 function fillCoin(sym){
   const m=COINS.find(c=>c[0]===sym),c=D.c[sym];if(!m)return;coinp.dataset.s=sym;
@@ -647,7 +669,7 @@ swBtn.onclick=()=>{const c=swCalc();if(!(c.a>0))return;const f=D.c[S.from],t=D.c
   S.mode=null;S.usd=0;render();swRender();go('wallet')};
 /* asset picker */
 let asSide='from';
-function openAssets(side){asSide=side;const pick=side==='recv'||side==='send';
+function openAssets(side){asSide=side;const pick=side==='recv'||side==='send'||side==='view';
   assp.classList.toggle('pick',pick);$e('asIn').value='';$e('asSearch').classList.toggle('on',false);$e('asSearch').classList.toggle('big',pick);$e('asBody').classList.remove('s');
   assp.querySelector('.ahead').firstChild.textContent='Select Asset';
   drawAssets('');assp.querySelector('.abody').scrollTop=0;openSheet(assp)}
@@ -658,10 +680,10 @@ function drawAssets(q){
     r.querySelector('img').src=imgSrc('ic_'+m[0]);r.querySelector('.n').textContent=m[1];
     const y=r.querySelector('.y');if(own){y.textContent=amt(D.c[m[0]].amt)+' '+m[0];const sm=document.createElement('small');sm.textContent='$'+money(val(m[0]));y.appendChild(sm)}else y.textContent=m[0];
     if(m[0]===(asSide==='from'?S.from:S.to))r.classList.add('sel');
-    r.onclick=()=>{if(asSide==='recv'||asSide==='send'){const f=asSide==='recv'?openRecv:openSend,s=m[0];closeSheet();setTimeout(()=>f(s),140);return}
+    r.onclick=()=>{if(asSide==='recv'||asSide==='send'||asSide==='view'){const f=asSide==='recv'?openRecv:asSide==='send'?openSend:openCoin,s=m[0];closeSheet();setTimeout(()=>f(s),140);return}
       const other=asSide==='from'?'to':'from';if(m[0]===S[other])S[other]=S[asSide];S[asSide]=m[0];closeSheet();swRender()};return r};
-  const flat=asSide==='recv'||asSide==='send';
-  if(flat){const list=COINS.filter(m=>match(m)&&(asSide==='recv'||D.c[m[0]].amt>0)).sort((a,b)=>val(b[0])-val(a[0])||COINS.indexOf(a)-COINS.indexOf(b));
+  const flat=asSide==='recv'||asSide==='send'||asSide==='view';
+  if(flat){const list=COINS.filter(m=>match(m)&&(asSide!=='send'||D.c[m[0]].amt>0)).sort((a,b)=>val(b[0])-val(a[0])||COINS.indexOf(a)-COINS.indexOf(b));
     list.forEach(m=>body.appendChild(row(m,D.c[m[0]].amt>0)));
     if(!list.length){const n=$('<div class="anone"></div>');n.textContent=asSide==='send'&&!q?'You have no assets to send yet.':'No results';body.appendChild(n)}return}
   if(!q){const c=$('<div class="acash"><div class="ci">$</div><div class="n">Cash</div><button type="button">+ Add money</button></div>');
@@ -792,6 +814,28 @@ $e('qShare').onclick=()=>{const who=D.name.trim()||'me',txt=who+' is requesting 
 const rqRow=document.createElement('div');rqRow.className='hs';rqRow.setAttribute('role','button');rqRow.setAttribute('aria-label','Request');
 Object.assign(rqRow.style,{left:'0',top:'15.5%',width:'100%',height:'13.5%'});addS.appendChild(rqRow);
 rqRow.onclick=()=>{closeSheet();setTimeout(openRequest,150)};
+/* ---------- activity ---------- */
+let actF='all',actQ='';
+const FIL={all:()=>true,swap:t=>t.type==='swapin'||t.type==='swapout',send:t=>t.type==='send',recv:t=>t.type==='recv',buy:t=>t.type==='buy'};
+const dayStart=ts=>{const d=new Date(ts);d.setHours(0,0,0,0);return d.getTime()};
+const relDay=ts=>{const t0=dayStart(Date.now()),d=dayStart(ts);return d===t0?'Today':d===t0-864e5?'Yesterday':dLabel(ts)};
+function drawAct(){
+  const body=$e('acBody');body.textContent='';const q=actQ.trim().toLowerCase();
+  const list=D.tx.filter(FIL[actF]).filter(t=>{if(!q)return true;const m=COINS.find(c=>c[0]===t.sym);return (t.sym+' '+m[1]+' '+(t.other||'')+' '+amt8(t.amt)+' '+dLabel(t.ts)).toLowerCase().includes(q)}).sort((a,b)=>b.ts-a.ts);
+  if(!list.length){const n=$('<div class="anone2"></div>');n.textContent='No activity yet';body.appendChild(n);return}
+  let last='';
+  list.forEach(t=>{const dl=relDay(t.ts);if(dl!==last){const d=$('<div class="cdate"></div>');d.textContent=dl;body.appendChild(d);last=dl}
+    const r=txRow(t);r.setAttribute('role','button');r.tabIndex=0;const go2=()=>{closeSheet();setTimeout(()=>openCoin(t.sym),150)};
+    r.onclick=go2;r.onkeydown=e=>{if(e.key==='Enter')go2()};body.appendChild(r)})}
+[['all','All'],['swap','Swap'],['send','Send'],['recv','Receive'],['buy','Buy']].forEach(([k,l])=>{
+  const b=$('<button type="button" class="fchip"></button>');b.textContent=l;b.dataset.k=k;if(k===actF)b.classList.add('on');
+  b.onclick=()=>{actF=k;$e('acChips').querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x===b));drawAct()};$e('acChips').appendChild(b)});
+$e('acBtn').onclick=()=>{const on=$e('acSearch').classList.toggle('on');$e('acBody').classList.toggle('s',on);if(on)$e('acIn').focus({preventScroll:true});else{actQ='';$e('acIn').value='';drawAct()}};
+$e('acIn').addEventListener('input',()=>{actQ=$e('acIn').value;drawAct()});
+actp.addEventListener('focusin',()=>requestAnimationFrame(()=>{P.scrollTop=0}));
+function openActivity(){actQ='';$e('acIn').value='';$e('acSearch').classList.remove('on');$e('acBody').classList.remove('s');drawAct();$e('acBody').scrollTop=0;openSheet(actp)}
+hs(W.content,806,130,889,213,()=>openActivity(),CH);
+hs(W.content,712,130,795,213,()=>openAssets('view'),CH);
 /* ---------- hold the screen 1.5 s to open the editor ---------- */
 let timer=null,sx=0,sy=0,suppress=false;
 const cancel=()=>{clearTimeout(timer);timer=null};
