@@ -227,9 +227,9 @@ body{position:fixed;inset:0;width:100%;touch-action:manipulation}
 .ereset2{flex:1;background:#222;color:#fff;border:0;border-radius:calc(var(--u)*60);padding:calc(var(--u)*24);font:inherit;font-size:calc(var(--u)*34);cursor:pointer}
 .etx{margin-top:calc(var(--u)*34);width:100%;background:#1b1b1b;color:var(--accent);border:1px solid #2a2a2a;border-radius:calc(var(--u)*40);padding:calc(var(--u)*26);font:inherit;font-size:calc(var(--u)*32);cursor:pointer}
 .sheet .fld+.fld{margin-top:calc(var(--u)*16)}
-.splash{position:absolute;inset:0;z-index:30;background:#ad9ef6;display:flex;align-items:center;justify-content:center;border-radius:inherit;transition:opacity .45s ease}
+.splash{position:absolute;inset:0;z-index:30;background:#000;display:flex;align-items:center;justify-content:center;border-radius:inherit;transition:opacity .45s ease}
 .splash.out{opacity:0;pointer-events:none}
-.splash img{width:calc(var(--u)*300);display:block;animation:gpop .75s cubic-bezier(.2,1.25,.3,1) both,gfloat 2.6s ease-in-out .75s infinite;filter:drop-shadow(0 calc(var(--u)*6) calc(var(--u)*20) rgba(60,40,140,.25))}
+.splash .gl{width:calc(var(--u)*300);aspect-ratio:384/320;background:url(logo_p.png) center/contain no-repeat;display:block;animation:gpop .75s cubic-bezier(.2,1.25,.3,1) both,gfloat 2.6s ease-in-out .75s infinite}
 @keyframes gpop{0%{transform:scale(.5) rotate(-10deg);opacity:0}100%{transform:none;opacity:1}}
 @keyframes gfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(calc(var(--u)*-16))}}
 .lockscr{position:absolute;inset:0;z-index:31;background:#ad9ef6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u)*46);border-radius:inherit;transition:opacity .4s ease;text-align:center;padding:0 calc(var(--u)*60);box-sizing:border-box;color:#fff}
@@ -256,7 +256,7 @@ var SCREENS={"home": {"img": "home_top.png", "img2": "home_low.png", "split": 11
 var app=document.getElementById('app'),cur='home',drawerOpen=false,toastT;
 function fit(){var vw=document.documentElement.clientWidth||innerWidth,vh=innerHeight;if(vh<400)vh=1e5;var u=Math.min(vw/921,vh/1881,480/921);app.style.width=(921*u)+'px';app.style.height=(1881*u)+'px';app.style.setProperty('--u',u+'px')}
 fit();addEventListener('resize',fit);
-var spl=el('div','splash');spl.id='splash';spl.innerHTML='<img src="logo.png" alt="Phantom">';app.appendChild(spl);
+var spl=el('div','splash');spl.id='splash';spl.innerHTML='<div class="gl"></div>';app.appendChild(spl);
 var splT0=Date.now();function hideSplash(){var d=Math.max(0,1800-(Date.now()-splT0));setTimeout(function(){try{var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content','#000000')}catch(e){}spl.classList.add('out');setTimeout(function(){if(spl.parentNode)spl.parentNode.removeChild(spl)},520)},d)}
 if(document.readyState==='complete')hideSplash();else addEventListener('load',hideSplash);
 try{localStorage.removeItem('phantom-lock')}catch(e){}
