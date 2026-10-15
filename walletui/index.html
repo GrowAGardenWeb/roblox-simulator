@@ -42,9 +42,6 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 @keyframes hlIn{from{opacity:0;transform:translateY(.55em);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes hlOut{to{opacity:0;transform:translateY(-.4em);filter:blur(5px)}}
 @media (prefers-reduced-motion:reduce){.hl div{animation-duration:.01s!important;animation-delay:0s!important}#port,#addp{transition-duration:.01s}}
-#ring{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid #a78bfa;opacity:0;pointer-events:none;z-index:9;transform:scale(.4)}
-#ring.go{animation:rg 1.5s linear forwards}
-@keyframes rg{0%{opacity:.9;transform:scale(1.3)}100%{opacity:0;transform:scale(.4)}}
 #edit{position:absolute;inset:0;z-index:20;display:none;align-items:flex-end;background:rgba(5,5,15,.6);touch-action:auto;-webkit-user-select:text;user-select:text}
 #edit.on{display:flex}
 #edit .sheet{width:100%;box-sizing:border-box;background:#2d2e40;border-radius:28px 28px 0 0;padding:14px 20px calc(22px + env(safe-area-inset-bottom,0px));max-height:92%;overflow:auto;box-shadow:0 -10px 40px rgba(0,0,0,.4)}
@@ -61,6 +58,27 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 #edit button{flex:1;font:inherit;font-size:16px;font-weight:600;border:0;border-radius:14px;padding:13px;color:#fff;background:#3d3e55;cursor:pointer}
 #edit button.p{background:#5b3fd6}
 #edit button:focus-visible{outline:2px solid #fff}
+#edit h3{margin:18px 0 8px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8c8ca2}
+#edit .cb{background:#252638;border:1px solid #3a3b52;border-radius:14px;padding:10px 12px 12px;margin-bottom:10px}
+#edit .ch{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+#edit .ch .t{flex:1;min-width:0;font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#edit .ch .t i{font-style:normal;color:#8c8ca2;font-weight:500;margin-left:6px}
+#edit .ch button{flex:none;width:34px;height:34px;padding:0;border-radius:10px;font-size:20px;line-height:1;background:#3a2b3a;color:#ff8d8d}
+#edit .empty{color:#7c7c92;font-size:14px;margin:0 0 6px}
+#edit button.a{margin-top:12px;width:100%;flex:none;background:#2f6f4a}
+.extra{position:relative;padding:0 3.6cqw 32cqw;box-sizing:border-box;display:flex;flex-direction:column}
+.crows{display:flex;flex-direction:column;gap:1.2cqw;margin-top:1.2cqw}.crows:empty{display:none}
+.crow{display:flex;align-items:center;gap:4.4cqw;height:17.9cqw;box-sizing:border-box;padding:0 4.3cqw 0 4.8cqw;border-radius:4.5cqw;background:#2c2d3f;border:1px solid rgba(255,255,255,.07);cursor:pointer;color:#fff}
+.hex{width:8cqw;height:9.2cqw;flex:none;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:3.6cqw;color:#fff}
+.crow .m{flex:1;min-width:0}
+.crow .n{font-size:3.58cqw;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crow .p{font-size:3.15cqw;font-weight:500;color:#a6a6b6;margin-top:.6cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crow .r{text-align:right;flex:none;max-width:46%}
+.crow .a{font-size:3.58cqw;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crow .f{font-size:3.15cqw;font-weight:500;color:#a6a6b6;margin-top:.6cqw;white-space:nowrap}
+.crow .sym{display:none;color:#d8d8e4}.extra.hid .crow .amt{display:none}.extra.hid .crow .sym{display:block}
+.addmore{align-self:center;margin-top:5.2cqw;width:22.9cqw;height:8.9cqw;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:#2c2b40;color:#fff;font:inherit;font-size:3.26cqw;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.addmore:focus-visible,.crow:focus-visible{outline:2px solid #fff}
 </style></head><body>
 <div id="phone"></div>
 <script src="cfg.js"></script>
@@ -72,7 +90,9 @@ function build(key,parent){
   const c=CFG[key],s=$('<div class="screen" data-k="'+key+'"></div>');
   let host=s;
   if(key==='wallet'){const sc=$('<div class="scroller"></div>');host=$('<div class="content"></div>');
-    host.style.aspectRatio=c.ar;sc.appendChild(host);s.appendChild(sc);s.scroller=sc;s.content=host}
+    host.style.aspectRatio=c.ar;sc.appendChild(host);
+    const ex=$('<div class="extra"><div class="crows"></div><button type="button" class="addmore">Add More</button></div>');sc.appendChild(ex);
+    s.appendChild(sc);s.scroller=sc;s.content=host;s.extra=ex}
   host.appendChild($('<img src="'+imgSrc(key)+'" alt="" draggable="false">'));
   c.items.forEach(it=>{
     if(!it.runs.length)return;
@@ -109,7 +129,7 @@ const W=scr.wallet,CH=921/CFG.wallet.ar;
 const nav=$('<div class="nav" data-t="wallet"><img class="iw" src="'+imgSrc('navw')+'" alt=""><img class="ic" src="'+imgSrc('navc')+'" alt=""><img class="is" src="'+imgSrc('navs')+'" alt=""></div>');
 [['wallet','Wallet',0],['swap','Swap',33.3],['cash','Cash',66.6]].forEach(([k,l,x])=>{const b=$('<button type="button" aria-label="'+l+'"></button>');b.style.left=x+'%';b.onclick=()=>go(k);nav.appendChild(b)});
 P.appendChild(nav);
-hs(W.content,130,250,800,925,()=>W.content.classList.toggle('hid'),CH);
+hs(W.content,130,250,800,925,()=>{W.content.classList.toggle('hid');W.extra.classList.toggle('hid',W.content.classList.contains('hid'))},CH);
 hs(W.content,30,125,118,215,openPort,CH);
 (()=>{let last=0;W.scroller.addEventListener('scroll',()=>{const y=W.scroller.scrollTop;
   if(y>last+4&&y>150)nav.classList.add('away');else if(y<last-4||y<150)nav.classList.remove('away');last=y},{passive:true})})();
@@ -122,12 +142,15 @@ let hi=0,hlT=null;
 function setHL(){hl.children[0].textContent=HL[hi][0];hl.children[1].textContent=HL[hi][1];hl.className='hl';void hl.offsetWidth;hl.className='hl in'}
 function startHL(){clearInterval(hlT);setHL();hlT=setInterval(()=>{if(!scr.cash.classList.contains('on')){clearInterval(hlT);return}
   hl.className='hl out';setTimeout(()=>{hi=(hi+1)%HL.length;setHL()},360)},3600)}
-/* ---------- editable balances ---------- */
-const DEF={cash:0,btc:0.00015,btcP:81582,ltc:0.100129,ltcP:59.31};
-let D=Object.assign({},DEF);
-try{Object.assign(D,JSON.parse(localStorage.getItem('walletui')||'{}'))}catch(e){}
+/* ---------- editable balances and coins ---------- */
+const DEF={cash:0,btc:0.00015,btcP:81582,ltc:0.100129,ltcP:59.31,coins:[]};
+let D=JSON.parse(JSON.stringify(DEF));
+try{Object.assign(D,JSON.parse(localStorage.getItem('walletui')||'{}'));if(!Array.isArray(D.coins))D.coins=[]}catch(e){}
 const money=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const amt=n=>String(Number(n.toFixed(6)));
+const fmtP=n=>n>=1?money(n):n.toLocaleString('en-US',{maximumFractionDigits:6});
+const COLORS=['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316','#6366f1','#84cc16'];
+const colorFor=s=>{let x=0;for(const ch of s)x=(x*31+ch.charCodeAt(0))>>>0;return COLORS[x%COLORS.length]};
 const find=(root,f)=>[...root.querySelectorAll('.tx')].find(d=>f(d.textContent.trim(),d));
 const R={
  wBal:find(scr.wallet,(t,d)=>d.dataset.k==='bal'),
@@ -138,7 +161,9 @@ const R={
  pCash:find(portS,t=>t==='$0'),pCashP:find(portS,t=>t==='0%'),pWal:find(portS,(t,d)=>d.children.length===1&&t==='$17.88'),pWalP:find(portS,t=>t==='100%'),
  pBP:find(portS,t=>t==='67.4%'),pBU:find(portS,t=>t==='$12.05'),pLP:find(portS,t=>t==='32.6%'),pLU:find(portS,t=>t==='$5.83')};
 const setT=(d,t)=>{d.children[0].textContent=t};
-function totals(){const b=D.btc*D.btcP,l=D.ltc*D.ltcP,w=b+l;return{b,l,w,all:w+D.cash}}
+const coinsVal=list=>list.reduce((s,c)=>s+c.amt*c.price,0);
+function totals(){const b=D.btc*D.btcP,l=D.ltc*D.ltcP,c=coinsVal(D.coins),w=b+l+c;return{b,l,c,w,all:w+D.cash}}
+const crows=W.extra.querySelector('.crows');
 function render(){
   const T=totals(),sp=n=>{const s=money(n).split('.');return[s[0],'.'+s[1]]};
   const bw=sp(T.w);R.wBal.children[1].textContent=bw[0];R.wBal.children[2].textContent=bw[1];
@@ -149,8 +174,17 @@ function render(){
   setT(R.pCash,'$'+(D.cash%1?money(D.cash):D.cash));setT(R.pWal,'$'+money(T.w));
   const pc=(x,t)=>t>0?Math.round(x/t*100)+'%':'0%';
   setT(R.pCashP,pc(D.cash,T.all));setT(R.pWalP,pc(T.w,T.all));
-  setT(R.pBP,T.w>0?(T.b/T.w*100).toFixed(1)+'%':'0%');setT(R.pLP,T.w>0?(T.l/T.w*100).toFixed(1)+'%':'0%');
-  setT(R.pBU,'$'+money(T.b));setT(R.pLU,'$'+money(T.l));
+  const bl=T.b+T.l,pl=x=>bl>0?(x/bl*100).toFixed(1)+'%':'0%';
+  setT(R.pBP,pl(T.b));setT(R.pLP,pl(T.l));setT(R.pBU,'$'+money(T.b));setT(R.pLU,'$'+money(T.l));
+  crows.textContent='';
+  D.coins.forEach(c=>{
+    const r=$('<div class="crow" role="button" tabindex="0"><div class="hex"></div><div class="m"><div class="n"></div><div class="p"></div></div><div class="r"><div class="a amt"></div><div class="f amt"></div><div class="a sym"></div></div></div>');
+    const q=s=>r.querySelector(s);
+    q('.hex').style.background=c.color;q('.hex').textContent=(c.sym||c.name).charAt(0);
+    q('.n').textContent=c.name;q('.p').textContent='$'+fmtP(c.price);
+    q('.r .a.amt').textContent=amt(c.amt)+' '+c.sym;q('.f').textContent='$'+money(c.amt*c.price);q('.sym').textContent=c.sym;
+    r.onclick=()=>openEdit();r.onkeydown=e=>{if(e.key==='Enter')openEdit()};
+    crows.appendChild(r)});
 }
 const edit=$(`<div id="edit"><div class="sheet"><div class="grab"></div><h2>Editar saldo</h2>
 <div class="tot">Total en wallet <b id="eTot">$0.00</b></div>
@@ -160,31 +194,63 @@ const edit=$(`<div id="edit"><div class="sheet"><div class="grab"></div><h2>Edit
 <label for="eBtcP">Precio BTC ($)<input id="eBtcP" inputmode="decimal" autocomplete="off"></label>
 <label for="eLtc">Litecoin (LTC)<input id="eLtc" inputmode="decimal" autocomplete="off"></label>
 <label for="eLtcP">Precio LTC ($)<input id="eLtcP" inputmode="decimal" autocomplete="off"></label>
-</div><div class="b"><button id="eReset" type="button">Restablecer</button><button id="eSave" class="p" type="button">Guardar</button></div></div></div>`);
+</div>
+<h3>Monedas agregadas</h3><div id="eCoins"></div>
+<h3>Nueva moneda</h3>
+<div class="g">
+<label for="eNName">Nombre<input id="eNName" maxlength="24" autocomplete="off" placeholder="Solana"></label>
+<label for="eNSym">Símbolo<input id="eNSym" maxlength="8" autocomplete="off" placeholder="SOL"></label>
+<label for="eNAmt">Cantidad<input id="eNAmt" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+<label for="eNPrice">Precio ($)<input id="eNPrice" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+</div><button id="eAdd" class="a" type="button">Agregar moneda</button>
+<div class="b"><button id="eReset" type="button">Restablecer</button><button id="eSave" class="p" type="button">Guardar</button></div></div></div>`);
 P.appendChild(edit);
+const $e=id=>document.getElementById(id);
 const F={cash:'eCash',btc:'eBtc',btcP:'eBtcP',ltc:'eLtc',ltcP:'eLtcP'};
 const num=v=>{const n=parseFloat(String(v).replace(/,/g,''));return isFinite(n)&&n>=0?n:0};
-function preview(){const t={btc:num(eBtc.value),btcP:num(eBtcP.value),ltc:num(eLtc.value),ltcP:num(eLtcP.value)};
-  document.getElementById('eTot').textContent='$'+money(t.btc*t.btcP+t.ltc*t.ltcP)}
-function openEdit(){for(const k in F)document.getElementById(F[k]).value=D[k];preview();edit.classList.add('on')}
+let draft=[];
+function preview(){$e('eTot').textContent='$'+money(num($e('eBtc').value)*num($e('eBtcP').value)+num($e('eLtc').value)*num($e('eLtcP').value)+coinsVal(draft))}
+function drawCoins(){
+  const box=$e('eCoins');box.textContent='';
+  if(!draft.length){const p=$('<p class="empty"></p>');p.textContent='Todavía no agregaste ninguna.';box.appendChild(p);return}
+  draft.forEach(c=>{
+    const b=$('<div class="cb"><div class="ch"><div class="t"></div><button type="button" aria-label="Quitar moneda">×</button></div><div class="g"><label>Cantidad<input data-f="amt" inputmode="decimal" autocomplete="off"></label><label>Precio ($)<input data-f="price" inputmode="decimal" autocomplete="off"></label></div></div>');
+    b.querySelector('.t').textContent=c.name;const i=document.createElement('i');i.textContent=c.sym;b.querySelector('.t').appendChild(i);
+    b.querySelectorAll('input').forEach(inp=>{inp.value=c[inp.dataset.f];inp.addEventListener('input',()=>{c[inp.dataset.f]=num(inp.value);preview()})});
+    b.querySelector('button').onclick=()=>{draft=draft.filter(x=>x!==c);drawCoins();preview()};
+    box.appendChild(b)})}
+function addCoin(){
+  let name=$e('eNName').value.trim(),sym=$e('eNSym').value.trim().toUpperCase();
+  if(!name&&!sym){$e('eNName').focus();return false}
+  if(!sym)sym=name.slice(0,4).toUpperCase();if(!name)name=sym;
+  if(draft.length>=30)return false;
+  draft.push({id:Date.now()+Math.random(),name,sym,amt:num($e('eNAmt').value),price:num($e('eNPrice').value),color:colorFor(sym)});
+  ['eNName','eNSym','eNAmt','eNPrice'].forEach(id=>$e(id).value='');
+  drawCoins();preview();return true}
+function openEdit(focusNew){
+  for(const k in F)$e(F[k]).value=D[k];
+  draft=D.coins.map(c=>Object.assign({},c));drawCoins();preview();edit.classList.add('on');
+  if(focusNew===true)setTimeout(()=>{const sh=edit.querySelector('.sheet'),n=$e('eNName');
+    sh.scrollTop+=n.getBoundingClientRect().top-sh.getBoundingClientRect().top-140;n.focus({preventScroll:true});P.scrollTop=0},60)}
 function closeEdit(){edit.classList.remove('on')}
-Object.values(F).forEach(id=>document.getElementById(id).addEventListener('input',preview));
+Object.values(F).forEach(id=>$e(id).addEventListener('input',preview));
+$e('eAdd').onclick=addCoin;
 edit.addEventListener('pointerdown',e=>e.stopPropagation());
 edit.addEventListener('click',e=>{if(e.target===edit)closeEdit()});
-document.getElementById('eSave').onclick=()=>{for(const k in F)D[k]=num(document.getElementById(F[k]).value);
+$e('eSave').onclick=()=>{if($e('eNName').value.trim()||$e('eNSym').value.trim())addCoin();
+  for(const k in F)D[k]=num($e(F[k]).value);D.coins=draft;
   try{localStorage.setItem('walletui',JSON.stringify(D))}catch(e){}render();closeEdit()};
-document.getElementById('eReset').onclick=()=>{D=Object.assign({},DEF);try{localStorage.removeItem('walletui')}catch(e){}render();closeEdit()};
+$e('eReset').onclick=()=>{D=JSON.parse(JSON.stringify(DEF));try{localStorage.removeItem('walletui')}catch(e){}render();closeEdit()};
+W.extra.querySelector('.addmore').onclick=()=>openEdit(true);
 render();
 
-/* ---------- hold the screen 3 s to open the editor ---------- */
-const ring=$('<div id="ring"></div>');P.appendChild(ring);
+/* ---------- hold the screen 1.5 s to open the editor ---------- */
 let timer=null,sx=0,sy=0,suppress=false;
-const cancel=()=>{clearTimeout(timer);timer=null;ring.classList.remove('go')};
+const cancel=()=>{clearTimeout(timer);timer=null};
 P.addEventListener('pointerdown',e=>{
   if(edit.classList.contains('on'))return;
   suppress=false;sx=e.clientX;sy=e.clientY;cancel();
-  ring.style.left=sx+'px';ring.style.top=sy+'px';void ring.offsetWidth;ring.classList.add('go');
-  timer=setTimeout(()=>{timer=null;ring.classList.remove('go');suppress=true;openEdit()},1500)});
+  timer=setTimeout(()=>{timer=null;suppress=true;openEdit()},1500)});
 P.addEventListener('pointermove',e=>{if(timer&&Math.hypot(e.clientX-sx,e.clientY-sy)>14)cancel()});
 ['pointerup','pointercancel','pointerleave'].forEach(n=>P.addEventListener(n,cancel));
 P.addEventListener('click',e=>{if(suppress){e.stopPropagation();e.preventDefault();suppress=false}},true);
