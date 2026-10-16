@@ -19,6 +19,7 @@ html,body{margin:0;width:100%;height:100%;background:#1d1d36;color:#fff;overflow
 :root{color-scheme:dark}
 #phone{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:auto;overflow:hidden;background:#1d1d36;touch-action:pan-y;
  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,sans-serif;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+#phone::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16%;z-index:2;pointer-events:none;background:linear-gradient(to bottom,rgba(29,29,54,0),#1d1d36 85%)}
 .screen{position:absolute;inset:0;container-type:inline-size;opacity:0;pointer-events:none;transition:opacity .25s}
 .screen.on{opacity:1;pointer-events:auto}
 .screen>img,.content>img{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
