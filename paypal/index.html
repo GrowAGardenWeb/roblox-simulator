@@ -1,11 +1,4 @@
 <meta charset="utf-8">
-<script>(function(){
-function setAppH(){document.documentElement.style.setProperty('--app-h',window.innerHeight+'px')}
-setAppH();
-window.addEventListener('resize',setAppH);
-window.addEventListener('orientationchange',setAppH);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',setAppH);
-})();</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -17,9 +10,8 @@ if(window.visualViewport)window.visualViewport.addEventListener('resize',setAppH
 <link rel="icon" type="image/png" href="favicon-32.png">
 <title>PayPal Send</title>
 <style>
-html{--app-h:100vh}
-html,body{height:var(--app-h);overflow:hidden;margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-text-size-adjust:100%}
-.wrap{position:fixed;top:0;left:0;right:0;height:var(--app-h);margin:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+html,body{height:100vh;height:100dvh;overflow:hidden;margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-text-size-adjust:100%}
+.wrap{position:fixed;top:0;left:0;right:0;height:100vh;height:100dvh;margin:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .ui{position:relative;width:100%;max-width:620px;aspect-ratio:1320/2868;flex:none;overflow:hidden;container-type:inline-size;font-family:"Helvetica Neue",Arial,sans-serif;color:#000}
 .page{position:absolute;inset:0;background:center/100% 100% no-repeat;visibility:hidden}
 .page.on{visibility:visible}
@@ -107,7 +99,7 @@ html,body{height:var(--app-h);overflow:hidden;margin:0;background:#fff;color:#00
 .donewrap{position:absolute;left:3.7%;top:76%;width:92.6%;height:5%;border-radius:999px;background:#1b1f8a;z-index:1}
 #donebtn{z-index:2}
 .link2{color:#1b1f8a;font-weight:700}
-#splash{position:fixed;top:0;left:0;right:0;height:var(--app-h);z-index:999999;background:#0e319f;display:flex;align-items:center;justify-content:center;transition:opacity .3s ease}
+#splash{position:fixed;top:0;left:0;right:0;height:100vh;height:100dvh;z-index:999999;background:#0e319f;display:flex;align-items:center;justify-content:center;transition:opacity .3s ease}
 #splash img{width:32vw;max-width:170px;height:auto;pointer-events:none;user-select:none}
 </style>
 <div id="splash"><img src="icon.png" alt="PayPal" draggable="false"></div>
