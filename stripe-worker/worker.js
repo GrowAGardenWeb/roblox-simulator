@@ -19,7 +19,7 @@
 //   GET  /admin/whitelist/list      ?secret=ADMIN_SECRET -> { entries: [{email,product,expiresAt,addedAt}] }
 //   POST /admin/whitelist/add       { secret, email, product, days? } -> { ok }
 //                                   product: 'mobile' | 'headless' | 'cashapp' |
-//                                   'phantom' | 'exodus' | 'megapack' | 'all'
+//                                   'phantom' | 'exodus' | 'paypal' | 'megapack' | 'all'
 //                                   days: optional — omit/0 for permanent, e.g. 30 for one month
 //   POST /admin/whitelist/remove    { secret, email } -> { ok }
 //
@@ -58,6 +58,7 @@ const PRODUCTS = {
   cashapp: { price: 'price_REPLACE_ME_CASHAPP', mode: 'subscription' },
   phantom: { price: 'price_REPLACE_ME_PHANTOM', mode: 'subscription' },
   exodus: { price: 'price_REPLACE_ME_EXODUS', mode: 'subscription' },
+  paypal: { price: 'price_REPLACE_ME_PAYPAL', mode: 'subscription' },
   megapack: { price: 'price_REPLACE_ME_MEGAPACK', mode: 'subscription' },
 };
 
@@ -65,6 +66,7 @@ const PRODUCTS = {
 //   Cash App   $10/mo
 //   Phantom    $10/mo
 //   Exodus     $10/mo
+//   PayPal     $10/mo
 //   Mega Pack  $22/mo  — grants cashapp + phantom + exodus together
 // A purchase of a bundle product grants every product listed here for it,
 // instead of just the bundle's own key.
