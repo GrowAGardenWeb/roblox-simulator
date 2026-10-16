@@ -100,13 +100,13 @@ function show(k){
   if(names.indexOf(k)<0)k='send';
   names.forEach(function(n){document.getElementById('p-'+n).classList.toggle('on',n===k)});
   ui.querySelectorAll('.tab').forEach(function(e){e.classList.toggle('on',e.dataset.for===k)});
-  ui.classList.toggle('inpay',k==='pay');sheet.hidden=true;resetSearch();try{history.replaceState(null,'','#'+k)}catch(e){}
+  ui.classList.toggle('inpay',k==='pay');sheet.hidden=true;resetSearch();fit();syncFont();try{history.replaceState(null,'','#'+k)}catch(e){}
 }
 function fit(){
   var k=ui.clientWidth/921;
   ui.querySelectorAll('.t').forEach(function(e){
     e.style.fontSize='100px';var w=e.getBoundingClientRect().width;
-    if(w)e.style.fontSize=(100*parseFloat(e.dataset.w)*k/w)+'px';
+    e.style.fontSize=w?(100*parseFloat(e.dataset.w)*k/w)+'px':'';
   });
 }
 var sbox=document.getElementById('sbox'),q=document.getElementById('q'),clr=document.getElementById('clr'),res=document.getElementById('res'),timer,timer2;
