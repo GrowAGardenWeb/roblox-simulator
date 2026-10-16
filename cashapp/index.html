@@ -14,35 +14,60 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .wrap{position:fixed;top:0;left:0;right:0;height:var(--app-h,100%);margin:0;overflow:hidden;display:flex;justify-content:center}
 .scroll{width:100%;max-width:620px;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 .ui{position:relative;width:100%;aspect-ratio:1320/4560;container-type:inline-size;background:top/100% 100% no-repeat url(money.png)}
-.amt{position:absolute;left:5.45%;top:19.76%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;white-space:nowrap;-webkit-user-select:none;user-select:none;cursor:pointer}
-.amt.editing{-webkit-user-select:text;user-select:text}
-.amtin{position:absolute;left:5.45%;top:19.76%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:70%;display:none}
-.amt.hold{opacity:.45;transition:opacity 3s linear}
-.digits{position:absolute;left:18.64%;top:12.24%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;white-space:nowrap;cursor:pointer}
-.digitsin{position:absolute;left:18.64%;top:12.24%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:16%;display:none}
-.cashtag{position:absolute;right:5.3%;top:12.37%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;white-space:nowrap;cursor:pointer;text-align:right}
-.cashtagin{position:absolute;right:5.3%;top:12.37%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:40%;text-align:right;display:none}
-.digits.hold,.cashtag.hold{opacity:.45;transition:opacity 3s linear}
-.avatar{position:absolute;left:91.36%;top:6.19%;width:11.52cqw;height:11.52cqw;transform:translate(-50%,-50%);border-radius:50%;background:#2c2c2e center/cover no-repeat;cursor:pointer}
-.avatarfile{display:none}
+.amt{position:absolute;left:5.45%;top:19.76%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;white-space:nowrap;pointer-events:none}
+.digits{position:absolute;left:18.64%;top:12.24%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;white-space:nowrap;pointer-events:none}
+.cashtag{position:absolute;right:5.3%;top:12.37%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;white-space:nowrap;text-align:right;pointer-events:none}
+.avatar{position:absolute;left:91.36%;top:6.19%;width:11.52cqw;height:11.52cqw;transform:translate(-50%,-50%);border-radius:50%;background:#2c2c2e center/cover no-repeat;pointer-events:none}
+.hitadd{position:absolute;left:3.64%;top:26.54%;width:45.45%;height:3.42%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .dockoverlay{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:100%;max-width:620px;display:flex;justify-content:center;pointer-events:none}
 .dockbar{position:relative;width:61.82%;aspect-ratio:816/186;container-type:inline-size;background:center/100% 100% no-repeat url(dock.png);pointer-events:auto}
 .dock{position:absolute;left:15.99%;top:51.6%;transform:translate(-50%,-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;color:#fff;font-size:9.4cqw;line-height:1;white-space:nowrap;pointer-events:none}
+
+.sheetwrap{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheetwrap[hidden]{display:none}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.sheet{position:relative;width:100%;max-width:620px;background:#111113;border-radius:24px 24px 0 0;padding:18px 20px calc(env(safe-area-inset-bottom,0px) + 24px);box-sizing:border-box;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;max-height:82vh;overflow-y:auto}
+.sheethead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.sheethead span{font-size:19px;font-weight:700}
+.closebtn{width:30px;height:30px;border-radius:50%;border:0;background:#222;color:#aaa;font-size:16px;cursor:pointer}
+.sheetavatarrow{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.sheetavatar{width:56px;height:56px;border-radius:50%;background:#2c2c2e center/cover no-repeat;flex:none}
+.sheetavatarbtn{border:0;background:#1d1d1f;color:#4fa3ff;font-size:15px;font-weight:600;padding:9px 14px;border-radius:999px;cursor:pointer}
+.sheetrow{margin-bottom:16px}
+.sheetrow label{display:block;font-size:13px;color:#8e8e93;margin-bottom:6px}
+.inwrap{display:flex;align-items:center;background:#1d1d1f;border-radius:12px;padding:12px 14px;gap:4px}
+.inwrap span{color:#8e8e93;font-size:17px}
+.inwrap input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#fff;font-size:17px;font-family:inherit}
+.savebtn{width:100%;border:0;background:#fff;color:#000;font-size:17px;font-weight:700;padding:15px;border-radius:999px;cursor:pointer;margin-top:4px}
 </style>
 </head>
 <body>
 <div class="wrap"><div class="scroll"><div class="ui" id="ui">
 <span class="amt" id="amt">$54.20</span>
-<input class="amtin" id="amtin" inputmode="decimal">
 <span class="digits" id="digits">9427</span>
-<input class="digitsin" id="digitsin" inputmode="numeric" maxlength="4">
 <span class="cashtag" id="cashtag">$jwr2239</span>
-<input class="cashtagin" id="cashtagin">
 <div class="avatar" id="avatar"></div>
-<input type="file" accept="image/*" class="avatarfile" id="avatarfile">
+<button class="hitadd" id="hitadd" aria-label="Edit account"></button>
 </div></div>
 <div class="dockoverlay"><div class="dockbar"><span class="dock" id="dock">$54</span></div></div>
 </div>
+
+<div class="sheetwrap" id="sheetwrap" hidden>
+<div class="dim" id="dim"></div>
+<div class="sheet">
+  <div class="sheethead"><span>Edit account</span><button class="closebtn" id="closebtn">&#10005;</button></div>
+  <div class="sheetavatarrow">
+    <div class="sheetavatar" id="sheetavatar"></div>
+    <button class="sheetavatarbtn" id="sheetavatarbtn">Change photo</button>
+    <input type="file" accept="image/*" id="avatarfile" style="display:none">
+  </div>
+  <div class="sheetrow"><label>Cash balance</label><div class="inwrap"><span>$</span><input id="pbal" inputmode="decimal"></div></div>
+  <div class="sheetrow"><label>Card last 4 digits</label><div class="inwrap"><span>&#8226;&#8226;</span><input id="pdigits" inputmode="numeric" maxlength="4"></div></div>
+  <div class="sheetrow"><label>Cashtag</label><div class="inwrap"><span>$</span><input id="ptag"></div></div>
+  <button class="savebtn" id="savebtn">Done</button>
+</div>
+</div>
+
 <script>
 (function(){
 function AH(){var h=innerHeight;try{var sa=navigator.standalone===true||(matchMedia&&matchMedia('(display-mode: standalone)').matches);if(sa&&innerHeight>innerWidth)h=Math.max(h,screen.height||0,(visualViewport&&visualViewport.height)||0)}catch(e){}document.documentElement.style.setProperty('--app-h',h+'px');return h}
@@ -58,90 +83,68 @@ document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preven
 var lastTouchEnd=0;
 document.addEventListener('touchend',function(e){var now=Date.now();if(now-lastTouchEnd<=300)e.preventDefault();lastTouchEnd=now},{passive:false});
 
-function holdToEdit(display,input,opts){
-  var holdTimer=null;
-  function startHold(){
-    cancelHold();
-    display.classList.add('hold');
-    holdTimer=setTimeout(function(){
-      display.classList.remove('hold');
-      input.value=opts.toInput();
-      display.style.display='none';
-      input.style.display='block';
-      input.focus();
-      input.select();
-    },3000);
-  }
-  function cancelHold(){
-    if(holdTimer){clearTimeout(holdTimer);holdTimer=null}
-    display.classList.remove('hold');
-  }
-  function commit(){
-    opts.fromInput(input.value);
-    input.style.display='none';
-    display.style.display='';
-  }
-  display.addEventListener('pointerdown',startHold);
-  display.addEventListener('pointerup',cancelHold);
-  display.addEventListener('pointerleave',cancelHold);
-  display.addEventListener('pointercancel',cancelHold);
-  input.addEventListener('blur',commit);
-  input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();input.blur()}});
+var amt=document.getElementById('amt'),dock=document.getElementById('dock');
+var digits=document.getElementById('digits');
+var cashtag=document.getElementById('cashtag');
+var avatar=document.getElementById('avatar'),sheetavatar=document.getElementById('sheetavatar'),avatarfile=document.getElementById('avatarfile');
+
+var bal=54.20,cardDigits='9427',tag='jwr2239',avatarUrl=null;
+try{var s1=localStorage.getItem('cashapp_balance');if(s1!==null&&!isNaN(parseFloat(s1)))bal=parseFloat(s1)}catch(e){}
+try{var s2=localStorage.getItem('cashapp_card_digits');if(s2&&/^\d{4}$/.test(s2))cardDigits=s2}catch(e){}
+try{var s3=localStorage.getItem('cashapp_cashtag');if(s3)tag=s3}catch(e){}
+try{var s4=localStorage.getItem('cashapp_avatar');if(s4)avatarUrl=s4}catch(e){}
+
+function renderAll(){
+  amt.textContent='$'+bal.toFixed(2);
+  dock.textContent='$'+Math.round(bal);
+  digits.textContent=cardDigits;
+  cashtag.textContent='$'+tag;
+  if(avatarUrl){avatar.style.backgroundImage='url('+avatarUrl+')';sheetavatar.style.backgroundImage='url('+avatarUrl+')'}
+}
+renderAll();
+
+var hitadd=document.getElementById('hitadd'),sheetwrap=document.getElementById('sheetwrap'),dim=document.getElementById('dim'),closebtn=document.getElementById('closebtn'),savebtn=document.getElementById('savebtn');
+var pbal=document.getElementById('pbal'),pdigits=document.getElementById('pdigits'),ptag=document.getElementById('ptag');
+
+function openSheet(){
+  pbal.value=bal.toFixed(2);
+  pdigits.value=cardDigits;
+  ptag.value=tag;
+  sheetwrap.hidden=false;
+}
+function closeSheet(){sheetwrap.hidden=true}
+
+function save(){
+  var n=parseFloat(pbal.value);
+  if(!isNaN(n)&&n>=0)bal=Math.round(n*100)/100;
+  var d=pdigits.value.replace(/\D/g,'').slice(0,4);
+  if(d.length===4)cardDigits=d;
+  var t=ptag.value.replace(/^\$+/,'').replace(/[^a-zA-Z0-9]/g,'').slice(0,20);
+  if(t)tag=t;
+  renderAll();
+  try{
+    localStorage.setItem('cashapp_balance',bal);
+    localStorage.setItem('cashapp_card_digits',cardDigits);
+    localStorage.setItem('cashapp_cashtag',tag);
+  }catch(e){}
+  closeSheet();
 }
 
-var amt=document.getElementById('amt'),amtin=document.getElementById('amtin'),dock=document.getElementById('dock');
-var bal=54.20;
-try{var saved=localStorage.getItem('cashapp_balance');if(saved!==null&&!isNaN(parseFloat(saved)))bal=parseFloat(saved)}catch(e){}
-function renderBal(){amt.textContent='$'+bal.toFixed(2);dock.textContent='$'+Math.round(bal)}
-renderBal();
-holdToEdit(amt,amtin,{
-  toInput:function(){return bal.toFixed(2)},
-  fromInput:function(v){
-    var n=parseFloat(v);
-    if(!isNaN(n)&&n>=0)bal=Math.round(n*100)/100;
-    renderBal();
-    try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
-  }
-});
+hitadd.addEventListener('click',openSheet);
+dim.addEventListener('click',closeSheet);
+closebtn.addEventListener('click',closeSheet);
+savebtn.addEventListener('click',save);
 
-var digits=document.getElementById('digits'),digitsin=document.getElementById('digitsin');
-var cardDigits='9427';
-try{var sd=localStorage.getItem('cashapp_card_digits');if(sd&&/^\d{4}$/.test(sd))cardDigits=sd}catch(e){}
-digits.textContent=cardDigits;
-holdToEdit(digits,digitsin,{
-  toInput:function(){return cardDigits},
-  fromInput:function(v){
-    var d=v.replace(/\D/g,'').slice(0,4);
-    if(d.length===4){cardDigits=d}
-    digits.textContent=cardDigits;
-    try{localStorage.setItem('cashapp_card_digits',cardDigits)}catch(e){}
-  }
-});
-
-var cashtag=document.getElementById('cashtag'),cashtagin=document.getElementById('cashtagin');
-var tag='jwr2239';
-try{var st=localStorage.getItem('cashapp_cashtag');if(st)tag=st}catch(e){}
-cashtag.textContent='$'+tag;
-holdToEdit(cashtag,cashtagin,{
-  toInput:function(){return tag},
-  fromInput:function(v){
-    var t=v.replace(/^\$+/,'').replace(/[^a-zA-Z0-9]/g,'').slice(0,20);
-    if(t)tag=t;
-    cashtag.textContent='$'+tag;
-    try{localStorage.setItem('cashapp_cashtag',tag)}catch(e){}
-  }
-});
-
-var avatar=document.getElementById('avatar'),avatarfile=document.getElementById('avatarfile');
-try{var av=localStorage.getItem('cashapp_avatar');if(av)avatar.style.backgroundImage='url('+av+')'}catch(e){}
-avatar.addEventListener('click',function(){avatarfile.click()});
+document.getElementById('sheetavatarbtn').addEventListener('click',function(){avatarfile.click()});
 avatarfile.addEventListener('change',function(){
   var f=avatarfile.files&&avatarfile.files[0];
   if(!f)return;
   var reader=new FileReader();
   reader.onload=function(){
-    avatar.style.backgroundImage='url('+reader.result+')';
-    try{localStorage.setItem('cashapp_avatar',reader.result)}catch(e){}
+    avatarUrl=reader.result;
+    sheetavatar.style.backgroundImage='url('+avatarUrl+')';
+    avatar.style.backgroundImage='url('+avatarUrl+')';
+    try{localStorage.setItem('cashapp_avatar',avatarUrl)}catch(e){}
   };
   reader.readAsDataURL(f);
 });
