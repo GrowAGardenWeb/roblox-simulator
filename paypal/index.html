@@ -136,7 +136,17 @@ ui.addEventListener('pointerdown',function(e){if(!e.target.closest('#sbox,#res')
 var pay=document.getElementById('p-pay'),amt=document.getElementById('amt'),nt=document.getElementById('nt'),cnt=document.getElementById('cnt'),pill=document.getElementById('pill'),sheet=document.getElementById('sheet'),cq=document.getElementById('cq'),usd=ui.querySelector('.usd');
 function ready(){pay.classList.toggle('ready',parseFloat(amt.value)>0)}
 function resetPay(){amt.value='';nt.value='';cnt.textContent='0/280';ready();setCur('USD')}
-amt.addEventListener('input',function(){amt.value=amt.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');ready()});
+amt.addEventListener('input',function(){
+  var raw=amt.value,c=amt.selectionStart,d=raw.indexOf('.'),ip,dp='',inDec=false,decBefore=0;
+  if(d<0){ip=raw.replace(/\D/g,'')}
+  else{ip=raw.slice(0,d).replace(/\D/g,'');dp=raw.slice(d+1).replace(/\D/g,'').slice(0,2);inDec=c>d;decBefore=raw.slice(d+1,Math.max(c,d+1)).replace(/\D/g,'').length}
+  ip=ip.replace(/^0+(?=\d)/,'').slice(0,9);
+  if(ip===''&&dp===''&&d<0){amt.value='';ready();return}
+  var v=(ip||'0')+'.'+dp.padEnd(2,'0');
+  amt.value=v;
+  var pos=inDec?ip.length+1+Math.min(decBefore,2):Math.min(c,ip.length);
+  amt.setSelectionRange(pos,pos);ready();
+});
 amt.addEventListener('blur',function(){var n=parseFloat(amt.value);if(n>0)amt.value=n.toFixed(2);else amt.value='';ready()});
 nt.addEventListener('input',function(){cnt.textContent=nt.value.length+'/280'});
 function setCur(c){
@@ -145,7 +155,7 @@ function setCur(c){
   sheet.hidden=true;fit();
 }
 function filter(){var v=cq.value.trim().toLowerCase();sheet.querySelectorAll('.crow').forEach(function(r){r.hidden=v&&r.dataset.n.indexOf(v)<0&&r.dataset.c.toLowerCase().indexOf(v)<0})}
-pill.addEventListener('click',function(){cq.value='';filter();sheet.hidden=false;cq.focus()});
+pill.addEventListener('click',function(){cq.value='';filter();sheet.hidden=false});
 cq.addEventListener('input',filter);
 ['shback','shx','dim'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){sheet.hidden=true})});
 sheet.querySelectorAll('.crow').forEach(function(r){r.addEventListener('click',function(){setCur(r.dataset.c)})});
