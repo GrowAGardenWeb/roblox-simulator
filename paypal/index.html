@@ -91,15 +91,6 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 .donewrap{position:absolute;left:3.7%;top:76%;width:92.6%;height:5%;border-radius:999px;background:#1b1f8a;z-index:1}
 #donebtn{z-index:2}
 .link2{color:#1b1f8a;font-weight:700}
-.hdrhit{position:absolute;top:6%;height:8%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:5}
-.menuwrap{position:absolute;inset:0;z-index:30;pointer-events:none;background:rgba(0,0,0,0);opacity:0;transition:opacity .28s ease}
-.menuwrap.open{opacity:1;background:rgba(0,0,0,.35);pointer-events:auto}
-.menuhdr2{position:absolute;left:0;top:0;width:100%;height:14.5%;background:center/100% 100% no-repeat;background-image:url(menuhdr.png)}
-.menudrawer2{position:absolute;left:0;top:14.5%;height:85.5%;width:78%;background:center/100% 100% no-repeat;background-image:url(menu.png);transform:translateX(-100%);transition:transform .32s cubic-bezier(.32,.72,0,1)}
-.menuwrap.open .menudrawer2{transform:translateX(0)}
-@media (prefers-reduced-motion:reduce){.menuwrap{transition-duration:.01s}.menudrawer2{transition-duration:.01s}}
-.ohit{position:absolute;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.mrow{left:0;width:100%;height:7.72%}
 </style>
 <div class="wrap"><div class="ui" id="ui">
 <section class="page p-send" id="p-send"><span class="t h" data-w="397" style="left:6.30%;top:30.60%">Send payment to</span><span class="t ph meas" data-w="477" style="left:16.50%;top:38.05%">Name, username, email, mobile</span><span class="t link" data-w="235" style="left:6.30%;top:49.80%">Show all contacts</span><span class="t h" data-w="432" style="left:6.30%;top:56.65%">More ways to send</span><span class="t it" data-w="212" style="left:20.09%;top:64.65%">Send an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:66.50%">Customize, track, and send invoices.</span><span class="t it" data-w="373" style="left:20.09%;top:73.25%">Send and receive donations</span><span class="t sub" data-w="391" style="left:20.09%;top:75.10%">Find support and help others now.</span><div class="sbox" id="sbox"><input id="q" type="text" placeholder="Name, username, email, mobile" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" aria-label="Name, username, email, mobile"><button class="clr" id="clr" type="button" aria-label="Clear" hidden>&times;</button></div>
@@ -128,8 +119,7 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 <button class="crow" type="button" data-c="MXN" data-n="mexican peso" aria-checked="false"><img src="mxn.png" alt=""><span><b>Mexican Peso</b><small>MXN</small></span><svg class="chk" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#000"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2"/></svg></button>
 <button class="crow" type="button" data-c="USD" data-n="us dollar" aria-checked="true"><img src="usd.png" alt=""><span><b>US Dollar</b><small>USD</small></span><svg class="chk" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#000"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2"/></svg></button>
 </div></div></div>
-</div></div><button class="hdrhit" id="hamhit" aria-label="Menu" style="left:1%;width:15%"></button>
-<div class="menuwrap" id="menuPanel"><div class="menuhdr2"><button class="ohit" id="logoutBtn" aria-label="Log out" style="left:0;width:30%;top:48.3%;height:48.3%"></button><button class="ohit" id="gearBtn" aria-label="Settings" style="left:67%;width:10%;top:48.3%;height:48.3%"></button><button class="ohit" id="menuClose" aria-label="Close" style="left:80%;width:12%;top:48.3%;height:48.3%"></button></div><div class="menudrawer2"><button class="ohit mrow" data-go="" style="top:0.6%" aria-label="Home"></button><button class="ohit mrow" data-go="send" style="top:8.2%" aria-label="Send and Request"></button><button class="ohit mrow" data-go="" style="top:16.1%" aria-label="Wallet"></button><button class="ohit mrow" data-go="" style="top:24%" aria-label="Activity"></button><button class="ohit mrow" data-go="" style="top:32.2%" aria-label="Help"></button></div></div>
+</div></div>
 <script>
 (function(){
 var ui=document.getElementById('ui'),names=['send','request','contacts','more','pay','done','loading'];
@@ -224,17 +214,6 @@ document.getElementById('next').addEventListener('click',function(){
 document.getElementById('donebtn').addEventListener('click',function(){show('send')});
 document.querySelector('.donewrap').addEventListener('click',function(){show('send')});
 document.getElementById('link2').addEventListener('click',function(){show('send')});
-var menuPanel=document.getElementById('menuPanel');
-document.getElementById('hamhit').addEventListener('click',function(){menuPanel.classList.add('open')});
-['menuClose','gearBtn','logoutBtn'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){menuPanel.classList.remove('open')})});
-menuPanel.addEventListener('click',function(e){if(!e.target.closest('.menuhdr2,.menudrawer2'))menuPanel.classList.remove('open')});
-document.querySelectorAll('.mrow').forEach(function(b){b.addEventListener('click',function(){
-  menuPanel.classList.remove('open');
-  var go=b.dataset.go;
-  if(go)show(go);
-})});
-
-
 ui.querySelectorAll('.hit').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.tab)})});
 show((location.hash||'').slice(1));
 fit();syncFont();window.addEventListener('resize',function(){fit();syncFont()});
