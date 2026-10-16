@@ -2,8 +2,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>PayPal Send</title>
 <style>
-html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-text-size-adjust:100%}
-.wrap{height:100dvh;margin:0 auto;display:flex;justify-content:center}
+html,body{height:100%;margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-text-size-adjust:100%}
+.wrap{height:100%;margin:0 auto;display:flex;justify-content:center}
 .ui{position:relative;height:100%;max-width:460px;aspect-ratio:1320/2868;overflow:hidden;container-type:inline-size;font-family:"Helvetica Neue",Arial,sans-serif;color:#000}
 .page{position:absolute;inset:0;background:center/100% 100% no-repeat;visibility:hidden}
 .page.on{visibility:visible}
@@ -22,7 +22,7 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 .meas{visibility:hidden}
 .sbox{position:absolute;z-index:2;left:6.08%;top:35.3%;width:87.84%;height:5.35%;box-sizing:border-box;border:.33cqw solid transparent;border-radius:999px;display:flex;align-items:center;background:transparent}
 .sbox.on{border-color:#2563e6;background:#fff}
-.sbox input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;padding:0 0 0 11.9%;font-family:inherit;color:#000;font-size:4cqw}
+.sbox input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;padding:0 0 0 11.9%;font-family:inherit;color:#000;font-size:max(16px,4cqw)}
 .sbox.on input{padding-left:4.8%}
 .sbox input::placeholder{color:#6b6b6b;opacity:1}
 .clr{flex:none;width:7.2cqw;height:7.2cqw;margin-right:3.5cqw;border:0;border-radius:50%;background:#eef0f5;color:#000;font-size:5cqw;line-height:1;cursor:pointer;padding:0}
@@ -52,7 +52,7 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 .pill{position:absolute;left:77.2%;top:28.15%;width:18.2%;height:3.3%;border:0;background:none;padding:0;cursor:pointer}
 .note{position:absolute;left:4.56%;top:34.1%;width:90.8%;height:10.85%;box-sizing:border-box;border:.33cqw solid transparent;border-radius:1.8cqw}
 .note:focus-within{border-color:#2563e6;background:#fff}
-.note textarea{position:absolute;inset:0;width:100%;height:100%;box-sizing:border-box;border:0;outline:0;resize:none;background:transparent;padding:7.2cqw 2.6cqw 0 2.5cqw;font:inherit;font-size:3.5cqw;color:#000}
+.note textarea{position:absolute;inset:0;width:100%;height:100%;box-sizing:border-box;border:0;outline:0;resize:none;background:transparent;padding:7.2cqw 2.6cqw 0 2.5cqw;font:inherit;font-size:max(16px,3.5cqw);color:#000}
 .note textarea::placeholder{color:#6b6b6b;opacity:1}
 .cnt2{position:absolute;right:2.8cqw;bottom:2.4cqw;font-size:2.9cqw;color:#5c5c5c;pointer-events:none}
 .sheetwrap{position:absolute;inset:0;z-index:10}
@@ -62,7 +62,7 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 .ic{border:0;background:none;padding:1cqw;cursor:pointer;color:#000;display:flex}
 .ic svg{width:4.8cqw;height:4.8cqw}
 .ssearch{margin-top:4.6cqw;height:11.7cqw;box-sizing:border-box;border:.33cqw solid #2563e6;border-radius:999px;display:flex;align-items:center;padding:0 4cqw}
-.ssearch input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:3.5cqw}
+.ssearch input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:max(16px,3.5cqw)}
 .clist{margin-top:5cqw;display:flex;flex-direction:column}
 .crow{display:flex;align-items:center;gap:2.6cqw;height:13.2cqw;padding:0 4.5cqw 0 3.9cqw;border:0;background:none;width:100%;text-align:left;font:inherit;color:#000;cursor:pointer}
 .crow img{width:7.4cqw;height:auto;flex:none}
@@ -137,7 +137,7 @@ function fit(){
   });
 }
 var sbox=document.getElementById('sbox'),q=document.getElementById('q'),clr=document.getElementById('clr'),res=document.getElementById('res'),timer,timer2,lastContact=null;
-function syncFont(){var m=ui.querySelector('.meas');if(m&&m.style.fontSize)q.style.fontSize=m.style.fontSize}
+function syncFont(){var m=ui.querySelector('.meas');if(m&&m.style.fontSize)q.style.fontSize=Math.max(16,parseFloat(m.style.fontSize))+'px'}
 function sync(){sbox.classList.toggle('on',document.activeElement===q||q.value!=='');clr.hidden=q.value===''}
 function search(){
   var v=q.value.trim();
