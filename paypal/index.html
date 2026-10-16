@@ -92,36 +92,11 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 #donebtn{z-index:2}
 .link2{color:#1b1f8a;font-weight:700}
 .hdrhit{position:absolute;top:6%;height:8%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:5}
-.menuwrap,.notifwrap{position:absolute;inset:0;z-index:30}
-.menudim{position:absolute;inset:0;background:rgba(0,0,0,.28)}
-.menuhead{position:absolute;left:0;right:0;top:0;height:14.5%;background:#1a2c8a;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box;padding:0 5.5%}
-.logout{color:#cfd6f5;font-weight:700;font-size:3.6cqw;letter-spacing:.08em;background:none;border:0;cursor:pointer;font-family:inherit}
-.hicons{display:flex;align-items:center;gap:5.5cqw}
-.gear,.mclose{background:none;border:0;padding:0;cursor:pointer;color:#dfe4fa;display:flex}
-.gear svg,.mclose svg{width:5.6cqw;height:5.6cqw}
-.menudrawer{position:absolute;left:0;top:14.5%;bottom:0;width:78%;background:#1a2c8a;overflow:auto}
-.mitem{display:block;width:100%;box-sizing:border-box;text-align:left;border:0;background:none;color:#eef0fb;font-family:inherit;font-weight:500;font-size:4.3cqw;padding:5.6cqw 7%;cursor:pointer}
-.mitem.sel{background:rgba(255,255,255,.14)}
-.notifwrap{background:#f2f3f8}
-.notifhead{position:relative;height:14.5%;display:flex;align-items:center;justify-content:center}
-.bello{color:#c9cedf}
-.bello svg{width:6.2cqw;height:6.2cqw}
-.nclose{position:absolute;right:5.5%;top:50%;transform:translateY(-50%);background:none;border:0;padding:0;cursor:pointer;color:#2b2b2b}
-.nclose svg{width:5.6cqw;height:5.6cqw}
-.seg{position:absolute;left:3.5%;right:3.5%;top:16.5%;height:5.6%;display:flex;border-radius:1.6cqw;overflow:hidden;border:.18cqw solid #d7dae6}
-.seg button{flex:1;border:0;background:#fff;color:#333;font-family:inherit;font-weight:700;font-size:3.6cqw;cursor:pointer}
-.seg button.on{background:#0f6fde;color:#fff}
-.nillo{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:70%;aspect-ratio:1/1;border-radius:50%;background:#e4eaf7}
-.ncard{position:absolute;left:50%;transform:translateX(-50%);width:62%;height:9.5%;background:#fff;border-radius:2.6cqw;box-shadow:0 .4cqw 2cqw rgba(30,40,80,.12);display:flex;align-items:center;gap:3.2cqw;padding:0 4%;box-sizing:border-box}
-.ncard .dot{flex:none;width:7cqw;height:7cqw;border-radius:50%}
-.ncard .lines{flex:1;min-width:0}
-.ncard .bar{display:block;height:.95cqw;border-radius:1cqw;background:#dcdfe9;margin-bottom:1.6cqw}
-.ncard .bar.b1{width:78%}.ncard .bar.b2{width:55%}
-.ncard .tag{display:block;height:2.6cqw;width:34%;border:.3cqw solid #0f6fde;border-radius:1.3cqw;box-sizing:border-box}
-.ncard .ago{flex:none;font-size:2.6cqw;color:#8992a8}
-.ndone{position:absolute;left:7%;right:7%;top:63%;text-align:center}
-.ndone h3{margin:0 0 2.6cqw;font-size:5.2cqw;font-weight:700;color:#222}
-.ndone p{margin:0;font-size:3.5cqw;line-height:1.45;color:#6b7280}
+.menuwrap,.notifwrap{position:absolute;inset:0;z-index:30;background:center/100% 100% no-repeat}
+.menuwrap{background-image:url(menu.png)}
+.notifwrap{background-image:url(notif.png)}
+.ohit{position:absolute;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mrow{left:0;width:78%;height:6.6%}
 </style>
 <div class="wrap"><div class="ui" id="ui">
 <section class="page p-send" id="p-send"><span class="t h" data-w="397" style="left:6.30%;top:30.60%">Send payment to</span><span class="t ph meas" data-w="477" style="left:16.50%;top:38.05%">Name, username, email, mobile</span><span class="t link" data-w="235" style="left:6.30%;top:49.80%">Show all contacts</span><span class="t h" data-w="432" style="left:6.30%;top:56.65%">More ways to send</span><span class="t it" data-w="212" style="left:20.09%;top:64.65%">Send an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:66.50%">Customize, track, and send invoices.</span><span class="t it" data-w="373" style="left:20.09%;top:73.25%">Send and receive donations</span><span class="t sub" data-w="391" style="left:20.09%;top:75.10%">Find support and help others now.</span><div class="sbox" id="sbox"><input id="q" type="text" placeholder="Name, username, email, mobile" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" aria-label="Name, username, email, mobile"><button class="clr" id="clr" type="button" aria-label="Clear" hidden>&times;</button></div>
@@ -151,8 +126,8 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 <button class="crow" type="button" data-c="USD" data-n="us dollar" aria-checked="true"><img src="usd.png" alt=""><span><b>US Dollar</b><small>USD</small></span><svg class="chk" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#000"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2"/></svg></button>
 </div></div></div>
 </div></div><button class="hdrhit" id="hamhit" aria-label="Menu" style="left:1%;width:15%"></button><button class="hdrhit" id="bellhit" aria-label="Notifications" style="left:84%;width:15%"></button>
-<div class="menuwrap" id="menuPanel" hidden><div class="menudim" id="menudim"></div><div class="menuhead"><button class="logout" id="logoutBtn">LOG OUT</button><div class="hicons"><button class="gear" id="gearBtn" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.5-2-3.4-2.4.6a7.6 7.6 0 0 0-1.7-1l-.4-2.5H9.1l-.4 2.5a7.6 7.6 0 0 0-1.7 1l-2.4-.6-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.5 2 3.4 2.4-.6a7.6 7.6 0 0 0 1.7 1l.4 2.5h5.8l.4-2.5a7.6 7.6 0 0 0 1.7-1l2.4.6 2-3.4z"/></svg></button><button class="mclose" id="menuClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4l16 16M20 4L4 20"/></svg></button></div></div><div class="menudrawer"><button class="mitem sel" data-go="">Home</button><button class="mitem" data-go="send">Send and Request</button><button class="mitem" data-go="">Wallet</button><button class="mitem" data-go="">Activity</button><button class="mitem" data-go="">Help</button></div></div>
-<div class="notifwrap" id="notifPanel" hidden><div class="notifhead"><span class="bello"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-1.5 2h15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></span><button class="nclose" id="notifClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4l16 16M20 4L4 20"/></svg></button></div><div class="seg"><button class="on" id="segNotif">Notifications (0)</button><button id="segInbox">Inbox (0)</button></div><div class="nillo"></div><div class="ncard" style="top:31%"><span class="dot" style="background:#e0552c"></span><span class="lines"><span class="bar b1"></span><span class="bar b2"></span><span class="tag"></span></span><span class="ago">1h</span></div><div class="ncard" style="top:40.5%"><span class="dot" style="background:#15b17c"></span><span class="lines"><span class="bar b1"></span><span class="bar b2"></span><span class="tag"></span></span><span class="ago">1h</span></div><div class="ncard" style="top:50%"><span class="dot" style="background:#2a93e5"></span><span class="lines"><span class="bar b1"></span><span class="bar b2"></span><span class="tag"></span></span><span class="ago">1h</span></div><div class="ndone"><h3>All Done For Now</h3><p>Check back later for handy tips and recommendations to keep your account in tip top shape.</p></div></div>
+<div class="menuwrap" id="menuPanel" hidden><button class="ohit" id="menudim" aria-label="Close" style="left:78%;width:22%;top:0;height:100%"></button><button class="ohit" id="menuClose" aria-label="Close" style="left:80%;width:12%;top:7%;height:7%"></button><button class="ohit" id="gearBtn" aria-label="Settings" style="left:67%;width:10%;top:7%;height:7%"></button><button class="ohit" id="logoutBtn" aria-label="Log out" style="left:0;width:30%;top:7%;height:7%"></button><button class="ohit mrow" data-go="" style="top:15%" aria-label="Home"></button><button class="ohit mrow" data-go="send" style="top:21.5%" aria-label="Send and Request"></button><button class="ohit mrow" data-go="" style="top:28.3%" aria-label="Wallet"></button><button class="ohit mrow" data-go="" style="top:35%" aria-label="Activity"></button><button class="ohit mrow" data-go="" style="top:42%" aria-label="Help"></button></div>
+<div class="notifwrap" id="notifPanel" hidden><button class="ohit" id="notifClose" aria-label="Close" style="left:86%;width:12%;top:7%;height:7%"></button></div>
 <script>
 (function(){
 var ui=document.getElementById('ui'),names=['send','request','contacts','more','pay','done','loading'];
@@ -252,17 +227,11 @@ document.getElementById('hamhit').addEventListener('click',function(){notifPanel
 document.getElementById('bellhit').addEventListener('click',function(){menuPanel.hidden=true;notifPanel.hidden=false});
 ['menudim','menuClose','gearBtn','logoutBtn'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){menuPanel.hidden=true})});
 document.getElementById('notifClose').addEventListener('click',function(){notifPanel.hidden=true});
-document.querySelectorAll('.mitem').forEach(function(b){b.addEventListener('click',function(){
+document.querySelectorAll('.mrow').forEach(function(b){b.addEventListener('click',function(){
   menuPanel.hidden=true;
   var go=b.dataset.go;
   if(go)show(go);
 })});
-document.getElementById('segInbox').addEventListener('click',function(){
-  this.classList.add('on');document.getElementById('segNotif').classList.remove('on');
-});
-document.getElementById('segNotif').addEventListener('click',function(){
-  this.classList.add('on');document.getElementById('segInbox').classList.remove('on');
-});
 
 
 ui.querySelectorAll('.hit').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.tab)})});
