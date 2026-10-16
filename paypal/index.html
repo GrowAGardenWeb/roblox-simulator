@@ -81,7 +81,7 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 .inpay .cancel{cursor:pointer}
 #next{cursor:pointer}
 .p-loading{background-image:url(done.png)}
-.loadspin{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:9cqw;height:9cqw;border:1cqw solid #1b1f8a;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite}
+.loadspin{position:absolute;left:50%;top:45%;width:9cqw;height:9cqw;margin:-4.5cqw 0 0 -4.5cqw;border:1cqw solid #1b1f8a;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite;transform-origin:center}
 .donewrap{cursor:pointer}
 @media (prefers-reduced-motion:reduce){.loadspin{animation-duration:2s}}
 .sentline{position:absolute;left:8.7%;top:35%;width:82.6%;text-align:center;font-weight:700;font-size:5.4cqw;line-height:1.3;color:#1b1f8a}
@@ -105,7 +105,7 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 <div class="amt"><span>$</span><input id="amt" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off" aria-label="Amount"></div>
 <div class="note"><textarea id="nt" maxlength="280" placeholder="Add a note" aria-label="Add a note"></textarea><span class="cnt2" id="cnt">0/280</span></div>
 </section>
-<section class="page p-done" id="p-done"><span class="t ctr donebtn" id="donebtn" data-w="67" style="left:49.95%;top:78.50%">Done</span><span class="t ctr link2" id="link2" data-w="174" style="left:49.95%;top:83.00%">Send More</span><div class="sentline" id="sentline">You've Sent $0.00 USD to Someone</div>
+<section class="page p-done" id="p-done"><span class="t ctr donebtn" id="donebtn" data-w="67" style="left:49.95%;top:78.50%">Done</span><span class="t ctr link2" id="link2" data-w="174" style="left:49.95%;top:86.00%">Send More</span><div class="sentline" id="sentline">You've Sent $0.00 USD to Someone</div>
 <p class="sub3">We'll let know right away that you sent money. You can see the details in your Activity in case you need them later</p>
 <div class="donewrap"></div>
 </section>
