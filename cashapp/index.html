@@ -17,6 +17,7 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .amt{position:absolute;left:5.45%;top:19.76%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;white-space:nowrap;pointer-events:none}
 .digits{position:absolute;left:18.64%;top:12.24%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;white-space:nowrap;pointer-events:none}
 .cashtag{position:absolute;right:5.3%;top:12.37%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;white-space:nowrap;text-align:right;pointer-events:none}
+.savings{position:absolute;left:9.09%;top:42.04%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:9.26cqw;line-height:1;white-space:nowrap;pointer-events:none}
 .avatar{position:absolute;left:91.36%;top:6.19%;width:11.52cqw;height:11.52cqw;transform:translate(-50%,-50%);border-radius:50%;background:#2c2c2e center/cover no-repeat;pointer-events:none}
 .hitadd{position:absolute;left:3.64%;top:26.54%;width:45.45%;height:3.42%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .dockoverlay{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:100%;max-width:620px;display:flex;justify-content:center;pointer-events:none}
@@ -46,6 +47,7 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 <span class="amt" id="amt">$54.20</span>
 <span class="digits" id="digits">9427</span>
 <span class="cashtag" id="cashtag">$jwr2239</span>
+<span class="savings" id="savings">$0.00</span>
 <div class="avatar" id="avatar"></div>
 <button class="hitadd" id="hitadd" aria-label="Edit account"></button>
 </div></div>
@@ -62,6 +64,7 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
     <input type="file" accept="image/*" id="avatarfile" style="display:none">
   </div>
   <div class="sheetrow"><label>Cash balance</label><div class="inwrap"><span>$</span><input id="pbal" inputmode="decimal"></div></div>
+  <div class="sheetrow"><label>Savings balance</label><div class="inwrap"><span>$</span><input id="psav" inputmode="decimal"></div></div>
   <div class="sheetrow"><label>Card last 4 digits</label><div class="inwrap"><span>&#8226;&#8226;</span><input id="pdigits" inputmode="numeric" maxlength="4"></div></div>
   <div class="sheetrow"><label>Cashtag</label><div class="inwrap"><span>$</span><input id="ptag"></div></div>
   <button class="savebtn" id="savebtn">Done</button>
@@ -86,10 +89,12 @@ document.addEventListener('touchend',function(e){var now=Date.now();if(now-lastT
 var amt=document.getElementById('amt'),dock=document.getElementById('dock');
 var digits=document.getElementById('digits');
 var cashtag=document.getElementById('cashtag');
+var savings=document.getElementById('savings');
 var avatar=document.getElementById('avatar'),sheetavatar=document.getElementById('sheetavatar'),avatarfile=document.getElementById('avatarfile');
 
-var bal=54.20,cardDigits='9427',tag='jwr2239',avatarUrl=null;
+var bal=54.20,sav=0,cardDigits='9427',tag='jwr2239',avatarUrl=null;
 try{var s1=localStorage.getItem('cashapp_balance');if(s1!==null&&!isNaN(parseFloat(s1)))bal=parseFloat(s1)}catch(e){}
+try{var s0=localStorage.getItem('cashapp_savings');if(s0!==null&&!isNaN(parseFloat(s0)))sav=parseFloat(s0)}catch(e){}
 try{var s2=localStorage.getItem('cashapp_card_digits');if(s2&&/^\d{4}$/.test(s2))cardDigits=s2}catch(e){}
 try{var s3=localStorage.getItem('cashapp_cashtag');if(s3)tag=s3}catch(e){}
 try{var s4=localStorage.getItem('cashapp_avatar');if(s4)avatarUrl=s4}catch(e){}
@@ -109,21 +114,24 @@ function fitText(el,containerEl,baseFrac,maxWidthFrac){
 function renderAll(){
   amt.textContent='$'+bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   dock.textContent='$'+Math.round(bal).toLocaleString('en-US');
+  savings.textContent='$'+sav.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   digits.textContent=cardDigits;
   cashtag.textContent='$'+tag;
   if(avatarUrl){avatar.style.backgroundImage='url('+avatarUrl+')';sheetavatar.style.backgroundImage='url('+avatarUrl+')'}
   fitText(amt,ui,.149,.90);
   fitText(dock,dockbar,.094,.28);
+  fitText(savings,ui,.0926,.82);
 }
 renderAll();
 addEventListener('resize',renderAll);
 addEventListener('orientationchange',renderAll);
 
 var hitadd=document.getElementById('hitadd'),sheetwrap=document.getElementById('sheetwrap'),dim=document.getElementById('dim'),closebtn=document.getElementById('closebtn'),savebtn=document.getElementById('savebtn');
-var pbal=document.getElementById('pbal'),pdigits=document.getElementById('pdigits'),ptag=document.getElementById('ptag');
+var pbal=document.getElementById('pbal'),psav=document.getElementById('psav'),pdigits=document.getElementById('pdigits'),ptag=document.getElementById('ptag');
 
 function openSheet(){
   pbal.value=bal.toFixed(2);
+  psav.value=sav.toFixed(2);
   pdigits.value=cardDigits;
   ptag.value=tag;
   sheetwrap.hidden=false;
@@ -133,6 +141,8 @@ function closeSheet(){sheetwrap.hidden=true}
 function save(){
   var n=parseFloat(pbal.value);
   if(!isNaN(n)&&n>=0)bal=Math.round(n*100)/100;
+  var ns=parseFloat(psav.value);
+  if(!isNaN(ns)&&ns>=0)sav=Math.round(ns*100)/100;
   var d=pdigits.value.replace(/\D/g,'').slice(0,4);
   if(d.length===4)cardDigits=d;
   var t=ptag.value.replace(/^\$+/,'').replace(/[^a-zA-Z0-9]/g,'').slice(0,20);
@@ -140,6 +150,7 @@ function save(){
   renderAll();
   try{
     localStorage.setItem('cashapp_balance',bal);
+    localStorage.setItem('cashapp_savings',sav);
     localStorage.setItem('cashapp_card_digits',cardDigits);
     localStorage.setItem('cashapp_cashtag',tag);
   }catch(e){}
