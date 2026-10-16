@@ -79,7 +79,7 @@ html,body{margin:0;background:#fff;color:#000}
 <section class="page p-request" id="p-request"><span class="t h" data-w="531" style="left:6.30%;top:29.75%">Request payment from</span><span class="t sub2" data-w="752" style="left:6.30%;top:33.40%">You can request multiple payments from up to 20 people.</span><span class="t sub2" data-w="417" style="left:20.41%;top:40.70%">Name, username, email, mobile</span><span class="t cnt" data-w="53" style="left:87.73%;top:47.25%">0/20</span><span class="t h" data-w="497" style="left:6.30%;top:55.30%">More ways to request</span><span class="t it" data-w="233" style="left:20.09%;top:63.30%">Create an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:65.15%">Customize, track, and send invoices.</span><span class="t it" data-w="326" style="left:20.09%;top:71.90%">Create a Personal Profile</span><span class="t sub" data-w="367" style="left:20.09%;top:73.75%">Get paid from people you know.</span></section>
 <section class="page p-contacts" id="p-contacts"><span class="t ph" data-w="104" style="left:13.68%;top:31.40%">Search</span><span class="t it" data-w="382" style="left:21.82%;top:40.70%">Create your PayPal.Me profile</span><span class="t sub" data-w="323" style="left:21.82%;top:43.00%">Share your link and get paid.</span><span class="t btn" data-w="91" style="left:80.46%;top:41.75%">Create</span><span class="t link" data-w="304" style="left:4.99%;top:54.50%">View blocked contacts</span></section>
 <section class="page p-more" id="p-more"><span class="t it" data-w="233" style="left:33.12%;top:30.15%">Create an invoice</span><span class="t sub" data-w="418" style="left:21.17%;top:32.40%">Customize, track, and send invoices.</span><span class="t it" data-w="393" style="left:34.09%;top:40.80%">Create your PayPal.Me profile</span><span class="t sub" data-w="581" style="left:22.15%;top:43.05%">Help your friends and customers know it's you they</span><span class="t sub" data-w="126" style="left:46.80%;top:44.75%">are paying.</span><span class="t logo" data-w="186" style="left:39.85%;top:85.50%">PayPal</span><span class="t it" data-w="78" style="left:45.60%;top:91.60%">Help</span></section>
-<section class="page p-pay" id="p-pay"><span class="t h" data-w="305" style="left:42.56%;top:21.20%">Chloe Secrest</span><span class="t sub2" data-w="73" style="left:55.16%;top:23.80%">@chl1</span><span class="t cs" data-w="45" style="left:29.10%;top:22.15%">CS</span><span class="t usd" data-w="51" style="left:80.56%;top:29.75%">USD</span><span class="t sub2" data-w="621" style="left:16.29%;top:51.80%">For more information please read our <span class="lk">user agreement</span>.</span><span class="t ctr nx" data-w="67" style="left:49.95%;top:59.25%">Next</span><span class="t logo" data-w="186" style="left:39.85%;top:89.40%">PayPal</span><div class="nextbtn"></div>
+<section class="page p-pay" id="p-pay"><span class="t h nofit" id="pname" data-w="305" style="left:42.56%;top:21.20%">Chloe Secrest</span><span class="t sub2 nofit" id="puser" data-w="73" style="left:55.16%;top:23.80%">@chl1</span><span class="t cs nofit" id="pav" data-w="45" style="left:29.10%;top:22.15%">CS</span><span class="t usd" data-w="51" style="left:80.56%;top:29.75%">USD</span><span class="t sub2" data-w="621" style="left:16.29%;top:51.80%">For more information please read our <span class="lk">user agreement</span>.</span><span class="t ctr nx" data-w="67" style="left:49.95%;top:59.25%">Next</span><span class="t logo" data-w="186" style="left:39.85%;top:89.40%">PayPal</span><div class="nextbtn"></div>
 <button class="t ctr cancel" id="cancel" type="button" data-w="95" style="left:50%;top:65.35%">Cancel</button>
 <button class="pill" id="pill" type="button" aria-label="Currency"></button>
 <div class="amt"><span>$</span><input id="amt" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off" aria-label="Amount"></div>
@@ -104,12 +104,12 @@ function show(k){
 }
 function fit(){
   var k=ui.clientWidth/921;
-  ui.querySelectorAll('.t').forEach(function(e){
+  ui.querySelectorAll('.t:not(.nofit)').forEach(function(e){
     e.style.fontSize='100px';var w=e.getBoundingClientRect().width;
     e.style.fontSize=w?(100*parseFloat(e.dataset.w)*k/w)+'px':'';
   });
 }
-var sbox=document.getElementById('sbox'),q=document.getElementById('q'),clr=document.getElementById('clr'),res=document.getElementById('res'),timer,timer2;
+var sbox=document.getElementById('sbox'),q=document.getElementById('q'),clr=document.getElementById('clr'),res=document.getElementById('res'),timer,timer2,lastContact=null;
 function syncFont(){var m=ui.querySelector('.meas');if(m&&m.style.fontSize)q.style.fontSize=m.style.fontSize}
 function sync(){sbox.classList.toggle('on',document.activeElement===q||q.value!=='');clr.hidden=q.value===''}
 function search(){
@@ -120,10 +120,20 @@ function search(){
   timer=setTimeout(function(){
     res.hidden=false;res.className='res load';res.innerHTML='<i class="spin"></i>';
     timer2=setTimeout(function(){
-      var s=v.toLowerCase().replace(/^@/,'');
-      var hit=s.length>1&&'chloe secrest @chl1 chl1'.indexOf(s)>-1;
+      var s=v.replace(/^@/,'').trim();
+      var letters=s.replace(/[^a-zA-Z]/g,'');
+      var hit=letters.length>=3;
+      var html='';
+      if(hit){
+        var words=s.replace(/[^a-zA-Z ]/g,' ').trim().split(/\s+/).filter(Boolean);
+        var name=words.length?words.map(function(w){return w[0].toUpperCase()+w.slice(1).toLowerCase()}).join(' '):s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();
+        var user='@'+s.toLowerCase().replace(/[^a-z0-9]/g,'');
+        var av=(words.length>1?words[0][0]+words[1][0]:name.slice(0,2)).toUpperCase();
+        lastContact={name:name,user:user,av:av};
+        html='<p class="rh">People on PayPal</p><div class="row"><span class="av">'+av+'</span><span><b>'+name+'</b><small>'+user+'</small></span></div>';
+      }
       res.className='res';
-      res.innerHTML=(hit?'<p class="rh">People on PayPal</p><div class="row"><span class="av">CS</span><span><b>Chloe Secrest</b><small>@chl1</small></span></div>':'')+'<p class="rm">Can\'t find the right person? Try entering their email or mobile number instead.</p>';
+      res.innerHTML=html+'<p class="rm">Can\'t find the right person? Try entering their email or mobile number instead.</p>';
     },900);
   },600);
 }
@@ -159,7 +169,12 @@ pill.addEventListener('click',function(){cq.value='';filter();sheet.hidden=false
 cq.addEventListener('input',filter);
 ['shback','shx','dim'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){sheet.hidden=true})});
 sheet.querySelectorAll('.crow').forEach(function(r){r.addEventListener('click',function(){setCur(r.dataset.c)})});
-res.addEventListener('click',function(e){if(e.target.closest('.row')){show('pay');resetPay()}});
+res.addEventListener('click',function(e){if(e.target.closest('.row')&&lastContact){
+  document.getElementById('pname').textContent=lastContact.name;
+  document.getElementById('puser').textContent=lastContact.user;
+  document.getElementById('pav').textContent=lastContact.av;
+  show('pay');resetPay();
+}});
 document.getElementById('cancel').addEventListener('click',function(){show('send')});
 ui.querySelectorAll('.hit').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.tab)})});
 show((location.hash||'').slice(1));
