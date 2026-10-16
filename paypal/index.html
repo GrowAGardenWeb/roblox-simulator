@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-title" content="PayPal">
 <meta name="theme-color" content="#19247d">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" href="icon.png">
 <title>PayPal Send</title>
 <style>
 html,body{height:100dvh;overflow:hidden;margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-text-size-adjust:100%}
@@ -98,7 +98,10 @@ html,body{height:100dvh;overflow:hidden;margin:0;background:#fff;color:#000;touc
 .donewrap{position:absolute;left:3.7%;top:76%;width:92.6%;height:5%;border-radius:999px;background:#1b1f8a;z-index:1}
 #donebtn{z-index:2}
 .link2{color:#1b1f8a;font-weight:700}
+#splash{position:fixed;inset:0;z-index:999999;background:#0e319f;display:flex;align-items:center;justify-content:center;transition:opacity .3s ease}
+#splash img{width:32vw;max-width:170px;height:auto;pointer-events:none;user-select:none}
 </style>
+<div id="splash"><img src="icon.png" alt="PayPal" draggable="false"></div>
 <div class="wrap"><div class="ui" id="ui">
 <section class="page p-send" id="p-send"><span class="t h" data-w="397" style="left:6.30%;top:30.60%">Send payment to</span><span class="t ph meas" data-w="477" style="left:16.50%;top:38.05%">Name, username, email, mobile</span><span class="t link" data-w="235" style="left:6.30%;top:49.80%">Show all contacts</span><span class="t h" data-w="432" style="left:6.30%;top:56.65%">More ways to send</span><span class="t it" data-w="212" style="left:20.09%;top:64.65%">Send an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:66.50%">Customize, track, and send invoices.</span><span class="t it" data-w="373" style="left:20.09%;top:73.25%">Send and receive donations</span><span class="t sub" data-w="391" style="left:20.09%;top:75.10%">Find support and help others now.</span><div class="sbox" id="sbox"><input id="q" type="text" placeholder="Name, username, email, mobile" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" aria-label="Name, username, email, mobile"><button class="clr" id="clr" type="button" aria-label="Clear" hidden>&times;</button></div>
 <div class="res" id="res" hidden></div>
@@ -129,6 +132,12 @@ html,body{height:100dvh;overflow:hidden;margin:0;background:#fff;color:#000;touc
 </div></div>
 <script>
 (function(){
+setTimeout(function(){
+  var s=document.getElementById('splash');
+  if(!s)return;
+  s.style.opacity='0';
+  setTimeout(function(){s.remove()},300);
+},1500);
 document.addEventListener('gesturestart',function(e){e.preventDefault()},{passive:false});
 document.addEventListener('gesturechange',function(e){e.preventDefault()},{passive:false});
 document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault()},{passive:false});
