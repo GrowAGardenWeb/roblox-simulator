@@ -18,7 +18,8 @@
 //   POST /notify-blocked            { product } (Authorization: Bearer <session>) -> { ok }
 //   GET  /admin/whitelist/list      ?secret=ADMIN_SECRET -> { entries: [{email,product,expiresAt,addedAt}] }
 //   POST /admin/whitelist/add       { secret, email, product, days? } -> { ok }
-//                                   product: 'mobile' | 'headless' | 'all'
+//                                   product: 'mobile' | 'headless' | 'cashapp' |
+//                                   'phantom' | 'exodus' | 'megapack' | 'all'
 //                                   days: optional — omit/0 for permanent, e.g. 30 for one month
 //   POST /admin/whitelist/remove    { secret, email } -> { ok }
 //
@@ -51,6 +52,24 @@ const ADMIN_EMAILS = new Set(['munfuja11@gmail.com']);
 const PRODUCTS = {
   mobile: { price: 'price_1UP7I9FvaDdMVYC9aNf1fQ4J', mode: 'subscription' },
   headless: { price: 'price_1UP7I9FvaDdMVYC9kNeu3VG9', mode: 'payment' },
+  // TODO: replace price_REPLACE_ME_* below with the real Stripe Price IDs
+  // once created in the dashboard (Live mode) — see the price list in the
+  // comment above PRODUCT_BUNDLES.
+  cashapp: { price: 'price_REPLACE_ME_CASHAPP', mode: 'subscription' },
+  phantom: { price: 'price_REPLACE_ME_PHANTOM', mode: 'subscription' },
+  exodus: { price: 'price_REPLACE_ME_EXODUS', mode: 'subscription' },
+  megapack: { price: 'price_REPLACE_ME_MEGAPACK', mode: 'subscription' },
+};
+
+// Products to create in Stripe (Live mode), all recurring/month unless noted:
+//   Cash App   $10/mo
+//   Phantom    $10/mo
+//   Exodus     $10/mo
+//   Mega Pack  $22/mo  — grants cashapp + phantom + exodus together
+// A purchase of a bundle product grants every product listed here for it,
+// instead of just the bundle's own key.
+const PRODUCT_BUNDLES = {
+  megapack: ['cashapp', 'phantom', 'exodus'],
 };
 
 const ALLOWED_ORIGINS = new Set([
@@ -529,7 +548,12 @@ async function handleWebhook(request, env) {
     const product = session.metadata && session.metadata.product;
     if (sub && product) {
       const email = session.customer_details?.email;
-      await applyGrant(env, sub, email, product, null, 'stripe');
+      // Grant the bundle's own key too (so the storefront can show the
+      // bundle card itself as owned), alongside everything it unlocks.
+      const grantedProducts = PRODUCT_BUNDLES[product] ? [...PRODUCT_BUNDLES[product], product] : [product];
+      for (const p of grantedProducts) {
+        await applyGrant(env, sub, email, p, null, 'stripe');
+      }
 
       const amount = typeof session.amount_total === 'number' ? (session.amount_total / 100).toFixed(2) : '?';
       const currency = (session.currency || 'usd').toUpperCase();
