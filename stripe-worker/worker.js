@@ -67,11 +67,11 @@ const PRODUCTS = {
 //   Phantom    $10/mo
 //   Exodus     $10/mo
 //   PayPal     $10/mo
-//   Mega Pack  $22/mo  — grants cashapp + phantom + exodus together
+//   Mega Pack  $33/mo  — grants cashapp + phantom + exodus + paypal together
 // A purchase of a bundle product grants every product listed here for it,
 // instead of just the bundle's own key.
 const PRODUCT_BUNDLES = {
-  megapack: ['cashapp', 'phantom', 'exodus'],
+  megapack: ['cashapp', 'phantom', 'exodus', 'paypal'],
 };
 
 const ALLOWED_ORIGINS = new Set([
