@@ -11,21 +11,22 @@
 <title>Money</title>
 <style>
 html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}
-.wrap{position:fixed;top:0;left:0;right:0;height:var(--app-h,100%);margin:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.ui{position:relative;width:100%;max-width:620px;aspect-ratio:1320/2868;flex:none;overflow:hidden;container-type:inline-size;background:center/100% 100% no-repeat url(money.png)}
-.amt{position:absolute;left:5.45%;top:31.42%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;white-space:nowrap;-webkit-user-select:none;user-select:none;cursor:pointer}
+.wrap{position:fixed;top:0;left:0;right:0;height:var(--app-h,100%);margin:0;overflow:hidden;display:flex;justify-content:center}
+.scroll{width:100%;max-width:620px;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
+.ui{position:relative;width:100%;aspect-ratio:1320/5238;container-type:inline-size;background:top/100% 100% no-repeat url(money.png)}
+.amt{position:absolute;left:5.45%;top:17.2%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;white-space:nowrap;-webkit-user-select:none;user-select:none;cursor:pointer}
 .amt.editing{-webkit-user-select:text;user-select:text}
-.dock{position:absolute;left:28.98%;top:79.71%;transform:translate(-50%,-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;color:#fff;font-size:5.83cqw;line-height:1;white-space:nowrap;pointer-events:none}
-.amtin{position:absolute;left:5.45%;top:31.42%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:70%;display:none}
+.dock{position:absolute;left:28.98%;top:88.88%;transform:translate(-50%,-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;color:#fff;font-size:5.83cqw;line-height:1;white-space:nowrap;pointer-events:none}
+.amtin{position:absolute;left:5.45%;top:17.2%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:70%;display:none}
 .amt.hold{opacity:.45;transition:opacity 3s linear}
 </style>
 </head>
 <body>
-<div class="wrap"><div class="ui" id="ui">
+<div class="wrap"><div class="scroll"><div class="ui" id="ui">
 <span class="amt" id="amt">$54.20</span>
 <input class="amtin" id="amtin" inputmode="decimal">
 <span class="dock" id="dock">$54</span>
-</div></div>
+</div></div></div>
 <script>
 (function(){
 function AH(){var h=innerHeight;try{var sa=navigator.standalone===true||(matchMedia&&matchMedia('(display-mode: standalone)').matches);if(sa&&innerHeight>innerWidth)h=Math.max(h,screen.height||0,(visualViewport&&visualViewport.height)||0)}catch(e){}document.documentElement.style.setProperty('--app-h',h+'px');return h}
