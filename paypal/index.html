@@ -1,8 +1,8 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>PayPal Send</title>
 <style>
-html,body{margin:0;background:#fff;color:#000}
+html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-text-size-adjust:100%}
 .wrap{max-width:460px;margin:0 auto;container-type:inline-size}
 .ui{position:relative;width:100%;aspect-ratio:1320/2868;overflow:hidden;font-family:"Helvetica Neue",Arial,sans-serif;color:#000}
 .page{position:absolute;inset:0;background:center/100% 100% no-repeat;visibility:hidden}
@@ -208,7 +208,7 @@ document.getElementById('next').addEventListener('click',function(){
   var who=(lastContact&&lastContact.name)||document.getElementById('pname').textContent;
   document.getElementById('sentline').textContent="You've Sent $"+amt.value+' '+cur+' to '+who;
   show('loading');
-  setTimeout(function(){show('done')},1100);
+  setTimeout(function(){show('done')},3000);
 });
 document.getElementById('donebtn').addEventListener('click',function(){show('send')});
 document.querySelector('.donewrap').addEventListener('click',function(){show('send')});
