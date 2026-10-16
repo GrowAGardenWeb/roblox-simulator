@@ -92,11 +92,12 @@ html,body{margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-
 #donebtn{z-index:2}
 .link2{color:#1b1f8a;font-weight:700}
 .hdrhit{position:absolute;top:6%;height:8%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:5}
-.menuwrap{position:absolute;inset:0;z-index:30;pointer-events:none;background:#1a2c8a;transform:translateX(-100%);transition:transform .32s cubic-bezier(.32,.72,0,1)}
-.menuwrap.open{transform:translateX(0);pointer-events:auto}
+.menuwrap{position:absolute;inset:0;z-index:30;pointer-events:none;background:rgba(0,0,0,0);opacity:0;transition:opacity .28s ease}
+.menuwrap.open{opacity:1;background:rgba(0,0,0,.35);pointer-events:auto}
 .menuhdr2{position:absolute;left:0;top:0;width:100%;height:14.5%;background:center/100% 100% no-repeat;background-image:url(menuhdr.png)}
-.menudrawer2{position:absolute;left:0;top:14.5%;height:85.5%;width:100%;background:center/100% 100% no-repeat;background-image:url(menu.png)}
-@media (prefers-reduced-motion:reduce){.menuwrap{transition-duration:.01s}}
+.menudrawer2{position:absolute;left:0;top:14.5%;height:85.5%;width:78%;background:center/100% 100% no-repeat;background-image:url(menu.png);transform:translateX(-100%);transition:transform .32s cubic-bezier(.32,.72,0,1)}
+.menuwrap.open .menudrawer2{transform:translateX(0)}
+@media (prefers-reduced-motion:reduce){.menuwrap{transition-duration:.01s}.menudrawer2{transition-duration:.01s}}
 .ohit{position:absolute;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .mrow{left:0;width:100%;height:7.72%}
 </style>
