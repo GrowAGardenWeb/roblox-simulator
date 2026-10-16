@@ -18,9 +18,29 @@ html,body{margin:0;background:#fff;color:#000}
 .ph,.cnt{color:#6b6b6b}.sub2{color:#000}
 .link{color:#1a5fe0;text-decoration:underline}.btn{color:#1a5fe0;font-weight:700}
 .logo{font-weight:800;letter-spacing:-.03em}
+[hidden]{display:none!important}
+.meas{visibility:hidden}
+.sbox{position:absolute;z-index:2;left:6.08%;top:35.3%;width:87.84%;height:5.35%;box-sizing:border-box;border:.33cqw solid transparent;border-radius:999px;display:flex;align-items:center;background:transparent}
+.sbox.on{border-color:#2563e6;background:#fff}
+.sbox input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;padding:0 0 0 11.9%;font-family:inherit;color:#000;font-size:4cqw}
+.sbox.on input{padding-left:4.8%}
+.sbox input::placeholder{color:#6b6b6b;opacity:1}
+.clr{flex:none;width:7.2cqw;height:7.2cqw;margin-right:3.5cqw;border:0;border-radius:50%;background:#eef0f5;color:#000;font-size:5cqw;line-height:1;cursor:pointer;padding:0}
+.res{position:absolute;z-index:3;left:6.4%;width:87.1%;top:41.5%;box-sizing:border-box;background:#fff;border-radius:3.3cqw;box-shadow:0 .5cqw 3cqw rgba(0,0,0,.14);padding:3.7cqw;font-size:3.3cqw;line-height:1.15;color:#000}
+.res.load{height:15.9cqw;padding:0;display:flex;align-items:center;justify-content:center}
+.spin{width:5.2cqw;height:5.2cqw;border:.55cqw solid #000;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.rh{margin:0 0 4.4cqw;font-size:2.9cqw}
+.row{display:flex;align-items:center;gap:3.4cqw;margin-bottom:5cqw}
+.av{width:10.9cqw;height:10.9cqw;border-radius:50%;background:#2c5fe0;color:#fff;display:flex;align-items:center;justify-content:center;font-size:3.3cqw}
+.row b{display:block;font-weight:400;font-size:3.1cqw}.row small{display:block;font-size:2.7cqw;margin-top:1.1cqw}
+.rm{margin:0;font-size:3.4cqw;line-height:1.2}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2s}}
 </style>
 <div class="wrap"><div class="ui" id="ui">
-<section class="page p-send" id="p-send"><span class="t h" data-w="397" style="left:6.30%;top:30.60%">Send payment to</span><span class="t ph" data-w="477" style="left:16.50%;top:38.05%">Name, username, email, mobile</span><span class="t link" data-w="235" style="left:6.30%;top:49.80%">Show all contacts</span><span class="t h" data-w="432" style="left:6.30%;top:56.65%">More ways to send</span><span class="t it" data-w="212" style="left:20.09%;top:64.65%">Send an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:66.50%">Customize, track, and send invoices.</span><span class="t it" data-w="373" style="left:20.09%;top:73.25%">Send and receive donations</span><span class="t sub" data-w="391" style="left:20.09%;top:75.10%">Find support and help others now.</span></section>
+<section class="page p-send" id="p-send"><span class="t h" data-w="397" style="left:6.30%;top:30.60%">Send payment to</span><span class="t ph meas" data-w="477" style="left:16.50%;top:38.05%">Name, username, email, mobile</span><span class="t link" data-w="235" style="left:6.30%;top:49.80%">Show all contacts</span><span class="t h" data-w="432" style="left:6.30%;top:56.65%">More ways to send</span><span class="t it" data-w="212" style="left:20.09%;top:64.65%">Send an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:66.50%">Customize, track, and send invoices.</span><span class="t it" data-w="373" style="left:20.09%;top:73.25%">Send and receive donations</span><span class="t sub" data-w="391" style="left:20.09%;top:75.10%">Find support and help others now.</span><div class="sbox" id="sbox"><input id="q" type="text" placeholder="Name, username, email, mobile" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" aria-label="Name, username, email, mobile"><button class="clr" id="clr" type="button" aria-label="Clear" hidden>&times;</button></div>
+<div class="res" id="res" hidden></div>
+</section>
 <section class="page p-request" id="p-request"><span class="t h" data-w="531" style="left:6.30%;top:29.75%">Request payment from</span><span class="t sub2" data-w="752" style="left:6.30%;top:33.40%">You can request multiple payments from up to 20 people.</span><span class="t sub2" data-w="417" style="left:20.41%;top:40.70%">Name, username, email, mobile</span><span class="t cnt" data-w="53" style="left:87.73%;top:47.25%">0/20</span><span class="t h" data-w="497" style="left:6.30%;top:55.30%">More ways to request</span><span class="t it" data-w="233" style="left:20.09%;top:63.30%">Create an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:65.15%">Customize, track, and send invoices.</span><span class="t it" data-w="326" style="left:20.09%;top:71.90%">Create a Personal Profile</span><span class="t sub" data-w="367" style="left:20.09%;top:73.75%">Get paid from people you know.</span></section>
 <section class="page p-contacts" id="p-contacts"><span class="t ph" data-w="104" style="left:13.68%;top:31.40%">Search</span><span class="t it" data-w="382" style="left:21.82%;top:40.70%">Create your PayPal.Me profile</span><span class="t sub" data-w="323" style="left:21.82%;top:43.00%">Share your link and get paid.</span><span class="t btn" data-w="91" style="left:80.46%;top:41.75%">Create</span><span class="t link" data-w="304" style="left:4.99%;top:54.50%">View blocked contacts</span></section>
 <section class="page p-more" id="p-more"><span class="t it" data-w="233" style="left:33.12%;top:30.15%">Create an invoice</span><span class="t sub" data-w="418" style="left:21.17%;top:32.40%">Customize, track, and send invoices.</span><span class="t it" data-w="393" style="left:34.09%;top:40.80%">Create your PayPal.Me profile</span><span class="t sub" data-w="581" style="left:22.15%;top:43.05%">Help your friends and customers know it's you they</span><span class="t sub" data-w="126" style="left:46.80%;top:44.75%">are paying.</span><span class="t logo" data-w="186" style="left:39.85%;top:85.50%">PayPal</span><span class="t it" data-w="78" style="left:45.60%;top:91.60%">Help</span></section>
@@ -32,7 +52,7 @@ function show(k){
   if(names.indexOf(k)<0)k='send';
   names.forEach(function(n){document.getElementById('p-'+n).classList.toggle('on',n===k)});
   ui.querySelectorAll('.tab').forEach(function(e){e.classList.toggle('on',e.dataset.for===k)});
-  try{history.replaceState(null,'','#'+k)}catch(e){}
+  resetSearch();try{history.replaceState(null,'','#'+k)}catch(e){}
 }
 function fit(){
   var k=ui.clientWidth/921;
@@ -41,9 +61,30 @@ function fit(){
     if(w)e.style.fontSize=(100*parseFloat(e.dataset.w)*k/w)+'px';
   });
 }
+var sbox=document.getElementById('sbox'),q=document.getElementById('q'),clr=document.getElementById('clr'),res=document.getElementById('res'),timer;
+function syncFont(){var m=ui.querySelector('.meas');if(m&&m.style.fontSize)q.style.fontSize=m.style.fontSize}
+function upd(){
+  var v=q.value.trim();
+  sbox.classList.toggle('on',document.activeElement===q||q.value!=='');
+  clr.hidden=q.value==='';
+  clearTimeout(timer);
+  if(!v){res.hidden=true;return}
+  res.hidden=false;res.className='res load';res.innerHTML='<i class="spin"></i>';
+  timer=setTimeout(function(){
+    var s=v.toLowerCase().replace(/^@/,'');
+    var hit=s.length>1&&'chloe secrest @chl1 chl1'.indexOf(s)>-1;
+    res.className='res';
+    res.innerHTML=(hit?'<p class="rh">People on PayPal</p><div class="row"><span class="av">CS</span><span><b>Chloe Secrest</b><small>@chl1</small></span></div>':'')+'<p class="rm">Can\'t find the right person? Try entering their email or mobile number instead.</p>';
+  },700);
+}
+function resetSearch(){q.value='';q.blur();upd()}
+q.addEventListener('input',upd);q.addEventListener('focus',upd);q.addEventListener('blur',upd);
+q.addEventListener('keydown',function(e){if(e.key==='Enter')q.blur()});
+clr.addEventListener('click',function(){q.value='';upd();q.focus()});
+ui.addEventListener('pointerdown',function(e){if(!e.target.closest('#sbox,#res'))q.blur()});
 ui.querySelectorAll('.hit').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.tab)})});
 show((location.hash||'').slice(1));
-fit();window.addEventListener('resize',fit);
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+fit();syncFont();window.addEventListener('resize',function(){fit();syncFont()});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){fit();syncFont()});
 })();
 </script>
