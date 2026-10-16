@@ -1,29 +1,49 @@
-<!doctype html>
-<html lang="es"><head><meta charset="utf-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Send</title>
+<title>PayPal Send</title>
 <style>
-html,body{margin:0;background:#fff}
+html,body{margin:0;background:#fff;color:#000}
 .wrap{max-width:460px;margin:0 auto;container-type:inline-size}
-.ui{position:relative;width:100%;aspect-ratio:1320/2868;background:url(base.png) center/100% 100% no-repeat;font-family:"Helvetica Neue",Arial,sans-serif;color:#000}
-.t{position:absolute;white-space:nowrap;line-height:1;transform:translateY(-50%)}
-.tab{font-weight:700;font-size:4.6cqw;color:#6b6b6b;transform:translate(-50%,-50%)}
+.ui{position:relative;width:100%;aspect-ratio:1320/2868;overflow:hidden;font-family:"Helvetica Neue",Arial,sans-serif;color:#000}
+.page{position:absolute;inset:0;background:center/100% 100% no-repeat;visibility:hidden}
+.page.on{visibility:visible}
+.p-send{background-image:url(send.png)}.p-request{background-image:url(request.png)}
+.p-contacts{background-image:url(contacts.png)}.p-more{background-image:url(more.png)}
+.t{position:absolute;white-space:nowrap;line-height:1;transform:translateY(-50%);font-size:4.6cqw}
+.tab{font-weight:700;color:#6b6b6b;transform:translate(-50%,-50%);pointer-events:none}
 .tab.on{color:#000}
-.h{font-weight:800;font-size:6.6cqw;letter-spacing:-.02em}
-.ph{font-size:4.9cqw;color:#6b6b6b}
-.link{font-size:4.7cqw;color:#1a5fe0;text-decoration:underline}
-.it{font-size:4.6cqw}.sub{font-size:3.9cqw}
-</style></head><body><div class="wrap"><div class="ui">
-<span class="t tab on" style="left:22.3%;top:19.9%">Send</span>
-<span class="t tab" style="left:45%;top:19.9%">Request</span>
-<span class="t tab" style="left:67.7%;top:19.9%">Contacts</span>
-<span class="t tab" style="left:90.4%;top:19.9%">More</span>
-<span class="t h" style="left:6.4%;top:30.6%">Send payment to</span>
-<span class="t ph" style="left:16.5%;top:38%">Name, username, email, mobile</span>
-<span class="t link" style="left:6.4%;top:49.8%">Show all contacts</span>
-<span class="t h" style="left:6.4%;top:56.7%">More ways to send</span>
-<span class="t it" style="left:20.1%;top:64.7%">Send an invoice</span>
-<span class="t sub" style="left:20.1%;top:66.5%;margin-top:.6cqw">Customize, track, and send invoices.</span>
-<span class="t it" style="left:20.1%;top:73.3%">Send and receive donations</span>
-<span class="t sub" style="left:20.1%;top:75.1%;margin-top:.6cqw">Find support and help others now.</span>
-</div></div></body></html>
+.hit{position:absolute;top:17.3%;height:5%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hit:focus-visible{outline:2px solid #1a5fe0;outline-offset:-2px}
+.h{font-weight:800;letter-spacing:-.02em}
+.ph,.cnt{color:#6b6b6b}.sub2{color:#000}
+.link{color:#1a5fe0;text-decoration:underline}.btn{color:#1a5fe0;font-weight:700}
+.logo{font-weight:800;letter-spacing:-.03em}
+</style>
+<div class="wrap"><div class="ui" id="ui">
+<section class="page p-send" id="p-send"><span class="t h" data-w="397" style="left:6.30%;top:30.60%">Send payment to</span><span class="t ph" data-w="477" style="left:16.50%;top:38.05%">Name, username, email, mobile</span><span class="t link" data-w="235" style="left:6.30%;top:49.80%">Show all contacts</span><span class="t h" data-w="432" style="left:6.30%;top:56.65%">More ways to send</span><span class="t it" data-w="212" style="left:20.09%;top:64.65%">Send an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:66.50%">Customize, track, and send invoices.</span><span class="t it" data-w="373" style="left:20.09%;top:73.25%">Send and receive donations</span><span class="t sub" data-w="391" style="left:20.09%;top:75.10%">Find support and help others now.</span></section>
+<section class="page p-request" id="p-request"><span class="t h" data-w="531" style="left:6.30%;top:29.75%">Request payment from</span><span class="t sub2" data-w="752" style="left:6.30%;top:33.40%">You can request multiple payments from up to 20 people.</span><span class="t sub2" data-w="417" style="left:20.41%;top:40.70%">Name, username, email, mobile</span><span class="t cnt" data-w="53" style="left:87.73%;top:47.25%">0/20</span><span class="t h" data-w="497" style="left:6.30%;top:55.30%">More ways to request</span><span class="t it" data-w="233" style="left:20.09%;top:63.30%">Create an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:65.15%">Customize, track, and send invoices.</span><span class="t it" data-w="326" style="left:20.09%;top:71.90%">Create a Personal Profile</span><span class="t sub" data-w="367" style="left:20.09%;top:73.75%">Get paid from people you know.</span></section>
+<section class="page p-contacts" id="p-contacts"><span class="t ph" data-w="104" style="left:13.68%;top:31.40%">Search</span><span class="t it" data-w="382" style="left:21.82%;top:40.70%">Create your PayPal.Me profile</span><span class="t sub" data-w="323" style="left:21.82%;top:43.00%">Share your link and get paid.</span><span class="t btn" data-w="91" style="left:80.46%;top:41.75%">Create</span><span class="t link" data-w="304" style="left:4.99%;top:54.50%">View blocked contacts</span></section>
+<section class="page p-more" id="p-more"><span class="t it" data-w="233" style="left:33.12%;top:30.15%">Create an invoice</span><span class="t sub" data-w="418" style="left:21.17%;top:32.40%">Customize, track, and send invoices.</span><span class="t it" data-w="393" style="left:34.09%;top:40.80%">Create your PayPal.Me profile</span><span class="t sub" data-w="581" style="left:22.15%;top:43.05%">Help your friends and customers know it's you they</span><span class="t sub" data-w="126" style="left:46.80%;top:44.75%">are paying.</span><span class="t logo" data-w="186" style="left:39.85%;top:85.50%">PayPal</span><span class="t it" data-w="78" style="left:45.60%;top:91.60%">Help</span></section>
+<button class="hit" data-tab="send" aria-label="Send" style="left:12.70%;width:19.11%"></button><span class="t tab" data-for="send" data-w="67" style="left:22.26%;top:19.85%">Send</span><button class="hit" data-tab="request" aria-label="Request" style="left:35.50%;width:19.00%"></button><span class="t tab" data-for="request" data-w="107" style="left:44.95%;top:19.85%">Request</span><button class="hit" data-tab="contacts" aria-label="Contacts" style="left:58.20%;width:19.11%"></button><span class="t tab" data-for="contacts" data-w="117" style="left:67.64%;top:19.85%">Contacts</span><button class="hit" data-tab="more" aria-label="More" style="left:80.89%;width:19.11%"></button><span class="t tab" data-for="more" data-w="72" style="left:90.45%;top:19.85%">More</span></div></div>
+<script>
+(function(){
+var ui=document.getElementById('ui'),names=['send','request','contacts','more'];
+function show(k){
+  if(names.indexOf(k)<0)k='send';
+  names.forEach(function(n){document.getElementById('p-'+n).classList.toggle('on',n===k)});
+  ui.querySelectorAll('.tab').forEach(function(e){e.classList.toggle('on',e.dataset.for===k)});
+  try{history.replaceState(null,'','#'+k)}catch(e){}
+}
+function fit(){
+  var k=ui.clientWidth/921;
+  ui.querySelectorAll('.t').forEach(function(e){
+    e.style.fontSize='100px';var w=e.getBoundingClientRect().width;
+    if(w)e.style.fontSize=(100*parseFloat(e.dataset.w)*k/w)+'px';
+  });
+}
+ui.querySelectorAll('.hit').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.tab)})});
+show((location.hash||'').slice(1));
+fit();window.addEventListener('resize',fit);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
