@@ -391,10 +391,11 @@ button.prow{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:ba
 <script src="cfg.js"></script>
 <script>
 (function(){var p=document.getElementById('phone');
-function fh(){var h=innerHeight,sa=(navigator.standalone||matchMedia('(display-mode: standalone)').matches),sh=Math.max(screen.height,screen.width);
-if(sa&&innerHeight<innerWidth*1.2===false&&sh>h&&sh-h<120)h=sh;
+var pr=document.createElement('div');pr.style.cssText='position:fixed;left:0;top:0;width:0;visibility:hidden;padding-top:env(safe-area-inset-top,0px)';document.body.appendChild(pr);
+function fh(){var h=innerHeight,st=pr.offsetHeight,sh=Math.max(screen.height,screen.width),d=sh-h;
+if(innerHeight>innerWidth&&st>0&&Math.abs(d-st)<=6)h=sh;
 p.style.bottom='auto';p.style.height=h+'px'}
-fh();addEventListener('resize',fh);addEventListener('orientationchange',function(){setTimeout(fh,300)});addEventListener('pageshow',fh)})();
+fh();addEventListener('resize',fh);addEventListener('orientationchange',function(){setTimeout(fh,300)});addEventListener('pageshow',fh);setTimeout(fh,300)})();
 </script>
 <script>
 const imgSrc=k=>'img/'+k+'.webp';
