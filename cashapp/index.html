@@ -13,33 +13,36 @@
 html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}
 .wrap{position:fixed;top:0;left:0;right:0;height:var(--app-h,100%);margin:0;overflow:hidden;display:flex;justify-content:center}
 .scroll{width:100%;max-width:620px;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
-.ui{position:relative;width:100%;aspect-ratio:1320/5238;container-type:inline-size;background:top/100% 100% no-repeat url(money.png)}
-.amt{position:absolute;left:5.45%;top:17.2%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;white-space:nowrap;-webkit-user-select:none;user-select:none;cursor:pointer}
+.ui{position:relative;width:100%;aspect-ratio:1320/4560;container-type:inline-size;background:top/100% 100% no-repeat url(money.png)}
+.amt{position:absolute;left:5.45%;top:19.76%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;white-space:nowrap;-webkit-user-select:none;user-select:none;cursor:pointer}
 .amt.editing{-webkit-user-select:text;user-select:text}
-.dock{position:absolute;left:28.98%;top:88.88%;transform:translate(-50%,-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;color:#fff;font-size:5.83cqw;line-height:1;white-space:nowrap;pointer-events:none}
-.amtin{position:absolute;left:5.45%;top:17.2%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:70%;display:none}
+.amtin{position:absolute;left:5.45%;top:19.76%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:70%;display:none}
 .amt.hold{opacity:.45;transition:opacity 3s linear}
-.digits{position:absolute;left:18.64%;top:10.65%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;white-space:nowrap;cursor:pointer}
-.digitsin{position:absolute;left:18.64%;top:10.65%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:16%;display:none}
-.cashtag{position:absolute;right:5.3%;top:10.77%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;white-space:nowrap;cursor:pointer;text-align:right}
-.cashtagin{position:absolute;right:5.3%;top:10.77%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:40%;text-align:right;display:none}
+.digits{position:absolute;left:18.64%;top:12.24%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;white-space:nowrap;cursor:pointer}
+.digitsin{position:absolute;left:18.64%;top:12.24%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:16%;display:none}
+.cashtag{position:absolute;right:5.3%;top:12.37%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;white-space:nowrap;cursor:pointer;text-align:right}
+.cashtagin{position:absolute;right:5.3%;top:12.37%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;background:transparent;border:0;outline:0;padding:0;width:40%;text-align:right;display:none}
 .digits.hold,.cashtag.hold{opacity:.45;transition:opacity 3s linear}
-.avatar{position:absolute;left:91.36%;top:5.39%;width:11.52cqw;height:11.52cqw;transform:translate(-50%,-50%);border-radius:50%;background:#2c2c2e center/cover no-repeat;cursor:pointer}
+.avatar{position:absolute;left:91.36%;top:6.19%;width:11.52cqw;height:11.52cqw;transform:translate(-50%,-50%);border-radius:50%;background:#2c2c2e center/cover no-repeat;cursor:pointer}
 .avatarfile{display:none}
+.dockoverlay{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:100%;max-width:620px;display:flex;justify-content:center;pointer-events:none}
+.dockbar{position:relative;width:61.82%;aspect-ratio:816/186;container-type:inline-size;background:center/100% 100% no-repeat url(dock.png);pointer-events:auto}
+.dock{position:absolute;left:15.99%;top:51.6%;transform:translate(-50%,-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;color:#fff;font-size:9.4cqw;line-height:1;white-space:nowrap;pointer-events:none}
 </style>
 </head>
 <body>
 <div class="wrap"><div class="scroll"><div class="ui" id="ui">
 <span class="amt" id="amt">$54.20</span>
 <input class="amtin" id="amtin" inputmode="decimal">
-<span class="dock" id="dock">$54</span>
 <span class="digits" id="digits">9427</span>
 <input class="digitsin" id="digitsin" inputmode="numeric" maxlength="4">
 <span class="cashtag" id="cashtag">$jwr2239</span>
 <input class="cashtagin" id="cashtagin">
 <div class="avatar" id="avatar"></div>
 <input type="file" accept="image/*" class="avatarfile" id="avatarfile">
-</div></div></div>
+</div></div>
+<div class="dockoverlay"><div class="dockbar"><span class="dock" id="dock">$54</span></div></div>
+</div>
 <script>
 (function(){
 function AH(){var h=innerHeight;try{var sa=navigator.standalone===true||(matchMedia&&matchMedia('(display-mode: standalone)').matches);if(sa&&innerHeight>innerWidth)h=Math.max(h,screen.height||0,(visualViewport&&visualViewport.height)||0)}catch(e){}document.documentElement.style.setProperty('--app-h',h+'px');return h}
