@@ -94,14 +94,30 @@ try{var s2=localStorage.getItem('cashapp_card_digits');if(s2&&/^\d{4}$/.test(s2)
 try{var s3=localStorage.getItem('cashapp_cashtag');if(s3)tag=s3}catch(e){}
 try{var s4=localStorage.getItem('cashapp_avatar');if(s4)avatarUrl=s4}catch(e){}
 
+var ui=document.getElementById('ui'),dockbar=document.querySelector('.dockbar');
+function fitText(el,containerEl,baseFrac,maxWidthFrac){
+  var cw=containerEl.getBoundingClientRect().width;
+  if(!cw)return;
+  var fontPx=cw*baseFrac;
+  el.style.fontSize=fontPx+'px';
+  var tw=el.getBoundingClientRect().width;
+  var maxW=cw*maxWidthFrac;
+  if(tw>maxW){
+    el.style.fontSize=(fontPx*(maxW/tw))+'px';
+  }
+}
 function renderAll(){
-  amt.textContent='$'+bal.toFixed(2);
-  dock.textContent='$'+Math.round(bal);
+  amt.textContent='$'+bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  dock.textContent='$'+Math.round(bal).toLocaleString('en-US');
   digits.textContent=cardDigits;
   cashtag.textContent='$'+tag;
   if(avatarUrl){avatar.style.backgroundImage='url('+avatarUrl+')';sheetavatar.style.backgroundImage='url('+avatarUrl+')'}
+  fitText(amt,ui,.149,.90);
+  fitText(dock,dockbar,.094,.28);
 }
 renderAll();
+addEventListener('resize',renderAll);
+addEventListener('orientationchange',renderAll);
 
 var hitadd=document.getElementById('hitadd'),sheetwrap=document.getElementById('sheetwrap'),dim=document.getElementById('dim'),closebtn=document.getElementById('closebtn'),savebtn=document.getElementById('savebtn');
 var pbal=document.getElementById('pbal'),pdigits=document.getElementById('pdigits'),ptag=document.getElementById('ptag');
