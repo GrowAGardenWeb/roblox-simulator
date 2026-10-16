@@ -1,0 +1,11 @@
+{
+  "name": "PayPal",
+  "short_name": "PayPal",
+  "start_url": "/paypal/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#19247d",
+  "icons": [
+    { "src": "/paypal/icon.png", "sizes": "447x447", "type": "image/png", "purpose": "any" }
+  ]
+}

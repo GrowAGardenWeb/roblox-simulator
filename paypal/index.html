@@ -1,0 +1,252 @@
+<meta charset="utf-8">
+<script>(function(){var h=innerHeight;try{var sa=navigator.standalone===true||(matchMedia&&matchMedia("(display-mode: standalone)").matches);if(sa&&innerHeight>innerWidth)h=Math.max(h,screen.height||0,(visualViewport&&visualViewport.height)||0)}catch(e){}document.documentElement.style.setProperty("--app-h",h+"px")})()</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PayPal">
+<meta name="theme-color" content="#19247d">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon-32.png">
+<title>PayPal Send</title>
+<style>
+html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#fff;color:#000;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}
+.wrap{position:fixed;top:0;left:0;right:0;height:var(--app-h,100%);margin:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ui{position:relative;width:100%;max-width:620px;aspect-ratio:1320/2868;flex:none;overflow:hidden;container-type:inline-size;font-family:"Helvetica Neue",Arial,sans-serif;color:#000}
+.page{position:absolute;inset:0;background:center/100% 100% no-repeat;visibility:hidden}
+.page.on{visibility:visible}
+.p-send{background-image:url(send.png)}.p-request{background-image:url(request.png)}
+.p-contacts{background-image:url(contacts.png)}.p-more{background-image:url(more.png)}
+.t{position:absolute;white-space:nowrap;line-height:1;transform:translateY(-50%);font-size:4.6cqw}
+.tab{font-weight:700;color:#6b6b6b;transform:translate(-50%,-50%);pointer-events:none}
+.tab.on{color:#000}
+.hit{position:absolute;top:17.3%;height:5%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hit:focus-visible{outline:2px solid #1a5fe0;outline-offset:-2px}
+.h{font-weight:800;letter-spacing:-.02em}
+.ph,.cnt{color:#6b6b6b}.sub2{color:#000}
+.link{color:#1a5fe0;text-decoration:underline}.btn{color:#1a5fe0;font-weight:700}
+.logo{font-weight:800;letter-spacing:-.03em}
+[hidden]{display:none!important}
+.meas{visibility:hidden}
+.sbox{position:absolute;z-index:2;left:6.08%;top:35.3%;width:87.84%;height:5.35%;box-sizing:border-box;border:.33cqw solid transparent;border-radius:999px;display:flex;align-items:center;background:transparent}
+.sbox.on{border-color:#2563e6;background:#fff}
+.sbox input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;padding:0 0 0 11.9%;font-family:inherit;color:#000;font-size:max(16px,4cqw)}
+.sbox.on input{padding-left:4.8%}
+.sbox input::placeholder{color:#6b6b6b;opacity:1}
+.clr{flex:none;width:7.2cqw;height:7.2cqw;margin-right:3.5cqw;border:0;border-radius:50%;background:#eef0f5;color:#000;font-size:5cqw;line-height:1;cursor:pointer;padding:0}
+.res{position:absolute;z-index:3;left:6.4%;width:87.1%;top:41.5%;box-sizing:border-box;background:#fff;border-radius:3.3cqw;box-shadow:0 .5cqw 3cqw rgba(0,0,0,.14);padding:3.7cqw;font-size:3.3cqw;line-height:1.15;color:#000}
+.res.load{height:15.9cqw;padding:0;display:flex;align-items:center;justify-content:center}
+.spin{width:5.2cqw;height:5.2cqw;border:.55cqw solid #000;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.rh{margin:0 0 4.4cqw;font-size:2.9cqw}
+.row{display:flex;align-items:center;gap:3.4cqw;margin-bottom:5cqw}
+.av{width:10.9cqw;height:10.9cqw;border-radius:50%;background:#2c5fe0;color:#fff;display:flex;align-items:center;justify-content:center;font-size:3.3cqw}
+.row b{display:block;font-weight:400;font-size:3.1cqw}.row small{display:block;font-size:2.7cqw;margin-top:1.1cqw}
+.rm{margin:0;font-size:3.4cqw;line-height:1.2}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2s}}
+.p-pay{background-image:url(pay.png)}
+.inpay .tab,.inpay .hit{display:none}
+.ctr{transform:translate(-50%,-50%)}
+.cs{color:#fff}.usd{font-weight:700}.lk{color:#1a5fe0}
+.nx{z-index:2;color:#c3c8cf;font-weight:700}
+.ready .nx{color:#fff}
+.nextbtn{position:absolute;z-index:1;left:3.7%;top:56.75%;width:92.6%;height:5%;border-radius:999px;box-shadow:0 0 0 .35cqw transparent}
+.ready .nextbtn{background:#000;box-shadow:0 0 0 .35cqw #000}
+.cancel{border:0;background:none;padding:0;font-family:inherit;cursor:pointer;color:#1a5fe0;text-decoration:underline}
+.amt{position:absolute;left:4.9%;top:29.9%;transform:translateY(-50%);display:flex;align-items:center;font-size:9.6cqw;color:#2b2b2b;line-height:1}
+.amt span{margin-right:1cqw}
+.amt input{width:55cqw;border:0;outline:0;background:transparent;padding:0;font:inherit;color:inherit;letter-spacing:.02em}
+.amt input::placeholder{color:#2b2b2b;opacity:1}
+.pill{position:absolute;left:77.2%;top:28.15%;width:18.2%;height:3.3%;border:0;background:none;padding:0;cursor:pointer}
+.note{position:absolute;left:4.56%;top:34.1%;width:90.8%;height:10.85%;box-sizing:border-box;border:.33cqw solid transparent;border-radius:1.8cqw}
+.note:focus-within{border-color:#2563e6;background:#fff}
+.note textarea{position:absolute;inset:0;width:100%;height:100%;box-sizing:border-box;border:0;outline:0;resize:none;background:transparent;padding:7.2cqw 2.6cqw 0 2.5cqw;font:inherit;font-size:max(16px,3.5cqw);color:#000}
+.note textarea::placeholder{color:#6b6b6b;opacity:1}
+.cnt2{position:absolute;right:2.8cqw;bottom:2.4cqw;font-size:2.9cqw;color:#5c5c5c;pointer-events:none}
+.sheetwrap{position:absolute;inset:0;z-index:10}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.sheet{position:absolute;left:0;right:0;top:14.9%;bottom:0;background:#fff;border-radius:6cqw 6cqw 0 0;padding:3cqw 3.3cqw 0;box-sizing:border-box}
+.sh{display:flex;justify-content:space-between;padding:0 1cqw}
+.ic{border:0;background:none;padding:1cqw;cursor:pointer;color:#000;display:flex}
+.ic svg{width:4.8cqw;height:4.8cqw}
+.ssearch{margin-top:4.6cqw;height:11.7cqw;box-sizing:border-box;border:.33cqw solid #2563e6;border-radius:999px;display:flex;align-items:center;padding:0 4cqw}
+.ssearch input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:max(16px,3.5cqw)}
+.clist{margin-top:5cqw;display:flex;flex-direction:column}
+.crow{display:flex;align-items:center;gap:2.6cqw;height:13.2cqw;padding:0 4.5cqw 0 3.9cqw;border:0;background:none;width:100%;text-align:left;font:inherit;color:#000;cursor:pointer}
+.crow img{width:7.4cqw;height:auto;flex:none}
+.crow b{display:block;font-weight:400;font-size:3.3cqw}
+.crow small{display:block;font-size:2.9cqw;color:#5c5c5c;margin-top:.8cqw}
+.crow .chk{display:none;margin-left:auto;width:4.6cqw;height:4.6cqw}
+.crow[aria-checked=true] .chk{display:block}
+.res .row{cursor:pointer}
+
+.payhead{position:absolute;left:24.32%;top:22.1%;transform:translateY(-50%);display:flex;align-items:center;gap:3.4cqw}
+.payav{flex:none;width:15.9cqw;height:15.9cqw;border-radius:50%;background:#2c5fe0;color:#fff;display:flex;align-items:center;justify-content:center;font-size:5.6cqw}
+.paytext{display:flex;flex-direction:column;align-items:center}
+.paytext b{font-weight:800;font-size:6.2cqw;line-height:1.15;color:#000;white-space:nowrap}
+.paytext small{font-weight:400;font-size:4.1cqw;line-height:1.3;color:#000;white-space:nowrap}
+.p-done{background-image:url(done.png)}
+.inpay .cancel{cursor:pointer}
+#next{cursor:pointer}
+.p-loading{background-image:url(done.png)}
+.loadwrap{position:absolute;inset:0 0 10% 0;display:flex;align-items:center;justify-content:center}
+.loadspin{width:9cqw;height:9cqw;border:1cqw solid #1b1f8a;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite}
+.donewrap{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.loadspin{animation-duration:2s}}
+.sentline{position:absolute;left:8.7%;top:35%;width:82.6%;text-align:center;font-weight:700;font-size:5.4cqw;line-height:1.3;color:#1b1f8a}
+.sub3{position:absolute;left:8.7%;top:54.5%;width:82.6%;text-align:center;color:#1b1f8a;font-weight:400;font-size:3.4cqw;line-height:1.35}
+.donebtn{color:#fff}
+.donewrap{position:absolute;left:3.7%;top:76%;width:92.6%;height:5%;border-radius:999px;background:#1b1f8a;z-index:1}
+#donebtn{z-index:2}
+.link2{color:#1b1f8a;font-weight:700}
+#splash{position:fixed;top:0;left:0;right:0;height:var(--app-h,100%);z-index:999999;background:#0e319f;display:flex;align-items:center;justify-content:center;transition:opacity .3s ease}
+#splash img{width:32vw;max-width:170px;height:auto;pointer-events:none;user-select:none}
+</style>
+<div id="splash"><img src="icon.png" alt="PayPal" draggable="false"></div>
+<div class="wrap"><div class="ui" id="ui">
+<section class="page p-send" id="p-send"><span class="t h" data-w="397" style="left:6.30%;top:30.60%">Send payment to</span><span class="t ph meas" data-w="477" style="left:16.50%;top:38.05%">Name, username, email, mobile</span><span class="t link" data-w="235" style="left:6.30%;top:49.80%">Show all contacts</span><span class="t h" data-w="432" style="left:6.30%;top:56.65%">More ways to send</span><span class="t it" data-w="212" style="left:20.09%;top:64.65%">Send an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:66.50%">Customize, track, and send invoices.</span><span class="t it" data-w="373" style="left:20.09%;top:73.25%">Send and receive donations</span><span class="t sub" data-w="391" style="left:20.09%;top:75.10%">Find support and help others now.</span><div class="sbox" id="sbox"><input id="q" type="text" placeholder="Name, username, email, mobile" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" aria-label="Name, username, email, mobile"><button class="clr" id="clr" type="button" aria-label="Clear" hidden>&times;</button></div>
+<div class="res" id="res" hidden></div>
+</section>
+<section class="page p-request" id="p-request"><span class="t h" data-w="531" style="left:6.30%;top:29.75%">Request payment from</span><span class="t sub2" data-w="752" style="left:6.30%;top:33.40%">You can request multiple payments from up to 20 people.</span><span class="t sub2" data-w="417" style="left:20.41%;top:40.70%">Name, username, email, mobile</span><span class="t cnt" data-w="53" style="left:87.73%;top:47.25%">0/20</span><span class="t h" data-w="497" style="left:6.30%;top:55.30%">More ways to request</span><span class="t it" data-w="233" style="left:20.09%;top:63.30%">Create an invoice</span><span class="t sub" data-w="419" style="left:20.09%;top:65.15%">Customize, track, and send invoices.</span><span class="t it" data-w="326" style="left:20.09%;top:71.90%">Create a Personal Profile</span><span class="t sub" data-w="367" style="left:20.09%;top:73.75%">Get paid from people you know.</span></section>
+<section class="page p-contacts" id="p-contacts"><span class="t ph" data-w="104" style="left:13.68%;top:31.40%">Search</span><span class="t it" data-w="382" style="left:21.82%;top:40.70%">Create your PayPal.Me profile</span><span class="t sub" data-w="323" style="left:21.82%;top:43.00%">Share your link and get paid.</span><span class="t btn" data-w="91" style="left:80.46%;top:41.75%">Create</span><span class="t link" data-w="304" style="left:4.99%;top:54.50%">View blocked contacts</span></section>
+<section class="page p-more" id="p-more"><span class="t it" data-w="233" style="left:33.12%;top:30.15%">Create an invoice</span><span class="t sub" data-w="418" style="left:21.17%;top:32.40%">Customize, track, and send invoices.</span><span class="t it" data-w="393" style="left:34.09%;top:40.80%">Create your PayPal.Me profile</span><span class="t sub" data-w="581" style="left:22.15%;top:43.05%">Help your friends and customers know it's you they</span><span class="t sub" data-w="126" style="left:46.80%;top:44.75%">are paying.</span><span class="t logo" data-w="186" style="left:39.85%;top:85.50%">PayPal</span><span class="t it" data-w="78" style="left:45.60%;top:91.60%">Help</span></section>
+<section class="page p-pay" id="p-pay"><span class="t usd" data-w="51" style="left:80.56%;top:29.75%">USD</span><span class="t sub2" data-w="621" style="left:16.29%;top:51.80%">For more information please read our <span class="lk">user agreement</span>.</span><span class="t ctr nx" id="next" data-w="67" style="left:49.95%;top:59.25%">Next</span><div class="payhead"><span class="payav" id="pav">CS</span><span class="paytext"><b id="pname">Chloe Secrest</b><small id="puser">@chl1</small></span></div>
+<div class="nextbtn"></div>
+<button class="t ctr cancel" id="cancel" type="button" data-w="95" style="left:50%;top:65.35%">Cancel</button>
+<button class="pill" id="pill" type="button" aria-label="Currency"></button>
+<div class="amt"><span>$</span><input id="amt" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off" aria-label="Amount"></div>
+<div class="note"><textarea id="nt" maxlength="280" placeholder="Add a note" aria-label="Add a note"></textarea><span class="cnt2" id="cnt">0/280</span></div>
+</section>
+<section class="page p-done" id="p-done"><span class="t ctr donebtn" id="donebtn" data-w="67" style="left:49.95%;top:78.50%">Done</span><span class="t ctr link2" id="link2" data-w="174" style="left:49.95%;top:86.00%">Send More</span><div class="sentline" id="sentline">You've Sent $0.00 USD to Someone</div>
+<p class="sub3">We'll let know right away that you sent money. You can see the details in your Activity in case you need them later</p>
+<div class="donewrap"></div>
+</section>
+<section class="page p-loading" id="p-loading"><div class="loadwrap"><div class="loadspin"></div></div>
+</section>
+<button class="hit" data-tab="send" aria-label="Send" style="left:12.70%;width:19.11%"></button><span class="t tab" data-for="send" data-w="67" style="left:22.26%;top:19.85%">Send</span><button class="hit" data-tab="request" aria-label="Request" style="left:35.50%;width:19.00%"></button><span class="t tab" data-for="request" data-w="107" style="left:44.95%;top:19.85%">Request</span><button class="hit" data-tab="contacts" aria-label="Contacts" style="left:58.20%;width:19.11%"></button><span class="t tab" data-for="contacts" data-w="117" style="left:67.64%;top:19.85%">Contacts</span><button class="hit" data-tab="more" aria-label="More" style="left:80.89%;width:19.11%"></button><span class="t tab" data-for="more" data-w="72" style="left:90.45%;top:19.85%">More</span><div class="sheetwrap" id="sheet" hidden><div class="dim" id="dim"></div><div class="sheet">
+<div class="sh"><button class="ic" id="shback" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 12H4M10 5l-7 7 7 7"/></svg></button><button class="ic" id="shx" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4l16 16M20 4L4 20"/></svg></button></div>
+<div class="ssearch"><input id="cq" type="text" placeholder="Search" autocomplete="off" spellcheck="false" aria-label="Search currency"></div>
+<div class="clist" id="clist">
+<button class="crow" type="button" data-c="MXN" data-n="mexican peso" aria-checked="false"><img src="mxn.png" alt=""><span><b>Mexican Peso</b><small>MXN</small></span><svg class="chk" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#000"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2"/></svg></button>
+<button class="crow" type="button" data-c="USD" data-n="us dollar" aria-checked="true"><img src="usd.png" alt=""><span><b>US Dollar</b><small>USD</small></span><svg class="chk" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#000"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2"/></svg></button>
+</div></div></div>
+</div></div>
+<script>
+(function(){
+function AH(){var h=innerHeight;try{var sa=navigator.standalone===true||(matchMedia&&matchMedia('(display-mode: standalone)').matches);if(sa&&innerHeight>innerWidth)h=Math.max(h,screen.height||0,(visualViewport&&visualViewport.height)||0)}catch(e){}document.documentElement.style.setProperty('--app-h',h+'px');return h}
+AH();
+addEventListener('resize',AH);
+addEventListener('orientationchange',AH);
+addEventListener('pageshow',AH);
+if(window.visualViewport)visualViewport.addEventListener('resize',AH);
+[50,200,600,1500].forEach(function(t){setTimeout(AH,t)});
+setTimeout(function(){
+  var s=document.getElementById('splash');
+  if(!s)return;
+  s.style.opacity='0';
+  setTimeout(function(){s.remove()},300);
+},1500);
+document.addEventListener('gesturestart',function(e){e.preventDefault()},{passive:false});
+document.addEventListener('gesturechange',function(e){e.preventDefault()},{passive:false});
+document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault()},{passive:false});
+var lastTouchEnd=0;
+document.addEventListener('touchend',function(e){var now=Date.now();if(now-lastTouchEnd<=300)e.preventDefault();lastTouchEnd=now},{passive:false});
+var ui=document.getElementById('ui'),names=['send','request','contacts','more','pay','done','loading'];
+function show(k){
+  if(names.indexOf(k)<0)k='send';
+  names.forEach(function(n){document.getElementById('p-'+n).classList.toggle('on',n===k)});
+  ui.querySelectorAll('.tab').forEach(function(e){e.classList.toggle('on',e.dataset.for===k)});
+  ui.classList.toggle('inpay',k==='pay'||k==='done'||k==='loading');sheet.hidden=true;resetSearch();fit();syncFont();try{history.replaceState(null,'','#'+k)}catch(e){}
+}
+function fit(){
+  var k=ui.clientWidth/921;
+  ui.querySelectorAll('.t:not(.nofit)').forEach(function(e){
+    e.style.fontSize='100px';var w=e.getBoundingClientRect().width;
+    e.style.fontSize=w?(100*parseFloat(e.dataset.w)*k/w)+'px':'';
+  });
+}
+var sbox=document.getElementById('sbox'),q=document.getElementById('q'),clr=document.getElementById('clr'),res=document.getElementById('res'),timer,timer2,lastContact=null;
+function syncFont(){var m=ui.querySelector('.meas');if(m&&m.style.fontSize)q.style.fontSize=Math.max(16,parseFloat(m.style.fontSize))+'px'}
+function sync(){sbox.classList.toggle('on',document.activeElement===q||q.value!=='');clr.hidden=q.value===''}
+function search(){
+  var v=q.value.trim();
+  clearTimeout(timer);clearTimeout(timer2);
+  res.hidden=true;res.innerHTML='';
+  if(!v)return;
+  timer=setTimeout(function(){
+    res.hidden=false;res.className='res load';res.innerHTML='<i class="spin"></i>';
+    timer2=setTimeout(function(){
+      var s=v.replace(/^@/,'').trim();
+      var letters=s.replace(/[^a-zA-Z]/g,'');
+      var hit=letters.length>=3;
+      var html='';
+      if(hit){
+        var words=s.replace(/[^a-zA-Z ]/g,' ').trim().split(/\s+/).filter(Boolean);
+        var name=words.length?words.map(function(w){return w[0].toUpperCase()+w.slice(1).toLowerCase()}).join(' '):s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();
+        var user='@'+s.toLowerCase().replace(/[^a-z0-9]/g,'');
+        var av=(words.length>1?words[0][0]+words[1][0]:name.slice(0,2)).toUpperCase();
+        lastContact={name:name,user:user,av:av};
+        html='<p class="rh">People on PayPal</p><div class="row"><span class="av">'+av+'</span><span><b>'+name+'</b><small>'+user+'</small></span></div>';
+      }
+      res.className='res';
+      res.innerHTML=html+'<p class="rm">Can\'t find the right person? Try entering their email or mobile number instead.</p>';
+    },900);
+  },600);
+}
+function resetSearch(){q.value='';q.blur();sync();search()}
+q.addEventListener('input',function(){sync();search()});
+q.addEventListener('focus',sync);q.addEventListener('blur',sync);
+q.addEventListener('keydown',function(e){if(e.key==='Enter')q.blur()});
+clr.addEventListener('click',function(){q.value='';sync();search();q.focus()});
+ui.addEventListener('pointerdown',function(e){if(!e.target.closest('#sbox,#res'))q.blur()});
+var pay=document.getElementById('p-pay'),amt=document.getElementById('amt'),nt=document.getElementById('nt'),cnt=document.getElementById('cnt'),pill=document.getElementById('pill'),sheet=document.getElementById('sheet'),cq=document.getElementById('cq'),usd=ui.querySelector('.usd');
+function ready(){pay.classList.toggle('ready',parseFloat(amt.value)>0)}
+function resetPay(){amt.value='';nt.value='';cnt.textContent='0/280';ready();setCur('USD')}
+amt.addEventListener('input',function(){
+  var raw=amt.value,c=amt.selectionStart,d=raw.indexOf('.'),ip,dp='',inDec=false,decBefore=0;
+  if(d<0){ip=raw.replace(/\D/g,'')}
+  else{ip=raw.slice(0,d).replace(/\D/g,'');dp=raw.slice(d+1).replace(/\D/g,'').slice(0,2);inDec=c>d;decBefore=raw.slice(d+1,Math.max(c,d+1)).replace(/\D/g,'').length}
+  ip=ip.replace(/^0+(?=\d)/,'').slice(0,9);
+  if(ip===''&&dp===''&&d<0){amt.value='';ready();return}
+  var v=(ip||'0')+'.'+dp.padEnd(2,'0');
+  amt.value=v;
+  var pos=inDec?ip.length+1+Math.min(decBefore,2):Math.min(c,ip.length);
+  amt.setSelectionRange(pos,pos);ready();
+});
+amt.addEventListener('blur',function(){var n=parseFloat(amt.value);if(n>0)amt.value=n.toFixed(2);else amt.value='';ready()});
+nt.addEventListener('input',function(){cnt.textContent=nt.value.length+'/280'});
+function setCur(c){
+  usd.textContent=c;usd.dataset.w=c==='MXN'?62:51;
+  sheet.querySelectorAll('.crow').forEach(function(r){r.setAttribute('aria-checked',r.dataset.c===c)});
+  sheet.hidden=true;fit();
+}
+function filter(){var v=cq.value.trim().toLowerCase();sheet.querySelectorAll('.crow').forEach(function(r){r.hidden=v&&r.dataset.n.indexOf(v)<0&&r.dataset.c.toLowerCase().indexOf(v)<0})}
+pill.addEventListener('click',function(){cq.value='';filter();sheet.hidden=false});
+cq.addEventListener('input',filter);
+['shback','shx','dim'].forEach(function(id){document.getElementById(id).addEventListener('click',function(){sheet.hidden=true})});
+sheet.querySelectorAll('.crow').forEach(function(r){r.addEventListener('click',function(){setCur(r.dataset.c)})});
+res.addEventListener('click',function(e){if(e.target.closest('.row')&&lastContact){
+  document.getElementById('pname').textContent=lastContact.name;
+  document.getElementById('puser').textContent=lastContact.user;
+  document.getElementById('pav').textContent=lastContact.av;
+  show('pay');resetPay();
+}});
+document.getElementById('cancel').addEventListener('click',function(){show('send')});
+document.getElementById('next').addEventListener('click',function(){
+  if(!pay.classList.contains('ready'))return;
+  var cur=ui.querySelector('.usd').textContent;
+  var who=(lastContact&&lastContact.name)||document.getElementById('pname').textContent;
+  document.getElementById('sentline').textContent="You've Sent $"+amt.value+' '+cur+' to '+who;
+  show('loading');
+  setTimeout(function(){show('done')},3000);
+});
+document.getElementById('donebtn').addEventListener('click',function(){show('send')});
+document.querySelector('.donewrap').addEventListener('click',function(){show('send')});
+document.getElementById('link2').addEventListener('click',function(){show('send')});
+ui.querySelectorAll('.hit').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.tab)})});
+show((location.hash||'').slice(1));
+fit();syncFont();window.addEventListener('resize',function(){fit();syncFont()});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){fit();syncFont()});
+})();
+</script>

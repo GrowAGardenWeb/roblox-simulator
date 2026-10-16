@@ -18,8 +18,160 @@
     <script src="/access-gate.js"></script>
     <script src="/robloxapp/draco_decoder.js"></script>
     <script>
-      // Apply the saved theme before first paint so dark mode doesn't flash white.
-      try { localStorage.getItem('theme.v1') === 'dark' && document.documentElement.classList.add('dark') } catch (e) {}
+      // Themes: light, dark, or custom. A custom theme rewrites the app
+      // stylesheet's neutral colours (greys/white/black: backgrounds, cards,
+      // borders, text) into shades of the chosen colour and injects that as an
+      // override stylesheet. Saturated colours (blue buttons, badges…) and
+      // images are never touched. Light colours give a light UI with no filter
+      // at all; dark colours sit on top of the normal dark mode (whose page
+      // filter is invert(.93) hue-rotate(180deg)), so their greys are written as
+      // the pre-image that comes out tinted after that filter.
+      ;(function () {
+        var HUE180 = [[-0.574, 1.43, 0.144], [0.426, 0.43, 0.144], [0.426, 1.43, -0.856]]
+        var root = document.documentElement
+        function rgb(hex) {
+          hex = String(hex || '').replace('#', '')
+          return [0, 2, 4].map(function (i) { return parseInt(hex.substr(i, 2), 16) / 255 || 0 })
+        }
+        function toHsl(c) {
+          var mx = Math.max.apply(0, c), mn = Math.min.apply(0, c), l = (mx + mn) / 2, d = mx - mn, h = 0, s = 0
+          if (d) {
+            s = d / (1 - Math.abs(2 * l - 1))
+            h = mx === c[0] ? ((c[1] - c[2]) / d) % 6 : mx === c[1] ? (c[2] - c[0]) / d + 2 : (c[0] - c[1]) / d + 4
+          }
+          return [h * 60, s, l]
+        }
+        function fromHsl(h, s, l) {
+          var k = function (n) { return (n + h / 30) % 12 }, a = s * Math.min(l, 1 - l)
+          return [0, 8, 4].map(function (n) { return l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1)) })
+        }
+        function inv3(m) {
+          var a = m[0][0], b = m[0][1], c = m[0][2], d = m[1][0], e = m[1][1], f = m[1][2], g = m[2][0], h = m[2][1], i = m[2][2]
+          var A = e * i - f * h, B = f * g - d * i, C = d * h - e * g, det = a * A + b * B + c * C
+          return [[A / det, (c * h - b * i) / det, (b * f - c * e) / det],
+                  [B / det, (a * i - c * g) / det, (c * d - a * f) / det],
+                  [C / det, (b * g - a * h) / det, (a * e - b * d) / det]]
+        }
+        var HUE180_INV = inv3(HUE180)
+        function clamp01(c) { return c.map(function (v) { return Math.max(0, Math.min(1, v)) }) }
+        // colour x such that the dark-mode page filter turns it into c
+        function darkPreimage(c) {
+          return clamp01(HUE180_INV.map(function (row) {
+            return (0.93 - (row[0] * c[0] + row[1] * c[1] + row[2] * c[2])) / 0.86
+          }))
+        }
+        // {dark, bg, nav (as written in CSS), map(neutral rgb) -> rgb (as written)}
+        function build(color, navColor) {
+          var hsl = toHsl(rgb(color)), dark = hsl[2] < 0.5, bg, nav, map
+          if (dark) {
+            bg = hsl[2] <= 0.25 ? rgb(color) : fromHsl(hsl[0], hsl[1], 0.22)
+            var bh = toHsl(bg), ink = fromHsl(hsl[0], Math.min(hsl[1], 0.35), 0.95)
+            nav = navColor ? rgb(navColor) : fromHsl(bh[0], bh[1], bh[2] * 0.72)
+            // white -> page colour, black -> near-white tint (dark UI)
+            map = function (c) {
+              var t = 1 - (c[0] + c[1] + c[2]) / 3
+              return darkPreimage(bg.map(function (v, i) { return v + (ink[i] - v) * t }))
+            }
+            return { dark: true, bg: bg, nav: darkPreimage(nav), map: map }
+          }
+          bg = hsl[2] >= 0.8 ? rgb(color) : fromHsl(hsl[0], hsl[1], 0.9)
+          var bh2 = toHsl(bg), dk = fromHsl(hsl[0], Math.min(hsl[1], 0.5), 0.1)
+          nav = navColor ? rgb(navColor) : fromHsl(bh2[0], Math.min(1, bh2[1] + 0.05), Math.max(0, bh2[2] - 0.11))
+          // white -> page colour, black -> very dark tint (light UI)
+          map = function (c) { return c.map(function (v, i) { return dk[i] + (bg[i] - dk[i]) * v }) }
+          return { dark: false, bg: bg, nav: nav, map: map }
+        }
+        function css(c, a) {
+          var v = c.map(function (x) { return Math.round(x * 255) }).join(', ')
+          return a == null ? 'rgb(' + v + ')' : 'rgba(' + v + ', ' + a + ')'
+        }
+        // only neutral colours are themed; anything with real colour is kept
+        function recolor(text, map) {
+          var neutral = function (c) { return Math.max.apply(0, c) - Math.min.apply(0, c) <= 0.1 }
+          return text
+            .replace(/rgba?\((\d+), (\d+), (\d+)(?:, ([\d.]+))?\)/g, function (m, r, g, b, a) {
+              var c = [r / 255, g / 255, b / 255]
+              return neutral(c) ? css(map(c), a) : m
+            })
+            // custom properties (e.g. --bg:#fff) keep the hex they were written with
+            .replace(/#([0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b/gi, function (m, h) {
+              if (h.length < 6) h = h.split('').map(function (x) { return x + x }).join('')
+              var c = rgb(h.slice(0, 6)), a = h.length === 8 ? +(parseInt(h.slice(6), 16) / 255).toFixed(3) : null
+              return neutral(c) ? css(map(c), a) : m
+            })
+        }
+        // brand buttons/badges, the patches drawn over screenshot pages (Robux balance) and the game (test zone) keep their original colours, text included
+        var KEEP = /\.(rx-bal|rx-send-ico|bi-buy|bi-price|bi-manage|a-view|ep-btn|ps-primary|ip-cta|gs-play|sra-next|sre-ok|srv-send|il-ltd|cz-plus|dr-badge|dr-buy|ep-sw|v-rtxt)\b|\.a-dialog button|\.ep-seg button\.on|\.(pt|pm|pa)(-[\w-]*)?(?![\w-])/
+        function appSheet() {
+          var link = document.querySelector('link[rel=stylesheet][href*="/assets/index-"]')
+          try { return link && link.sheet && link.sheet.cssRules && link.sheet } catch (e) { return null }
+        }
+        var state = { mode: 'light', color: '#ede6ff', nav: '#d6c3fe' }
+        try {
+          var saved = localStorage.getItem('theme.v1')
+          if (saved === 'dark' || saved === 'custom') state.mode = saved
+          state.color = localStorage.getItem('theme.color.v1') || state.color
+          state.nav = localStorage.getItem('theme.nav.v1') || ''
+        } catch (e) {}
+        function apply() {
+          var custom = state.mode === 'custom', t = custom && build(state.color, state.nav)
+          root.classList.toggle('custom', !!custom)
+          root.classList.toggle('dark', state.mode === 'dark' || (custom && t.dark))
+          var style = document.getElementById('th-css')
+          if (!custom) {
+            if (style) style.remove()
+            return ['--th-bg', '--th-nav'].forEach(function (v) { root.style.removeProperty(v) })
+          }
+          root.style.setProperty('--th-bg', css(t.bg))
+          root.style.setProperty('--th-nav', css(t.nav))
+          var sheet = appSheet()
+          if (!sheet) return
+          // only the colour declarations are written again (never positions or sizes):
+          // re-emitting whole rules at the end let them override later rules of the
+          // same weight, e.g. a second row of text jumping onto the first one
+          function walk(rules, out) {
+            for (var i = 0; i < rules.length; i++) {
+              var rule = rules[i]
+              if (rule.style && rule.selectorText != null) {
+                if (KEEP.test(rule.selectorText)) continue
+                var decl = []
+                for (var j = 0; j < rule.style.length; j++) {
+                  var p = rule.style[j], v = rule.style.getPropertyValue(p), nv = recolor(v, t.map)
+                  if (nv !== v) decl.push(p + ':' + nv + (rule.style.getPropertyPriority(p) ? ' !important' : ''))
+                }
+                if (decl.length) out.push(rule.selectorText + '{' + decl.join(';') + '}')
+              } else if (rule.cssRules && rule.conditionText != null) {
+                var inner = []
+                walk(rule.cssRules, inner)
+                if (inner.length) out.push('@' + (rule.constructor.name === 'CSSSupportsRule' ? 'supports ' : 'media ') + rule.conditionText + '{' + inner.join('\n') + '}')
+              }
+            }
+            return out
+          }
+          var out = walk(sheet.cssRules, [])
+          if (!style) {
+            style = document.createElement('style')
+            style.id = 'th-css'
+            document.head.appendChild(style)
+          }
+          style.textContent = out.join('\n')
+        }
+        window.__theme = {
+          get: function () { return { mode: state.mode, color: state.color, nav: state.nav } },
+          set: function (mode, color, nav) {
+            state.mode = mode
+            if (color) { state.color = color; state.nav = nav || '' }
+            try {
+              localStorage.setItem('theme.v1', mode)
+              localStorage.setItem('theme.color.v1', state.color)
+              localStorage.setItem('theme.nav.v1', state.nav)
+            } catch (e) {}
+            apply()
+          },
+          apply: apply
+        }
+        apply()
+      })()
     </script>
     <script>
       // The engine does `await DracoDecoderModule()` once per mesh. Older
@@ -49,10 +201,24 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-D45W5eIv.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-Bphe83Pg.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-v5e2e2764.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v5e2e2764.css">
   </head>
   <body>
+    <script>window.__theme && window.__theme.apply()</script>
+    <!-- Launch screen: full screen, always light (outside #root, so no theme
+         or dark mode touches it), shown for 2s on every app start. -->
+    <div id="splash" style="position:fixed;inset:0;z-index:2147483647;background:#f6f6f6;display:flex;align-items:center;justify-content:center;transition:opacity .25s ease">
+      <img src="/robloxapp/site-assets/splash-logo.png" alt="Roblox" draggable="false" style="width:222px;height:auto;margin-bottom:4.6vh;pointer-events:none">
+    </div>
+    <script>
+      setTimeout(function () {
+        var s = document.getElementById('splash')
+        if (!s) return
+        s.style.opacity = '0'
+        setTimeout(function () { s.remove() }, 260)
+      }, 2000)
+    </script>
     <div id="root"></div>
   </body>
 </html>
