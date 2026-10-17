@@ -92,7 +92,8 @@ body.balhidden .eyeopen{display:flex}
 .cresultslabel{padding:2px 20px 10px;font-size:13px;font-weight:700;color:#8e8e93}
 .clist{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px calc(env(safe-area-inset-bottom,0px) + 16px)}
 .crow{display:flex;align-items:center;gap:14px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.cav{width:46px;height:46px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#07140a}
+.cav{position:relative;width:46px;height:46px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#07140a;overflow:hidden}
+.cav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cmeta{min-width:0}
 .cname{font-size:15.5px;font-weight:700;display:flex;align-items:center;gap:5px}
 .cname .cbiz{width:13px;height:13px;flex:none;color:#3ac732}
@@ -111,7 +112,8 @@ body.balhidden .eyeopen{display:flex}
 .backarrow{border:0;background:none;color:#fff;cursor:pointer;padding:6px;margin:0 0 14px -6px;display:flex}
 .backarrow svg{width:20px;height:20px}
 .notetitle{font-size:21px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;flex-wrap:wrap;gap:8px 6px}
-.notewhoav{width:26px;height:26px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#07140a}
+.notewhoav{position:relative;width:26px;height:26px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#07140a;overflow:hidden}
+.notewhoav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .notedivider{height:1px;background:#2c2c2e;margin-bottom:6px}
 .noterow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
 .noteinput{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font-size:16px;font-family:inherit}
@@ -508,7 +510,7 @@ function renderContacts(q){
         var initial=(r.name.split(' ').length>1?r.name.split(' ')[0][0]+r.name.split(' ')[1][0]:r.name.slice(0,2)).toUpperCase();
         var color=AVATAR_COLORS[r.tag.length%AVATAR_COLORS.length];
         return '<div class="crow" data-tag="'+r.tag+'" data-name="'+r.name+'" style="animation-delay:'+(i*45)+'ms">'+
-          '<div class="cav" style="background:'+color+'">'+initial+'</div>'+
+          '<div class="cav" style="background:'+color+'">'+initial+'<img src="https://unavatar.io/cashapp/'+encodeURIComponent(r.tag)+'" loading="lazy" onerror="this.remove()" alt=""></div>'+
           '<div class="cmeta"><div class="cname">'+r.name+(r.biz?' <svg class="cbiz" viewBox="0 0 24 24" fill="currentColor"><path d="M9 4a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3V6a2 2 0 0 0-2-2H9zm0 2h6v1H9V6zM4 9h16v9H4V9z"/></svg>':'')+'</div><div class="ctag">$'+r.tag+'</div></div>'+
         '</div>';
       }).join('');
@@ -537,6 +539,12 @@ clist.addEventListener('click',function(e){
   ntto.textContent=ctitleto.textContent;
   ntav.textContent=initial;
   ntav.style.background=color;
+  var ntimg=document.createElement('img');
+  ntimg.src='https://unavatar.io/cashapp/'+encodeURIComponent(row.dataset.tag);
+  ntimg.loading='lazy';
+  ntimg.alt='';
+  ntimg.onerror=function(){ntimg.remove()};
+  ntav.appendChild(ntimg);
   ntname.textContent=pendingWho;
   noteinput.value='';
   reviewbtn.disabled=true;
