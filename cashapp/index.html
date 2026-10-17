@@ -27,7 +27,8 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .sheetwrap{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
 .sheetwrap[hidden]{display:none}
 .dim{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-.sheet{position:relative;width:100%;max-width:620px;background:#111113;border-radius:24px 24px 0 0;padding:18px 20px calc(env(safe-area-inset-bottom,0px) + 24px);box-sizing:border-box;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;max-height:82vh;overflow-y:auto}
+.sheet{position:relative;width:100%;max-width:620px;background:#111113;border-radius:24px 24px 0 0;padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 24px);box-sizing:border-box;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;max-height:82vh;overflow-y:auto}
+.grabber{width:36px;height:5px;border-radius:999px;background:#48484a;margin:0 auto 14px}
 .sheethead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .sheethead span{font-size:19px;font-weight:700}
 .closebtn{width:30px;height:30px;border-radius:50%;border:0;background:#222;color:#aaa;font-size:16px;cursor:pointer}
@@ -41,63 +42,47 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .inwrap input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#fff;font-size:17px;font-family:inherit}
 .savebtn{width:100%;border:0;background:#fff;color:#000;font-size:17px;font-weight:700;padding:15px;border-radius:999px;cursor:pointer;margin-top:4px}
 
-.dockhit{position:absolute;left:50%;top:0;transform:translateX(-50%);width:34%;height:100%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.paywrap{position:fixed;top:0;left:0;right:0;height:var(--app-h,100%);margin:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.paywrap[hidden]{display:none}
+.payui{position:relative;width:100%;max-width:620px;aspect-ratio:1320/2868;container-type:inline-size;background:center/100% 100% no-repeat url(pay.png)}
+.payamt{position:absolute;left:14.92%;top:25.94%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#000;font-size:24.2cqw;line-height:1;white-space:nowrap;pointer-events:none}
+.payavatar{position:absolute;left:89.81%;top:9.82%;width:12.95cqw;height:12.95cqw;transform:translate(-50%,-50%);border-radius:50%;background:#2c2c2e center/cover no-repeat;pointer-events:none}
+.payhit{position:absolute;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.k1{left:0;top:40.1%;width:33.33%;height:7.84%}
+.k2{left:33.33%;top:40.1%;width:33.33%;height:7.84%}
+.k3{left:66.66%;top:40.1%;width:33.34%;height:7.84%}
+.k4{left:0;top:47.94%;width:33.33%;height:7.85%}
+.k5{left:33.33%;top:47.94%;width:33.33%;height:7.85%}
+.k6{left:66.66%;top:47.94%;width:33.34%;height:7.85%}
+.k7{left:0;top:55.79%;width:33.33%;height:7.84%}
+.k8{left:33.33%;top:55.79%;width:33.33%;height:7.84%}
+.k9{left:66.66%;top:55.79%;width:33.34%;height:7.84%}
+.kdot{left:0;top:63.63%;width:33.33%;height:7.85%}
+.k0{left:33.33%;top:63.63%;width:33.33%;height:7.85%}
+.kback{left:66.66%;top:63.63%;width:33.34%;height:7.85%}
+.kavatar{left:83.3%;top:7.53%;width:13.4%;height:4.57%;border-radius:50%}
+.kpool{left:3.64%;top:76.19%;width:45.45%;height:5.23%}
+.kreq{left:50.91%;top:76.19%;width:45.45%;height:5.23%}
+.kpay{left:3.64%;top:82.81%;width:92.73%;height:5.4%}
+.kbank{left:0;top:90.66%;width:33.3%;height:6.28%}
+.kdollar{left:33.3%;top:90.66%;width:33.3%;height:6.28%}
+.kclock{left:66.6%;top:90.66%;width:33.4%;height:6.28%}
 
-/* ---- Pay page (keypad) ---- */
-.paypage{position:fixed;inset:0;z-index:60;background:#3ac732;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;transform:translateY(100%);transition:transform .32s cubic-bezier(.25,.8,.25,1)}
-.paypage.open{transform:translateY(0)}
-.paytop{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px 10px}
-.payicon{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.14);display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;color:#06200a}
-.payavatar{width:40px;height:40px;border-radius:50%;background:#2c2c2e center/cover no-repeat;flex:none}
-.payamtwrap{flex:none;text-align:center;padding:26px 16px 6px;min-height:92px;display:flex;align-items:center;justify-content:center}
-.payamt{font-size:min(16vw,76px);font-weight:800;color:#06200a;line-height:1;letter-spacing:-.02em;word-break:break-all}
-.paynote{text-align:center;font-size:13px;color:#0a3310;opacity:.65;min-height:16px;margin-top:4px}
-.paykeys{flex:1;display:grid;grid-template-columns:repeat(3,1fr);align-content:center;gap:4px 0;padding:0 20px;max-height:52vh}
-.paykey{border:0;background:none;color:#06200a;font-size:30px;font-weight:500;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
-.paykey.dot{font-size:30px;font-weight:700}
-.paykey.back svg{width:26px;height:26px}
-.payactions{flex:none;padding:10px 20px calc(env(safe-area-inset-bottom,0px) + 18px)}
-.payrow2{display:flex;gap:10px;margin-bottom:10px}
-.paypill{flex:1;border:0;border-radius:999px;background:rgba(0,0,0,.14);color:#06200a;font-size:16px;font-weight:700;padding:15px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.paymain{width:100%;border:0;border-radius:999px;background:#06200a;color:#fff;font-size:17px;font-weight:700;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.paymain:disabled{opacity:.45}
-
-/* ---- Pay-to contact sheet ---- */
-.contactwrap{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center}
-.contactwrap[hidden]{display:none}
-.contactsheet{position:relative;width:100%;max-width:620px;height:88vh;background:#000;border-radius:22px 22px 0 0;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;animation:sheetUp .28s cubic-bezier(.25,.8,.25,1)}
-@keyframes sheetUp{from{transform:translateY(16px);opacity:.6}to{transform:translateY(0);opacity:1}}
-.cgrab{width:36px;height:4px;border-radius:999px;background:#3a3a3d;margin:10px auto 2px}
-.chead{display:flex;align-items:flex-start;justify-content:space-between;padding:8px 20px 14px}
-.cxbtn{width:30px;height:38px;border:0;background:center/contain no-repeat url(pay-close.png);cursor:pointer;flex:none}
-.ctitle{font-size:21px;font-weight:700}
-.ctitle b{color:#fff}
-.ctitle span{color:#7c7c80;font-weight:600}
-.csearchwrap{position:relative;margin:0 20px 14px;aspect-ratio:921/82;container-type:inline-size;background:top/100% 100% no-repeat url(pay-searchbar.png)}
-.csearchwrap input{position:absolute;left:0;top:0;width:85%;height:100%;box-sizing:border-box;padding:0 0 0 13%;border:0;outline:0;background:transparent;color:#fff;font-size:3.6cqw;font-family:inherit}
-.csearchwrap input.has-text{background:#1d1d1f;border-radius:999px 0 0 999px}
-.cqr{position:absolute;right:0;top:0;width:12%;height:100%;border:0;background:none;cursor:pointer}
-.cresultslabel{padding:2px 20px 10px;font-size:13px;font-weight:700;color:#8e8e93}
-.clist{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px calc(env(safe-area-inset-bottom,0px) + 16px)}
-.crow{display:flex;align-items:center;gap:14px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.cav{width:46px;height:46px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#07140a}
-.cmeta{min-width:0}
-.cname{font-size:15.5px;font-weight:700;display:flex;align-items:center;gap:5px}
-.cname .cbiz{width:13px;height:13px;flex:none;color:#3ac732}
-.ctag{font-size:13.5px;color:#8e8e93;margin-top:1px}
-.cempty{padding:30px 0;text-align:center;color:#6a6a6d;font-size:14px}
-@keyframes rowIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-.crow{animation:rowIn .3s ease both}
-@media (prefers-reduced-motion:reduce){.crow{animation:none}}
-.cspinwrap{display:flex;align-items:center;justify-content:center;padding:30px 0}
-.cspin{width:22px;height:22px;border:2.4px solid #3a3a3d;border-right-color:transparent;border-radius:50%;animation:cspinturn .8s linear infinite}
-@keyframes cspinturn{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.cspin{animation-duration:2s}}
-
-.toastwrap{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;justify-content:center;z-index:90;pointer-events:none}
-.toast{background:#1c1c1e;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-size:14px;font-weight:600;padding:13px 20px;border-radius:999px;box-shadow:0 8px 24px -8px rgba(0,0,0,.6);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;display:flex;align-items:center;gap:8px}
-.toast.show{opacity:1;transform:translateY(0)}
-.toast svg{width:16px;height:16px;color:#3ac732;flex:none}
+.paysheetwrap{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.paysheetwrap[hidden]{display:none}
+.paysheet{position:relative;width:100%;max-width:620px;height:85vh;background:#0b0b0c;border-radius:24px 24px 0 0;padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 16px);box-sizing:border-box;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;display:flex;flex-direction:column}
+.paysheethead{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.paysheethead span{font-size:17px}
+.paysheethead b{font-weight:800}
+.paysearch{display:flex;align-items:center;background:#1c1c1e;border-radius:999px;padding:12px 16px;gap:8px;margin-bottom:18px}
+.paysearch input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#fff;font-size:16px;font-family:inherit}
+.paysearch svg{flex:none;opacity:.6}
+.paylist{flex:1;overflow-y:auto}
+.payrow{display:flex;align-items:center;gap:14px;padding:10px 0;cursor:pointer}
+.payav{width:48px;height:48px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;color:#000;font-size:18px}
+.payrow b{display:block;font-weight:600;font-size:16px}
+.payrow small{display:block;color:#8e8e93;font-size:14px;margin-top:2px}
+.paylisthead{font-size:13px;color:#8e8e93;margin:6px 0 10px}
 </style>
 </head>
 <body>
@@ -109,63 +94,13 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 <div class="avatar" id="avatar"></div>
 <button class="hitadd" id="hitadd" aria-label="Edit account"></button>
 </div></div>
-<div class="dockoverlay"><div class="dockbar"><span class="dock" id="dock">$54</span><button class="dockhit" id="dockhit" aria-label="Money"></button></div></div>
+<div class="dockoverlay"><div class="dockbar"><span class="dock" id="dock">$54</span><button class="payhit" id="godock" aria-label="Pay" style="left:40%;top:10%;width:20%;height:80%"></button></div></div>
 </div>
-
-<div class="paypage" id="paypage">
-  <div class="paytop">
-    <button class="payicon" id="payclose" aria-label="Close">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
-    </button>
-    <div class="payavatar" id="payavatar"></div>
-  </div>
-  <div class="payamtwrap"><div class="payamt" id="payamt">$0</div></div>
-  <div class="paynote" id="paynote">&nbsp;</div>
-  <div class="paykeys" id="paykeys">
-    <button class="paykey" data-k="1">1</button>
-    <button class="paykey" data-k="2">2</button>
-    <button class="paykey" data-k="3">3</button>
-    <button class="paykey" data-k="4">4</button>
-    <button class="paykey" data-k="5">5</button>
-    <button class="paykey" data-k="6">6</button>
-    <button class="paykey" data-k="7">7</button>
-    <button class="paykey" data-k="8">8</button>
-    <button class="paykey" data-k="9">9</button>
-    <button class="paykey dot" data-k=".">.</button>
-    <button class="paykey" data-k="0">0</button>
-    <button class="paykey back" data-k="back" aria-label="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-6-6z"/><path d="M13 10l4 4M17 10l-4 4"/></svg></button>
-  </div>
-  <div class="payactions">
-    <div class="payrow2">
-      <button class="paypill" id="poolbtn">Pool</button>
-      <button class="paypill" id="requestbtn">Request</button>
-    </div>
-    <button class="paymain" id="paybtn" disabled>Pay</button>
-  </div>
-</div>
-
-<div class="contactwrap" id="contactwrap" hidden>
-  <div class="dim" id="cdim"></div>
-  <div class="contactsheet">
-    <div class="cgrab"></div>
-    <div class="chead">
-      <button class="cxbtn" id="cxbtn"></button>
-    </div>
-    <div class="ctitle" style="padding:0 20px 14px"><b id="ctitlemode">Pay</b> <b id="ctitleamt"></b> <span id="ctitleto">to</span></div>
-    <div class="csearchwrap">
-      <input id="csearchinput" aria-label="Name, $cashtag, email, phone, USDC" autocomplete="off" autocapitalize="off" spellcheck="false">
-      <button class="cqr" aria-label="Scan QR"></button>
-    </div>
-    <div class="cresultslabel" id="cresultslabel" hidden>Results</div>
-    <div class="clist" id="clist"></div>
-  </div>
-</div>
-
-<div class="toastwrap"><div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span id="toasttext"></span></div></div>
 
 <div class="sheetwrap" id="sheetwrap" hidden>
 <div class="dim" id="dim"></div>
 <div class="sheet">
+  <div class="grabber"></div>
   <div class="sheethead"><span>Edit account</span><button class="closebtn" id="closebtn">&#10005;</button></div>
   <div class="sheetavatarrow">
     <div class="sheetavatar" id="sheetavatar"></div>
@@ -177,6 +112,44 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
   <div class="sheetrow"><label>Card last 4 digits</label><div class="inwrap"><span>&#8226;&#8226;</span><input id="pdigits" inputmode="numeric" maxlength="4"></div></div>
   <div class="sheetrow"><label>Cashtag</label><div class="inwrap"><span>$</span><input id="ptag"></div></div>
   <button class="savebtn" id="savebtn">Done</button>
+</div>
+</div>
+
+<div class="paywrap" id="paywrap" hidden><div class="payui" id="payui">
+<span class="payamt" id="payamt">$0</span>
+<div class="payavatar" id="payavatar"></div>
+<button class="payhit kavatar" id="kavatar" aria-label="Edit account"></button>
+<button class="payhit k1" data-k="1"></button>
+<button class="payhit k2" data-k="2"></button>
+<button class="payhit k3" data-k="3"></button>
+<button class="payhit k4" data-k="4"></button>
+<button class="payhit k5" data-k="5"></button>
+<button class="payhit k6" data-k="6"></button>
+<button class="payhit k7" data-k="7"></button>
+<button class="payhit k8" data-k="8"></button>
+<button class="payhit k9" data-k="9"></button>
+<button class="payhit kdot" data-k="."></button>
+<button class="payhit k0" data-k="0"></button>
+<button class="payhit kback" id="kback" aria-label="Backspace"></button>
+<button class="payhit kpool" id="kpool" aria-label="Pool"></button>
+<button class="payhit kreq" id="kreq" aria-label="Request"></button>
+<button class="payhit kpay" id="kpay" aria-label="Pay"></button>
+<button class="payhit kbank" id="kbank" aria-label="Bank"></button>
+<button class="payhit kdollar" id="kdollar" aria-label="Back to Money"></button>
+<button class="payhit kclock" id="kclock" aria-label="History"></button>
+</div></div>
+
+<div class="paysheetwrap" id="paysheetwrap" hidden>
+<div class="dim" id="paydim"></div>
+<div class="paysheet">
+  <div class="grabber"></div>
+  <div class="paysheethead"><button class="closebtn" id="payclosebtn">&#10005;</button></div>
+  <div style="font-size:28px;font-weight:800;margin-bottom:16px">Pay <span id="paysheetamt" style="color:#8e8e93">$0</span> to</div>
+  <div class="paysearch">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input id="payq" placeholder="Name, $cashtag, email, phone">
+  </div>
+  <div class="paylist" id="paylist"></div>
 </div>
 </div>
 
@@ -280,176 +253,93 @@ avatarfile.addEventListener('change',function(){
     avatarUrl=reader.result;
     sheetavatar.style.backgroundImage='url('+avatarUrl+')';
     avatar.style.backgroundImage='url('+avatarUrl+')';
+    var pa=document.getElementById('payavatar');if(pa)pa.style.backgroundImage='url('+avatarUrl+')';
     try{localStorage.setItem('cashapp_avatar',avatarUrl)}catch(e){}
   };
   reader.readAsDataURL(f);
 });
 
-/* ---- Pay / Request flow ---- */
-var AVATAR_COLORS=['#ff5fa2','#3ddc97','#5b8cff','#ffb23f','#9a7bff','#ff7a5f','#2fd1c5','#5fd0ff'];
+var wrap=document.querySelector('.wrap'),paywrap=document.getElementById('paywrap');
+var payui=document.getElementById('payui'),payamt=document.getElementById('payamt'),payavatar=document.getElementById('payavatar');
+var godock=document.getElementById('godock'),kdollar=document.getElementById('kdollar');
+function syncPayAvatar(){if(avatarUrl)payavatar.style.backgroundImage='url('+avatarUrl+')'}
+function goPay(){wrap.hidden=true;paywrap.hidden=false;syncPayAvatar();fitPayAmt()}
+function goMoney(){paywrap.hidden=true;wrap.hidden=false}
+godock.addEventListener('click',goPay);
+kdollar.addEventListener('click',goMoney);
+document.getElementById('kavatar').addEventListener('click',openSheet);
 
-var paypage=document.getElementById('paypage'),payamt=document.getElementById('payamt'),paynote=document.getElementById('paynote');
-var payclose=document.getElementById('payclose'),payavatar=document.getElementById('payavatar'),dockhit=document.getElementById('dockhit');
-var paybtn=document.getElementById('paybtn'),poolbtn=document.getElementById('poolbtn'),requestbtn=document.getElementById('requestbtn');
-var paykeys=document.getElementById('paykeys');
-var contactwrap=document.getElementById('contactwrap'),cdim=document.getElementById('cdim'),cxbtn=document.getElementById('cxbtn');
-var csearchinput=document.getElementById('csearchinput'),clist=document.getElementById('clist'),cresultslabel=document.getElementById('cresultslabel');
-var ctitlemode=document.getElementById('ctitlemode'),ctitleamt=document.getElementById('ctitleamt'),ctitleto=document.getElementById('ctitleto');
-var toast=document.getElementById('toast'),toasttext=document.getElementById('toasttext');
-
-var payBuf='';
-var payMode='pay'; // 'pay' or 'request'
-
-function payAmount(){ return parseFloat(payBuf||'0')||0 }
-function withCommas(s){
-  var parts=String(s).split('.');
-  parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');
-  return parts.join('.');
+var payVal='';
+function fitPayAmt(){fitText(payamt,payui,.242,.90)}
+function renderPayAmt(){
+  payamt.textContent='$'+(payVal||'0');
+  fitPayAmt();
 }
-function renderPay(){
-  var n=payAmount();
-  payamt.textContent='$'+withCommas((payBuf?payBuf:'0').replace(/^0+(?=\d)/,''));
-  paybtn.disabled = !(n>0);
-  if(n>bal && payMode==='pay'){ paynote.textContent='Not enough money'; paybtn.disabled=true; }
-  else { paynote.textContent=' '; }
-  if(avatarUrl) payavatar.style.backgroundImage='url('+avatarUrl+')';
-}
-
-function openPayPage(){
-  payBuf='';
-  payMode='pay';
-  renderPay();
-  paypage.classList.add('open');
-}
-function closePayPage(){ paypage.classList.remove('open') }
-
-dockhit.addEventListener('click',openPayPage);
-payclose.addEventListener('click',closePayPage);
-
-paykeys.addEventListener('click',function(e){
-  var btn=e.target.closest('.paykey');
-  if(!btn)return;
-  var k=btn.dataset.k;
-  if(k==='back'){ payBuf=payBuf.slice(0,-1); }
-  else if(k==='.'){ if(payBuf.indexOf('.')===-1) payBuf=(payBuf||'0')+'.'; }
-  else {
-    var dot=payBuf.indexOf('.');
-    if(dot!==-1 && payBuf.length-dot>2) return; // max 2 decimals
-    if(payBuf.replace('.','').length>=7) return; // sane max length
-    payBuf+=k;
-  }
-  renderPay();
+renderPayAmt();
+document.querySelectorAll('.payhit[data-k]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var k=btn.dataset.k;
+    if(k==='.'){
+      if(payVal.indexOf('.')<0)payVal=(payVal||'0')+'.';
+    }else{
+      if(payVal.indexOf('.')>=0&&payVal.split('.')[1].length>=2)return;
+      if(payVal==='0')payVal=k;else payVal=(payVal||'')+k;
+    }
+    renderPayAmt();
+  });
+});
+document.getElementById('kback').addEventListener('click',function(){
+  payVal=payVal.slice(0,-1);
+  renderPayAmt();
 });
 
-function openContactSheet(mode){
-  payMode=mode;
-  ctitlemode.textContent = mode==='pay' ? 'Pay' : 'Request';
-  ctitleamt.textContent = '$'+withCommas(payAmount().toFixed(payAmount()%1?2:0));
-  ctitleto.textContent = mode==='pay' ? 'to' : 'from';
-  csearchinput.value='';
-  renderContacts('');
-  contactwrap.hidden=false;
+var contactPool=[
+  {name:'Jordan Diaz',tag:'jordand',av:'J',color:'#ff8fd6'},
+  {name:'Jamie Lee',tag:'jamielee',av:'J',color:'#ff8fd6'},
+  {name:'Hana Kim',tag:'hanak',av:'H',color:'#63e6c4'},
+  {name:'Marcus Reed',tag:'marcusr',av:'M',color:'#74c0fc'},
+  {name:'Priya Patel',tag:'priyap',av:'P',color:'#ffa94d'},
+  {name:'My Phan',tag:'hellomya63',av:'M',color:'#74c0fc'},
+  {name:'Hello Sunshine Butterfly',tag:'hellosunshinecookies',av:'H',color:'#ffd43b'},
+  {name:'SNUG',tag:'HellaMotion29',av:'S',color:'#b197fc'},
+  {name:'Alishia Givens',tag:'hellosweetsbakeshop',av:'A',color:'#ff8fd6'},
+  {name:'Chris Nguyen',tag:'chrisn',av:'C',color:'#74c0fc'},
+  {name:'Destiny Brooks',tag:'destinyb',av:'D',color:'#d0a9ff'},
+  {name:'Alex Turner',tag:'alext',av:'A',color:'#ff8fd6'}
+];
+var paylist=document.getElementById('paylist'),payq=document.getElementById('payq');
+function rowHtml(c){
+  return '<div class="payrow"><div class="payav" style="background:'+c.color+'">'+c.av+'</div><div><b>'+c.name+'</b><small>$'+c.tag+'</small></div></div>';
 }
-function closeContactSheet(){ contactwrap.hidden=true }
-
-paybtn.addEventListener('click',function(){ if(!paybtn.disabled) openContactSheet('pay') });
-requestbtn.addEventListener('click',function(){ if(payAmount()>0) openContactSheet('request'); else { payBuf='1'; renderPay(); openContactSheet('request'); } });
-poolbtn.addEventListener('click',function(){ showToast('Pools are coming soon') });
-
-cdim.addEventListener('click',closeContactSheet);
-cxbtn.addEventListener('click',closeContactSheet);
-
-// Synthesizes a small list of plausible results from whatever was typed —
-// same no-API trick as paypal/index.html's search(), extended to look like
-// real Cash App results: several unrelated-looking names whose $cashtag
-// just happens to contain the query, some marked as business accounts.
-// Nothing here is a real person or business — it's all generated from the
-// query text with a seeded PRNG so the same search always looks the same.
-var FIRSTNAMES=['Alex','Jordan','Maria','Chris','Sam','Taylor','Jamie','Morgan','Casey','Riley','Avery','Drew','Dana','Reese','Quinn','Skyler','Nico','Ariel','Blake','Rowan','Devon','Logan'];
-var LASTNAMES=['Rivera','Blake','Lopez','Webb','Castillo','Nguyen','Walsh','Reyes','Patel','Chen','Flores','Hayes','Diaz','Cole','Fisher','Ward','Brooks','Vega','Hart','Price'];
-var BIZPREFIX=['Blue','Sunset','Golden','Little','North','Silver','Green','Urban','Wild','Honey','Maple','Coastal','Cedar','Amber'];
-var BIZWORDS=['Bakery','Studio','Market','Design','Goods','Press','Supply','Kitchen','Garden','Collective','Co','Boutique'];
-var TAGFRAGS=['co','shop','store','hub','world','plus','official','go'];
-function seededRand(seed){
-  var s=seed%2147483647; if(s<=0) s+=2147483646;
-  return function(){ s=s*16807%2147483647; return (s-1)/2147483646; };
-}
-function pick(arr,rand){ return arr[Math.floor(rand()*arr.length)] }
-function genResults(q){
-  var s=q.replace(/^\$/,'').trim();
-  var letters=s.replace(/[^a-zA-Z]/g,'').toLowerCase();
-  if(letters.length<2) return [];
-  var seed=0; for(var i=0;i<s.length;i++) seed+=s.charCodeAt(i)*(i*31+7);
-  var rand=seededRand(seed||1);
-  var words=s.replace(/[^a-zA-Z ]/g,' ').trim().split(/\s+/).filter(Boolean);
-  var cleanName=words.length?words.map(function(w){return w[0].toUpperCase()+w.slice(1).toLowerCase()}).join(' '):letters.charAt(0).toUpperCase()+letters.slice(1);
-  var out=[{name:cleanName,tag:letters,biz:false}];
-  var used={}; used[letters]=1;
-  var n=2+Math.floor(rand()*3);
-  for(var k=0;k<n;k++){
-    var biz=rand()<0.35;
-    var name=biz?(pick(BIZPREFIX,rand)+' '+pick(BIZWORDS,rand)):(pick(FIRSTNAMES,rand)+' '+pick(LASTNAMES,rand));
-    var pos=rand(), frag=pick(TAGFRAGS,rand), num=Math.floor(rand()*90+10);
-    var tag = pos<.4 ? (letters+frag+num) : pos<.7 ? (frag+letters+num) : (letters+num);
-    tag=tag.toLowerCase().replace(/[^a-z0-9]/g,'');
-    if(used[tag]) continue;
-    used[tag]=1;
-    out.push({name:name,tag:tag,biz:biz});
+function renderList(){
+  var v=payq.value.trim().toLowerCase();
+  if(!v){
+    paylist.innerHTML=contactPool.slice(0,5).map(rowHtml).join('');
+    return;
   }
-  return out;
+  var matches=contactPool.filter(function(c){
+    return c.name.toLowerCase().indexOf(v)>=0||c.tag.toLowerCase().indexOf(v)>=0;
+  });
+  var html='<div class="paylisthead">Results</div>';
+  html+=matches.length?matches.map(rowHtml).join(''):'<div class="paylisthead">No results</div>';
+  paylist.innerHTML=html;
 }
-var searchTimer=null,searchTimer2=null;
-function renderContacts(q){
-  var v=(q||'').trim();
-  clearTimeout(searchTimer);clearTimeout(searchTimer2);
-  cresultslabel.hidden=true;
-  if(!v){ clist.innerHTML=''; return }
-  clist.innerHTML='<div class="cspinwrap"><i class="cspin"></i></div>';
-  searchTimer=setTimeout(function(){
-    searchTimer2=setTimeout(function(){
-      var results=genResults(v);
-      if(!results.length){ clist.innerHTML='<div class="cempty">No results</div>'; return }
-      cresultslabel.hidden=false;
-      clist.innerHTML=results.map(function(r,i){
-        var initial=(r.name.split(' ').length>1?r.name.split(' ')[0][0]+r.name.split(' ')[1][0]:r.name.slice(0,2)).toUpperCase();
-        var color=AVATAR_COLORS[r.tag.length%AVATAR_COLORS.length];
-        return '<div class="crow" data-tag="'+r.tag+'" data-name="'+r.name+'" style="animation-delay:'+(i*45)+'ms">'+
-          '<div class="cav" style="background:'+color+'">'+initial+'</div>'+
-          '<div class="cmeta"><div class="cname">'+r.name+(r.biz?' <svg class="cbiz" viewBox="0 0 24 24" fill="currentColor"><path d="M9 4a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3V6a2 2 0 0 0-2-2H9zm0 2h6v1H9V6zM4 9h16v9H4V9z"/></svg>':'')+'</div><div class="ctag">$'+r.tag+'</div></div>'+
-        '</div>';
-      }).join('');
-    },700);
-  },500);
-}
-csearchinput.addEventListener('input',function(){
-  csearchinput.classList.toggle('has-text',csearchinput.value!=='');
-  renderContacts(csearchinput.value);
+payq.addEventListener('input',renderList);
+paylist.addEventListener('click',function(e){
+  if(e.target.closest('.payrow'))closePaySheet();
 });
 
-clist.addEventListener('click',function(e){
-  var row=e.target.closest('.crow');
-  if(!row)return;
-  var n=payAmount();
-  var who=row.dataset.name;
-  closeContactSheet();
-  closePayPage();
-  if(payMode==='pay'){
-    bal=Math.max(0,Math.round((bal-n)*100)/100);
-    renderAll();
-    try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
-    showToast('Sent $'+n.toFixed(2)+' to '+who);
-  } else {
-    showToast('Requested $'+n.toFixed(2)+' from '+who);
-  }
-});
-
-var toastTimer=null;
-function showToast(msg){
-  toasttext.textContent=msg;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(function(){ toast.classList.remove('show') },2600);
+var paysheetwrap=document.getElementById('paysheetwrap'),paydim=document.getElementById('paydim'),payclosebtn=document.getElementById('payclosebtn'),paysheetamt=document.getElementById('paysheetamt');
+function openPaySheet(){
+  paysheetamt.textContent='$'+Math.round(parseFloat(payVal||'0'));
+  payq.value='';
+  renderList();
+  paysheetwrap.hidden=false;
 }
+function closePaySheet(){paysheetwrap.hidden=true}
+document.getElementById('kpay').addEventListener('click',openPaySheet);
+paydim.addEventListener('click',closePaySheet);
+payclosebtn.addEventListener('click',closePaySheet);
 })();
 </script>
 </body></html>
