@@ -464,7 +464,6 @@ paykeys.addEventListener('click',function(e){
   else {
     var dot=payBuf.indexOf('.');
     if(dot!==-1 && payBuf.length-dot>2) return; // max 2 decimals
-    if(payBuf.replace('.','').length>=7) return; // sane max length
     payBuf+=k;
   }
   renderPay();
