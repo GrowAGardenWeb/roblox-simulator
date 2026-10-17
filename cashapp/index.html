@@ -67,6 +67,12 @@ body.balhidden .eyeopen{display:flex}
 .paypill{flex:1;border:0;border-radius:999px;background:rgba(0,0,0,.14);color:#06200a;font-size:16px;font-weight:700;padding:15px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .paymain{width:100%;border:0;border-radius:999px;background:#06200a;color:#fff;font-size:17px;font-weight:700;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .paymain:disabled{opacity:.45}
+.paytabdock{flex:none;display:flex;justify-content:center;padding:0 20px calc(env(safe-area-inset-bottom,0px) + 14px)}
+.paytabs{display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.14);border-radius:999px;padding:8px}
+.paytab{border:0;background:none;width:52px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#06200a;-webkit-tap-highlight-color:transparent;font-size:19px;font-weight:800;transition:transform .1s cubic-bezier(.25,.8,.25,1)}
+.paytab:active{transform:scale(.88)}
+.paytab.active{background:rgba(0,0,0,.16)}
+.paytab svg{width:22px;height:22px}
 
 /* ---- Pay-to contact sheet ---- */
 .contactwrap{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center}
@@ -150,6 +156,11 @@ body.balhidden .eyeopen{display:flex}
     </div>
     <button class="paymain" id="paybtn" disabled>Pay</button>
   </div>
+  <div class="paytabdock"><div class="paytabs">
+    <button class="paytab" id="paytabbank" aria-label="Bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M4 10v9M9 10v9M15 10v9M20 10v9"/><path d="M2 21h20"/></svg></button>
+    <button class="paytab active" id="paytabdollar" aria-label="Pay">$</button>
+    <button class="paytab" id="paytabclock" aria-label="Activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></button>
+  </div></div>
 </div>
 
 <div class="contactwrap" id="contactwrap" hidden>
@@ -358,6 +369,8 @@ function closePayPage(){ paypage.classList.remove('open') }
 
 dockhit.addEventListener('click',openPayPage);
 payclose.addEventListener('click',closePayPage);
+document.getElementById('paytabbank').addEventListener('click',closePayPage);
+document.getElementById('paytabclock').addEventListener('click',closePayPage);
 
 paykeys.addEventListener('click',function(e){
   var btn=e.target.closest('.paykey');
