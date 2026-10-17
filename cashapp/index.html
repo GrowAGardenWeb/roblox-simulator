@@ -208,6 +208,7 @@ try{var s2=localStorage.getItem('cashapp_card_digits');if(s2&&/^\d{4}$/.test(s2)
 try{var s3=localStorage.getItem('cashapp_cashtag');if(s3)tag=s3}catch(e){}
 try{var s4=localStorage.getItem('cashapp_avatar');if(s4)avatarUrl=s4}catch(e){}
 
+function avatarSrc(){return avatarUrl||('https://unavatar.io/cashapp/'+encodeURIComponent(tag))}
 var ui=document.getElementById('ui'),dockbar=document.querySelector('.dockbar');
 function fitText(el,containerEl,baseFrac,maxWidthFrac){
   var cw=containerEl.getBoundingClientRect().width;
@@ -226,7 +227,9 @@ function renderAll(){
   savings.textContent='$'+sav.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   digits.textContent=cardDigits;
   cashtag.textContent='$'+tag;
-  if(avatarUrl){avatar.style.backgroundImage='url('+avatarUrl+')';sheetavatar.style.backgroundImage='url('+avatarUrl+')'}
+  var asrc=avatarSrc();
+  avatar.style.backgroundImage='url('+asrc+')';
+  sheetavatar.style.backgroundImage='url('+asrc+')';
   fitText(amt,ui,.149,.90);
   fitText(dock,dockbar,.094,.28);
   fitText(savings,ui,.0926,.82);
@@ -312,7 +315,7 @@ function renderPay(){
   paybtn.disabled = !(n>0);
   if(n>bal && payMode==='pay'){ paynote.textContent='Not enough money'; paybtn.disabled=true; }
   else { paynote.textContent=' '; }
-  if(avatarUrl) payavatar.style.backgroundImage='url('+avatarUrl+')';
+  payavatar.style.backgroundImage='url('+avatarSrc()+')';
 }
 
 function openPayPage(){
