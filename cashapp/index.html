@@ -13,13 +13,17 @@
 html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}
 .wrap{position:fixed;top:0;left:0;right:0;height:var(--app-h,100%);margin:0;overflow:hidden;display:flex;justify-content:center}
 .scroll{width:100%;max-width:620px;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
-.ui{position:relative;width:100%;aspect-ratio:1320/4560;container-type:inline-size;background:top/100% 100% no-repeat url(money.png)}
+.ui{position:relative;width:100%;aspect-ratio:1320/4560;overflow:hidden;container-type:inline-size;background:top/100% 100% no-repeat url(money.png)}
 .amt{position:absolute;left:5.45%;top:19.76%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;white-space:nowrap;pointer-events:none}
 .digits{position:absolute;left:18.64%;top:12.24%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;white-space:nowrap;pointer-events:none}
 .cashtag{position:absolute;right:5.3%;top:12.37%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;white-space:nowrap;text-align:right;pointer-events:none}
 .savings{position:absolute;left:9.09%;top:42.04%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:9.26cqw;line-height:1;white-space:nowrap;pointer-events:none}
 .avatar{position:absolute;left:91.36%;top:6.19%;width:11.52cqw;height:11.52cqw;transform:translate(-50%,-50%);border-radius:50%;background:#2c2c2e center/cover no-repeat;pointer-events:none}
 .hitadd{position:absolute;left:3.64%;top:26.54%;width:45.45%;height:3.42%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hiteye{position:absolute;left:84%;top:13.5%;width:13%;height:4.5%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.eyeopen{position:absolute;left:88.7%;top:15.3%;width:6.3%;height:2.3%;background:#000;display:none;align-items:center;justify-content:center;pointer-events:none}
+.eyeopen svg{width:70%;height:70%;display:block}
+body.balhidden .eyeopen{display:flex}
 .dockoverlay{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:100%;max-width:620px;display:flex;justify-content:center;pointer-events:none}
 .dockbar{position:relative;width:61.82%;aspect-ratio:816/186;container-type:inline-size;background:center/100% 100% no-repeat url(dock.png);pointer-events:auto}
 .dock{position:absolute;left:15.99%;top:51.6%;transform:translate(-50%,-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;color:#fff;font-size:9.4cqw;line-height:1;white-space:nowrap;pointer-events:none}
@@ -50,10 +54,12 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .payicon{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.14);display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;color:#06200a}
 .payavatar{width:40px;height:40px;border-radius:50%;background:#2c2c2e center/cover no-repeat;flex:none}
 .payamtwrap{flex:none;text-align:center;padding:26px 16px 6px;min-height:92px;display:flex;align-items:center;justify-content:center}
-.payamt{font-size:min(16vw,76px);font-weight:800;color:#06200a;line-height:1;letter-spacing:-.02em;word-break:break-all}
+.payamt{font-size:min(16vw,76px);font-weight:800;color:#06200a;line-height:1;letter-spacing:-.02em;word-break:break-all;display:inline-block;transition:transform .14s cubic-bezier(.25,.8,.25,1)}
+.payamt.pop{transform:scale(1.06)}
 .paynote{text-align:center;font-size:13px;color:#0a3310;opacity:.65;min-height:16px;margin-top:4px}
 .paykeys{flex:1;display:grid;grid-template-columns:repeat(3,1fr);align-content:center;gap:4px 0;padding:0 20px;max-height:52vh}
-.paykey{border:0;background:none;color:#06200a;font-size:30px;font-weight:500;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.paykey{border:0;background:none;color:#06200a;font-size:30px;font-weight:500;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform .1s cubic-bezier(.25,.8,.25,1),opacity .1s}
+.paykey:active{transform:scale(.85);opacity:.5}
 .paykey.dot{font-size:30px;font-weight:700}
 .paykey.back svg{width:26px;height:26px}
 .payactions{flex:none;padding:10px 20px calc(env(safe-area-inset-bottom,0px) + 18px)}
@@ -61,10 +67,16 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .paypill{flex:1;border:0;border-radius:999px;background:rgba(0,0,0,.14);color:#06200a;font-size:16px;font-weight:700;padding:15px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .paymain{width:100%;border:0;border-radius:999px;background:#06200a;color:#fff;font-size:17px;font-weight:700;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .paymain:disabled{opacity:.45}
+.paytabdock{flex:none;display:flex;justify-content:center;padding:0 20px calc(env(safe-area-inset-bottom,0px) + 14px)}
+.paybankicon{position:absolute;left:15.99%;top:51.6%;width:8.2cqw;height:8.2cqw;transform:translate(-50%,-50%);pointer-events:none;color:#fff}
+.paybankicon svg{width:100%;height:100%;display:block}
+.paytabhit{position:absolute;top:0;height:100%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.paytabhit:active{opacity:.6}
 
 /* ---- Pay-to contact sheet ---- */
 .contactwrap{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center}
 .contactwrap[hidden]{display:none}
+.contactsheet.noting .ctitle,.contactsheet.noting .csearchwrap,.contactsheet.noting .cresultslabel,.contactsheet.noting .clist{display:none}
 .contactsheet{position:relative;width:100%;max-width:620px;height:88vh;background:#000;border-radius:22px 22px 0 0;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;animation:sheetUp .28s cubic-bezier(.25,.8,.25,1)}
 @keyframes sheetUp{from{transform:translateY(16px);opacity:.6}to{transform:translateY(0);opacity:1}}
 .cgrab{width:36px;height:4px;border-radius:999px;background:#3a3a3d;margin:10px auto 2px}
@@ -94,6 +106,32 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 @keyframes cspinturn{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.cspin{animation-duration:2s}}
 
+.notestep{display:none;padding:4px 20px 20px}
+.notestep.show{display:block}
+.backarrow{border:0;background:none;color:#fff;cursor:pointer;padding:6px;margin:0 0 14px -6px;display:flex}
+.backarrow svg{width:20px;height:20px}
+.notetitle{font-size:21px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;flex-wrap:wrap;gap:8px 6px}
+.notewhoav{width:26px;height:26px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#07140a}
+.notedivider{height:1px;background:#2c2c2e;margin-bottom:6px}
+.noterow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
+.noteinput{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font-size:16px;font-family:inherit}
+.noteinput::placeholder{color:#6a6a6d}
+.reviewbtn{flex:none;border:0;background:#1d1d1f;color:#fff;font-size:14px;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer}
+.reviewbtn:disabled{opacity:.4}
+
+.successwrap{position:fixed;inset:0;z-index:80;background:#000;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;transform:translateY(100%);transition:transform .32s cubic-bezier(.25,.8,.25,1)}
+.successwrap.open{transform:translateY(0)}
+.successtop{padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 0}
+.successclose{width:34px;height:34px;border-radius:50%;background:#1d1d1f;border:0;color:#fff;cursor:pointer;font-size:16px}
+.successbody{flex:1;padding:40px 24px 0}
+.successcheck{width:56px;height:56px;border-radius:50%;background:#2ecc5f;display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+.successcheck svg{width:26px;height:26px;color:#06200a}
+.successtext{font-size:27px;font-weight:800;line-height:1.28}
+.successactions{padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 18px)}
+.successbtn{width:100%;border:0;border-radius:999px;padding:16px 0;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px;-webkit-tap-highlight-color:transparent}
+.successbtn.receipt{background:#1d1d1f;color:#fff}
+.successbtn.done{background:#fff;color:#000}
+
 .toastwrap{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;justify-content:center;z-index:90;pointer-events:none}
 .toast{background:#1c1c1e;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-size:14px;font-weight:600;padding:13px 20px;border-radius:999px;box-shadow:0 8px 24px -8px rgba(0,0,0,.6);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;display:flex;align-items:center;gap:8px}
 .toast.show{opacity:1;transform:translateY(0)}
@@ -108,6 +146,8 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 <span class="savings" id="savings">$0.00</span>
 <div class="avatar" id="avatar"></div>
 <button class="hitadd" id="hitadd" aria-label="Edit account"></button>
+<button class="hiteye" id="hiteye" aria-label="Toggle balance visibility"></button>
+<div class="eyeopen"><svg viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="2"/></svg></div>
 </div></div>
 <div class="dockoverlay"><div class="dockbar"><span class="dock" id="dock">$54</span><button class="dockhit" id="dockhit" aria-label="Money"></button></div></div>
 </div>
@@ -142,6 +182,12 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
     </div>
     <button class="paymain" id="paybtn" disabled>Pay</button>
   </div>
+  <div class="dockoverlay"><div class="dockbar">
+    <div class="paybankicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M4 10v9M9 10v9M15 10v9M20 10v9"/><path d="M2 21h20"/></svg></div>
+    <button class="paytabhit" id="paytabbank" aria-label="Bank" style="left:0;width:32%"></button>
+    <button class="paytabhit" id="paytabdollar" aria-label="Pay" style="left:34%;width:32%"></button>
+    <button class="paytabhit" id="paytabclock" aria-label="Activity" style="left:68%;width:32%"></button>
+  </div></div>
 </div>
 
 <div class="contactwrap" id="contactwrap" hidden>
@@ -158,6 +204,27 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
     </div>
     <div class="cresultslabel" id="cresultslabel" hidden>Results</div>
     <div class="clist" id="clist"></div>
+    <div class="notestep" id="notestep">
+      <button class="backarrow" id="notebackbtn" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="notetitle"><b id="ntmode">Pay</b> <b id="ntamt"></b> <span id="ntto">to</span> <span class="notewhoav" id="ntav"></span> <b id="ntname"></b> <span>for</span></div>
+      <div class="notedivider"></div>
+      <div class="noterow">
+        <input class="noteinput" id="noteinput" placeholder="Note (Required)" autocomplete="off" autocapitalize="sentences">
+        <button class="reviewbtn" id="reviewbtn" disabled>Review</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="successwrap" id="successwrap">
+  <div class="successtop"><button class="successclose" id="successclose" aria-label="Close">&#10005;</button></div>
+  <div class="successbody">
+    <div class="successcheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <div class="successtext" id="successtext">Done</div>
+  </div>
+  <div class="successactions">
+    <button class="successbtn receipt" id="successreceipt">Receipt</button>
+    <button class="successbtn done" id="successdone">Done</button>
   </div>
 </div>
 
@@ -207,7 +274,11 @@ try{var s0=localStorage.getItem('cashapp_savings');if(s0!==null&&!isNaN(parseFlo
 try{var s2=localStorage.getItem('cashapp_card_digits');if(s2&&/^\d{4}$/.test(s2))cardDigits=s2}catch(e){}
 try{var s3=localStorage.getItem('cashapp_cashtag');if(s3)tag=s3}catch(e){}
 try{var s4=localStorage.getItem('cashapp_avatar');if(s4)avatarUrl=s4}catch(e){}
+var balHidden=false;
+try{balHidden=localStorage.getItem('cashapp_balhidden')==='1'}catch(e){}
+document.body.classList.toggle('balhidden',balHidden);
 
+function avatarSrc(){return avatarUrl||('https://unavatar.io/cashapp/'+encodeURIComponent(tag))}
 var ui=document.getElementById('ui'),dockbar=document.querySelector('.dockbar');
 function fitText(el,containerEl,baseFrac,maxWidthFrac){
   var cw=containerEl.getBoundingClientRect().width;
@@ -221,15 +292,24 @@ function fitText(el,containerEl,baseFrac,maxWidthFrac){
   }
 }
 function renderAll(){
-  amt.textContent='$'+bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  dock.textContent='$'+Math.round(bal).toLocaleString('en-US');
-  savings.textContent='$'+sav.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  if(balHidden){
+    amt.textContent='••••';
+    dock.textContent='••••';
+    savings.textContent='••••';
+  }else{
+    amt.textContent='$'+bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    dock.textContent='$'+Math.round(bal).toLocaleString('en-US');
+    savings.textContent='$'+sav.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
   digits.textContent=cardDigits;
   cashtag.textContent='$'+tag;
-  if(avatarUrl){avatar.style.backgroundImage='url('+avatarUrl+')';sheetavatar.style.backgroundImage='url('+avatarUrl+')'}
+  var asrc=avatarSrc();
+  avatar.style.backgroundImage='url('+asrc+')';
+  sheetavatar.style.backgroundImage='url('+asrc+')';
   fitText(amt,ui,.149,.90);
   fitText(dock,dockbar,.094,.28);
   fitText(savings,ui,.0926,.82);
+  fitText(cashtag,ui,.043,.55);
 }
 renderAll();
 addEventListener('resize',renderAll);
@@ -267,6 +347,12 @@ function save(){
 }
 
 hitadd.addEventListener('click',openSheet);
+document.getElementById('hiteye').addEventListener('click',function(){
+  balHidden=!balHidden;
+  document.body.classList.toggle('balhidden',balHidden);
+  try{localStorage.setItem('cashapp_balhidden',balHidden?'1':'0')}catch(e){}
+  renderAll();
+});
 dim.addEventListener('click',closeSheet);
 closebtn.addEventListener('click',closeSheet);
 savebtn.addEventListener('click',save);
@@ -306,13 +392,19 @@ function withCommas(s){
   parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');
   return parts.join('.');
 }
+var payamtPopTimer=null;
 function renderPay(){
   var n=payAmount();
   payamt.textContent='$'+withCommas((payBuf?payBuf:'0').replace(/^0+(?=\d)/,''));
+  payamt.classList.remove('pop');
+  void payamt.offsetWidth;
+  payamt.classList.add('pop');
+  clearTimeout(payamtPopTimer);
+  payamtPopTimer=setTimeout(function(){payamt.classList.remove('pop')},140);
   paybtn.disabled = !(n>0);
   if(n>bal && payMode==='pay'){ paynote.textContent='Not enough money'; paybtn.disabled=true; }
   else { paynote.textContent=' '; }
-  if(avatarUrl) payavatar.style.backgroundImage='url('+avatarUrl+')';
+  payavatar.style.backgroundImage='url('+avatarSrc()+')';
 }
 
 function openPayPage(){
@@ -325,6 +417,8 @@ function closePayPage(){ paypage.classList.remove('open') }
 
 dockhit.addEventListener('click',openPayPage);
 payclose.addEventListener('click',closePayPage);
+document.getElementById('paytabbank').addEventListener('click',closePayPage);
+document.getElementById('paytabclock').addEventListener('click',closePayPage);
 
 paykeys.addEventListener('click',function(e){
   var btn=e.target.closest('.paykey');
@@ -343,7 +437,7 @@ paykeys.addEventListener('click',function(e){
 
 function openContactSheet(mode){
   payMode=mode;
-  ctitlemode.textContent = mode==='pay' ? 'Pay' : 'Request';
+  ctitlemode.textContent = mode==='pay' ? 'Pay' : mode==='pool' ? 'Pool' : 'Request';
   ctitleamt.textContent = '$'+withCommas(payAmount().toFixed(payAmount()%1?2:0));
   ctitleto.textContent = mode==='pay' ? 'to' : 'from';
   csearchinput.value='';
@@ -354,7 +448,7 @@ function closeContactSheet(){ contactwrap.hidden=true }
 
 paybtn.addEventListener('click',function(){ if(!paybtn.disabled) openContactSheet('pay') });
 requestbtn.addEventListener('click',function(){ if(payAmount()>0) openContactSheet('request'); else { payBuf='1'; renderPay(); openContactSheet('request'); } });
-poolbtn.addEventListener('click',function(){ showToast('Pools are coming soon') });
+poolbtn.addEventListener('click',function(){ if(payAmount()>0) openContactSheet('pool'); else { payBuf='1'; renderPay(); openContactSheet('pool'); } });
 
 cdim.addEventListener('click',closeContactSheet);
 cxbtn.addEventListener('click',closeContactSheet);
@@ -426,22 +520,66 @@ csearchinput.addEventListener('input',function(){
   renderContacts(csearchinput.value);
 });
 
+var contactsheet=document.querySelector('.contactsheet'),notestep=document.getElementById('notestep');
+var notebackbtn=document.getElementById('notebackbtn'),noteinput=document.getElementById('noteinput'),reviewbtn=document.getElementById('reviewbtn');
+var ntmode=document.getElementById('ntmode'),ntamt=document.getElementById('ntamt'),ntto=document.getElementById('ntto'),ntav=document.getElementById('ntav'),ntname=document.getElementById('ntname');
+var successwrap=document.getElementById('successwrap'),successtext=document.getElementById('successtext'),successclose=document.getElementById('successclose'),successreceipt=document.getElementById('successreceipt'),successdone=document.getElementById('successdone');
+var pendingWho=null;
+
 clist.addEventListener('click',function(e){
   var row=e.target.closest('.crow');
   if(!row)return;
+  pendingWho=row.dataset.name;
+  var initial=(pendingWho.split(' ').length>1?pendingWho.split(' ')[0][0]+pendingWho.split(' ')[1][0]:pendingWho.slice(0,2)).toUpperCase();
+  var color=AVATAR_COLORS[row.dataset.tag.length%AVATAR_COLORS.length];
+  ntmode.textContent=ctitlemode.textContent;
+  ntamt.textContent=ctitleamt.textContent;
+  ntto.textContent=ctitleto.textContent;
+  ntav.textContent=initial;
+  ntav.style.background=color;
+  ntname.textContent=pendingWho;
+  noteinput.value='';
+  reviewbtn.disabled=true;
+  contactsheet.classList.add('noting');
+  notestep.classList.add('show');
+  noteinput.focus();
+});
+
+notebackbtn.addEventListener('click',function(){
+  contactsheet.classList.remove('noting');
+  notestep.classList.remove('show');
+});
+
+noteinput.addEventListener('input',function(){
+  reviewbtn.disabled=noteinput.value.trim()==='';
+});
+
+reviewbtn.addEventListener('click',function(){
   var n=payAmount();
-  var who=row.dataset.name;
+  var who=pendingWho;
   closeContactSheet();
   closePayPage();
+  contactsheet.classList.remove('noting');
+  notestep.classList.remove('show');
+  var msg;
   if(payMode==='pay'){
     bal=Math.max(0,Math.round((bal-n)*100)/100);
     renderAll();
     try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
-    showToast('Sent $'+n.toFixed(2)+' to '+who);
+    msg='You sent $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to '+who;
+  } else if(payMode==='pool'){
+    msg='Pool invite sent to '+who;
   } else {
-    showToast('Requested $'+n.toFixed(2)+' from '+who);
+    msg='You requested $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' from '+who;
   }
+  successtext.textContent=msg;
+  successwrap.classList.add('open');
 });
+
+function closeSuccess(){ successwrap.classList.remove('open') }
+successclose.addEventListener('click',closeSuccess);
+successdone.addEventListener('click',closeSuccess);
+successreceipt.addEventListener('click',function(){ showToast('Receipt saved') });
 
 var toastTimer=null;
 function showToast(msg){
