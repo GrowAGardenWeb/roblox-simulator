@@ -31,10 +31,11 @@ body.balhidden .eyeopen{display:flex}
 .dockbar.bigbal .dock{display:none}
 .dockbar.bigbal .dockbankicon{display:block}
 
-.sheetwrap{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
-.sheetwrap[hidden]{display:none}
+.sheetwrap{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s linear}
+.sheetwrap.open{opacity:1;pointer-events:auto}
 .dim{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-.sheet{position:relative;width:100%;max-width:620px;background:#111113;border-radius:24px 24px 0 0;padding:18px 20px calc(env(safe-area-inset-bottom,0px) + 24px);box-sizing:border-box;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;max-height:82vh;overflow-y:auto}
+.sheet{position:relative;width:100%;max-width:620px;background:#111113;border-radius:24px 24px 0 0;padding:18px 20px calc(env(safe-area-inset-bottom,0px) + 24px);box-sizing:border-box;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;max-height:82vh;overflow-y:auto;transform:translateY(100%);transition:transform .26s cubic-bezier(.22,.9,.32,1)}
+.sheetwrap.open .sheet{transform:translateY(0)}
 .sheethead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .sheethead span{font-size:19px;font-weight:700}
 .closebtn{width:30px;height:30px;border-radius:50%;border:0;background:#222;color:#aaa;font-size:16px;cursor:pointer}
@@ -67,12 +68,12 @@ body.balhidden .eyeopen{display:flex}
 .paykey:active{transform:scale(.85);opacity:.5}
 .paykey.dot{font-size:30px;font-weight:700}
 .paykey.back svg{width:26px;height:26px}
-.payactions{flex:none;padding:10px 20px calc(env(safe-area-inset-bottom,0px) + 18px)}
+.payactions{flex:none;padding:10px 20px 10px}
 .payrow2{display:flex;gap:10px;margin-bottom:10px}
 .paypill{flex:1;border:0;border-radius:999px;background:rgba(0,0,0,.14);color:#06200a;font-size:16px;font-weight:700;padding:15px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .paymain{width:100%;border:0;border-radius:999px;background:#06200a;color:#fff;font-size:17px;font-weight:700;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .paymain:disabled{opacity:.45}
-.paytabsoverlay{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:100%;max-width:620px;display:flex;justify-content:center}
+.paytabsoverlay{flex:none;width:100%;display:flex;justify-content:center;padding:4px 0 calc(env(safe-area-inset-bottom,0px) + 14px)}
 .paytabsbar{position:relative;width:61.82%;aspect-ratio:816/186;container-type:inline-size}
 .paytab{position:absolute;top:51.6%;width:19cqw;height:19cqw;transform:translate(-50%,-50%);border:0;background:none;border-radius:50%;cursor:pointer;color:#06200a;opacity:.6;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
 .paytab svg{width:46%;height:46%;display:block}
@@ -136,10 +137,14 @@ body.balhidden .eyeopen{display:flex}
 .processingwrap{position:fixed;inset:0;z-index:90;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease}
 .processingwrap.show{opacity:1;pointer-events:auto}
 .processingicon{position:relative;width:88px;height:88px;border-radius:22px;background:#000;box-shadow:0 14px 34px rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center}
-.processingspin{width:40px;height:40px;border-radius:50%;border:3px solid rgba(46,204,95,.22);border-top-color:#3ddb6c;border-right-color:#3ddb6c;animation:procspin .85s cubic-bezier(.45,.05,.55,.95) infinite;filter:drop-shadow(0 0 7px rgba(61,219,108,.75));transition:opacity .2s ease}
+.processingface{width:44px;height:44px;color:#3ddb6c;opacity:1;transform:scale(1);filter:drop-shadow(0 0 6px rgba(61,219,108,.65));transition:opacity .2s ease,transform .2s ease}
+.processingface svg{width:100%;height:100%;display:block}
+.processingspin{position:absolute;width:40px;height:40px;border-radius:50%;border:3px solid rgba(46,204,95,.22);border-top-color:#3ddb6c;border-right-color:#3ddb6c;animation:procspin .85s cubic-bezier(.45,.05,.55,.95) infinite;filter:drop-shadow(0 0 7px rgba(61,219,108,.75));opacity:0;transform:scale(.6);transition:opacity .2s ease,transform .2s cubic-bezier(.34,1.56,.64,1)}
 .processingcheck{position:absolute;width:40px;height:40px;border-radius:50%;border:3px solid #3ddb6c;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);filter:drop-shadow(0 0 7px rgba(61,219,108,.75));transition:opacity .25s ease,transform .25s cubic-bezier(.34,1.56,.64,1)}
 .processingcheck svg{width:18px;height:18px;color:#3ddb6c}
-.processingwrap.done .processingspin{opacity:0}
+.processingwrap.spin .processingface{opacity:0;transform:scale(.6)}
+.processingwrap.spin .processingspin{opacity:1;transform:scale(1)}
+.processingwrap.done .processingspin{opacity:0;transform:scale(.6)}
 .processingwrap.done .processingcheck{opacity:1;transform:scale(1)}
 @keyframes procspin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.processingspin{animation-duration:1.6s}}
@@ -245,6 +250,7 @@ body.balhidden .eyeopen{display:flex}
 
 <div class="processingwrap" id="processingwrap">
   <div class="processingicon">
+    <div class="processingface"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8V5h3"/><path d="M19 8V5h-3"/><path d="M5 16v3h3"/><path d="M19 16v3h-3"/><path d="M9 10v1"/><path d="M15 10v1"/><path d="M9 15c1.3 1 4.7 1 6 0"/></svg></div>
     <div class="processingspin"></div>
     <div class="processingcheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
   </div>
@@ -264,7 +270,7 @@ body.balhidden .eyeopen{display:flex}
 
 <div class="toastwrap"><div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span id="toasttext"></span></div></div>
 
-<div class="sheetwrap" id="sheetwrap" hidden>
+<div class="sheetwrap" id="sheetwrap">
 <div class="dim" id="dim"></div>
 <div class="sheet">
   <div class="sheethead"><span>Edit account</span><button class="closebtn" id="closebtn">&#10005;</button></div>
@@ -358,9 +364,9 @@ function openSheet(){
   psav.value=sav.toFixed(2);
   pdigits.value=cardDigits;
   ptag.value=tag;
-  sheetwrap.hidden=false;
+  sheetwrap.classList.add('open');
 }
-function closeSheet(){sheetwrap.hidden=true}
+function closeSheet(){sheetwrap.classList.remove('open')}
 
 function save(){
   var n=parseFloat(pbal.value);
@@ -543,7 +549,7 @@ function renderContacts(q){
         var initial=(r.name.split(' ').length>1?r.name.split(' ')[0][0]+r.name.split(' ')[1][0]:r.name.slice(0,2)).toUpperCase();
         var color=AVATAR_COLORS[r.tag.length%AVATAR_COLORS.length];
         return '<div class="crow" data-tag="'+r.tag+'" data-name="'+r.name+'" style="animation-delay:'+(i*45)+'ms">'+
-          '<div class="cav" style="background:'+color+'">'+initial+'<img src="https://unavatar.io/cashapp/'+encodeURIComponent(r.tag)+'" loading="lazy" onerror="this.remove()" alt=""></div>'+
+          '<div class="cav" style="background:'+color+'">'+initial+'<img src="https://unavatar.io/cashapp/'+encodeURIComponent(r.tag)+'?fallback=false" loading="lazy" onerror="this.remove()" alt=""></div>'+
           '<div class="cmeta"><div class="cname">'+r.name+(r.biz?' <svg class="cbiz" viewBox="0 0 24 24" fill="currentColor"><path d="M9 4a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3V6a2 2 0 0 0-2-2H9zm0 2h6v1H9V6zM4 9h16v9H4V9z"/></svg>':'')+'</div><div class="ctag">$'+r.tag+'</div></div>'+
         '</div>';
       }).join('');
@@ -559,7 +565,7 @@ var contactsheet=document.querySelector('.contactsheet'),notestep=document.getEl
 var notebackbtn=document.getElementById('notebackbtn'),noteinput=document.getElementById('noteinput'),reviewbtn=document.getElementById('reviewbtn');
 var ntmode=document.getElementById('ntmode'),ntamt=document.getElementById('ntamt'),ntto=document.getElementById('ntto'),ntav=document.getElementById('ntav'),ntname=document.getElementById('ntname'),ntbal=document.getElementById('ntbal');
 var successwrap=document.getElementById('successwrap'),successtext=document.getElementById('successtext'),successclose=document.getElementById('successclose'),successreceipt=document.getElementById('successreceipt'),successdone=document.getElementById('successdone');
-var processingwrap=document.getElementById('processingwrap'),procTimer1=null,procTimer2=null;
+var processingwrap=document.getElementById('processingwrap'),procTimer1=null,procTimer2=null,procTimer3=null;
 var pendingWho=null;
 
 clist.addEventListener('click',function(e){
@@ -574,7 +580,7 @@ clist.addEventListener('click',function(e){
   ntav.textContent=initial;
   ntav.style.background=color;
   var ntimg=document.createElement('img');
-  ntimg.src='https://unavatar.io/cashapp/'+encodeURIComponent(row.dataset.tag);
+  ntimg.src='https://unavatar.io/cashapp/'+encodeURIComponent(row.dataset.tag)+'?fallback=false';
   ntimg.loading='lazy';
   ntimg.alt='';
   ntimg.onerror=function(){ntimg.remove()};
@@ -604,30 +610,34 @@ reviewbtn.addEventListener('click',function(){
   closeContactSheet();
   clearTimeout(procTimer1);
   clearTimeout(procTimer2);
-  processingwrap.classList.remove('done');
+  clearTimeout(procTimer3);
+  processingwrap.classList.remove('spin','done');
   processingwrap.classList.add('show');
   procTimer1=setTimeout(function(){
-    processingwrap.classList.add('done');
+    processingwrap.classList.add('spin');
     procTimer2=setTimeout(function(){
-      processingwrap.classList.remove('show');
-      closePayPage();
-      contactsheet.classList.remove('noting');
-      notestep.classList.remove('show');
-      var msg;
-      if(payMode==='pay'){
-        bal=Math.max(0,Math.round((bal-n)*100)/100);
-        renderAll();
-        try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
-        msg='You sent $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to '+who;
-      } else if(payMode==='pool'){
-        msg='Pool invite sent to '+who;
-      } else {
-        msg='You requested $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' from '+who;
-      }
-      successtext.textContent=msg;
-      successwrap.classList.add('open');
-    },480);
-  },900);
+      processingwrap.classList.add('done');
+      procTimer3=setTimeout(function(){
+        processingwrap.classList.remove('show','spin','done');
+        closePayPage();
+        contactsheet.classList.remove('noting');
+        notestep.classList.remove('show');
+        var msg;
+        if(payMode==='pay'){
+          bal=Math.max(0,Math.round((bal-n)*100)/100);
+          renderAll();
+          try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
+          msg='You sent $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to '+who;
+        } else if(payMode==='pool'){
+          msg='Pool invite sent to '+who;
+        } else {
+          msg='You requested $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' from '+who;
+        }
+        successtext.textContent=msg;
+        successwrap.classList.add('open');
+      },480);
+    },650);
+  },500);
 });
 
 function closeSuccess(){ successwrap.classList.remove('open') }
