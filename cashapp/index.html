@@ -83,8 +83,12 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .cav{width:46px;height:46px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#07140a}
 .cmeta{min-width:0}
 .cname{font-size:15.5px;font-weight:700;display:flex;align-items:center;gap:5px}
+.cname .cbiz{width:13px;height:13px;flex:none;color:#3ac732}
 .ctag{font-size:13.5px;color:#8e8e93;margin-top:1px}
 .cempty{padding:30px 0;text-align:center;color:#6a6a6d;font-size:14px}
+@keyframes rowIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.crow{animation:rowIn .3s ease both}
+@media (prefers-reduced-motion:reduce){.crow{animation:none}}
 .cspinwrap{display:flex;align-items:center;justify-content:center;padding:30px 0}
 .cspin{width:22px;height:22px;border:2.4px solid #3a3a3d;border-right-color:transparent;border-radius:50%;animation:cspinturn .8s linear infinite}
 @keyframes cspinturn{to{transform:rotate(360deg)}}
@@ -297,9 +301,14 @@ var payBuf='';
 var payMode='pay'; // 'pay' or 'request'
 
 function payAmount(){ return parseFloat(payBuf||'0')||0 }
+function withCommas(s){
+  var parts=String(s).split('.');
+  parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  return parts.join('.');
+}
 function renderPay(){
   var n=payAmount();
-  payamt.textContent='$'+(payBuf?payBuf:'0').replace(/^0+(?=\d)/,'');
+  payamt.textContent='$'+withCommas((payBuf?payBuf:'0').replace(/^0+(?=\d)/,''));
   paybtn.disabled = !(n>0);
   if(n>bal && payMode==='pay'){ paynote.textContent='Not enough money'; paybtn.disabled=true; }
   else { paynote.textContent=' '; }
@@ -335,7 +344,7 @@ paykeys.addEventListener('click',function(e){
 function openContactSheet(mode){
   payMode=mode;
   ctitlemode.textContent = mode==='pay' ? 'Pay' : 'Request';
-  ctitleamt.textContent = '$'+payAmount().toFixed(payAmount()%1?2:0);
+  ctitleamt.textContent = '$'+withCommas(payAmount().toFixed(payAmount()%1?2:0));
   ctitleto.textContent = mode==='pay' ? 'to' : 'from';
   csearchinput.value='';
   renderContacts('');
@@ -350,10 +359,45 @@ poolbtn.addEventListener('click',function(){ showToast('Pools are coming soon') 
 cdim.addEventListener('click',closeContactSheet);
 cxbtn.addEventListener('click',closeContactSheet);
 
-// Synthesizes a single plausible result from whatever was typed — same
-// trick as paypal/index.html's search(): no contact list, no API, just
-// reflects the query back as a name + $cashtag so it feels like a real
-// lookup without ever depicting a real person.
+// Synthesizes a small list of plausible results from whatever was typed —
+// same no-API trick as paypal/index.html's search(), extended to look like
+// real Cash App results: several unrelated-looking names whose $cashtag
+// just happens to contain the query, some marked as business accounts.
+// Nothing here is a real person or business — it's all generated from the
+// query text with a seeded PRNG so the same search always looks the same.
+var FIRSTNAMES=['Alex','Jordan','Maria','Chris','Sam','Taylor','Jamie','Morgan','Casey','Riley','Avery','Drew','Dana','Reese','Quinn','Skyler','Nico','Ariel','Blake','Rowan','Devon','Logan'];
+var LASTNAMES=['Rivera','Blake','Lopez','Webb','Castillo','Nguyen','Walsh','Reyes','Patel','Chen','Flores','Hayes','Diaz','Cole','Fisher','Ward','Brooks','Vega','Hart','Price'];
+var BIZPREFIX=['Blue','Sunset','Golden','Little','North','Silver','Green','Urban','Wild','Honey','Maple','Coastal','Cedar','Amber'];
+var BIZWORDS=['Bakery','Studio','Market','Design','Goods','Press','Supply','Kitchen','Garden','Collective','Co','Boutique'];
+var TAGFRAGS=['co','shop','store','hub','world','plus','official','go'];
+function seededRand(seed){
+  var s=seed%2147483647; if(s<=0) s+=2147483646;
+  return function(){ s=s*16807%2147483647; return (s-1)/2147483646; };
+}
+function pick(arr,rand){ return arr[Math.floor(rand()*arr.length)] }
+function genResults(q){
+  var s=q.replace(/^\$/,'').trim();
+  var letters=s.replace(/[^a-zA-Z]/g,'').toLowerCase();
+  if(letters.length<2) return [];
+  var seed=0; for(var i=0;i<s.length;i++) seed+=s.charCodeAt(i)*(i*31+7);
+  var rand=seededRand(seed||1);
+  var words=s.replace(/[^a-zA-Z ]/g,' ').trim().split(/\s+/).filter(Boolean);
+  var cleanName=words.length?words.map(function(w){return w[0].toUpperCase()+w.slice(1).toLowerCase()}).join(' '):letters.charAt(0).toUpperCase()+letters.slice(1);
+  var out=[{name:cleanName,tag:letters,biz:false}];
+  var used={}; used[letters]=1;
+  var n=2+Math.floor(rand()*3);
+  for(var k=0;k<n;k++){
+    var biz=rand()<0.35;
+    var name=biz?(pick(BIZPREFIX,rand)+' '+pick(BIZWORDS,rand)):(pick(FIRSTNAMES,rand)+' '+pick(LASTNAMES,rand));
+    var pos=rand(), frag=pick(TAGFRAGS,rand), num=Math.floor(rand()*90+10);
+    var tag = pos<.4 ? (letters+frag+num) : pos<.7 ? (frag+letters+num) : (letters+num);
+    tag=tag.toLowerCase().replace(/[^a-z0-9]/g,'');
+    if(used[tag]) continue;
+    used[tag]=1;
+    out.push({name:name,tag:tag,biz:biz});
+  }
+  return out;
+}
 var searchTimer=null,searchTimer2=null;
 function renderContacts(q){
   var v=(q||'').trim();
@@ -363,19 +407,17 @@ function renderContacts(q){
   clist.innerHTML='<div class="cspinwrap"><i class="cspin"></i></div>';
   searchTimer=setTimeout(function(){
     searchTimer2=setTimeout(function(){
-      var s=v.replace(/^\$/,'').trim();
-      var letters=s.replace(/[^a-zA-Z]/g,'');
-      if(letters.length<2){ clist.innerHTML='<div class="cempty">No results</div>'; return }
-      var words=s.replace(/[^a-zA-Z ]/g,' ').trim().split(/\s+/).filter(Boolean);
-      var name=words.length?words.map(function(w){return w[0].toUpperCase()+w.slice(1).toLowerCase()}).join(' '):s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();
-      var tag=s.toLowerCase().replace(/[^a-z0-9]/g,'');
-      var initial=(words.length>1?words[0][0]+words[1][0]:name.slice(0,2)).toUpperCase();
-      var color=AVATAR_COLORS[tag.length%AVATAR_COLORS.length];
+      var results=genResults(v);
+      if(!results.length){ clist.innerHTML='<div class="cempty">No results</div>'; return }
       cresultslabel.hidden=false;
-      clist.innerHTML='<div class="crow" data-tag="'+tag+'" data-name="'+name+'">'+
-        '<div class="cav" style="background:'+color+'">'+initial+'</div>'+
-        '<div class="cmeta"><div class="cname">'+name+'</div><div class="ctag">$'+tag+'</div></div>'+
-      '</div>';
+      clist.innerHTML=results.map(function(r,i){
+        var initial=(r.name.split(' ').length>1?r.name.split(' ')[0][0]+r.name.split(' ')[1][0]:r.name.slice(0,2)).toUpperCase();
+        var color=AVATAR_COLORS[r.tag.length%AVATAR_COLORS.length];
+        return '<div class="crow" data-tag="'+r.tag+'" data-name="'+r.name+'" style="animation-delay:'+(i*45)+'ms">'+
+          '<div class="cav" style="background:'+color+'">'+initial+'</div>'+
+          '<div class="cmeta"><div class="cname">'+r.name+(r.biz?' <svg class="cbiz" viewBox="0 0 24 24" fill="currentColor"><path d="M9 4a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3V6a2 2 0 0 0-2-2H9zm0 2h6v1H9V6zM4 9h16v9H4V9z"/></svg>':'')+'</div><div class="ctag">$'+r.tag+'</div></div>'+
+        '</div>';
+      }).join('');
     },700);
   },500);
 }
