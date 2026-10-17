@@ -20,6 +20,10 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .savings{position:absolute;left:9.09%;top:42.04%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:9.26cqw;line-height:1;white-space:nowrap;pointer-events:none}
 .avatar{position:absolute;left:91.36%;top:6.19%;width:11.52cqw;height:11.52cqw;transform:translate(-50%,-50%);border-radius:50%;background:#2c2c2e center/cover no-repeat;pointer-events:none}
 .hitadd{position:absolute;left:3.64%;top:26.54%;width:45.45%;height:3.42%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hiteye{position:absolute;left:84%;top:13.5%;width:13%;height:4.5%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.eyeopen{position:absolute;left:88.7%;top:15.3%;width:6.3%;height:2.3%;background:#000;display:none;align-items:center;justify-content:center;pointer-events:none}
+.eyeopen svg{width:70%;height:70%;display:block}
+body.balhidden .eyeopen{display:flex}
 .dockoverlay{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:100%;max-width:620px;display:flex;justify-content:center;pointer-events:none}
 .dockbar{position:relative;width:61.82%;aspect-ratio:816/186;container-type:inline-size;background:center/100% 100% no-repeat url(dock.png);pointer-events:auto}
 .dock{position:absolute;left:15.99%;top:51.6%;transform:translate(-50%,-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;color:#fff;font-size:9.4cqw;line-height:1;white-space:nowrap;pointer-events:none}
@@ -50,10 +54,12 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .payicon{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.14);display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;color:#06200a}
 .payavatar{width:40px;height:40px;border-radius:50%;background:#2c2c2e center/cover no-repeat;flex:none}
 .payamtwrap{flex:none;text-align:center;padding:26px 16px 6px;min-height:92px;display:flex;align-items:center;justify-content:center}
-.payamt{font-size:min(16vw,76px);font-weight:800;color:#06200a;line-height:1;letter-spacing:-.02em;word-break:break-all}
+.payamt{font-size:min(16vw,76px);font-weight:800;color:#06200a;line-height:1;letter-spacing:-.02em;word-break:break-all;display:inline-block;transition:transform .14s cubic-bezier(.25,.8,.25,1)}
+.payamt.pop{transform:scale(1.06)}
 .paynote{text-align:center;font-size:13px;color:#0a3310;opacity:.65;min-height:16px;margin-top:4px}
 .paykeys{flex:1;display:grid;grid-template-columns:repeat(3,1fr);align-content:center;gap:4px 0;padding:0 20px;max-height:52vh}
-.paykey{border:0;background:none;color:#06200a;font-size:30px;font-weight:500;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.paykey{border:0;background:none;color:#06200a;font-size:30px;font-weight:500;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform .1s cubic-bezier(.25,.8,.25,1),opacity .1s}
+.paykey:active{transform:scale(.85);opacity:.5}
 .paykey.dot{font-size:30px;font-weight:700}
 .paykey.back svg{width:26px;height:26px}
 .payactions{flex:none;padding:10px 20px calc(env(safe-area-inset-bottom,0px) + 18px)}
@@ -108,6 +114,8 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 <span class="savings" id="savings">$0.00</span>
 <div class="avatar" id="avatar"></div>
 <button class="hitadd" id="hitadd" aria-label="Edit account"></button>
+<button class="hiteye" id="hiteye" aria-label="Toggle balance visibility"></button>
+<div class="eyeopen"><svg viewBox="0 0 24 24" fill="none"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="2"/></svg></div>
 </div></div>
 <div class="dockoverlay"><div class="dockbar"><span class="dock" id="dock">$54</span><button class="dockhit" id="dockhit" aria-label="Money"></button></div></div>
 </div>
@@ -207,6 +215,9 @@ try{var s0=localStorage.getItem('cashapp_savings');if(s0!==null&&!isNaN(parseFlo
 try{var s2=localStorage.getItem('cashapp_card_digits');if(s2&&/^\d{4}$/.test(s2))cardDigits=s2}catch(e){}
 try{var s3=localStorage.getItem('cashapp_cashtag');if(s3)tag=s3}catch(e){}
 try{var s4=localStorage.getItem('cashapp_avatar');if(s4)avatarUrl=s4}catch(e){}
+var balHidden=false;
+try{balHidden=localStorage.getItem('cashapp_balhidden')==='1'}catch(e){}
+document.body.classList.toggle('balhidden',balHidden);
 
 function avatarSrc(){return avatarUrl||('https://unavatar.io/cashapp/'+encodeURIComponent(tag))}
 var ui=document.getElementById('ui'),dockbar=document.querySelector('.dockbar');
@@ -222,9 +233,15 @@ function fitText(el,containerEl,baseFrac,maxWidthFrac){
   }
 }
 function renderAll(){
-  amt.textContent='$'+bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  dock.textContent='$'+Math.round(bal).toLocaleString('en-US');
-  savings.textContent='$'+sav.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  if(balHidden){
+    amt.textContent='••••';
+    dock.textContent='••••';
+    savings.textContent='••••';
+  }else{
+    amt.textContent='$'+bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    dock.textContent='$'+Math.round(bal).toLocaleString('en-US');
+    savings.textContent='$'+sav.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
   digits.textContent=cardDigits;
   cashtag.textContent='$'+tag;
   var asrc=avatarSrc();
@@ -271,6 +288,12 @@ function save(){
 }
 
 hitadd.addEventListener('click',openSheet);
+document.getElementById('hiteye').addEventListener('click',function(){
+  balHidden=!balHidden;
+  document.body.classList.toggle('balhidden',balHidden);
+  try{localStorage.setItem('cashapp_balhidden',balHidden?'1':'0')}catch(e){}
+  renderAll();
+});
 dim.addEventListener('click',closeSheet);
 closebtn.addEventListener('click',closeSheet);
 savebtn.addEventListener('click',save);
@@ -310,9 +333,15 @@ function withCommas(s){
   parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');
   return parts.join('.');
 }
+var payamtPopTimer=null;
 function renderPay(){
   var n=payAmount();
   payamt.textContent='$'+withCommas((payBuf?payBuf:'0').replace(/^0+(?=\d)/,''));
+  payamt.classList.remove('pop');
+  void payamt.offsetWidth;
+  payamt.classList.add('pop');
+  clearTimeout(payamtPopTimer);
+  payamtPopTimer=setTimeout(function(){payamt.classList.remove('pop')},140);
   paybtn.disabled = !(n>0);
   if(n>bal && payMode==='pay'){ paynote.textContent='Not enough money'; paybtn.disabled=true; }
   else { paynote.textContent=' '; }
@@ -347,7 +376,7 @@ paykeys.addEventListener('click',function(e){
 
 function openContactSheet(mode){
   payMode=mode;
-  ctitlemode.textContent = mode==='pay' ? 'Pay' : 'Request';
+  ctitlemode.textContent = mode==='pay' ? 'Pay' : mode==='pool' ? 'Pool' : 'Request';
   ctitleamt.textContent = '$'+withCommas(payAmount().toFixed(payAmount()%1?2:0));
   ctitleto.textContent = mode==='pay' ? 'to' : 'from';
   csearchinput.value='';
@@ -358,7 +387,7 @@ function closeContactSheet(){ contactwrap.hidden=true }
 
 paybtn.addEventListener('click',function(){ if(!paybtn.disabled) openContactSheet('pay') });
 requestbtn.addEventListener('click',function(){ if(payAmount()>0) openContactSheet('request'); else { payBuf='1'; renderPay(); openContactSheet('request'); } });
-poolbtn.addEventListener('click',function(){ showToast('Pools are coming soon') });
+poolbtn.addEventListener('click',function(){ if(payAmount()>0) openContactSheet('pool'); else { payBuf='1'; renderPay(); openContactSheet('pool'); } });
 
 cdim.addEventListener('click',closeContactSheet);
 cxbtn.addEventListener('click',closeContactSheet);
@@ -442,6 +471,8 @@ clist.addEventListener('click',function(e){
     renderAll();
     try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
     showToast('Sent $'+n.toFixed(2)+' to '+who);
+  } else if(payMode==='pool'){
+    showToast('Pool invite sent to '+who);
   } else {
     showToast('Requested $'+n.toFixed(2)+' from '+who);
   }
