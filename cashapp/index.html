@@ -65,20 +65,18 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 /* ---- Pay-to contact sheet ---- */
 .contactwrap{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center}
 .contactwrap[hidden]{display:none}
-.contactsheet{position:relative;width:100%;max-width:620px;height:88vh;background:#0c0c0e;border-radius:22px 22px 0 0;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;animation:sheetUp .28s cubic-bezier(.25,.8,.25,1)}
+.contactsheet{position:relative;width:100%;max-width:620px;height:88vh;background:#000;border-radius:22px 22px 0 0;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;animation:sheetUp .28s cubic-bezier(.25,.8,.25,1)}
 @keyframes sheetUp{from{transform:translateY(16px);opacity:.6}to{transform:translateY(0);opacity:1}}
 .cgrab{width:36px;height:4px;border-radius:999px;background:#3a3a3d;margin:10px auto 2px}
 .chead{display:flex;align-items:flex-start;justify-content:space-between;padding:8px 20px 14px}
-.cxbtn{width:30px;height:30px;border-radius:50%;border:0;background:#1d1d1f;color:#aaa;font-size:15px;cursor:pointer;flex:none}
+.cxbtn{width:30px;height:38px;border:0;background:center/contain no-repeat url(pay-close.png);cursor:pointer;flex:none}
 .ctitle{font-size:21px;font-weight:700}
 .ctitle b{color:#fff}
 .ctitle span{color:#7c7c80;font-weight:600}
-.csearchwrap{display:flex;align-items:center;gap:10px;padding:0 20px 14px}
-.csearch{flex:1;display:flex;align-items:center;gap:8px;background:#1d1d1f;border-radius:12px;padding:11px 13px}
-.csearch svg{width:17px;height:17px;color:#8e8e93;flex:none}
-.csearch input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#fff;font-size:15px;font-family:inherit}
-.cqr{width:38px;height:38px;border-radius:10px;background:#1d1d1f;border:0;display:flex;align-items:center;justify-content:center;color:#fff;flex:none;cursor:pointer}
-.cqr svg{width:19px;height:19px}
+.csearchwrap{position:relative;margin:0 20px 14px;aspect-ratio:921/82;container-type:inline-size;background:top/100% 100% no-repeat url(pay-searchbar.png)}
+.csearchwrap input{position:absolute;left:0;top:0;width:85%;height:100%;box-sizing:border-box;padding:0 0 0 13%;border:0;outline:0;background:transparent;color:#fff;font-size:3.6cqw;font-family:inherit}
+.csearchwrap input.has-text{background:#1d1d1f;border-radius:999px 0 0 999px}
+.cqr{position:absolute;right:0;top:0;width:12%;height:100%;border:0;background:none;cursor:pointer}
 .cresultslabel{padding:2px 20px 10px;font-size:13px;font-weight:700;color:#8e8e93}
 .clist{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px calc(env(safe-area-inset-bottom,0px) + 16px)}
 .crow{display:flex;align-items:center;gap:14px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -87,6 +85,10 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
 .cname{font-size:15.5px;font-weight:700;display:flex;align-items:center;gap:5px}
 .ctag{font-size:13.5px;color:#8e8e93;margin-top:1px}
 .cempty{padding:30px 0;text-align:center;color:#6a6a6d;font-size:14px}
+.cspinwrap{display:flex;align-items:center;justify-content:center;padding:30px 0}
+.cspin{width:22px;height:22px;border:2.4px solid #3a3a3d;border-right-color:transparent;border-radius:50%;animation:cspinturn .8s linear infinite}
+@keyframes cspinturn{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.cspin{animation-duration:2s}}
 
 .toastwrap{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;justify-content:center;z-index:90;pointer-events:none}
 .toast{background:#1c1c1e;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-size:14px;font-weight:600;padding:13px 20px;border-radius:999px;box-shadow:0 8px 24px -8px rgba(0,0,0,.6);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;display:flex;align-items:center;gap:8px}
@@ -143,15 +145,12 @@ html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touc
   <div class="contactsheet">
     <div class="cgrab"></div>
     <div class="chead">
-      <button class="cxbtn" id="cxbtn">&#10005;</button>
+      <button class="cxbtn" id="cxbtn"></button>
     </div>
-    <div class="ctitle" style="padding:0 20px 14px"><b id="ctitlemode">Pay</b> <span id="ctitleamt"></span> <span id="ctitleto">to</span></div>
+    <div class="ctitle" style="padding:0 20px 14px"><b id="ctitlemode">Pay</b> <b id="ctitleamt"></b> <span id="ctitleto">to</span></div>
     <div class="csearchwrap">
-      <div class="csearch">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
-        <input id="csearchinput" placeholder="Name, $cashtag, email, phone, USDC" autocomplete="off" autocapitalize="off" spellcheck="false">
-      </div>
-      <button class="cqr" aria-label="Scan QR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/></svg></button>
+      <input id="csearchinput" aria-label="Name, $cashtag, email, phone, USDC" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button class="cqr" aria-label="Scan QR"></button>
     </div>
     <div class="cresultslabel" id="cresultslabel" hidden>Results</div>
     <div class="clist" id="clist"></div>
@@ -283,18 +282,7 @@ avatarfile.addEventListener('change',function(){
 });
 
 /* ---- Pay / Request flow ---- */
-var CONTACTS=[
-  {name:'Jordan K.',tag:'jordank99',color:'#ff5fa2',initial:'J'},
-  {name:'Jasmine R.',tag:'jaszz_',color:'#ff8fc4',initial:'J'},
-  {name:'Hunter B.',tag:'hunterb',color:'#3ddc97',initial:'H'},
-  {name:'Mya Chen',tag:'myachen',color:'#5b8cff',initial:'M'},
-  {name:'Alex Ortiz',tag:'alexo',color:'#ffb23f',initial:'A'},
-  {name:'Devon Price',tag:'devonp',color:'#9a7bff',initial:'D'},
-  {name:'Riley Fox',tag:'rileyfox',color:'#ff7a5f',initial:'R'},
-  {name:'Sam Nguyen',tag:'samn',color:'#2fd1c5',initial:'S'},
-  {name:'Taylor W.',tag:'taylorw',color:'#ff5f5f',initial:'T'},
-  {name:'Casey Diaz',tag:'caseyd',color:'#5fd0ff',initial:'C'}
-];
+var AVATAR_COLORS=['#ff5fa2','#3ddc97','#5b8cff','#ffb23f','#9a7bff','#ff7a5f','#2fd1c5','#5fd0ff'];
 
 var paypage=document.getElementById('paypage'),payamt=document.getElementById('payamt'),paynote=document.getElementById('paynote');
 var payclose=document.getElementById('payclose'),payavatar=document.getElementById('payavatar'),dockhit=document.getElementById('dockhit');
@@ -362,19 +350,39 @@ poolbtn.addEventListener('click',function(){ showToast('Pools are coming soon') 
 cdim.addEventListener('click',closeContactSheet);
 cxbtn.addEventListener('click',closeContactSheet);
 
+// Synthesizes a single plausible result from whatever was typed — same
+// trick as paypal/index.html's search(): no contact list, no API, just
+// reflects the query back as a name + $cashtag so it feels like a real
+// lookup without ever depicting a real person.
+var searchTimer=null,searchTimer2=null;
 function renderContacts(q){
-  var query=(q||'').trim().toLowerCase();
-  var list = query ? CONTACTS.filter(function(c){ return c.name.toLowerCase().indexOf(query)!==-1 || c.tag.toLowerCase().indexOf(query)!==-1 }) : CONTACTS;
-  cresultslabel.hidden = !query;
-  if(!list.length){ clist.innerHTML='<div class="cempty">No results</div>'; return }
-  clist.innerHTML = list.map(function(c){
-    return '<div class="crow" data-tag="'+c.tag+'" data-name="'+c.name+'">'+
-      '<div class="cav" style="background:'+c.color+'">'+c.initial+'</div>'+
-      '<div class="cmeta"><div class="cname">'+c.name+'</div><div class="ctag">$'+c.tag+'</div></div>'+
-    '</div>';
-  }).join('');
+  var v=(q||'').trim();
+  clearTimeout(searchTimer);clearTimeout(searchTimer2);
+  cresultslabel.hidden=true;
+  if(!v){ clist.innerHTML=''; return }
+  clist.innerHTML='<div class="cspinwrap"><i class="cspin"></i></div>';
+  searchTimer=setTimeout(function(){
+    searchTimer2=setTimeout(function(){
+      var s=v.replace(/^\$/,'').trim();
+      var letters=s.replace(/[^a-zA-Z]/g,'');
+      if(letters.length<2){ clist.innerHTML='<div class="cempty">No results</div>'; return }
+      var words=s.replace(/[^a-zA-Z ]/g,' ').trim().split(/\s+/).filter(Boolean);
+      var name=words.length?words.map(function(w){return w[0].toUpperCase()+w.slice(1).toLowerCase()}).join(' '):s.charAt(0).toUpperCase()+s.slice(1).toLowerCase();
+      var tag=s.toLowerCase().replace(/[^a-z0-9]/g,'');
+      var initial=(words.length>1?words[0][0]+words[1][0]:name.slice(0,2)).toUpperCase();
+      var color=AVATAR_COLORS[tag.length%AVATAR_COLORS.length];
+      cresultslabel.hidden=false;
+      clist.innerHTML='<div class="crow" data-tag="'+tag+'" data-name="'+name+'">'+
+        '<div class="cav" style="background:'+color+'">'+initial+'</div>'+
+        '<div class="cmeta"><div class="cname">'+name+'</div><div class="ctag">$'+tag+'</div></div>'+
+      '</div>';
+    },700);
+  },500);
 }
-csearchinput.addEventListener('input',function(){ renderContacts(csearchinput.value) });
+csearchinput.addEventListener('input',function(){
+  csearchinput.classList.toggle('has-text',csearchinput.value!=='');
+  renderContacts(csearchinput.value);
+});
 
 clist.addEventListener('click',function(e){
   var row=e.target.closest('.crow');
