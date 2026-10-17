@@ -67,8 +67,8 @@ body.balhidden .eyeopen{display:flex}
 .payavatar{width:40px;height:40px;border-radius:50%;background:#2c2c2e center/cover no-repeat;flex:none}
 .payamtwrap{flex:none;text-align:center;padding:26px 16px 6px;min-height:92px;display:flex;align-items:center;justify-content:center}
 .payamt{font-size:min(17.5vw,100px);font-weight:800;color:#06200a;line-height:1;letter-spacing:-.02em;word-break:break-all;display:inline-block;transform-origin:center}
-.payamt.pop{animation:amtpop .22s cubic-bezier(.34,1.56,.64,1)}
-@keyframes amtpop{0%{transform:scale(.8)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+.payamt.pop{animation:amtpop .18s cubic-bezier(.34,1.56,.64,1)}
+@keyframes amtpop{0%{transform:scale(.4)}65%{transform:scale(1.07)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.payamt.pop{animation:none}}
 .paynote{text-align:center;font-size:13px;color:#0a3310;opacity:.65;min-height:16px;margin-top:4px}
 .paykeys{flex:1;display:grid;grid-template-columns:repeat(3,1fr);align-content:center;gap:4px 0;padding:0 20px;max-height:52vh}
@@ -457,7 +457,7 @@ function renderPay(){
   void payamt.offsetWidth;
   payamt.classList.add('pop');
   clearTimeout(payamtPopTimer);
-  payamtPopTimer=setTimeout(function(){payamt.classList.remove('pop')},220);
+  payamtPopTimer=setTimeout(function(){payamt.classList.remove('pop')},180);
   paybtn.disabled = !(n>0);
   if(n>bal && payMode==='pay'){ paynote.textContent='Not enough money'; paybtn.disabled=true; }
   else { paynote.textContent=' '; }
