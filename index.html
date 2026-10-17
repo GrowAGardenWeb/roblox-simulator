@@ -230,6 +230,23 @@ a{color:inherit;text-decoration:none}
 .shot5{background:linear-gradient(160deg,#3a1c2c,#ff5ca8 140%)}
 .shot6{background:linear-gradient(160deg,#2c2c1c,#ffd43d 140%)}
 
+/* REDEEM */
+.redeem{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:4px 20px 40px}
+.redeem-inner{border-radius:24px;padding:26px 24px;background:var(--glass-bg);-webkit-backdrop-filter:blur(26px) saturate(170%);backdrop-filter:blur(26px) saturate(170%);border:1px solid var(--glass-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+.redeem-inner h2{font-size:18px;font-weight:800}
+.redeem-sub{margin-top:8px;font-size:13px;line-height:1.55;color:var(--text-dim);max-width:52ch}
+.redeem-row{display:flex;gap:10px;margin-top:16px}
+.redeem-input{flex:1;background:var(--surface-2);border:1px solid var(--border);border-radius:13px;padding:13px 16px;color:var(--text);font-size:15px;letter-spacing:.04em;outline:none;transition:border-color .15s;text-transform:uppercase}
+.redeem-input::placeholder{color:var(--text-faint);text-transform:none;letter-spacing:normal}
+.redeem-input:focus{border-color:var(--border-hi)}
+.redeem-btn{flex:none;background:var(--blue);color:#fff;border:none;border-radius:13px;padding:13px 22px;font-size:14.5px;font-weight:700;cursor:pointer;transition:background .15s,transform .12s}
+.redeem-btn:hover{background:var(--blue-hi)}
+.redeem-btn:active{transform:scale(.96)}
+.redeem-btn:disabled{opacity:.5;cursor:not-allowed}
+.redeem-result{margin-top:12px;font-size:13px;min-height:16px}
+.redeem-result.ok{color:#7fe08a}
+.redeem-result.err{color:#ff8a8a}
+
 /* FOOTER */
 footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:26px 20px;text-align:center}
 footer p{font-size:11px;color:var(--text-faint);line-height:1.75;max-width:680px;margin:0 auto}
@@ -704,6 +721,27 @@ footer strong{color:#7a7a86}
   </div>
 </section>
 
+<!-- REDEEM -->
+<section class="redeem" id="redeem">
+  <div class="redeem-inner">
+    <h2>Redeem a code</h2>
+    <p class="redeem-sub">Got a temporary access key? Redeem it here — it unlocks that app for a set number of hours, starting the moment you redeem it.</p>
+
+    <div id="redeemAuthGate" class="auth-gate hidden">
+      <p>Sign in with Google first — this is how we know which account to grant access to.</p>
+      <div class="auth-gate-btn"><div id="gSignInBtnRedeem"></div></div>
+    </div>
+
+    <div id="redeemAuthed">
+      <div class="redeem-row">
+        <input class="redeem-input" id="redeemCodeInput" type="text" placeholder="XXXXX-XXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false">
+        <button class="redeem-btn" id="redeemBtn" onclick="redeemCode()">Redeem</button>
+      </div>
+      <div id="redeemResult" class="redeem-result"></div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <p>
     This website is a <strong>fan-made LARP / simulator</strong> and is not affiliated with, endorsed by, or associated with Roblox Corporation, Block Inc. (Cash App), Phantom Technologies Inc., Exodus Movement Inc., PayPal Holdings Inc., Apple Inc., or the App Store in any way. All related names, logos, images and trademarks are the property of their respective owners and are used here solely for illustrative purposes. <strong>Roblox Mobile LARP ($10/month)</strong>, <strong>Headless Gifter ($20 one-time)</strong>, <strong>Cash App ($10/month)</strong>, <strong>Phantom ($10/month)</strong>, <strong>Exodus ($10/month)</strong>, <strong>PayPal ($10/month)</strong> and the <strong>Mega Pack ($33/month)</strong> are all 100% fake simulators — no real Robux, items, money, crypto, wallets, bank accounts, or account changes of any kind are ever delivered, under any circumstance. <strong>moneyscripts.shop</strong>
@@ -779,6 +817,8 @@ function initGoogleSignIn(){
   if(navBtn) google.accounts.id.renderButton(navBtn, { theme: 'filled_black', size: 'medium', shape: 'pill', text: 'signin' });
   var modalBtn = document.getElementById('gSignInBtnModal');
   if(modalBtn) google.accounts.id.renderButton(modalBtn, { theme: 'filled_black', size: 'medium', shape: 'pill', text: 'signin' });
+  var redeemBtn = document.getElementById('gSignInBtnRedeem');
+  if(redeemBtn) google.accounts.id.renderButton(redeemBtn, { theme: 'filled_black', size: 'medium', shape: 'pill', text: 'signin' });
   updateAuthUI();
 }
 
@@ -832,6 +872,7 @@ function updateAuthUI(){
     signedIn.classList.add('hidden');
   }
   refreshCheckoutAuthGate();
+  refreshRedeemAuthGate();
   refreshOwnedProducts();
 }
 
@@ -889,6 +930,57 @@ function refreshCheckoutAuthGate(){
   }else{
     gate.classList.remove('hidden');
     authed.classList.add('hidden');
+  }
+}
+
+function refreshRedeemAuthGate(){
+  var gate = document.getElementById('redeemAuthGate');
+  var authed = document.getElementById('redeemAuthed');
+  if(!gate || !authed) return;
+  if(getSessionToken()){
+    gate.classList.add('hidden');
+    authed.classList.remove('hidden');
+  }else{
+    gate.classList.remove('hidden');
+    authed.classList.add('hidden');
+  }
+}
+
+async function redeemCode(){
+  var input = document.getElementById('redeemCodeInput');
+  var result = document.getElementById('redeemResult');
+  var btn = document.getElementById('redeemBtn');
+  var code = input.value.trim();
+  if(!code){ result.textContent = 'Enter a code first.'; result.className = 'redeem-result err'; return; }
+
+  var token = getSessionToken();
+  if(!token){ result.textContent = 'Sign in with Google first.'; result.className = 'redeem-result err'; return; }
+
+  btn.disabled = true;
+  result.textContent = 'Redeeming...';
+  result.className = 'redeem-result';
+
+  try{
+    var res = await fetch(CHECKOUT_WORKER_URL + '/redeem', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ code: code })
+    });
+    var data = await res.json();
+    if(!res.ok || !data.ok){
+      result.textContent = data.error || 'Could not redeem that code.';
+      result.className = 'redeem-result err';
+      return;
+    }
+    result.textContent = 'Unlocked ' + data.product + ' for ' + data.hours + ' hour' + (data.hours == 1 ? '' : 's') + '!';
+    result.className = 'redeem-result ok';
+    input.value = '';
+    refreshOwnedProducts();
+  }catch(err){
+    result.textContent = 'Could not reach the server. Try again in a moment.';
+    result.className = 'redeem-result err';
+  }finally{
+    btn.disabled = false;
   }
 }
 

@@ -68,6 +68,37 @@
     </table>
   </div>
 
+  <div class="card">
+    <strong style="font-size:14px;">Key temporal (ej. pagada con Robux)</strong>
+    <p class="sub" style="margin:6px 0 0;">Genera un codigo de un solo uso. Quien lo canjee en moneyscripts.shop (con sesion de Google) recibe acceso a esa app por X horas desde que lo canjea.</p>
+    <label>Producto</label>
+    <select id="keyProductInput">
+      <option value="mobile">Roblox Mobile LARP</option>
+      <option value="headless">Headless Gifter</option>
+      <option value="cashapp">Cash App</option>
+      <option value="phantom">Phantom</option>
+      <option value="exodus">Exodus</option>
+      <option value="paypal">PayPal</option>
+      <option value="megapack">Mega Pack (cashapp+phantom+exodus+paypal)</option>
+    </select>
+    <label>Duracion (horas)</label>
+    <input id="keyHoursInput" type="number" min="1" step="1" placeholder="ej. 5" value="5" />
+    <button id="keyAddBtn" onclick="createKey()">Generar key</button>
+    <div id="keyResult" style="margin-top:12px;"></div>
+    <div id="keyStatus"></div>
+  </div>
+
+  <div class="card" style="max-width:720px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <strong style="font-size:14px;">Keys generadas</strong>
+      <button style="width:auto;padding:6px 14px;font-size:12px;" onclick="loadKeysList()">Refrescar</button>
+    </div>
+    <table id="keysTable">
+      <thead><tr><th>Codigo</th><th>Producto</th><th>Horas</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="keysListBody"></tbody>
+    </table>
+  </div>
+
 <script>
 var WORKER_URL = 'https://moneyscripts-stripe.pamelalunaescuela.workers.dev';
 
@@ -181,8 +212,100 @@ function escapeHtml(s) {
   });
 }
 
-document.getElementById('secretInput').addEventListener('change', loadList);
-if (document.getElementById('secretInput').value) loadList();
+function setKeyStatus(msg, ok) {
+  var el = document.getElementById('keyStatus');
+  el.textContent = msg;
+  el.className = ok ? 'ok' : 'err';
+}
+
+async function createKey() {
+  var secret = getSecret();
+  var product = document.getElementById('keyProductInput').value;
+  var hours = document.getElementById('keyHoursInput').value.trim();
+
+  if (!secret) { setKeyStatus('Falta el admin secret', false); return; }
+  if (!hours || Number(hours) <= 0) { setKeyStatus('Pon cuantas horas dura', false); return; }
+
+  var btn = document.getElementById('keyAddBtn');
+  btn.disabled = true;
+  setKeyStatus('Generando...', true);
+  document.getElementById('keyResult').innerHTML = '';
+
+  try {
+    var res = await fetch(WORKER_URL + '/admin/keys/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: secret, product: product, hours: Number(hours) }),
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+    document.getElementById('keyResult').innerHTML =
+      '<div style="background:#0e0e14;border:1px solid #2e2e38;border-radius:8px;padding:12px;text-align:center;font-size:18px;font-weight:700;letter-spacing:.05em;">' +
+      escapeHtml(data.code) + '</div>';
+    setKeyStatus('Listo: ' + data.product + ' por ' + data.hours + ' horas', true);
+    loadKeysList();
+  } catch (err) {
+    setKeyStatus('Error: ' + err.message, false);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function revokeKey(code) {
+  var secret = getSecret();
+  if (!secret) { setKeyStatus('Falta el admin secret', false); return; }
+  if (!confirm('Revocar la key ' + code + '?')) return;
+
+  try {
+    var res = await fetch(WORKER_URL + '/admin/keys/revoke', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: secret, code: code }),
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+    setKeyStatus('Revocada: ' + code, true);
+    loadKeysList();
+  } catch (err) {
+    setKeyStatus('Error: ' + err.message, false);
+  }
+}
+
+async function loadKeysList() {
+  var secret = getSecret();
+  if (!secret) return;
+  var body = document.getElementById('keysListBody');
+  body.innerHTML = '<tr><td colspan="5">Cargando...</td></tr>';
+
+  try {
+    var res = await fetch(WORKER_URL + '/admin/keys/list?secret=' + encodeURIComponent(secret));
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+
+    if (!data.entries || !data.entries.length) {
+      body.innerHTML = '<tr><td colspan="5">Sin keys</td></tr>';
+      return;
+    }
+
+    body.innerHTML = data.entries.map(function (e) {
+      var statusLabel = e.redeemed ? ('Usada por ' + escapeHtml(e.redeemedBy || '?')) : 'Sin usar';
+      var actionCell = e.redeemed ? '' :
+        '<button class="remove-btn" onclick="revokeKey(\'' + escapeHtml(e.code).replace(/'/g, "\\'") + '\')">Revocar</button>';
+      return '<tr>' +
+        '<td>' + escapeHtml(e.code) + '</td>' +
+        '<td>' + escapeHtml(e.product) + '</td>' +
+        '<td>' + escapeHtml(String(e.hours)) + '</td>' +
+        '<td><span class="pill' + (e.redeemed ? ' expired' : '') + '">' + statusLabel + '</span></td>' +
+        '<td>' + actionCell + '</td>' +
+        '</tr>';
+    }).join('');
+  } catch (err) {
+    body.innerHTML = '<tr><td colspan="5">Error: ' + escapeHtml(err.message) + '</td></tr>';
+  }
+}
+
+document.getElementById('secretInput').addEventListener('change', function () { loadList(); loadKeysList(); });
+if (document.getElementById('secretInput').value) { loadList(); loadKeysList(); }
 </script>
 </body>
 </html>

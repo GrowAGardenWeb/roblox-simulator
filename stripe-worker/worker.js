@@ -23,6 +23,15 @@
 //                                   days: optional — omit/0 for permanent, e.g. 30 for one month
 //   POST /admin/whitelist/remove    { secret, email } -> { ok }
 //
+//   POST /redeem                    { code } (Authorization: Bearer <session>) -> { ok, product, hours, expiresAt }
+//                                   Redeems a one-time temporary-access key (see /admin/keys below)
+//                                   for the signed-in Google account. Single-use.
+//   GET  /admin/keys/list           ?secret=ADMIN_SECRET -> { entries: [{code,product,hours,createdAt,redeemed,redeemedBy,redeemedAt}] }
+//   POST /admin/keys/create         { secret, product, hours } -> { code, product, hours }
+//                                   Generates a single-use redeem code granting `product`
+//                                   for `hours` hours from the moment it's redeemed.
+//   POST /admin/keys/revoke         { secret, code } -> { ok }  (only works on an unredeemed code)
+//
 // Requires a KV namespace bound as MS_KV (Settings -> Bindings -> KV Namespace).
 //
 // Optional: set DISCORD_WEBHOOK_URL as a Worker secret (wrangler secret put /
@@ -119,6 +128,18 @@ export default {
       }
       if (url.pathname === '/admin/whitelist/remove' && request.method === 'POST') {
         return await handleWhitelistRemove(request, env, origin);
+      }
+      if (url.pathname === '/redeem' && request.method === 'POST') {
+        return await handleRedeemKey(request, env, origin);
+      }
+      if (url.pathname === '/admin/keys/list' && request.method === 'GET') {
+        return await handleKeysList(request, env, origin);
+      }
+      if (url.pathname === '/admin/keys/create' && request.method === 'POST') {
+        return await handleKeysCreate(request, env, origin);
+      }
+      if (url.pathname === '/admin/keys/revoke' && request.method === 'POST') {
+        return await handleKeysRevoke(request, env, origin);
       }
       return new Response('Not found', { status: 404, headers: corsHeaders(origin) });
     } catch (err) {
@@ -468,6 +489,114 @@ async function handleWhitelistRemove(request, env, origin) {
   }
 
   return json({ ok: true }, 200, origin);
+}
+
+// ---------- Temporary-access redeem keys ----------
+// A key is a single-use code ("key:<CODE>" in KV) created by the admin for
+// one specific product and a number of hours. Redeeming it grants that
+// product to the signed-in Google account for that many hours from the
+// moment of redemption (via the same applyGrant() used for real purchases
+// and whitelist entries), then marks the key used so it can't be redeemed
+// again.
+
+function randomKeyCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I — avoids visual confusion
+  const bytes = crypto.getRandomValues(new Uint8Array(10));
+  let out = '';
+  for (let i = 0; i < 10; i++) {
+    out += chars[bytes[i] % chars.length];
+    if (i === 4) out += '-';
+  }
+  return out;
+}
+
+async function handleKeysList(request, env, origin) {
+  const secret = new URL(request.url).searchParams.get('secret');
+  if (!checkAdminSecret(env, secret)) return json({ error: 'Invalid admin secret' }, 401, origin);
+
+  const entries = [];
+  let cursor;
+  do {
+    const page = await env.MS_KV.list({ prefix: 'key:', cursor });
+    for (const k of page.keys) {
+      const raw = await env.MS_KV.get(k.name);
+      let entry = {};
+      try { entry = JSON.parse(raw); } catch {}
+      entries.push({ code: k.name.slice(4), ...entry });
+    }
+    cursor = page.cursor;
+  } while (cursor);
+
+  entries.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  return json({ entries }, 200, origin);
+}
+
+async function handleKeysCreate(request, env, origin) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
+  if (!checkAdminSecret(env, body.secret)) return json({ error: 'Invalid admin secret' }, 401, origin);
+
+  const product = body.product;
+  if (!PRODUCTS[product]) {
+    return json({ error: `product must be one of: ${Object.keys(PRODUCTS).join(', ')}` }, 400, origin);
+  }
+  const hours = Number(body.hours);
+  if (!Number.isFinite(hours) || hours <= 0) {
+    return json({ error: 'hours must be a positive number' }, 400, origin);
+  }
+
+  let code;
+  do {
+    code = randomKeyCode();
+  } while (await env.MS_KV.get(`key:${code}`));
+
+  const entry = { product, hours, createdAt: Date.now(), redeemed: false };
+  await env.MS_KV.put(`key:${code}`, JSON.stringify(entry));
+
+  return json({ code, product, hours }, 200, origin);
+}
+
+async function handleKeysRevoke(request, env, origin) {
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
+  if (!checkAdminSecret(env, body.secret)) return json({ error: 'Invalid admin secret' }, 401, origin);
+  const code = (body.code || '').trim().toUpperCase();
+  if (!code) return json({ error: 'Missing code' }, 400, origin);
+
+  const raw = await env.MS_KV.get(`key:${code}`);
+  if (raw) {
+    const entry = JSON.parse(raw);
+    if (entry.redeemed) return json({ error: 'Already redeemed — cannot revoke' }, 400, origin);
+  }
+  await env.MS_KV.delete(`key:${code}`);
+  return json({ ok: true }, 200, origin);
+}
+
+async function handleRedeemKey(request, env, origin) {
+  const session = await getSession(request, env);
+  if (!session) return json({ error: 'Please sign in with Google first.' }, 401, origin);
+
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
+  const code = (body.code || '').trim().toUpperCase();
+  if (!code) return json({ error: 'Enter a code.' }, 400, origin);
+
+  const keyRaw = await env.MS_KV.get(`key:${code}`);
+  if (!keyRaw) return json({ error: 'Invalid or unknown code.' }, 404, origin);
+  const keyEntry = JSON.parse(keyRaw);
+  if (keyEntry.redeemed) return json({ error: 'This code has already been used.' }, 400, origin);
+
+  const expiresAt = Date.now() + keyEntry.hours * 60 * 60 * 1000;
+  await applyGrant(env, session.sub, session.email, keyEntry.product, expiresAt, 'redeemkey');
+
+  keyEntry.redeemed = true;
+  keyEntry.redeemedBy = session.email;
+  keyEntry.redeemedAt = Date.now();
+  await env.MS_KV.put(`key:${code}`, JSON.stringify(keyEntry));
+
+  await notifyDiscord(env, `🔑 **Key redeemed** — ${session.email} redeemed **${code}** for **${keyEntry.product}** (${keyEntry.hours}h)`);
+
+  return json({ ok: true, product: keyEntry.product, hours: keyEntry.hours, expiresAt }, 200, origin);
 }
 
 async function handleCreateSession(request, env, origin) {
