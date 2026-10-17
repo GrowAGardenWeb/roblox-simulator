@@ -48,6 +48,14 @@ body.balhidden .eyeopen{display:flex}
 .inwrap span{color:#8e8e93;font-size:17px}
 .inwrap input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#fff;font-size:17px;font-family:inherit}
 .savebtn{width:100%;border:0;background:#fff;color:#000;font-size:17px;font-weight:700;padding:15px;border-radius:999px;cursor:pointer;margin-top:4px}
+.sheettogglerow{display:flex;align-items:center;justify-content:space-between}
+.sheettogglerow label:first-child{margin-bottom:0;font-size:15px;color:#fff}
+.toggle{position:relative;width:46px;height:28px;flex:none}
+.toggle input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.toggleslider{position:absolute;inset:0;background:#3a3a3c;border-radius:999px;transition:background .2s ease;pointer-events:none}
+.toggleslider::before{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.toggle input:checked + .toggleslider{background:#3ac732}
+.toggle input:checked + .toggleslider::before{transform:translateX(18px)}
 
 .dockhit{position:absolute;left:50%;top:0;transform:translateX(-50%);width:34%;height:100%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 
@@ -283,6 +291,7 @@ body.balhidden .eyeopen{display:flex}
   <div class="sheetrow"><label>Savings balance</label><div class="inwrap"><span>$</span><input id="psav" inputmode="decimal"></div></div>
   <div class="sheetrow"><label>Card last 4 digits</label><div class="inwrap"><span>&#8226;&#8226;</span><input id="pdigits" inputmode="numeric" maxlength="4"></div></div>
   <div class="sheetrow"><label>Cashtag</label><div class="inwrap"><span>$</span><input id="ptag"></div></div>
+  <div class="sheetrow sheettogglerow"><label>Show bank icon in dock</label><label class="toggle"><input type="checkbox" id="pbankicon"><span class="toggleslider"></span></label></div>
   <button class="savebtn" id="savebtn">Done</button>
 </div>
 </div>
@@ -317,6 +326,15 @@ try{var s4=localStorage.getItem('cashapp_avatar');if(s4)avatarUrl=s4}catch(e){}
 var balHidden=false;
 try{balHidden=localStorage.getItem('cashapp_balhidden')==='1'}catch(e){}
 document.body.classList.toggle('balhidden',balHidden);
+var dockBankIcon=false;
+try{dockBankIcon=localStorage.getItem('cashapp_dockbankicon')==='1'}catch(e){}
+
+function compactAmount(n){
+  n=Math.round(n);
+  if(n>=1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'')+'M';
+  if(n>=1000) return (n/1000).toFixed(1).replace(/\.0$/,'')+'K';
+  return n.toLocaleString('en-US');
+}
 
 function avatarSrc(){return avatarUrl||('https://unavatar.io/cashapp/'+encodeURIComponent(tag))}
 var ui=document.getElementById('ui'),dockbar=document.querySelector('.dockbar');
@@ -338,10 +356,10 @@ function renderAll(){
     savings.textContent='••••';
   }else{
     amt.textContent='$'+bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    dock.textContent='$'+Math.round(bal).toLocaleString('en-US');
+    dock.textContent='$'+compactAmount(bal);
     savings.textContent='$'+sav.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   }
-  dockbar.classList.toggle('bigbal',!balHidden&&Math.round(bal)>=100);
+  dockbar.classList.toggle('bigbal',!balHidden&&dockBankIcon);
   digits.textContent=cardDigits;
   cashtag.textContent='$'+tag;
   var asrc=avatarSrc();
@@ -357,13 +375,14 @@ addEventListener('resize',renderAll);
 addEventListener('orientationchange',renderAll);
 
 var hitadd=document.getElementById('hitadd'),sheetwrap=document.getElementById('sheetwrap'),dim=document.getElementById('dim'),closebtn=document.getElementById('closebtn'),savebtn=document.getElementById('savebtn');
-var pbal=document.getElementById('pbal'),psav=document.getElementById('psav'),pdigits=document.getElementById('pdigits'),ptag=document.getElementById('ptag');
+var pbal=document.getElementById('pbal'),psav=document.getElementById('psav'),pdigits=document.getElementById('pdigits'),ptag=document.getElementById('ptag'),pbankicon=document.getElementById('pbankicon');
 
 function openSheet(){
   pbal.value=bal.toFixed(2);
   psav.value=sav.toFixed(2);
   pdigits.value=cardDigits;
   ptag.value=tag;
+  pbankicon.checked=dockBankIcon;
   sheetwrap.classList.add('open');
 }
 function closeSheet(){sheetwrap.classList.remove('open')}
@@ -377,12 +396,14 @@ function save(){
   if(d.length===4)cardDigits=d;
   var t=ptag.value.replace(/^\$+/,'').replace(/[^a-zA-Z0-9]/g,'').slice(0,20);
   if(t)tag=t;
+  dockBankIcon=pbankicon.checked;
   renderAll();
   try{
     localStorage.setItem('cashapp_balance',bal);
     localStorage.setItem('cashapp_savings',sav);
     localStorage.setItem('cashapp_card_digits',cardDigits);
     localStorage.setItem('cashapp_cashtag',tag);
+    localStorage.setItem('cashapp_dockbankicon',dockBankIcon?'1':'0');
   }catch(e){}
   closeSheet();
 }
