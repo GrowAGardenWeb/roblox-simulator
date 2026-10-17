@@ -145,8 +145,7 @@ body.balhidden .eyeopen{display:flex}
 .processingwrap{position:fixed;inset:0;z-index:90;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease}
 .processingwrap.show{opacity:1;pointer-events:auto}
 .processingicon{position:relative;width:88px;height:88px;border-radius:22px;background:#000;box-shadow:0 14px 34px rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center}
-.processingface{width:44px;height:44px;color:#3ddb6c;opacity:1;transform:scale(1);filter:drop-shadow(0 0 6px rgba(61,219,108,.65));transition:opacity .2s ease,transform .2s ease}
-.processingface svg{width:100%;height:100%;display:block}
+.processingface{width:66px;height:66px;background:center/contain no-repeat url(faceid.png);opacity:1;transform:scale(1);filter:drop-shadow(0 0 6px rgba(61,219,108,.5));transition:opacity .2s ease,transform .2s ease}
 .processingspin{position:absolute;width:40px;height:40px;border-radius:50%;border:3px solid rgba(46,204,95,.22);border-top-color:#3ddb6c;border-right-color:#3ddb6c;animation:procspin .85s cubic-bezier(.45,.05,.55,.95) infinite;filter:drop-shadow(0 0 7px rgba(61,219,108,.75));opacity:0;transform:scale(.6);transition:opacity .2s ease,transform .2s cubic-bezier(.34,1.56,.64,1)}
 .processingcheck{position:absolute;width:40px;height:40px;border-radius:50%;border:3px solid #3ddb6c;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);filter:drop-shadow(0 0 7px rgba(61,219,108,.75));transition:opacity .25s ease,transform .25s cubic-bezier(.34,1.56,.64,1)}
 .processingcheck svg{width:18px;height:18px;color:#3ddb6c}
@@ -258,7 +257,7 @@ body.balhidden .eyeopen{display:flex}
 
 <div class="processingwrap" id="processingwrap">
   <div class="processingicon">
-    <div class="processingface"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8V5h3"/><path d="M19 8V5h-3"/><path d="M5 16v3h3"/><path d="M19 16v3h-3"/><path d="M9 10v1"/><path d="M15 10v1"/><path d="M9 15c1.3 1 4.7 1 6 0"/></svg></div>
+    <div class="processingface"></div>
     <div class="processingspin"></div>
     <div class="processingcheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
   </div>
