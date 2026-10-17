@@ -13,7 +13,7 @@
 html,body{height:var(--app-h,100%);overflow:hidden;margin:0;background:#000;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}
 .wrap{position:fixed;top:0;left:0;right:0;height:var(--app-h,100%);margin:0;overflow:hidden;display:flex;justify-content:center}
 .scroll{width:100%;max-width:620px;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
-.ui{position:relative;width:100%;aspect-ratio:1320/4560;container-type:inline-size;background:top/100% 100% no-repeat url(money.png)}
+.ui{position:relative;width:100%;aspect-ratio:1320/4560;overflow:hidden;container-type:inline-size;background:top/100% 100% no-repeat url(money.png)}
 .amt{position:absolute;left:5.45%;top:19.76%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;color:#fff;font-size:14.9cqw;line-height:1;white-space:nowrap;pointer-events:none}
 .digits{position:absolute;left:18.64%;top:12.24%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:600;color:#1c1c1e;font-size:3.1cqw;line-height:1;white-space:nowrap;pointer-events:none}
 .cashtag{position:absolute;right:5.3%;top:12.37%;transform:translateY(-50%);font-family:"Helvetica Neue",Arial,sans-serif;font-weight:400;color:#5b5b5e;font-size:4.3cqw;line-height:1;white-space:nowrap;text-align:right;pointer-events:none}
@@ -233,6 +233,7 @@ function renderAll(){
   fitText(amt,ui,.149,.90);
   fitText(dock,dockbar,.094,.28);
   fitText(savings,ui,.0926,.82);
+  fitText(cashtag,ui,.043,.55);
 }
 renderAll();
 addEventListener('resize',renderAll);
