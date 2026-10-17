@@ -102,8 +102,7 @@ a{color:inherit;text-decoration:none}
   mask-image:radial-gradient(70% 62% at 50% 26%, #000 0%, transparent 85%);
 }
 .hero{position:relative;z-index:1;padding:44px 20px 30px;max-width:720px;margin:0 auto;text-align:center}
-.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--text-faint);text-transform:uppercase}
-.hero-display{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(38px,11vw,78px);letter-spacing:-.01em;color:var(--mint);text-shadow:0 0 28px rgba(138,255,158,.3),0 0 2px rgba(138,255,158,.55);font-variant-numeric:tabular-nums;margin:10px 0 18px;animation:cardIn .6s cubic-bezier(.2,.8,.2,1) both}
+.hero-display{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(38px,11vw,78px);letter-spacing:-.01em;color:#fff;text-shadow:0 0 30px rgba(255,255,255,.3),0 0 2px rgba(255,255,255,.5);font-variant-numeric:tabular-nums;margin:0 0 18px;animation:cardIn .6s cubic-bezier(.2,.8,.2,1) both}
 .hero h1{font-size:clamp(26px,5.2vw,38px);font-weight:800;line-height:1.14;letter-spacing:-.02em;max-width:18ch;margin:0 auto;animation:cardIn .6s cubic-bezier(.2,.8,.2,1) .05s both}
 .hero-sub{margin:16px auto 0;font-size:14.5px;line-height:1.6;color:var(--text-dim);max-width:44ch}
 .hero-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:20px}
@@ -303,7 +302,6 @@ footer strong{color:#7a7a86}
 <header class="hero-shell">
   <div class="hero-grid-bg" aria-hidden="true"></div>
   <div class="hero">
-    <div class="hero-eyebrow">Live balance preview</div>
     <div class="hero-display" id="heroBalance">$0.00</div>
     <h1>Any balance. Any app. Zero dollars spent.</h1>
     <p class="hero-sub">Pixel-perfect fake screens for Cash App, Phantom, Exodus, PayPal and Roblox. Type in whatever number you want, screenshot it, post it. Nothing real ever moves.</p>
@@ -994,10 +992,12 @@ function applyFilters(){
   });
 }
 
-// --- Hero balance display: a little odometer-style slot flicker, settling
-// on a new absurd fake balance every few seconds. Purely decorative.
+// --- Hero balance display: never sits still. The cents keep ticking like a
+// live counter, and every few seconds the whole number slot-flickers into a
+// new absurd fake balance. Purely decorative.
 var heroBalanceEl = document.getElementById('heroBalance');
 var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var heroRolling = false;
 function formatHeroBalance(n){
   return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
@@ -1006,19 +1006,30 @@ function rollHeroBalance(){
   var target = 800 + Math.floor(Math.random() * 4000000);
   var targetStr = formatHeroBalance(target);
   if(reduceMotion){ heroBalanceEl.textContent = targetStr; return; }
+  heroRolling = true;
   var frame = 0, frames = 16;
   var iv = setInterval(function(){
     frame++;
     if(frame >= frames){
       clearInterval(iv);
       heroBalanceEl.textContent = targetStr;
+      heroRolling = false;
       return;
     }
     heroBalanceEl.textContent = targetStr.replace(/[0-9]/g, function(){ return Math.floor(Math.random() * 10); });
   }, 45);
 }
+function tickHeroCents(){
+  if(!heroBalanceEl || reduceMotion || heroRolling) return;
+  heroBalanceEl.textContent = heroBalanceEl.textContent.replace(/(\d{2})$/, function(){
+    return String(Math.floor(Math.random() * 100)).padStart(2, '0');
+  });
+}
 rollHeroBalance();
-setInterval(rollHeroBalance, 8000);
+if(!reduceMotion){
+  setInterval(rollHeroBalance, 4000);
+  setInterval(tickHeroCents, 150);
+}
 
 updateAuthUI();
 </script>
