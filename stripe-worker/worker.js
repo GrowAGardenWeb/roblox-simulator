@@ -52,14 +52,11 @@ const ADMIN_EMAILS = new Set(['munfuja11@gmail.com']);
 const PRODUCTS = {
   mobile: { price: 'price_1UP7I9FvaDdMVYC9aNf1fQ4J', mode: 'subscription' },
   headless: { price: 'price_1UP7I9FvaDdMVYC9kNeu3VG9', mode: 'payment' },
-  // TODO: replace price_REPLACE_ME_* below with the real Stripe Price IDs
-  // once created in the dashboard (Live mode) — see the price list in the
-  // comment above PRODUCT_BUNDLES.
-  cashapp: { price: 'price_REPLACE_ME_CASHAPP', mode: 'subscription' },
-  phantom: { price: 'price_REPLACE_ME_PHANTOM', mode: 'subscription' },
-  exodus: { price: 'price_REPLACE_ME_EXODUS', mode: 'subscription' },
-  paypal: { price: 'price_REPLACE_ME_PAYPAL', mode: 'subscription' },
-  megapack: { price: 'price_REPLACE_ME_MEGAPACK', mode: 'subscription' },
+  cashapp: { price: 'price_1URNWCFvaDdMVYC9XGyamKKl', mode: 'subscription' },
+  phantom: { price: 'price_1URNWPFvaDdMVYC9aLlaWzuv', mode: 'subscription' },
+  exodus: { price: 'price_1URNWkFvaDdMVYC9loqRm93S', mode: 'subscription' },
+  paypal: { price: 'price_1URNXNFvaDdMVYC9IOd576dU', mode: 'subscription' },
+  megapack: { price: 'price_1URNVSFvaDdMVYC9M1EwD63O', mode: 'subscription' },
 };
 
 // Products to create in Stripe (Live mode), all recurring/month unless noted:
