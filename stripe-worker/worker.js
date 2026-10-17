@@ -19,8 +19,7 @@
 //   GET  /admin/whitelist/list      ?secret=ADMIN_SECRET -> { entries: [{email,product,expiresAt,addedAt}] }
 //   POST /admin/whitelist/add       { secret, email, product, days? } -> { ok }
 //                                   product: 'mobile' | 'headless' | 'cashapp' |
-//                                   'phantom' | 'exodus' | 'paypal' | 'megapack' |
-//                                   'vip' | 'all'
+//                                   'phantom' | 'exodus' | 'paypal' | 'megapack' | 'all'
 //                                   days: optional — omit/0 for permanent, e.g. 30 for one month
 //   POST /admin/whitelist/remove    { secret, email } -> { ok }
 //
@@ -61,22 +60,18 @@ const PRODUCTS = {
   exodus: { price: 'price_REPLACE_ME_EXODUS', mode: 'subscription' },
   paypal: { price: 'price_REPLACE_ME_PAYPAL', mode: 'subscription' },
   megapack: { price: 'price_REPLACE_ME_MEGAPACK', mode: 'subscription' },
-  vip: { price: 'price_REPLACE_ME_VIP', mode: 'subscription' },
 };
 
 // Products to create in Stripe (Live mode), all recurring/month unless noted:
-//   Cash App       $10/mo
-//   Phantom        $10/mo
-//   Exodus         $10/mo
-//   PayPal         $10/mo
-//   Mega Pack      $33/mo  — grants cashapp + phantom + exodus + paypal together
-//   VIP All Access $45/mo  — grants every product: mobile + headless +
-//                            cashapp + phantom + exodus + paypal together
+//   Cash App   $10/mo
+//   Phantom    $10/mo
+//   Exodus     $10/mo
+//   PayPal     $10/mo
+//   Mega Pack  $33/mo  — grants cashapp + phantom + exodus + paypal together
 // A purchase of a bundle product grants every product listed here for it,
 // instead of just the bundle's own key.
 const PRODUCT_BUNDLES = {
   megapack: ['cashapp', 'phantom', 'exodus', 'paypal'],
-  vip: ['mobile', 'headless', 'cashapp', 'phantom', 'exodus', 'paypal'],
 };
 
 const ALLOWED_ORIGINS = new Set([
