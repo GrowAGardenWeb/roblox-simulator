@@ -69,18 +69,19 @@ body.balhidden .eyeopen{display:flex}
 .paypill{flex:1;border:0;border-radius:999px;background:rgba(0,0,0,.14);color:#06200a;font-size:16px;font-weight:700;padding:15px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .paymain{width:100%;border:0;border-radius:999px;background:#06200a;color:#fff;font-size:17px;font-weight:700;padding:16px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .paymain:disabled{opacity:.45}
-.paytabdock{flex:none;display:flex;justify-content:center;padding:0 20px calc(env(safe-area-inset-bottom,0px) + 14px)}
-.paybankicon{position:absolute;left:15.99%;top:51.6%;width:8.2cqw;height:8.2cqw;transform:translate(-50%,-50%);pointer-events:none;color:#fff}
-.paybankicon svg{width:100%;height:100%;display:block}
-.paytabhit{position:absolute;top:0;height:100%;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.paytabhit:active{opacity:.6}
+.paytabsbar{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:100%;max-width:620px;display:flex;align-items:center;justify-content:center;gap:30px}
+.paytab{border:0;background:none;padding:9px 16px;border-radius:999px;cursor:pointer;color:#06200a;opacity:.6;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:opacity .15s}
+.paytab svg{width:22px;height:22px;display:block}
+.paytabdollarlbl{font-size:19px;font-weight:700;line-height:1}
+.paytab.active{opacity:1;background:rgba(0,0,0,.14)}
+.paytab:active{opacity:1}
 
 /* ---- Pay-to contact sheet ---- */
-.contactwrap{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center}
-.contactwrap[hidden]{display:none}
+.contactwrap{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s linear}
+.contactwrap.open{opacity:1;pointer-events:auto}
 .contactsheet.noting .ctitle,.contactsheet.noting .csearchwrap,.contactsheet.noting .cresultslabel,.contactsheet.noting .clist{display:none}
-.contactsheet{position:relative;width:100%;max-width:620px;height:88vh;background:#000;border-radius:22px 22px 0 0;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;animation:sheetUp .28s cubic-bezier(.25,.8,.25,1)}
-@keyframes sheetUp{from{transform:translateY(16px);opacity:.6}to{transform:translateY(0);opacity:1}}
+.contactsheet{position:relative;width:100%;max-width:620px;height:88vh;background:#000;border-radius:22px 22px 0 0;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;transform:translateY(100%);transition:transform .26s cubic-bezier(.22,.9,.32,1)}
+.contactwrap.open .contactsheet{transform:translateY(0)}
 .cgrab{width:36px;height:4px;border-radius:999px;background:#3a3a3d;margin:10px auto 2px}
 .chead{display:flex;align-items:flex-start;justify-content:space-between;padding:8px 20px 14px}
 .cxbtn{width:30px;height:38px;border:0;background:center/contain no-repeat url(pay-close.png);cursor:pointer;flex:none}
@@ -191,15 +192,14 @@ body.balhidden .eyeopen{display:flex}
     </div>
     <button class="paymain" id="paybtn" disabled>Pay</button>
   </div>
-  <div class="dockoverlay"><div class="dockbar">
-    <div class="paybankicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M4 10v9M9 10v9M15 10v9M20 10v9"/><path d="M2 21h20"/></svg></div>
-    <button class="paytabhit" id="paytabbank" aria-label="Bank" style="left:0;width:32%"></button>
-    <button class="paytabhit" id="paytabdollar" aria-label="Pay" style="left:34%;width:32%"></button>
-    <button class="paytabhit" id="paytabclock" aria-label="Activity" style="left:68%;width:32%"></button>
-  </div></div>
+  <div class="paytabsbar">
+    <button class="paytab" id="paytabbank" aria-label="Bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M4 10v9M9 10v9M15 10v9M20 10v9"/><path d="M2 21h20"/></svg></button>
+    <button class="paytab active" id="paytabdollar" aria-label="Pay"><span class="paytabdollarlbl">$</span></button>
+    <button class="paytab" id="paytabclock" aria-label="Activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></button>
+  </div>
 </div>
 
-<div class="contactwrap" id="contactwrap" hidden>
+<div class="contactwrap" id="contactwrap">
   <div class="dim" id="cdim"></div>
   <div class="contactsheet">
     <div class="cgrab"></div>
@@ -455,9 +455,9 @@ function openContactSheet(mode){
   ctitleto.textContent = mode==='pay' ? 'to' : 'from';
   csearchinput.value='';
   renderContacts('');
-  contactwrap.hidden=false;
+  contactwrap.classList.add('open');
 }
-function closeContactSheet(){ contactwrap.hidden=true }
+function closeContactSheet(){ contactwrap.classList.remove('open') }
 
 paybtn.addEventListener('click',function(){ if(!paybtn.disabled) openContactSheet('pay') });
 requestbtn.addEventListener('click',function(){ if(payAmount()>0) openContactSheet('request'); else { payBuf='1'; renderPay(); openContactSheet('request'); } });
