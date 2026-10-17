@@ -129,6 +129,16 @@ body.balhidden .eyeopen{display:flex}
 .reviewbtn{display:block;width:100%;border:0;background:#fff;color:#06200a;font-size:17px;font-weight:700;padding:15px;border-radius:999px;cursor:pointer}
 .reviewbtn:disabled{opacity:.4}
 
+.processingwrap{position:fixed;inset:0;z-index:90;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.processingwrap.show{opacity:1;pointer-events:auto}
+.processingicon{position:relative;width:64px;height:64px;border-radius:18px;background:#1d1d1f;display:flex;align-items:center;justify-content:center;transition:background .25s ease}
+.processingwrap.done .processingicon{background:#0d2615}
+.processingspin{width:32px;height:32px;border:3px solid #3a3a3d;border-top-color:#fff;border-radius:50%;animation:procspin .7s linear infinite;transition:opacity .15s ease}
+.processingcheck{position:absolute;width:32px;height:32px;color:#2ecc5f;opacity:0;transform:scale(.6);transition:opacity .25s ease,transform .25s cubic-bezier(.34,1.56,.64,1)}
+.processingwrap.done .processingspin{opacity:0}
+.processingwrap.done .processingcheck{opacity:1;transform:scale(1)}
+@keyframes procspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.processingspin{animation-duration:1.4s}}
 .successwrap{position:fixed;inset:0;z-index:80;background:#000;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;transform:translateY(100%);transition:transform .32s cubic-bezier(.25,.8,.25,1)}
 .successwrap.open{transform:translateY(0)}
 .successtop{padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 0}
@@ -226,6 +236,13 @@ body.balhidden .eyeopen{display:flex}
         <button class="reviewbtn" id="reviewbtn" disabled>Review</button>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="processingwrap" id="processingwrap">
+  <div class="processingicon">
+    <div class="processingspin"></div>
+    <svg class="processingcheck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
   </div>
 </div>
 
@@ -537,6 +554,7 @@ var contactsheet=document.querySelector('.contactsheet'),notestep=document.getEl
 var notebackbtn=document.getElementById('notebackbtn'),noteinput=document.getElementById('noteinput'),reviewbtn=document.getElementById('reviewbtn');
 var ntmode=document.getElementById('ntmode'),ntamt=document.getElementById('ntamt'),ntto=document.getElementById('ntto'),ntav=document.getElementById('ntav'),ntname=document.getElementById('ntname'),ntbal=document.getElementById('ntbal');
 var successwrap=document.getElementById('successwrap'),successtext=document.getElementById('successtext'),successclose=document.getElementById('successclose'),successreceipt=document.getElementById('successreceipt'),successdone=document.getElementById('successdone');
+var processingwrap=document.getElementById('processingwrap'),procTimer1=null,procTimer2=null;
 var pendingWho=null;
 
 clist.addEventListener('click',function(e){
@@ -579,22 +597,32 @@ reviewbtn.addEventListener('click',function(){
   var n=payAmount();
   var who=pendingWho;
   closeContactSheet();
-  closePayPage();
-  contactsheet.classList.remove('noting');
-  notestep.classList.remove('show');
-  var msg;
-  if(payMode==='pay'){
-    bal=Math.max(0,Math.round((bal-n)*100)/100);
-    renderAll();
-    try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
-    msg='You sent $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to '+who;
-  } else if(payMode==='pool'){
-    msg='Pool invite sent to '+who;
-  } else {
-    msg='You requested $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' from '+who;
-  }
-  successtext.textContent=msg;
-  successwrap.classList.add('open');
+  clearTimeout(procTimer1);
+  clearTimeout(procTimer2);
+  processingwrap.classList.remove('done');
+  processingwrap.classList.add('show');
+  procTimer1=setTimeout(function(){
+    processingwrap.classList.add('done');
+    procTimer2=setTimeout(function(){
+      processingwrap.classList.remove('show');
+      closePayPage();
+      contactsheet.classList.remove('noting');
+      notestep.classList.remove('show');
+      var msg;
+      if(payMode==='pay'){
+        bal=Math.max(0,Math.round((bal-n)*100)/100);
+        renderAll();
+        try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
+        msg='You sent $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to '+who;
+      } else if(payMode==='pool'){
+        msg='Pool invite sent to '+who;
+      } else {
+        msg='You requested $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' from '+who;
+      }
+      successtext.textContent=msg;
+      successwrap.classList.add('open');
+    },480);
+  },900);
 });
 
 function closeSuccess(){ successwrap.classList.remove('open') }
