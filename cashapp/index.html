@@ -145,12 +145,9 @@ body.balhidden .eyeopen{display:flex}
 .processingwrap{position:fixed;inset:0;z-index:90;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s ease}
 .processingwrap.show{opacity:1;pointer-events:auto}
 .processingicon{position:relative;width:88px;height:88px;border-radius:22px;background:#000;box-shadow:0 14px 34px rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center}
-.processingface{width:66px;height:66px;background:center/contain no-repeat url(faceid.png);opacity:1;transform:scale(1);filter:drop-shadow(0 0 6px rgba(61,219,108,.5));transition:opacity .2s ease,transform .2s ease}
-.processingspin{position:absolute;width:40px;height:40px;border-radius:50%;border:3px solid rgba(46,204,95,.22);border-top-color:#3ddb6c;border-right-color:#3ddb6c;animation:procspin .85s cubic-bezier(.45,.05,.55,.95) infinite;filter:drop-shadow(0 0 7px rgba(61,219,108,.75));opacity:0;transform:scale(.6);transition:opacity .2s ease,transform .2s cubic-bezier(.34,1.56,.64,1)}
+.processingspin{width:40px;height:40px;border-radius:50%;border:3px solid rgba(46,204,95,.22);border-top-color:#3ddb6c;border-right-color:#3ddb6c;animation:procspin .85s cubic-bezier(.45,.05,.55,.95) infinite;filter:drop-shadow(0 0 7px rgba(61,219,108,.75));transition:opacity .2s ease,transform .2s ease}
 .processingcheck{position:absolute;width:40px;height:40px;border-radius:50%;border:3px solid #3ddb6c;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);filter:drop-shadow(0 0 7px rgba(61,219,108,.75));transition:opacity .25s ease,transform .25s cubic-bezier(.34,1.56,.64,1)}
 .processingcheck svg{width:18px;height:18px;color:#3ddb6c}
-.processingwrap.spin .processingface{opacity:0;transform:scale(.6)}
-.processingwrap.spin .processingspin{opacity:1;transform:scale(1)}
 .processingwrap.done .processingspin{opacity:0;transform:scale(.6)}
 .processingwrap.done .processingcheck{opacity:1;transform:scale(1)}
 @keyframes procspin{to{transform:rotate(360deg)}}
@@ -257,7 +254,6 @@ body.balhidden .eyeopen{display:flex}
 
 <div class="processingwrap" id="processingwrap">
   <div class="processingicon">
-    <div class="processingface"></div>
     <div class="processingspin"></div>
     <div class="processingcheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
   </div>
@@ -585,7 +581,7 @@ var contactsheet=document.querySelector('.contactsheet'),notestep=document.getEl
 var notebackbtn=document.getElementById('notebackbtn'),noteinput=document.getElementById('noteinput'),reviewbtn=document.getElementById('reviewbtn');
 var ntmode=document.getElementById('ntmode'),ntamt=document.getElementById('ntamt'),ntto=document.getElementById('ntto'),ntav=document.getElementById('ntav'),ntname=document.getElementById('ntname'),ntbal=document.getElementById('ntbal');
 var successwrap=document.getElementById('successwrap'),successtext=document.getElementById('successtext'),successclose=document.getElementById('successclose'),successreceipt=document.getElementById('successreceipt'),successdone=document.getElementById('successdone');
-var processingwrap=document.getElementById('processingwrap'),procTimer1=null,procTimer2=null,procTimer3=null;
+var processingwrap=document.getElementById('processingwrap'),procTimer1=null,procTimer2=null;
 var pendingWho=null;
 
 clist.addEventListener('click',function(e){
@@ -630,34 +626,30 @@ reviewbtn.addEventListener('click',function(){
   closeContactSheet();
   clearTimeout(procTimer1);
   clearTimeout(procTimer2);
-  clearTimeout(procTimer3);
-  processingwrap.classList.remove('spin','done');
+  processingwrap.classList.remove('done');
   processingwrap.classList.add('show');
   procTimer1=setTimeout(function(){
-    processingwrap.classList.add('spin');
+    processingwrap.classList.add('done');
     procTimer2=setTimeout(function(){
-      processingwrap.classList.add('done');
-      procTimer3=setTimeout(function(){
-        processingwrap.classList.remove('show','spin','done');
-        closePayPage();
-        contactsheet.classList.remove('noting');
-        notestep.classList.remove('show');
-        var msg;
-        if(payMode==='pay'){
-          bal=Math.max(0,Math.round((bal-n)*100)/100);
-          renderAll();
-          try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
-          msg='You sent $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to '+who;
-        } else if(payMode==='pool'){
-          msg='Pool invite sent to '+who;
-        } else {
-          msg='You requested $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' from '+who;
-        }
-        successtext.textContent=msg;
-        successwrap.classList.add('open');
-      },480);
-    },650);
-  },500);
+      processingwrap.classList.remove('show','done');
+      closePayPage();
+      contactsheet.classList.remove('noting');
+      notestep.classList.remove('show');
+      var msg;
+      if(payMode==='pay'){
+        bal=Math.max(0,Math.round((bal-n)*100)/100);
+        renderAll();
+        try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
+        msg='You sent $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to '+who;
+      } else if(payMode==='pool'){
+        msg='Pool invite sent to '+who;
+      } else {
+        msg='You requested $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' from '+who;
+      }
+      successtext.textContent=msg;
+      successwrap.classList.add('open');
+    },480);
+  },900);
 });
 
 function closeSuccess(){ successwrap.classList.remove('open') }
