@@ -54,8 +54,10 @@ body.balhidden .eyeopen{display:flex}
 .payicon{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.14);display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;color:#06200a}
 .payavatar{width:40px;height:40px;border-radius:50%;background:#2c2c2e center/cover no-repeat;flex:none}
 .payamtwrap{flex:none;text-align:center;padding:26px 16px 6px;min-height:92px;display:flex;align-items:center;justify-content:center}
-.payamt{font-size:min(17.5vw,100px);font-weight:800;color:#06200a;line-height:1;letter-spacing:-.02em;word-break:break-all;display:inline-block;transition:transform .14s cubic-bezier(.25,.8,.25,1)}
-.payamt.pop{transform:scale(1.06)}
+.payamt{font-size:min(17.5vw,100px);font-weight:800;color:#06200a;line-height:1;letter-spacing:-.02em;word-break:break-all;display:inline-block;transform-origin:center}
+.payamt.pop{animation:amtpop .22s cubic-bezier(.34,1.56,.64,1)}
+@keyframes amtpop{0%{transform:scale(.8)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.payamt.pop{animation:none}}
 .paynote{text-align:center;font-size:13px;color:#0a3310;opacity:.65;min-height:16px;margin-top:4px}
 .paykeys{flex:1;display:grid;grid-template-columns:repeat(3,1fr);align-content:center;gap:4px 0;padding:0 20px;max-height:52vh}
 .paykey{border:0;background:none;color:#06200a;font-size:30px;font-weight:500;padding:14px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform .1s cubic-bezier(.25,.8,.25,1),opacity .1s}
@@ -107,18 +109,23 @@ body.balhidden .eyeopen{display:flex}
 @keyframes cspinturn{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.cspin{animation-duration:2s}}
 
-.notestep{display:none;padding:4px 20px 20px}
-.notestep.show{display:block}
+.notestep{display:none;padding:4px 20px 20px;flex-direction:column;height:100%;box-sizing:border-box}
+.notestep.show{display:flex}
 .backarrow{border:0;background:none;color:#fff;cursor:pointer;padding:6px;margin:0 0 14px -6px;display:flex}
 .backarrow svg{width:20px;height:20px}
 .notetitle{font-size:min(7.8vw,34px);font-weight:700;margin-bottom:16px;display:flex;align-items:center;flex-wrap:wrap;gap:8px 6px}
 .notewhoav{position:relative;width:37px;height:37px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#07140a;overflow:hidden}
 .notewhoav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .notedivider{height:1px;background:#2c2c2e;margin-bottom:6px}
-.noterow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
+.noterow{display:flex;align-items:center;gap:10px;padding:10px 0}
 .noteinput{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font-size:16px;font-family:inherit}
 .noteinput::placeholder{color:#6a6a6d}
-.reviewbtn{flex:none;border:0;background:#1d1d1f;color:#fff;font-size:14px;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer}
+.notefooter{margin-top:auto;padding-top:14px;padding-bottom:env(safe-area-inset-bottom,0px)}
+.notebalrow{display:flex;align-items:center;gap:10px;padding:10px 0;font-size:15px;font-weight:600;color:#fff}
+.notebalicon{width:22px;height:22px;border-radius:50%;flex:none;background:#3ac732;color:#06200a;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.notebalrow b{margin-left:auto;font-weight:700}
+.notedisclaimer{font-size:12.5px;color:#7c7c80;line-height:1.35;padding-bottom:14px}
+.reviewbtn{display:block;width:100%;border:0;background:#fff;color:#06200a;font-size:17px;font-weight:700;padding:15px;border-radius:999px;cursor:pointer}
 .reviewbtn:disabled{opacity:.4}
 
 .successwrap{position:fixed;inset:0;z-index:80;background:#000;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;transform:translateY(100%);transition:transform .32s cubic-bezier(.25,.8,.25,1)}
@@ -212,6 +219,10 @@ body.balhidden .eyeopen{display:flex}
       <div class="notedivider"></div>
       <div class="noterow">
         <input class="noteinput" id="noteinput" placeholder="Note (Required)" autocomplete="off" autocapitalize="sentences">
+      </div>
+      <div class="notefooter">
+        <div class="notebalrow"><span class="notebalicon">$</span> Cash balance <b id="ntbal"></b></div>
+        <div class="notedisclaimer">Payments can't be canceled once they're sent.</div>
         <button class="reviewbtn" id="reviewbtn" disabled>Review</button>
       </div>
     </div>
@@ -402,7 +413,7 @@ function renderPay(){
   void payamt.offsetWidth;
   payamt.classList.add('pop');
   clearTimeout(payamtPopTimer);
-  payamtPopTimer=setTimeout(function(){payamt.classList.remove('pop')},140);
+  payamtPopTimer=setTimeout(function(){payamt.classList.remove('pop')},220);
   paybtn.disabled = !(n>0);
   if(n>bal && payMode==='pay'){ paynote.textContent='Not enough money'; paybtn.disabled=true; }
   else { paynote.textContent=' '; }
@@ -524,7 +535,7 @@ csearchinput.addEventListener('input',function(){
 
 var contactsheet=document.querySelector('.contactsheet'),notestep=document.getElementById('notestep');
 var notebackbtn=document.getElementById('notebackbtn'),noteinput=document.getElementById('noteinput'),reviewbtn=document.getElementById('reviewbtn');
-var ntmode=document.getElementById('ntmode'),ntamt=document.getElementById('ntamt'),ntto=document.getElementById('ntto'),ntav=document.getElementById('ntav'),ntname=document.getElementById('ntname');
+var ntmode=document.getElementById('ntmode'),ntamt=document.getElementById('ntamt'),ntto=document.getElementById('ntto'),ntav=document.getElementById('ntav'),ntname=document.getElementById('ntname'),ntbal=document.getElementById('ntbal');
 var successwrap=document.getElementById('successwrap'),successtext=document.getElementById('successtext'),successclose=document.getElementById('successclose'),successreceipt=document.getElementById('successreceipt'),successdone=document.getElementById('successdone');
 var pendingWho=null;
 
@@ -546,6 +557,8 @@ clist.addEventListener('click',function(e){
   ntimg.onerror=function(){ntimg.remove()};
   ntav.appendChild(ntimg);
   ntname.textContent=pendingWho;
+  ntbal.textContent='$'+withCommas(bal.toFixed(2));
+  reviewbtn.textContent=payMode==='pay'?'Pay':payMode==='pool'?'Pool':'Request';
   noteinput.value='';
   reviewbtn.disabled=true;
   contactsheet.classList.add('noting');
