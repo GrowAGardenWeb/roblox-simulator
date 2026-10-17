@@ -77,6 +77,7 @@ body.balhidden .eyeopen{display:flex}
 /* ---- Pay-to contact sheet ---- */
 .contactwrap{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center}
 .contactwrap[hidden]{display:none}
+.contactsheet.noting .ctitle,.contactsheet.noting .csearchwrap,.contactsheet.noting .cresultslabel,.contactsheet.noting .clist{display:none}
 .contactsheet{position:relative;width:100%;max-width:620px;height:88vh;background:#000;border-radius:22px 22px 0 0;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;animation:sheetUp .28s cubic-bezier(.25,.8,.25,1)}
 @keyframes sheetUp{from{transform:translateY(16px);opacity:.6}to{transform:translateY(0);opacity:1}}
 .cgrab{width:36px;height:4px;border-radius:999px;background:#3a3a3d;margin:10px auto 2px}
@@ -105,6 +106,32 @@ body.balhidden .eyeopen{display:flex}
 .cspin{width:22px;height:22px;border:2.4px solid #3a3a3d;border-right-color:transparent;border-radius:50%;animation:cspinturn .8s linear infinite}
 @keyframes cspinturn{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.cspin{animation-duration:2s}}
+
+.notestep{display:none;padding:4px 20px 20px}
+.notestep.show{display:block}
+.backarrow{border:0;background:none;color:#fff;cursor:pointer;padding:6px;margin:0 0 14px -6px;display:flex}
+.backarrow svg{width:20px;height:20px}
+.notetitle{font-size:21px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;flex-wrap:wrap;gap:8px 6px}
+.notewhoav{width:26px;height:26px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#07140a}
+.notedivider{height:1px;background:#2c2c2e;margin-bottom:6px}
+.noterow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0}
+.noteinput{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font-size:16px;font-family:inherit}
+.noteinput::placeholder{color:#6a6a6d}
+.reviewbtn{flex:none;border:0;background:#1d1d1f;color:#fff;font-size:14px;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer}
+.reviewbtn:disabled{opacity:.4}
+
+.successwrap{position:fixed;inset:0;z-index:80;background:#000;display:flex;flex-direction:column;font-family:"Helvetica Neue",Arial,sans-serif;color:#fff;transform:translateY(100%);transition:transform .32s cubic-bezier(.25,.8,.25,1)}
+.successwrap.open{transform:translateY(0)}
+.successtop{padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 0}
+.successclose{width:34px;height:34px;border-radius:50%;background:#1d1d1f;border:0;color:#fff;cursor:pointer;font-size:16px}
+.successbody{flex:1;padding:40px 24px 0}
+.successcheck{width:56px;height:56px;border-radius:50%;background:#2ecc5f;display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+.successcheck svg{width:26px;height:26px;color:#06200a}
+.successtext{font-size:27px;font-weight:800;line-height:1.28}
+.successactions{padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 18px)}
+.successbtn{width:100%;border:0;border-radius:999px;padding:16px 0;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px;-webkit-tap-highlight-color:transparent}
+.successbtn.receipt{background:#1d1d1f;color:#fff}
+.successbtn.done{background:#fff;color:#000}
 
 .toastwrap{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;justify-content:center;z-index:90;pointer-events:none}
 .toast{background:#1c1c1e;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-size:14px;font-weight:600;padding:13px 20px;border-radius:999px;box-shadow:0 8px 24px -8px rgba(0,0,0,.6);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;display:flex;align-items:center;gap:8px}
@@ -177,6 +204,27 @@ body.balhidden .eyeopen{display:flex}
     </div>
     <div class="cresultslabel" id="cresultslabel" hidden>Results</div>
     <div class="clist" id="clist"></div>
+    <div class="notestep" id="notestep">
+      <button class="backarrow" id="notebackbtn" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="notetitle"><b id="ntmode">Pay</b> <b id="ntamt"></b> <span id="ntto">to</span> <span class="notewhoav" id="ntav"></span> <b id="ntname"></b> <span>for</span></div>
+      <div class="notedivider"></div>
+      <div class="noterow">
+        <input class="noteinput" id="noteinput" placeholder="Note (Required)" autocomplete="off" autocapitalize="sentences">
+        <button class="reviewbtn" id="reviewbtn" disabled>Review</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="successwrap" id="successwrap">
+  <div class="successtop"><button class="successclose" id="successclose" aria-label="Close">&#10005;</button></div>
+  <div class="successbody">
+    <div class="successcheck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <div class="successtext" id="successtext">Done</div>
+  </div>
+  <div class="successactions">
+    <button class="successbtn receipt" id="successreceipt">Receipt</button>
+    <button class="successbtn done" id="successdone">Done</button>
   </div>
 </div>
 
@@ -472,24 +520,66 @@ csearchinput.addEventListener('input',function(){
   renderContacts(csearchinput.value);
 });
 
+var contactsheet=document.querySelector('.contactsheet'),notestep=document.getElementById('notestep');
+var notebackbtn=document.getElementById('notebackbtn'),noteinput=document.getElementById('noteinput'),reviewbtn=document.getElementById('reviewbtn');
+var ntmode=document.getElementById('ntmode'),ntamt=document.getElementById('ntamt'),ntto=document.getElementById('ntto'),ntav=document.getElementById('ntav'),ntname=document.getElementById('ntname');
+var successwrap=document.getElementById('successwrap'),successtext=document.getElementById('successtext'),successclose=document.getElementById('successclose'),successreceipt=document.getElementById('successreceipt'),successdone=document.getElementById('successdone');
+var pendingWho=null;
+
 clist.addEventListener('click',function(e){
   var row=e.target.closest('.crow');
   if(!row)return;
+  pendingWho=row.dataset.name;
+  var initial=(pendingWho.split(' ').length>1?pendingWho.split(' ')[0][0]+pendingWho.split(' ')[1][0]:pendingWho.slice(0,2)).toUpperCase();
+  var color=AVATAR_COLORS[row.dataset.tag.length%AVATAR_COLORS.length];
+  ntmode.textContent=ctitlemode.textContent;
+  ntamt.textContent=ctitleamt.textContent;
+  ntto.textContent=ctitleto.textContent;
+  ntav.textContent=initial;
+  ntav.style.background=color;
+  ntname.textContent=pendingWho;
+  noteinput.value='';
+  reviewbtn.disabled=true;
+  contactsheet.classList.add('noting');
+  notestep.classList.add('show');
+  noteinput.focus();
+});
+
+notebackbtn.addEventListener('click',function(){
+  contactsheet.classList.remove('noting');
+  notestep.classList.remove('show');
+});
+
+noteinput.addEventListener('input',function(){
+  reviewbtn.disabled=noteinput.value.trim()==='';
+});
+
+reviewbtn.addEventListener('click',function(){
   var n=payAmount();
-  var who=row.dataset.name;
+  var who=pendingWho;
   closeContactSheet();
   closePayPage();
+  contactsheet.classList.remove('noting');
+  notestep.classList.remove('show');
+  var msg;
   if(payMode==='pay'){
     bal=Math.max(0,Math.round((bal-n)*100)/100);
     renderAll();
     try{localStorage.setItem('cashapp_balance',bal)}catch(e){}
-    showToast('Sent $'+n.toFixed(2)+' to '+who);
+    msg='You sent $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to '+who;
   } else if(payMode==='pool'){
-    showToast('Pool invite sent to '+who);
+    msg='Pool invite sent to '+who;
   } else {
-    showToast('Requested $'+n.toFixed(2)+' from '+who);
+    msg='You requested $'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' from '+who;
   }
+  successtext.textContent=msg;
+  successwrap.classList.add('open');
 });
+
+function closeSuccess(){ successwrap.classList.remove('open') }
+successclose.addEventListener('click',closeSuccess);
+successdone.addEventListener('click',closeSuccess);
+successreceipt.addEventListener('click',function(){ showToast('Receipt saved') });
 
 var toastTimer=null;
 function showToast(msg){
