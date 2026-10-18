@@ -1,0 +1,14 @@
+{
+  "name": "moneyscripts-tiktok-conector",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Lee los comentarios y regalos de tu TikTok LIVE y se los pasa al escenario de baile por un WebSocket local.",
+  "scripts": {
+    "start": "node conector.mjs"
+  },
+  "dependencies": {
+    "tiktok-live-connector": "2.5.0",
+    "ws": "8.22.0"
+  }
+}
