@@ -201,8 +201,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-vd2f4a375.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vd2f4a375.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-v24fd1ccc.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v24fd1ccc.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
@@ -220,13 +220,14 @@
       }, 2000)
     </script>
     <script>
-      // iOS scrolls clipped containers sideways to reveal a focused input (e.g. while a page slides in); undo that
+      // iOS (and focus) scroll clipped containers to reveal a focused input; containers that aren't meant to scroll are put back
       document.addEventListener('scroll', function (e) {
         var t = e.target
         if (t === document || t === document.documentElement) { if (window.scrollX) window.scrollTo(0, window.scrollY); return }
-        if (t.nodeType === 1 && t.scrollLeft) {
-          var o = getComputedStyle(t).overflowX
-          if (o === 'hidden' || o === 'clip' || o === 'visible') t.scrollLeft = 0
+        if (t.nodeType === 1 && (t.scrollLeft || t.scrollTop)) {
+          var cs = getComputedStyle(t), o = cs.overflowX, y = cs.overflowY
+          if (t.scrollLeft && (o === 'hidden' || o === 'clip' || o === 'visible')) t.scrollLeft = 0
+          if (t.scrollTop && (y === 'hidden' || y === 'clip' || y === 'visible')) t.scrollTop = 0
         }
       }, true)
     </script>
