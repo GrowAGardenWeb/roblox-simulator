@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Conector de TikTok LIVE</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#1c1f26;--muted:#5c5f6e;--line:#e3e4e8;--acc:#335fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14151a;--card:#1d1f26;--text:#eceef3;--muted:#a3a7b3;--line:#2c2f38;--acc:#6d8bff}}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:720px;margin:0 auto;padding:28px 16px 48px}
+h1{font-size:24px;margin:0 0 6px}p.lead{color:var(--muted);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:0 0 14px}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:700;padding:11px 18px;border-radius:10px}
+ol{padding-left:20px;margin:8px 0 0}li{margin:6px 0}
+code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px;word-break:break-all}
+small{color:var(--muted)}a{color:var(--acc)}
+</style>
+</head>
+<body><main>
+<h1>Conector de TikTok LIVE</h1>
+<p class="lead">Lee los comentarios y regalos de tu live y se los pasa al escenario de baile (<a href="/live/">moneyscripts.shop/live</a>).</p>
+<div class="card">
+<a class="btn" href="conector.zip" download>Descargar conector (.zip)</a>
+<p><small>Incluye <code>conector.mjs</code>, <code>package.json</code>, <code>iniciar.bat</code> (Windows) e <code>iniciar.sh</code> (Mac/Linux).</small></p>
+</div>
+<div class="card">
+<b>Cómo usarlo</b>
+<ol>
+<li>Instala <b>Node.js</b> (versión LTS) desde <a href="https://nodejs.org" target="_blank" rel="noreferrer">nodejs.org</a>.</li>
+<li>Descomprime el zip en una carpeta.</li>
+<li>Empieza tu live en TikTok.</li>
+<li>Abre <code>iniciar.bat</code> (Windows) o <code>iniciar.sh</code> (Mac) y escribe tu usuario de TikTok. La primera vez instala lo necesario.</li>
+<li>En la misma PC abre <a href="/live/">moneyscripts.shop/live</a> (en OBS o TikTok LIVE Studio como fuente de navegador), entra a ⚙ › <b>TikTok</b> y toca <b>Conectar a TikTok</b>.</li>
+</ol>
+</div>
+<div class="card">
+<b>Bueno saber</b>
+<ol>
+<li>Si ya usas <b>TikFinity</b>, no necesitas este conector: deja TikFinity abierto y en el escenario conecta a <code>ws://localhost:21213</code>.</li>
+<li>Si no conecta aunque estés en vivo, crea una API key gratis en <a href="https://www.eulerstream.com" target="_blank" rel="noreferrer">eulerstream.com</a> y ábrelo así: <code>iniciar.bat TU_USUARIO TU_API_KEY</code>.</li>
+<li>Es un conector no oficial: TikTok no da una forma oficial de leer los regalos del live, y puede dejar de funcionar si TikTok cambia algo.</li>
+</ol>
+</div>
+</main></body>
+</html>
