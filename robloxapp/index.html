@@ -201,8 +201,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-v3ab3f2c3.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v3ab3f2c3.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-vf7c1eea4.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vf7c1eea4.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
@@ -218,6 +218,17 @@
         s.style.opacity = '0'
         setTimeout(function () { s.remove() }, 260)
       }, 2000)
+    </script>
+    <script>
+      // iOS scrolls clipped containers sideways to reveal a focused input (e.g. while a page slides in); undo that
+      document.addEventListener('scroll', function (e) {
+        var t = e.target
+        if (t === document || t === document.documentElement) { if (window.scrollX) window.scrollTo(0, window.scrollY); return }
+        if (t.nodeType === 1 && t.scrollLeft) {
+          var o = getComputedStyle(t).overflowX
+          if (o === 'hidden' || o === 'clip' || o === 'visible') t.scrollLeft = 0
+        }
+      }, true)
     </script>
     <div id="root"></div>
   </body>
