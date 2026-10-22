@@ -21,20 +21,20 @@ button,input{font-family:inherit}
 .ic-chat{-webkit-mask-image:url(assets/icons/speech-bubble-round.svg);mask-image:url(assets/icons/speech-bubble-round.svg)}
 .ic-search{-webkit-mask-image:url(assets/icons/magnifying-glass.svg);mask-image:url(assets/icons/magnifying-glass.svg)}
 .ic-bell{-webkit-mask-image:url(assets/icons/bell.svg);mask-image:url(assets/icons/bell.svg)}
-.ic-premium{-webkit-mask-image:url(assets/icons/premium-filled.svg);mask-image:url(assets/icons/premium-filled.svg)}
+.ic-premium{-webkit-mask-image:url(assets/icons/roblox-plus-filled.svg);mask-image:url(assets/icons/roblox-plus-filled.svg)}
 .ic-robux{-webkit-mask-image:url(assets/icons/robux-filled.svg);mask-image:url(assets/icons/robux-filled.svg)}
 .ic-personplus{-webkit-mask-image:url(assets/icons/person-plus-filled.svg);mask-image:url(assets/icons/person-plus-filled.svg)}
 .ic-bookmark{-webkit-mask-image:url(assets/icons/bookmark.svg);mask-image:url(assets/icons/bookmark.svg)}
-.ic-clock{-webkit-mask-image:url(assets/icons/clock.svg);mask-image:url(assets/icons/clock.svg)}
+.ic-clock{-webkit-mask-image:url(assets/icons/clock-spin-reverse.svg);mask-image:url(assets/icons/clock-spin-reverse.svg)}
 .ic-twopeople{-webkit-mask-image:url(assets/icons/two-people.svg);mask-image:url(assets/icons/two-people.svg)}
 .ic-threepeople{-webkit-mask-image:url(assets/icons/three-people.svg);mask-image:url(assets/icons/three-people.svg)}
-.ic-basket{-webkit-mask-image:url(assets/icons/shopping-basket.svg);mask-image:url(assets/icons/shopping-basket.svg)}
-.ic-switch{-webkit-mask-image:url(assets/icons/two-arrows-switch-right.svg);mask-image:url(assets/icons/two-arrows-switch-right.svg)}
+.ic-backpack{-webkit-mask-image:url(assets/icons/backpack.svg);mask-image:url(assets/icons/backpack.svg)}
+.ic-switch{-webkit-mask-image:url(assets/icons/hand-two-arrows-horizontal.svg);mask-image:url(assets/icons/hand-two-arrows-horizontal.svg)}
 .ic-envelope{-webkit-mask-image:url(assets/icons/envelope.svg);mask-image:url(assets/icons/envelope.svg)}
 .ic-gear{-webkit-mask-image:url(assets/icons/gear.svg);mask-image:url(assets/icons/gear.svg)}
 .ic-shield{-webkit-mask-image:url(assets/icons/shield-check.svg);mask-image:url(assets/icons/shield-check.svg)}
 .ic-grad{-webkit-mask-image:url(assets/icons/person-graduate.svg);mask-image:url(assets/icons/person-graduate.svg)}
-.ic-hammer{-webkit-mask-image:url(assets/icons/hammer-code.svg);mask-image:url(assets/icons/hammer-code.svg)}
+.ic-studio{-webkit-mask-image:url(assets/icons/studio-filled.svg);mask-image:url(assets/icons/studio-filled.svg)}
 
 .app{height:100%;display:flex;flex-direction:column}
 
@@ -110,14 +110,14 @@ button,input{font-family:inherit}
 .ham-name .ic-premium{width:14px;height:14px;background:#1a1a1e}
 .ham-handle{font-size:12.5px;color:#8a8d92;margin-top:1px}
 .ham-edit{margin-left:auto;background:none;border:1px solid #dcdee1;border-radius:7px;padding:5px 9px;font-size:11.5px;font-weight:700;color:#45484d;cursor:pointer}
-.robux-pill{margin-top:16px;display:flex;align-items:center;gap:8px;background:#f2f3f5;border-radius:10px;padding:10px 12px}
+.robux-card{margin-top:16px;border:1px solid #eceef0;border-radius:12px;overflow:hidden}
+.robux-pill{display:flex;align-items:center;gap:8px;padding:12px 14px}
 .robux-pill .ic{width:17px;height:17px;background:#1a1a1e}
 .robux-amt{font-weight:800;font-size:15px;color:#1a1a1e}
-.buy-robux{margin-left:auto;background:#1a1a1e;color:#fff;border:0;border-radius:7px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer}
-.share-plus{margin-top:10px;display:flex;align-items:center;gap:9px;padding:9px 4px;cursor:pointer}
+.buy-robux{margin-left:auto;background:#e4e5ea;color:#1a1a1e;border:0;border-radius:7px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer}
+.share-plus{display:flex;align-items:center;gap:9px;padding:11px 14px;border-top:1px solid #eceef0;cursor:pointer}
 .share-plus .ic{width:16px;height:16px;background:#1a1a1e}
 .share-plus span{font-size:13px;font-weight:600;color:#1a1a1e}
-.new-chip{margin-left:auto;background:#19c37d;color:#fff;font-size:10px;font-weight:800;border-radius:5px;padding:2px 6px}
 
 .ham-list{flex:1;overflow-y:auto;padding:8px 10px}
 .ham-item{display:flex;align-items:center;gap:13px;padding:11px 10px;border-radius:9px;cursor:pointer;color:#1a1a1e;font-size:14px;font-weight:600}
@@ -128,12 +128,11 @@ button,input{font-family:inherit}
 .ham-sep{height:1px;background:#eceef0;margin:8px 6px}
 
 .ham-foot{padding:14px 20px 18px;border-top:1px solid #eceef0}
-.ham-foot button{width:100%;border-radius:999px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer;margin-top:8px}
-.btn-outline{background:#fff;border:1px solid #dcdee1;color:#1a1a1e}
-.btn-outline:first-of-type{margin-top:0}
-.btn-dark{background:#1a1a1e;border:0;color:#fff}
+.ham-foot button{width:100%;border-radius:12px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer;margin-top:8px}
+.btn-gray{background:#e4e5ea;border:0;color:#1a1a1e}
+.btn-gray:first-of-type{margin-top:0}
 .ham-legal{display:flex;gap:16px;justify-content:center;margin-top:14px}
-.ham-legal a{font-size:11.5px;color:#8a8d92}
+.ham-legal a{font-size:11.5px;color:#8a8d92;text-decoration:none}
 
 /* EDIT SHEET */
 .sheetdim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;display:none;align-items:flex-end;justify-content:center}
@@ -211,24 +210,25 @@ button,input{font-family:inherit}
       </div>
       <button class="ham-edit" id="hamEditBtn">Edit</button>
     </div>
-    <div class="robux-pill">
-      <span class="ic ic-robux"></span>
-      <span class="robux-amt" id="robuxAmt">0</span>
-      <button class="buy-robux">Buy Robux</button>
-    </div>
-    <div class="share-plus">
-      <span class="ic ic-basket"></span>
-      <span>Share Plus to get 100 Robux</span>
-      <span class="new-chip">New</span>
+    <div class="robux-card">
+      <div class="robux-pill">
+        <span class="ic ic-robux"></span>
+        <span class="robux-amt" id="robuxAmt">0</span>
+        <button class="buy-robux">Buy Robux</button>
+      </div>
+      <div class="share-plus">
+        <span class="ic ic-premium"></span>
+        <span>Share Plus to get 100 Robux</span>
+      </div>
     </div>
   </div>
 
   <div class="ham-list">
     <div class="ham-item"><span class="ic ic-bookmark"></span>Favorites</div>
     <div class="ham-item"><span class="ic ic-clock"></span>Continue Playing</div>
-    <div class="ham-item"><span class="ic ic-twopeople"></span>Friends<span class="ham-item-badge">99+</span></div>
+    <div class="ham-item"><span class="ic ic-twopeople"></span>Friends<span class="ham-item-badge blue">99+</span></div>
     <div class="ham-item"><span class="ic ic-threepeople"></span>Communities</div>
-    <div class="ham-item"><span class="ic ic-basket"></span>Inventory</div>
+    <div class="ham-item"><span class="ic ic-backpack"></span>Inventory</div>
     <div class="ham-item"><span class="ic ic-switch"></span>Trades</div>
     <div class="ham-item"><span class="ic ic-envelope"></span>Messages<span class="ham-item-badge blue">13</span></div>
     <div class="ham-item"><span class="ic ic-premium"></span>Roblox Plus</div>
@@ -236,13 +236,13 @@ button,input{font-family:inherit}
     <div class="ham-item"><span class="ic ic-shield"></span>Help &amp; Safety</div>
     <div class="ham-sep"></div>
     <div class="ham-item"><span class="ic ic-grad"></span>Learn</div>
-    <div class="ham-item"><span class="ic ic-hammer"></span>Create</div>
+    <div class="ham-item"><span class="ic ic-studio"></span>Create</div>
   </div>
 
   <div class="ham-foot">
-    <button class="btn-outline">Switch Accounts</button>
-    <button class="btn-outline">Quick Sign-in</button>
-    <button class="btn-dark">Log Out</button>
+    <button class="btn-gray">Switch Accounts</button>
+    <button class="btn-gray">Quick Sign-in</button>
+    <button class="btn-gray">Log Out</button>
     <div class="ham-legal"><a href="#">Terms</a><a href="#">Privacy</a></div>
   </div>
 </div>
