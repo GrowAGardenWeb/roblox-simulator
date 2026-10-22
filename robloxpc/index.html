@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roblox</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<script>window.MS_REQUIRED_PRODUCT = 'robloxpc';</script>
+<script src="/access-gate.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#fff;font-family:"Segoe UI",-apple-system,Helvetica,Arial,sans-serif}
+button,input{font-family:inherit}
+.hidden{display:none!important}
+
+.ic{display:inline-block;flex:none;-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:contain;mask-repeat:no-repeat;mask-position:center;mask-size:contain}
+.ic-house{-webkit-mask-image:url(assets/icons/house-filled.svg);mask-image:url(assets/icons/house-filled.svg)}
+.ic-moments{-webkit-mask-image:url(assets/icons/moments.svg);mask-image:url(assets/icons/moments.svg)}
+.ic-chat{-webkit-mask-image:url(assets/icons/speech-bubble-round.svg);mask-image:url(assets/icons/speech-bubble-round.svg)}
+.ic-search{-webkit-mask-image:url(assets/icons/magnifying-glass.svg);mask-image:url(assets/icons/magnifying-glass.svg)}
+.ic-bell{-webkit-mask-image:url(assets/icons/bell.svg);mask-image:url(assets/icons/bell.svg)}
+.ic-premium{-webkit-mask-image:url(assets/icons/premium-filled.svg);mask-image:url(assets/icons/premium-filled.svg)}
+.ic-robux{-webkit-mask-image:url(assets/icons/robux-filled.svg);mask-image:url(assets/icons/robux-filled.svg)}
+.ic-personplus{-webkit-mask-image:url(assets/icons/person-plus-filled.svg);mask-image:url(assets/icons/person-plus-filled.svg)}
+.ic-bookmark{-webkit-mask-image:url(assets/icons/bookmark.svg);mask-image:url(assets/icons/bookmark.svg)}
+.ic-clock{-webkit-mask-image:url(assets/icons/clock.svg);mask-image:url(assets/icons/clock.svg)}
+.ic-twopeople{-webkit-mask-image:url(assets/icons/two-people.svg);mask-image:url(assets/icons/two-people.svg)}
+.ic-threepeople{-webkit-mask-image:url(assets/icons/three-people.svg);mask-image:url(assets/icons/three-people.svg)}
+.ic-basket{-webkit-mask-image:url(assets/icons/shopping-basket.svg);mask-image:url(assets/icons/shopping-basket.svg)}
+.ic-switch{-webkit-mask-image:url(assets/icons/two-arrows-switch-right.svg);mask-image:url(assets/icons/two-arrows-switch-right.svg)}
+.ic-envelope{-webkit-mask-image:url(assets/icons/envelope.svg);mask-image:url(assets/icons/envelope.svg)}
+.ic-gear{-webkit-mask-image:url(assets/icons/gear.svg);mask-image:url(assets/icons/gear.svg)}
+.ic-shield{-webkit-mask-image:url(assets/icons/shield-check.svg);mask-image:url(assets/icons/shield-check.svg)}
+.ic-grad{-webkit-mask-image:url(assets/icons/person-graduate.svg);mask-image:url(assets/icons/person-graduate.svg)}
+.ic-hammer{-webkit-mask-image:url(assets/icons/hammer-code.svg);mask-image:url(assets/icons/hammer-code.svg)}
+
+.app{height:100%;display:flex;flex-direction:column}
+
+/* TOP BAR */
+.topbar{height:64px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid #eceef0;background:#fff}
+.hamburger{width:34px;height:34px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:8px;flex:none;position:relative}
+.hamburger:hover{background:#f2f3f5}
+.hamburger .bars{width:20px;height:14px;display:flex;flex-direction:column;justify-content:space-between}
+.hamburger .bars span{display:block;height:2px;background:#1a1a1e;border-radius:1px}
+.hamburger .dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:#3b5bfa}
+.logo{height:21px;flex:none}
+.searchwrap{flex:1;max-width:520px;margin:0 auto}
+.searchbar{width:100%;background:#f2f3f5;border-radius:8px;padding:9px 14px;display:flex;align-items:center;gap:10px;color:#8a8d92;font-size:14px;cursor:text}
+.searchbar .ic{width:15px;height:15px;background:#8a8d92}
+.topright{display:flex;align-items:center;gap:14px;margin-left:auto}
+.acct{display:flex;align-items:center;gap:9px;cursor:pointer;border-radius:8px;padding:4px 6px}
+.acct:hover{background:#f2f3f5}
+.acct-av{width:30px;height:30px;border-radius:50%;background:#cfd3d8;flex:none;object-fit:cover;display:block}
+.acct-name{font-size:14.5px;font-weight:700;color:#1a1a1e}
+.icon-btn{width:30px;height:30px;border:0;background:none;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;flex:none}
+.icon-btn:hover{background:#f2f3f5}
+.icon-btn .ic{width:19px;height:19px;background:#1a1a1e}
+.badge{position:absolute;top:-2px;right:-4px;background:#3b5bfa;color:#fff;font-size:10px;font-weight:700;border-radius:999px;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:2px solid #fff}
+
+/* LAYOUT */
+.layout{flex:1;display:flex;min-height:0}
+.sidebar{width:84px;flex:none;background:#fff;border-right:1px solid #eceef0;display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:2px}
+.navitem{width:64px;padding:9px 0;border:0;background:none;cursor:pointer;color:#6b6e73;display:flex;flex-direction:column;align-items:center;gap:5px;border-radius:10px;font-size:11px;font-weight:600}
+.navitem:hover{background:#f2f3f5}
+.navitem .ic{width:21px;height:21px;background:#6b6e73}
+.navitem.active{color:#1a1a1e;font-weight:700}
+.navitem.active .ic{background:#1a1a1e}
+.navitem.me{margin-top:8px}
+.me-av{width:26px;height:26px;border-radius:50%;background:#cfd3d8;object-fit:cover}
+
+.main{flex:1;overflow-y:auto;padding:18px 28px 60px}
+.tabs{display:flex;gap:26px;border-bottom:1px solid #eceef0;margin-bottom:18px}
+.tab{padding:0 0 12px;font-size:15px;font-weight:700;color:#8a8d92;cursor:pointer;border-bottom:2px solid transparent;position:relative;top:1px}
+.tab.active{color:#1a1a1e;border-bottom-color:#1a1a1e}
+
+.friends-row{display:flex;gap:20px;overflow-x:auto;padding-bottom:6px;margin-bottom:26px}
+.friend{flex:none;width:74px;text-align:center;cursor:pointer}
+.friend-av{width:68px;height:68px;border-radius:50%;background:#e8e9eb;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:19px;position:relative;margin:0 auto}
+.friend-av.dot::after{content:"";position:absolute;right:2px;bottom:2px;width:13px;height:13px;border-radius:50%;background:#19c37d;border:2px solid #fff}
+.friend-name{font-size:11.5px;color:#1a1a1e;margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.friend-sub{font-size:10.5px;color:#8a8d92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.addfriend-av{width:68px;height:68px;border-radius:50%;background:#eef0f2;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative}
+.addfriend-av .ic{width:24px;height:24px;background:#45484d}
+.addfriend-badge{position:absolute;top:-3px;right:-3px;background:#3b5bfa;color:#fff;font-size:10px;font-weight:700;border-radius:999px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+
+.section-title{font-size:19px;font-weight:700;color:#1a1a1e;margin-bottom:14px}
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+.game-card{cursor:pointer}
+.game-thumb{width:100%;aspect-ratio:16/9;border-radius:10px;background:#e8e9eb center/cover no-repeat;overflow:hidden}
+.game-title{font-size:13.5px;font-weight:700;color:#1a1a1e;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.game-rating{font-size:12px;color:#6b6e73;margin-top:2px;display:flex;align-items:center;gap:5px}
+.game-rating svg{width:12px;height:12px;color:#6b6e73;flex:none}
+
+.grid-loading{grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:50px 0}
+.spin{width:26px;height:26px;border:2.6px solid #d8dadd;border-right-color:#3b5bfa;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:1.8s}}
+
+/* HAMBURGER MENU */
+.dim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .18s;z-index:40}
+.dim.open{opacity:1;pointer-events:auto}
+.hammenu{position:fixed;top:0;left:0;bottom:0;width:320px;background:#fff;z-index:41;transform:translateX(-100%);transition:transform .22s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:16px 0 40px -20px rgba(0,0,0,.3)}
+.hammenu.open{transform:translateX(0)}
+.ham-head{padding:22px 20px 16px;border-bottom:1px solid #eceef0}
+.ham-acct{display:flex;align-items:center;gap:12px}
+.ham-av{width:52px;height:52px;border-radius:50%;background:#cfd3d8;object-fit:cover;flex:none}
+.ham-name{font-size:16px;font-weight:700;color:#1a1a1e;display:flex;align-items:center;gap:6px}
+.ham-name .ic-premium{width:14px;height:14px;background:#1a1a1e}
+.ham-handle{font-size:12.5px;color:#8a8d92;margin-top:1px}
+.ham-edit{margin-left:auto;background:none;border:1px solid #dcdee1;border-radius:7px;padding:5px 9px;font-size:11.5px;font-weight:700;color:#45484d;cursor:pointer}
+.robux-pill{margin-top:16px;display:flex;align-items:center;gap:8px;background:#f2f3f5;border-radius:10px;padding:10px 12px}
+.robux-pill .ic{width:17px;height:17px;background:#1a1a1e}
+.robux-amt{font-weight:800;font-size:15px;color:#1a1a1e}
+.buy-robux{margin-left:auto;background:#1a1a1e;color:#fff;border:0;border-radius:7px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer}
+.share-plus{margin-top:10px;display:flex;align-items:center;gap:9px;padding:9px 4px;cursor:pointer}
+.share-plus .ic{width:16px;height:16px;background:#1a1a1e}
+.share-plus span{font-size:13px;font-weight:600;color:#1a1a1e}
+.new-chip{margin-left:auto;background:#19c37d;color:#fff;font-size:10px;font-weight:800;border-radius:5px;padding:2px 6px}
+
+.ham-list{flex:1;overflow-y:auto;padding:8px 10px}
+.ham-item{display:flex;align-items:center;gap:13px;padding:11px 10px;border-radius:9px;cursor:pointer;color:#1a1a1e;font-size:14px;font-weight:600}
+.ham-item:hover{background:#f2f3f5}
+.ham-item .ic{width:19px;height:19px;background:#45484d}
+.ham-item-badge{margin-left:auto;background:#eceef0;color:#45484d;font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px}
+.ham-item-badge.blue{background:#3b5bfa;color:#fff}
+.ham-sep{height:1px;background:#eceef0;margin:8px 6px}
+
+.ham-foot{padding:14px 20px 18px;border-top:1px solid #eceef0}
+.ham-foot button{width:100%;border-radius:999px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer;margin-top:8px}
+.btn-outline{background:#fff;border:1px solid #dcdee1;color:#1a1a1e}
+.btn-outline:first-of-type{margin-top:0}
+.btn-dark{background:#1a1a1e;border:0;color:#fff}
+.ham-legal{display:flex;gap:16px;justify-content:center;margin-top:14px}
+.ham-legal a{font-size:11.5px;color:#8a8d92}
+
+/* EDIT SHEET */
+.sheetdim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;display:none;align-items:flex-end;justify-content:center}
+.sheetdim.open{display:flex}
+.sheet{width:100%;max-width:420px;background:#fff;border-radius:18px 18px 0 0;padding:20px 22px 26px;font-family:inherit}
+.sheet h3{font-size:16px;font-weight:800;color:#1a1a1e;margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:700;color:#6b6e73;margin-bottom:6px}
+.field input{width:100%;border:1px solid #dcdee1;border-radius:9px;padding:10px 12px;font-size:14.5px;color:#1a1a1e}
+.field-check{display:flex;align-items:center;gap:9px;margin-top:4px}
+.field-check input{width:17px;height:17px}
+.field-check label{font-size:13.5px;font-weight:600;color:#1a1a1e}
+.sheet-save{width:100%;background:#1a1a1e;color:#fff;border:0;border-radius:999px;padding:13px;font-size:14.5px;font-weight:700;cursor:pointer;margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="topbar">
+    <button class="hamburger" id="hamBtn" aria-label="Menu">
+      <span class="bars"><span></span><span></span><span></span></span>
+      <span class="dot"></span>
+    </button>
+    <img class="logo" src="assets/logo.png" alt="Roblox">
+    <div class="searchwrap">
+      <div class="searchbar"><span class="ic ic-search"></span><span>Search</span></div>
+    </div>
+    <div class="topright">
+      <div class="acct" id="acctBtn">
+        <img class="acct-av" id="acctAvatar" src="" alt="">
+        <span class="acct-name" id="acctNameTop">Player</span>
+      </div>
+      <button class="icon-btn" id="premiumTopBtn" aria-label="Premium"><span class="ic ic-premium"></span></button>
+      <button class="icon-btn" aria-label="Robux"><span class="ic ic-robux"></span></button>
+      <button class="icon-btn" aria-label="Notifications">
+        <span class="ic ic-bell"></span>
+        <span class="badge">3</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <button class="navitem active"><span class="ic ic-house"></span>Home</button>
+      <button class="navitem"><span class="ic ic-moments"></span>Moments</button>
+      <button class="navitem"><span class="ic ic-chat"></span>Chat</button>
+      <button class="navitem me"><img class="me-av" src="" id="sideAvatar" alt="">Me</button>
+    </div>
+
+    <div class="main">
+      <div class="tabs">
+        <div class="tab active">For you</div>
+        <div class="tab">Charts</div>
+      </div>
+
+      <div class="friends-row" id="friendsRow"></div>
+
+      <div class="section-title">Recommended For You</div>
+      <div class="game-grid" id="gameGrid">
+        <div class="grid-loading"><div class="spin"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HAMBURGER MENU -->
+<div class="dim" id="dim"></div>
+<div class="hammenu" id="hammenu">
+  <div class="ham-head">
+    <div class="ham-acct">
+      <img class="ham-av" id="hamAvatar" src="" alt="">
+      <div>
+        <div class="ham-name" id="hamName">Player<span class="ic ic-premium" id="hamPremiumBadge"></span></div>
+        <div class="ham-handle" id="hamHandle">@player</div>
+      </div>
+      <button class="ham-edit" id="hamEditBtn">Edit</button>
+    </div>
+    <div class="robux-pill">
+      <span class="ic ic-robux"></span>
+      <span class="robux-amt" id="robuxAmt">0</span>
+      <button class="buy-robux">Buy Robux</button>
+    </div>
+    <div class="share-plus">
+      <span class="ic ic-basket"></span>
+      <span>Share Plus to get 100 Robux</span>
+      <span class="new-chip">New</span>
+    </div>
+  </div>
+
+  <div class="ham-list">
+    <div class="ham-item"><span class="ic ic-bookmark"></span>Favorites</div>
+    <div class="ham-item"><span class="ic ic-clock"></span>Continue Playing</div>
+    <div class="ham-item"><span class="ic ic-twopeople"></span>Friends<span class="ham-item-badge">99+</span></div>
+    <div class="ham-item"><span class="ic ic-threepeople"></span>Communities</div>
+    <div class="ham-item"><span class="ic ic-basket"></span>Inventory</div>
+    <div class="ham-item"><span class="ic ic-switch"></span>Trades</div>
+    <div class="ham-item"><span class="ic ic-envelope"></span>Messages<span class="ham-item-badge blue">13</span></div>
+    <div class="ham-item"><span class="ic ic-premium"></span>Roblox Plus</div>
+    <div class="ham-item"><span class="ic ic-gear"></span>Settings</div>
+    <div class="ham-item"><span class="ic ic-shield"></span>Help &amp; Safety</div>
+    <div class="ham-sep"></div>
+    <div class="ham-item"><span class="ic ic-grad"></span>Learn</div>
+    <div class="ham-item"><span class="ic ic-hammer"></span>Create</div>
+  </div>
+
+  <div class="ham-foot">
+    <button class="btn-outline">Switch Accounts</button>
+    <button class="btn-outline">Quick Sign-in</button>
+    <button class="btn-dark">Log Out</button>
+    <div class="ham-legal"><a href="#">Terms</a><a href="#">Privacy</a></div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE SHEET -->
+<div class="sheetdim" id="sheetDim">
+  <div class="sheet">
+    <h3>Edit profile</h3>
+    <div class="field"><label>Display name</label><input id="editName" maxlength="24" autocomplete="off"></div>
+    <div class="field"><label>Robux balance</label><input id="editRobux" inputmode="numeric" autocomplete="off"></div>
+    <div class="field-check"><input type="checkbox" id="editPremium"><label for="editPremium">Show Premium badge</label></div>
+    <button class="sheet-save" id="sheetSaveBtn">Save</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var AVATAR_COLORS = ['#ff5fa2','#3ddc97','#5b8cff','#ffb23f','#9a7bff','#ff7a5f','#2fd1c5','#5fd0ff'];
+var FAKE_FRIENDS = [
+  { name: 'xX_Builder_Xx', sub: 'Playing Brookhaven' },
+  { name: 'ShadowFox21', sub: '' },
+  { name: 'PixelQueen', sub: 'Trading' },
+  { name: 'TurboBlox', sub: '' },
+  { name: 'GalaxyGamer7', sub: 'Playing Blox Fruits' },
+  { name: 'NoobMaster99', sub: '' },
+  { name: 'CrimsonWolfie', sub: '' },
+  { name: 'LunaStarz', sub: 'Playing Adopt Me!' },
+];
+
+// ---- profile state (name/robux/premium), editable + persisted ----
+var profile = { name: 'Player1', robux: 658, premium: true };
+try {
+  var saved = JSON.parse(localStorage.getItem('robloxpc_profile') || 'null');
+  if (saved) profile = saved;
+} catch (e) {}
+
+function initial(name) {
+  var parts = name.replace(/[^a-zA-Z0-9]/g, ' ').trim().split(/\s+/);
+  return (parts[0] ? parts[0].slice(0, 2) : 'P').toUpperCase();
+}
+
+function renderProfile() {
+  var color = AVATAR_COLORS[profile.name.length % AVATAR_COLORS.length];
+  var avatarSvg = 'data:image/svg+xml,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" fill="' + color + '"/>' +
+    '<text x="40" y="52" font-family="Segoe UI, Arial" font-size="30" font-weight="700" fill="#fff" text-anchor="middle">' + initial(profile.name) + '</text></svg>'
+  );
+  document.getElementById('acctAvatar').src = avatarSvg;
+  document.getElementById('sideAvatar').src = avatarSvg;
+  document.getElementById('hamAvatar').src = avatarSvg;
+  document.getElementById('acctNameTop').textContent = profile.name;
+  document.getElementById('hamName').firstChild.textContent = profile.name;
+  document.getElementById('hamPremiumBadge').style.display = profile.premium ? '' : 'none';
+  document.getElementById('premiumTopBtn').style.display = profile.premium ? '' : 'none';
+  document.getElementById('hamHandle').textContent = '@' + profile.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  document.getElementById('robuxAmt').textContent = profile.robux.toLocaleString('en-US');
+}
+renderProfile();
+
+// ---- friends row (fake, generic — never the buyer's own real friends) ----
+var friendsRow = document.getElementById('friendsRow');
+friendsRow.innerHTML = '<div class="friend"><div class="addfriend-av"><span class="ic ic-personplus"></span><span class="addfriend-badge">' + FAKE_FRIENDS.length + '</span></div><div class="friend-name">Add Friends</div></div>' +
+  FAKE_FRIENDS.map(function (f) {
+    var color = AVATAR_COLORS[f.name.length % AVATAR_COLORS.length];
+    return '<div class="friend"><div class="friend-av dot" style="background:' + color + '">' + initial(f.name) + '</div>' +
+      '<div class="friend-name">' + f.name + '</div>' +
+      (f.sub ? '<div class="friend-sub">' + f.sub + '</div>' : '') + '</div>';
+  }).join('');
+
+// ---- hamburger menu + edit sheet wiring ----
+var hamBtn = document.getElementById('hamBtn'), hammenu = document.getElementById('hammenu'), dim = document.getElementById('dim');
+function openHam(){ hammenu.classList.add('open'); dim.classList.add('open'); }
+function closeHam(){ hammenu.classList.remove('open'); dim.classList.remove('open'); }
+hamBtn.addEventListener('click', openHam);
+document.getElementById('acctBtn').addEventListener('click', openHam);
+dim.addEventListener('click', closeHam);
+
+var sheetDim = document.getElementById('sheetDim');
+function openSheet(){
+  document.getElementById('editName').value = profile.name;
+  document.getElementById('editRobux').value = profile.robux;
+  document.getElementById('editPremium').checked = !!profile.premium;
+  sheetDim.classList.add('open');
+}
+function closeSheet(){ sheetDim.classList.remove('open') }
+document.getElementById('hamEditBtn').addEventListener('click', openSheet);
+sheetDim.addEventListener('click', function(e){ if (e.target === sheetDim) closeSheet(); });
+document.getElementById('sheetSaveBtn').addEventListener('click', function(){
+  var name = document.getElementById('editName').value.trim().slice(0, 24) || 'Player1';
+  var robux = parseInt(document.getElementById('editRobux').value, 10);
+  profile = { name: name, robux: isNaN(robux) || robux < 0 ? 0 : robux, premium: document.getElementById('editPremium').checked };
+  try { localStorage.setItem('robloxpc_profile', JSON.stringify(profile)); } catch (e) {}
+  renderProfile();
+  closeSheet();
+});
+
+// ---- live game grid: fetch real, current Roblox games via Roblox's own
+// public (no-auth) explore API, same domains the mobile build already calls
+// client-side. Falls back to a few static cards if the fetch ever fails. ----
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+var FALLBACK_GAMES = [
+  { name: '[DIAMOND] Pet Simulator 99!', rating: 94, img: 'assets/fallback-1.jpg' },
+  { name: 'Brookhaven 🏡RP', rating: 85, img: 'assets/fallback-2.jpg' },
+  { name: 'BedWars', rating: 82, img: 'assets/fallback-3.jpg' },
+  { name: 'Catalog Avatar Creator', rating: 93, img: 'assets/fallback-4.jpg' },
+];
+
+function renderGames(games) {
+  var grid = document.getElementById('gameGrid');
+  grid.innerHTML = games.map(function (g) {
+    var bg = g.img ? 'background-image:url(\'' + g.img + '\')' : '';
+    return '<div class="game-card">' +
+      '<div class="game-thumb" style="' + bg + '"></div>' +
+      '<div class="game-title">' + escapeHtml(g.name) + '</div>' +
+      (g.rating != null ? '<div class="game-rating"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21h3V10H2v11zm19-10a2 2 0 00-2-2h-6.3l.9-4.4.03-.3a1.5 1.5 0 00-.44-1.06L12.17 2 6.6 7.59A2 2 0 006 9v10a2 2 0 002 2h9a2 2 0 001.84-1.21l3-7A2 2 0 0022 12v-1z"/></svg>' + g.rating + '% Rating</div>' : '') +
+      '</div>';
+  }).join('');
+}
+
+async function loadLiveGames() {
+  var sessionId = 'ms-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  var sortsRes = await fetch('https://apis.roblox.com/explore-api/v1/get-sorts?sessionId=' + sessionId + '&country=us');
+  if (!sortsRes.ok) throw new Error('sorts request failed');
+  var sortsData = await sortsRes.json();
+  var sorts = (sortsData && sortsData.sorts) || [];
+  var target = sorts.find(function (s) {
+    var label = ((s.sortDisplayName || '') + ' ' + (s.sortId || '')).toLowerCase();
+    return label.indexOf('popular') !== -1 || label.indexOf('recommend') !== -1;
+  }) || sorts[0];
+  if (!target) throw new Error('no sort available');
+
+  var contentRes = await fetch('https://apis.roblox.com/explore-api/v1/get-sort-content?sessionId=' + sessionId + '&sortId=' + encodeURIComponent(target.sortId));
+  if (!contentRes.ok) throw new Error('sort content request failed');
+  var contentData = await contentRes.json();
+  var tiles = ((contentData && contentData.games) || []).filter(function (t) { return t.universeId; }).slice(0, 12);
+  if (!tiles.length) throw new Error('no games in sort');
+
+  var ids = tiles.map(function (t) { return t.universeId; });
+  var thumbMap = {}, voteMap = {};
+
+  try {
+    var thumbRes = await fetch('https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=' + ids.join(',') + '&countPerUniverse=1&size=768x432&format=Png&isCircular=false');
+    if (thumbRes.ok) {
+      var thumbData = await thumbRes.json();
+      (thumbData.data || []).forEach(function (d) {
+        if (d.thumbnails && d.thumbnails[0]) thumbMap[d.universeId] = d.thumbnails[0].imageUrl;
+      });
+    }
+  } catch (e) {}
+
+  try {
+    var votesRes = await fetch('https://games.roblox.com/v1/games/votes?universeIds=' + ids.join(','));
+    if (votesRes.ok) {
+      var votesData = await votesRes.json();
+      (votesData.data || []).forEach(function (v) {
+        var total = (v.upVotes || 0) + (v.downVotes || 0);
+        voteMap[v.id] = total ? Math.round((100 * v.upVotes) / total) : null;
+      });
+    }
+  } catch (e) {}
+
+  renderGames(tiles.map(function (t) {
+    return { name: t.name || 'Untitled', rating: voteMap[t.universeId], img: thumbMap[t.universeId] || '' };
+  }));
+}
+
+loadLiveGames().catch(function () {
+  renderGames(FALLBACK_GAMES);
+});
+
+})();
+</script>
+</body>
+</html>

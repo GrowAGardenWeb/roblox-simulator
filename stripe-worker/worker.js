@@ -18,7 +18,7 @@
 //   POST /notify-blocked            { product } (Authorization: Bearer <session>) -> { ok }
 //   GET  /admin/whitelist/list      ?secret=ADMIN_SECRET -> { entries: [{email,product,expiresAt,addedAt}] }
 //   POST /admin/whitelist/add       { secret, email, product, days? } -> { ok }
-//                                   product: 'mobile' | 'headless' | 'cashapp' |
+//                                   product: 'mobile' | 'headless' | 'robloxpc' | 'cashapp' |
 //                                   'phantom' | 'exodus' | 'paypal' | 'megapack' | 'all'
 //                                   days: optional — omit/0 for permanent, e.g. 30 for one month
 //   POST /admin/whitelist/remove    { secret, email } -> { ok }
@@ -61,6 +61,7 @@ const ADMIN_EMAILS = new Set(['munfuja11@gmail.com']);
 const PRODUCTS = {
   mobile: { price: 'price_1UP7I9FvaDdMVYC9aNf1fQ4J', mode: 'subscription' },
   headless: { price: 'price_1UP7I9FvaDdMVYC9kNeu3VG9', mode: 'payment' },
+  robloxpc: { price: 'price_REPLACE_ME_ROBLOXPC', mode: 'subscription' },
   cashapp: { price: 'price_1URNWCFvaDdMVYC9XGyamKKl', mode: 'subscription' },
   phantom: { price: 'price_1URNWPFvaDdMVYC9aLlaWzuv', mode: 'subscription' },
   exodus: { price: 'price_1URNWkFvaDdMVYC9loqRm93S', mode: 'subscription' },
