@@ -204,8 +204,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-vfbca7b31.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vfbca7b31.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-vf1f604e7.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vf1f604e7.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
@@ -240,10 +240,10 @@
       // nothing drawn under that filter can come out a vivid red, so the reds
       // are painted from out here with a screen blend: the dark backgrounds
       // turn red while white icons and text stay white. Each frame the layer
-      // follows the tab bar and the Robux page, and only shows them while
-      // they are on top.
+      // follows the tab bar and the page opened on top (dark red page, red
+      // header bar), and only shows them while they are on top.
       ;(function () {
-        var root = document.documentElement, fx = null, nav, page, xbtn, raf = 0
+        var root = document.documentElement, fx = null, nav, page, xbtn, head, raf = 0
         var XN = [83, 145], XB = [98, 143]
         function box(el, r, o) {
           el.style.cssText += ';left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px;opacity:' + o
@@ -255,24 +255,55 @@
           var hit = document.elementFromPoint((x0 + x1) / 2, (y0 + y1) / 2)
           return !!hit && (el === hit || el.contains(hit))
         }
+        // a page's header bar: the full-width row holding its back / close button, as [bottom edge, row]
+        // (screenshot pages: the button is drawn in the picture, the bar ends just under it)
+        function headOf(pg, r) {
+          var b = pg.querySelector('[data-testid=page-back],.mi-x,.rset-back,[aria-label=Close],[aria-label=Back]')
+          if (!b) return null
+          var q = b.getBoundingClientRect()
+          if (q.top - r.top > 150) return null
+          for (var a = b.parentElement; a && a !== pg; a = a.parentElement) {
+            var s = a.getBoundingClientRect()
+            if (s.width >= r.width * 0.9) { if (s.height <= 140) return [Math.max(s.bottom, q.bottom + 10), a]; break }
+          }
+          return pg.querySelector('.tp-col') ? [q.bottom + 10, null] : null
+        }
+        // screen colour that turns the header's own (dark mode) background into Roblox's Hollow red
+        var RED = [148, 15, 19], PAGE = [20, 0, 0]
+        function redOver(row) {
+          var v = 0.07
+          for (var a = row; a; a = a.parentElement) {
+            var m = /rgba?\((\d+), (\d+), (\d+)(?:, ([\d.]+))?\)/.exec(getComputedStyle(a).backgroundColor)
+            if (m && (m[4] == null || +m[4] > 0.5)) { v = 0.93 - 0.86 * ((+m[1] + +m[2] + +m[3]) / 765); break }
+          }
+          return 'rgb(' + RED.map(function (t, i) {
+            var under = 1 - (1 - v) * (1 - PAGE[i] / 255)
+            return Math.round(255 * Math.max(0, 1 - (1 - t / 255) / (1 - under)))
+          }).join(',') + ')'
+        }
         function tick() {
           raf = 0
           if (!root.classList.contains('hollow')) { if (fx) fx.style.display = 'none'; return }
           if (!fx) {
             fx = document.createElement('div')
             fx.id = 'hollow-fx'
-            fx.innerHTML = '<i></i><i></i><i><svg viewBox="0 0 24 24"><path d="M4.5 4.5l15 15M19.5 4.5l-15 15"/></svg></i>'
-            nav = fx.children[0]; page = fx.children[1]; xbtn = fx.children[2]
+            fx.innerHTML = '<i></i><i></i><i><svg viewBox="0 0 24 24"><path d="M4.5 4.5l15 15M19.5 4.5l-15 15"/></svg></i><i></i>'
+            nav = fx.children[0]; page = fx.children[1]; xbtn = fx.children[2]; head = fx.children[3]
             document.body.appendChild(fx)
           }
           fx.style.display = ''
           var vh = window.innerHeight
           // tab bar: red from its top edge to the bottom of the screen; the Me picture keeps its colours
-          var bn = document.querySelector('.bottomnav'), show = 0
-          if (bn && !bn.classList.contains('hidden')) {
+          // pages like Settings draw their own tab bar over the app's one: take the last one that is showing
+          var bns = document.querySelectorAll('.bottomnav:not(.hidden)'), bn = bns[bns.length - 1], show = 0
+          if (bn) {
             var r = bn.getBoundingClientRect(), dr = document.querySelector('.drawer-root.open .drawer-panel'), left = r.left
             if (dr) { left = Math.max(left, dr.getBoundingClientRect().right); show = 0.55 }
-            else if (onTop(bn, r)) show = 1
+            else {
+              // a page on top can leave the tab bar showing: test the buttons, not the bar's middle
+              var it = bn.querySelectorAll('.nav-item')
+              for (var i = 0; i < it.length && !show; i++) if (onTop(bn, it[i].getBoundingClientRect())) show = 1
+            }
             var av = bn.querySelector('.nav-avatar'), hole = 'none'
             if (av && !dr) {
               var a = av.getBoundingClientRect(), cx = a.left + a.width / 2 - left, cy = a.top + a.height / 2 - r.top, rad = a.width / 2 + 1
@@ -281,17 +312,37 @@
             nav.style.webkitMaskImage = nav.style.maskImage = hole
             box(nav, { left: left, top: r.top, width: Math.max(0, r.right - left), height: Math.max(r.height, vh - r.top) }, show)
           } else nav.style.opacity = 0
-          // Robux page: dark red over the whole page, and its own close button (red circle, white X) drawn over the X in the picture
-          var col = document.querySelector('.tp-col[data-spec^=robux]'), tp = col && col.closest('.tp-root'), on = 0
-          if (tp) {
-            var p = tp.getBoundingClientRect()
-            on = onTop(tp, p) ? 1 : 0
-            box(page, { left: p.left, top: p.top, width: p.width, height: Math.max(p.height, vh - p.top) }, on)
-            // the X is part of the page picture: its centre in picture pixels (1080 wide), scaled to the page
-            var c = col.getBoundingClientRect(), k = c.width / 1080, bonus = col.getAttribute('data-spec') === 'robux2'
-            var xx = bonus ? XB[0] : XN[0], xy = bonus ? XB[1] : XN[1], d = 104 * k
-            box(xbtn, { left: c.left + xx * k - d / 2, top: c.top + xy * k - d / 2, width: d, height: d }, on)
-          } else { page.style.opacity = 0; xbtn.style.opacity = 0 }
+          // the page opened on top: dark red all over (to the top of the screen), red header bar;
+          // the Robux page has no red bar but its own close button (red circle, white X) drawn over the X in the picture
+          var pgs = document.querySelectorAll('.page-enter-push'), pg = pgs[pgs.length - 1], on = 0, hb = 0, col = null
+          if (pg && !pg.querySelector('.page.login')) {
+            var p = pg.getBoundingClientRect(), top = p.top > 0 && p.top < 80 ? 0 : p.top
+            on = onTop(pg, p) ? 1 : 0
+            col = pg.querySelector('.tp-col[data-spec^=robux]')
+            page.style.background = col ? '#1e0000' : '#140000'
+            box(page, { left: p.left, top: top, width: p.width, height: Math.max(p.bottom, vh) - top }, on)
+            var hd = !col && on && headOf(pg, p)
+            if (hd) {
+              hb = hd[0]
+              if (head._row !== hd[1] || !head._row) {
+                // a light grey bar would come out pink: it gets the page's own (white, so dark) background first
+                hd[1] && hd[1].classList.add('hollow-bar')
+                head._row = hd[1]; head.style.background = redOver(hd[1])
+              }
+              box(head, { left: p.left, top: top, width: p.width, height: hb - top }, 1)
+            }
+            if (col) {
+              // the X is part of the page picture: its centre in picture pixels (1080 wide), scaled to the page
+              var c = col.getBoundingClientRect(), k = c.width / 1080, bonus = col.getAttribute('data-spec') === 'robux2'
+              var xx = bonus ? XB[0] : XN[0], xy = bonus ? XB[1] : XN[1], d = 104 * k
+              // the layer is a frame behind a moving page, so the button only shows once the page has stopped sliding
+              var still = Math.abs(c.left - xbtn._l) < 0.5 && Math.abs(c.top - xbtn._t) < 0.5
+              xbtn._l = c.left; xbtn._t = c.top
+              box(xbtn, { left: c.left + xx * k - d / 2, top: c.top + xy * k - d / 2, width: d, height: d }, on && still ? 1 : 0)
+            }
+          } else page.style.opacity = 0
+          if (!hb) head.style.opacity = 0
+          if (!col || !on) xbtn.style.opacity = 0
           raf = requestAnimationFrame(tick)
         }
         function start() { if (!raf) raf = requestAnimationFrame(tick) }
