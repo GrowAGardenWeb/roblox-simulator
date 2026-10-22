@@ -251,6 +251,7 @@ button,input{font-family:inherit}
     <h3>Edit profile</h3>
     <div class="field"><label>Display name</label><input id="editName" maxlength="24" autocomplete="off"></div>
     <div class="field"><label>Robux balance</label><input id="editRobux" inputmode="numeric" autocomplete="off"></div>
+    <div class="field"><label>Roblox username (for your friends list)</label><input id="editFriendsUser" maxlength="20" autocomplete="off"></div>
     <div class="field-check"><input type="checkbox" id="editPremium"><label for="editPremium">Show Premium badge</label></div>
     <button class="sheet-save" id="sheetSaveBtn">Save</button>
   </div>
@@ -261,16 +262,6 @@ button,input{font-family:inherit}
 "use strict";
 
 var AVATAR_COLORS = ['#ff5fa2','#3ddc97','#5b8cff','#ffb23f','#9a7bff','#ff7a5f','#2fd1c5','#5fd0ff'];
-var FAKE_FRIENDS = [
-  { name: 'xX_Builder_Xx', sub: 'Playing Brookhaven' },
-  { name: 'ShadowFox21', sub: '' },
-  { name: 'PixelQueen', sub: 'Trading' },
-  { name: 'TurboBlox', sub: '' },
-  { name: 'GalaxyGamer7', sub: 'Playing Blox Fruits' },
-  { name: 'NoobMaster99', sub: '' },
-  { name: 'CrimsonWolfie', sub: '' },
-  { name: 'LunaStarz', sub: 'Playing Adopt Me!' },
-];
 
 // ---- profile state (name/robux/premium), editable + persisted ----
 var profile = { name: 'Player1', robux: 658, premium: true };
@@ -302,15 +293,69 @@ function renderProfile() {
 }
 renderProfile();
 
-// ---- friends row (fake, generic — never the buyer's own real friends) ----
+// ---- friends row: real public Roblox friends, fetched live via Roblox's
+// own public API (same endpoints the mobile build already calls), for
+// whatever username is set below — never invented/fake people. ----
+var friendsUsername = 'Munfuja22';
+try {
+  var savedFriendsUser = localStorage.getItem('robloxpc_friends_username');
+  if (savedFriendsUser) friendsUsername = savedFriendsUser;
+} catch (e) {}
+
 var friendsRow = document.getElementById('friendsRow');
-friendsRow.innerHTML = '<div class="friend"><div class="addfriend-av"><span class="ic ic-personplus"></span><span class="addfriend-badge">' + FAKE_FRIENDS.length + '</span></div><div class="friend-name">Add Friends</div></div>' +
-  FAKE_FRIENDS.map(function (f) {
-    var color = AVATAR_COLORS[f.name.length % AVATAR_COLORS.length];
-    return '<div class="friend"><div class="friend-av dot" style="background:' + color + '">' + initial(f.name) + '</div>' +
-      '<div class="friend-name">' + f.name + '</div>' +
-      (f.sub ? '<div class="friend-sub">' + f.sub + '</div>' : '') + '</div>';
+var ADD_FRIENDS_HTML = '<div class="friend"><div class="addfriend-av"><span class="ic ic-personplus"></span></div><div class="friend-name">Add Friends</div></div>';
+friendsRow.innerHTML = ADD_FRIENDS_HTML;
+
+async function loadFriends(username) {
+  var lookupRes = await fetch('https://users.roblox.com/v1/usernames/users', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ usernames: [username], excludeBannedUsers: true })
+  });
+  if (!lookupRes.ok) throw new Error('username lookup failed');
+  var lookupData = await lookupRes.json();
+  var user = lookupData.data && lookupData.data[0];
+  if (!user) throw new Error('user not found');
+
+  var friendsRes = await fetch('https://friends.roblox.com/v1/users/' + user.id + '/friends/find?limit=10');
+  if (!friendsRes.ok) throw new Error('friends list failed');
+  var friendsData = await friendsRes.json();
+  var ids = (friendsData.PageItems || []).map(function (f) { return f.id; }).slice(0, 10);
+  if (!ids.length) { friendsRow.innerHTML = ADD_FRIENDS_HTML; return; }
+
+  var namesRes = await fetch('https://users.roblox.com/v1/users', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userIds: ids, excludeBannedUsers: true })
+  });
+  var namesData = namesRes.ok ? await namesRes.json() : { data: [] };
+  var nameMap = {};
+  (namesData.data || []).forEach(function (u) { nameMap[u.id] = u.displayName || u.name; });
+
+  var avatarMap = {};
+  try {
+    var avatarRes = await fetch('https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=' + ids.join(',') + '&size=150x150&format=Png&isCircular=true');
+    if (avatarRes.ok) {
+      var avatarData = await avatarRes.json();
+      (avatarData.data || []).forEach(function (d) { avatarMap[d.targetId] = d.imageUrl; });
+    }
+  } catch (e) {}
+
+  friendsRow.innerHTML = ADD_FRIENDS_HTML + ids.map(function (id) {
+    var name = nameMap[id] || ('User' + id);
+    var img = avatarMap[id];
+    var av = img
+      ? '<div class="friend-av dot" style="background-image:url(\'' + img + '\');background-size:cover;background-position:center"></div>'
+      : '<div class="friend-av dot" style="background:' + AVATAR_COLORS[id % AVATAR_COLORS.length] + '">' + initial(name) + '</div>';
+    return '<div class="friend">' + av + '<div class="friend-name">' + escapeHtml(name) + '</div></div>';
   }).join('');
+}
+
+loadFriends(friendsUsername).catch(function () {
+  // Live fetch failed (network, rate limit, etc.) — leave just "Add
+  // Friends" rather than ever showing made-up people.
+  friendsRow.innerHTML = ADD_FRIENDS_HTML;
+});
 
 // ---- hamburger menu + edit sheet wiring ----
 var hamBtn = document.getElementById('hamBtn'), hammenu = document.getElementById('hammenu'), dim = document.getElementById('dim');
@@ -324,6 +369,7 @@ var sheetDim = document.getElementById('sheetDim');
 function openSheet(){
   document.getElementById('editName').value = profile.name;
   document.getElementById('editRobux').value = profile.robux;
+  document.getElementById('editFriendsUser').value = friendsUsername;
   document.getElementById('editPremium').checked = !!profile.premium;
   sheetDim.classList.add('open');
 }
@@ -333,8 +379,15 @@ sheetDim.addEventListener('click', function(e){ if (e.target === sheetDim) close
 document.getElementById('sheetSaveBtn').addEventListener('click', function(){
   var name = document.getElementById('editName').value.trim().slice(0, 24) || 'Player1';
   var robux = parseInt(document.getElementById('editRobux').value, 10);
+  var newFriendsUser = document.getElementById('editFriendsUser').value.trim().slice(0, 20) || 'Munfuja22';
   profile = { name: name, robux: isNaN(robux) || robux < 0 ? 0 : robux, premium: document.getElementById('editPremium').checked };
   try { localStorage.setItem('robloxpc_profile', JSON.stringify(profile)); } catch (e) {}
+  if (newFriendsUser !== friendsUsername) {
+    friendsUsername = newFriendsUser;
+    try { localStorage.setItem('robloxpc_friends_username', friendsUsername); } catch (e) {}
+    friendsRow.innerHTML = ADD_FRIENDS_HTML;
+    loadFriends(friendsUsername).catch(function () { friendsRow.innerHTML = ADD_FRIENDS_HTML; });
+  }
   renderProfile();
   closeSheet();
 });
