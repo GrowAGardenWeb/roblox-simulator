@@ -108,12 +108,13 @@
           var link = document.querySelector('link[rel=stylesheet][href*="/assets/index-"]')
           try { return link && link.sheet && link.sheet.cssRules && link.sheet } catch (e) { return null }
         }
-        var state = { mode: 'light', color: '#ede6ff', nav: '#d6c3fe' }
+        var state = { mode: 'light', color: '#ede6ff', nav: '#d6c3fe', scene: true }
         try {
           var saved = localStorage.getItem('theme.v1')
           if (saved === 'dark' || saved === 'custom' || saved === 'hollow') state.mode = saved
           state.color = localStorage.getItem('theme.color.v1') || state.color
           state.nav = localStorage.getItem('theme.nav.v1') || ''
+          state.scene = localStorage.getItem('theme.scene.v1') !== '0'
         } catch (e) {}
         function apply() {
           var custom = state.mode === 'custom', t = custom && build(state.color, state.nav)
@@ -130,7 +131,7 @@
           // the avatar scene is tinted like Roblox's: halfway between the page colour and the dark
           // scene's navy grey; it is a multiplier on the dark scene picture (which the dark filter
           // maps to .07 + .86 x), so it is solved for the picture's mid grey
-          if (t.dark) {
+          if (t.dark && state.scene) {
             var P0 = [0.251, 0.251, 0.288], NAVY = [33, 36, 47]
             root.style.setProperty('--th-scene', css(clamp01(t.bg.map(function (v, i) {
               return ((v + NAVY[i] / 255) / 2 - 0.07) / (0.86 * P0[i])
@@ -169,7 +170,13 @@
           style.textContent = out.join('\n')
         }
         window.__theme = {
-          get: function () { return { mode: state.mode, color: state.color, nav: state.nav } },
+          get: function () { return { mode: state.mode, color: state.color, nav: state.nav, scene: state.scene } },
+          // "Change background color": whether a custom colour also tints the avatar scene
+          setScene: function (on) {
+            state.scene = !!on
+            try { localStorage.setItem('theme.scene.v1', on ? '1' : '0') } catch (e) {}
+            apply()
+          },
           set: function (mode, color, nav) {
             state.mode = mode
             if (color) { state.color = color; state.nav = nav || '' }
@@ -213,8 +220,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-v11484795.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v11484795.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-vf8229a99.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vf8229a99.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
