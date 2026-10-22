@@ -123,10 +123,19 @@
           var style = document.getElementById('th-css')
           if (!custom) {
             if (style) style.remove()
-            return ['--th-bg', '--th-nav'].forEach(function (v) { root.style.removeProperty(v) })
+            return ['--th-bg', '--th-nav', '--th-scene'].forEach(function (v) { root.style.removeProperty(v) })
           }
           root.style.setProperty('--th-bg', css(t.bg))
           root.style.setProperty('--th-nav', css(t.nav))
+          // the avatar scene is tinted like Roblox's: halfway between the page colour and the dark
+          // scene's navy grey; it is a multiplier on the dark scene picture (which the dark filter
+          // maps to .07 + .86 x), so it is solved for the picture's mid grey
+          if (t.dark) {
+            var P0 = [0.251, 0.251, 0.288], NAVY = [33, 36, 47]
+            root.style.setProperty('--th-scene', css(clamp01(t.bg.map(function (v, i) {
+              return ((v + NAVY[i] / 255) / 2 - 0.07) / (0.86 * P0[i])
+            }))))
+          } else root.style.removeProperty('--th-scene')
           var sheet = appSheet()
           if (!sheet) return
           // only the colour declarations are written again (never positions or sizes):
@@ -204,8 +213,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-vc5131cb6.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vc5131cb6.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-vf155084d.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vf155084d.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
