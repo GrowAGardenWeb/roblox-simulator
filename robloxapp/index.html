@@ -18,7 +18,9 @@
     <script src="/access-gate.js"></script>
     <script src="/robloxapp/draco_decoder.js"></script>
     <script>
-      // Themes: light, dark, or custom. A custom theme rewrites the app
+      // Themes: light, dark, custom, or The Hollow (dark mode with Roblox's
+      // Halloween red tab bar and dark red Robux page, see the hollow layer
+      // below). A custom theme rewrites the app
       // stylesheet's neutral colours (greys/white/black: backgrounds, cards,
       // borders, text) into shades of the chosen colour and injects that as an
       // override stylesheet. Saturated colours (blue buttons, badges…) and
@@ -109,14 +111,15 @@
         var state = { mode: 'light', color: '#ede6ff', nav: '#d6c3fe' }
         try {
           var saved = localStorage.getItem('theme.v1')
-          if (saved === 'dark' || saved === 'custom') state.mode = saved
+          if (saved === 'dark' || saved === 'custom' || saved === 'hollow') state.mode = saved
           state.color = localStorage.getItem('theme.color.v1') || state.color
           state.nav = localStorage.getItem('theme.nav.v1') || ''
         } catch (e) {}
         function apply() {
           var custom = state.mode === 'custom', t = custom && build(state.color, state.nav)
           root.classList.toggle('custom', !!custom)
-          root.classList.toggle('dark', state.mode === 'dark' || (custom && t.dark))
+          root.classList.toggle('dark', state.mode === 'dark' || state.mode === 'hollow' || (custom && t.dark))
+          root.classList.toggle('hollow', state.mode === 'hollow')
           var style = document.getElementById('th-css')
           if (!custom) {
             if (style) style.remove()
@@ -201,8 +204,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-vf9c4d02f.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vf9c4d02f.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-v3558d163.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v3558d163.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
@@ -232,5 +235,66 @@
       }, true)
     </script>
     <div id="root"></div>
+    <script>
+      // The Hollow theme. Dark mode filters #root (invert + hue-rotate), and
+      // nothing drawn under that filter can come out a vivid red, so the reds
+      // are painted from out here with a screen blend: the dark backgrounds
+      // turn red while white icons and text stay white. Each frame the layer
+      // follows the tab bar and the Robux page, and only shows them while
+      // they are on top.
+      ;(function () {
+        var root = document.documentElement, fx = null, nav, page, xbtn, raf = 0
+        var XN = [83, 145], XB = [98, 143]
+        function box(el, r, o) {
+          el.style.cssText += ';left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px;opacity:' + o
+        }
+        function onTop(el, x, y) {
+          var hit = document.elementFromPoint(x, y)
+          return !!hit && (el === hit || el.contains(hit))
+        }
+        function tick() {
+          raf = 0
+          if (!root.classList.contains('hollow')) { if (fx) fx.style.display = 'none'; return }
+          if (!fx) {
+            fx = document.createElement('div')
+            fx.id = 'hollow-fx'
+            fx.innerHTML = '<i></i><i></i><i></i>'
+            nav = fx.children[0]; page = fx.children[1]; xbtn = fx.children[2]
+            document.body.appendChild(fx)
+          }
+          fx.style.display = ''
+          var vh = window.innerHeight
+          // tab bar: red from its top edge to the bottom of the screen; the Me picture keeps its colours
+          var bn = document.querySelector('.bottomnav'), show = 0
+          if (bn && !bn.classList.contains('hidden')) {
+            var r = bn.getBoundingClientRect(), dr = document.querySelector('.drawer-root.open .drawer-panel'), left = r.left
+            if (dr) { left = Math.max(left, dr.getBoundingClientRect().right); show = 0.55 }
+            else if (onTop(bn, r.left + r.width / 2, r.top + r.height / 2)) show = 1
+            var av = bn.querySelector('.nav-avatar'), hole = 'none'
+            if (av && !dr) {
+              var a = av.getBoundingClientRect(), cx = a.left + a.width / 2 - left, cy = a.top + a.height / 2 - r.top, rad = a.width / 2 + 1
+              hole = 'radial-gradient(circle ' + rad + 'px at ' + cx + 'px ' + cy + 'px,transparent ' + (rad - 0.5) + 'px,#000 ' + rad + 'px)'
+            }
+            nav.style.webkitMaskImage = nav.style.maskImage = hole
+            box(nav, { left: left, top: r.top, width: Math.max(0, r.right - left), height: Math.max(r.height, vh - r.top) }, show)
+          } else nav.style.opacity = 0
+          // Robux page: dark red over the whole page, red circle behind its close button
+          var col = document.querySelector('.tp-col[data-spec^=robux]'), tp = col && col.closest('.tp-root'), on = 0
+          if (tp) {
+            var p = tp.getBoundingClientRect()
+            on = onTop(tp, p.left + p.width / 2, p.top + p.height / 2) ? 1 : 0
+            box(page, { left: p.left, top: p.top, width: p.width, height: Math.max(p.height, vh - p.top) }, on)
+            // the X is part of the page picture: its centre in picture pixels (1080 wide), scaled to the page
+            var c = col.getBoundingClientRect(), k = c.width / 1080, bonus = col.getAttribute('data-spec') === 'robux2'
+            var xx = bonus ? XB[0] : XN[0], xy = bonus ? XB[1] : XN[1], d = 120 * k
+            box(xbtn, { left: c.left + xx * k - d / 2, top: c.top + xy * k - d / 2, width: d, height: d }, on)
+          } else { page.style.opacity = 0; xbtn.style.opacity = 0 }
+          raf = requestAnimationFrame(tick)
+        }
+        function start() { if (!raf) raf = requestAnimationFrame(tick) }
+        new MutationObserver(start).observe(root, { attributes: true, attributeFilter: ['class'] })
+        start()
+      })()
+    </script>
   </body>
 </html>
