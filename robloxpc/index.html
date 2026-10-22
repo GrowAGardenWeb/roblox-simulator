@@ -83,7 +83,8 @@ button,input{font-family:inherit}
 .addfriend-av .ic{width:24px;height:24px;background:#45484d}
 .addfriend-badge{position:absolute;top:-3px;right:-3px;background:#3b5bfa;color:#fff;font-size:10px;font-weight:700;border-radius:999px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
 
-.section-title{font-size:19px;font-weight:700;color:#1a1a1e;margin-bottom:14px}
+.section-title{font-size:19px;font-weight:700;color:#1a1a1e;margin:28px 0 14px}
+.section-title:first-child{margin-top:0}
 .game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
 .game-card{cursor:pointer}
 .game-thumb{width:100%;aspect-ratio:16/9;border-radius:10px;background:#e8e9eb center/cover no-repeat;overflow:hidden}
@@ -188,9 +189,11 @@ button,input{font-family:inherit}
 
       <div class="friends-row" id="friendsRow"></div>
 
-      <div class="section-title">Recommended For You</div>
-      <div class="game-grid" id="gameGrid">
-        <div class="grid-loading"><div class="spin"></div></div>
+      <div id="gameSections">
+        <div class="section-title">Recommended For You</div>
+        <div class="game-grid" id="gameGrid">
+          <div class="grid-loading"><div class="spin"></div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -317,6 +320,21 @@ async function loadFriends(username) {
   var user = lookupData.data && lookupData.data[0];
   if (!user) throw new Error('user not found');
 
+  // Use this same account's real photo for the profile avatar everywhere
+  // (top bar, sidebar, hamburger), instead of a generated placeholder.
+  try {
+    var ownAvatarRes = await fetch('https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=' + user.id + '&size=150x150&format=Png&isCircular=true');
+    if (ownAvatarRes.ok) {
+      var ownAvatarData = await ownAvatarRes.json();
+      var ownUrl = ownAvatarData.data && ownAvatarData.data[0] && ownAvatarData.data[0].imageUrl;
+      if (ownUrl) {
+        document.getElementById('acctAvatar').src = ownUrl;
+        document.getElementById('sideAvatar').src = ownUrl;
+        document.getElementById('hamAvatar').src = ownUrl;
+      }
+    }
+  } catch (e) {}
+
   var friendsRes = await fetch('https://friends.roblox.com/v1/users/' + user.id + '/friends/find?limit=10');
   if (!friendsRes.ok) throw new Error('friends list failed');
   var friendsData = await friendsRes.json();
@@ -401,41 +419,38 @@ function escapeHtml(s) {
   });
 }
 
-var FALLBACK_GAMES = [
-  { name: '[DIAMOND] Pet Simulator 99!', rating: 94, img: 'assets/fallback-1.jpg' },
-  { name: 'Brookhaven 🏡RP', rating: 85, img: 'assets/fallback-2.jpg' },
-  { name: 'BedWars', rating: 82, img: 'assets/fallback-3.jpg' },
-  { name: 'Catalog Avatar Creator', rating: 93, img: 'assets/fallback-4.jpg' },
+var FALLBACK_SECTIONS = [
+  { title: 'Recommended For You', games: [
+    { name: '[DIAMOND] Pet Simulator 99!', rating: 94, img: 'assets/fallback-1.jpg' },
+    { name: 'Brookhaven 🏡RP', rating: 85, img: 'assets/fallback-2.jpg' },
+    { name: 'BedWars', rating: 82, img: 'assets/fallback-3.jpg' },
+    { name: 'Catalog Avatar Creator', rating: 93, img: 'assets/fallback-4.jpg' },
+  ] },
 ];
 
-function renderGames(games) {
-  var grid = document.getElementById('gameGrid');
-  grid.innerHTML = games.map(function (g) {
-    var bg = g.img ? 'background-image:url(\'' + g.img + '\')' : '';
-    return '<div class="game-card">' +
-      '<div class="game-thumb" style="' + bg + '"></div>' +
-      '<div class="game-title">' + escapeHtml(g.name) + '</div>' +
-      (g.rating != null ? '<div class="game-rating"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21h3V10H2v11zm19-10a2 2 0 00-2-2h-6.3l.9-4.4.03-.3a1.5 1.5 0 00-.44-1.06L12.17 2 6.6 7.59A2 2 0 006 9v10a2 2 0 002 2h9a2 2 0 001.84-1.21l3-7A2 2 0 0022 12v-1z"/></svg>' + g.rating + '% Rating</div>' : '') +
-      '</div>';
+function renderGameSections(sections) {
+  var container = document.getElementById('gameSections');
+  container.innerHTML = sections.map(function (sec, i) {
+    return '<div class="section-title">' + escapeHtml(sec.title) + '</div>' +
+      '<div class="game-grid" id="gameGrid' + i + '"></div>';
   }).join('');
+  sections.forEach(function (sec, i) {
+    document.getElementById('gameGrid' + i).innerHTML = sec.games.map(function (g) {
+      var bg = g.img ? 'background-image:url(\'' + g.img + '\')' : '';
+      return '<div class="game-card">' +
+        '<div class="game-thumb" style="' + bg + '"></div>' +
+        '<div class="game-title">' + escapeHtml(g.name) + '</div>' +
+        (g.rating != null ? '<div class="game-rating"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21h3V10H2v11zm19-10a2 2 0 00-2-2h-6.3l.9-4.4.03-.3a1.5 1.5 0 00-.44-1.06L12.17 2 6.6 7.59A2 2 0 006 9v10a2 2 0 002 2h9a2 2 0 001.84-1.21l3-7A2 2 0 0022 12v-1z"/></svg>' + g.rating + '% Rating</div>' : '') +
+        '</div>';
+    }).join('');
+  });
 }
 
-async function loadLiveGames() {
-  var sessionId = 'ms-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-  var sortsRes = await fetch('https://apis.roblox.com/explore-api/v1/get-sorts?sessionId=' + sessionId + '&country=us');
-  if (!sortsRes.ok) throw new Error('sorts request failed');
-  var sortsData = await sortsRes.json();
-  var sorts = (sortsData && sortsData.sorts) || [];
-  var target = sorts.find(function (s) {
-    var label = ((s.sortDisplayName || '') + ' ' + (s.sortId || '')).toLowerCase();
-    return label.indexOf('popular') !== -1 || label.indexOf('recommend') !== -1;
-  }) || sorts[0];
-  if (!target) throw new Error('no sort available');
-
-  var contentRes = await fetch('https://apis.roblox.com/explore-api/v1/get-sort-content?sessionId=' + sessionId + '&sortId=' + encodeURIComponent(target.sortId));
+async function fetchGamesForSort(sessionId, sort) {
+  var contentRes = await fetch('https://apis.roblox.com/explore-api/v1/get-sort-content?sessionId=' + sessionId + '&sortId=' + encodeURIComponent(sort.sortId));
   if (!contentRes.ok) throw new Error('sort content request failed');
   var contentData = await contentRes.json();
-  var tiles = ((contentData && contentData.games) || []).filter(function (t) { return t.universeId; }).slice(0, 12);
+  var tiles = ((contentData && contentData.games) || []).filter(function (t) { return t.universeId; }).slice(0, 8);
   if (!tiles.length) throw new Error('no games in sort');
 
   var ids = tiles.map(function (t) { return t.universeId; });
@@ -462,13 +477,36 @@ async function loadLiveGames() {
     }
   } catch (e) {}
 
-  renderGames(tiles.map(function (t) {
-    return { name: t.name || 'Untitled', rating: voteMap[t.universeId], img: thumbMap[t.universeId] || '' };
-  }));
+  return {
+    title: sort.sortDisplayName || sort.sortId || 'Games',
+    games: tiles.map(function (t) {
+      return { name: t.name || 'Untitled', rating: voteMap[t.universeId], img: thumbMap[t.universeId] || '' };
+    }),
+  };
+}
+
+async function loadLiveGames() {
+  var sessionId = 'ms-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  var sortsRes = await fetch('https://apis.roblox.com/explore-api/v1/get-sorts?sessionId=' + sessionId + '&country=us');
+  if (!sortsRes.ok) throw new Error('sorts request failed');
+  var sortsData = await sortsRes.json();
+  var sorts = ((sortsData && sortsData.sorts) || []).slice(0, 4);
+  if (!sorts.length) throw new Error('no sorts available');
+
+  var sections = [];
+  for (var i = 0; i < sorts.length; i++) {
+    try {
+      var sec = await fetchGamesForSort(sessionId, sorts[i]);
+      if (sec.games.length) sections.push(sec);
+    } catch (e) {}
+    if (sections.length >= 3) break;
+  }
+  if (!sections.length) throw new Error('no sections loaded');
+  renderGameSections(sections);
 }
 
 loadLiveGames().catch(function () {
-  renderGames(FALLBACK_GAMES);
+  renderGameSections(FALLBACK_SECTIONS);
 });
 
 })();
