@@ -204,8 +204,8 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-v35167429.js"></script>
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v35167429.css">
+    <script type="module" crossorigin src="/robloxapp/assets/index-v6a0e6795.js"></script>
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v6a0e6795.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
@@ -248,8 +248,11 @@
         function box(el, r, o) {
           el.style.cssText += ';left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px;opacity:' + o
         }
-        function onTop(el, x, y) {
-          var hit = document.elementFromPoint(x, y)
+        // hit-test the middle of the part of r that is on screen (a page sliding in starts off screen)
+        function onTop(el, r) {
+          var x0 = Math.max(r.left, 0), x1 = Math.min(r.right, window.innerWidth), y0 = Math.max(r.top, 0), y1 = Math.min(r.bottom, window.innerHeight)
+          if (x1 - x0 < 2 || y1 - y0 < 2) return false
+          var hit = document.elementFromPoint((x0 + x1) / 2, (y0 + y1) / 2)
           return !!hit && (el === hit || el.contains(hit))
         }
         function tick() {
@@ -258,7 +261,7 @@
           if (!fx) {
             fx = document.createElement('div')
             fx.id = 'hollow-fx'
-            fx.innerHTML = '<i></i><i></i><i></i>'
+            fx.innerHTML = '<i></i><i></i><i><svg viewBox="0 0 24 24"><path d="M4.5 4.5l15 15M19.5 4.5l-15 15"/></svg></i>'
             nav = fx.children[0]; page = fx.children[1]; xbtn = fx.children[2]
             document.body.appendChild(fx)
           }
@@ -269,7 +272,7 @@
           if (bn && !bn.classList.contains('hidden')) {
             var r = bn.getBoundingClientRect(), dr = document.querySelector('.drawer-root.open .drawer-panel'), left = r.left
             if (dr) { left = Math.max(left, dr.getBoundingClientRect().right); show = 0.55 }
-            else if (onTop(bn, r.left + r.width / 2, r.top + r.height / 2)) show = 1
+            else if (onTop(bn, r)) show = 1
             var av = bn.querySelector('.nav-avatar'), hole = 'none'
             if (av && !dr) {
               var a = av.getBoundingClientRect(), cx = a.left + a.width / 2 - left, cy = a.top + a.height / 2 - r.top, rad = a.width / 2 + 1
@@ -278,15 +281,15 @@
             nav.style.webkitMaskImage = nav.style.maskImage = hole
             box(nav, { left: left, top: r.top, width: Math.max(0, r.right - left), height: Math.max(r.height, vh - r.top) }, show)
           } else nav.style.opacity = 0
-          // Robux page: dark red over the whole page, red circle behind its close button
+          // Robux page: dark red over the whole page, and its own close button (red circle, white X) drawn over the X in the picture
           var col = document.querySelector('.tp-col[data-spec^=robux]'), tp = col && col.closest('.tp-root'), on = 0
           if (tp) {
             var p = tp.getBoundingClientRect()
-            on = onTop(tp, p.left + p.width / 2, p.top + p.height / 2) ? 1 : 0
+            on = onTop(tp, p) ? 1 : 0
             box(page, { left: p.left, top: p.top, width: p.width, height: Math.max(p.height, vh - p.top) }, on)
             // the X is part of the page picture: its centre in picture pixels (1080 wide), scaled to the page
             var c = col.getBoundingClientRect(), k = c.width / 1080, bonus = col.getAttribute('data-spec') === 'robux2'
-            var xx = bonus ? XB[0] : XN[0], xy = bonus ? XB[1] : XN[1], d = 120 * k
+            var xx = bonus ? XB[0] : XN[0], xy = bonus ? XB[1] : XN[1], d = 104 * k
             box(xbtn, { left: c.left + xx * k - d / 2, top: c.top + xy * k - d / 2, width: d, height: d }, on)
           } else { page.style.opacity = 0; xbtn.style.opacity = 0 }
           raf = requestAnimationFrame(tick)
