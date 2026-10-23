@@ -221,9 +221,9 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-va91fc0cb.js"></script>
+    <script type="module" crossorigin src="/robloxapp/assets/index-vd71be6e2.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap">
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-va91fc0cb.css">
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-vd71be6e2.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
@@ -342,14 +342,18 @@
           if (pg && !classic && !pg.querySelector('.page.login')) {
             var pr = pg.getBoundingClientRect(), par = pg.parentElement.getBoundingClientRect()
             var p = { left: par.left, right: par.right, width: par.width, top: pr.top, bottom: pr.bottom, height: pr.height }
-            var dx = pr.left - par.left, top = p.top > 0 && p.top < 80 ? 0 : p.top
+            var dx = pr.left - par.left, up2 = pg.classList.contains('page-up'), top = p.top > 0 && p.top < 80 ? 0 : p.top
             if (pg !== fx._pg) {
               fx._pg = pg; fx._at = performance.now()
               fx.style.setProperty('--pw', par.width + 'px')
-              ;[head, xbtn].forEach(function (el) { el.classList.remove('hfx-in'); void el.offsetWidth; el.classList.add('hfx-in') })
+              fx.style.setProperty('--ph', par.height + 'px')
+              var up = pg.classList.contains('page-up')
+              ;[head, xbtn].forEach(function (el) { el.classList.remove('hfx-in'); el.classList.toggle('up', up); void el.offsetWidth; el.classList.add('hfx-in') })
             }
             // while it slides in it is on top by definition; after that hit-test it (a sheet can cover it)
-            on = !pg.querySelector('.srb-root') && (performance.now() - fx._at < 320 || onTop(pg, pr)) ? 1 : 0
+            // the Send Robux sheet sits on the page: the X stays, dimmed like the page under the sheet's scrim
+            var sheet = !!pg.querySelector('.srb-root')
+            on = sheet || performance.now() - fx._at < 320 || onTop(pg, pr) ? 1 : 0
             col = pg.querySelector('.tp-col[data-spec^=robux]')
             var hd = !col && on && headOf(pg, { left: pr.left, right: pr.right, width: pr.width, top: pr.top, bottom: pr.bottom })
             if (hd) {
@@ -363,9 +367,10 @@
             }
             if (col) {
               // the X is part of the page picture: its centre in picture pixels (1080 wide), scaled to the page
-              var c = col.getBoundingClientRect(), k = c.width / 1080, bonus = col.getAttribute('data-spec') === 'robux2'
+              var c = col.getBoundingClientRect(), k = c.width / 1080, bonus = col.getAttribute('data-spec') !== 'robux'
               var xx = bonus ? XB[0] : XN[0], xy = bonus ? XB[1] : XN[1], d = 104 * k
-              box(xbtn, { left: c.left - dx + xx * k - d / 2, top: c.top + xy * k - d / 2, width: d, height: d }, on)
+              box(xbtn, { left: c.left - dx + xx * k - d / 2, top: c.top - (up2 ? pr.top - par.top : 0) + xy * k - d / 2, width: d, height: d }, on ? 1 : 0)
+              xbtn.style.filter = sheet ? 'brightness(.6)' : ''
             }
           } else fx._pg = null
           if (!hb) head.style.opacity = 0
