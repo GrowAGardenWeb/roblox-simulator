@@ -336,7 +336,7 @@ function compactAmount(n){
 }
 
 function avatarSrc(){return avatarUrl||('https://unavatar.io/cashapp/'+encodeURIComponent(tag))}
-var ui=document.getElementById('ui'),dockbar=document.querySelector('.dockbar');
+var ui=document.getElementById('ui'),dockbar=document.querySelector('.dockbar'),paytabbank=document.getElementById('paytabbank');
 function fitText(el,containerEl,baseFrac,maxWidthFrac){
   var cw=containerEl.getBoundingClientRect().width;
   if(!cw)return;
@@ -359,6 +359,7 @@ function renderAll(){
     savings.textContent='$'+sav.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   }
   dockbar.classList.toggle('bigbal',!balHidden&&dockBankIcon);
+  paytabbank.style.display=dockBankIcon?'':'none';
   digits.textContent=cardDigits;
   cashtag.textContent='$'+tag;
   var asrc=avatarSrc();
