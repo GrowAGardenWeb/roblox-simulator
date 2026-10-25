@@ -96,3 +96,8 @@ html.dark .hp-li button.b{filter:invert() hue-rotate(180deg)}
 .gs-sk.chip{width:91px!important;padding:0!important}
 .gs-more{left:10px}.gs-friends{left:55.5px}
 .gs-play{left:101.6px;right:10px}
+
+/* Robux page: the picture's own X is covered with the page colour and our X sits on it from the moment the page opens */
+.rx-xcov{z-index:3;pointer-events:none;background:#f7f7f7;width:36px;height:37px;display:block;position:absolute;top:29px;left:15px}
+.rx-xhi,.rx-xhi:not(.b){top:31.75px;left:17.35px}
+.rx-xhi:not(.lit){animation:none}
