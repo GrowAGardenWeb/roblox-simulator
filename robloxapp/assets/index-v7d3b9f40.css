@@ -101,3 +101,32 @@ html.dark .hp-li button.b{filter:invert() hue-rotate(180deg)}
 .rx-xcov{z-index:3;pointer-events:none;background:#f7f7f7;width:36px;height:37px;display:block;position:absolute;top:29px;left:15px}
 .rx-xhi,.rx-xhi:not(.b){top:31.75px;left:17.35px}
 .rx-xhi:not(.lit){animation:none}
+
+/* Charts: Device / Location pickers */
+.c-pills{position:absolute;display:flex;gap:3.4px}
+.c-pills .c-pill{position:static;width:auto;gap:9px;padding:0 11px 0 12px;font-size:12.4px}
+.cs-root{z-index:130;position:absolute;inset:0}
+.cs-scrim{background:#0000009e;animation:.25s srb-fade;position:absolute;inset:0;transition:opacity .23s}
+.cs-scrim.out{opacity:0}
+.cs-sheet{color:#202227;background:#f8f7f7;border-radius:12px 12px 0 0;flex-direction:column;max-height:calc(100% - 90px);animation:.3s cubic-bezier(.2,.8,.2,1) both cs-up;display:flex;position:absolute;bottom:0;left:0;right:0;overflow:hidden}
+.cs-sheet.out{transform:translateY(100%);transition:transform .23s ease-in;animation:none}
+@keyframes cs-up{from{transform:translateY(100%)}to{transform:none}}
+.cs-handle{background:#d6d8de;border-radius:2px;flex:none;width:29px;height:3.3px;margin:9px auto 0;display:block}
+.cs-head{flex:none;justify-content:space-between;align-items:center;padding:20px 21px 0 20px;display:flex}
+.cs-head h3{margin:0;font-size:20px;font-weight:700}
+.cs-x{color:#202227;background:0 0;border:0;justify-content:center;align-items:center;width:30px;height:30px;padding:0;display:flex}
+.cs-list{flex:auto;min-height:0;margin-top:14px;padding:0 20px;overflow-y:auto}
+.cs-row{text-align:left;background:0 0;border:0;align-items:center;gap:10px;width:100%;height:30.3px;padding:0;display:flex}
+.cs-rad{box-sizing:border-box;border:1.6px solid #3a3d46;border-radius:50%;flex:none;width:19px;height:19px;display:block}
+.cs-row.on .cs-rad{background:#fff;border:5.5px solid #202227}
+.cs-n{color:#4a4d56;font-size:14.7px;font-weight:600}
+.cs-row.on .cs-n{color:#202227;font-weight:700}
+.cs-tag{color:#202227;background:#e3e4e8;border-radius:12px;padding:3px 10px;font-size:12.6px;font-style:normal;font-weight:500;line-height:14px}
+.cs-sheet.loc .cs-tag{margin-left:auto;margin-right:28px}
+.cs-foot{flex:none;padding:12px 19.5px 24px}
+.cs-apply{color:#fff;background:#335fff;border:0;border-radius:8px;width:100%;height:32.5px;font-size:14.7px;font-weight:600;transition:opacity .2s}
+.cs-apply:disabled{opacity:.5}
+html.dark .cs-apply,html.dark .cs-row.on .cs-rad{filter:invert() hue-rotate(180deg)}
+
+.cs-apply{text-align:center}
+.c-chev{flex:none}
