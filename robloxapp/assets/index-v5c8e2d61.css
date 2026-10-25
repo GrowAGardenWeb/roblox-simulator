@@ -67,3 +67,37 @@ html.dark .hp-row button.gray{filter:none}
 .hp-li button.b{color:#fff;background:#335fff}
 .hp-li button.g{color:#202227;background:#e1e2e7}
 html.dark .hp-li button.b{filter:invert() hue-rotate(180deg)}
+
+/* game sheet, new layout: carousel, scrolling chips, skeleton */
+.gs-icon{top:28px;left:16.4px;width:46px;height:46px}
+.gs-title{top:21px;left:72.3px}
+.gs-dev{top:43.6px;left:72.3px}
+.gs-mat{top:62.9px;left:72.3px}
+.gs-hero,.gs-car{position:absolute;top:96.6px;left:16.4px;width:327.4px;height:183.7px;border-radius:12px}
+.gs-car{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:#e6e7eb}
+.gs-car::-webkit-scrollbar{display:none}
+.gs-car img{flex:none;width:100%;height:100%;object-fit:cover;scroll-snap-align:center;scroll-snap-stop:always}
+.gs-dots{top:261px;pointer-events:none}
+.gs-dots b,.gs-dots b:first-child{width:6px;height:6px;border-radius:50%;transition:width .3s}
+.gs-dots b.on{width:27px;border-radius:3px}
+.gs-chips{top:297px;display:flex;gap:6.6px;padding:0 16.4px;overflow-x:auto;scrollbar-width:none;height:26.2px}
+.gs-chips::-webkit-scrollbar{display:none}
+.gs-chips .chip{position:static;flex:none;width:auto!important;left:auto!important;padding:0 11px;height:26.2px;line-height:26.2px}
+.chip-svg{flex:none}
+.gs-sk{display:block;background:#e3e4e8;border-radius:5px;position:absolute}
+.gs-sk.dev{top:50px;left:72.3px;width:183px;height:18px}
+.gs-sk.mat{top:70px;left:72.3px;width:78px;height:14.5px}
+.gs-sk.chip{position:static;flex:none;width:91px;height:26.2px;border-radius:14px}
+.gs-sk.b1{top:338px;left:16.4px;width:183px;height:19px}
+.gs-sk.b2{top:367px;left:16.4px;width:327px;height:70px;border-radius:8px}
+.gs-col.sk>.gs-h,.gs-col.sk>.gs-desc,.gs-col.sk>.gs-info,.gs-col.sk>.gs-more-btn{visibility:hidden}
+.gs-bar .sk{background:#e6e7eb;border-radius:8px;width:39px;height:38.7px;top:10px}
+.gs-play{height:38.7px;top:10px}
+.gs-sk.chip{width:91px!important;padding:0!important}
+.gs-more{left:10px}.gs-friends{left:55.5px}
+.gs-play{left:101.6px;right:10px}
+
+/* Robux page: the picture's own X is covered with the page colour and our X sits on it from the moment the page opens */
+.rx-xcov{z-index:3;pointer-events:none;background:#f7f7f7;width:36px;height:37px;display:block;position:absolute;top:29px;left:15px}
+.rx-xhi,.rx-xhi:not(.b){top:31.75px;left:17.35px}
+.rx-xhi:not(.lit){animation:none}
