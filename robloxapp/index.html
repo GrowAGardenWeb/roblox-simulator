@@ -368,8 +368,9 @@
             if (col) {
               // the X is part of the page picture: its centre in picture pixels (1080 wide), scaled to the page
               var c = col.getBoundingClientRect(), k = c.width / 1080, bonus = col.getAttribute('data-spec') !== 'robux'
+              var ty = 0; try { ty = new DOMMatrix(getComputedStyle(pg).transform).m42 || 0 } catch (e) {}
               var xx = bonus ? XB[0] : XN[0], xy = bonus ? XB[1] : XN[1], d = 104 * k
-              box(xbtn, { left: c.left - dx + xx * k - d / 2, top: c.top - (up2 ? pr.top - par.top : 0) + xy * k - d / 2, width: d, height: d }, on ? 1 : 0)
+              box(xbtn, { left: c.left - dx + xx * k - d / 2, top: c.top - (up2 ? ty : 0) + xy * k - d / 2, width: d, height: d }, on ? 1 : 0)
               xbtn.style.filter = sheet ? 'brightness(.6)' : ''
             }
           } else fx._pg = null
