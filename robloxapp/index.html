@@ -221,9 +221,9 @@
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="Roblox">
     <meta property="og:description" content="Explore a mobile-friendly Roblox home interface that offers seamless navigation and quick access to games and social features for players on the go.">
-    <script type="module" crossorigin src="/robloxapp/assets/index-v1b6f3d85.js"></script>
+    <script type="module" crossorigin src="/robloxapp/assets/index-v3e9a5c27.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap">
-    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v1b6f3d85.css">
+    <link rel="stylesheet" crossorigin href="/robloxapp/assets/index-v3e9a5c27.css">
   </head>
   <body>
     <script>window.__theme && window.__theme.apply()</script>
@@ -370,7 +370,7 @@
               var c = col.getBoundingClientRect(), k = c.width / 1080, bonus = col.getAttribute('data-spec') !== 'robux'
               var ty = 0; try { ty = new DOMMatrix(getComputedStyle(pg).transform).m42 || 0 } catch (e) {}
               var xx = bonus ? XB[0] : XN[0], xy = bonus ? XB[1] : XN[1], d = 104 * k
-              box(xbtn, { left: c.left - dx + xx * k - d / 2, top: c.top - (up2 ? ty : 0) + xy * k - d / 2, width: d, height: d }, on ? 1 : 0)
+              box(xbtn, { left: c.left - dx + xx * k - d / 2, top: c.top - (up2 ? ty : 0) + xy * k - d / 2, width: d, height: d }, 0)
               xbtn.style.filter = sheet ? 'brightness(.6)' : ''
             }
           } else fx._pg = null
