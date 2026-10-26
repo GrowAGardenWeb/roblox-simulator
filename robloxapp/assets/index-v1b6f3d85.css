@@ -130,3 +130,7 @@ html.dark .cs-apply,html.dark .cs-row.on .cs-rad{filter:invert() hue-rotate(180d
 
 .cs-apply{text-align:center}
 .c-chev{flex:none}
+
+/* the X now lives inside the scrolling page, so it moves with the picture */
+html.hollow .rx-xcov{display:none}
+html.hollow .rx-xhi:not(.lit){opacity:0}
