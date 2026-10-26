@@ -132,5 +132,8 @@ html.dark .cs-apply,html.dark .cs-row.on .cs-rad{filter:invert() hue-rotate(180d
 .c-chev{flex:none}
 
 /* the X now lives inside the scrolling page, so it moves with the picture */
-html.hollow .rx-xcov{display:none}
-html.hollow .rx-xhi:not(.lit){opacity:0}
+
+/* The Hollow: our own close X in the theme's red, inside the page so it scrolls with it. Dark mode inverts the whole app, so the colour is picked to come out red after the inversion (a saturated dark red is out of reach there; this is the closest) and the filter cancels the inversion of the X itself */
+html.hollow .rx-xhi{background:#f00;width:34.7px;height:34.7px;top:29.65px;left:15.25px;filter:invert() hue-rotate(180deg)}
+html.hollow .rx-xhi.lit{background:#960000}
+html.hollow .rx-xhi:before,html.hollow .rx-xhi:after{background:#fff;width:18px}
