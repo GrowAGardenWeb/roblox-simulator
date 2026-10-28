@@ -1,0 +1,1 @@
+import{t as e}from"./index-v96c953ce.js";export{e as avatarStatus};
