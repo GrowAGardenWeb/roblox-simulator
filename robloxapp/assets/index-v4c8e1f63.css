@@ -171,7 +171,7 @@ html.oldui .seg-on{width:103.5px!important;left:3.4px!important}html.oldui .seg:
 /* after buying: the system loading square and the "You're all set" alert, drawn in CSS so they stay sharp */
 .iap-hudw,.iap-alw{z-index:210;justify-content:center;align-items:center;display:flex;position:absolute;inset:0}
 .iap-alw{background:#00000040;animation:.2s srb-fade}
-.iap-hud{container-type:inline-size;background:#292929;border-radius:17.5cqw;width:70px;aspect-ratio:1;animation:.15s srb-fade;position:relative}
+.iap-hud{container-type:inline-size;background:#292929;border-radius:12%;width:64px;aspect-ratio:1;animation:.15s srb-fade;position:relative}
 .iap-sp{width:0;height:0;position:absolute;top:50%;left:50%}
 .iap-sp i{background:#cdcdd0;border-radius:4.2cqw;width:8.4cqw;height:14cqw;margin:-7cqw 0 0 -4.2cqw;animation:1s linear infinite iap-fade;display:block;position:absolute;top:0;left:0}
 @keyframes iap-fade{0%{opacity:1}100%{opacity:.2}}
