@@ -163,7 +163,22 @@ html.oldui .seg-on{width:103.5px!important;left:3.4px!important}html.oldui .seg:
 .iap-cover{background:#d8d8d9;width:11.8%;height:13.6%;position:absolute;top:76.4%;left:44%}
 .iap-spin{box-sizing:border-box;border:.9cqw solid #c3c3c8;border-top-color:#2f7cf6;border-radius:50%;width:7.8%;aspect-ratio:1;animation:.8s linear infinite iap-spin;position:absolute;top:78.1%;left:46.1%}
 @keyframes iap-spin{to{transform:rotate(360deg)}}
-.iap-ok{color:#34c759;width:8.6%;aspect-ratio:1;position:absolute;top:77.8%;left:45.7%}
+.iap-ok{color:#2f7cf6;width:8.6%;aspect-ratio:1;position:absolute;top:77.8%;left:45.7%}
 .iap-home{background:#000;border-radius:.6cqw;width:36.6%;height:.9%;position:absolute;top:98%;left:31.7%;pointer-events:none}
 .iap-x{cursor:pointer;background:0 0;border:0;border-radius:50%;width:10%;aspect-ratio:1;padding:0;position:absolute;top:5%;left:86.4%}
 .iap-conf{cursor:pointer;background:0 0;border:0;width:46.7%;height:19.3%;padding:0;position:absolute;top:76.4%;left:26.6%}
+
+/* after buying: the system loading square, then the "You're all set" alert */
+.iap-hudw,.iap-alw{z-index:210;justify-content:center;align-items:center;display:flex;position:absolute;inset:0}
+.iap-alw{background:#0000004d;animation:.2s srb-fade}
+.iap-hud{background:#262627f2;border-radius:16px;width:74px;height:74px;display:grid;place-items:center;animation:.15s srb-fade}
+.iap-sp{width:7px;height:7px;position:relative}
+.iap-sp i{background:#d8d8da;border-radius:3px;width:6.5px;height:15px;margin:-7.5px 0 0 -3.25px;animation:1s steps(1) infinite iap-fade;display:block;position:absolute;top:0;left:0}
+@keyframes iap-fade{0%{opacity:1}100%{opacity:.25}}
+.iap-al{box-sizing:border-box;color:#000;-webkit-backdrop-filter:blur(30px) saturate(1.6);backdrop-filter:blur(30px) saturate(1.6);text-align:left;background:#f6f6f8f2;border-radius:30px;width:min(86%,330px);padding:24px 18px 16px;animation:.3s cubic-bezier(.2,.9,.2,1) iap-pop;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",system-ui,sans-serif}
+@keyframes iap-pop{from{opacity:0;transform:scale(1.12)}to{opacity:1;transform:none}}
+.iap-al b{letter-spacing:-.01em;margin:0 6px;font-size:17px;font-weight:700;line-height:1.2;display:block}
+.iap-al p{color:#3c3c43;margin:7px 6px 20px;font-size:15px;line-height:1.3}
+.iap-al button{color:#fff;font:inherit;cursor:pointer;background:#2f81f5;border:0;border-radius:999px;width:100%;height:46px;font-size:17px;font-weight:600}
+html.dark .iap-hud,html.dark .iap-al button{filter:invert() hue-rotate(180deg)}
+.iap-al button{text-align:center;display:block}
