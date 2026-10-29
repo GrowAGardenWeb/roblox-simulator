@@ -154,31 +154,16 @@ html.oldui .seg-on{width:103.5px!important;left:3.4px!important}html.oldui .seg:
 /* chat editor sheet */.che{z-index:80;position:absolute;inset:0}.che-scrim{background:#00000070;animation:czf-in .2s;position:absolute;inset:0}.che-sheet{background:#fff;border-radius:14px 14px 0 0;max-height:82%;padding:6px 16px 26px;animation:czf-up .26s cubic-bezier(.2,0,0,1);position:absolute;bottom:0;left:0;right:0;overflow-y:auto}.che-handle{background:#c9cbd1;border-radius:2px;width:28px;height:3px;margin:4px auto 10px;display:block}.che-top{justify-content:space-between;align-items:center;margin-bottom:10px;display:flex}.che-top h3{color:#202227;margin:0;font-size:17px;font-weight:700}.che-x{cursor:pointer;background:0 0;border:0;padding:4px}.che-xi{background:#202227;width:16px;height:16px;-webkit-mask:50%/contain no-repeat;mask:50%/contain no-repeat;display:block}.che-body{flex-direction:column;gap:10px;display:flex}.che-in{font:inherit;color:#202227;box-sizing:border-box;background:#f2f2f4;border:1px solid #d5d7dd;border-radius:7px;outline:0;width:100%;min-height:36px;padding:7px 10px;font-size:14px}.che-ta{resize:vertical;min-height:70px}.che-find{gap:8px;display:flex}.che-btn{font:inherit;text-align:center;color:#202227;cursor:pointer;white-space:nowrap;background:#e3e4e9;border:0;border-radius:7px;flex:none;height:36px;padding:0 14px;font-size:13.5px;font-weight:600}.che-ok{color:#fff;background:#335fff}.che-ok:disabled{opacity:.5}.che-del{color:#d0312d;background:#fbe9e8}.che-row{justify-content:flex-end;gap:8px;margin-top:4px;display:flex}.che-row .che-del{margin-right:auto}.che-note{color:#6b6e78;margin:0;font-size:12px}.che-res{flex-direction:column;gap:4px;display:flex}.che-pick{font:inherit;text-align:left;cursor:pointer;background:#f2f2f4;border:1.5px solid #0000;border-radius:8px;align-items:center;gap:10px;padding:6px 8px;font-size:12px;display:flex}.che-pick.on{border-color:#335fff}.che-pick img,.che-pick i,.che-who img,.che-who>i{background:#d9dbe0;border-radius:50%;flex:none;width:34px;height:34px}.che-pick span{color:#6b6e78;flex-direction:column;display:flex}.che-pick b{color:#202227;font-size:13.5px}.che-who{align-items:center;gap:10px;display:flex}.che-who>div{flex-direction:column;flex:1;gap:6px;display:flex}.che-who img,.che-who>i{width:48px;height:48px}.che-tog{color:#202227;justify-content:space-between;align-items:center;font-size:14px;display:flex}.che-tog input{width:40px;height:22px;accent-color:#335fff}.che-field{color:#6b6e78;flex-direction:column;gap:5px;font-size:12px;display:flex}.che-seg{background:#f2f2f4;border-radius:8px;gap:3px;padding:3px;display:flex}.che-seg button{font:inherit;text-align:center;color:#393b3d;cursor:pointer;white-space:nowrap;text-overflow:ellipsis;background:0 0;border:0;border-radius:6px;flex:1;height:32px;font-size:12.5px;overflow:hidden}.che-seg button.on{color:#202227;background:#fff;font-weight:700;box-shadow:0 1px 3px #0000001f}
 /* Body Parts picker, measured on Roblox */.bp-row{align-items:center;gap:6.6px;height:25.8px;margin:9.2px 16.4px 0;display:flex}.bp-row>span{color:#5f636d;font-size:11.3px}.bp-pill{font:inherit;color:#202227;cursor:pointer;background:#e3e4e9;border:0;border-radius:13px;align-items:center;gap:6px;height:25.8px;padding:0 9px 0 10px;font-size:11.6px;display:flex}.bp-chev{background:#202227;width:18px;height:18px;-webkit-mask:50%/contain no-repeat;mask:50%/contain no-repeat}.bps-sheet{height:319.6px}.bps-t{color:#393b3d!important;font-size:12.8px!important;top:18px!important;left:16.8px!important}.bps-row{font:inherit;color:#202227;cursor:pointer;text-align:left;background:0 0;border:0;align-items:center;gap:0;height:29px;padding:0;font-size:11px;display:flex;position:absolute;left:14px;right:14px}.bps-row i{box-sizing:border-box;border:1.2px solid #393b3d;border-radius:50%;flex:none;width:18.8px;height:18.8px;margin-right:9.8px}.bps-row.on i{border:6.2px solid #202227}.bps-foot{top:231.6px;padding:21px 19.5px 0}
 .rx-hit{cursor:pointer;background:0 0;border:0;height:46px;padding:0;position:absolute;left:8px;right:8px}
-/* Robux packages: the iOS "In-App Purchase" sheet */
+/* Robux packages: the iOS "In-App Purchase" sheet, drawn from the real screenshot with its texts written over it */
 .iap-scrim{z-index:200;background:#00000066;animation:.25s srb-fade;align-items:flex-end;padding:0 5px 5px;display:flex;position:absolute;inset:0}
-.iap-sheet{box-sizing:border-box;color:#000;-webkit-backdrop-filter:blur(30px) saturate(1.6);backdrop-filter:blur(30px) saturate(1.6);background:#dcdcdee8;border-radius:36px;flex-direction:column;width:100%;padding:18px 12px 20px;animation:.42s cubic-bezier(.2,.85,.2,1) both iap-up;display:flex;position:relative;overflow:hidden}
+.iap-sheet{container-type:inline-size;aspect-ratio:1284/1034;width:100%;animation:.42s cubic-bezier(.2,.85,.2,1) both iap-up;position:relative}
 @keyframes iap-up{from{transform:translateY(105%)}to{transform:none}}
-.iap-top{justify-content:space-between;align-items:center;padding:0 4px 0 6px;display:flex}
-.iap-top h3{letter-spacing:-.03em;align-items:center;gap:3px;margin:0;font-size:23px;font-weight:600;display:flex}
-.iap-x{color:#000;background:#c8c8cb;border:0;border-radius:50%;justify-content:center;align-items:center;width:38px;height:38px;padding:0;display:flex}
-.iap-card{background:#fff;border-radius:22px;margin-top:20px;padding:12px 14px 14px}
-.iap-card hr{background:#d9d9dc;border:0;height:1px;margin:14px 0}
-.iap-r1{align-items:center;gap:14px;display:flex}
-.iap-r1>div{flex-direction:column;gap:1px;min-width:0;display:flex}
-.iap-r1 b{letter-spacing:-.01em;font-size:15px;font-weight:500}
-.iap-r1 span{color:#86868b;align-items:center;gap:5px;font-size:12px;display:flex}
-.iap-r1 em{box-sizing:border-box;color:#86868b;border:1px solid #9a9aa0;border-radius:4px;padding:0 3px;font-size:9px;font-style:normal;line-height:12px}
-.iap-app{background:linear-gradient(#3f78f4,#2b5ed6);border-radius:12px;flex:none;width:50px;height:50px;display:block;position:relative;overflow:hidden}
-.iap-app:before{content:"";background:#f4f6ff;border-radius:5px;width:28px;height:28px;margin:-14px 0 0 -14px;position:absolute;top:50%;left:50%;transform:rotate(-14deg)}
-.iap-app:after{content:"";background:#2b5ed6;border-radius:2px;width:8px;height:8px;margin:-4px 0 0 -4px;position:absolute;top:50%;left:50%;transform:rotate(-14deg)}
-.iap-pr{flex-direction:column;gap:1px;display:flex}
-.iap-pr b{letter-spacing:-.01em;font-size:16px;font-weight:600}
-.iap-pr span,.iap-acct{color:#86868b;font-size:12px}
-.iap-acct{margin:0}
-.iap-conf{color:#000;font:inherit;cursor:pointer;background:0 0;border:0;flex-direction:column;align-items:center;gap:6px;margin-top:18px;padding:0;font-size:15px;font-weight:500;display:flex}
-.iap-side,.iap-ok{color:#2f7cf6}
-.iap-ok{color:#34c759}
-.iap-home{background:#000;border-radius:3px;width:112px;height:4px;margin:16px auto 0;display:block}
-.iap-spin{border:3px solid #c3c3c8;border-top-color:#2f7cf6;border-radius:50%;width:34px;height:34px;animation:.8s linear infinite iap-spin;display:block}
+.iap-bg{width:100%;height:100%;display:block;-webkit-user-select:none;user-select:none;pointer-events:none}
+.iap-t{white-space:nowrap;letter-spacing:-.01em;pointer-events:none;line-height:1;position:absolute}
+.iap-cover{background:#d8d8d9;width:11.8%;height:13.6%;position:absolute;top:76.4%;left:44%}
+.iap-spin{box-sizing:border-box;border:.9cqw solid #c3c3c8;border-top-color:#2f7cf6;border-radius:50%;width:7.8%;aspect-ratio:1;animation:.8s linear infinite iap-spin;position:absolute;top:78.1%;left:46.1%}
 @keyframes iap-spin{to{transform:rotate(360deg)}}
-html.dark .iap-app,html.dark .iap-side,html.dark .iap-ok,html.dark .iap-spin{filter:invert() hue-rotate(180deg)}
+.iap-ok{color:#34c759;width:8.6%;aspect-ratio:1;position:absolute;top:77.8%;left:45.7%}
+.iap-home{background:#000;border-radius:.6cqw;width:36.6%;height:.9%;position:absolute;top:98%;left:31.7%;pointer-events:none}
+.iap-x{cursor:pointer;background:0 0;border:0;border-radius:50%;width:10%;aspect-ratio:1;padding:0;position:absolute;top:5%;left:86.4%}
+.iap-conf{cursor:pointer;background:0 0;border:0;width:46.7%;height:19.3%;padding:0;position:absolute;top:76.4%;left:26.6%}
