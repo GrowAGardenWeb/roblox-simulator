@@ -71,7 +71,7 @@ img{display:block;max-width:none}
 .cell .dr{position:absolute;top:calc(12*var(--u));left:calc(14*var(--u));font-size:calc(40*var(--u));font-weight:800;color:#fff;text-shadow:0 1px 4px #0007}
 .empty{padding:calc(140*var(--u)) calc(60*var(--u));text-align:center;color:var(--mute);font-size:calc(30*var(--u));font-weight:500}
 .nav{position:absolute;z-index:6;left:0;right:0;bottom:0;height:calc(150*var(--u) + env(safe-area-inset-bottom,0px));padding:calc(10*var(--u)) calc(34*var(--u)) env(safe-area-inset-bottom,0px);background:#fff;border-top:calc(2*var(--u)) solid #f0f0f1;display:flex;justify-content:space-between;align-items:flex-start}
-.nav button{display:flex;flex-direction:column;align-items:center;gap:calc(8*var(--u));width:calc(160*var(--u));font-size:calc(26*var(--u));font-weight:600;color:#161616;position:relative}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:calc(8*var(--u));width:calc(160*var(--u));font-size:calc(26*var(--u));font-weight:600;color:#161616;position:relative;transition:none}
 .nav img{height:calc(56*var(--u));width:auto}
 .nav .mk img{margin-top:calc(2*var(--u))}
 .nav .badge{font-style:normal;position:absolute;top:calc(-6*var(--u));left:50%;margin-left:calc(-2*var(--u));min-width:calc(78*var(--u));height:calc(46*var(--u));padding:0 calc(14*var(--u));border-radius:calc(23*var(--u));background:#e8445a;color:#fff;font-size:calc(31*var(--u));font-weight:500;letter-spacing:.01em;display:grid;place-items:center}.nav .badge:empty{display:none}
@@ -122,10 +122,9 @@ input[type=file]{display:none}
 .nop button{margin-top:calc(34*var(--u));height:calc(70*var(--u));padding:0 calc(46*var(--u));border-radius:calc(35*var(--u));background:#e8445a;color:#fff;font-size:calc(34*var(--u));font-weight:600}
 /* nav + screens */
 .nav .ic{position:relative;display:block;width:calc(62*var(--u));height:calc(62*var(--u))}
-.nav .ic img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:none;transition:opacity .15s}
+.nav .ic img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:none}
 .nav .ic .n{opacity:0}.nav button.on .ic .n{opacity:1}.nav button.on .ic .o{opacity:0}
 .nav button{gap:calc(6*var(--u))}
-.nav{transition:background .2s}
 .app.dk .nav{background:#000;border-top-color:#1c1c1f}.app.dk .nav button{color:#fff}.app.dk .nav .ic img,.app.dk .nav .ic svg{filter:invert(1)}.app.dk .nav .mk img{filter:invert(1) hue-rotate(180deg)}
 .scr{position:absolute;inset:0;overflow:hidden;background:#fff;padding-bottom:calc(150*var(--u) + env(safe-area-inset-bottom,0px))}
 .scr.disc,.scr.inb{overflow-y:auto;scrollbar-width:none}.scr.disc::-webkit-scrollbar,.scr.inb::-webkit-scrollbar{display:none}
@@ -274,7 +273,7 @@ input[type=file]{display:none}
     <div class="irow"><img class="ia" src="img/r_req.webp" alt=""><div class="it"><b>Message requests</b><span id="iReq"></span></div><i class="bdg red wide" id="iReqN"></i></div>
     <div class="irow"><img class="ia" src="img/r_sys.webp" alt=""><div class="it"><b>System notifications</b><span id="iSys"></span></div><i class="bdg dot"></i></div>
   </section>
-  <nav class="nav" id="nav"><button data-s="home"><span class="ic"><img class="o" src="img/n_home_off.webp" style="width:calc(47.4*var(--u));height:calc(50.2*var(--u))" alt=""><img class="n" src="img/n_home_on.webp" style="width:calc(68.4*var(--u));height:calc(67.7*var(--u))" alt=""></span>Home</button><button data-s="disc"><span class="ic"><img class="o" src="img/n_disc_off.webp" style="width:calc(51.6*var(--u));height:calc(51.6*var(--u))" alt=""><img class="n" src="img/n_disc_on.webp" style="width:calc(67.7*var(--u));height:calc(67.7*var(--u))" alt=""></span>Discover</button><button class="mk" aria-label="Create" data-s="mk"><img src="img/i_n3.webp" style="width:calc(100.5*var(--u));height:calc(65.6*var(--u))" alt=""></button><button data-s="inbox"><span class="ic"><img class="o" src="img/n_inbox_off.webp" style="width:calc(50.2*var(--u));height:calc(49.5*var(--u))" alt=""><img class="n" src="img/n_inbox_on.webp" style="width:calc(50.2*var(--u));height:calc(50.9*var(--u))" alt=""></span>Inbox<i class="badge" id="inbox"></i></button><button data-s="profile"><span class="ic"><img class="o" src="img/n_prof_off.webp" style="width:calc(46.1*var(--u));height:calc(50.2*var(--u))" alt=""><img class="n" src="img/n_prof_on.webp" style="width:calc(43.3*var(--u));height:calc(47.4*var(--u))" alt=""></span>Profile</button></nav>
+  <nav class="nav" id="nav"><button data-s="home"><span class="ic"><img class="o" src="img/n_home_off.webp" style="width:calc(47.4*var(--u));height:calc(50.2*var(--u))" alt=""><img class="n" src="img/n_home_on.webp" style="width:calc(48.8*var(--u));height:calc(50.2*var(--u))" alt=""></span>Home</button><button data-s="disc"><span class="ic"><img class="o" src="img/n_disc_off.webp" style="width:calc(51.6*var(--u));height:calc(51.6*var(--u))" alt=""><img class="n" src="img/n_disc_on.webp" style="width:calc(51.6*var(--u));height:calc(51.6*var(--u))" alt=""></span>Discover</button><button class="mk" aria-label="Create" data-s="mk"><img src="img/i_n3.webp" style="width:calc(100.5*var(--u));height:calc(65.6*var(--u))" alt=""></button><button data-s="inbox"><span class="ic"><img class="o" src="img/n_inbox_off.webp" style="width:calc(50.2*var(--u));height:calc(49.5*var(--u))" alt=""><img class="n" src="img/n_inbox_on.webp" style="width:calc(50.2*var(--u));height:calc(50.9*var(--u))" alt=""></span>Inbox<i class="badge" id="inbox"></i></button><button data-s="profile"><span class="ic"><img class="o" src="img/n_prof_off.webp" style="width:calc(46.1*var(--u));height:calc(50.2*var(--u))" alt=""><img class="n" src="img/n_prof_on.webp" style="width:calc(43.3*var(--u));height:calc(47.4*var(--u))" alt=""></span>Profile</button></nav>
 </div>
 
 <aside class="ed" id="ed" aria-hidden="true"><div class="ed-in">
