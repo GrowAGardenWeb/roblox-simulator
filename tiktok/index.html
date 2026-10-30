@@ -74,7 +74,7 @@ img{display:block;max-width:none}
 .nav button{display:flex;flex-direction:column;align-items:center;gap:calc(8*var(--u));width:calc(160*var(--u));font-size:calc(26*var(--u));font-weight:600;color:#161616;position:relative}
 .nav img{height:calc(56*var(--u));width:auto}
 .nav .mk img{margin-top:calc(2*var(--u))}
-.nav .badge{position:absolute;top:calc(-12*var(--u));left:50%;margin-left:calc(10*var(--u));min-width:calc(72*var(--u));height:calc(48*var(--u));padding:0 calc(14*var(--u));border-radius:calc(24*var(--u));background:var(--red);color:#fff;font-size:calc(27*var(--u));font-weight:700;display:grid;place-items:center;border:calc(4*var(--u)) solid #fff;box-sizing:content-box}
+.nav .badge{font-style:normal;position:absolute;top:calc(-12*var(--u));left:50%;margin-left:calc(10*var(--u));min-width:calc(72*var(--u));height:calc(48*var(--u));padding:0 calc(14*var(--u));border-radius:calc(24*var(--u));background:var(--red);color:#fff;font-size:calc(27*var(--u));font-weight:700;display:grid;place-items:center;border:calc(4*var(--u)) solid #fff;box-sizing:content-box}
 /* editor */
 .ed{position:fixed;inset:0;z-index:50;background:#f4f4f6;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.85,.2,1);visibility:hidden}
 .ed.on{transform:none;visibility:visible}
@@ -287,7 +287,7 @@ input[type=file]{display:none}
   <div class="card"><h3>Numbers</h3>
     <div class="row2"><div class="fld"><label for="eFg">Following</label><input type="text" id="eFg" inputmode="text" autocomplete="off"></div><div class="fld"><label for="eFr">Followers</label><input type="text" id="eFr" autocomplete="off"></div><div class="fld"><label for="eLk">Likes</label><input type="text" id="eLk" autocomplete="off"></div></div>
     <p class="hint">Type 347300 and it shows 347.3K, or type exactly what you want to show (for example 1.2M).</p>
-    <div class="fld" style="margin-top:12px"><label for="eInbox">Inbox badge (empty to hide)</label><input type="text" id="eInbox" maxlength="5" autocomplete="off"></div>
+    <div class="fld" style="margin-top:12px"><label for="eInbox">Inbox badge (empty to hide; above 999 shows 999+)</label><input type="text" id="eInbox" maxlength="9" autocomplete="off"></div>
   </div>
   <div class="card"><h3>Look</h3>
     <label class="tog">Verified check<input type="checkbox" id="eVer"></label>
@@ -298,7 +298,7 @@ input[type=file]{display:none}
   <div class="card"><h3>Collections (saved tab)</h3><div class="list" id="eCols"></div><button class="btn g add" id="addCol" type="button">Add collection</button></div>
   <div class="card"><h3>Inbox screen</h3>
     <div class="fld"><label for="eIA">Activity &amp; new followers: text</label><input type="text" id="eIA" maxlength="70" autocomplete="off"></div>
-    <div class="row2" style="grid-template-columns:1fr 1fr"><div class="fld"><label for="eIAN">Activity badge</label><input type="text" id="eIAN" maxlength="4" autocomplete="off"></div><div class="fld"><label for="eIR">Message requests</label><input type="text" id="eIR" maxlength="6" autocomplete="off"></div></div>
+    <div class="row2" style="grid-template-columns:1fr 1fr"><div class="fld"><label for="eIAN">Activity badge</label><input type="text" id="eIAN" maxlength="4" autocomplete="off"></div><div class="fld"><label for="eIR">Pending DMs (999+ above 999)</label><input type="text" id="eIR" maxlength="9" autocomplete="off"></div></div>
     <div class="fld"><label for="eIC">Chat row: text</label><input type="text" id="eIC" maxlength="70" autocomplete="off"></div>
     <div class="fld"><label for="eIS">System notifications: text</label><input type="text" id="eIS" maxlength="70" autocomplete="off"></div>
   </div>
@@ -338,6 +338,7 @@ function src(v,d){return v&&String(v).indexOf('data:')===0?v:'img/'+(v||d)+'.web
 function fmt(v){v=String(v==null?'':v).trim();if(!/^\d+(\.\d+)?$/.test(v))return v;var n=parseFloat(v);
  function t1(x){return (Math.floor(x*10)/10).toFixed(1).replace(/\.0$/,'')}
  if(n>=1e9)return t1(n/1e9)+'B';if(n>=1e6)return t1(n/1e6)+'M';if(n>=1e4)return t1(n/1e3)+'K';return String(Math.round(n))}
+function bd(v){v=String(v==null?'':v).trim().replace(/,/g,'');if(/^\d+$/.test(v))return +v>999?'999+':String(+v);return v}
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var PLAY='<svg viewBox="0 0 24 24"><path d="M6 3.8v16.4a1 1 0 0 0 1.5.9l13-8.2a1 1 0 0 0 0-1.7l-13-8.2A1 1 0 0 0 6 3.8z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/></svg>';
 var STACK='<svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2.4" fill="none" stroke="#fff" stroke-width="2"/><path d="M6.5 5h11" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
@@ -354,7 +355,7 @@ function render(){
  $('cat').textContent='Artist';$('cat').style.display=S.artist?'':'none';$('vb').style.display=S.ver?'inline-block':'none';tabsApply();$('dot').style.display=S.dot?'':'none';$('coin').style.display=S.coin?'':'none';
  var nt=$('note');nt.textContent=S.note;nt.style.display=S.note?'':'none';
  $('av').style.background=S.avBg;
- var ib=$('inbox');ib.textContent=S.inbox;ib.style.display=S.inbox?'':'none';
+ var ib=$('inbox');ib.textContent=bd(S.inbox);ib.style.display=S.inbox?'':'none';
  $('cat').textContent='Artist';$('cat').style.display=S.artist?'':'none';
  var h='<div class="hl"><img class="newb" src="img/new.webp" alt=""><span>New</span></div>';
  S.hls.forEach(function(x){h+='<div class="hl"><div class="c pic"><img src="'+esc(src(x.img,'hl'))+'" alt=""></div><span>'+esc(x.name)+'</span></div>'});
@@ -373,7 +374,7 @@ function renderMore(){
  $('fCap').textContent=f.cap;$('fSnd').textContent=f.snd+' - '+String(S.handle).replace(/^@/,'');$('fSr').textContent=f.sr;
  qa('.b-first',function(e){e.textContent=String(S.name).split(' ')[0]});
  $('iAct').textContent=i.act;$('iActN').textContent=i.actN;$('iChat').textContent=i.chat;$('iSys').textContent=i.sys;
- var rq=String(i.reqs).trim();$('iReq').textContent='You have '+rq+' requests';$('iReqN').textContent=/^\d+$/.test(rq)?(+rq>99?'99+':rq):rq;
+ var rq=String(i.reqs).trim().replace(/,/g,'');$('iReq').textContent='You have '+(/^\d+$/.test(rq)?(+rq).toLocaleString('en-US'):rq)+' pending DMs';$('iReqN').textContent=bd(rq);
  $('sNote').textContent=S.note;$('sNote').style.display=S.note?'':'none';
  var c='';S.cols.forEach(function(x,k){c+='<div class="col" data-c="'+k+'"><svg class="ck" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2"/><path d="M12 7v5l3.200 1.800" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span class="cn">'+esc(x.name)+'</span>'+(x.lock?'<svg class="lk" viewBox="0 0 24 24"><rect x="4.500" y="10.500" width="15" height="10" rx="2.500" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 10.500V8a4 4 0 0 1 8 0v2.500" fill="none" stroke="#fff" stroke-width="2"/></svg>':'')+'</div>'});
  $('cols').innerHTML=c;$('sCols').textContent=S.cols.length;
