@@ -628,6 +628,9 @@ var mx=0,md=false;mnu.addEventListener('touchstart',function(e){mx=e.touches[0].
 mnu.addEventListener('touchend',function(e){if(!md)return;md=false;if(e.changedTouches[0].clientX-mx>70)closeMenu()});
 mnu.addEventListener('click',function(e){var r=e.target.closest('.mr');if(r&&r.dataset.m==='settings'){closeMenu();setTimeout(openEd,250)}else if(r&&r.dataset.m==='balance'){openBalLoad()}});
 
+/* standalone: some iOS versions report a viewport shorter than the screen */
+function fitH(){var sa=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);var h=window.innerHeight;if(sa&&window.innerWidth<=screen.width&&screen.height-h>10&&screen.height-h<130)h=screen.height;app.style.height=h+'px'}
+fitH();window.addEventListener('resize',fitH);window.addEventListener('orientationchange',function(){setTimeout(fitH,200)});
 /* balance screen */
 var bal=$('bal');
 var ld=$('ld'),gc=$('gc'),GP=[[15,'$5.00'],[30,'$10.00'],[50,'$16.00'],[70,'$22.00'],[139,'$43.00'],[210,'$65.00'],[559,'$171.00'],[1050,'$325.00']],gsel=0,busy=false;
