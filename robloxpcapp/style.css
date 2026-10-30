@@ -306,3 +306,9 @@ html.dk .win .sr{background:rgba(0,0,0,.5)}
 html.dk .win .sr{background:rgba(255,255,255,.5);animation:none}
 .bell{cursor:pointer}
 .sh .cl{margin-left:auto}.sh .bl+.cl{margin-left:0}
+
+.ap-s{margin-top:2px}
+.ap-s .fx.ad{height:56px}
+.ap-s .fx .p{width:40px;height:40px}.ap-s .fx .p img{width:40px;height:40px}
+.ap-s .fx .ab{margin-right:0}
+.ap-box .sh{position:sticky;top:0;background:#f7f7f8;z-index:2}
