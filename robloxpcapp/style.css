@@ -250,3 +250,36 @@ body{text-rendering:optimizeLegibility;font-feature-settings:'kern','liga'}
 .am>:nth-child(4),.cf>:nth-child(4){animation-delay:.06s}
 .am>:nth-child(5),.cf>:nth-child(5){animation-delay:.09s}
 .am>:nth-child(6){animation-delay:.12s}
+
+/* 1:1 sidebar + header placement (measured on the real app) */
+.side{position:relative;width:64px}
+.menu{position:absolute;left:13px;top:14px;width:38px;height:36px;margin:0}
+.menu i[data-ic]{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.menu .dot{left:25px;top:4px}
+.sb{position:absolute;left:0;width:64px;height:63px;margin:0!important;display:block}
+.sb i[data-ic],.sb .si{position:absolute;left:50%;transform:translate(-50%,-50%)}
+.sb span{position:absolute;left:0;right:0;text-align:center;font-size:12.4px;line-height:16px;margin-top:-8px}
+#sbHome{top:0}
+#sbHome i{top:84px}#sbHome span{top:108px}
+.sb[data-s=moments] i{top:147.5px}.sb[data-s=moments] span{top:171px}
+.sb[data-s=chat] i{top:211px}.sb[data-s=chat] span{top:235px}
+.sb[data-s=me] .si{top:274px}.sb[data-s=me] span{top:298px}
+.logo-b{position:absolute;left:17px;bottom:15px;width:30px;height:30px}
+.logo-b i[data-ic]{position:absolute;left:0;top:0}
+.search{padding:0 10px;gap:7px}
+.search i[data-ic]{margin:0}
+.prem{margin-left:5.85px;margin-right:0}
+.rbx{margin-left:14.15px}
+.bell{margin-left:17.8px;width:27px;height:27px}
+.bell i[data-ic]{display:block}
+.bdg{left:11.5px;top:-3px}
+.me{margin-right:2.5px}
+
+.me .rbx{margin-left:14.15px}
+.ap-ph{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#e5e6e8;flex:none}
+.ap-fb{height:36px;padding:0 14px;border-radius:8px;background:#335fff;color:#fff;font-size:13.5px;font-weight:700;display:grid;place-items:center;cursor:pointer;align-self:center}
+.ap-r button.g{background:#dcdde3;color:#232527}
+.ap-t{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;font-weight:600}
+.ap-t input{width:16px;height:16px}
+.ap-box{max-height:90%}
+.prem{color:#3f4246}
