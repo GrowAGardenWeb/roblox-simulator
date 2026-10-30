@@ -37,7 +37,7 @@ img{display:block;max-width:none}
 .bubble:after{content:"";position:absolute;left:calc(40*var(--u));bottom:calc(-9*var(--u));width:calc(18*var(--u));height:calc(18*var(--u));background:#fff;transform:rotate(45deg);border-radius:0 0 calc(4*var(--u)) 0}
 .av{position:absolute;top:calc(56*var(--u));left:0;width:calc(200*var(--u));height:calc(200*var(--u));border-radius:50%;background:#1d44c8;overflow:visible}
 .av>img{width:100%;height:100%;border-radius:50%;object-fit:cover}
-.av .plus{position:absolute;right:calc(-4*var(--u));bottom:calc(-4*var(--u));width:calc(56*var(--u));height:calc(56*var(--u));border-radius:50%;background:#20d5ec;color:#fff;font-size:calc(46*var(--u));line-height:calc(54*var(--u));text-align:center;font-weight:400;border:calc(4*var(--u)) solid #fff;box-sizing:content-box;margin:calc(-4*var(--u))}
+.av .plus{position:absolute;right:calc(-6*var(--u));bottom:calc(-6*var(--u));width:calc(66*var(--u));height:calc(66*var(--u));border-radius:50%}
 .stats{display:flex;gap:calc(52*var(--u));padding:calc(10*var(--u)) calc(34*var(--u)) 0}
 .stats div{display:flex;flex-direction:column;gap:calc(2*var(--u))}
 .stats b{font-size:calc(35*var(--u));font-weight:800;letter-spacing:-.01em;line-height:1.2}
@@ -51,6 +51,7 @@ img{display:block;max-width:none}
 .hls{display:flex;gap:calc(34*var(--u));padding:calc(11*var(--u)) calc(34*var(--u)) 0;overflow-x:auto;scrollbar-width:none}
 .hls::-webkit-scrollbar{display:none}
 .hl{flex:none;width:calc(132*var(--u));display:flex;flex-direction:column;align-items:center;gap:calc(14*var(--u))}
+.hl .newb{width:calc(132*var(--u));height:calc(132*var(--u))}
 .hl .c{width:calc(132*var(--u));height:calc(132*var(--u));border-radius:calc(46*var(--u));border:calc(5*var(--u)) solid #e4e4e6;background:#fff;display:grid;place-items:center;overflow:hidden;position:relative}
 .hl .c.pic{border-radius:50%;padding:calc(7*var(--u));background:#fff}
 .hl .c.pic img{width:100%;height:100%;border-radius:50%;object-fit:cover}
@@ -147,13 +148,13 @@ input[type=file]{display:none}
   <main class="scroll" id="scroll">
     <section class="head me">
       <div class="who"><h1 id="name" class="b-name"></h1><i class="caret"></i><i class="dot" id="dot"></i><p class="hline"><span id="handle" class="b-handle2"></span><svg class="vb2" id="vb" viewBox="0 0 24 24"><path d="M12 1.6l2.3 1.6 2.8-.2 1.2 2.6 2.5 1.2-.2 2.8L22 12l-1.6 2.3.2 2.8-2.6 1.2-1.2 2.5-2.8-.2L12 22l-2.3-1.6-2.8.2-1.2-2.6-2.5-1.2.2-2.8L2 12l1.6-2.3-.2-2.8 2.6-1.2 1.2-2.5 2.8.2z" fill="#20d5ec"/><path d="M7.6 12.3l3 3 5.8-6.2" stroke="#fff" stroke-width="2.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="cat" class="cat"></span></p></div>
-      <div class="avwrap"><div class="bubble" id="note"></div><div class="av" id="av"><img id="avImg" class="b-av" alt=""><b class="plus">+</b></div></div>
+      <div class="avwrap"><div class="bubble" id="note"></div><div class="av" id="av"><img id="avImg" class="b-av" alt=""><img class="plus" src="img/plus.webp" alt=""></div></div>
     </section>
     <section class="stats me"><div><b id="sFg" class="b-fg"></b><span>Following</span></div><div><b id="sFr" class="b-fr"></b><span>Followers</span></div><div><b id="sLk" class="b-lk"></b><span>Likes</span></div></section>
     <section class="bio me"><span id="bio" class="b-bio"></span><a id="link" class="b-link"></a></section>
     <section class="chips me"><span class="chip"><img src="img/i_chip1.webp" alt="">TikTok Studio</span><span class="chip"><img src="img/i_chip2.webp" alt="">Your orders</span><span class="chip"><img src="img/i_chip3.webp" alt="">Balance</span><span class="chip"><img src="img/i_chip4.webp" alt="">Showcase</span></section>
     <section class="hls me" id="hls"></section>
-    <section class="tabs me" id="tabs"><button class="on" data-t="0"><img src="img/i_t1.webp" alt=""></button><button data-t="1"><img src="img/i_t2.webp" alt=""></button><button data-t="2"><img src="img/i_t3.webp" alt=""></button><button data-t="3"><img src="img/i_t4.webp" alt=""></button><button data-t="4"><img src="img/i_t5.webp" alt=""></button><button data-t="5"><img src="img/i_t6.webp" alt=""></button><button data-t="6"><img src="img/i_t7.webp" alt=""></button><button data-t="7"><img src="img/i_t8.webp" alt=""></button><i class="ind" id="ind"></i></section>
+    <section class="tabs me" id="tabs"><button id="musTab" data-t="9" style="display:none"><img src="img/o_music.webp" alt=""></button><button class="on" data-t="0"><img src="img/i_t1.webp" alt=""></button><button data-t="1"><img src="img/i_t2.webp" alt=""></button><button data-t="2"><img src="img/i_t3.webp" alt=""></button><button data-t="3"><img src="img/i_t4.webp" alt=""></button><button data-t="4"><img src="img/i_t5.webp" alt=""></button><button data-t="5"><img src="img/i_t6.webp" alt=""></button><button data-t="6"><img src="img/i_t7.webp" alt=""></button><button data-t="7"><img src="img/i_t8.webp" alt=""></button><i class="ind" id="ind"></i></section>
     <section id="grid" class="grid"></section>
     <p class="empty" id="empty" hidden>Nothing here yet.</p>
   </main>
@@ -169,7 +170,7 @@ input[type=file]{display:none}
     <div class="fld"><label for="eHandle">Username</label><input type="text" id="eHandle" maxlength="30" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off"></div>
     <div class="fld"><label for="eBio">Bio</label><textarea id="eBio" rows="3" maxlength="200"></textarea></div>
     <div class="fld"><label for="eLink">Link</label><input type="text" id="eLink" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off"></div>
-    <div class="fld"><label for="eCat">Label after the username, for example Artist (empty to hide)</label><input type="text" id="eCat" maxlength="24" autocomplete="off"></div>
+    <div class="fld"><label>Account type</label><div class="seg" id="eArt"><button type="button" data-a="0">Regular</button><button type="button" data-a="1">Artist</button></div><p class="hint">Artists get the “Artist” label next to the username and the music tab.</p></div>
     <div class="fld"><label for="eNote">Note over the photo (empty to hide)</label><input type="text" id="eNote" maxlength="40" autocomplete="off"></div>
   </div>
   <div class="card"><h3>Numbers</h3>
@@ -197,7 +198,7 @@ input[type=file]{display:none}
 <script>
 (function(){
 var KEY='tt.profile.v1';
-var DEF={tabs:8,cat:'',name:'pocoyo roblox',handle:'pocoyorobloxiano',ver:false,dot:true,coin:true,avBg:'#1d44c8',avatar:null,note:"What's good?",
+var DEF={tabs:8,artist:false,name:'pocoyo roblox',handle:'pocoyorobloxiano',ver:false,dot:true,coin:true,avBg:'#1d44c8',avatar:null,note:"What's good?",
  following:'73',followers:'347300',likes:'672900',bio:'Ponte serio crack',link:'https://moneyscripts.shop/',inbox:'99+',
  hls:[{name:'Important',img:'hl'}],
  drafts:{on:true,n:'7',size:'208.7MB',img:'v1'},
@@ -224,12 +225,12 @@ function render(){
  qa('.b-link',function(e){e.textContent=S.link;e.href=/^https?:/i.test(S.link)?S.link:'#';e.style.display=S.link?'':'none'});
  qa('.bio',function(e){e.style.display=(S.bio||S.link)?'':'none'});
  qa('.b-av',function(e){e.src=src(S.avatar,'avatar')});
- $('cat').textContent=S.cat;$('cat').style.display=S.cat?'':'none';$('vb').style.display=S.ver?'inline-block':'none';tabsApply();$('dot').style.display=S.dot?'':'none';$('coin').style.display=S.coin?'':'none';
+ $('cat').textContent='Artist';$('cat').style.display=S.artist?'':'none';$('vb').style.display=S.ver?'inline-block':'none';tabsApply();$('dot').style.display=S.dot?'':'none';$('coin').style.display=S.coin?'':'none';
  var nt=$('note');nt.textContent=S.note;nt.style.display=S.note?'':'none';
  $('av').style.background=S.avBg;
  var ib=$('inbox');ib.textContent=S.inbox;ib.style.display=S.inbox?'':'none';
- $('cat').textContent=S.cat;$('cat').style.display=S.cat?'':'none';
- var h='<div class="hl"><div class="c"><b>+</b></div><span>New</span></div>';
+ $('cat').textContent='Artist';$('cat').style.display=S.artist?'':'none';
+ var h='<div class="hl"><img class="newb" src="img/new.webp" alt=""><span>New</span></div>';
  S.hls.forEach(function(x){h+='<div class="hl"><div class="c pic"><img src="'+esc(src(x.img,'hl'))+'" alt=""></div><span>'+esc(x.name)+'</span></div>'});
  $('hls').innerHTML=h;
  var g='';
@@ -242,7 +243,7 @@ function render(){
 var tabs=document.querySelectorAll('#tabs button'),ind=$('ind');
 function moveInd(b){if(!b||!b.offsetWidth)return;ind.style.left=b.offsetLeft+'px';ind.style.width=b.offsetWidth+'px'}
 tabs.forEach(function(b){b.addEventListener('click',function(){tabs.forEach(function(x){x.classList.toggle('on',x===b)});moveInd(b);var first=b.dataset.t==='0';$('grid').hidden=!first;$('empty').hidden=first})});
-function tabsApply(){var five=S.tabs==5;[].forEach.call(document.querySelectorAll('#tabs button'),function(b){var k=+b.dataset.t;b.style.display=(five&&[1,2,3].indexOf(k)>-1)?'none':''});var on=document.querySelector('#tabs button.on');if(on&&on.style.display==='none'){var f=document.querySelector('#tabs button[data-t="0"]');f.click()}}
+function tabsApply(){var five=S.tabs==5;[].forEach.call(document.querySelectorAll('#tabs button'),function(b){var k=+b.dataset.t;if(k===9){b.style.display=S.artist?'':'none';return}b.style.display=(five&&[1,2,3].indexOf(k)>-1)?'none':''});var on=document.querySelector('#tabs button.on');if(on&&on.style.display==='none'){var f=document.querySelector('#tabs button[data-t="0"]');f.click()}}
 function moveAll(){moveInd(document.querySelector('#tabs button.on'))}
 /* editor */
 var fAny=$('fAny'),pick=null;
@@ -261,7 +262,7 @@ function fill(){
  $('eName').value=S.name;$('eHandle').value=S.handle;$('eBio').value=S.bio;$('eLink').value=S.link;$('eNote').value=S.note;
  $('eFg').value=S.following;$('eFr').value=S.followers;$('eLk').value=S.likes;$('eInbox').value=S.inbox;$('eBg').value=S.avBg;
  $('eVer').checked=S.ver;$('eDot').checked=S.dot;$('eCoin').checked=S.coin;$('eDrOn').checked=S.drafts.on;$('eDrN').value=S.drafts.n;$('eDrS').value=S.drafts.size;
- $('eCat').value=S.cat;qa('#eTabs button',function(b){b.classList.toggle('on',+b.dataset.k===S.tabs)});
+ qa('#eArt button',function(b){b.classList.toggle('on',(b.dataset.a==='1')===!!S.artist)});qa('#eTabs button',function(b){b.classList.toggle('on',+b.dataset.k===S.tabs)});
  $('pvAv').src=src(S.avatar,'avatar');$('pvAv').style.background=S.avBg;
  var h='';S.hls.forEach(function(x,i){h+='<div class="li"><img class="pv c" src="'+esc(src(x.img,'hl'))+'" data-hp="'+i+'" alt=""><div class="f"><input type="text" value="'+esc(x.name)+'" data-hn="'+i+'" maxlength="20" placeholder="Name"><div class="ac"><button class="btn g" data-hp="'+i+'" type="button">Photo</button><button class="btn r" data-hd="'+i+'" type="button">Delete</button></div></div></div>'});
  $('eHls').innerHTML=h||'<p class="hint">No highlights.</p>';
@@ -269,7 +270,7 @@ function fill(){
  $('eVids').innerHTML=v||'<p class="hint">No videos.</p>';
 }
 function sync(){render();fill();save()}
-bind('eCat','cat');
+$('eArt').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;S.artist=b.dataset.a==='1';render();fill();save()});
 $('eTabs').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;S.tabs=+b.dataset.k;render();fill();save()});
 $('eHls').addEventListener('input',function(e){var t=e.target;if(t.dataset.hn!=null){S.hls[+t.dataset.hn].name=t.value;render();save()}});
 $('eHls').addEventListener('click',function(e){var t=e.target.closest('[data-hp],[data-hd]');if(!t)return;if(t.dataset.hd!=null){S.hls.splice(+t.dataset.hd,1);sync()}else{var i=+t.dataset.hp;pickImage(300,function(d){S.hls[i].img=d;sync()})}});
