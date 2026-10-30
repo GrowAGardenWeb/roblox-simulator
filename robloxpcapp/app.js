@@ -14,7 +14,9 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 var PX=/^https?:$/.test(location.protocol)&&!window.pc;
 var HOST={apis:'apis',thumbs:'thumbnails',users:'users',friends:'friends',games:'games',catalog:'catalog'};
 function D(p){var m=p.match(/^\/rbx\/([a-z]+)\/(.*)$/);return 'https://'+HOST[m[1]]+'.roblox.com/'+m[2]}
-function F1(u){return fetch(u).then(function(r){if(!r.ok)throw Error(r.status);return r.json()})}
+var FAILS=[];
+function note(u,e){var m=(String(u).match(/^\/?([a-z]+(?:\/[a-z]+)?)/)||[,'?'])[1];FAILS.push(m+' '+((e&&e.message)||e));if(FAILS.length>6)FAILS.shift()}
+function F1(u){return fetch(u).then(function(r){if(!r.ok)throw Error(r.status);return r.json()},function(e){throw Error('blocked')}).catch(function(e){note(u,e);throw e})}
 function J(p){
  if(!PX)return F1(D(p));
  return F1(p).catch(function(){return F1('/rbxproxy?u='+encodeURIComponent(D(p)))}).catch(function(){return F1('/api/rbx?u='+encodeURIComponent(D(p)))});
@@ -25,7 +27,7 @@ function PGET(url){
 }
 function PPOST(url,body){
  var u=PX?'/rbxproxy?u='+encodeURIComponent(url):url;
- return fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw Error(r.status);return r.json()});
+ return fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw Error(r.status);return r.json()},function(){throw Error('blocked')}).catch(function(e){note(u,e);throw e});
 }
 /* same three sources the mobile app uses: exact username, omni-search and user search */
 function searchUsers(q){
@@ -37,7 +39,7 @@ function searchUsers(q){
   PGET('https://users.roblox.com/v1/users/search?keyword='+enc+'&limit=10').then(function(r){ok++;add((r.data||[]).map(function(e){return {id:e.id,name:e.name,display:e.displayName||e.name}}))}).catch(function(){})
  ];
  return Promise.all(jobs).then(function(){
-  if(!ok)throw Error('Couldn’t reach Roblox. Try again in a moment.');
+  if(!ok)throw Error('Couldn’t reach Roblox. Try again in a moment. ['+FAILS.slice(-3).join(' · ')+']');
   var l=order.map(function(k){return seen[k]});
   l.sort(function(a,b){return (String(b.name).toLowerCase()===q.toLowerCase())-(String(a.name).toLowerCase()===q.toLowerCase())});
   return l.slice(0,10);
@@ -97,7 +99,64 @@ document.addEventListener('load',function(e){var t=e.target;if(t&&t.tagName==='I
 
 /* sidebar / tabs */
 [].forEach.call(document.querySelectorAll('.sb'),function(b){b.addEventListener('click',function(){[].forEach.call(document.querySelectorAll('.sb'),function(x){x.classList.toggle('on',x===b)})})});
-[].forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){[].forEach.call(document.querySelectorAll('.tabs button'),function(x){x.classList.toggle('on',x===b)})})});
+/* tabs: For you / Charts */
+function showTab(n){$('s-home').hidden=n!=='home';$('s-charts').hidden=n!=='charts';if(n==='charts')loadCharts()}
+[].forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){showTab(/Charts/.test(b.textContent)?'charts':'home')})});
+
+/* ---------- Charts ---------- */
+var CH={dev:['Computer','computer'],cty:['Mexico','mx']};
+var DEVS=[['Computer','computer'],['Phone','phone'],['Tablet','tablet'],['Console','console']];
+var CTYS=[['Mexico','mx'],['United States','us'],['Brazil','br'],['Argentina','ar'],['Spain','es'],['All locations','all']];
+var CSEC=[['top-trending','Top Trending',''],['up-and-coming','Up-and-Coming',''],['top-playing-now','Top Playing Now','Results for all devices and locations']];
+var CSTAT=[
+ [['DONT SPLASH','87%','113K'],['The Strongest Battlegrounds','83%','69...'],['[BUTCHER x 🎃] Violence','92%','39...'],['FATHOM [HORROR]','95%','7.4K'],['Backseat Rally','91%','22...'],['WARDEN 🦖 Sonaria Horr...','92%','12...'],['[🕷️ EVENT] Dead Rails','92%','23...'],['[🎃] Animal Hospital (An...','93%','32...'],['[🎃] Bike Universe','87%','31...'],['🔪 Survive the Killer!','90%','10...']],
+ [['DONT SPLASH','87%','113K'],['📷 Say Cheese! [ST...','89%','22...'],['[🌍UPD] +1 Anime Eyes','95%','40...'],['FATHOM [HORROR]','95%','7.4K'],['[💉INJECTION S] Ragdoll Pl...','95%','26K'],['+1 Spider Arm🕷️','97%','42...'],['Bug Evolution [🕷️]','73%','22...'],['[🎃] Realistic Ragdoll Engi...','87%','37...'],['Night Rider 🏍️ [TESTING]','94%','11...'],['Scare Your Neighbor','98%','14...']],
+ []
+];
+function kfmt(e){return e>=1e6?(e/1e6).toFixed(e>=1e7?0:1).replace(/\.0$/,'')+'M':e>=1e3?(e/1e3).toFixed(e>=1e4?0:1).replace(/\.0$/,'')+'K':String(e)}
+function ccard(name,r,pl,img){return '<div class="cc"><img class="t" src="'+e2(img||'')+'" alt=""><b>'+e2(name)+'</b><div class="rt">'+I('like-f',15)+'<span>'+e2(r)+'</span>'+I('user-f',15)+'<span>'+e2(pl)+'</span></div></div>'}
+function crowHtml(s,cards){return '<div class="crow"><div class="hd"><div><h3>'+e2(s[1])+'<i data-ic="chevr-r">'+I('chevr-r',18)+'</i></h3>'+(s[2]?'<div class="sub">'+e2(s[2])+'</div>':'')+'</div>'+I('info-r',26)+'</div><div class="cards">'+cards+'</div></div>'}
+function drawStatic(){
+ $('chartRows').innerHTML=CSEC.map(function(s,k){
+  var st=CSTAT[k],pre=k===0?'c_t':k===1?'c_u':'',cards='';
+  if(st.length)cards=st.map(function(g,i){return ccard(g[0],g[1],g[2],'img/'+pre+i+'.webp')}).join('');
+  else for(var i=0;i<10;i++)cards+='<div class="cc"><img class="t" alt=""><b></b></div>';
+  return crowHtml(s,cards)}).join('');
+ [].forEach.call(document.querySelectorAll('#chartRows img.t'),function(i){i.classList.add('ld')});
+}
+var chSeq=0;
+function loadCharts(){
+ var my=++chSeq,sid=Math.random().toString(36).slice(2,12),q='&device='+CH.dev[1]+'&country='+CH.cty[1];
+ return Promise.all(CSEC.map(function(s){return J('/rbx/apis/explore-api/v1/get-sort-content?sessionId='+sid+'&sortId='+s[0]+q).then(function(r){return (r.games||[]).slice(0,12)}).catch(function(){return null})})).then(function(res){
+  if(my!==chSeq||!res.some(function(x){return x&&x.length}))return;
+  var ids=[];res.forEach(function(x){(x||[]).forEach(function(g){ids.push(g.universeId)})});
+  var ch=[];for(var i=0;i<ids.length;i+=100)ch.push(J('/rbx/thumbs/v1/games/icons?universeIds='+ids.slice(i,i+100).join(',')+'&returnPolicy=PlaceHolder&size=256x256&format=Webp&isCircular=false').catch(function(){return {data:[]}}));
+  return Promise.all(ch).then(function(rs){
+   if(my!==chSeq)return;var im={};rs.forEach(function(r){(r.data||[]).forEach(function(x){if(x.imageUrl)im[x.targetId]=x.imageUrl})});
+   $('chartRows').innerHTML=CSEC.map(function(s,k){var g=res[k];if(!g||!g.length)return '';return crowHtml(s,g.map(function(x){return ccard(x.name,pct(x)+'%',kfmt(x.playerCount||0),im[x.universeId])}).join(''))}).join('')})}).catch(function(){})}
+function closeDd(){[].forEach.call(document.querySelectorAll('.dd'),function(d){d.remove()})}
+[].forEach.call(document.querySelectorAll('.chip'),function(b){b.addEventListener('click',function(e){
+ e.stopPropagation();var had=b.nextElementSibling&&b.nextElementSibling.classList.contains('dd');closeDd();if(had)return;
+ var k=b.dataset.k,L=k==='dev'?DEVS:CTYS,d=document.createElement('div');d.className='dd';
+ d.innerHTML=L.map(function(o){return '<button data-v="'+o[1]+'" class="'+(CH[k][1]===o[1]?'on':'')+'">'+o[0]+'</button>'}).join('');
+ var r=b.getBoundingClientRect(),w=$('win').getBoundingClientRect();d.style.left=(r.left-w.left)+'px';d.style.top=(r.bottom-w.top+6)+'px';$('win').appendChild(d);
+ d.addEventListener('click',function(ev){var o=ev.target.closest('button');if(!o)return;var it=L.filter(function(x){return x[1]===o.dataset.v})[0];CH[k]=it;b.querySelector('span').textContent=it[0];closeDd();drawStatic();loadCharts()})})});
+document.addEventListener('click',closeDd);
+drawStatic();
+
+/* ---------- left menu drawer ---------- */
+var DRI=[['bookmark-r','Favorites',''],['clock-r','Continue Playing',''],['friends-r','Friends','99+'],['people3-r','Communities',''],['bag-r','Inventory',''],['trade-r','Trades',''],['mail-r','Messages','12'],['rplus-r','Roblox Plus',''],['gear-r','Settings',''],['shield-r','Help & Safety','']];
+function renderDrawer(){
+ var u=S.user,top=168.6,h='<div class="dp"><img src="'+e2(u.img||'img/av_me.webp')+'" alt=""><div><b>'+e2(u.display||u.name)+(S.prem===false?'':'<i>'+I('rplus-r',17)+'</i>')+'</b><small>@'+e2(u.name)+'</small></div></div>';
+ h+='<div class="drb">'+I('robux-r',26)+'<span>'+fmt(S.robux)+'</span><button>Buy Robux</button></div>';
+ DRI.forEach(function(r,i){h+='<div class="dli" style="top:'+(top+44*i)+'px"><i class="di">'+I(r[0],24)+'</i><span>'+r[1]+'</span>'+(r[2]?'<em>'+r[2]+'</em>':'')+'</div>'});
+ h+='<div class="dhr"></div><div class="dli" style="top:633px"><i class="di">'+I('grad-r',24)+'</i><span>Learn</span></div><div class="dli" style="top:677px"><i class="di">'+I('studio-f',24)+'</i><span>Create</span></div><button class="dsw">Switch Accounts</button>';
+ $('drw').innerHTML=h;
+}
+function openDrw(){renderDrawer();$('scrim').hidden=false;$('drw').classList.add('open');$('drw').setAttribute('aria-hidden','false')}
+function closeDrw(){$('drw').classList.remove('open');$('drw').setAttribute('aria-hidden','true');$('scrim').hidden=true}
+document.querySelector('.menu').addEventListener('click',openDrw);
+$('scrim').addEventListener('mousedown',closeDrw);
 
 /* ---------- Robux page ---------- */
 var PK=[[24000,22500,1500,'$4,999.00'],[11000,10000,1000,'$2,499.00'],[5250,4500,750,'$1,299.00'],[3625,3150,475,'$799.00'],[2000,1700,300,'$499.00']];
@@ -233,7 +292,7 @@ function hold(el,fn,ms){
 }
 document.querySelector('.bell').addEventListener('click',openAp);
 
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!ap.hidden)closeAp();else if(!sr.hidden)closeSr();else if(!$('rb').hidden)closeRb()}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!ap.hidden)closeAp();else if(!$('scrim').hidden)closeDrw();else if(!sr.hidden)closeSr();else if(!$('rb').hidden)closeRb()}});
 
 /* ---------- window controls (Electron) ---------- */
 var pc=window.pc||null;
