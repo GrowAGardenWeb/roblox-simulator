@@ -19,12 +19,34 @@ function J(p){
  if(!PX)return F1(D(p));
  return F1(p).catch(function(){return F1('/rbxproxy?u='+encodeURIComponent(D(p)))}).catch(function(){return F1('/api/rbx?u='+encodeURIComponent(D(p)))});
 }
+function PGET(url){
+ if(!PX)return F1(url);
+ return F1('/rbxproxy?u='+encodeURIComponent(url)).catch(function(){return F1('/api/rbx?u='+encodeURIComponent(url))});
+}
+function PPOST(url,body){
+ var u=PX?'/rbxproxy?u='+encodeURIComponent(url):url;
+ return fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw Error(r.status);return r.json()});
+}
+/* same three sources the mobile app uses: exact username, omni-search and user search */
+function searchUsers(q){
+ q=String(q||'').trim();var enc=encodeURIComponent(q),seen={},order=[],ok=0;
+ function add(a){a.forEach(function(x){var k=String(x.id);if(x.id&&!seen[k]){seen[k]=x;order.push(k)}})}
+ var jobs=[
+  PPOST('https://users.roblox.com/v1/usernames/users',{usernames:[q],excludeBannedUsers:true}).then(function(r){ok++;add((r.data||[]).map(function(e){return {id:e.id,name:e.name,display:e.displayName||e.name}}))}).catch(function(){}),
+  PGET('https://apis.roblox.com/search-api/omni-search?searchQuery='+enc+'&verticalType=user&pageType=all&sessionId='+Date.now()).then(function(r){ok++;var o=[];(r.searchResults||[]).forEach(function(t){(t.contents||[]).forEach(function(e){if(e.contentType==='User')o.push({id:e.contentId,name:e.username,display:e.displayName||e.username})})});add(o)}).catch(function(){}),
+  PGET('https://users.roblox.com/v1/users/search?keyword='+enc+'&limit=10').then(function(r){ok++;add((r.data||[]).map(function(e){return {id:e.id,name:e.name,display:e.displayName||e.name}}))}).catch(function(){})
+ ];
+ return Promise.all(jobs).then(function(){
+  if(!ok)throw Error('Couldn’t reach Roblox. Try again in a moment.');
+  var l=order.map(function(k){return seen[k]});
+  l.sort(function(a,b){return (String(b.name).toLowerCase()===q.toLowerCase())-(String(a.name).toLowerCase()===q.toLowerCase())});
+  return l.slice(0,10);
+ });
+}
 function findUser(q){
  q=String(q||'').trim();if(!q)return Promise.reject(Error('Type a username or ID.'));
- if(/^\d+$/.test(q))return J('/rbx/users/v1/users/'+q).then(function(u){return {id:u.id,name:u.name,display:u.displayName||u.name}});
- return J('/rbx/users/v1/users/search?keyword='+encodeURIComponent(q)+'&limit=10').then(function(s){
-  var l=s.data||[],u=l.filter(function(x){return String(x.name).toLowerCase()===q.toLowerCase()})[0]||l[0];
-  if(!u)throw Error('No user found.');return {id:u.id,name:u.name,display:u.displayName||u.name}});
+ if(/^\d+$/.test(q))return J('/rbx/users/v1/users/'+q).then(function(u){return {id:u.id,name:u.name,display:u.displayName||u.name}}).catch(function(){throw Error('No user with that ID.')});
+ return searchUsers(q).then(function(l){if(!l.length)throw Error('No user found.');return l[0]});
 }
 function heads(ids){
  if(!ids.length)return Promise.resolve({});
@@ -110,8 +132,8 @@ function viewPick(q){
  function look(){
   var v=inp.value.trim(),my=++seq;if(v.length<2){people=[];fill();return}
   clearTimeout(peopleTimer);peopleTimer=setTimeout(function(){
-   J('/rbx/users/v1/users/search?keyword='+encodeURIComponent(v)+'&limit=10').then(function(s){
-    var l=(s.data||[]).slice(0,10).map(function(u){return {id:u.id,name:u.name,display:u.displayName||u.name,img:''}});
+   searchUsers(v).then(function(s){
+    var l=s.map(function(u){return {id:u.id,name:u.name,display:u.display,img:''}});
     if(my!==seq)return;people=l;fill();
     heads(l.map(function(u){return u.id})).then(function(m){if(my!==seq)return;l.forEach(function(u){u.img=m[u.id]||''});fill()})}).catch(function(){})},220)}
  inp.addEventListener('input',function(){fill();look()});fill();
@@ -175,11 +197,11 @@ function openAp(focusF){
  $('apPR').addEventListener('click',function(){S.user.img='';save();renderMe();$('apPh').src='img/av_me.webp'});
  $('apUB').addEventListener('click',function(){
   var q=$('apU').value;apMsg('apUM','Loading…');
-  findUser(q).then(withHead).then(function(u){S.user=u;save();renderMe();$('apD').value=u.display||u.name;$('apN').value=u.name;$('apPh').src=u.img||'img/av_me.webp';apMsg('apUM','Loaded '+(u.display||u.name),1)}).catch(function(e){apMsg('apUM',e&&e.message&&!/^\d+$/.test(e.message)?e.message:'Couldn’t load that user.')})});
+  findUser(q).then(withHead).then(function(u){S.user=u;save();renderMe();$('apD').value=u.display||u.name;$('apN').value=u.name;$('apPh').src=u.img||'img/av_me.webp';apMsg('apUM','Loaded '+(u.display||u.name),1)}).catch(function(e){apMsg('apUM',e&&e.message||'Couldn’t load that user.')})});
  $('apRB').addEventListener('click',function(){var n=Math.max(0,Math.min(999999999,Math.floor(Number(String($('apR').value).replace(/\D/g,''))||0)));S.robux=n;save();setBal();$('apR').value=n});
  $('apFB').addEventListener('click',function(){
   var q=$('apF').value;apMsg('apFM','Loading…');
-  findUser(q).then(function(u){if(S.friends.some(function(f){return String(f.id)===String(u.id)}))throw Error('Already added.');return withHead(u)}).then(function(u){S.friends.push(u);save();renderFriends();$('apL').innerHTML=apFriendsHtml();$('apF').value='';apMsg('apFM','Added '+(u.display||u.name),1)}).catch(function(e){apMsg('apFM',e&&e.message&&!/^\d+$/.test(e.message)?e.message:'Couldn’t add that user.')})});
+  findUser(q).then(function(u){if(S.friends.some(function(f){return String(f.id)===String(u.id)}))throw Error('Already added.');return withHead(u)}).then(function(u){S.friends.push(u);save();renderFriends();$('apL').innerHTML=apFriendsHtml();$('apF').value='';apMsg('apFM','Added '+(u.display||u.name),1)}).catch(function(e){apMsg('apFM',e&&e.message||'Couldn’t add that user.')})});
  $('apF').addEventListener('keydown',function(e){if(e.key==='Enter')$('apFB').click()});
  var sres=[],sseq=0,stm=null;
  function sdraw(msg){
@@ -190,9 +212,9 @@ function openAp(focusF){
   if(v.length<2&&!/^\d+$/.test(v)){sres=[];sdraw();return}
   sdraw('Searching…');
   stm=setTimeout(function(){
-   var p=/^\d+$/.test(v)?findUser(v).then(function(u){return [u]}):J('/rbx/users/v1/users/search?keyword='+encodeURIComponent(v)+'&limit=8').then(function(s){return (s.data||[]).slice(0,8).map(function(u){return {id:u.id,name:u.name,display:u.displayName||u.name}})});
+   var p=/^\d+$/.test(v)?findUser(v).then(function(u){return [u]}):searchUsers(v);
    p.then(function(l){if(my!==sseq)return;sres=l.map(function(u){u.img=u.img||'';return u});sdraw(l.length?'':'No users found.');
-    return heads(l.map(function(u){return u.id})).then(function(m){if(my!==sseq)return;sres.forEach(function(u){u.img=m[u.id]||''});sdraw()})}).catch(function(){if(my===sseq){sres=[];sdraw('Couldn’t search right now.')}})},220)});
+    return heads(l.map(function(u){return u.id})).then(function(m){if(my!==sseq)return;sres.forEach(function(u){u.img=m[u.id]||''});sdraw()})}).catch(function(e){if(my===sseq){sres=[];sdraw(e&&e.message||'Couldn’t search right now.')}})},220)});
  $('apS').addEventListener('click',function(e){var b=e.target.closest('.ab');if(!b||b.classList.contains('on'))return;var u=sres[+b.dataset.i];if(!u)return;S.friends.push({id:u.id,name:u.name,display:u.display,img:u.img});save();renderFriends();$('apL').innerHTML=apFriendsHtml();sdraw()});
  if(focusF===true){var fi=$('apF');fi.scrollIntoView({block:'center'});fi.focus({preventScroll:true})}
  $('apU').addEventListener('keydown',function(e){if(e.key==='Enter')$('apUB').click()});
