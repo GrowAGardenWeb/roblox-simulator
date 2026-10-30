@@ -116,6 +116,8 @@ img{display:block;max-width:none}
 .add{margin-top:10px;width:100%}
 .hint{font-size:12px;color:#8a8a8f;margin:8px 0 0;line-height:1.35}
 input[type=file]{display:none}
+[hidden]{display:none!important}
+.tabs.five button{flex:1;padding:0}
 .cell{cursor:pointer}
 .cell .vtag{position:absolute;top:calc(12*var(--u));right:calc(12*var(--u));width:calc(40*var(--u));height:calc(40*var(--u));border-radius:50%;background:#00000066;display:grid;place-items:center}
 .cell .vtag svg{width:calc(20*var(--u));height:calc(20*var(--u))}
@@ -241,9 +243,9 @@ function render(){
 }
 /* tabs */
 var tabs=document.querySelectorAll('#tabs button'),ind=$('ind');
-function moveInd(b){if(!b||!b.offsetWidth)return;ind.style.left=b.offsetLeft+'px';ind.style.width=b.offsetWidth+'px'}
+function moveInd(b){if(!b||!b.offsetWidth)return;var five=$('tabs').classList.contains('five');if(five){var w=$('tabs').clientWidth/921*100;ind.style.left=(b.offsetLeft+(b.offsetWidth-w)/2)+'px';ind.style.width=w+'px'}else{ind.style.left=b.offsetLeft+'px';ind.style.width=b.offsetWidth+'px'}}
 tabs.forEach(function(b){b.addEventListener('click',function(){tabs.forEach(function(x){x.classList.toggle('on',x===b)});moveInd(b);var first=b.dataset.t==='0';$('grid').hidden=!first;$('empty').hidden=first})});
-function tabsApply(){var five=S.tabs==5;[].forEach.call(document.querySelectorAll('#tabs button'),function(b){var k=+b.dataset.t;if(k===9){b.style.display=S.artist?'':'none';return}b.style.display=(five&&[1,2,3].indexOf(k)>-1)?'none':''});var on=document.querySelector('#tabs button.on');if(on&&on.style.display==='none'){var f=document.querySelector('#tabs button[data-t="0"]');f.click()}}
+function tabsApply(){var five=S.tabs==5;$('tabs').classList.toggle('five',five);[].forEach.call(document.querySelectorAll('#tabs button'),function(b){var k=+b.dataset.t;if(k===9){b.style.display=S.artist?'':'none';return}b.style.display=(five&&[1,2,3].indexOf(k)>-1)?'none':''});var on=document.querySelector('#tabs button.on');if(on&&on.style.display==='none'){var f=document.querySelector('#tabs button[data-t="0"]');f.click()}requestAnimationFrame(moveAll)}
 function moveAll(){moveInd(document.querySelector('#tabs button.on'))}
 /* editor */
 var fAny=$('fAny'),pick=null;
