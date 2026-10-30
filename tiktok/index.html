@@ -125,7 +125,7 @@ input[type=file]{display:none}
 /* loader sheet + skeletons + get coins */
 body.inst *{transition:none!important}
 .ld{position:fixed;top:0;bottom:0;right:max(0px,calc((100vw - 460px)/2));width:min(100vw,460px);background:#fff;z-index:50;border-radius:calc(88*var(--u)) 0 0 calc(88*var(--u));transform:translateX(100%);visibility:hidden;transition:transform .4s cubic-bezier(.32,.72,0,1),visibility 0s .4s}
-.ld.on{transform:none;visibility:visible;transition:transform .4s cubic-bezier(.32,.72,0,1),visibility 0s}
+.ld.on{transform:none;border-radius:0;visibility:visible;transition:transform .4s cubic-bezier(.32,.72,0,1),border-radius .4s cubic-bezier(.32,.72,0,1),visibility 0s}
 .ld.flat{border-radius:0}
 .ld .ptr{top:50%;margin-top:calc(-14*var(--u));opacity:1}
 .sh{background:linear-gradient(90deg,#f0f0f2 0,#f6f6f8 50%,#f0f0f2 100%) 0 0/200% 100%;animation:shm 1.2s linear infinite}
