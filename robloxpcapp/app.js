@@ -15,19 +15,24 @@ var PX=/^https?:$/.test(location.protocol)&&!window.pc;
 var HOST={apis:'apis',thumbs:'thumbnails',users:'users',friends:'friends',games:'games',catalog:'catalog'};
 function D(p){var m=p.match(/^\/rbx\/([a-z]+)\/(.*)$/);return 'https://'+HOST[m[1]]+'.roblox.com/'+m[2]}
 var FAILS=[];
-function note(u,e){var m=(String(u).match(/^\/?([a-z]+(?:\/[a-z]+)?)/)||[,'?'])[1];FAILS.push(m+' '+((e&&e.message)||e));if(FAILS.length>6)FAILS.shift()}
+function note(u,e){var m=(String(u).replace(/^https?:\/\/[^\/]+/,'').match(/^\/?([a-z]+(?:\/[a-z]+)?)/)||[,'?'])[1];FAILS.push(m+' '+((e&&e.message)||e));if(FAILS.length>6)FAILS.shift()}
 function F1(u){return fetch(u).then(function(r){if(!r.ok)throw Error(r.status);return r.json()},function(e){throw Error('blocked')}).catch(function(e){note(u,e);throw e})}
+/* the site is static (GitHub Pages), so /rbx/ and /api/ live on the same proxy host the mobile app (/robloxapp/) uses; /rbxproxy is still tried first */
+var PB='https://create-app-iota.vercel.app';
+var VID='';try{VID=localStorage.getItem('larp-vid-m')||'';if(!/^[a-f0-9]{16}$/.test(VID)){VID='';for(var i=0;i<16;i++)VID+=Math.floor(Math.random()*16).toString(16);localStorage.setItem('larp-vid-m',VID)}}catch(e){VID=''}
+function PA(url){return PB+'/api/rbx?u='+encodeURIComponent(url)+(VID?'&_v='+VID:'')}
 function J(p){
  if(!PX)return F1(D(p));
- return F1(p).catch(function(){return F1('/rbxproxy?u='+encodeURIComponent(D(p)))}).catch(function(){return F1('/api/rbx?u='+encodeURIComponent(D(p)))});
+ return F1(PB+p).catch(function(){return F1('/rbxproxy?u='+encodeURIComponent(D(p)))}).catch(function(){return F1(PA(D(p)))});
 }
 function PGET(url){
  if(!PX)return F1(url);
- return F1('/rbxproxy?u='+encodeURIComponent(url)).catch(function(){return F1('/api/rbx?u='+encodeURIComponent(url))});
+ return F1('/rbxproxy?u='+encodeURIComponent(url)).catch(function(){return F1(PA(url))});
 }
+function P1(u,body){return fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw Error(r.status);return r.json()},function(){throw Error('blocked')}).catch(function(e){note(u,e);throw e})}
 function PPOST(url,body){
- var u=PX?'/rbxproxy?u='+encodeURIComponent(url):url;
- return fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw Error(r.status);return r.json()},function(){throw Error('blocked')}).catch(function(e){note(u,e);throw e});
+ if(!PX)return P1(url,body);
+ return P1('/rbxproxy?u='+encodeURIComponent(url),body).catch(function(){return P1(PA(url),body)});
 }
 /* same three sources the mobile app uses: exact username, omni-search and user search */
 function searchUsers(q){
