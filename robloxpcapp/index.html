@@ -36,7 +36,7 @@
           <img class="me-av" src="img/av_me.webp" alt="">
           <b id="meName">munfuja</b>
           <img src="img/i_verified.webp" alt="" style="width:34px;height:24px">
-          <img class="rbx" src="img/i_robux.webp" alt="Robux" style="width:36px;height:30px">
+          <button class="rbx" id="openRb" aria-label="Robux"><img src="img/i_robux.webp" alt="Robux" style="width:36px;height:30px"></button>
           <button class="bell" aria-label="Notifications"><img src="img/i_bell.webp" alt="" style="width:32px;height:30px"><i class="bdg" id="bellN">3</i></button>
         </div>
       </div>
@@ -57,6 +57,27 @@
       </section>
     </main>
   </div>
+</div>
+
+<section class="rb" id="rb" hidden>
+  <div class="rb-bar"><button class="rb-x" id="rbX" aria-label="Close"><img src="img/x_big.webp" alt="" style="width:22px;height:24px"></button><div class="rb-t"><small id="rbU">munfuja: 13+</small><span>Balance: <span id="rbBal">1,000</span> Robux</span></div></div>
+  <div class="rb-sc">
+    <div class="rb-col">
+      <div class="rb-pill"><img src="img/hx_p.webp" alt="" style="width:26px;height:28px"><b id="rbPill">1,000</b><button id="rbSend"><img src="img/i_up.webp" alt="" style="width:14px;height:14px">Send</button></div>
+      <h1>Enjoy up to 25%<br>more Robux</h1>
+      <h2>Bonus item we picked for you</h2>
+      <div class="rb-card">
+        <img class="rb-ban" src="img/bed_banner.webp" alt="">
+        <div id="rbRows"></div>
+      </div>
+      <h2 class="h2b">Robux packages</h2>
+      <div class="rb-card w" id="rbPk"></div>
+    </div>
+  </div>
+</section>
+
+<div class="sr" id="sr" hidden>
+  <div class="sr-box" id="srBox"></div>
 </div>
 <script src="app.js"></script>
 </body>
