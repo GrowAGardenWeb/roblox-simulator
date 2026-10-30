@@ -660,7 +660,6 @@ function closeEd(){ed.classList.remove('on');ed.setAttribute('aria-hidden','true
 $('editBtn').addEventListener('click',openEd);$('av').addEventListener('click',openEd);
 $('done').addEventListener('click',closeEd);
 $('reset').addEventListener('click',function(){if($('reset').dataset.c!=='1'){$('reset').dataset.c='1';$('reset').textContent='Tap again';setTimeout(function(){$('reset').dataset.c='';$('reset').textContent='Reset'},2500);return}$('reset').dataset.c='';$('reset').textContent='Reset';S=clone(DEF);try{localStorage.removeItem(KEY)}catch(e){}vClear();sync()});
-(function(){try{var sa=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);if(!sa)return;var S=screen.height-window.innerHeight;if(S>10&&S<110){app.style.setProperty('--st','calc(105*var(--u) - '+S+'px)');document.documentElement.style.setProperty('--st','calc(105*var(--u) - '+S+'px)')}}catch(e){}})();
 load();render();go('profile');window.addEventListener('resize',moveAll);
 })();
 </script>
