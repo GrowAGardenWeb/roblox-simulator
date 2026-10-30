@@ -15,14 +15,14 @@
 html,body{margin:0;height:100%;background:#fff;color:var(--ink);font-family:var(--ui);-webkit-text-size-adjust:100%}
 button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
 img{display:block;max-width:none}
-.app{position:relative;max-width:460px;height:100%;margin:0 auto;background:#fff;overflow:hidden}
-.top{position:absolute;z-index:5;top:0;left:0;right:0;height:calc(196*var(--u) + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) calc(34*var(--u)) 0;display:flex;align-items:flex-end;padding-bottom:calc(14*var(--u));background:#fff}
+.app{--st:max(env(safe-area-inset-top,0px),calc(105*var(--u)));position:relative;max-width:460px;height:100%;margin:0 auto;background:#fff;overflow:hidden}
+.top{position:absolute;z-index:5;top:0;left:0;right:0;height:calc(116*var(--u) + var(--st));padding:var(--st) calc(34*var(--u)) 0;display:flex;align-items:flex-end;padding-bottom:calc(14*var(--u));background:#fff}
 .top .ib{width:calc(64*var(--u));height:calc(64*var(--u));display:grid;place-items:center}
 .top img{height:calc(46*var(--u));width:auto}
 .top .coin{margin-left:calc(18*var(--u))}.top .coin img{height:calc(56*var(--u));border-radius:50%}
 .top .sp{flex:1}
 .top .r{display:flex;gap:calc(30*var(--u));align-items:center}
-.scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-top:calc(196*var(--u) + env(safe-area-inset-top,0px));padding-bottom:calc(150*var(--u) + env(safe-area-inset-bottom,0px));scrollbar-width:none}
+.scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-top:calc(91*var(--u) + var(--st));padding-bottom:calc(150*var(--u) + env(safe-area-inset-bottom,0px));scrollbar-width:none}
 .scroll::-webkit-scrollbar{display:none}
 .head{position:relative;padding:calc(59*var(--u)) calc(34*var(--u)) 0;min-height:calc(190*var(--u))}
 .who{max-width:calc(620*var(--u))}
@@ -65,10 +65,10 @@ img{display:block;max-width:none}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(2*var(--u))}
 .cell{position:relative;aspect-ratio:3/4;background:#111;overflow:hidden}
 .cell>img{width:100%;height:100%;object-fit:cover}
-.cell .ov{position:absolute;left:0;right:0;bottom:0;padding:calc(30*var(--u)) calc(14*var(--u)) calc(12*var(--u));background:linear-gradient(transparent,#0000006b);color:#fff;font-weight:700;font-size:calc(34*var(--u));display:flex;align-items:center;gap:calc(8*var(--u));text-shadow:0 1px 3px #0006}
-.cell .ov svg{width:calc(32*var(--u));height:calc(32*var(--u));flex:none}
-.cell .lab{position:absolute;inset:0;display:flex;align-items:flex-end;padding:calc(16*var(--u));background:#00000073;color:#fff;font-size:calc(40*var(--u));font-weight:700;line-height:1.15;text-shadow:0 1px 4px #0006}
-.cell .dr{position:absolute;top:calc(12*var(--u));left:calc(14*var(--u));font-size:calc(40*var(--u));font-weight:800;color:#fff;text-shadow:0 1px 4px #0007}
+.cell .ov{position:absolute;left:0;right:0;bottom:0;padding:calc(30*var(--u)) calc(14*var(--u)) calc(12*var(--u));background:linear-gradient(transparent,#0000006b);color:#fff;font-weight:700;font-size:calc(27.5*var(--u));display:flex;align-items:center;gap:calc(8*var(--u));text-shadow:0 1px 3px #0006}
+.cell .ov svg{width:calc(27*var(--u));height:calc(27*var(--u));flex:none}
+.cell .lab{position:absolute;inset:0;display:flex;align-items:flex-end;padding:calc(16*var(--u));background:#00000073;color:#fff;font-size:calc(27.5*var(--u));font-weight:600;line-height:1.2;text-shadow:0 1px 4px #0006}
+.cell .dr{position:absolute;top:calc(12*var(--u));left:calc(14*var(--u));font-size:calc(28.5*var(--u));font-weight:800;color:#fff;text-shadow:0 1px 4px #0007}
 .empty{padding:calc(140*var(--u)) calc(60*var(--u));text-align:center;color:var(--mute);font-size:calc(30*var(--u));font-weight:500}
 .nav{position:absolute;z-index:6;left:0;right:0;bottom:0;height:calc(150*var(--u) + env(safe-area-inset-bottom,0px));padding:calc(10*var(--u)) calc(34*var(--u)) env(safe-area-inset-bottom,0px);background:#fff;border-top:calc(2*var(--u)) solid #f0f0f1;display:flex;justify-content:space-between;align-items:flex-start}
 .nav button{display:flex;flex-direction:column;align-items:center;gap:calc(8*var(--u));width:calc(160*var(--u));font-size:calc(26*var(--u));font-weight:600;color:#161616;position:relative;transition:none}
