@@ -73,7 +73,7 @@ img{display:block;max-width:none}
 .nav{position:absolute;z-index:6;left:0;right:0;bottom:0;height:calc(150*var(--u) + env(safe-area-inset-bottom,0px));padding:calc(10*var(--u)) calc(34*var(--u)) env(safe-area-inset-bottom,0px);background:#fff;border-top:calc(2*var(--u)) solid #f0f0f1;display:flex;justify-content:space-between;align-items:flex-start}
 .nav button{display:flex;flex-direction:column;align-items:center;gap:calc(8*var(--u));width:calc(160*var(--u));font-size:calc(26*var(--u));font-weight:600;color:#161616;position:relative}
 .nav img{height:calc(56*var(--u));width:auto}
-.nav .mk img{height:calc(78*var(--u));margin-top:calc(2*var(--u))}
+.nav .mk img{margin-top:calc(2*var(--u))}
 .nav .badge{position:absolute;top:calc(-12*var(--u));left:50%;margin-left:calc(10*var(--u));min-width:calc(72*var(--u));height:calc(48*var(--u));padding:0 calc(14*var(--u));border-radius:calc(24*var(--u));background:var(--red);color:#fff;font-size:calc(27*var(--u));font-weight:700;display:grid;place-items:center;border:calc(4*var(--u)) solid #fff;box-sizing:content-box}
 /* editor */
 .ed{position:fixed;inset:0;z-index:50;background:#f4f4f6;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.85,.2,1);visibility:hidden}
@@ -118,7 +118,7 @@ img{display:block;max-width:none}
 input[type=file]{display:none}
 /* nav + screens */
 .nav .ic{position:relative;display:block;width:calc(62*var(--u));height:calc(62*var(--u))}
-.nav .ic img,.nav .ic svg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .15s}
+.nav .ic img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:none;transition:opacity .15s}
 .nav .ic .n{opacity:0}.nav button.on .ic .n{opacity:1}.nav button.on .ic .o{opacity:0}
 .nav button{gap:calc(6*var(--u))}
 .nav{transition:background .2s}
@@ -269,7 +269,7 @@ input[type=file]{display:none}
     <div class="irow"><img class="ia" src="img/r_req.webp" alt=""><div class="it"><b>Message requests</b><span id="iReq"></span></div><i class="bdg red wide" id="iReqN"></i></div>
     <div class="irow"><img class="ia" src="img/r_sys.webp" alt=""><div class="it"><b>System notifications</b><span id="iSys"></span></div><i class="bdg dot"></i></div>
   </section>
-  <nav class="nav" id="nav"><button data-s="home"><span class="ic"><img class="o" src="img/n_home_off.webp" alt=""><img class="n" src="img/n_home_on.webp" alt=""></span>Home</button><button data-s="disc"><span class="ic"><img class="o" src="img/n_disc_off.webp" alt=""><img class="n" src="img/n_disc_on.webp" alt=""></span>Discover</button><button class="mk" aria-label="Create" data-s="mk"><img src="img/i_n3.webp" alt=""></button><button data-s="inbox"><span class="ic"><img class="o" src="img/n_inbox_off.webp" alt=""><svg class="n" viewBox="0 0 24 24"><path d="M7 3.2h10A4.2 4.2 0 0 1 21.2 7.4v6.2a4.2 4.2 0 0 1-4.2 4.2h-4.4L8.6 21.6v-3.8H7a4.2 4.2 0 0 1-4.2-4.2V7.4A4.2 4.2 0 0 1 7 3.2z" fill="#000"/><path d="M8.6 10.5h6.8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></span>Inbox<i class="badge" id="inbox"></i></button><button data-s="profile"><span class="ic"><img class="o" src="img/n_prof_off.webp" alt=""><img class="n" src="img/n_prof_on.webp" alt=""></span>Profile</button></nav>
+  <nav class="nav" id="nav"><button data-s="home"><span class="ic"><img class="o" src="img/n_home_off.webp" style="width:calc(47.4*var(--u));height:calc(50.2*var(--u))" alt=""><img class="n" src="img/n_home_on.webp" style="width:calc(68.4*var(--u));height:calc(67.7*var(--u))" alt=""></span>Home</button><button data-s="disc"><span class="ic"><img class="o" src="img/n_disc_off.webp" style="width:calc(51.6*var(--u));height:calc(51.6*var(--u))" alt=""><img class="n" src="img/n_disc_on.webp" style="width:calc(67.7*var(--u));height:calc(67.7*var(--u))" alt=""></span>Discover</button><button class="mk" aria-label="Create" data-s="mk"><img src="img/i_n3.webp" style="width:calc(100.5*var(--u));height:calc(65.6*var(--u))" alt=""></button><button data-s="inbox"><span class="ic"><img class="o" src="img/n_inbox_off.webp" style="width:calc(50.2*var(--u));height:calc(49.5*var(--u))" alt=""><img class="n" src="img/n_inbox_on.webp" style="width:calc(50.2*var(--u));height:calc(50.9*var(--u))" alt=""></span>Inbox<i class="badge" id="inbox"></i></button><button data-s="profile"><span class="ic"><img class="o" src="img/n_prof_off.webp" style="width:calc(46.1*var(--u));height:calc(50.2*var(--u))" alt=""><img class="n" src="img/n_prof_on.webp" style="width:calc(43.3*var(--u));height:calc(47.4*var(--u))" alt=""></span>Profile</button></nav>
 </div>
 
 <aside class="ed" id="ed" aria-hidden="true"><div class="ed-in">
