@@ -157,7 +157,7 @@ button{transition:background-color .15s ease,color .15s ease,transform .12s ease
 button:active{transform:scale(.97)}
 .tabs button:active,.sb:active,.menu:active{transform:none}
 .sb img,.me img,.bell img,.menu img{transition:transform .15s ease}
-.sb:hover img.si{transform:scale(1.06)}
+.sb:hover img.si{transform:translate(-50%,-50%) scale(1.06)}
 .sb:hover span{color:#111}
 .search{transition:box-shadow .15s ease,background-color .15s ease}
 .search:focus-within{background:#fff;box-shadow:0 0 0 2px #335fff55 inset}
@@ -318,3 +318,60 @@ html.dk .win .sr{background:rgba(255,255,255,.5);animation:none}
 .rb-pill b{margin-left:4px}
 .rb-pill button{margin-left:auto;flex:none}
 html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
+.me i.ver[hidden]{display:none!important}
+
+/* tabs hover like the real app */
+.tabs button{border-radius:8px 8px 0 0}
+.tabs button:hover{background:#eef0f2}
+.tabs button.on:hover{background:#eef0f2}
+/* charts */
+.chips{display:flex;gap:7px;margin-top:20px}
+.chip{height:32px;padding:0 6px 0 14px;border-radius:16px;background:#1f2023;color:#fff;display:flex;align-items:center;gap:2px;font-size:14.5px;font-weight:500}
+.chip .ic{color:#fff}
+.chip i[data-ic]{display:grid;place-items:center}
+.dd{position:absolute;z-index:30;min-width:180px;background:#fff;border:1px solid #e3e4e6;border-radius:10px;box-shadow:0 6px 24px #0002;padding:6px;animation:pop .14s ease}
+.dd button{display:block;width:100%;text-align:left;height:36px;padding:0 12px;border-radius:6px;font-size:14px;font-weight:500}
+.dd button:hover{background:#eef0f2}.dd button.on{font-weight:700}
+.crow{margin-top:20px}
+.crow h3{display:flex;align-items:center;gap:6px;font-size:19.3px;line-height:26px;font-weight:700;color:#232527}
+.crow h3 i{display:grid;place-items:center;color:#232527}
+.crow .sub{font-size:13.85px;line-height:18px;color:#6d7176;margin-top:0}
+.crow .hd{display:flex;align-items:flex-start;justify-content:space-between}
+.crow .hd>i{color:#232527;margin-top:2px;margin-right:2px}
+.cards{display:flex;gap:18px;overflow:hidden;margin-top:14px;padding-bottom:4px}
+.cc{flex:none;width:118px}
+.cc img.t{width:118px;height:118px;border-radius:8px;object-fit:cover;background:#e5e6e8;opacity:0;transition:opacity .3s}
+.cc img.t.ld{opacity:1}
+.cc b{display:block;margin-top:8px;font-size:13.7px;line-height:18px;font-weight:600;color:#232527;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:36px}
+.cc .rt{display:flex;align-items:center;gap:3px;margin-top:6px;font-size:13.5px;font-weight:600;color:#393b3d;white-space:nowrap}
+.cc .rt i{display:grid;place-items:center;color:#393b3d}
+.cc .rt span+i{margin-left:5px}
+/* left drawer */
+.scrim{position:absolute;left:0;right:0;top:22px;bottom:0;background:rgba(0,0,0,.5);z-index:60;animation:srfade .2s ease}
+.scrim[hidden]{display:none}
+.drw{position:absolute;left:0;top:22px;bottom:0;width:352px;background:#fcfcfc;z-index:61;transform:translateX(-102%);transition:transform .24s cubic-bezier(.2,.7,.3,1);box-shadow:0 0 24px #0003;color:#232527;overflow:hidden}
+.drw.open{transform:none}
+.dp{position:absolute;left:22px;top:22px;display:flex;align-items:center;gap:10px}
+.dp img{width:64px;height:64px;border-radius:50%;object-fit:cover;background:#e5e6e8}
+.dp b{display:flex;align-items:center;gap:4px;font-size:14.1px;line-height:18px}
+.dp b i{color:#3f4246}
+.dp small{display:block;font-size:14.6px;line-height:20px;color:#6d7176;font-weight:400}
+.drb{position:absolute;left:20px;right:20px;top:101px;height:55px;border:1px solid #e1e2e4;border-radius:10px;display:flex;align-items:center;padding:0 10px 0 12px;gap:8px;font-size:16.3px;font-weight:700}
+.drb button{margin-left:auto;height:32px;padding:0 10px;border-radius:6px;background:#e3e4e6;font-size:11.8px;font-weight:600;color:#393b3d}
+.dli{position:absolute;left:0;right:0;height:44px;display:flex;align-items:center;padding:0 20px 0 26px;font-size:13.3px;font-weight:600;cursor:pointer;color:#232527}
+.dli:hover{background:#eef0f2}
+.dli i[data-ic]{width:28px;display:grid;place-items:center;margin-right:32px;color:#232527}
+.dli em{margin-left:auto;font-style:normal;min-width:20px;height:18px;border-radius:9px;background:#335fff;color:#fff;font-size:11px;font-weight:700;line-height:18px;text-align:center;padding:0 5px}
+.dhr{position:absolute;left:20px;right:20px;top:598px;height:1px;background:#e1e2e4}
+.dsw{position:absolute;left:20px;right:20px;top:733px;height:48px;border-radius:8px;background:#e3e4e6;font-size:15.2px;font-weight:600;text-align:center}
+/* sidebar hit areas: each button sits at its own place (the Me button used to cover the menu button) */
+.sb{height:64px}
+#sbHome{top:52px}
+.sb[data-s=moments]{top:115.5px}
+.sb[data-s=chat]{top:179px}
+.sb[data-s=me]{top:242px}
+.sb i[data-ic],.sb .si{top:32px!important}
+.sb span{top:56px!important}
+
+.dli .di{width:28px;display:grid;place-items:center;margin-right:32px;flex:none;color:#232527}
+.dhr{top:621px}
