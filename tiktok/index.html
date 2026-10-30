@@ -269,7 +269,7 @@ input[type=file]{display:none}
     <div class="itop"><img src="img/i_plus.webp" alt=""><h2>Inbox<span class="stp"><i class="g"></i><i class="cr"></i></span></h2><img src="img/i_search.webp" alt=""></div>
     <div class="story"><div class="sb" id="sNote"></div><div class="sav"><img class="b-av" alt=""><img class="sp" src="img/plus.webp" alt=""></div><span>Create</span></div>
     <div class="irow"><img class="ia" src="img/r_act.webp" alt=""><div class="it"><b>Activity &amp; new followers</b><span id="iAct"></span></div><i class="bdg red" id="iActN"></i></div>
-    <div class="irow"><img class="ia b-av" alt="" style="background:#1d44c8"><div class="it"><b>Chat de <span class="b-first"></span> <svg class="vbs" viewBox="0 0 24 24"><path d="M12 1.6l2.3 1.6 2.8-.2 1.2 2.6 2.5 1.2-.2 2.8L22 12l-1.6 2.3.2 2.8-2.6 1.2-1.2 2.5-2.8-.2L12 22l-2.3-1.6-2.8.2-1.2-2.6-2.5-1.2.2-2.8L2 12l1.6-2.3-.2-2.8 2.6-1.2 1.2-2.5 2.8.2z" fill="#20d5ec"/><path d="M7.6 12.3l3 3 5.8-6.2" stroke="#fff" stroke-width="2.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="pin" viewBox="0 0 24 24"><path d="M14.500 3.500l6 6-2.200.6-3.300 3.300.4 4.100-1.400 1.400-3.400-3.400-5.200 5.200-1-1 5.200-5.200-3.400-3.400 1.400-1.400 4.100.4 3.300-3.300z" fill="#9a9aa0"/></svg></b><span id="iChat"></span></div></div>
+    
     <div class="irow"><img class="ia" src="img/r_req.webp" alt=""><div class="it"><b>Message requests</b><span id="iReq"></span></div><i class="bdg red wide" id="iReqN"></i></div>
     <div class="irow"><img class="ia" src="img/r_sys.webp" alt=""><div class="it"><b>System notifications</b><span id="iSys"></span></div><i class="bdg dot"></i></div>
   </section>
@@ -304,7 +304,6 @@ input[type=file]{display:none}
   <div class="card"><h3>Inbox screen</h3>
     <div class="fld"><label for="eIA">Activity &amp; new followers: text</label><input type="text" id="eIA" maxlength="70" autocomplete="off"></div>
     <div class="row2" style="grid-template-columns:1fr 1fr"><div class="fld"><label for="eIAN">Activity badge</label><input type="text" id="eIAN" maxlength="4" autocomplete="off"></div><div class="fld"><label for="eIR">Pending DMs (999+ above 999)</label><input type="text" id="eIR" maxlength="9" autocomplete="off"></div></div>
-    <div class="fld"><label for="eIC">Chat row: text</label><input type="text" id="eIC" maxlength="70" autocomplete="off"></div>
     <div class="fld"><label for="eIS">System notifications: text</label><input type="text" id="eIS" maxlength="70" autocomplete="off"></div>
   </div>
   <div class="card"><h3>Home feed screen</h3>
@@ -379,7 +378,7 @@ function renderMore(){
  $('fL').textContent=fmt(f.l);$('fC').textContent=Number(f.c)>=1e3&&/^\d+$/.test(f.c)?Number(f.c).toLocaleString('en-US'):fmt(f.c);$('fS').textContent=fmt(f.s);$('fH').textContent=fmt(f.h);
  $('fCap').textContent=f.cap;$('fSnd').textContent=f.snd+' - '+String(S.handle).replace(/^@/,'');$('fSr').textContent=f.sr;
  qa('.b-first',function(e){e.textContent=String(S.name).split(' ')[0]});
- $('iAct').textContent=i.act;$('iActN').textContent=i.actN;$('iChat').textContent=i.chat;$('iSys').textContent=i.sys;
+ $('iAct').textContent=i.act;$('iActN').textContent=i.actN;$('iSys').textContent=i.sys;
  var rq=String(i.reqs).trim().replace(/,/g,'');$('iReq').textContent='You have '+(/^\d+$/.test(rq)?(+rq).toLocaleString('en-US'):rq)+' pending DMs';$('iReqN').textContent=bd(rq);
  $('sNote').textContent=S.note;$('sNote').style.display=S.note?'':'none';
  var c='';S.cols.forEach(function(x,k){c+='<div class="col" data-c="'+k+'"><svg class="ck" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2"/><path d="M12 7v5l3.200 1.800" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span class="cn">'+esc(x.name)+'</span>'+(x.lock?'<svg class="lk" viewBox="0 0 24 24"><rect x="4.500" y="10.500" width="15" height="10" rx="2.500" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 10.500V8a4 4 0 0 1 8 0v2.500" fill="none" stroke="#fff" stroke-width="2"/></svg>':'')+'</div>'});
@@ -417,7 +416,7 @@ function fill(){
  $('eVids').innerHTML=v||'<p class="hint">No videos.</p>';
  var cl='';S.cols.forEach(function(x,k){cl+='<div class="li" style="grid-template-columns:1fr auto"><div class="f"><input type="text" value="'+esc(x.name)+'" data-cn="'+k+'" maxlength="30"><label class="tog" style="padding:0;font-size:13px">Private (lock)<input type="checkbox" data-cl="'+k+'"'+(x.lock?' checked':'')+'></label></div><button class="btn r" data-cd="'+k+'" type="button">Delete</button></div>'});
  $('eCols').innerHTML=cl||'<p class="hint">No collections.</p>';
- $('eIA').value=S.inb.act;$('eIAN').value=S.inb.actN;$('eIR').value=S.inb.reqs;$('eIC').value=S.inb.chat;$('eIS').value=S.inb.sys;
+ $('eIA').value=S.inb.act;$('eIAN').value=S.inb.actN;$('eIR').value=S.inb.reqs;$('eIS').value=S.inb.sys;
  $('eFL').value=S.feed.l;$('eFC').value=S.feed.c;$('eFS').value=S.feed.s;$('eFH').value=S.feed.h;$('eFCap').value=S.feed.cap;$('eFSnd').value=S.feed.snd;$('eFSr').value=S.feed.sr;
 }
 function sync(){render();fill();save()}
@@ -466,7 +465,7 @@ $('eCols').addEventListener('input',function(e){var t=e.target;if(t.dataset.cn!=
 $('eCols').addEventListener('click',function(e){var t=e.target.closest('[data-cd]');if(!t)return;S.cols.splice(+t.dataset.cd,1);sync()});
 $('addCol').addEventListener('click',function(){S.cols.push({name:'New collection',lock:false});sync()});
 function bindObj(id,o,k){$(id).addEventListener('input',function(){S[o][k]=this.value;render();save()})}
-bindObj('eIA','inb','act');bindObj('eIAN','inb','actN');bindObj('eIR','inb','reqs');bindObj('eIC','inb','chat');bindObj('eIS','inb','sys');
+bindObj('eIA','inb','act');bindObj('eIAN','inb','actN');bindObj('eIR','inb','reqs');bindObj('eIS','inb','sys');
 bindObj('eFL','feed','l');bindObj('eFC','feed','c');bindObj('eFS','feed','s');bindObj('eFH','feed','h');bindObj('eFCap','feed','cap');bindObj('eFSnd','feed','snd');bindObj('eFSr','feed','sr');
 /* screens + nav */
 var app=$('app'),scr={home:$('scrHome'),disc:$('scrDisc'),inbox:$('scrInbox'),profile:$('scroll')},cur='profile',fvid=$('fvid'),furl=null,fIdx=0;
