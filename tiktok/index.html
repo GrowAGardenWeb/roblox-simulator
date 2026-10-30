@@ -636,8 +636,8 @@ function openBalLoad(){if(busy)return;busy=true;ld.classList.remove('flat');ld.c
  setTimeout(function(){inst(function(){closeMenu();bal.classList.add('sk1');openBal();ld.classList.remove('on')});
   setTimeout(function(){bal.classList.remove('sk1');bal.classList.add('sk2');setTimeout(function(){bal.classList.remove('sk2');busy=false},450)},750)},1150)}
 function openGc(){if(busy)return;busy=true;renderGc();ld.classList.add('flat');ld.classList.add('on');
- setTimeout(function(){inst(function(){gc.classList.add('sk','on');gc.setAttribute('aria-hidden','false');ld.classList.remove('on')});
-  setTimeout(function(){gc.classList.remove('sk');busy=false},800)},1000)}
+ setTimeout(function(){inst(function(){gc.classList.add('on');gc.setAttribute('aria-hidden','false');ld.classList.remove('on')});
+  busy=false},1000)}
 function closeGc(){gc.classList.remove('on');gc.setAttribute('aria-hidden','true')}
 function renderGc(){$('gBal').textContent=cnt(S.bal.coins);$('gGrid').innerHTML=GP.map(function(p,i){return '<div class="gp'+(i===gsel?' on':'')+'" data-i="'+i+'"><i><img src="img/g_coin_s.webp" alt="">'+p[0].toLocaleString('en-US')+'</i><span>'+p[1]+'</span></div>'}).join('')}
 $('gGrid').addEventListener('click',function(e){var t=e.target.closest('.gp');if(t){gsel=+t.dataset.i;renderGc()}});
