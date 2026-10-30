@@ -242,3 +242,11 @@ body{text-rendering:optimizeLegibility;font-feature-settings:'kern','liga'}
 .ap-box .sh .cl{margin-left:auto}
 .menu .dot{left:24px;top:3px}
 .win{overflow:clip}
+
+/* amount / confirm steps rise a little with a quick fade */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.am>:not(.sh),.cf>:not(.sh){animation:rise .2s cubic-bezier(.2,.7,.3,1) both}
+.am>:nth-child(3),.cf>:nth-child(3){animation-delay:.03s}
+.am>:nth-child(4),.cf>:nth-child(4){animation-delay:.06s}
+.am>:nth-child(5),.cf>:nth-child(5){animation-delay:.09s}
+.am>:nth-child(6){animation-delay:.12s}
