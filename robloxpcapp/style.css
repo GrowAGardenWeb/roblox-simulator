@@ -14,7 +14,7 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 .menu{position:relative;margin-top:15px;width:38px;height:36px;display:grid;place-items:center}
 .menu .dot{position:absolute;left:27px;top:6px;width:9px;height:9px;border-radius:50%;background:#335fff}
 .sb{width:64px;height:63px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:12.5px;color:#393b3d}
-.sb:first-of-type{margin-top:10px}
+.sb:first-of-type{margin-top:21px}
 .sb span{line-height:16px}
 .sb.on span{color:#111}
 .sb .av{border-radius:50%}
@@ -22,7 +22,7 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 .main{flex:1;min-width:0;display:flex;flex-direction:column;padding:0 61px 0 64px}
 .top{flex:none;height:58px;margin-top:11px;display:flex;align-items:center;position:relative}
 .top .logo{margin-top:-18px;margin-left:-4px}
-.search{position:absolute;left:50%;top:0;left:50%;margin-left:-199px;margin-top:-12px;width:399px;height:36px;border-radius:8px;background:#edeff1;display:flex;align-items:center;gap:8px;padding:0 10px}
+.search{position:absolute;left:50%;top:0;left:50%;margin-left:-199px;width:399px;height:36px;border-radius:8px;background:#edeff1;display:flex;align-items:center;gap:8px;padding:0 10px}
 .search input{flex:1;border:0;outline:0;background:none;font:inherit;font-size:16px;color:#111}
 .search input::placeholder{color:#6d7176}
 .me{margin-left:auto;display:flex;align-items:center;gap:0;margin-top:-26px;margin-right:-2px}
@@ -145,3 +145,12 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 .cf .ntt{margin:12px 20px 0;font-size:11px;line-height:14px}
 
 .rbx{display:block}
+
+.fr>img.ph{width:106px;height:106px;border-radius:50%;margin:0;object-fit:cover;background:#e5e6e8}
+.rh.r2{margin-top:30px}
+.g{position:relative}
+.g .hv{display:none;position:absolute;left:-10px;right:-10px;top:-10px;z-index:30;background:#f7f7f8;border-radius:12px;padding:10px 10px 10px;box-shadow:0 4px 18px #0002}
+.g:hover .hv{display:block}
+.g .hv .t{border-radius:8px}
+.g .hv .pb{display:grid;place-items:center;width:100%;height:40px;margin-top:10px;border-radius:8px;background:#335fff}
+.g .hv b{margin-top:10px}

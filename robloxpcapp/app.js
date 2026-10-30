@@ -21,6 +21,47 @@ $('games').innerHTML=h;
 /* sidebar / tabs */
 [].forEach.call(document.querySelectorAll('.sb'),function(b){b.addEventListener('click',function(){[].forEach.call(document.querySelectorAll('.sb'),function(x){x.classList.toggle('on',x===b)})})});
 [].forEach.call(document.querySelectorAll('.tabs button'),function(b){b.addEventListener('click',function(){[].forEach.call(document.querySelectorAll('.tabs button'),function(x){x.classList.toggle('on',x===b)})})});
+/* Roblox web API (same-origin proxy on the site, direct calls inside Electron) */
+var PX=/^https?:$/.test(location.protocol)&&!window.pc;
+var HOST={apis:'apis',thumbs:'thumbnails',users:'users',friends:'friends',games:'games',catalog:'catalog'};
+function U(p){if(PX)return p;var m=p.match(/^\/rbx\/([a-z]+)\/(.*)$/);return 'https://'+HOST[m[1]]+'.roblox.com/'+m[2]}
+function J(p){return fetch(U(p)).then(function(r){if(!r.ok)throw Error(r.status);return r.json()})}
+function pct(g){var t=(g.totalUpVotes||0)+(g.totalDownVotes||0);return t?Math.round(100*g.totalUpVotes/t):0}
+function e2(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function loadFriends(){
+ var name=(localStorage.getItem('pc.user')||'munfuja').trim();
+ return J('/rbx/users/v1/users/search?keyword='+encodeURIComponent(name)+'&limit=10').then(function(s){
+  var l=s.data||[],u=l.filter(function(x){return String(x.name).toLowerCase()===name.toLowerCase()})[0]||l[0];if(!u)throw Error('no user');
+  return J('/rbx/friends/v1/users/'+u.id+'/friends')}).then(function(r){
+  var list=(r.data||[]).slice(0,20);if(!list.length)throw Error('no friends');
+  var ids=list.map(function(x){return x.id}).join(',');
+  return J('/rbx/thumbs/v1/users/avatar-headshot?userIds='+ids+'&size=150x150&format=Webp').then(function(t){
+   var im={};(t.data||[]).forEach(function(x){im[x.targetId]=x.imageUrl});
+   var h='<div class="fr"><div class="add"><img src="img/f_add.webp" alt="" style="width:54px;height:56px"><i class="n">45</i></div><b>Add Friends</b><small></small></div>';
+   list.forEach(function(f){h+='<div class="fr"><img class="ph" src="'+e2(im[f.id]||'')+'" alt=""><b>'+e2(f.displayName||f.name)+'</b><small></small></div>'});
+   $('friends').innerHTML=h})});
+}
+function gcard(g,img){
+ var r=pct(g)+'% Rating';
+ return '<div class="g"><img class="t" src="'+e2(img||'')+'" alt=""><b>'+e2(g.name)+'</b><div class="r"><img src="img/i_like.webp" alt=""><span>'+r+'</span></div>'+
+  '<div class="hv"><img class="t" src="'+e2(img||'')+'" alt=""><b>'+e2(g.name)+'</b><div class="r"><img src="img/i_like.webp" alt=""><span>'+r+'</span></div><button class="pb" aria-label="Play"><svg width="26" height="26" viewBox="0 0 26 26"><path d="M7 4.5v17l15-8.5z" fill="#fff"/></svg></button></div></div>'}
+var FALL=[['top-trending','Recommended For You',12],['top-playing-now','Top Playing Now',6],['up-and-coming','Up-and-Coming',6]];
+function loadGames(){
+ var sid=Math.random().toString(36).slice(2,12),q='&device=computer&country=all';
+ return J('/rbx/apis/explore-api/v1/get-sorts?sessionId='+sid+q).then(function(r){
+  var s=(r.sorts||[]).filter(function(x){return x.sortId&&/game/i.test(x.contentType||'Games')}).slice(0,4).map(function(x,i){return [x.sortId,x.sortDisplayName||x.sortId,i?6:12]});
+  return s.length?s:FALL}).catch(function(){return FALL}).then(function(sorts){
+  return Promise.all(sorts.map(function(s){return J('/rbx/apis/explore-api/v1/get-sort-content?sessionId='+sid+'&sortId='+encodeURIComponent(s[0])+q).then(function(r){return {t:s[1],n:s[2],g:(r.games||[]).slice(0,s[2])}}).catch(function(){return null})}))}).then(function(secs){
+  secs=secs.filter(function(x){return x&&x.g.length});if(!secs.length)throw Error('no games');
+  var ids=[];secs.forEach(function(x){x.g.forEach(function(g){ids.push(g.universeId)})});
+  var ch=[];for(var i=0;i<ids.length;i+=50)ch.push(J('/rbx/thumbs/v1/games/multiget/thumbnails?universeIds='+ids.slice(i,i+50).join(',')+'&countPerUniverse=1&size=768x432&format=Webp&isCircular=false').catch(function(){return {data:[]}}));
+  return Promise.all(ch).then(function(rs){
+   var im={};rs.forEach(function(r){(r.data||[]).forEach(function(x){if(x.thumbnails&&x.thumbnails[0])im[x.universeId]=x.thumbnails[0].imageUrl})});
+   var h='';secs.forEach(function(x,i){h+=(i?'<h3 class="rh r2">':'<h3 class="rh">')+e2(x.t)+'</h3><div class="games">'+x.g.map(function(g){return gcard(g,im[g.universeId])}).join('')+'</div>'});
+   var old=document.querySelector('#s-home .rh'),g0=$('games');if(old)old.remove();g0.insertAdjacentHTML('beforebegin',h);g0.remove()})});
+}
+loadFriends().catch(function(){});
+loadGames().catch(function(){});
 /* Robux page */
 var S={robux:1000,user:'munfuja'};
 function fmt(n){return Number(n).toLocaleString('en-US')}
