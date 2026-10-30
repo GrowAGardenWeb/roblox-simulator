@@ -5,7 +5,7 @@ function fmt(n){return Number(n).toLocaleString('en-US')}
 
 /* ---------- state (saved in this browser / app) ---------- */
 var KEY='pc.state.v2';
-function def(){return {user:{id:0,name:'munfuja',display:'munfuja',img:''},robux:1000,friends:[],req:'45',total:''}}
+function def(){return {user:{id:0,name:'munfuja',display:'munfuja',img:''},robux:1000,friends:[],req:'45',total:'',bell:'3',prem:true}}
 var S=def();
 try{var r0=JSON.parse(localStorage.getItem(KEY)||'null');if(r0)S=Object.assign(def(),r0)}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -36,7 +36,7 @@ function withHead(u){return heads([u.id]).then(function(m){u.img=m[u.id]||'';ret
 function renderMe(){
  $('meName').textContent=S.user.display||S.user.name;
  var im=S.user.img||'img/av_me.webp';$('meAv').src=im;$('sideAv').src=S.user.img||'img/av_side.webp';
- $('rbU').textContent=S.user.name+': 13+';
+ $('rbU').textContent=S.user.name+': 13+';var bn=String(S.bell==null?'':S.bell).trim();$('bellN').textContent=bn;$('bellN').style.display=bn?'':'none';$('prem').style.display=S.prem===false?'none':'';
 }
 function renderFriends(){
  var req=String(S.req||'').trim();
@@ -149,16 +149,27 @@ function openAp(){
  ap.hidden=false;
  apb.className='sr-box ap-box';
  apb.innerHTML='<div class="sh"><span class="ti">discord.gg/moneyscripts</span><span class="bl"></span><button class="cl" id="apX" aria-label="Close">'+I('x-r',24)+'</button></div><div class="ap-b">'+
-  '<h4>Account</h4><div class="ap-r"><input id="apU" placeholder="Roblox username or ID" value="'+e2(S.user.name)+'" autocomplete="off"><button id="apUB">Load</button></div><p class="ap-m" id="apUM"></p>'+
+  '<h4>Display name (next to your photo)</h4><div class="ap-r"><input id="apD" value="'+e2(S.user.display||S.user.name)+'" autocomplete="off"></div>'+
+  '<h4>Username (shown on the Robux page)</h4><div class="ap-r"><input id="apN" value="'+e2(S.user.name)+'" autocomplete="off"></div>'+
+  '<h4>Photo</h4><div class="ap-r"><img class="ap-ph" id="apPh" src="'+e2(S.user.img||'img/av_me.webp')+'" alt=""><label class="ap-fb">Choose photo<input type="file" id="apFile" accept="image/*" hidden></label><button id="apPR" class="g">Reset</button></div>'+
+  '<h4>Load everything from a Roblox user</h4><div class="ap-r"><input id="apU" placeholder="Roblox username or ID" value="'+e2(S.user.name)+'" autocomplete="off"><button id="apUB">Load</button></div><p class="ap-m" id="apUM"></p>'+
+  '<label class="ap-t"><input type="checkbox" id="apP" '+(S.prem!==false?'checked':'')+'> Premium icon next to the name</label>'+
+  '<h4>Notifications badge</h4><div class="ap-r"><input id="apB" placeholder="empty hides it" value="'+e2(S.bell)+'" autocomplete="off"></div>'+
   '<h4>Robux</h4><div class="ap-r"><input id="apR" inputmode="numeric" value="'+S.robux+'" autocomplete="off"><button id="apRB">Set</button></div>'+
   '<h4>Friends</h4><div class="ap-r"><input id="apF" placeholder="Roblox username or ID" autocomplete="off"><button id="apFB">Add</button></div><p class="ap-m" id="apFM"></p><ul class="ap-l" id="apL">'+apFriendsHtml()+'</ul>'+
   '<h4>Friend requests badge</h4><div class="ap-r"><input id="apQ" placeholder="empty hides it" value="'+e2(S.req)+'" autocomplete="off"><button id="apQB">Set</button></div>'+
   '<h4>Total friends shown in Send Robux</h4><div class="ap-r"><input id="apT" inputmode="numeric" placeholder="empty = list length" value="'+e2(S.total)+'" autocomplete="off"><button id="apTB">Set</button></div>'+
   '</div>';
  $('apX').addEventListener('click',closeAp);
+ $('apD').addEventListener('input',function(){S.user.display=this.value;save();renderMe()});
+ $('apN').addEventListener('input',function(){S.user.name=this.value;save();renderMe()});
+ $('apB').addEventListener('input',function(){S.bell=this.value;save();renderMe()});
+ $('apP').addEventListener('change',function(){S.prem=this.checked;save();renderMe()});
+ $('apFile').addEventListener('change',function(){var f=this.files&&this.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var n=Math.min(im.width,im.height),c=document.createElement('canvas');c.width=c.height=256;c.getContext('2d').drawImage(im,(im.width-n)/2,(im.height-n)/2,n,n,0,0,256,256);S.user.img=c.toDataURL('image/jpeg',.92);save();renderMe();$('apPh').src=S.user.img};im.src=rd.result};rd.readAsDataURL(f)});
+ $('apPR').addEventListener('click',function(){S.user.img='';save();renderMe();$('apPh').src='img/av_me.webp'});
  $('apUB').addEventListener('click',function(){
   var q=$('apU').value;apMsg('apUM','Loading…');
-  findUser(q).then(withHead).then(function(u){S.user=u;save();renderMe();apMsg('apUM','Loaded '+(u.display||u.name),1)}).catch(function(e){apMsg('apUM',e&&e.message&&!/^\d+$/.test(e.message)?e.message:'Couldn’t load that user.')})});
+  findUser(q).then(withHead).then(function(u){S.user=u;save();renderMe();$('apD').value=u.display||u.name;$('apN').value=u.name;$('apPh').src=u.img||'img/av_me.webp';apMsg('apUM','Loaded '+(u.display||u.name),1)}).catch(function(e){apMsg('apUM',e&&e.message&&!/^\d+$/.test(e.message)?e.message:'Couldn’t load that user.')})});
  $('apRB').addEventListener('click',function(){var n=Math.max(0,Math.min(999999999,Math.floor(Number(String($('apR').value).replace(/\D/g,''))||0)));S.robux=n;save();setBal();$('apR').value=n});
  $('apFB').addEventListener('click',function(){
   var q=$('apF').value;apMsg('apFM','Loading…');
