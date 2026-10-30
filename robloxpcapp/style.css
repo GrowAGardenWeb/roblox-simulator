@@ -47,13 +47,6 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 .fr .n{position:absolute;right:-1px;top:-6px;min-width:25px;height:19px;border-radius:10px;background:#335fff;color:#fff;font:700 12.5px/19px 'Segoe UI',Arial,sans-serif;padding:0 5px}
 .fr b{display:block;margin-top:9px;font-size:12.25px;font-weight:700;color:#393b3d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:16px}
 .fr small{display:block;font-size:12.25px;color:#6d7176;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:16px;min-height:16px}
-.ban{position:relative;height:336px;margin-top:43px;border-radius:8px;overflow:hidden;color:#fff;background:linear-gradient(180deg,#e60408 0,#e50408 52%,#bf0307 64%,#640206 84%,#260102 100%)}
-.ban-art{position:absolute;right:0;top:0;bottom:0;width:min(1156px,100%);background-size:auto 100%;background-position:right top;background-repeat:no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%);mask-image:linear-gradient(90deg,transparent 0,#000 18%)}
-.ban .chip{position:absolute;left:20px;top:20px;height:20px;line-height:20px;padding:0 8px;border-radius:10px;background:#fff;color:#111;font-size:12.5px;font-weight:600}
-.ban h2{position:absolute;left:20px;top:122px;font-size:38.7px;line-height:54px;font-weight:700;letter-spacing:-.005em;text-shadow:0 1px 0 #0001}
-.ban p{position:absolute;left:20px;top:175px;font-size:15.9px;line-height:22px}
-.ban .play{position:absolute;left:20px;bottom:20px;width:188px;height:40px;border-radius:8px;background:#335fff;color:#fff;font-size:15.5px;font-weight:600;text-align:center}
-.ban .mat{position:absolute;right:20px;bottom:21px;font-size:12.5px}
 .rh{margin-top:36px;font-size:20px;line-height:26px;font-weight:700;color:#232527}
 .games{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;margin-top:14px;padding-bottom:30px}
 .g{min-width:0}
@@ -189,3 +182,63 @@ button:active{transform:scale(.97)}
 .am .chips button,.am .nx{transition:background-color .15s ease,transform .12s ease}
 img{image-rendering:auto}
 body{text-rendering:optimizeLegibility;font-feature-settings:'kern','liga'}
+
+/* svg icons */
+.ic{display:block;flex:none}
+.side i[data-ic],.me i[data-ic],.top i[data-ic],.search i[data-ic]{display:grid;place-items:center}
+.menu i[data-ic]{color:#232527}
+.sb{color:#393b3d}.sb i[data-ic]{color:#393b3d}.sb.on i[data-ic]{color:#232527}
+.logo-b{color:#232527}
+.search i[data-ic]{color:#232527;margin-left:-6px;margin-right:-4px}
+.prem{color:#6d7176;margin-left:6px;margin-right:-2px}
+.rbx i,.bell i[data-ic]{color:#232527}
+.fr .add{color:#4b4e55}
+.rh.first{margin-top:40px}
+.g .r i{color:#6d7176}
+.g .hv .pb i{color:#fff}
+.rb-x{color:#232527;display:grid;place-items:center}
+.rb-pill{color:#232527}.rb-pill button{color:#232527}
+.rr .a i[data-ic],.rr .a .ic{color:#232527}
+.rr .a s .ic{color:#5d5f62}
+.sh .ti{color:#232527}
+.sr-s i[data-ic]{color:#232527}
+.ap-box{width:520px;height:auto;max-height:86%;overflow-y:auto;margin-top:0}
+.ap-box h2{margin:0}
+
+/* admin panel */
+.ap-b{padding:0 22px 22px}
+.ap-b h4{margin:16px 0 6px;font-size:13px;font-weight:700;color:#232527}
+.ap-r{display:flex;gap:8px}
+.ap-r input{flex:1;height:36px;border:1px solid #c3c6ca;border-radius:8px;background:#fff;padding:0 12px;font:inherit;font-size:14px;outline:0;color:#232527}
+.ap-r input:focus{border-color:#335fff}
+.ap-r button{height:36px;padding:0 16px;border-radius:8px;background:#335fff;color:#fff;font-size:13.5px;font-weight:700}
+.ap-r button:hover{filter:brightness(1.08)}
+.ap-m{min-height:16px;margin-top:6px;font-size:12px;color:#c0392b}.ap-m.ok{color:#1a8f4b}
+.ap-l{list-style:none;margin-top:6px;max-height:190px;overflow-y:auto}
+.ap-l li{display:flex;align-items:center;gap:10px;height:48px;padding:0 4px;border-radius:8px}
+.ap-l li:hover{background:#e6e7eb}
+.ap-l li.e{color:#6d7176;font-size:13px;justify-content:center}
+.ap-l img{width:36px;height:36px;border-radius:50%;object-fit:cover;background:#e5e6e8}
+.ap-l div{flex:1;min-width:0}.ap-l b{display:block;font-size:13.5px}.ap-l small{color:#6d7176;font-size:12px}
+.ap-l button{width:28px;height:28px;display:grid;place-items:center;border-radius:6px;color:#232527}
+.sh .bl:empty{display:none}
+.sh .ti:only-child{margin-left:0}
+.sr-list .sr-l{margin:12px 0 4px}
+.sr-list{margin:0 20px 0 21px;height:290px}
+.sr-s{margin-bottom:0}
+.sr-s{margin-bottom:6px}
+.fx .p img{width:48px;height:48px;position:static;transform:none}
+.am .chips button i,.am .chips button svg{color:#232527}
+.rr .a s{display:inline-flex;align-items:center;gap:2px}
+.rr .a s:after{display:block}
+.am .big svg{color:#232527}
+.cf .c2 .v svg{color:#232527}
+.sh .bl{color:#232527}
+
+.menu+.sb{margin-top:17px}
+.prem{margin-left:3px;margin-right:8px}
+.bell{margin-left:14px}
+.rh.first{margin-top:30px}
+.ap-box .sh .cl{margin-left:auto}
+.menu .dot{left:24px;top:3px}
+.win{overflow:clip}
