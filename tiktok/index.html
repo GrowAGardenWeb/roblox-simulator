@@ -74,8 +74,8 @@ img{display:block;max-width:none}
 .cell .lab{position:absolute;inset:0;display:flex;align-items:flex-end;padding:calc(16*var(--u));background:#00000073;color:#fff;font-size:calc(27.5*var(--u));font-weight:600;line-height:1.2;text-shadow:0 1px 4px #0006}
 .cell .dr{position:absolute;top:calc(12*var(--u));left:calc(14*var(--u));font-size:calc(28.5*var(--u));font-weight:800;color:#fff;text-shadow:0 1px 4px #0007}
 .empty{padding:calc(140*var(--u)) calc(60*var(--u));text-align:center;color:var(--mute);font-size:calc(30*var(--u));font-weight:500}
-.nav{position:absolute;z-index:6;left:0;right:0;bottom:0;height:calc(150*var(--u) + env(safe-area-inset-bottom,0px));padding:calc(10*var(--u)) calc(34*var(--u)) env(safe-area-inset-bottom,0px);background:#fff;border-top:calc(2*var(--u)) solid #f0f0f1;display:flex;justify-content:space-between;align-items:flex-start}
-.nav button{display:flex;flex-direction:column;align-items:center;gap:calc(8*var(--u));width:calc(160*var(--u));font-size:calc(26*var(--u));font-weight:600;color:#161616;position:relative;transition:none}
+.nav{position:absolute;z-index:6;left:0;right:0;bottom:0;height:calc(150*var(--u) + env(safe-area-inset-bottom,0px));padding:calc(10*var(--u)) calc(34*var(--u)) env(safe-area-inset-bottom,0px);background:#fff;border-top:calc(2*var(--u)) solid #f0f0f1;display:flex;justify-content:space-between;align-items:flex-start;overflow:visible}
+.nav button{line-height:calc(32*var(--u));display:flex;flex-direction:column;align-items:center;gap:calc(8*var(--u));width:calc(160*var(--u));font-size:calc(26*var(--u));font-weight:600;color:#161616;position:relative;transition:none}
 .nav img{height:calc(56*var(--u));width:auto}
 .nav .mk img{margin-top:calc(2*var(--u))}
 .nav .badge{font-style:normal;position:absolute;top:calc(-4*var(--u));left:50%;margin-left:calc(4*var(--u));min-width:calc(73*var(--u));height:calc(31*var(--u));padding:0 calc(8*var(--u));border-radius:calc(15.5*var(--u));background:#e8445a;color:#fff;font-family:'Urbanist',var(--ui);font-size:calc(28*var(--u));font-weight:600;line-height:1;display:grid;place-items:center;box-sizing:border-box}.nav .badge:empty{display:none}
@@ -411,6 +411,7 @@ body.inst *{transition:none!important}
     <label class="tog">Verified check<input type="checkbox" id="eVer"></label>
     <label class="tog">Red dot next to the name<input type="checkbox" id="eDot"></label>
     <label class="tog">Coin badge<input type="checkbox" id="eCoin"></label>
+    <label class="tog">“New” button in highlights<input type="checkbox" id="eNew"></label>
     <div class="fld" style="margin-top:6px"><label for="eBg">Photo background colour</label><input type="color" id="eBg" style="width:100%;height:38px;border:1px solid #e3e3e6;border-radius:10px;background:#f4f4f6;padding:3px"></div>
   </div>
   <div class="card"><h3>Balance screen</h3>
@@ -453,7 +454,7 @@ body.inst *{transition:none!important}
 var KEY='tt.profile.v2';
 var DEF={bal:{amt:'4.38',cur:'USD',coins:'0',tx:'Exchange of Coins: USD0.02',rc:'1',rt:'USD 0.02 from Content rewards',rech:true,rcc:'139',ru:'$43.00',hide:false},tabs:5,emptyT:'Share a throwback photo',cols:[{name:'Watch later',lock:true}],inb:{act:'New followers and comments',actN:'8',chat:'You have 23 new interactions · Oct 22',reqs:'998',sys:'Sell with TikTok Shop'},feed:{l:'1M',c:'3891',s:'145300',h:'76500',cap:'Pasito a pasito, suave suavecito #Trend #Dance',snd:'original sound',sr:'Search · your favorite creators'},tabs:5,artist:false,name:'moneyscripts',handle:'moneyscripts',ver:false,dot:true,coin:true,avBg:'#0a0a0a',avatar:null,note:"What's good?",
  following:'10',followers:'10000',likes:'10000',bio:'',link:'',inbox:'99+',
- hls:[],
+ hls:[],newB:true,
  drafts:{on:false,n:'7',size:'208.7MB',img:'v1'},
  vids:[]};
 var S;
@@ -485,9 +486,9 @@ function render(){
  $('av').style.background=S.avBg;
  var ib=$('inbox');ib.textContent=bdN(S.inbox);ib.style.display=S.inbox?'':'none';
  $('cat').textContent='Artist';$('cat').style.display=S.artist?'':'none';
- var h='<div class="hl"><img class="newb" src="img/new.webp" alt=""><span>New</span></div>';
+ var h=S.newB===false?'':'<div class="hl"><img class="newb" src="img/new.webp" alt=""><span>New</span></div>';
  S.hls.forEach(function(x){h+='<div class="hl"><div class="c pic"><img src="'+esc(src(x.img,'hl'))+'" alt=""></div><span>'+esc(x.name)+'</span></div>'});
- $('hls').innerHTML=h;
+ $('hls').innerHTML=h;$('hls').style.display=h?'':'none';
  var g='';
  if(S.drafts.on)g+='<div class="cell"><img src="'+esc(src(S.drafts.img,'v1'))+'" alt=""><span class="dr">Drafts: '+esc(S.drafts.n)+'</span><div class="ov">'+STACK+esc(S.drafts.size)+'</div></div>';
  S.vids.forEach(function(v,i){g+='<div class="cell" data-i="'+i+'"><img src="'+esc(src(v.img,'v2'))+'" alt="">'+(v.label?'<div class="lab">'+esc(v.label)+'</div>':(v.views?'<div class="ov">'+PLAY+esc(v.views)+'</div>':''))+(v.vid?'<span class="vtag"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" fill="#fff"/></svg></span>':'')+'</div>'});
@@ -526,14 +527,14 @@ $('fAv').addEventListener('change',function(){var f=this.files&&this.files[0];if
 $('rmAv').addEventListener('click',function(){S.avatar=null;sync()});
 function bind(id,key,tr){var el=$(id);el.addEventListener('input',function(){S[key]=tr?tr(el):el.value;render();save()})}
 bind('eEmpty','emptyT');bind('eName','name');bind('eHandle','handle');bind('eBio','bio');bind('eLink','link');bind('eNote','note');bind('eFg','following');bind('eFr','followers');bind('eLk','likes');bind('eInbox','inbox');bind('eBg','avBg');
-bind('eVer','ver',function(e){return e.checked});bind('eDot','dot',function(e){return e.checked});bind('eCoin','coin',function(e){return e.checked});
+bind('eVer','ver',function(e){return e.checked});bind('eDot','dot',function(e){return e.checked});bind('eCoin','coin',function(e){return e.checked});bind('eNew','newB',function(e){return e.checked});
 $('eDrOn').addEventListener('input',function(){S.drafts.on=this.checked;render();save()});
 $('eDrN').addEventListener('input',function(){S.drafts.n=this.value;render();save()});
 $('eDrS').addEventListener('input',function(){S.drafts.size=this.value;render();save()});
 function fill(){
  $('eEmpty').value=S.emptyT;$('eName').value=S.name;$('eHandle').value=S.handle;$('eBio').value=S.bio;$('eLink').value=S.link;$('eNote').value=S.note;
  $('eFg').value=S.following;$('eFr').value=S.followers;$('eLk').value=S.likes;$('eInbox').value=S.inbox;$('eBg').value=S.avBg;
- $('eVer').checked=S.ver;$('eDot').checked=S.dot;$('eCoin').checked=S.coin;$('eDrOn').checked=S.drafts.on;$('eDrN').value=S.drafts.n;$('eDrS').value=S.drafts.size;
+ $('eVer').checked=S.ver;$('eDot').checked=S.dot;$('eCoin').checked=S.coin;$('eNew').checked=S.newB!==false;$('eDrOn').checked=S.drafts.on;$('eDrN').value=S.drafts.n;$('eDrS').value=S.drafts.size;
  qa('#eArt button',function(b){b.classList.toggle('on',(b.dataset.a==='1')===!!S.artist)});
  $('pvAv').src=src(S.avatar,'avatar');$('pvAv').style.background=S.avBg;
  var h='';S.hls.forEach(function(x,i){h+='<div class="li"><img class="pv c" src="'+esc(src(x.img,'hl'))+'" data-hp="'+i+'" alt=""><div class="f"><input type="text" value="'+esc(x.name)+'" data-hn="'+i+'" maxlength="20" placeholder="Name"><div class="ac"><button class="btn g" data-hp="'+i+'" type="button">Photo</button><button class="btn r" data-hd="'+i+'" type="button">Delete</button></div></div></div>'});
