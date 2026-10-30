@@ -312,3 +312,9 @@ html.dk .win .sr{background:rgba(255,255,255,.5);animation:none}
 .ap-s .fx .p{width:40px;height:40px}.ap-s .fx .p img{width:40px;height:40px}
 .ap-s .fx .ab{margin-right:0}
 .ap-box .sh{position:sticky;top:0;background:#f7f7f8;z-index:2}
+
+.win{background:#fff}
+.rb-pill{width:auto;min-width:222px;white-space:nowrap;gap:12px}
+.rb-pill b{margin-left:4px}
+.rb-pill button{margin-left:auto;flex:none}
+html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
