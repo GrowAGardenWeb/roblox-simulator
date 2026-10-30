@@ -1,0 +1,9 @@
+{
+  "name": "TikTok",
+  "short_name": "TikTok",
+  "start_url": "/tiktok/",
+  "scope": "/tiktok/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
+}
