@@ -119,6 +119,40 @@ img{display:block;max-width:none}
 .add{margin-top:10px;width:100%}
 .hint{font-size:12px;color:#8a8a8f;margin:8px 0 0;line-height:1.35}
 input[type=file]{display:none}
+/* balance screen */
+.bal{position:absolute;inset:0;z-index:30;overflow-y:auto;scrollbar-width:none;background:linear-gradient(#f4f4f400 0,#f4f4f4 32%) top/100% 100% no-repeat,linear-gradient(90deg,#a5d9e6,#f3e6f7 52%,#eaa2b0) top/100% 100%,#f4f4f4;transform:translateX(100%);visibility:hidden;transition:transform .38s cubic-bezier(.32,.72,0,1),visibility 0s .38s;padding:var(--st,calc(105*var(--u))) 0 calc(110*var(--u));box-sizing:border-box;display:flex;flex-direction:column;max-width:460px;margin:0 auto}
+.bal::-webkit-scrollbar{display:none}
+.bal.on{transform:none;visibility:visible;transition:transform .38s cubic-bezier(.32,.72,0,1),visibility 0s}
+.bh{position:relative;height:calc(140*var(--u));display:flex;align-items:center;justify-content:space-between;padding:0 calc(34*var(--u))}
+.bb,.bgr{width:calc(64*var(--u));height:calc(64*var(--u));display:grid;place-items:center}
+.bb{justify-items:start}.bgr{justify-items:end}
+.btl{position:absolute;left:0;right:0;top:calc(20*var(--u));text-align:center;pointer-events:none}
+.btl b{display:block;font-size:calc(33*var(--u));font-weight:700;line-height:calc(40*var(--u))}
+.btl span{display:inline-flex;align-items:center;gap:calc(8*var(--u));font-size:calc(27*var(--u));color:#6f6f77;line-height:calc(34*var(--u))}
+.be{display:flex;align-items:center;justify-content:center;gap:calc(14*var(--u));margin-top:calc(25*var(--u));height:calc(44*var(--u));font-size:calc(31*var(--u));font-weight:500;color:#6a6a72;letter-spacing:.01em}
+.be u{text-decoration:none;font-weight:600;font-size:calc(29*var(--u))}
+.be button img{width:calc(31*var(--u));height:auto}
+.be button{height:100%;display:grid;place-items:center;padding:0 calc(6*var(--u))}
+.ba{display:flex;align-items:center;justify-content:center;gap:calc(14*var(--u));margin-top:calc(18*var(--u));height:calc(110*var(--u))}
+.ba b{font-size:calc(80*var(--u));font-weight:700;letter-spacing:-.02em;color:#1a1a1a}
+.bp{display:flex;align-items:center;justify-content:center;gap:calc(10*var(--u));width:max-content;margin:calc(23*var(--u)) auto 0;height:calc(73*var(--u));padding:0 calc(30*var(--u));border-radius:calc(37*var(--u));background:#ffffff59;border:calc(2*var(--u)) solid #ffffffb3;font-size:calc(31*var(--u));font-weight:500;color:#6a6a72;box-shadow:0 0 0 calc(2*var(--u)) #e9e9ec inset}
+.bp b{color:#161616;font-size:calc(34*var(--u));font-weight:700}
+.bp i{width:calc(2*var(--u));height:calc(30*var(--u));background:#cfcfd4;margin:0 calc(10*var(--u))}
+.bc{margin:calc(25*var(--u)) calc(34*var(--u)) 0;background:#fff;border-radius:calc(28*var(--u));min-height:calc(108*var(--u));display:flex;align-items:center;gap:calc(14*var(--u));padding:0 calc(34*var(--u))}
+.bc:first-of-type{margin-top:calc(52*var(--u))}
+.bal .bc.c0{margin-top:calc(52*var(--u))}
+.bc>b{font-size:calc(33*var(--u));font-weight:700}.bc>span{flex:1;text-align:right;font-size:calc(29*var(--u));color:#7a7a82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left:calc(20*var(--u))}
+.br2{flex-direction:column;align-items:stretch;justify-content:center;gap:0;padding:0 calc(34*var(--u)) 0 calc(34*var(--u))}
+.brw{display:flex;align-items:center;gap:calc(12*var(--u));height:calc(108*var(--u))}
+.brw b{font-size:calc(35*var(--u));font-weight:700}.brw span{flex:1;font-size:calc(29*var(--u));color:#7a7a82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left:calc(8*var(--u))}
+.brw button{height:calc(58*var(--u));padding:0 calc(17*var(--u));border-radius:calc(29*var(--u));background:#e8445a;color:#fff;font-size:calc(31*var(--u));font-weight:600}
+.brw button.rc{background:#fe2c55}
+.bg{display:grid!important;grid-template-columns:repeat(3,calc(290*var(--u)));gap:calc(40*var(--u)) 0;padding:calc(34*var(--u)) calc(34*var(--u)) calc(34*var(--u)) calc(25*var(--u))!important;margin-top:calc(26*var(--u))!important;min-height:0}
+.bgi{display:flex;flex-direction:column;align-items:center;gap:calc(14*var(--u));font-size:calc(29*var(--u));font-weight:600;text-align:center;line-height:1.18}
+.bgi img{width:calc(84*var(--u));height:calc(84*var(--u))}
+.bgi span{max-width:calc(250*var(--u))}
+.bf{margin:auto calc(50*var(--u)) 0;padding-top:calc(60*var(--u));text-align:center;font-size:calc(24*var(--u));line-height:1.45;color:#a0a0a6;letter-spacing:.02em}
+
 /* side menu */
 .app{transition:transform .38s cubic-bezier(.32,.72,0,1)}
 .app.mo{transform:translateX(calc(-783*var(--u)))}
@@ -305,6 +339,16 @@ input[type=file]{display:none}
   <nav class="nav" id="nav"><button data-s="home"><span class="ic"><img class="o" src="img/n_home_off.webp" style="width:calc(47.4*var(--u));height:calc(50.2*var(--u))" alt=""><img class="n" src="img/n_home_on.webp" style="width:calc(48.8*var(--u));height:calc(50.2*var(--u))" alt=""></span>Home</button><button data-s="disc"><span class="ic"><img class="o" src="img/n_friends.webp" style="width:calc(53.0*var(--u));height:calc(44.7*var(--u))" alt=""><img class="n" src="img/n_friends.webp" style="width:calc(53.0*var(--u));height:calc(44.7*var(--u))" alt=""></span>Friends</button><button class="mk" aria-label="Create" data-s="mk"><img src="img/i_n3.webp" style="width:calc(100.5*var(--u));height:calc(65.6*var(--u))" alt=""></button><button data-s="inbox"><span class="ic"><img class="o" src="img/n_inbox_off.webp" style="width:calc(50.2*var(--u));height:calc(49.5*var(--u))" alt=""><img class="n" src="img/n_inbox_on.webp" style="width:calc(50.2*var(--u));height:calc(50.9*var(--u))" alt=""></span>Inbox<i class="badge" id="inbox"></i></button><button data-s="profile"><span class="ic"><img class="o" src="img/n_prof_off.webp" style="width:calc(46.1*var(--u));height:calc(50.2*var(--u))" alt=""><img class="n" src="img/n_prof_on.webp" style="width:calc(43.3*var(--u));height:calc(47.4*var(--u))" alt=""></span>Profile</button></nav>
 </div>
 
+<section class="bal" id="bal" aria-hidden="true">
+  <div class="bh"><button class="bb" id="bBack" type="button" aria-label="Back"><img src="img/b_back.webp" style="width:calc(23.3*var(--u));height:calc(38.1*var(--u))" alt=""></button><div class="btl"><b>Balance</b><span><img src="img/b_shield.webp" style="width:calc(22.5*var(--u));height:calc(24.8*var(--u))" alt="">Secure</span></div><button class="bgr" type="button" aria-label="Settings"><img src="img/b_gear.webp" style="width:calc(49.7*var(--u));height:calc(49.7*var(--u))" alt=""></button></div>
+  <div class="be"><span>Estimated balance</span><u id="bCur"></u><button id="bEye" type="button" aria-label="Show or hide"><img id="bEyeI" src="img/b_eye.webp" alt=""></button></div>
+  <div class="ba"><b id="bAmt"></b><img src="img/b_chev1.webp" style="width:calc(15.5*var(--u));height:calc(25.6*var(--u))" alt=""></div>
+  <div class="bp"><img src="img/b_coin.webp" style="width:calc(35.7*var(--u));height:calc(35.7*var(--u))" alt=""><span>Coins</span><b id="bCoins"></b><i></i><span>Get Coins</span><img src="img/b_arrow.webp" style="width:calc(25.6*var(--u));height:calc(22.5*var(--u))" alt=""></div>
+  <div class="bc c0"><b>Transactions</b><span id="bTx"></span><img src="img/b_chev2.webp" style="width:calc(15.5*var(--u));height:calc(24.8*var(--u))" alt=""></div>
+  <div class="bc br2"><div class="brw"><img src="img/b_coin2.webp" style="width:calc(35.7*var(--u));height:calc(35.7*var(--u))" alt=""><b id="bRc"></b><span id="bRt"></span><button type="button">Exchange</button></div><div class="brw" id="bRech"><img src="img/b_coin2.webp" style="width:calc(35.7*var(--u));height:calc(35.7*var(--u))" alt=""><b id="bRcc"></b><span id="bRu"></span><button type="button" class="rc">Recharge</button></div></div>
+  <div class="bc bg"><button class="bgi" type="button"><img class="bt1" src="img/b_t_live.webp" alt=""><span>LIVE rewards</span></button><button class="bgi" type="button"><img class="bt1" src="img/b_t_mon.webp" alt=""><span>Monetization</span></button><button class="bgi" type="button"><img class="bt1" src="img/b_t_camp.webp" alt=""><span>Campaigns</span></button><button class="bgi" type="button"><img class="bt1" src="img/b_t_subs.webp" alt=""><span>Subscriptions Manager</span></button></div>
+  <p class="bf">Balance is not a financial product. Details shown are for information purposes only.</p>
+</section>
 <aside class="mnu" id="mnu" aria-hidden="true"><div class="ml">Assets</div><button class="mr" type="button" data-m="balance"><span class="mi"><img src="img/m_balance.webp" style="width:calc(39.3*var(--u));height:calc(35.2*var(--u))" alt=""></span><span class="mt">Balance</span><img class="mc" src="img/m_chev.webp" alt=""></button><hr><div class="ml">Personal tools</div><button class="mr" type="button" data-m="activity"><span class="mi"><img src="img/m_activity.webp" style="width:calc(39.3*var(--u));height:calc(39.3*var(--u))" alt=""></span><span class="mt">Activity center</span><img class="mc" src="img/m_chev.webp" alt=""></button><button class="mr" type="button" data-m="offline"><span class="mi"><img src="img/m_offline.webp" style="width:calc(42.0*var(--u));height:calc(32.5*var(--u))" alt=""></span><span class="mt">Offline videos</span><img class="mc" src="img/m_chev.webp" alt=""></button><button class="mr" type="button" data-m="qr"><span class="mi"><img src="img/m_qr.webp" style="width:calc(35.2*var(--u));height:calc(35.2*var(--u))" alt=""></span><span class="mt">Your QR code</span><img class="mc" src="img/m_chev.webp" alt=""></button><button class="mr" type="button" data-m="minis"><span class="mi"><img src="img/m_minis.webp" style="width:calc(37.9*var(--u));height:calc(40.6*var(--u))" alt=""></span><span class="mt">TikTok Minis</span><img class="mc" src="img/m_chev.webp" alt=""></button><hr><div class="ml">Creation &amp; business tools</div><button class="mr" type="button" data-m="studio"><span class="mi"><img src="img/m_studio.webp" style="width:calc(39.9*var(--u));height:calc(36.5*var(--u))" alt=""></span><span class="mt">TikTok Studio</span><img class="mc" src="img/m_chev.webp" alt=""></button><button class="mr" type="button" data-m="promote"><span class="mi"><img src="img/m_promote.webp" style="width:calc(33.8*var(--u));height:calc(39.3*var(--u))" alt=""></span><span class="mt">Promote</span><img class="mc" src="img/m_chev.webp" alt=""></button><hr class="h2"><button class="mr" type="button" data-m="settings"><span class="mi"><img src="img/m_settings.webp" style="width:calc(39.9*var(--u));height:calc(40.6*var(--u))" alt=""></span><span class="mt">Settings and privacy</span><img class="mc" src="img/m_chev.webp" alt=""></button></aside>
 <aside class="ed" id="ed" aria-hidden="true"><div class="ed-in">
   <div class="ed-bar"><button class="rst" id="reset" type="button">Reset</button><h2>Edit profile</h2><button class="done" id="done" type="button">Done</button></div>
@@ -329,6 +373,16 @@ input[type=file]{display:none}
     <label class="tog">Red dot next to the name<input type="checkbox" id="eDot"></label>
     <label class="tog">Coin badge<input type="checkbox" id="eCoin"></label>
     <div class="fld" style="margin-top:6px"><label for="eBg">Photo background colour</label><input type="color" id="eBg" style="width:100%;height:38px;border:1px solid #e3e3e6;border-radius:10px;background:#f4f4f6;padding:3px"></div>
+  </div>
+  <div class="card"><h3>Balance screen</h3>
+    <div class="row2" style="grid-template-columns:2fr 1fr"><div class="fld"><label for="eBA">Estimated balance</label><input type="text" id="eBA" inputmode="decimal" autocomplete="off"></div><div class="fld"><label for="eBCur">Currency</label><input type="text" id="eBCur" maxlength="5" autocomplete="off"></div></div>
+    <div class="fld" style="margin-top:10px"><label for="eBCoin">Coins</label><input type="text" id="eBCoin" autocomplete="off"></div>
+    <label class="tog">Hide the amounts (eye closed)<input type="checkbox" id="eBHide"></label>
+    <div class="fld"><label for="eBTx">Transactions: text on the right</label><input type="text" id="eBTx" maxlength="50" autocomplete="off"></div>
+    <div class="row2" style="grid-template-columns:1fr 3fr;margin-top:10px"><div class="fld"><label for="eBRc">Coins</label><input type="text" id="eBRc" autocomplete="off"></div><div class="fld"><label for="eBRt">Content rewards row</label><input type="text" id="eBRt" maxlength="50" autocomplete="off"></div></div>
+    <label class="tog">Show the Recharge row<input type="checkbox" id="eBRech"></label>
+    <div class="row2" style="grid-template-columns:1fr 1fr"><div class="fld"><label for="eBRcc">Recharge coins</label><input type="text" id="eBRcc" autocomplete="off"></div><div class="fld"><label for="eBRu">Recharge price</label><input type="text" id="eBRu" autocomplete="off"></div></div>
+    <p class="hint">Open it from the Balance chip on the profile or from the side menu.</p>
   </div>
   <div class="card"><h3>Collections (saved tab)</h3><div class="list" id="eCols"></div><button class="btn g add" id="addCol" type="button">Add collection</button></div>
   <div class="card"><h3>Inbox screen</h3>
@@ -358,14 +412,14 @@ input[type=file]{display:none}
 <script>
 (function(){
 var KEY='tt.profile.v2';
-var DEF={tabs:5,emptyT:'Share a throwback photo',cols:[{name:'Watch later',lock:true}],inb:{act:'New followers and comments',actN:'8',chat:'You have 23 new interactions · Oct 22',reqs:'998',sys:'Sell with TikTok Shop'},feed:{l:'1M',c:'3891',s:'145300',h:'76500',cap:'Pasito a pasito, suave suavecito #Trend #Dance',snd:'original sound',sr:'Search · your favorite creators'},tabs:5,artist:false,name:'moneyscripts',handle:'moneyscripts',ver:false,dot:true,coin:true,avBg:'#0a0a0a',avatar:null,note:"What's good?",
+var DEF={bal:{amt:'4.38',cur:'USD',coins:'0',tx:'Exchange of Coins: USD0.02',rc:'1',rt:'USD 0.02 from Content rewards',rech:false,rcc:'139',ru:'$43.00',hide:false},tabs:5,emptyT:'Share a throwback photo',cols:[{name:'Watch later',lock:true}],inb:{act:'New followers and comments',actN:'8',chat:'You have 23 new interactions · Oct 22',reqs:'998',sys:'Sell with TikTok Shop'},feed:{l:'1M',c:'3891',s:'145300',h:'76500',cap:'Pasito a pasito, suave suavecito #Trend #Dance',snd:'original sound',sr:'Search · your favorite creators'},tabs:5,artist:false,name:'moneyscripts',handle:'moneyscripts',ver:false,dot:true,coin:true,avBg:'#0a0a0a',avatar:null,note:"What's good?",
  following:'10',followers:'10000',likes:'10000',bio:'',link:'',inbox:'99+',
  hls:[],
  drafts:{on:false,n:'7',size:'208.7MB',img:'v1'},
  vids:[]};
 var S;
 function clone(o){return JSON.parse(JSON.stringify(o))}
-function load(){try{var r=JSON.parse(localStorage.getItem(KEY)||'null');S=r?Object.assign(clone(DEF),r):clone(DEF);S.tabs=5;S.feed=Object.assign(clone(DEF).feed,S.feed||{});S.inb=Object.assign(clone(DEF).inb,S.inb||{})}catch(e){S=clone(DEF)}}
+function load(){try{var r=JSON.parse(localStorage.getItem(KEY)||'null');S=r?Object.assign(clone(DEF),r):clone(DEF);S.tabs=5;S.bal=Object.assign(clone(DEF).bal,S.bal||{});S.feed=Object.assign(clone(DEF).feed,S.feed||{});S.inb=Object.assign(clone(DEF).inb,S.inb||{})}catch(e){S=clone(DEF)}}
 var st=null;function save(){clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){try{alert('The pictures are too big to keep. Use smaller ones.')}catch(_){}}},250)}
 function $(id){return document.getElementById(id)}
 function src(v,d){return v&&String(v).indexOf('data:')===0?v:'img/'+(v||d)+'.webp'}
@@ -403,7 +457,10 @@ function render(){
  requestAnimationFrame(moveAll);
 }
 
-function renderMore(){
+function mny(v){v=String(v==null?'':v).trim().replace(/,/g,'');return /^\d+(\.\d+)?$/.test(v)?Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):v}
+function cnt(v){v=String(v==null?'':v).trim().replace(/,/g,'');return /^\d+$/.test(v)?Number(v).toLocaleString('en-US'):v}
+function renderBal(){var b=S.bal;$('bCur').textContent=b.cur;$('bAmt').textContent=b.hide?'******':mny(b.amt);$('bCoins').textContent=b.hide?'****':cnt(b.coins);$('bTx').textContent=b.tx;$('bRc').textContent=cnt(b.rc);$('bRt').textContent=b.rt;$('bRech').style.display=b.rech?'':'none';$('bRcc').textContent=cnt(b.rcc);$('bRu').textContent=b.ru;$('bEyeI').src=b.hide?'img/b_eyec.webp':'img/b_eye.webp'}
+function renderMore(){renderBal();
  var f=S.feed,i=S.inb;
  $('fL').textContent=fmt(f.l);$('fC').textContent=Number(f.c)>=1e3&&/^\d+$/.test(f.c)?Number(f.c).toLocaleString('en-US'):fmt(f.c);$('fS').textContent=fmt(f.s);$('fH').textContent=fmt(f.h);
  $('fCap').textContent=f.cap;$('fSnd').textContent=f.snd+' - '+String(S.handle).replace(/^@/,'');$('fSr').textContent=f.sr;
@@ -447,6 +504,7 @@ function fill(){
  var cl='';S.cols.forEach(function(x,k){cl+='<div class="li" style="grid-template-columns:1fr auto"><div class="f"><input type="text" value="'+esc(x.name)+'" data-cn="'+k+'" maxlength="30"><label class="tog" style="padding:0;font-size:13px">Private (lock)<input type="checkbox" data-cl="'+k+'"'+(x.lock?' checked':'')+'></label></div><button class="btn r" data-cd="'+k+'" type="button">Delete</button></div>'});
  $('eCols').innerHTML=cl||'<p class="hint">No collections.</p>';
  $('eIA').value=S.inb.act;$('eIAN').value=S.inb.actN;$('eIR').value=S.inb.reqs;$('eIS').value=S.inb.sys;
+ $('eBA').value=S.bal.amt;$('eBCur').value=S.bal.cur;$('eBCoin').value=S.bal.coins;$('eBTx').value=S.bal.tx;$('eBRc').value=S.bal.rc;$('eBRt').value=S.bal.rt;$('eBRcc').value=S.bal.rcc;$('eBRu').value=S.bal.ru;$('eBRech').checked=!!S.bal.rech;$('eBHide').checked=!!S.bal.hide;
  $('eFL').value=S.feed.l;$('eFC').value=S.feed.c;$('eFS').value=S.feed.s;$('eFH').value=S.feed.h;$('eFCap').value=S.feed.cap;$('eFSnd').value=S.feed.snd;$('eFSr').value=S.feed.sr;
 }
 function sync(){render();fill();save()}
@@ -529,7 +587,19 @@ app.addEventListener('click',function(e){if(app.classList.contains('mo')){e.stop
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
 var mx=0,md=false;mnu.addEventListener('touchstart',function(e){mx=e.touches[0].clientX;md=true},{passive:true});
 mnu.addEventListener('touchend',function(e){if(!md)return;md=false;if(e.changedTouches[0].clientX-mx>70)closeMenu()});
-mnu.addEventListener('click',function(e){var r=e.target.closest('.mr');if(r&&r.dataset.m==='settings'){closeMenu();setTimeout(openEd,250)}});
+mnu.addEventListener('click',function(e){var r=e.target.closest('.mr');if(r&&r.dataset.m==='settings'){closeMenu();setTimeout(openEd,250)}else if(r&&r.dataset.m==='balance'){closeMenu();setTimeout(openBal,200)}});
+
+/* balance screen */
+var bal=$('bal');
+function openBal(){bal.classList.add('on');bal.setAttribute('aria-hidden','false')}
+function closeBal(){bal.classList.remove('on');bal.setAttribute('aria-hidden','true')}
+$('bBack').addEventListener('click',closeBal);
+$('bEye').addEventListener('click',function(){S.bal.hide=!S.bal.hide;render();save()});
+qa('.chips .chip',function(c){if(/Balance/.test(c.textContent)){c.style.cursor='pointer';c.addEventListener('click',openBal)}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeBal()});
+bindObj('eBA','bal','amt');bindObj('eBCur','bal','cur');bindObj('eBCoin','bal','coins');bindObj('eBTx','bal','tx');bindObj('eBRc','bal','rc');bindObj('eBRt','bal','rt');bindObj('eBRcc','bal','rcc');bindObj('eBRu','bal','ru');
+$('eBRech').addEventListener('input',function(){S.bal.rech=this.checked;render();save()});
+$('eBHide').addEventListener('input',function(){S.bal.hide=this.checked;render();save()});
 var ed=$('ed');
 function openEd(){fill();ed.classList.add('on');ed.setAttribute('aria-hidden','false')}
 function closeEd(){ed.classList.remove('on');ed.setAttribute('aria-hidden','true');save()}
