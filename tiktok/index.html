@@ -9,6 +9,8 @@
 <meta name="theme-color" content="#ffffff">
 <meta name="robots" content="noindex, nofollow">
 <title>TikTok</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600;700&display=swap">
 <style>
 :root{--u:calc(min(100vw,460px)/921);--ink:#161616;--mute:#8a8a8f;--line:#e6e6e8;--red:#fe2c55;--bg:#fff;--ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -74,7 +76,7 @@ img{display:block;max-width:none}
 .nav button{display:flex;flex-direction:column;align-items:center;gap:calc(8*var(--u));width:calc(160*var(--u));font-size:calc(26*var(--u));font-weight:600;color:#161616;position:relative;transition:none}
 .nav img{height:calc(56*var(--u));width:auto}
 .nav .mk img{margin-top:calc(2*var(--u))}
-.nav .badge{font-style:normal;position:absolute;top:calc(-4*var(--u));left:50%;margin-left:calc(4*var(--u));min-width:calc(73*var(--u));height:calc(31*var(--u));padding:0 calc(8*var(--u));border-radius:calc(15.5*var(--u));background:#e8445a;color:#fff;font-size:calc(26*var(--u));font-weight:500;line-height:1;display:grid;place-items:center;box-sizing:border-box}.nav .badge:empty{display:none}
+.nav .badge{font-style:normal;position:absolute;top:calc(-4*var(--u));left:50%;margin-left:calc(4*var(--u));min-width:calc(73*var(--u));height:calc(31*var(--u));padding:0 calc(8*var(--u));border-radius:calc(15.5*var(--u));background:#e8445a;color:#fff;font-family:'Urbanist',var(--ui);font-size:calc(28*var(--u));font-weight:600;line-height:1;display:grid;place-items:center;box-sizing:border-box}.nav .badge:empty{display:none}
 /* editor */
 .ed{position:fixed;inset:0;z-index:50;background:#f4f4f6;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.85,.2,1);visibility:hidden}
 .ed.on{transform:none;visibility:visible}
@@ -179,7 +181,7 @@ input[type=file]{display:none}
 .it b{font-size:calc(36*var(--u));font-weight:500;display:flex;align-items:center;gap:calc(10*var(--u));white-space:nowrap}
 .it b .vbs{width:calc(26*var(--u));height:calc(26*var(--u))}.it b .pin{width:calc(28*var(--u));height:calc(28*var(--u))}
 .it span{font-size:calc(31*var(--u));color:#8a8a8f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bdg{flex:none;min-width:calc(40*var(--u));height:calc(40*var(--u));padding:0 calc(10*var(--u));border-radius:calc(20*var(--u));background:#fe2c55;color:#fff;font-style:normal;font-size:calc(25*var(--u));font-weight:700;display:grid;place-items:center}
+.bdg{flex:none;min-width:calc(40*var(--u));height:calc(40*var(--u));padding:0 calc(10*var(--u));border-radius:calc(20*var(--u));background:#fe2c55;color:#fff;font-style:normal;font-family:'Urbanist',var(--ui);font-size:calc(25*var(--u));font-weight:700;display:grid;place-items:center}
 .bdg.wide{min-width:calc(72*var(--u))}.bdg.dot{width:calc(18*var(--u));min-width:0;height:calc(18*var(--u));padding:0;margin-right:calc(8*var(--u))}
 .bdg:empty:not(.dot){display:none}
 /* saved tab */
