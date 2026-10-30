@@ -18,9 +18,10 @@ html,body{margin:0;height:100%;background:#fff;color:var(--ink);font-family:var(
 button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
 img{display:block;max-width:none}
 .app{--st:calc(105*var(--u));position:relative;max-width:460px;height:100%;margin:0 auto;background:#fff;overflow:hidden}
-.top{position:absolute;z-index:5;top:0;left:0;right:0;height:calc(116*var(--u) + var(--st));padding:var(--st) calc(34*var(--u)) 0;display:flex;align-items:flex-end;padding-bottom:calc(14*var(--u));background:#fff}
+.top{position:absolute;z-index:5;top:0;left:0;right:0;height:calc(116*var(--u) + var(--st));padding:max(0px,var(--st)) calc(25*var(--u)) 0 calc(31*var(--u));display:flex;align-items:flex-end;padding-bottom:calc(14*var(--u));background:#fff}
 .top .ib{width:calc(64*var(--u));height:calc(64*var(--u));display:grid;place-items:center}
-.top img{height:calc(46*var(--u));width:auto}
+.top img{height:calc(56*var(--u));width:auto}
+.top #menuBtn img{height:calc(47*var(--u))}
 .top .coin{margin-left:calc(18*var(--u))}.top .coin img{height:calc(56*var(--u));border-radius:50%}
 .top .sp{flex:1}
 .top .r{display:flex;gap:calc(30*var(--u));align-items:center}
@@ -39,7 +40,7 @@ img{display:block;max-width:none}
 .bubble:after{content:"";position:absolute;left:calc(40*var(--u));bottom:calc(-9*var(--u));width:calc(18*var(--u));height:calc(18*var(--u));background:#fff;transform:rotate(45deg);border-radius:0 0 calc(4*var(--u)) 0}
 .av{position:absolute;top:calc(56*var(--u));left:0;width:calc(200*var(--u));height:calc(200*var(--u));border-radius:50%;background:#1d44c8;overflow:visible}
 .av>img{width:100%;height:100%;border-radius:50%;object-fit:cover}
-.av .plus{position:absolute;right:calc(-6*var(--u));bottom:calc(-6*var(--u));width:calc(66*var(--u));height:calc(66*var(--u));border-radius:50%}
+.av .plus{position:absolute;right:calc(-6*var(--u));bottom:calc(-6*var(--u));width:calc(80*var(--u));height:calc(80*var(--u));border-radius:50%}
 .stats{display:flex;gap:calc(52*var(--u));padding:calc(10*var(--u)) calc(34*var(--u)) 0}
 .stats div{display:flex;flex-direction:column;gap:calc(2*var(--u))}
 .stats b{font-size:calc(35*var(--u));font-weight:800;letter-spacing:-.01em;line-height:1.2}
@@ -48,8 +49,8 @@ img{display:block;max-width:none}
 .bio a{color:var(--ink);font-weight:600;text-decoration:none;display:block}
 .chips{display:flex;gap:calc(18*var(--u));padding:calc(32*var(--u)) calc(34*var(--u)) 0;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:none;height:calc(64*var(--u));border-radius:calc(32*var(--u));border:calc(2*var(--u)) solid var(--line);display:flex;align-items:center;gap:calc(14*var(--u));padding:0 calc(24*var(--u)) 0 calc(18*var(--u));font-size:calc(29*var(--u));font-weight:600;white-space:nowrap;background:#fff}
-.chip img{height:calc(36*var(--u));width:auto}
+.chip{flex:none;height:calc(64*var(--u));border-radius:calc(32*var(--u));border:calc(2*var(--u)) solid var(--line);display:flex;align-items:center;gap:0;padding:0 calc(20*var(--u)) 0 calc(18*var(--u));font-size:calc(27.5*var(--u));font-weight:600;white-space:nowrap;background:#fff}
+.chip img{height:calc(36*var(--u));width:auto;margin-right:calc(-1*var(--u))}
 .hls{display:flex;gap:calc(34*var(--u));padding:calc(11*var(--u)) calc(34*var(--u)) 0;overflow-x:auto;scrollbar-width:none}
 .hls::-webkit-scrollbar{display:none}
 .hl{flex:none;width:calc(132*var(--u));display:flex;flex-direction:column;align-items:center;gap:calc(14*var(--u))}
@@ -484,6 +485,7 @@ function closeEd(){ed.classList.remove('on');ed.setAttribute('aria-hidden','true
 $('editBtn').addEventListener('click',openEd);$('menuBtn').addEventListener('click',openEd);$('av').addEventListener('click',openEd);
 $('done').addEventListener('click',closeEd);
 $('reset').addEventListener('click',function(){if($('reset').dataset.c!=='1'){$('reset').dataset.c='1';$('reset').textContent='Tap again';setTimeout(function(){$('reset').dataset.c='';$('reset').textContent='Reset'},2500);return}$('reset').dataset.c='';$('reset').textContent='Reset';S=clone(DEF);try{localStorage.removeItem(KEY)}catch(e){}vClear();sync()});
+(function(){try{var sa=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);if(!sa)return;var S=screen.height-window.innerHeight;if(S>10&&S<110)app.style.setProperty('--st','calc(105*var(--u) - '+S+'px)')}catch(e){}})();
 load();render();go('profile');window.addEventListener('resize',moveAll);
 })();
 </script>
