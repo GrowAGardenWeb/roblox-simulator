@@ -283,3 +283,26 @@ body{text-rendering:optimizeLegibility;font-feature-settings:'kern','liga'}
 .ap-t input{width:16px;height:16px}
 .ap-box{max-height:90%}
 .prem{color:#3f4246}
+
+/* verified badge + hint + add friends rows */
+.ver{display:grid;place-items:center;margin-left:5px}
+.ver[hidden]{display:none}
+.sr-hint{margin:14px 2px;font-size:13px;color:#6d7176}
+.adf .sr-list{height:340px}
+.fx.ad{height:64px;cursor:default}
+.fx.ad:hover{background:#e6e7eb}
+.fx .who{flex:1;min-width:0}
+.fx .who b{display:block;font-size:13.2px;line-height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fx .who small{display:block;font-size:12px;color:#6d7176;line-height:16px;font-weight:500}
+.fx .ab{height:32px;padding:0 14px;border-radius:8px;background:#335fff;color:#fff;font-size:12.5px;font-weight:700;margin-right:6px}
+.fx .ab.on{background:#dcdde3;color:#232527;cursor:default}
+.fr .add{cursor:pointer}
+/* dark mode (same approach as the mobile app: invert the shell, restore the pictures) */
+html.dk body{background:#fff}
+html.dk .win{filter:invert(.93) hue-rotate(180deg)}
+html.dk .win img:not(.ic){filter:invert(1) hue-rotate(180deg)}
+html.dk .win .sr{background:rgba(0,0,0,.5)}
+
+html.dk .win .sr{background:rgba(255,255,255,.5);animation:none}
+.bell{cursor:pointer}
+.sh .cl{margin-left:auto}.sh .bl+.cl{margin-left:0}

@@ -5,7 +5,7 @@ function fmt(n){return Number(n).toLocaleString('en-US')}
 
 /* ---------- state (saved in this browser / app) ---------- */
 var KEY='pc.state.v2';
-function def(){return {user:{id:0,name:'munfuja',display:'munfuja',img:''},robux:1000,friends:[],req:'45',total:'',bell:'3',prem:true}}
+function def(){return {user:{id:0,name:'munfuja',display:'munfuja',img:''},robux:1000,friends:[],req:'45',total:'',bell:'3',prem:true,ver:false,dark:false}}
 var S=def();
 try{var r0=JSON.parse(localStorage.getItem(KEY)||'null');if(r0)S=Object.assign(def(),r0)}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -36,13 +36,14 @@ function withHead(u){return heads([u.id]).then(function(m){u.img=m[u.id]||'';ret
 function renderMe(){
  $('meName').textContent=S.user.display||S.user.name;
  var im=S.user.img||'img/av_me.webp';$('meAv').src=im;$('sideAv').src=S.user.img||'img/av_side.webp';
- $('rbU').textContent=S.user.name+': 13+';var bn=String(S.bell==null?'':S.bell).trim();$('bellN').textContent=bn;$('bellN').style.display=bn?'':'none';$('prem').style.display=S.prem===false?'none':'';
+ $('rbU').textContent=S.user.name+': 13+';var bn=String(S.bell==null?'':S.bell).trim();$('bellN').textContent=bn;$('bellN').style.display=bn?'':'none';$('prem').style.display=S.prem===false?'none':'';$('ver').hidden=!S.ver;document.documentElement.classList.toggle('dk',!!S.dark);
 }
 function renderFriends(){
  var req=String(S.req||'').trim();
  var h='<div class="fr"><div class="add">'+I('plusp-r',56)+(req?'<i class="n">'+e2(req)+'</i>':'')+'</div><b>Add Friends</b><small></small></div>';
  S.friends.forEach(function(f){h+='<div class="fr"><img class="ph" src="'+e2(f.img||'')+'" alt=""><b>'+e2(f.display||f.name)+'</b><small></small></div>'});
  $('friends').innerHTML=h;
+ var ad=document.querySelector('#friends .add');if(ad)ad.addEventListener('click',openAdd)
 }
 function setBal(){$('rbBal').textContent=fmt(S.robux);$('rbPill').textContent=fmt(S.robux)}
 
@@ -88,7 +89,7 @@ $('openRb').addEventListener('click',openRb);$('rbX').addEventListener('click',c
 /* ---------- Send Robux modal ---------- */
 var sr=$('sr'),box=$('srBox'),pick=null,amt='',peopleTimer=null;
 function pav(f){return '<img src="'+e2(f.img||'')+'" alt="">'}
-function head(){return '<div class="sh"><span class="ti">'+I('rplus-r',26)+'Send Robux</span><span class="bl">'+I('robux-r',20)+fmt(S.robux)+'</span><button class="cl" id="srX" aria-label="Close">'+I('x-r',24)+'</button></div>'}
+function head(t,nobal){return '<div class="sh"><span class="ti">'+I('rplus-r',26)+(t||'Send Robux')+'</span><span class="bl">'+(nobal?'':I('robux-r',20)+fmt(S.robux))+'</span><button class="cl" id="srX" aria-label="Close">'+I('x-r',24)+'</button></div>'}
 function bindX(){$('srX').addEventListener('click',closeSr)}
 function openSr(){pick=null;amt='';sr.hidden=false;viewPick('')}
 function closeSr(){sr.hidden=true;clearTimeout(peopleTimer)}
@@ -139,6 +140,31 @@ function viewConfirm(n){
 $('rbSend').addEventListener('click',openSr);
 sr.addEventListener('mousedown',function(e){if(e.target===sr)closeSr()});
 
+/* ---------- Add Friends dialog (search any Roblox user and add them) ---------- */
+function openAdd(){
+ sr.hidden=false;box.className='sr-box pick adf';
+ box.innerHTML=head('Add Friends',true)+'<label class="sr-s">'+I('search-r',24)+'<input id="adQ" type="text" placeholder="Search by username or ID" autocomplete="off"></label><div id="adB" class="sr-list"><p class="sr-hint">Search for a username or ID to add friends.</p></div>';
+ bindX();
+ var inp=$('adQ'),res=[],seq=0,tm=null;
+ function draw(msg){
+  var h=msg?'<p class="sr-hint">'+e2(msg)+'</p>':'';
+  h+=res.map(function(u,i){var on=S.friends.some(function(f){return String(f.id)===String(u.id)});return '<div class="fx ad"><span class="p"><img src="'+e2(u.img||'')+'" alt=""></span><div class="who"><b>'+e2(u.display||u.name)+'</b><small>@'+e2(u.name)+'</small></div><button class="ab'+(on?' on':'')+'" data-i="'+i+'">'+(on?'Added':'Add friend')+'</button></div>'}).join('');
+  $('adB').innerHTML=h||'<p class="sr-hint">Search for a username or ID to add friends.</p>';
+ }
+ function look(){
+  var v=inp.value.trim(),my=++seq;clearTimeout(tm);
+  if(v.length<2&&!/^\d+$/.test(v)){res=[];draw();return}
+  draw('Searching…');
+  tm=setTimeout(function(){
+   var p=/^\d+$/.test(v)?findUser(v).then(function(u){return [u]}):J('/rbx/users/v1/users/search?keyword='+encodeURIComponent(v)+'&limit=10').then(function(s){return (s.data||[]).slice(0,10).map(function(u){return {id:u.id,name:u.name,display:u.displayName||u.name}})});
+   p.then(function(l){
+    if(my!==seq)return;res=l.map(function(u){u.img=u.img||'';return u});draw(l.length?'':'No users found.');
+    return heads(l.map(function(u){return u.id})).then(function(m){if(my!==seq)return;res.forEach(function(u){u.img=m[u.id]||''});draw()})}).catch(function(){if(my===seq){res=[];draw('Couldn’t search right now.')}})},220)}
+ inp.addEventListener('input',look);
+ $('adB').addEventListener('click',function(e){var b=e.target.closest('.ab');if(!b||b.classList.contains('on'))return;var u=res[+b.dataset.i];if(!u)return;S.friends.push({id:u.id,name:u.name,display:u.display,img:u.img});save();renderFriends();draw()});
+ inp.focus({preventScroll:true});
+}
+
 /* ---------- admin panel (hold Home or the logo for 3 seconds) ---------- */
 var ap=$('ap'),apb=$('apBox');
 function apMsg(id,t,ok){var m=$(id);if(m){m.textContent=t||'';m.className='ap-m'+(ok?' ok':'')}}
@@ -153,7 +179,7 @@ function openAp(){
   '<h4>Username (shown on the Robux page)</h4><div class="ap-r"><input id="apN" value="'+e2(S.user.name)+'" autocomplete="off"></div>'+
   '<h4>Photo</h4><div class="ap-r"><img class="ap-ph" id="apPh" src="'+e2(S.user.img||'img/av_me.webp')+'" alt=""><label class="ap-fb">Choose photo<input type="file" id="apFile" accept="image/*" hidden></label><button id="apPR" class="g">Reset</button></div>'+
   '<h4>Load everything from a Roblox user</h4><div class="ap-r"><input id="apU" placeholder="Roblox username or ID" value="'+e2(S.user.name)+'" autocomplete="off"><button id="apUB">Load</button></div><p class="ap-m" id="apUM"></p>'+
-  '<label class="ap-t"><input type="checkbox" id="apP" '+(S.prem!==false?'checked':'')+'> Premium icon next to the name</label>'+
+  '<h4>Appearance</h4><label class="ap-t"><input type="checkbox" id="apP" '+(S.prem!==false?'checked':'')+'> Plus (Premium) icon next to the name</label><label class="ap-t"><input type="checkbox" id="apV" '+(S.ver?'checked':'')+'> Verified badge</label><label class="ap-t"><input type="checkbox" id="apK" '+(S.dark?'checked':'')+'> Dark mode</label>'+
   '<h4>Notifications badge</h4><div class="ap-r"><input id="apB" placeholder="empty hides it" value="'+e2(S.bell)+'" autocomplete="off"></div>'+
   '<h4>Robux</h4><div class="ap-r"><input id="apR" inputmode="numeric" value="'+S.robux+'" autocomplete="off"><button id="apRB">Set</button></div>'+
   '<h4>Friends</h4><div class="ap-r"><input id="apF" placeholder="Roblox username or ID" autocomplete="off"><button id="apFB">Add</button></div><p class="ap-m" id="apFM"></p><ul class="ap-l" id="apL">'+apFriendsHtml()+'</ul>'+
@@ -165,6 +191,8 @@ function openAp(){
  $('apN').addEventListener('input',function(){S.user.name=this.value;save();renderMe()});
  $('apB').addEventListener('input',function(){S.bell=this.value;save();renderMe()});
  $('apP').addEventListener('change',function(){S.prem=this.checked;save();renderMe()});
+ $('apV').addEventListener('change',function(){S.ver=this.checked;save();renderMe()});
+ $('apK').addEventListener('change',function(){S.dark=this.checked;save();renderMe()});
  $('apFile').addEventListener('change',function(){var f=this.files&&this.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var n=Math.min(im.width,im.height),c=document.createElement('canvas');c.width=c.height=256;c.getContext('2d').drawImage(im,(im.width-n)/2,(im.height-n)/2,n,n,0,0,256,256);S.user.img=c.toDataURL('image/jpeg',.92);save();renderMe();$('apPh').src=S.user.img};im.src=rd.result};rd.readAsDataURL(f)});
  $('apPR').addEventListener('click',function(){S.user.img='';save();renderMe();$('apPh').src='img/av_me.webp'});
  $('apUB').addEventListener('click',function(){
@@ -187,9 +215,9 @@ function hold(el,fn,ms){
  function stop(){clearTimeout(t);t=null}
  el.addEventListener('pointerdown',function(){fired=false;stop();t=setTimeout(function(){fired=true;fn()},ms)});
  ['pointerup','pointerleave','pointercancel'].forEach(function(n){el.addEventListener(n,stop)});
- el.addEventListener('click',function(e){if(fired){e.stopPropagation();e.preventDefault();fired=false}},true);
+ el.addEventListener('click',function(e){if(fired){e.stopImmediatePropagation();e.stopPropagation();e.preventDefault();fired=false}},true);
 }
-hold($('sbHome'),openAp,3000);hold($('logo'),openAp,3000);
+document.querySelector('.bell').addEventListener('click',openAp);
 
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!ap.hidden)closeAp();else if(!sr.hidden)closeSr();else if(!$('rb').hidden)closeRb()}});
 
