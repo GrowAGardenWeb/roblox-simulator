@@ -629,14 +629,11 @@ var mx=0,md=false;mnu.addEventListener('touchstart',function(e){mx=e.touches[0].
 mnu.addEventListener('touchend',function(e){if(!md)return;md=false;if(e.changedTouches[0].clientX-mx>70)closeMenu()});
 mnu.addEventListener('click',function(e){var r=e.target.closest('.mr');if(r&&r.dataset.m==='settings'){closeMenu();setTimeout(openEd,250)}else if(r&&r.dataset.m==='balance'){openBalLoad()}});
 
-/* standalone: some iOS versions report a viewport shorter than the screen */
-function fitH(){var sa=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);var h=window.innerHeight;if(sa&&window.innerWidth<=screen.width&&screen.height-h>10&&screen.height-h<200)h=Math.max(h,screen.height,window.outerHeight||0);app.style.height=h+'px'}
-fitH();window.addEventListener('resize',fitH);window.addEventListener('orientationchange',function(){setTimeout(fitH,200)});
 /* balance screen */
 var bal=$('bal');
 var ld=$('ld'),gc=$('gc'),GP=[[15,'$5.00'],[30,'$10.00'],[50,'$16.00'],[70,'$22.00'],[139,'$43.00'],[210,'$65.00'],[559,'$171.00'],[1050,'$325.00']],gsel=0,busy=false;
 function inst(f){document.body.classList.add('inst');f();setTimeout(function(){document.body.classList.remove('inst')},60)}
-function theme(){var c=gc.classList.contains('on')?'#f3f3f3':bal.classList.contains('on')?'#d9dde8':cur==='home'?'#000000':'#ffffff',m=document.querySelector('meta[name=theme-color]');m.setAttribute('content',c);document.documentElement.style.background=c}
+function theme(){var c=gc.classList.contains('on')?'#f3f3f3':bal.classList.contains('on')?'#f4f4f4':cur==='home'?'#000000':'#ffffff',m=document.querySelector('meta[name=theme-color]');m.setAttribute('content',c);document.documentElement.style.background=c;document.body.style.background=c}
 function openBal(){bal.classList.add('on');bal.setAttribute('aria-hidden','false');theme()}
 function openBalLoad(){if(busy)return;busy=true;ld.classList.remove('flat');ld.classList.add('on');
  setTimeout(function(){inst(function(){closeMenu();openBal();ld.classList.remove('on')});busy=false},800)}
