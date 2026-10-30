@@ -119,6 +119,16 @@ img{display:block;max-width:none}
 .add{margin-top:10px;width:100%}
 .hint{font-size:12px;color:#8a8a8f;margin:8px 0 0;line-height:1.35}
 input[type=file]{display:none}
+/* pull to refresh */
+.scroll{overscroll-behavior-y:contain}
+#pull{will-change:transform}
+.ptr{position:absolute;z-index:4;left:0;right:0;top:calc(116*var(--u) + var(--st) + 48*var(--u));height:calc(28*var(--u));pointer-events:none;opacity:0}
+.ptr i{position:absolute;top:0;left:50%;width:calc(28*var(--u));height:calc(28*var(--u));margin-left:calc(-14*var(--u));border-radius:50%;mix-blend-mode:multiply;animation:ptrs 1.14s infinite ease-in-out}
+.ptr .r{background:#ff0050;--a:-17;--b:17}
+.ptr .c{background:#00f2ea;--a:17;--b:-17;animation-name:ptrc}
+@keyframes ptrs{0%{transform:translateX(calc(var(--a)*var(--u))) scale(1)}25%{transform:translateX(0) scale(1.3);z-index:2}50%{transform:translateX(calc(var(--b)*var(--u))) scale(1)}75%{transform:translateX(0) scale(.65)}100%{transform:translateX(calc(var(--a)*var(--u))) scale(1)}}
+@keyframes ptrc{0%{transform:translateX(calc(var(--a)*var(--u))) scale(1)}25%{transform:translateX(0) scale(.65)}50%{transform:translateX(calc(var(--b)*var(--u))) scale(1)}75%{transform:translateX(0) scale(1.3)}100%{transform:translateX(calc(var(--a)*var(--u))) scale(1)}}
+
 .nop{display:flex;flex-direction:column;align-items:center;padding:calc(70*var(--u)) calc(40*var(--u)) 0;text-align:center}
 .nop img{width:calc(90*var(--u));height:auto}
 .nop b{margin-top:calc(46*var(--u));font-size:calc(38*var(--u));font-weight:700}
@@ -229,7 +239,8 @@ input[type=file]{display:none}
     <span class="sp"></span>
     <div class="r"><img src="img/i_cal.webp" alt=""><img src="img/i_adduser.webp" alt=""><button class="ib" id="menuBtn" aria-label="Menu"><img src="img/i_menu.webp" alt=""></button></div>
   </header>
-  <main class="scroll" id="scroll">
+  <div class="ptr" id="ptr"><i class="r"></i><i class="c"></i></div>
+  <main class="scroll" id="scroll"><div id="pull">
     <section class="head me">
       <div class="who"><h1 id="name" class="b-name"></h1><i class="caret"></i><i class="dot" id="dot"></i><p class="hline"><span id="handle" class="b-handle2"></span><svg class="vb2" id="vb" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#4fd0e2"/><path d="M8.2 11.2l3 3.1 4.8-4.9" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="cat" class="cat"></span></p></div>
       <div class="avwrap"><div class="bubble" id="note"></div><div class="av" id="av"><img id="avImg" class="b-av" alt=""><img class="plus" src="img/plus.svg" alt=""></div></div>
@@ -245,7 +256,7 @@ input[type=file]{display:none}
       <p class="empty" id="sPostsEmpty" hidden>Nothing saved yet.</p></section>
     <section class="nop" id="noPosts" hidden><img src="img/e_photos.webp" alt=""><b id="nopT"></b><button type="button" id="nopBtn">Upload</button></section>
     <p class="empty" id="empty" hidden>Nothing here yet.</p>
-  </main>
+  </div></main>
 
   <section class="scr home" id="scrHome" hidden>
     <video id="fvid" playsinline loop muted></video>
@@ -479,6 +490,18 @@ $('nav').addEventListener('click',function(e){var b=e.target.closest('button[dat
 var fy=0;scr.home.addEventListener('touchstart',function(e){fy=e.touches[0].clientY},{passive:true});
 scr.home.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientY-fy;if(Math.abs(d)>70){fIdx+=d<0?1:-1;feedPlay()}else{if(fvid.paused)fvid.play();else fvid.pause()}});
 scr.home.addEventListener('click',function(e){if(e.detail&&!('ontouchstart' in window)){if(fvid.paused)fvid.play();else fvid.pause()}});
+
+/* pull to refresh: the page moves down, the top bar and the nav stay, the two dots show for 2 seconds */
+(function(){var sc=$('scroll'),pe=$('pull'),pt=$('ptr'),y0=0,pd=0,on=false,busy=false;
+function U(){return Math.min(window.innerWidth,460)/921}
+function put(d,anim){pe.style.transition=anim||'none';pe.style.transform=d?'translateY('+d+'px)':'';}
+sc.addEventListener('touchstart',function(e){if(cur!=='profile'||busy||sc.scrollTop>0)return;y0=e.touches[0].clientY;pd=0;on=true},{passive:true});
+sc.addEventListener('touchmove',function(e){if(!on)return;var dy=e.touches[0].clientY-y0;if(dy<=0||sc.scrollTop>0){if(pd>0){pd=0;put(0);pt.style.opacity=0}return}
+ if(e.cancelable)e.preventDefault();var m=170*U();pd=m*(1-Math.exp(-dy*0.9/ (m*1.6)));put(pd);pt.style.transition='none';pt.style.opacity=Math.min(1,pd/(70*U()))},{passive:false});
+function end(){if(!on)return;on=false;if(pd>=95*U()){busy=true;pt.style.transition='opacity .25s';pt.style.opacity=1;put(124*U(),'transform .35s cubic-bezier(.2,.8,.2,1)');
+ setTimeout(function(){pt.style.transition='opacity .3s .05s';pt.style.opacity=0;put(0,'transform .45s cubic-bezier(.3,.7,.2,1)');setTimeout(function(){busy=false},480)},2000)}
+ else{pt.style.transition='opacity .2s';pt.style.opacity=0;put(0,'transform .3s cubic-bezier(.3,.7,.2,1)')}pd=0}
+sc.addEventListener('touchend',end);sc.addEventListener('touchcancel',end)})();
 var ed=$('ed');
 function openEd(){fill();ed.classList.add('on');ed.setAttribute('aria-hidden','false')}
 function closeEd(){ed.classList.remove('on');ed.setAttribute('aria-hidden','true');save()}
