@@ -25,7 +25,13 @@ $('games').innerHTML=h;
 var PX=/^https?:$/.test(location.protocol)&&!window.pc;
 var HOST={apis:'apis',thumbs:'thumbnails',users:'users',friends:'friends',games:'games',catalog:'catalog'};
 function U(p){if(PX)return p;var m=p.match(/^\/rbx\/([a-z]+)\/(.*)$/);return 'https://'+HOST[m[1]]+'.roblox.com/'+m[2]}
-function J(p){return fetch(U(p)).then(function(r){if(!r.ok)throw Error(r.status);return r.json()})}
+function D(p){var m=p.match(/^\/rbx\/([a-z]+)\/(.*)$/);return 'https://'+HOST[m[1]]+'.roblox.com/'+m[2]}
+function F1(u){return fetch(u).then(function(r){if(!r.ok)throw Error(r.status);return r.json()})}
+function J(p){
+ if(!PX)return F1(D(p));
+ /* same-origin proxy first, then the two generic proxies the other pages use */
+ return F1(p).catch(function(){return F1('/rbxproxy?u='+encodeURIComponent(D(p)))}).catch(function(){return F1('/api/rbx?u='+encodeURIComponent(D(p)))});
+}
 function pct(g){var t=(g.totalUpVotes||0)+(g.totalDownVotes||0);return t?Math.round(100*g.totalUpVotes/t):0}
 function e2(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function loadFriends(){
@@ -62,6 +68,8 @@ function loadGames(){
 }
 loadFriends().catch(function(){});
 loadGames().catch(function(){});
+/* images fade in once they are decoded */
+document.addEventListener('load',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&(t.classList.contains('t')||t.classList.contains('ph')))t.classList.add('ld')},true);
 /* Robux page */
 var S={robux:1000,user:'munfuja'};
 function fmt(n){return Number(n).toLocaleString('en-US')}
