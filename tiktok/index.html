@@ -130,18 +130,6 @@ body.inst *{transition:none!important}
 .ld .ptr{top:50%;margin-top:calc(-14*var(--u));opacity:1}
 .sh{background:linear-gradient(90deg,#f0f0f2 0,#f6f6f8 50%,#f0f0f2 100%) 0 0/200% 100%;animation:shm 1.2s linear infinite}
 @keyframes shm{to{background-position:-200% 0}}
-.bal .bn{height:calc(167*var(--u));margin-top:calc(26*var(--u));justify-content:space-between;padding:0 calc(30*var(--u)) 0 calc(34*var(--u))}
-.bn .bnt{display:flex;flex-direction:column;gap:calc(14*var(--u));min-width:0}
-.bn .bnt b{font-size:calc(31*var(--u));font-weight:700;display:flex;align-items:center;gap:calc(14*var(--u));white-space:nowrap}
-.bn .bnt span{font-size:calc(29*var(--u));color:#7a7a82}
-.bn .sk{display:none}
-.bal.sk1 .bn .bnt,.bal.sk1 .bn>img{display:none}
-.bal.sk1 .bn .sk{display:block}
-.bn .bk1,.bn .bk2{height:calc(26*var(--u));border-radius:calc(13*var(--u))}
-.bn .bk1{width:calc(240*var(--u))}.bn .bk2{width:calc(560*var(--u));margin-top:calc(14*var(--u))}
-.bn .bkc{width:calc(88*var(--u));height:calc(88*var(--u));border-radius:50%;margin-left:auto}
-.bal.sk1 .bn{display:flex;flex-direction:row;align-items:center}
-.bal.sk1 .bn .skw{display:block;flex:1}
 .bal.sk1 #bTx,.bal.sk1 .c0>img{visibility:hidden}
 .bal.sk1 .br2,.bal.sk2 .br2{display:none}
 .gc{position:absolute;inset:0;z-index:31;background:#f3f3f3;display:none;flex-direction:column;max-width:460px;margin:0 auto;overflow-y:auto;scrollbar-width:none;padding-top:var(--st,calc(105*var(--u)))}
@@ -388,7 +376,6 @@ body.inst *{transition:none!important}
   <div class="ba"><b id="bAmt"></b><img src="img/b_chev1.webp" style="width:calc(15.5*var(--u));height:calc(25.6*var(--u))" alt=""></div>
   <div class="bp"><img src="img/b_coin.webp" style="width:calc(35.7*var(--u));height:calc(35.7*var(--u))" alt=""><span>Coins</span><b id="bCoins"></b><i></i><span>Get Coins</span><img src="img/b_arrow.webp" style="width:calc(25.6*var(--u));height:calc(22.5*var(--u))" alt=""></div>
   <div class="bc c0"><b>Transactions</b><span id="bTx"></span><img src="img/b_chev2.webp" style="width:calc(15.5*var(--u));height:calc(24.8*var(--u))" alt=""></div>
-  <div class="bc bn" id="bBn"><div class="bnt"><b><span id="bBt" style="color:#161616;font-size:inherit"></span><img src="img/b_chev2.webp" style="width:calc(15.5*var(--u));height:calc(24.8*var(--u))" alt=""></b><span id="bBs"></span></div><img src="img/b_star.webp" style="width:calc(118*var(--u));height:calc(121*var(--u))" alt=""><div class="skw sk"><div class="bk1 sh"></div><div class="bk2 sh"></div></div><div class="bkc sh sk"></div></div>
   <div class="bc br2"><div class="brw"><img src="img/b_coin2.webp" style="width:calc(35.7*var(--u));height:calc(35.7*var(--u))" alt=""><b id="bRc"></b><span id="bRt"></span><button type="button">Exchange</button></div><div class="brw" id="bRech"><img src="img/b_coin2.webp" style="width:calc(35.7*var(--u));height:calc(35.7*var(--u))" alt=""><b id="bRcc"></b><span id="bRu"></span><button type="button" class="rc">Recharge</button></div></div>
   <div class="bc bg"><button class="bgi" type="button"><img class="bt1" src="img/b_t_live.webp" alt=""><span>LIVE rewards</span></button><button class="bgi" type="button"><img class="bt1" src="img/b_t_mon.webp" alt=""><span>Monetization</span></button><button class="bgi" type="button"><img class="bt1" src="img/b_t_camp.webp" alt=""><span>Campaigns</span></button><button class="bgi" type="button"><img class="bt1" src="img/b_t_subs.webp" alt=""><span>Subscriptions Manager</span></button></div>
   <p class="bf">Balance is not a financial product. Details shown are for information purposes only.</p>
@@ -432,9 +419,6 @@ body.inst *{transition:none!important}
     <div class="fld"><label for="eBTx">Transactions: text on the right</label><input type="text" id="eBTx" maxlength="50" autocomplete="off"></div>
     <div class="row2" style="grid-template-columns:1fr 3fr;margin-top:10px"><div class="fld"><label for="eBRc">Coins</label><input type="text" id="eBRc" autocomplete="off"></div><div class="fld"><label for="eBRt">Content rewards row</label><input type="text" id="eBRt" maxlength="50" autocomplete="off"></div></div>
     <label class="tog">Show the Recharge row<input type="checkbox" id="eBRech"></label>
-    <label class="tog">Show the banner card<input type="checkbox" id="eBBn"></label>
-    <div class="fld"><label for="eBBt">Banner title</label><input type="text" id="eBBt" maxlength="50" autocomplete="off"></div>
-    <div class="fld"><label for="eBBs">Banner subtitle</label><input type="text" id="eBBs" maxlength="50" autocomplete="off"></div>
     <div class="row2" style="grid-template-columns:1fr 1fr"><div class="fld"><label for="eBRcc">Recharge coins</label><input type="text" id="eBRcc" autocomplete="off"></div><div class="fld"><label for="eBRu">Recharge price</label><input type="text" id="eBRu" autocomplete="off"></div></div>
     <p class="hint">Open it from the Balance chip on the profile or from the side menu.</p>
   </div>
@@ -466,7 +450,7 @@ body.inst *{transition:none!important}
 <script>
 (function(){
 var KEY='tt.profile.v2';
-var DEF={bal:{amt:'4.38',cur:'USD',coins:'0',tx:'Exchange of Coins: USD0.02',rc:'1',rt:'USD 0.02 from Content rewards',rech:true,rcc:'139',ru:'$43.00',hide:false,bt:'Acompáñanos en la celebración',bs:'Dia de Muertos',bn:true},tabs:5,emptyT:'Share a throwback photo',cols:[{name:'Watch later',lock:true}],inb:{act:'New followers and comments',actN:'8',chat:'You have 23 new interactions · Oct 22',reqs:'998',sys:'Sell with TikTok Shop'},feed:{l:'1M',c:'3891',s:'145300',h:'76500',cap:'Pasito a pasito, suave suavecito #Trend #Dance',snd:'original sound',sr:'Search · your favorite creators'},tabs:5,artist:false,name:'moneyscripts',handle:'moneyscripts',ver:false,dot:true,coin:true,avBg:'#0a0a0a',avatar:null,note:"What's good?",
+var DEF={bal:{amt:'4.38',cur:'USD',coins:'0',tx:'Exchange of Coins: USD0.02',rc:'1',rt:'USD 0.02 from Content rewards',rech:true,rcc:'139',ru:'$43.00',hide:false},tabs:5,emptyT:'Share a throwback photo',cols:[{name:'Watch later',lock:true}],inb:{act:'New followers and comments',actN:'8',chat:'You have 23 new interactions · Oct 22',reqs:'998',sys:'Sell with TikTok Shop'},feed:{l:'1M',c:'3891',s:'145300',h:'76500',cap:'Pasito a pasito, suave suavecito #Trend #Dance',snd:'original sound',sr:'Search · your favorite creators'},tabs:5,artist:false,name:'moneyscripts',handle:'moneyscripts',ver:false,dot:true,coin:true,avBg:'#0a0a0a',avatar:null,note:"What's good?",
  following:'10',followers:'10000',likes:'10000',bio:'',link:'',inbox:'99+',
  hls:[],
  drafts:{on:false,n:'7',size:'208.7MB',img:'v1'},
@@ -513,7 +497,7 @@ function render(){
 
 function mny(v){v=String(v==null?'':v).trim().replace(/,/g,'');return /^\d+(\.\d+)?$/.test(v)?Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):v}
 function cnt(v){v=String(v==null?'':v).trim().replace(/,/g,'');return /^\d+$/.test(v)?Number(v).toLocaleString('en-US'):v}
-function renderBal(){var b=S.bal;$('bCur').textContent=b.cur;$('bAmt').textContent=b.hide?'******':mny(b.amt);$('bCoins').textContent=b.hide?'****':cnt(b.coins);$('bTx').textContent=b.tx;$('bRc').textContent=cnt(b.rc);$('bRt').textContent=b.rt;$('bRech').style.display=b.rech?'':'none';$('bRcc').textContent=cnt(b.rcc);$('bRu').textContent=b.ru;$('bEyeI').src=b.hide?'img/b_eyec.webp':'img/b_eye.webp';$('bBt').textContent=b.bt;$('bBs').textContent=b.bs;$('bBn').style.display=b.bn===false?'none':'';if(window.GP)renderGc()}
+function renderBal(){var b=S.bal;$('bCur').textContent=b.cur;$('bAmt').textContent=b.hide?'******':mny(b.amt);$('bCoins').textContent=b.hide?'****':cnt(b.coins);$('bTx').textContent=b.tx;$('bRc').textContent=cnt(b.rc);$('bRt').textContent=b.rt;$('bRech').style.display=b.rech?'':'none';$('bRcc').textContent=cnt(b.rcc);$('bRu').textContent=b.ru;$('bEyeI').src=b.hide?'img/b_eyec.webp':'img/b_eye.webp';if(window.GP)renderGc()}
 function renderMore(){renderBal();
  var f=S.feed,i=S.inb;
  $('fL').textContent=fmt(f.l);$('fC').textContent=Number(f.c)>=1e3&&/^\d+$/.test(f.c)?Number(f.c).toLocaleString('en-US'):fmt(f.c);$('fS').textContent=fmt(f.s);$('fH').textContent=fmt(f.h);
@@ -558,7 +542,7 @@ function fill(){
  var cl='';S.cols.forEach(function(x,k){cl+='<div class="li" style="grid-template-columns:1fr auto"><div class="f"><input type="text" value="'+esc(x.name)+'" data-cn="'+k+'" maxlength="30"><label class="tog" style="padding:0;font-size:13px">Private (lock)<input type="checkbox" data-cl="'+k+'"'+(x.lock?' checked':'')+'></label></div><button class="btn r" data-cd="'+k+'" type="button">Delete</button></div>'});
  $('eCols').innerHTML=cl||'<p class="hint">No collections.</p>';
  $('eIA').value=S.inb.act;$('eIAN').value=S.inb.actN;$('eIR').value=S.inb.reqs;$('eIS').value=S.inb.sys;
- $('eBA').value=S.bal.amt;$('eBBn').checked=S.bal.bn!==false;$('eBBt').value=S.bal.bt;$('eBBs').value=S.bal.bs;$('eBCur').value=S.bal.cur;$('eBCoin').value=S.bal.coins;$('eBTx').value=S.bal.tx;$('eBRc').value=S.bal.rc;$('eBRt').value=S.bal.rt;$('eBRcc').value=S.bal.rcc;$('eBRu').value=S.bal.ru;$('eBRech').checked=!!S.bal.rech;$('eBHide').checked=!!S.bal.hide;
+ $('eBA').value=S.bal.amt;$('eBCur').value=S.bal.cur;$('eBCoin').value=S.bal.coins;$('eBTx').value=S.bal.tx;$('eBRc').value=S.bal.rc;$('eBRt').value=S.bal.rt;$('eBRcc').value=S.bal.rcc;$('eBRu').value=S.bal.ru;$('eBRech').checked=!!S.bal.rech;$('eBHide').checked=!!S.bal.hide;
  $('eFL').value=S.feed.l;$('eFC').value=S.feed.c;$('eFS').value=S.feed.s;$('eFH').value=S.feed.h;$('eFCap').value=S.feed.cap;$('eFSnd').value=S.feed.snd;$('eFSr').value=S.feed.sr;
 }
 function sync(){render();fill();save()}
@@ -666,7 +650,7 @@ qa('.chips .chip',function(c){if(/Balance/.test(c.textContent)){c.style.cursor='
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeBal()});
 bindObj('eBA','bal','amt');bindObj('eBCur','bal','cur');bindObj('eBCoin','bal','coins');bindObj('eBTx','bal','tx');bindObj('eBRc','bal','rc');bindObj('eBRt','bal','rt');bindObj('eBRcc','bal','rcc');bindObj('eBRu','bal','ru');
 $('eBRech').addEventListener('input',function(){S.bal.rech=this.checked;render();save()});
-$('eBBn').addEventListener('input',function(){S.bal.bn=this.checked;render();save()});bindObj('eBBt','bal','bt');bindObj('eBBs','bal','bs');
+
 $('eBHide').addEventListener('input',function(){S.bal.hide=this.checked;render();save()});
 var ed=$('ed');
 function openEd(){fill();ed.classList.add('on');ed.setAttribute('aria-hidden','false')}
