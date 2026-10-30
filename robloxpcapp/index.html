@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Roblox</title>
-<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
+<script src="icons.js"></script>
 </head>
 <body>
 <div class="win" id="win">
@@ -21,50 +21,41 @@
 
   <div class="app">
     <nav class="side">
-      <button class="menu" aria-label="Menu"><img src="img/i_menu.webp" alt="" style="width:38px;height:34px"><i class="dot"></i></button>
-      <button class="sb on" data-s="home"><img class="si" src="img/n_home.webp" alt="" style="width:30px;height:30px"><span>Home</span></button>
-      <button class="sb" data-s="moments"><img class="si" src="img/n_moments.webp" alt="" style="width:30px;height:28px"><span>Moments</span></button>
-      <button class="sb" data-s="chat"><img class="si" src="img/n_chat.webp" alt="" style="width:30px;height:26px"><span>Chat</span></button>
-      <button class="sb" data-s="me"><img class="si av" src="img/av_side.webp" alt="" style="width:28px;height:28px"><span>Me</span></button>
-      <button class="logo-b" aria-label="Roblox"><img src="img/n_logo.webp" alt="" style="width:30px;height:32px"></button>
+      <button class="menu" aria-label="Menu"><i data-ic="menu-r" data-s="34"></i><i class="dot"></i></button>
+      <button class="sb on" data-s="home" id="sbHome"><i data-ic="house-f" data-s="30"></i><span>Home</span></button>
+      <button class="sb" data-s="moments"><i data-ic="moments-r" data-s="30"></i><span>Moments</span></button>
+      <button class="sb" data-s="chat"><i data-ic="chat-r" data-s="30"></i><span>Chat</span></button>
+      <button class="sb" data-s="me"><img class="si av" id="sideAv" src="img/av_side.webp" alt="" style="width:28px;height:28px"><span>Me</span></button>
+      <button class="logo-b" aria-label="Roblox"><i data-ic="rbx-f" data-s="34"></i></button>
     </nav>
 
     <main class="main">
       <div class="top">
-        <img class="logo" src="img/logo.webp" alt="Roblox" style="width:112px;height:28px">
-        <label class="search"><img src="img/i_search.webp" alt="" style="width:30px;height:26px;margin-left:-6px;margin-right:-4px"><input id="q" type="text" placeholder="Search" autocomplete="off"></label>
+        <img class="logo" id="logo" src="img/logo.webp" alt="Roblox" style="width:112px;height:28px">
+        <label class="search"><i data-ic="search-r" data-s="28"></i><input id="q" type="text" placeholder="Search" autocomplete="off"></label>
         <div class="me">
-          <img class="me-av" src="img/av_me.webp" alt="">
+          <img class="me-av" id="meAv" src="img/av_me.webp" alt="">
           <b id="meName">munfuja</b>
-          <img src="img/i_verified.webp" alt="" style="width:34px;height:24px">
-          <button class="rbx" id="openRb" aria-label="Robux"><img src="img/i_robux.webp" alt="Robux" style="width:36px;height:30px"></button>
-          <button class="bell" aria-label="Notifications"><img src="img/i_bell.webp" alt="" style="width:32px;height:30px"><i class="bdg" id="bellN">3</i></button>
+          <i class="prem" data-ic="rplus-r" data-s="20"></i>
+          <button class="rbx" id="openRb" aria-label="Robux"><i data-ic="robux-r" data-s="29"></i></button>
+          <button class="bell" aria-label="Notifications"><i data-ic="bell-r" data-s="28"></i><i class="bdg" id="bellN">3</i></button>
         </div>
       </div>
 
       <section class="scr" id="s-home">
         <div class="tabs"><button class="on">For you</button><button>Charts</button></div>
         <div class="friends" id="friends"></div>
-        <div class="ban" id="ban">
-          <div class="ban-art" style="background-image:url(img/banner.webp)"></div>
-          <span class="chip" id="banTag">New Chapter</span>
-          <h2 id="banT">Escape The Corruption</h2>
-          <p id="banS">The Overseer has been summoned</p>
-          <button class="play" id="banB">Jo...</button>
-          <span class="mat" id="banM">Maturity: Minimal</span>
-        </div>
-        <h3 class="rh">Recommended For You</h3>
+        <h3 class="rh first">Recommended For You</h3>
         <div class="games" id="games"></div>
       </section>
     </main>
   </div>
-</div>
 
 <section class="rb" id="rb" hidden>
-  <div class="rb-bar"><button class="rb-x" id="rbX" aria-label="Close"><img src="img/x_big.webp" alt="" style="width:22px;height:24px"></button><div class="rb-t"><small id="rbU">munfuja: 13+</small><span>Balance: <span id="rbBal">1,000</span> Robux</span></div></div>
+  <div class="rb-bar"><button class="rb-x" id="rbX" aria-label="Close"><i data-ic="x-r" data-s="30"></i></button><div class="rb-t"><small id="rbU">munfuja: 13+</small><span>Balance: <span id="rbBal">1,000</span> Robux</span></div></div>
   <div class="rb-sc">
     <div class="rb-col">
-      <div class="rb-pill"><img src="img/hx_p.webp" alt="" style="width:26px;height:28px"><b id="rbPill">1,000</b><button id="rbSend"><img src="img/i_up.webp" alt="" style="width:14px;height:14px">Send</button></div>
+      <div class="rb-pill"><i data-ic="robux-r" data-s="34"></i><b id="rbPill">1,000</b><button id="rbSend"><i data-ic="up-r" data-s="16"></i>Send</button></div>
       <h1>Enjoy up to 25%<br>more Robux</h1>
       <h2>Bonus item we picked for you</h2>
       <div class="rb-card">
@@ -79,6 +70,11 @@
 
 <div class="sr" id="sr" hidden>
   <div class="sr-box" id="srBox"></div>
+</div>
+
+<div class="sr ap" id="ap" hidden>
+  <div class="sr-box ap-box" id="apBox"></div>
+</div>
 </div>
 <script src="app.js"></script>
 </body>
