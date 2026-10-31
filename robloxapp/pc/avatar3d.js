@@ -16,8 +16,10 @@ function render3d(ids){
 }
 var cur=null;
 function show(box,ids,opt){
- opt=opt||{};var zoom=opt.zoom||1.25;
- return Promise.all([render3d(ids),libs()]).then(function(r){
+ opt=opt||{};var zoom=opt.zoom||1.25,log=opt.log||function(){};
+ log('3D: asking the server… ('+ids.length+' items)');
+ var timeout=new Promise(function(_,rej){setTimeout(function(){rej(Error('timed out (the server did not answer in 40s)'))},40000)});
+ var main=Promise.all([render3d(ids).then(function(m){log('3D: loading the model…');return m}),libs().then(function(){log('3D: libraries ready')})]).then(function(r){
   var meta=r[0],T=window.THREE;
   if(cur){cur.dead=true;cancelAnimationFrame(cur.raf);try{cur.renderer.dispose()}catch(e){}if(cur.el&&cur.el.parentNode)cur.el.parentNode.removeChild(cur.el)}
   var W=box.clientWidth||600,H=box.clientHeight||800;
@@ -51,6 +53,7 @@ function show(box,ids,opt){
    },null,function(){rej2(Error('mtl'))});
   });
  });
+ return Promise.race([main,timeout]);
 }
 window.Av3D={show:show};
 })();
