@@ -33,13 +33,18 @@ function boot(){
  P.catch(function(){P=null});
  return P;
 }
-function show(box,uid,opt){
+var Q=Promise.resolve(),tok=0;
+function show(box,uid,opt){var t=++tok;Q=Q.catch(function(){}).then(function(){if(t!==tok)throw Error('superseded');return doShow(box,uid,opt)});return Q}
+function doShow(box,uid,opt){
  opt=opt||{};var log=opt.log||function(){},LF=opt.lift!=null?opt.lift:LIFT;
  return boot().then(function(E){
   var R=E.R;log('Loading avatar…');
   return R.API.Avatar.GetUserAvatarModel(Number(uid)).then(function(model){
    if(!model||model instanceof Response)throw Error('avatar model '+(model&&model.status));
-   var rend=new R.OutfitRenderer(E.auth,model);
+   var reuse=!!(cur&&cur.rend),rend=reuse?cur.rend:new R.OutfitRenderer(E.auth,model);
+   /* one renderer for the whole page: a new person is loaded into it (like the mobile app does when the outfit changes), so two models never stack */
+   if(reuse){try{rend.setOutfitModel(model)}catch(x){}}
+   else if(rend.backgroundRenderer){rend.backgroundRenderer.cameraAffectsTransparency=false;rend.backgroundRenderer.cameraAffectsRotation=false}
    var assets0=model.clone().outfit.toJson().assets.slice();
    var el=R.RBXRenderer.getRendererElement();
    el.style.cssText='width:100%;height:100%;display:block;touch-action:none';
