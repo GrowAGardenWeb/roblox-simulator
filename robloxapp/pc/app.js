@@ -243,15 +243,15 @@ function viewConfirm(n){
  $('cfE').addEventListener('click',viewAmt);
  $('cfS').addEventListener('click',function(){
   if(box.dataset.busy)return;box.dataset.busy='1';
-  box.style.transition='opacity .22s ease';box.style.opacity='0';sr.style.transition='background .25s ease';sr.style.background='rgba(0,0,0,0)';
+  box.style.transition='opacity .12s ease';box.style.opacity='0';sr.style.transition='background .14s ease';sr.style.background='rgba(0,0,0,0)';
   setTimeout(function(){
    var old=S.robux;S.robux=Math.max(0,S.robux-n);save();
    box.style.opacity='';box.style.transition='';sr.style.background='';sr.style.transition='';delete box.dataset.busy;
    box.className='sr-box dn';
    box.innerHTML=head()+'<div class="dn-c">'+I('ccheck-r',44)+'</div><p class="dn-t">You sent '+fmt(n)+' Robux</p><button class="dn-b" id="dnOk">OK</button>';
    bindX();$('dnOk').addEventListener('click',closeSr);
-   setTimeout(function(){var bl=box.querySelector('.bl');if(bl)bl.innerHTML=I('robux-r',20)+fmt(S.robux);setBal()},650);
-  },950);
+   setTimeout(function(){var bl=box.querySelector('.bl');if(bl)bl.innerHTML=I('robux-r',20)+fmt(S.robux);setBal()},250);
+  },300);
  });
 }
 $('rbSend').addEventListener('click',openSr);
