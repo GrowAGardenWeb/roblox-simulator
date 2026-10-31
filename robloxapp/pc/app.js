@@ -423,10 +423,32 @@ function showAv(on){
 $('cats').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;[].forEach.call(document.querySelectorAll('#cats button'),function(x){x.classList.toggle('on',x===b)});avCat=b.dataset.k;avChip=null;avStatic();loadAv()});
 $('avRows').addEventListener('click',function(e){var b=e.target.closest('#mchips button');if(!b)return;avChip=Number(b.dataset.c);avStatic();loadAv()});
 ;(function(){
- var bar=document.createElement('div');bar.className='av-buy';bar.hidden=true;bar.innerHTML='<button class="bb" id="avBuy"></button><button class="bm" aria-label="More">'+I('three-dots-h',26)+'</button>';$('avR').appendChild(bar);
- $('avRows').addEventListener('click',function(e){var it=e.target.closest('.it');if(!it)return;var was=it.classList.contains('sel');[].forEach.call(document.querySelectorAll('#avRows .it.sel'),function(x){x.classList.remove('sel')});
-  if(was){bar.hidden=true;$('avR').classList.remove('buying');return}
-  it.classList.add('sel');var pr=it.dataset.p;$('avBuy').innerHTML=pr===''?'Off sale':I('robux-r',20)+'<span>'+fmt(pr)+'</span>';bar.hidden=false;$('avR').classList.add('buying')});
+ var bar=document.createElement('div');bar.className='av-buy';bar.hidden=true;bar.innerHTML='<button class="bb" id="avBuy"></button><button class="bm" id="avClr" aria-label="Clear">'+I('trash-r',24)+'</button>';$('avR').appendChild(bar);
+ function sels(){return [].slice.call(document.querySelectorAll('#avRows .it.sel'))}
+ function upd(){
+  var l=sels();bar.hidden=!l.length;$('avR').classList.toggle('buying',!!l.length);
+  if(l.length===1){var pr=l[0].dataset.p;$('avBuy').dataset.m='one';$('avBuy').innerHTML=pr===''?'Off sale':I('robux-r',20)+'<span>'+(pr==='0'?'Free':fmt(pr))+'</span>';$('avClr').innerHTML=I('three-dots-h',26)}
+  else if(l.length){$('avBuy').dataset.m='many';$('avBuy').textContent='View Checkout ('+l.length+')';$('avClr').innerHTML=I('trash-r',24)}
+  if(!l.length)closeCo();
+ }
+ window.avSelUpd=upd;
+ $('avRows').addEventListener('click',function(e){var it=e.target.closest('.it');if(!it||it.classList.contains('isk'))return;it.classList.toggle('sel');upd()});
+ $('avClr').addEventListener('click',function(){if(sels().length>1||$('avBuy').dataset.m==='many'){sels().forEach(function(x){x.classList.remove('sel')});upd()}});
+ /* checkout panel */
+ var co=document.createElement('div');co.className='co';co.hidden=true;$('avR').appendChild(co);
+ function closeCo(){co.hidden=true}
+ function drawCo(){
+  var l=sels();if(!l.length){closeCo();upd();return}
+  var plus=S.prem!==false,sum=0,rows=l.map(function(it,i){var p=Number(it.dataset.p)||0,np=plus?p-Math.round(p*.1):p;sum+=p;var im=it.querySelector('.ph img');
+   return '<div class="co-i"><span class="co-p"><img src="'+e2(im?im.src:'')+'" alt=""></span><div><b>'+e2(it.querySelector('b').textContent)+'</b><small>Item</small><div class="co-pr"><i>'+I('robux-r',16)+'</i>'+fmt(np)+(plus&&p!==np?'<s><i>'+I('robux-r',12)+'</i>'+fmt(p)+'</s>':'')+'</div></div><button class="co-x" data-i="'+i+'" aria-label="Remove">'+I('x-r',22)+'</button></div>'}).join('');
+  var save=plus?Math.round(sum*.1):0,tot=sum-save;
+  co.innerHTML='<div class="co-h"><button id="coB" aria-label="Back">'+I('chevl-r',26)+'</button><b>Checkout</b></div><div class="co-l">'+rows+'<label class="by-c"><input type="checkbox" checked><i></i>Wear items after purchase</label></div><div class="co-f">'+(plus?'<div class="co-s"><i>'+I('rplus-r',20)+'</i><span>Saving <i class="ri">'+I('robux-r',13)+'</i>'+fmt(save)+' with Plus</span></div>':'')+'<div class="co-t"><b>Total ('+l.length+' items)</b><span>'+(save?'<s><i class="ri">'+I('robux-r',12)+'</i>'+fmt(sum)+'</s>':'')+'<i class="ri">'+I('robux-r',18)+'</i>'+fmt(tot)+'</span></div><button class="by-b" id="coBuy">Buy</button></div>';
+  co.hidden=false;
+  $('coB').addEventListener('click',closeCo);
+  co.querySelectorAll('.co-x').forEach(function(b){b.addEventListener('click',function(){sels()[+b.dataset.i].classList.remove('sel');upd();if(sels().length)drawCo()})});
+  $('coBuy').addEventListener('click',function(){if(S.robux<tot){$('coBuy').textContent='Not enough Robux';return}S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);sels().forEach(function(x){x.classList.remove('sel')});upd()});
+ }
+ window.drawCo=drawCo;
 })();
 function avMode(m){var bb=document.querySelector('.av-buy');if(bb&&m==='c'){bb.hidden=true;$('avR').classList.remove('buying');[].forEach.call(document.querySelectorAll('#avRows .it.sel'),function(x){x.classList.remove('sel')})}$('avM').classList.toggle('on',m==='m');$('avC').classList.toggle('on',m==='c');$('avSc').hidden=m!=='m';$('cuSc').hidden=m!=='c';if(m==='c')loadCust()}
 $('avM').addEventListener('click',function(){avMode('m')});
@@ -492,7 +514,7 @@ function openBuy(name,price,img){
  draw();$('buy').hidden=false;
 }
 $('buy').addEventListener('mousedown',function(e){if(e.target===$('buy'))$('buy').hidden=true});
-$('avBuy').addEventListener('click',function(){var it=document.querySelector('#avRows .it.sel');if(!it)return;var im=it.querySelector('.ph img');openBuy(it.querySelector('b').textContent,it.dataset.p,im&&im.src)});
+$('avBuy').addEventListener('click',function(){var l=document.querySelectorAll('#avRows .it.sel');if(l.length>1){window.drawCo()}else if(l.length===1){var it=l[0],im=it.querySelector('.ph img');openBuy(it.querySelector('b').textContent,it.dataset.p,im&&im.src)}});
 
 /* ---------- window controls (Electron) ---------- */
 var pc=window.pc||null;

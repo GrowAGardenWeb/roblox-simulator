@@ -600,3 +600,27 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .pr.clk::after{content:"";width:14px;height:14px;border:1.5px solid #232527;border-radius:50%;margin-left:6px;display:inline-block}
 .avg.cg:empty{display:none}
 #cuTail .cr{display:none}#cuTail .avg.row .it{width:146px}
+
+/* Details stays on selected items; multi-select checkout */
+.it.sel .dt{display:block}
+.co{position:absolute;inset:0;background:#fff;z-index:8;display:flex;flex-direction:column;animation:buyin .22s cubic-bezier(.2,.7,.3,1)}
+.co[hidden]{display:none}
+.co-h{height:63px;display:flex;align-items:center;justify-content:center;position:relative;font-size:16.5px;font-weight:700;flex:none}
+.co-h button{position:absolute;left:18px;top:18px;display:grid;place-items:center}
+.co-l{flex:1;overflow-y:auto;padding:0 18px;scrollbar-width:none}
+.co-i{display:flex;gap:14px;align-items:center;margin-bottom:12px;min-height:84px}
+.co-p{width:84px;height:84px;border-radius:6px;background:#eeeff2;flex:none;overflow:hidden;display:block}
+.co-p img{width:100%;height:100%;object-fit:cover}
+.co-i>div{flex:1;min-width:0}
+.co-i b{display:block;font-size:14.6px;font-weight:700;line-height:20px}
+.co-i small{display:block;font-size:14px;color:#6d7176;line-height:20px}
+.co-pr{display:flex;align-items:center;gap:3px;font-size:14.6px;font-weight:700;line-height:24px}
+.co-pr i,.co-pr s{display:inline-flex;align-items:center}
+.co-pr s{font-weight:500;color:#6d7176;font-size:12px;margin-left:4px;gap:2px}
+.co-x{width:40px;height:40px;border-radius:50%;background:#eeeff2;display:grid;place-items:center;flex:none}
+.co-f{flex:none;padding:0 18px 22px}
+.co-s{display:flex;align-items:center;gap:8px;height:40px;border:1px solid #dcdee2;border-radius:6px;padding:0 10px;font-size:12.6px;font-weight:700}
+.co-s span{display:flex;align-items:center;gap:3px}
+.co-t{display:flex;justify-content:space-between;align-items:center;height:40px;font-size:15px}
+.co-t span{display:flex;align-items:center;gap:4px;font-weight:700}
+.co-t s{display:flex;align-items:center;gap:2px;color:#6d7176;font-weight:500;font-size:12.5px;margin-right:6px}
