@@ -929,22 +929,18 @@ function tick(){if(!mk.classList.contains('lon'))return;var l=L(),r=Math.random(
 function startSim(){joined=0;lastG=null;gbs=[];$('lvGifts').innerHTML='';$('lvGan').innerHTML='';$('lvChat').innerHTML='';cmsg('sys','','Welcome to TikTok LIVE! Have fun interacting with your viewers in real time. Creators must be 18 or older to go LIVE. Viewers must be 18 or older to recharge and send Gifts. Remember to create a safe viewing experience by following our Community Guidelines.');cmsg('host',L().host||S.name,L().msg);clearTimeout(simT);if(L().auto!==false)simT=setTimeout(tick,1200)}
 function stopSim(){clearTimeout(simT)}
 
-var GIFTS=[
- {id:'rose',n:'Rose',c:1,e:'🌹',t:'S'},{id:'tiktok',n:'TikTok',c:1,e:'🎵',t:'S'},{id:'icecream',n:'Ice Cream Cone',c:1,e:'🍦',t:'S'},{id:'heartme',n:'Heart Me',c:1,e:'💗',t:'S'},{id:'gg',n:'GG',c:1,e:'🎮',t:'S'},{id:'panda',n:'Panda',c:5,e:'🐼',t:'S'},{id:'fingerheart',n:'Finger Heart',c:5,e:'🫰',t:'S'},{id:'doughnut',n:'Doughnut',c:30,e:'🍩',t:'S'},{id:'cap',n:'Cap',c:99,e:'🧢',t:'S'},{id:'handhearts',n:'Hand Hearts',c:100,e:'🫶',t:'S'},
- {id:'confetti',n:'Confetti',c:100,e:'🎉',t:'M'},{id:'corgi',n:'Corgi',c:299,e:'🐕',t:'M'},{id:'moneygun',n:'Money Gun',c:500,e:'💸',t:'M'},{id:'swan',n:'Swan',c:699,e:'🦢',t:'M'},{id:'train',n:'Train',c:899,e:'🚂',t:'M'},{id:'galaxy',n:'Galaxy',c:1000,e:'🌌',t:'M'},
- {id:'fireworks',n:'Fireworks',c:1088,e:'🎆',t:'B'},{id:'whale',n:'Whale Diving',c:2150,e:'🐋',t:'B'},{id:'sportscar',n:'Sports Car',c:7000,e:'🏎️',t:'B'},{id:'interstellar',n:'Interstellar',c:10000,e:'🚀',t:'B'},{id:'lion',n:'Lion',c:29999,e:'🦁',t:'B'},{id:'universe',n:'TikTok Universe',c:34999,e:'🪐',t:'B'}],
-lastG=null,gbs=[];
-function gicon(g){return '<img src="gifts/icons/'+g.id+'.webp" onerror="this.replaceWith(document.createTextNode(\''+g.e+'\'))" alt="">'}
+var GIFTS=[],lastG=null,gbs=[];
+fetch('gifts/gifts.json').then(function(r){return r.ok?r.json():[]}).then(function(j){if(Array.isArray(j))GIFTS=j}).catch(function(){});
+function gicon(g){return '<img src="gifts/icons/'+g.id+'.webp" onerror="this.remove()" alt="">'}
 function pickGift(){var L_=L(),tiers=[];if(L_.gS!==false)tiers.push(['S',70]);if(L_.gM!==false)tiers.push(['M',22]);if(L_.gB!==false)tiers.push(['B',8]);if(!tiers.length)return null;var tot=0;tiers.forEach(function(x){tot+=x[1]});var r=Math.random()*tot,t='S';for(var i=0;i<tiers.length;i++){r-=tiers[i][1];if(r<=0){t=tiers[i][0];break}}return pickGiftT(t)}
-function pickGiftT(t){var a=GIFTS.filter(function(g){return g.t===t});return pick(a)}
+function pickGiftT(t){var a=GIFTS.filter(function(g){return g.t===t});return a.length?pick(a):null}
 function gift(g,who_){if(!g)return null;var nm=who_||who(),now=Date.now(),key=nm+'|'+g.id;
  var ex=gbs.filter(function(b){return b.key===key&&now-b.t<5000})[0];
  if(ex){ex.n++;ex.t=now;var x=ex.el.querySelector('.x');x.textContent='x'+ex.n;x.classList.remove('p');void x.offsetWidth;x.classList.add('p');clearTimeout(ex.o);ex.o=setTimeout(function(){rmGb(ex)},3200)}
  else{var el=document.createElement('div');el.className='gb';var col=pick(CL);el.innerHTML='<i class="ca2" style="background:'+col+'">'+(PH[nm]?'<img src="'+PH[nm]+'" onerror="this.remove()" alt="">':'')+esc(String(nm).charAt(0).toUpperCase())+'</i><div class="tx"><b>'+esc(nm)+'</b><small>sent '+esc(g.n)+'</small></div><i class="gi">'+gicon(g)+'</i><span class="x">x1</span>';
   $('lvGifts').appendChild(el);var b={el:el,key:key,n:1,t:now};b.o=setTimeout(function(){rmGb(b)},3200);gbs.push(b);while(gbs.length>2)rmGb(gbs[0])}
  var l=L();l.est=(parseFloat(l.est||0)+g.c*.005).toFixed(2);
- if(g.t==='B'&&(!ex)){bigAnim(g,nm)}
- return nm}
+  return nm}
 function rmGb(b){var i=gbs.indexOf(b);if(i<0)return;gbs.splice(i,1);clearTimeout(b.o);b.el.classList.add('out');setTimeout(function(){b.el.remove()},300)}
 function bigAnim(g,nm){var c=$('lvGan');c.innerHTML='<div class="bg"></div><div class="bi">'+gicon(g).replace('<img ','<img ')+'</div><div class="bt">'+esc(nm)+' sent '+esc(g.n)+'<small>'+g.c.toLocaleString('en-US')+' coins</small></div>';
  var v=document.createElement('video');v.muted=true;v.playsInline=true;v.autoplay=true;v.src='gifts/anim/'+g.id+'.mp4';v.onloadeddata=function(){var bi=c.querySelector('.bi');if(bi){bi.innerHTML='';bi.appendChild(v);v.play&&v.play().catch(function(){})}};v.onerror=function(){};
