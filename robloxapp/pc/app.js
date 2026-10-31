@@ -14,13 +14,14 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 var PX=/^https?:$/.test(location.protocol)&&!window.pc;
 var HOST={apis:'apis',thumbs:'thumbnails',users:'users',friends:'friends',games:'games',catalog:'catalog',inv:'inventory',avatar:'avatar',economy:'economy'};
 function D(p){var m=p.match(/^\/rbx\/([a-z]+)\/(.*)$/);return 'https://'+HOST[m[1]]+'.roblox.com/'+m[2]}
-var VP='https://create-app-iota.vercel.app/api/rbx?u=';
+var VB='https://create-app-iota.vercel.app',VP=VB+'/api/rbx?u=';
 var FAILS=[];
 function note(u,e){var m=(String(u).match(/^\/?([a-z]+(?:\/[a-z]+)?)/)||[,'?'])[1];FAILS.push(m+' '+((e&&e.message)||e));if(FAILS.length>6)FAILS.shift()}
 function F1(u){return fetch(u).then(function(r){if(!r.ok)throw Error(r.status);return r.json()},function(e){throw Error('blocked')}).catch(function(e){note(u,e);throw e})}
 function J(p){
  if(!PX)return F1(D(p));
- return F1(VP+encodeURIComponent(D(p))).catch(function(){return F1(p)}).catch(function(){return F1('/rbxproxy?u='+encodeURIComponent(D(p)))});
+ /* same route the mobile app uses (/rbx/...), then the generic proxy */
+ return F1(VB+p).catch(function(){return F1(VP+encodeURIComponent(D(p)))}).catch(function(){return F1(p)});
 }
 function PGET(url){
  if(!PX)return F1(url);
@@ -356,13 +357,14 @@ function catItems(q,limit){
  if(!q.bg)return catSearch(q,limit);
  var k=0;return (function next(){if(k>=BGW.length)return Promise.resolve([]);var w=BGW[k++];return catSearch(w,60).then(function(l){l=l.filter(function(x){return x.assetType===92});return l.length?l.slice(0,limit):next()}).catch(next)})();
 }
-function loadAv(){
+function avErr(w){var e=$('avErrT');if(!e){e=document.createElement('div');e.id='avErrT';e.className='av-err';$('avSc').insertBefore(e,$('avSc').firstChild)}e.textContent=w+' did not load. '+(FAILS.length?'['+FAILS.slice(-3).join(' · ')+']':'')}
+function loadAv(){var e0=$('avErrT');if(e0)e0.remove();
  var my=++avSeq,q=CATQ[avCat];
  if(avCat==='all'){
   Promise.all([catItems({category:1},21),catItems({category:18,subcategory:37},7),catItems({category:11},14),catItems({category:3,sort:2},14)]).then(function(r){
-   if(my!==avSeq||!r[0].length)return;
+   if(my!==avSeq)return;if(!r[0].length){avErr('Marketplace');return}
    $('avRows').innerHTML=avSec('Recommended For You',r[0])+avSec('Discover Futuristic Styles',r[1],{mt:1,all:1})+(r[2].length?avSec('Worth A Look',r[2],{mt:1}):'')+(r[3].length?avSec('Trending Clothing',r[3],{mt:1}):'');
-  }).catch(function(){});
+  }).catch(function(){avErr('Marketplace')});
   return;
  }
  var sub=q.chips?(avChip==null?q.chips[0][1]:avChip):q.subcategory;
@@ -381,7 +383,7 @@ function avUser(){
    var ids=(a.assets||[]).map(function(x){return x.id});if(!ids.length)throw Error('no assets');
    $('avBg').hidden=false;
    return window.Av3D.show($('av3d'),ids,{zoom:1.25}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true})
-  }).catch(function(e){console.warn('3D avatar failed',e&&e.message)});
+  }).catch(function(e){console.warn('3D avatar failed',e&&e.message);var t=$('av3dErr');if(!t){t=document.createElement('div');t.id='av3dErr';t.className='av-err av-err2';$('avR').appendChild(t)}t.textContent='3D avatar: '+(e&&e.message||'failed')+(FAILS.length?' ['+FAILS.slice(-2).join(' · ')+']':'')});
  };
  if(S.user.id)go(S.user.id);else findUser(S.user.name).then(function(u){S.user.id=u.id;save();go(u.id)}).catch(function(){});
 }
