@@ -497,13 +497,13 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .cg .it .ph{background-color:#eaeaee}
 .bsub{background:#f7f7f8;padding:12px 0 10px}
 .bsr{display:flex;gap:10px;padding:0 15px}
-.bs{width:82px;text-align:center;cursor:pointer}
-.bs span{display:grid;place-items:center;width:82px;height:82px;border-radius:8px;background:#f0f1f3;border:2px solid transparent;overflow:hidden;color:#b6b8be}
-.bs.on span{border-color:#232527;background:#fff}
-.bs span img{width:62px;height:62px;object-fit:cover;border-radius:6px}
-.bs span i{display:grid;place-items:center}
-.bs .skc{width:36px;height:36px;border-radius:50%;background:#a58468}
-.bs em{display:block;margin-top:6px;font-style:normal;font-size:12.6px;color:#232527}
+.bsc{width:82px;text-align:center;cursor:pointer}
+.bsc span{display:grid;place-items:center;width:82px;height:82px;border-radius:8px;background:#f0f1f3;border:2px solid transparent;overflow:hidden;color:#b6b8be}
+.bsc.on span{border-color:#232527;background:#fff}
+.bsc span img{width:62px;height:62px;object-fit:cover;border-radius:6px}
+.bsc span i{display:grid;place-items:center}
+.bsc .skc{width:36px;height:36px;border-radius:50%;background:#a58468}
+.bsc em{display:block;margin-top:6px;font-style:normal;font-size:12.6px;color:#232527}
 .bpl{display:flex;align-items:center;gap:8px;padding:30px 15px 0;font-size:14.4px;color:#5c6070}
 .chip2{height:34px;padding:0 6px 0 12px;border-radius:17px;background:#eeeff2;display:flex;align-items:center;gap:2px;font-size:14.5px;font-weight:600;color:#232527}
 .chip2 i{display:grid;place-items:center}
@@ -552,3 +552,8 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .mchips button.on{background:#232527;color:#fff}
 .il-none{padding:40px 24px;font-size:14px;color:#6d7176}
 .mchips+.avg{margin-top:14px}
+
+.sr-box.dn{width:456px;height:254px;margin-top:0}
+.dn-c{display:grid;place-items:center;margin-top:12px;color:#232527}
+.dn-t{text-align:center;font-size:14.6px;margin-top:20px;color:#232527}
+.dn-b{position:absolute;left:20px;right:20px;bottom:20px;height:40px;border-radius:6px;background:#335fff;color:#fff;font-size:14px;font-weight:600;text-align:center}
