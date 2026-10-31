@@ -41,18 +41,23 @@ function grab(){
   if(!P.handle){var m=location.pathname.match(/@([^\/]+)/);if(m)P.handle=m[1]}
   var av=u.avatarLarger||u.avatarMedium||((D.querySelector('[data-e2e="user-avatar"] img')||{}).src);
   say('Cargando videos…');
-  var last=-1,same=0,sel='[data-e2e="user-post-item"]';
-  for(var i=0;i<60&&same<3;i++){W.scrollTo(0,D.documentElement.scrollHeight);await sleep(700);var n=D.querySelectorAll(sel).length;if(n>=MAXV)break;if(n===last)same++;else{same=0;last=n}}
-  var items=[].slice.call(D.querySelectorAll(sel)).slice(0,MAXV);
+  var handleRe=P.handle?new RegExp('/@'+P.handle.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'/(video|photo)/(\\d+)','i'):/\/@[^\/]+\/(video|photo)\/(\d+)/;
+  function links(){var out=[],seen={};[].slice.call(D.querySelectorAll('a[href*="/video/"],a[href*="/photo/"]')).forEach(function(a){var m=(a.getAttribute('href')||'').match(handleRe);if(!m||seen[m[2]])return;seen[m[2]]=1;out.push({a:a,id:m[2]})});return out}
+  var last=-1,same=0;
+  for(var i=0;i<70&&same<3;i++){W.scrollTo(0,D.documentElement.scrollHeight);await sleep(700);var n=links().length;if(n>=MAXV)break;if(n===last)same++;else{same=0;last=n}}
+  var items=links().slice(0,MAXV);
   if(av){say('Foto de perfil…');P.avatar=await small(av,320)||av}
+  function card(a){var el=a,best=a;for(var k=0;k<5&&el.parentElement;k++){el=el.parentElement;var ls=el.querySelectorAll('a[href*="/video/"],a[href*="/photo/"]'),ids={};[].forEach.call(ls,function(x){var mm=(x.getAttribute('href')||'').match(/\/(video|photo)\/(\d+)/);if(mm)ids[mm[2]]=1});if(Object.keys(ids).length>1)break;best=el}return best}
+  function imgOf(el){var im=el.querySelector('img');if(im){var u=im.currentSrc||im.src||im.getAttribute('data-src')||(im.getAttribute('srcset')||'').split(' ')[0];if(u)return {u:u,alt:im.alt||''}}var bg=[el].concat([].slice.call(el.querySelectorAll('*'))).map(function(x){var m=(getComputedStyle(x).backgroundImage||'').match(/url\(["']?([^"')]+)/);return m&&m[1]}).filter(Boolean)[0];return bg?{u:bg,alt:''}:null}
   for(var j=0;j<items.length;j++){
-   var el=items[j],im=el.querySelector('img'),a=el.querySelector('a[href*="/video/"]');
-   var views=txt('[data-e2e="video-views"]',el),text=(el.innerText||'');
-   var pinned=!!el.querySelector('[data-e2e="video-card-badge"]')&&/pin/i.test(txt('[data-e2e="video-card-badge"]',el))||/(^|\n)\s*pinned\s*(\n|$)/i.test(text);
-   var o={id:a?((a.href.match(/video\/(\d+)/)||[])[1]||''):'',views:views,pinned:pinned,desc:im?(im.alt||''):'',img:null};
-   if(im&&(im.currentSrc||im.src)){say('Portadas… '+(j+1)+'/'+items.length);o.img=await small(im.currentSrc||im.src,360)}
+   var it=items[j],el=card(it.a),text=(el.innerText||'').split('\n').map(function(x){return x.trim()}).filter(Boolean);
+   var views='';for(var q=0;q<text.length;q++){if(/^\d[\d.,]*\s?[KkMmBb]?$/.test(text[q])){views=text[q];break}}
+   var pinned=text.some(function(x){return /^pinned$/i.test(x)})||!!el.querySelector('[data-e2e="video-card-badge"]');
+   var ii=imgOf(el)||imgOf(it.a),o={id:it.id,views:views,pinned:pinned,desc:ii?ii.alt:'',img:null};
+   if(ii&&ii.u){say('Portadas… '+(j+1)+'/'+items.length);o.img=await small(ii.u,360)}
    P.videos.push(o);
   }
+  if(!P.videos.length){say('No encontré videos. Enlaces con /video/ en la página: '+D.querySelectorAll('a[href*="/video/"]').length+', usuario: @'+P.handle+'. Mándame una captura y lo ajusto.<br><button onclick="this.parentNode.remove()" style="margin-top:8px;padding:8px 12px;border:0;border-radius:10px">Cerrar</button>');return}
   var data=JSON.stringify(P);W.__ttp=data;
   say('Listo: <b>'+P.videos.length+'</b> videos, '+(P.followers||'?')+' seguidores.<br><button id="__s" style="margin:8px 6px 0 0;padding:9px 14px;border:0;border-radius:10px;font-weight:700">Guardar archivo</button><button id="__x" style="margin-top:8px;padding:9px 14px;border:0;border-radius:10px;font-weight:700">Cerrar</button>');
   D.getElementById('__x').onclick=function(){box.remove()};
