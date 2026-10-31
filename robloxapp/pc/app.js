@@ -494,7 +494,7 @@ $('cuCats').addEventListener('click',function(e){var b=e.target.closest('button[
 $('bsr').addEventListener('click',function(e){var b=e.target.closest('.bsc');if(!b)return;cuSub=b.dataset.n;drawBsub();loadCust()});
 /* Buy item dialog */
 function purchased(){
- var t=document.createElement('div');t.className='ptoast';t.innerHTML='<span class="plg"><i></i></span><b>Purchased!</b>';$('s-av').appendChild(t);
+ var t=document.createElement('div');t.className='ptoast';t.innerHTML='<span class="plg"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><g transform="rotate(-11 20 20)"><rect x="3" y="3" width="34" height="34" rx="4" fill="#17181a"/><rect x="15" y="15" width="10" height="10" fill="#fff"/></g></svg></span><b>Purchased!</b>';$('s-av').appendChild(t);
  var s=document.querySelector('.av-s');if(s)s.classList.add('ld');
  setTimeout(function(){if(s)s.classList.remove('ld')},1400);
  setTimeout(function(){t.classList.add('out')},2600);setTimeout(function(){t.remove()},3000);
