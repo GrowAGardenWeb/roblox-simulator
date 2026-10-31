@@ -883,13 +883,13 @@ bindObj('eIA','inb','act');bindObj('eIAN','inb','actN');bindObj('eIR','inb','req
 bindObj('eFL','feed','l');bindObj('eFC','feed','c');bindObj('eFS','feed','s');bindObj('eFH','feed','h');bindObj('eFCap','feed','cap');bindObj('eFSnd','feed','snd');bindObj('eFSr','feed','sr');
 /* screens + nav */
 var app=$('app'),scr={home:$('scrHome'),disc:$('scrDisc'),inbox:$('scrInbox'),profile:$('scroll')},cur='profile',fvid=$('fvid'),furl=null,fIdx=0;
-var BUILTIN=[{src:'media/vxp1.mp4',poster:'media/vxp1.jpg',user:'Valoraxplore™',date:'9-20',cap:'Luxury lifestyle <span class="em">💯</span> <span class="em">💎</span> <b>#richlife #luxurylifestyle #money #richlife #millionaire</b> <span class="fsep"></span><b class="fst">See translation</b>',l:'142.6K',c:'806',s:'19.5K',h:'11.8K',av:'img/fy_av1.webp',disc:'img/fy_disc1.webp',sr:'maybach bouncing car'},{src:'media/vxp2.mp4',poster:'media/vxp2.jpg',user:null}];
+var BUILTIN=[{src:'media/vxp1.mp4',poster:'media/vxp1.jpg',user:'Valoraxplore™',date:'9-20',cap:'Luxury lifestyle <span class="em">💯</span> <span class="em">💎</span> <b>#richlife #luxurylifestyle #money #richlife #millionaire</b> <span class="fsep"></span><b class="fst">See translation</b>',l:'142.6K',c:'806',s:'19.5K',h:'11.8K',av:'img/fy_av1.webp',disc:'img/fy_disc1.webp',sr:'maybach bouncing car'},{src:'media/vxp2.mp4',poster:'media/vxp2.jpg',user:'777',rp:false,date:'9-20',cap:'larpmaxxing <b>#targetaudience #svj #maybach #larping #mc</b> <span class="fsep"></span><b class="fst">See translation</b>',l:'12.8K',c:'166',s:'2,567',h:'1,746',av:'img/fy_av2.webp',disc:'img/fy_disc2.webp',sr:'maybach larp'}];
 var likedMap={};
 function feedList(){var a=BUILTIN.slice();S.vids.forEach(function(v){if(v.vid)a.push(v)});return a}
 function feedStop(){fvid.pause();fvid.removeAttribute('src');fvid.load();if(furl){URL.revokeObjectURL(furl);furl=null}}
 function metaOf(v){
  var bi=!!v.src,r2=document.querySelector('.r2');
- $('frp').hidden=!bi;$('fdt').hidden=!bi;$('fSee').hidden=true;document.querySelector('.fsnd').hidden=bi;document.querySelector('.vbf').style.display=bi?'none':'';
+ $('frp').hidden=!(bi&&v.rp!==false);$('fdt').hidden=!bi;$('fSee').hidden=true;document.querySelector('.fsnd').hidden=bi;document.querySelector('.vbf').style.display=bi?'none':'';
  document.querySelector('.rail').classList.toggle('bi',bi);
  if(bi){
   var F=S.feed||{},sv=src(S.avatar,'avatar');document.querySelector('.fcap .b-name').textContent=v.user||S.name;$('fdt').textContent='· '+(v.date||'10-31');$('fCap').innerHTML=v.cap!=null?v.cap:esc(F.cap||'');
