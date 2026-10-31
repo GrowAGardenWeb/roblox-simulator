@@ -521,7 +521,6 @@ body.inst *{transition:none!important}
     <button class="xb" type="button" data-x="1" style="top:calc(150*var(--u))"><svg class="i" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
     <div class="est"><b>$</b><span id="lvEst"></span></div>
     <div class="rc" style="left:calc(718*var(--u))"><svg class="i" viewBox="0 0 24 24"><path d="M5 3h14v10l-7 8-7-8z"/></svg></div><div class="rc" style="left:calc(803*var(--u))"><svg class="i" viewBox="0 0 24 24"><path d="M6 4l15 8-15 8z"/></svg></div>
-    <div class="ban"><img data-av="1" alt=""><span id="lvTitle"></span><i><svg class="i" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></i></div>
     <div class="tools">
       <div><svg class="i" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.500-4.500L4 8M4 3.500V8h4.500M4 13a8 8 0 0 0 14.500 4.500L20 16M20 20.500V16h-4.500"/></svg>Flip</div>
       <div><svg class="i" viewBox="0 0 24 24"><path d="M4 20L15 9l3 3L7 23zM14 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1zM19 12l.8 1.700 1.700.8-1.700.8L19 17l-.8-1.700-1.700-.8 1.700-.8z"/></svg>Enhance</div>
@@ -550,7 +549,7 @@ body.inst *{transition:none!important}
   <div class="es" id="mkEs"><h4>Edit LIVE<button type="button" id="mkEsX">Done</button></h4>
     <div class="g2"><div><label>Viewers</label><input data-k="viewers" inputmode="numeric"></div><div><label>Likes</label><input data-k="likes" inputmode="numeric"></div></div>
     <div class="g2"><div><label>Host likes</label><input data-k="hl" inputmode="numeric"></div><div><label>Est. earnings ($)</label><input data-k="est" inputmode="decimal"></div></div>
-    <label>Host name</label><input data-k="host"><label>Host message</label><input data-k="msg"><label>Banner title</label><input data-k="title">
+    <label>Host name</label><input data-k="host"><label>Host message</label><input data-k="msg">
   </div>
 </div>
 
@@ -853,7 +852,7 @@ fitH();window.addEventListener('resize',fitH);window.addEventListener('orientati
 (function(){
 var mk=$('mk'),mv=$('mkv'),mode='cm',stream=null,face='user',cdT=null,hT=null;
 function L(){return S.live}
-function paint(){var l=L();$('lvEst').textContent='Est. $'+l.est;$('lvTitle').textContent=l.title;$('lvHost').textContent=l.host||S.name;$('lvHost2').textContent=l.host||S.name;$('lvHl').textContent=fmt(l.hl);$('lvLk').textContent=fmt(l.likes);$('lvVw').textContent=fmt(l.viewers);$('lvMsg').textContent=l.msg;$('mkDr').textContent=(S.drafts&&S.drafts.n)||'7';qa('[data-av]',function(e){e.src=src(S.avatar,'avatar')})}
+function paint(){var l=L();$('lvEst').textContent='Est. $'+l.est;$('lvHost').textContent=l.host||S.name;$('lvHost2').textContent=l.host||S.name;$('lvHl').textContent=fmt(l.hl);$('lvLk').textContent=fmt(l.likes);$('lvVw').textContent=fmt(l.viewers);$('lvMsg').textContent=l.msg;$('mkDr').textContent=(S.drafts&&S.drafts.n)||'7';qa('[data-av]',function(e){e.src=src(S.avatar,'avatar')})}
 function tabPos(){var t=$('mkTrk'),a=t.querySelector('[data-m="'+mode+'"]');var w=mk.clientWidth;t.style.transform='translateX('+(w/2-(a.offsetLeft+a.offsetWidth/2))+'px)';qa('#mkTrk span',function(s){s.classList.toggle('on',s===a)})}
 function cam(on){if(!on){if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null}mv.srcObject=null;return}
  if(stream||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)return;
@@ -870,7 +869,7 @@ mk.addEventListener('click',function(e){var t=e.target;
  if(t.closest('[data-flip]')){face=face==='user'?'environment':'user';cam(false);cam(true);return}
  var d=t.closest('#dur span');if(d){qa('#dur span',function(s){s.classList.remove('on')});d.classList.add('on');return}
  if(t.closest('#rec')){$('rec').classList.toggle('r');return}
- if(t.closest('.ban i')){t.closest('.ban').style.display='none';return}
+ 
  if(t.closest('#goLive')){startCd();return}
  if(t.closest('#lvEnd')){endLive();return}
  if(t.closest('#lvEdit')){openEs();return}
