@@ -799,3 +799,6 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .sch-r{top:10px}
 .sch-top>button:first-child{height:36px}
 .pf-full{text-align:center}
+
+img.pend,img.bad,img[src=""]{opacity:0!important;visibility:hidden}
+.ph,.t,.p,.pf-id img,.up .ph,.sg .t,.cc .t,.g .t,.it .ph,.pw .ph,.me-av{background-color:#e5e6e8}
