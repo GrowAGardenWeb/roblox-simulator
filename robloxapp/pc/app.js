@@ -335,7 +335,16 @@ function loadAv(){
 }
 document.addEventListener('load',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.closest&&t.closest('.it .ph'))t.classList.add('ld')},true);
 function avUser(){
- var go=function(id){J('/rbx/thumbs/v1/users/avatar?userIds='+id+'&size=720x720&format=Png&isCircular=false').then(function(t){var u=t.data&&t.data[0]&&t.data[0].imageUrl;if(!u)return;$('avFig').src=u;$('avBg').hidden=false;$('avFb').hidden=true}).catch(function(){})};
+ /* same method as the mobile app: worn items -> 3D render on the Vercel server -> three.js */
+ var showFig=function(id){J('/rbx/thumbs/v1/users/avatar?userIds='+id+'&size=720x720&format=Png&isCircular=false').then(function(t){var u=t.data&&t.data[0]&&t.data[0].imageUrl;if(!u||window.__av3d)return;$('avFig').src=u;$('avBg').hidden=false;$('avFb').hidden=true}).catch(function(){})};
+ var go=function(id){
+  showFig(id);
+  J('/rbx/avatar/v1/users/'+id+'/avatar').then(function(a){
+   var ids=(a.assets||[]).map(function(x){return x.id});if(!ids.length)throw Error('no assets');
+   $('avBg').hidden=false;
+   return window.Av3D.show($('av3d'),ids,{zoom:1.25}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true})
+  }).catch(function(e){console.warn('3D avatar failed',e&&e.message)});
+ };
  if(S.user.id)go(S.user.id);else findUser(S.user.name).then(function(u){S.user.id=u.id;save();go(u.id)}).catch(function(){});
 }
 function showAv(on){
