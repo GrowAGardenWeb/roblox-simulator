@@ -90,7 +90,7 @@ function gcard(name,rate,img){
   '<div class="hv"><button class="hx" aria-label="Close">'+I('x-r',20)+'</button><img class="t" src="'+e2(img||'')+'" alt=""><b>'+e2(name)+'</b><div class="r">'+I('like-f',15)+'<span>'+e2(rate)+'</span></div><button class="pb" aria-label="Play">'+I('play-f',26)+'</button></div></div>';
 }
 var STATIC=[['[NUCLEAR WARFARE] God Simulati...','79% Rating'],['[🍀] Spin To Upgrade! [GUILDS + GO...','68% Rating'],['Prison Life','85% Rating'],['[🎃] 📱 Build a Phone Empire','87% Rating'],['[EVENT] San Diego Roleplay','85% Rating'],['🍀 Tower Of Luck [1.8]','54% Rating']];
-$('games').innerHTML=STATIC.map(function(g,i){return gcard(g[0],g[1],'img/g'+i+'.webp')}).join('');
+$('games').innerHTML=STATIC.map(function(){return '<div class="g gsk"><div class="t"></div><b></b><div class="r"></div></div>'}).join('');
 var FALL=[['top-trending','Recommended For You',12],['top-playing-now','Top Playing Now',6],['up-and-coming','Up-and-Coming',6]];
 function loadGames(){
  var sid=Math.random().toString(36).slice(2,12),q='&device=computer&country=all';
@@ -130,9 +130,7 @@ function ccard(name,r,pl,img){return '<div class="cc"><img class="t" src="'+e2(i
 function crowHtml(s,cards){return '<div class="crow"><div class="hd"><div><h3>'+e2(s[1])+'<i data-ic="chevr-r">'+I('chevr-r',18)+'</i></h3>'+(s[2]?'<div class="sub">'+e2(s[2])+'</div>':'')+'</div>'+I('info-r',26)+'</div><div class="cards">'+cards+'</div></div>'}
 function drawStatic(){
  $('chartRows').innerHTML=CSEC.map(function(s,k){
-  var st=CSTAT[k],pre=k===0?'c_t':k===1?'c_u':'',cards='';
-  if(st.length)cards=st.map(function(g,i){return ccard(g[0],g[1],g[2],'img/'+pre+i+'.webp')}).join('');
-  else for(var i=0;i<16;i++)cards+='<div class="cc"><img class="t" alt=""><b></b></div>';
+  var cards='';for(var i=0;i<16;i++)cards+='<div class="cc csk"><div class="t"></div><b></b></div>';
   return crowHtml(s,cards)}).join('');
  [].forEach.call(document.querySelectorAll('#chartRows img.t'),function(i){i.classList.add('ld')});
 }
@@ -338,14 +336,14 @@ function itCard(x){
 function avSec(title,items,extra){return '<h3 class="avh"'+(extra&&extra.mt?' style="margin-top:22px"':'')+'>'+e2(title)+(extra&&extra.all?'<a>See All</a>':'')+'</h3><div class="avg">'+items.map(itCard).join('')+'</div>'}
 function chipsHtml(q){return q.chips?'<div class="mchips" id="mchips">'+q.chips.map(function(c){return '<button data-c="'+c[1]+'" class="'+((avChip==null?q.chips[0][1]:avChip)===c[1]?'on':'')+'">'+e2(c[0])+'</button>'}).join('')+'</div>':''}
 function avStatic(){
- var q=CATQ[avCat],n=avCat==='all'?21:28,rec=[];
- for(var i=0;i<n;i++)rec.push(avCat==='all'?{name:AVN[i][0],price:AVN[i][1],img:'img/it'+i+'.webp'}:{name:'',price:null});
- var h=chipsHtml(q);
- if(avCat==='all'){var fut=[];for(var k=0;k<7;k++)fut.push({name:'',price:null});h+=avSec('Recommended For You',rec)+avSec('Discover Futuristic Styles',fut,{mt:1,all:1})}
- else h+='<div class="avg">'+rec.map(itCard).join('')+'</div>';
- $('avRows').innerHTML=h;[].forEach.call(document.querySelectorAll('#avRows .it'),function(e,i){if(avCat!=='all'||i>=21){e.querySelector('b').style.visibility='hidden';e.querySelector('.cr').style.visibility='hidden'}})}
+ var q=CATQ[avCat],h=chipsHtml(q),sk=function(n){var o='';for(var i=0;i<n;i++)o+='<div class="it isk"><div class="ph"></div><b></b><div class="cr"></div><div class="pr"></div></div>';return o};
+ if(avCat==='all')h+='<h3 class="avh">Recommended For You</h3><div class="avg">'+sk(21)+'</div><h3 class="avh" style="margin-top:22px">Discover Futuristic Styles</h3><div class="avg row">'+sk(8)+'</div>';
+ else h+='<div class="avg pg">'+sk(28)+'</div>';
+ $('avRows').innerHTML=h;
+}
 function catSearch(q,limit,cursor){
- var p='Category='+q.category+'&Limit='+limit+'&SortType='+(q.sort==null?1:q.sort)+'&IncludeNotForSale=false'+(q.subcategory?'&Subcategory='+q.subcategory:'')+(q.keyword?'&Keyword='+encodeURIComponent(q.keyword):'')+(q.extra||'')+(cursor?'&Cursor='+cursor:'');
+ var LL=[10,28,30,60,120].filter(function(x){return x>=limit})[0]||120;
+ var p='Category='+q.category+'&Limit='+LL+'&SortType='+(q.sort==null?1:q.sort)+'&IncludeNotForSale=false'+(q.subcategory?'&Subcategory='+q.subcategory:'')+(q.keyword?'&Keyword='+encodeURIComponent(q.keyword):'')+(q.extra||'')+(cursor?'&Cursor='+cursor:'');
  return J('/rbx/catalog/v1/search/items/details?'+p).then(function(r){
   var d=(r.data||[]).slice(0,limit),a=d.filter(function(e){return e.itemType==='Asset'}).map(function(e){return e.id}),b=d.filter(function(e){return e.itemType==='Bundle'}).map(function(e){return e.id}),im={},jobs=[];
   if(a.length)jobs.push(J('/rbx/thumbs/v1/assets?assetIds='+a.join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t){(t.data||[]).forEach(function(x){if(x.imageUrl)im['Asset'+x.targetId]=x.imageUrl})}).catch(function(){}));
@@ -387,6 +385,14 @@ function loadAv(){
 var avMore=function(){};
 $('avSc').addEventListener('scroll',function(){var e=this;if(e.scrollTop+e.clientHeight>e.scrollHeight-600)avMore()},{passive:true});
 document.addEventListener('load',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.closest&&t.closest('.it .ph'))t.classList.add('ld')},true);
+/* same rule as the mobile app (ur/mr): accessories can repeat, every other type keeps only one; head parts yield to a dynamic head */
+function wornIds(as){
+ var acc={8:1,41:1,42:1,43:1,44:1,45:1,46:1,47:1},seen={},out=[];
+ as=as.map(function(x){return {id:x.id,t:(x.assetType&&x.assetType.id)||x.assetTypeId||0}});
+ if(as.some(function(x){return x.t===79}))as=as.filter(function(x){return x.t!==17&&x.t!==18});
+ for(var i=as.length-1;i>=0;i--){var x=as[i];if(acc[x.t]||x.t===61){if(out.indexOf(x.id)<0)out.unshift(x.id);continue}var k=(x.t===17||x.t===79)?'head':x.t;if(seen[k])continue;seen[k]=1;out.unshift(x.id)}
+ return out;
+}
 function av3dMsg(t,err){var e=$('av3dErr');if(!t){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='av3dErr';$('avR').appendChild(e)}e.className='av-err av-err2'+(err?'':' av-info');e.textContent=t}
 function avUser(){
  /* same method as the mobile app: worn items -> 3D render on the Vercel server -> three.js */
@@ -394,7 +400,7 @@ function avUser(){
  var go=function(id){
   showFig(id);
   J('/rbx/avatar/v1/users/'+id+'/avatar').then(function(a){
-   var ids=(a.assets||[]).map(function(x){return x.id});if(!ids.length)throw Error('no assets');
+   var ids=wornIds(a.assets||[]);if(!ids.length)throw Error('no assets');
    $('avBg').hidden=false;av3dMsg('Checking the avatar server…');
    return window.Av3D.status().then(function(st){
     if(!st.authed){av3dMsg('Avatar server says not ready: '+JSON.stringify(st.raw||'no answer').slice(0,120),1)}
