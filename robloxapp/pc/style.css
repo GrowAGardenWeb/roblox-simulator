@@ -154,7 +154,7 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 html{scroll-behavior:smooth}
 .scr,.rb-sc,.sr-list{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 button{transition:background-color .15s ease,color .15s ease,transform .12s ease,box-shadow .15s ease,opacity .15s ease}
-button:active{transform:scale(.97)}
+button:active{transform:none}
 .tabs button:active,.sb:active,.menu:active{transform:none}
 .sb img,.me img,.bell img,.menu img{transition:transform .15s ease}
 .sb:hover img.si{transform:translate(-50%,-50%) scale(1.06)}
@@ -699,7 +699,7 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .hot{position:absolute;width:200px;height:40px;border-radius:6px;background:transparent;transition:background-color .12s}
 .hot:hover{background:#00000010}
 .hot.blue:hover{background:#00000018}
-.hot:active{transform:scale(.99)}
+.hot:active{transform:none}
 #rbFaq{margin-top:0}
 .fq2{margin-top:16px}
 .fq2:first-child{margin-top:0}
@@ -829,3 +829,5 @@ img.pend,img.bad,img[src=""]{opacity:0!important;visibility:hidden}
 .pf-3d{width:100%;height:100%;position:relative}
 .pf-3d canvas{width:100%!important;height:100%!important;display:block}
 .pf-av{display:block;position:relative}
+
+button:active,.tb-btns button:active,.pk-a:active,.by-b:active{transform:none!important}
