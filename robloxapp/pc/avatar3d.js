@@ -11,16 +11,30 @@ function loadScript(u){return new Promise(function(res,rej){var s=document.creat
 function libs(){if(!libP)libP=LIBS.reduce(function(p,u){return p.then(function(){return loadScript(u)})},Promise.resolve());return libP}
 function vid(){var k='larp-vid-m',v='';try{v=localStorage.getItem(k)||'';if(!/^[a-f0-9]{16}$/.test(v)){v=Array.from({length:16},function(){return Math.floor(Math.random()*16).toString(16)}).join('');localStorage.setItem(k,v)}}catch(e){v=''}return v}
 function cdn(h){return BASE+'/avatar/cdn/'+h+(vid()?'?_v='+vid():'')}
+/* Roblox's own 3D thumbnail (same files the website viewer loads) */
+function rbxHost(h){var i=31;for(var k=0;k<h.length;k++)i^=h.charCodeAt(k);return 'https://t'+(i%8)+'.rbxcdn.com/'+h}
+function roblox3d(uid,get){
+ if(!uid||!get)return Promise.reject(Error('no user'));
+ var n=0;
+ return (function poll(){return get('/rbx/thumbs/v1/users/avatar-3d?userId='+uid).then(function(r){
+  if(r.state==='Completed'&&r.imageUrl)return fetch(r.imageUrl).then(function(x){return x.json()}).then(function(m){return {meta:m,url:rbxHost}});
+  if(r.state==='Error'||r.state==='Blocked'||++n>14)throw Error('3D thumbnail '+(r.state||'timeout'));
+  return new Promise(function(res){setTimeout(res,1000)}).then(poll)})})();
+}
 function render3d(ids){
  return fetch(BASE+'/avatar/render3d'+(vid()?'?_v='+vid():''),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({assetIds:ids})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error(j.error||'render3d '+r.status);return j})});
 }
 var cur=null;
 function show(box,ids,opt){
+ opt=opt||{};
  opt=opt||{};var zoom=opt.zoom||1.25,log=opt.log||function(){};
- log('3D: asking the server… ('+ids.length+' items)');
- var timeout=new Promise(function(_,rej){setTimeout(function(){rej(Error('timed out (the server did not answer in 40s)'))},40000)});
- var main=Promise.all([render3d(ids).then(function(m){log('3D: loading the model…');return m}),libs().then(function(){log('3D: libraries ready')})]).then(function(r){
-  var meta=r[0],T=window.THREE;
+ log('3D: asking the servers… ('+ids.length+' items)');
+ var timeout=new Promise(function(_,rej){setTimeout(function(){rej(Error('timed out (no 3D model after 45s)'))},45000)});
+ var A=render3d(ids).then(function(m){return {meta:m,url:cdn,from:'avatar server'}});
+ var B=roblox3d(opt.uid,opt.get).then(function(r){r.from='Roblox';return r});
+ var first=new Promise(function(res,rej){var f=0,errs=[];[A,B].forEach(function(p){p.then(res,function(e){errs.push(e&&e.message);if(++f===2)rej(Error(errs.join(' / ')))})})});
+ var main=Promise.all([first.then(function(m){log('3D: loading the model ('+m.from+')…');return m}),libs()]).then(function(r){
+  var meta=r[0].meta,CDN=r[0].url,T=window.THREE;
   if(cur){cur.dead=true;cancelAnimationFrame(cur.raf);try{cur.renderer.dispose()}catch(e){}if(cur.el&&cur.el.parentNode)cur.el.parentNode.removeChild(cur.el)}
   var W=box.clientWidth||600,H=box.clientHeight||800;
   var renderer=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
@@ -31,17 +45,17 @@ function show(box,ids,opt){
   var pivot=new T.Group();scene.add(pivot);
   var a=meta.aabb,ctr=new T.Vector3((a.min.x+a.max.x)/2,(a.min.y+a.max.y)/2,(a.min.z+a.max.z)/2);
   var st={dead:false,renderer:renderer,el:renderer.domElement,yaw:0,target:0,raf:0};cur=st;
-  var mgr=new T.LoadingManager();mgr.setURLModifier(function(u){return /^(blob:|data:|https?:)/.test(u)?u:cdn(u.split('/').pop())});
+  var mgr=new T.LoadingManager();mgr.setURLModifier(function(u){return /^(blob:|data:)/.test(u)?u:CDN(u.split('/').pop())});
   return new Promise(function(res2,rej2){
-   new T.MTLLoader(mgr).load(cdn(meta.mtl),function(mtl){
+   new T.MTLLoader(mgr).load(CDN(meta.mtl),function(mtl){
     mtl.preload();var base={};
     Object.keys(mtl.materials).forEach(function(k){
      var m=mtl.materials[k];base[k]=m.color.clone();m.side=T.DoubleSide;if(m.specular)m.specular.set(0);m.alphaMap=null;m.transparent=false;m.opacity=1;
      var info=mtl.materialsInfo&&mtl.materialsInfo[k],kd=info&&info.map_kd;
-     if(kd){m.color.set(0xffffff);m.map=null;new T.TextureLoader().load(cdn(kd.split('/').pop()),function(t){var c=document.createElement('canvas');c.width=t.image.width;c.height=t.image.height;var g=c.getContext('2d');g.fillStyle='#'+base[k].getHexString();g.fillRect(0,0,c.width,c.height);g.drawImage(t.image,0,0);var tx=new T.CanvasTexture(c);tx.encoding=T.sRGBEncoding;tx.flipY=true;tx.anisotropy=4;m.map=tx;m.needsUpdate=true})}
+     if(kd){m.color.set(0xffffff);m.map=null;new T.TextureLoader().load(CDN(kd.split('/').pop()),function(t){var c=document.createElement('canvas');c.width=t.image.width;c.height=t.image.height;var g=c.getContext('2d');g.fillStyle='#'+base[k].getHexString();g.fillRect(0,0,c.width,c.height);g.drawImage(t.image,0,0);var tx=new T.CanvasTexture(c);tx.encoding=T.sRGBEncoding;tx.flipY=true;tx.anisotropy=4;m.map=tx;m.needsUpdate=true})}
     });
     var ol=new T.OBJLoader(mgr);ol.setMaterials(mtl);
-    ol.load(cdn(meta.obj),function(obj){
+    ol.load(CDN(meta.obj),function(obj){
      if(st.dead)return;obj.position.sub(ctr);pivot.add(obj);
      var h=a.max.y-a.min.y,r2=h*.8/Math.tan(cam.fov*Math.PI/360)/zoom;cam.position.set(0,h*.1,-r2);cam.lookAt(0,h*.06,0);
      var down=null;var el=renderer.domElement;el.style.cursor='grab';
