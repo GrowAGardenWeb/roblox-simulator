@@ -427,7 +427,7 @@ body.inst *{transition:none!important}
 .cx .chat{position:absolute;left:calc(24*var(--u));right:calc(110*var(--u));bottom:calc(200*var(--u));display:flex;flex-direction:column;justify-content:flex-end;max-height:calc(560*var(--u));overflow:hidden;font-size:calc(34*var(--u));line-height:1.3;-webkit-mask-image:linear-gradient(transparent,#000 22%);mask-image:linear-gradient(transparent,#000 22%);pointer-events:none}
 .cx .cmi{display:flex;gap:calc(14*var(--u));align-items:center;margin-top:calc(34*var(--u));animation:cmi .35s ease-out;flex:none}
 @keyframes cmi{from{opacity:0;transform:translateY(calc(40*var(--u)))}to{opacity:1;transform:none}}
-.cx .cmi .ca{flex:none;width:calc(58*var(--u));height:calc(58*var(--u));border-radius:50%;display:grid;place-items:center;font-size:calc(26*var(--u));font-weight:700;color:#fff;overflow:hidden}.cx .cmi .ca img{width:100%;height:100%;object-fit:cover}
+.cx .cmi .ca{flex:none;width:calc(58*var(--u));height:calc(58*var(--u));border-radius:50%;display:grid;place-items:center;font-size:calc(26*var(--u));font-weight:700;color:#fff;overflow:hidden}.cx .cmi .ca{position:relative}.cx .cmi .ca img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cx .cmi .nm{color:#ffffff90;font-weight:500}.cx .cmi .tx{font-weight:700;color:#fff}.cx .cmi.two{align-items:flex-start}.cx .cmi.two .ca{margin-top:calc(8*var(--u))}.cx .cmi.two b{display:block;font-weight:700}
 .cx .cmi.sys .ca{background:#3a3a3c}.cx .cmi.sys div{font-weight:500;color:#ffffffe0;text-shadow:0 1px 3px #0008}
 .cx .cmi .lv{display:inline-block;background:#2a3b8f;border-radius:calc(8*var(--u));padding:0 calc(10*var(--u));font-size:calc(26*var(--u));font-weight:700;margin-right:calc(8*var(--u));color:#fff}
@@ -891,17 +891,19 @@ mk.addEventListener('click',function(e){var t=e.target;
  if(t.closest('#mkEsX')){$('mkEs').classList.remove('on');return}
  if(mk.classList.contains('lon')&&!t.closest('.bb2,.es,.pw')){heart(e.clientX,e.clientY);L().likes=String((+String(L().likes).replace(/\D/g,'')||0)+1);$('lvLk').textContent=kf(L().likes);save()}});
 
+var PH={};function ph(i){return Math.random()<.65?(Math.random()<.5?'https://i.pravatar.cc/120?img='+(1+Math.floor(Math.random()*70)):'https://randomuser.me/api/portraits/'+(Math.random()<.5?'men':'women')+'/'+Math.floor(Math.random()*90)+'.jpg'):''}
 var NM=['tem hm','PrettyMoon.56','MATI✨','Ian Álvarez','el bro','soysuco_3951','Renzo11🎩','colen💙','Valeria','xX_Gamer_Xx','Dani','Sofi🌸','Kevin','Mau','luna_rbx','Carlos','Fer','Ana_099'],CL=['#6b4fbb','#c2415d','#2b8a6e','#b87a2b','#3b6fb8','#8a3b8a','#4a4a52'],simT=null,joined=0;
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function who(){var n=pick(NM);if(!(n in PH))PH[n]=ph();return n}
 function bump(k){var l=L(),n=+String(l[k]).replace(/[,\s]/g,'');if(!isFinite(n))return;l[k]=String(n+Math.max(1,Math.round(n*Math.random()*.004)))}
 function cmsg(kind,nm,txt){var c=$('lvChat'),d=document.createElement('div');d.className='cmi'+(kind==='sys'?' sys':'')+(kind==='chat'?' two':'');
- var av=kind==='sys'?'<i class="ca">♪</i>':(kind==='host'?'<i class="ca"><img src="'+esc(src(S.avatar,'avatar'))+'" alt=""></i>':'<i class="ca" style="background:'+pick(CL)+'">'+esc(String(nm).charAt(0).toUpperCase())+'</i>');
+ var av=kind==='sys'?'<i class="ca">♪</i>':(kind==='host'?'<i class="ca"><img src="'+esc(src(S.avatar,'avatar'))+'" alt=""></i>':'<i class="ca" style="background:'+pick(CL)+'">'+(PH[nm]?'<img src="'+PH[nm]+'" onerror="this.remove()" alt="">':'')+esc(String(nm).charAt(0).toUpperCase())+'</i>');
  var body=kind==='sys'?'<div>'+esc(txt)+'</div>':kind==='chat'?'<div><span class="nm">'+esc(nm)+'</span><b>'+esc(txt)+'</b></div>':kind==='host'?'<div><span class="nm">'+esc(nm)+'<em class="hs">Host</em></span><b>'+esc(txt)+'</b></div>':'<div><span class="nm">'+esc(nm)+'</span> <span class="tx">'+esc(txt)+'</span></div>';
  d.innerHTML=av+body;c.appendChild(d);while(c.children.length>7)c.removeChild(c.firstChild)}
 function tick(){if(!mk.classList.contains('lon'))return;var l=L(),r=Math.random();
- if(r<.42){cmsg('join',pick(NM),'joined');joined++;bump('viewers')}
- else if(r<.72){var m=String(l.chat||'').split('\n').filter(Boolean);cmsg('chat',pick(NM),m.length?pick(m):'hola')}
- else{cmsg('like',pick(NM),'liked the LIVE');bump('hl');var rr=mk.getBoundingClientRect();heart(rr.right-30,rr.bottom-110)}
+ if(r<.42){cmsg('join',who(),'joined');joined++;bump('viewers')}
+ else if(r<.72){var m=String(l.chat||'').split('\n').filter(Boolean);cmsg('chat',who(),m.length?pick(m):'hola')}
+ else{cmsg('like',who(),'liked the LIVE');bump('hl');var rr=mk.getBoundingClientRect();heart(rr.right-30,rr.bottom-110)}
  paint();save();simT=setTimeout(tick,900+Math.random()*1400)}
 function startSim(){joined=0;$('lvChat').innerHTML='';cmsg('sys','','Welcome to TikTok LIVE! Have fun interacting with your viewers in real time. Creators must be 18 or older to go LIVE. Viewers must be 18 or older to recharge and send Gifts. Remember to create a safe viewing experience by following our Community Guidelines.');cmsg('host',L().host||S.name,L().msg);clearTimeout(simT);if(L().auto!==false)simT=setTimeout(tick,1200)}
 function stopSim(){clearTimeout(simT)}
