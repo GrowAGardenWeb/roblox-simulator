@@ -550,10 +550,38 @@ $('avBuy').addEventListener('click',function(){var l=document.querySelectorAll('
 /* ---------- Search ---------- */
 var sch=$('s-sch'),schQ=$('schQ'),schTab='top',schSeq=0,schTm=null,schData=null;
 function recentGet(){try{return JSON.parse(localStorage.getItem('pc.recent')||'[]')}catch(e){return[]}}
-function openSch(){
+function openSch(){openPop();return;
+
  document.querySelector('.main').hidden=true;$('s-av').hidden=true;sch.hidden=false;sch.classList.remove('in');void sch.offsetWidth;sch.classList.add('in');
  schQ.value='';$('schClr').hidden=true;$('schTabs').hidden=true;$('schCancel').style.display='';document.querySelector('.sch-r').style.display='none';schHome();setTimeout(function(){schQ.focus({preventScroll:true})},60);
 }
+var pop=$('pop'),popQ=$('popQ'),popTm=null,popSeq=0;
+function openPop(){
+ $('popScrim').hidden=false;pop.hidden=false;void pop.offsetWidth;$('popScrim').classList.add('on');pop.classList.add('on');
+ popQ.value='';schHome('popBody');setTimeout(function(){popQ.focus({preventScroll:true})},50);
+}
+function closePop(){$('popScrim').classList.remove('on');pop.classList.remove('on');setTimeout(function(){$('popScrim').hidden=true;pop.hidden=true},220)}
+function goSearch(v){
+ v=String(v||'').trim();if(!v)return;closePop();
+ document.querySelector('.main').hidden=true;$('s-av').hidden=true;sch.hidden=false;sch.classList.remove('in');void sch.offsetWidth;sch.classList.add('in');
+ schQ.value=v;$('schClr').hidden=false;$('schTabs').hidden=false;$('schCancel').style.display='none';document.querySelector('.sch-r').style.display='';
+ schTab='top';[].forEach.call(document.querySelectorAll('#schTabs button'),function(x){x.classList.toggle('on',x.dataset.t==='top')});
+ schData=null;$('schBody').innerHTML='<div class="sch-spin"><i></i></div>';schRun(v);
+}
+$('popCancel').addEventListener('click',closePop);$('popScrim').addEventListener('mousedown',closePop);
+popQ.addEventListener('keydown',function(e){if(e.key==='Enter')goSearch(popQ.value)});
+popQ.addEventListener('input',function(){
+ var v=popQ.value.trim(),my=++popSeq;clearTimeout(popTm);
+ if(!v){schHome('popBody');return}
+ popTm=setTimeout(function(){
+  J('/rbx/apis/search-api/autocomplete-suggestions?prefix='+encodeURIComponent(v)+'&sessionId='+Date.now()).then(function(r){
+   if(my!==popSeq)return;var l=(r.entries||[]).map(function(x){return x.query}).filter(Boolean).slice(0,9);
+   $('popBody').innerHTML='<div class="pop-sug">'+(l.length?l:[v]).map(function(q){return '<button>'+I('search-r',20)+'<span>'+e2(q)+'</span></button>'}).join('')+'</div>';
+   [].forEach.call(document.querySelectorAll('.pop-sug button'),function(b){b.addEventListener('click',function(){goSearch(b.textContent)})});
+  }).catch(function(){$('popBody').innerHTML='<div class="pop-sug"><button>'+I('search-r',20)+'<span>'+e2(v)+'</span></button></div>';document.querySelector('.pop-sug button').addEventListener('click',function(){goSearch(v)})});
+ },160);
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!pop.hidden)closePop()});
 function closeSch(){sch.hidden=true;closePf();document.querySelector('.main').hidden=false;[].forEach.call(document.querySelectorAll('.sb'),function(x){x.classList.toggle('on',x.dataset.s==='home')})}
 $('q').addEventListener('focus',function(){this.blur();openSch()});
 document.querySelector('.search').addEventListener('click',function(e){e.preventDefault();openSch()});
@@ -565,10 +593,10 @@ function gthumbs(ids){
  if(!ids.length)return Promise.resolve({});
  return J('/rbx/thumbs/v1/games/multiget/thumbnails?universeIds='+ids.join(',')+'&countPerUniverse=1&size=768x432&format=Webp&isCircular=false').then(function(r){var m={};(r.data||[]).forEach(function(x){if(x.thumbnails&&x.thumbnails[0])m[x.universeId]=x.thumbnails[0].imageUrl});return m}).catch(function(){return {}});
 }
-function schHome(){
- var my=++schSeq,rec=recentGet(),chips=['Tycoon','Escape','Survival','Story','Escape Room','Tower Defense','Sandbox','RPG','Quiz','Life'];
- $('schBody').innerHTML='<div class="sh-box" id="schHome">'+(rec.length?'<h3>Recently Visited</h3><div class="sg-row" id="recRow">'+rec.map(function(g){return gc(g,g.img)}).join('')+'</div>':'')+'<h3>Try searching for</h3><div class="sch-ch">'+chips.map(function(c){return '<button>'+e2(c)+'</button>'}).join('')+'</div><h3>Trending Games in '+e2(CH.cty[0])+'</h3><div class="sg-row" id="trRow"></div></div>';
- [].forEach.call(document.querySelectorAll('.sch-ch button'),function(b){b.addEventListener('click',function(){schQ.value=b.textContent;schQ.dispatchEvent(new Event('input'))})});
+function schHome(tg){
+ tg=tg||'schBody';var my=++schSeq,rec=recentGet(),chips=['Tycoon','Escape','Survival','Story','Escape Room','Tower Defense','Sandbox','RPG','Quiz','Life'];
+ $(tg).innerHTML='<div class="sh-box" id="schHome">'+(rec.length?'<h3>Recently Visited</h3><div class="sg-row" id="recRow">'+rec.map(function(g){return gc(g,g.img)}).join('')+'</div>':'')+'<h3>Try searching for</h3><div class="sch-ch">'+chips.map(function(c){return '<button>'+e2(c)+'</button>'}).join('')+'</div><h3>Trending Games in '+e2(CH.cty[0])+'</h3><div class="sg-row" id="trRow"></div></div>';
+ [].forEach.call(document.querySelectorAll('.sch-ch button'),function(b){b.addEventListener('click',function(){goSearch(b.textContent)})});
  var sid=Math.random().toString(36).slice(2,12);
  J('/rbx/apis/explore-api/v1/get-sort-content?sessionId='+sid+'&sortId=top-trending&device=computer&country='+(CH.cty[1]||'all')).then(function(r){
   var g=(r.games||[]).slice(0,12);return gthumbs(g.map(function(x){return x.universeId})).then(function(im){if(my!==schSeq)return;var el=$('trRow');if(el)el.innerHTML=g.map(function(x){return gc(x,im[x.universeId])}).join('')})}).catch(function(){});
@@ -608,7 +636,7 @@ function schDraw(){
   if(d.items.length)h+='<h3 class="sh2">Style your avatar</h3><div class="avg row" style="margin:12px 0 0">'+d.items.map(itCard).join('')+'</div>';
  }else if(tab==='games'){h+='<div class="sg-grid">'+G.map(function(g){return gc(g,d.gimg[g.universeId])}).join('')+'</div>'}
  else h+='<div class="up-grid">'+P.map(function(u){return ucard(u,0)}).join('')+'</div>';
- if(!h)h='<p class="sch-empty">'+(tab==='people'||tab==='top'?'Searching…':'')+'</p>';
+ if(!h)h='<div class="sch-spin"><i></i></div>';
  var sc=$('schBody').scrollTop;$('schBody').innerHTML='<div class="sh-box">'+h+'</div>';$('schBody').scrollTop=sc;
 }
 /* profile panel */
