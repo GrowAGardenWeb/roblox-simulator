@@ -12,7 +12,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 /* ---------- Roblox web API (same-origin proxy on the site, direct inside Electron) ---------- */
 var PX=/^https?:$/.test(location.protocol)&&!window.pc;
-var HOST={apis:'apis',thumbs:'thumbnails',users:'users',friends:'friends',games:'games',catalog:'catalog'};
+var HOST={apis:'apis',thumbs:'thumbnails',users:'users',friends:'friends',games:'games',catalog:'catalog',inv:'inventory',avatar:'avatar',economy:'economy'};
 function D(p){var m=p.match(/^\/rbx\/([a-z]+)\/(.*)$/);return 'https://'+HOST[m[1]]+'.roblox.com/'+m[2]}
 var VP='https://create-app-iota.vercel.app/api/rbx?u=';
 var FAILS=[];
@@ -137,15 +137,22 @@ function loadCharts(){
   return Promise.all(ch).then(function(rs){
    if(my!==chSeq)return;var im={};rs.forEach(function(r){(r.data||[]).forEach(function(x){if(x.imageUrl)im[x.targetId]=x.imageUrl})});
    $('chartRows').innerHTML=CSEC.map(function(s,k){var g=res[k];if(!g||!g.length)return '';return crowHtml(s,g.map(function(x){return ccard(x.name,pct(x)+'%',kfmt(x.playerCount||0),im[x.universeId])}).join(''))}).join('')})}).catch(function(){})}
+var DEVS2=[['All Devices','all'],['Entry-level Phone','phone'],['Standard Phone','phone2'],['Entry-level Tablet','tablet'],['Standard Tablet','tablet2'],['Computer','computer'],['Console','console'],['VR','vr']];
+var CTY2=[['All Locations','all'],['Mexico','mx']].concat([["Afghanistan","af"],["Albania","al"],["Algeria","dz"],["American Samoa","as"],["Andorra","ad"],["Angola","ao"],["Anguilla","ai"],["Antarctica","aq"],["Antigua and Barbuda","ag"],["Argentina","ar"],["Armenia","am"],["Aruba","aw"],["Australia","au"],["Austria","at"],["Azerbaijan","az"],["Bahamas","bs"],["Bahrain","bh"],["Bangladesh","bd"],["Barbados","bb"],["Belarus","by"],["Belgium","be"],["Belize","bz"],["Benin","bj"],["Bermuda","bm"],["Bhutan","bt"],["Bolivia","bo"],["Bonaire, Sint Eustatius and Saba","bq"],["Bosnia and Herzegovina","ba"],["Botswana","bw"],["Bouvet Island","bv"],["Brazil","br"],["British Indian Ocean Territory","io"],["Brunei","bn"],["Bulgaria","bg"],["Burkina Faso","bf"],["Burundi","bi"],["Cabo Verde","cv"],["Cambodia","kh"],["Cameroon","cm"],["Canada","ca"],["Cayman Islands","ky"],["Central African Republic","cf"],["Chad","td"],["Chile","cl"],["China","cn"],["Christmas Island","cx"],["Cocos (Keeling) Islands","cc"],["Colombia","co"],["Comoros","km"],["Congo","cg"],["Congo, The Democratic Republic of the","cd"],["Cook Islands","ck"],["Costa Rica","cr"],["Croatia","hr"],["Cuba","cu"],["Curaçao","cw"],["Cyprus","cy"],["Czech Republic","cz"],["Côte d'Ivoire","ci"],["Denmark","dk"],["Djibouti","dj"],["Dominica","dm"],["Dominican Republic","do"],["Ecuador","ec"],["Egypt","eg"],["El Salvador","sv"],["Equatorial Guinea","gq"],["Eritrea","er"],["Estonia","ee"],["Eswatini","sz"],["Ethiopia","et"],["Falkland Islands (Malvinas)","fk"],["Faroe Islands","fo"],["Fiji","fj"],["Finland","fi"],["France","fr"],["French Guiana","gf"],["French Polynesia","pf"],["French Southern Territories","tf"],["Gabon","ga"],["Gambia","gm"],["Georgia","ge"],["Germany","de"],["Ghana","gh"],["Gibraltar","gi"],["Greece","gr"],["Greenland","gl"],["Grenada","gd"],["Guadeloupe","gp"],["Guam","gu"],["Guatemala","gt"],["Guernsey","gg"],["Guinea","gn"],["Guinea-Bissau","gw"],["Guyana","gy"],["Haiti","ht"],["Heard Island and McDonald Islands","hm"],["Holy See (Vatican City State)","va"],["Honduras","hn"],["Hong Kong","hk"],["Hungary","hu"],["Iceland","is"],["India","in"],["Indonesia","id"],["Iran","ir"],["Iraq","iq"],["Ireland","ie"],["Isle of Man","im"],["Israel","il"],["Italy","it"],["Jamaica","jm"],["Japan","jp"],["Jersey","je"],["Jordan","jo"],["Kazakhstan","kz"],["Kenya","ke"],["Kiribati","ki"],["Kuwait","kw"],["Kyrgyzstan","kg"],["Laos","la"],["Latvia","lv"],["Lebanon","lb"],["Lesotho","ls"],["Liberia","lr"],["Libya","ly"],["Liechtenstein","li"],["Lithuania","lt"],["Luxembourg","lu"],["Macao","mo"],["Madagascar","mg"],["Malawi","mw"],["Malaysia","my"],["Maldives","mv"],["Mali","ml"],["Malta","mt"],["Marshall Islands","mh"],["Martinique","mq"],["Mauritania","mr"],["Mauritius","mu"],["Mayotte","yt"],["Micronesia, Federated States of","fm"],["Moldova","md"],["Monaco","mc"],["Mongolia","mn"],["Montenegro","me"],["Montserrat","ms"],["Morocco","ma"],["Mozambique","mz"],["Myanmar","mm"],["Namibia","na"],["Nauru","nr"],["Nepal","np"],["Netherlands","nl"],["New Caledonia","nc"],["New Zealand","nz"],["Nicaragua","ni"],["Niger","ne"],["Nigeria","ng"],["Niue","nu"],["Norfolk Island","nf"],["North Korea","kp"],["North Macedonia","mk"],["Northern Mariana Islands","mp"],["Norway","no"],["Oman","om"],["Pakistan","pk"],["Palau","pw"],["Palestine, State of","ps"],["Panama","pa"],["Papua New Guinea","pg"],["Paraguay","py"],["Peru","pe"],["Philippines","ph"],["Pitcairn","pn"],["Poland","pl"],["Portugal","pt"],["Puerto Rico","pr"],["Qatar","qa"],["Romania","ro"],["Russia","ru"],["Rwanda","rw"],["Réunion","re"],["Saint Barthélemy","bl"],["Saint Helena, Ascension and Tristan da Cunha","sh"],["Saint Kitts and Nevis","kn"],["Saint Lucia","lc"],["Saint Martin (French part)","mf"],["Saint Pierre and Miquelon","pm"],["Saint Vincent and the Grenadines","vc"],["Samoa","ws"],["San Marino","sm"],["Sao Tome and Principe","st"],["Saudi Arabia","sa"],["Senegal","sn"],["Serbia","rs"],["Seychelles","sc"],["Sierra Leone","sl"],["Singapore","sg"],["Sint Maarten (Dutch part)","sx"],["Slovakia","sk"],["Slovenia","si"],["Solomon Islands","sb"],["Somalia","so"],["South Africa","za"],["South Georgia and the South Sandwich Islands","gs"],["South Korea","kr"],["South Sudan","ss"],["Spain","es"],["Sri Lanka","lk"],["Sudan","sd"],["Suriname","sr"],["Svalbard and Jan Mayen","sj"],["Sweden","se"],["Switzerland","ch"],["Syria","sy"],["Taiwan","tw"],["Tajikistan","tj"],["Tanzania","tz"],["Thailand","th"],["Timor-Leste","tl"],["Togo","tg"],["Tokelau","tk"],["Tonga","to"],["Trinidad and Tobago","tt"],["Tunisia","tn"],["Turkey","tr"],["Turkmenistan","tm"],["Turks and Caicos Islands","tc"],["Tuvalu","tv"],["Uganda","ug"],["Ukraine","ua"],["United Arab Emirates","ae"],["United Kingdom","gb"],["United States","us"],["United States Minor Outlying Islands","um"],["Uruguay","uy"],["Uzbekistan","uz"],["Vanuatu","vu"],["Venezuela","ve"],["Vietnam","vn"],["Virgin Islands, British","vg"],["Virgin Islands, U.S.","vi"],["Wallis and Futuna","wf"],["Western Sahara","eh"],["Yemen","ye"],["Zambia","zm"],["Zimbabwe","zw"],["Åland Islands","ax"]]);
+var DAPI={phone2:'phone',tablet2:'tablet'};
+function openPick(k,chip){
+ closeDd();var L=k==='dev'?DEVS2:CTY2,cur=CH[k][1],sel=cur,my=k==='dev'?'My device':'My location',mine=k==='dev'?'computer':'mx';
+ var ov=document.createElement('div');ov.className='pk dd';var w=$('win').getBoundingClientRect(),r=chip.getBoundingClientRect();
+ ov.innerHTML='<div class="pk-box '+k+'" style="left:'+Math.round(r.left-w.left)+'px"><div class="pk-h"><b>'+(k==='dev'?'Device':'Location')+'</b><button class="pk-x" aria-label="Close">'+I('x-r',22)+'</button></div><div class="pk-l">'+L.map(function(o){return '<label class="pk-r"><input type="radio" name="pk" value="'+o[1]+'"'+(o[1]===cur?' checked':'')+'><i></i><span>'+e2(o[0])+'</span>'+(o[1]===mine?'<em>'+my+'</em>':'')+'</label>'}).join('')+'</div><button class="pk-a" disabled>Apply</button></div>';
+ $('win').appendChild(ov);
+ ov.addEventListener('mousedown',function(e){if(e.target===ov)ov.remove()});
+ ov.addEventListener('click',function(e){e.stopPropagation()});
+ ov.querySelector('.pk-x').addEventListener('click',function(){ov.remove()});
+ ov.querySelector('.pk-l').addEventListener('change',function(e){sel=e.target.value;ov.querySelector('.pk-a').disabled=sel===cur});
+ ov.querySelector('.pk-a').addEventListener('click',function(){var it=L.filter(function(x){return x[1]===sel})[0];CH[k]=[it[0],DAPI[it[1]]||it[1]];chip.querySelector('span').textContent=it[0];ov.remove();drawStatic();loadCharts()});
+}
 function closeDd(){[].forEach.call(document.querySelectorAll('.dd'),function(d){d.remove()})}
-[].forEach.call(document.querySelectorAll('.chip'),function(b){b.addEventListener('click',function(e){
- e.stopPropagation();var had=b.nextElementSibling&&b.nextElementSibling.classList.contains('dd');closeDd();if(had)return;
- var k=b.dataset.k,L=k==='dev'?DEVS:CTYS,d=document.createElement('div');d.className='dd';
- d.innerHTML=L.map(function(o){return '<button data-v="'+o[1]+'" class="'+(CH[k][1]===o[1]?'on':'')+'">'+o[0]+'</button>'}).join('');
- var r=b.getBoundingClientRect(),w=$('win').getBoundingClientRect();d.style.left=(r.left-w.left)+'px';d.style.top=(r.bottom-w.top+6)+'px';$('win').appendChild(d);
- d.addEventListener('click',function(ev){var o=ev.target.closest('button');if(!o)return;var it=L.filter(function(x){return x[1]===o.dataset.v})[0];CH[k]=it;b.querySelector('span').textContent=it[0];closeDd();drawStatic();loadCharts()})})});
-document.addEventListener('click',closeDd);
-document.addEventListener('click',function(e){var b=e.target.closest('.hx');if(!b)return;var g=b.closest('.g');g.classList.add('nohv');g.addEventListener('mouseleave',function f(){g.classList.remove('nohv');g.removeEventListener('mouseleave',f)})});
+[].forEach.call(document.querySelectorAll('.chip'),function(b){b.addEventListener('click',function(e){e.stopPropagation();openPick(b.dataset.k,b)})});
 drawStatic();
 
 /* ---------- left menu drawer ---------- */
@@ -306,12 +313,12 @@ var CATQ={all:{category:1},avatars:{category:2},backgrounds:{category:1,keyword:
 var avCat='all',avSeq=0,avInit=false;
 function kc(n){n=Number(n)||0;return n>=1e6?(n/1e6).toFixed(n>=1e7?0:1).replace(/\.0$/,'')+'M':n>=1e3?(n/1e3).toFixed(n>=1e4?0:1).replace(/\.0$/,'')+'K':String(n)}
 function itCard(x){
- return '<div class="it"><div class="ph">'+(x.img?'<img src="'+e2(x.img)+'" alt="">':'')+'</div><b>'+e2(x.name)+'</b><div class="cr"><span>'+e2(x.creator||'Roblox')+'</span><i>'+I('ver-f',16)+'</i></div><div class="pr">'+(x.price==null?'':'<i>'+I('robux-r',16)+'</i>'+fmt(x.price))+'</div></div>'}
+ return '<div class="it" data-p="'+(x.price==null?'':x.price)+'"><div class="ph">'+(x.img?'<img src="'+e2(x.img)+'" alt="">':'')+'<span class="dt">Details</span></div><b>'+e2(x.name)+'</b><div class="cr"><span>'+e2(x.creator||'Roblox')+'</span><i>'+I('ver-f',16)+'</i></div><div class="pr">'+(x.price==null?'':'<i>'+I('robux-r',16)+'</i>'+fmt(x.price))+'</div></div>'}
 function avRowsHtml(rec,fut){
  return '<h3 class="avh">Recommended For You</h3><div class="avg">'+rec.map(itCard).join('')+'</div>'+
   '<h3 class="avh" style="margin-top:22px">Discover Futuristic Styles<a>See All</a></h3><div class="avg fut">'+fut.map(itCard).join('')+'</div>';
 }
-function avStatic(){var rec=AVN.map(function(n){return {name:n[0],price:n[1]}}),fut=[];for(var i=0;i<7;i++)fut.push({name:'',price:null});$('avRows').innerHTML=avRowsHtml(rec,fut);[].forEach.call(document.querySelectorAll('#avRows .fut .it b,#avRows .fut .it .cr'),function(e){e.style.visibility='hidden'})}
+function avStatic(){var rec=AVN.map(function(n,i){return {name:n[0],price:n[1],img:avCat==='all'?'img/it'+i+'.webp':''}}),fut=[];for(var i=0;i<7;i++)fut.push({name:'',price:null});$('avRows').innerHTML=avRowsHtml(rec,fut);[].forEach.call(document.querySelectorAll('#avRows .fut .it b,#avRows .fut .it .cr'),function(e){e.style.visibility='hidden'})}
 function catItems(q,limit){
  var p='Category='+q.category+'&Limit='+limit+'&SortType=1&IncludeNotForSale=false'+(q.keyword?'&Keyword='+encodeURIComponent(q.keyword):'');
  return J('/rbx/catalog/v1/search/items/details?'+p).then(function(r){
@@ -334,16 +341,53 @@ function avUser(){
 function showAv(on){
  $('s-av').hidden=!on;document.querySelector('.main').hidden=on;
  if(on){$('avRb').textContent=kc(S.robux);$('avHead').src=S.user.img||'img/av_me.webp';
-  if(!avInit){avInit=true;avStatic();loadAv();avUser();if(!sessionStorage.getItem('pc.unl')){setTimeout(function(){$('unl').hidden=false},600)}}}
+  if(!avInit){avInit=true;avStatic();loadAv();avUser();}}
 }
 [].forEach.call(document.querySelectorAll('.sb'),function(b){b.addEventListener('click',function(){showAv(b.dataset.s==='me')})});
 $('cats').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;[].forEach.call(document.querySelectorAll('#cats button'),function(x){x.classList.toggle('on',x===b)});avCat=b.dataset.k;avStatic();loadAv()});
-$('promoX').addEventListener('click',function(){$('promo').hidden=true});
-function closeUnl(){$('unl').hidden=true;try{sessionStorage.setItem('pc.unl','1')}catch(e){}}
-$('unlOk').addEventListener('click',closeUnl);$('unlT').addEventListener('click',function(e){e.preventDefault()});
-$('unl').addEventListener('mousedown',function(e){if(e.target===$('unl'))closeUnl()});
-$('avM').addEventListener('click',function(){$('avM').classList.add('on');$('avC').classList.remove('on')});
-$('avC').addEventListener('click',function(){$('avC').classList.add('on');$('avM').classList.remove('on')});
+;(function(){
+ var bar=document.createElement('div');bar.className='av-buy';bar.hidden=true;bar.innerHTML='<button class="bb" id="avBuy"></button><button class="bm" aria-label="More">'+I('three-dots-h',26)+'</button>';$('avR').appendChild(bar);
+ $('avRows').addEventListener('click',function(e){var it=e.target.closest('.it');if(!it)return;var was=it.classList.contains('sel');[].forEach.call(document.querySelectorAll('#avRows .it.sel'),function(x){x.classList.remove('sel')});
+  if(was){bar.hidden=true;$('avR').classList.remove('buying');return}
+  it.classList.add('sel');var pr=it.dataset.p;$('avBuy').innerHTML=pr===''?'Off sale':I('robux-r',20)+'<span>'+fmt(pr)+'</span>';bar.hidden=false;$('avR').classList.add('buying')});
+})();
+function avMode(m){var bb=document.querySelector('.av-buy');if(bb&&m==='c'){bb.hidden=true;$('avR').classList.remove('buying');[].forEach.call(document.querySelectorAll('#avRows .it.sel'),function(x){x.classList.remove('sel')})}$('avM').classList.toggle('on',m==='m');$('avC').classList.toggle('on',m==='c');$('avSc').hidden=m!=='m';$('cuSc').hidden=m!=='c';if(m==='c')loadCust()}
+$('avM').addEventListener('click',function(){avMode('m')});
+$('avC').addEventListener('click',function(){avMode('c')});
+/* Customize */
+var cuCat='all',cuSeq=0,cuSub='Full Body';
+var CUT={all:'Hat,HairAccessory,FaceAccessory,NeckAccessory,ShoulderAccessory,FrontAccessory,BackAccessory,WaistAccessory',accessories:'Hat,HairAccessory,FaceAccessory,NeckAccessory,ShoulderAccessory,FrontAccessory,BackAccessory,WaistAccessory',clothing:'Shirt,Pants,TShirt',emotes:'EmoteAnimation',animations:'RunAnimation,WalkAnimation,FallAnimation,JumpAnimation,IdleAnimation,ClimbAnimation,SwimAnimation'};
+function cuSkel(n){var h='';for(var i=0;i<n;i++)h+='<div class="it"><div class="ph"><span class="dt">Details</span></div></div>';$('cuGrid').innerHTML=h}
+function drawBsub(){
+ var on=cuCat==='body';$('bsub').hidden=!on;if(!on)return;
+ var S2=[['Full Body','<img src="img/av_me.webp" alt="">'],['Hair','<i data-ic="plusp-r">'+I('person-plus-h',40)+'</i>'],['Head',''],['Build','<i>'+I('build-r',36)+'</i>'],['Skin','<b class="skc"></b>']];
+ $('bsr').innerHTML=S2.map(function(s){return '<div class="bs'+(cuSub===s[0]?' on':'')+'" data-n="'+s[0]+'"><span>'+s[1]+'</span><em>'+s[0]+'</em></div>'}).join('');
+}
+function loadCust(){
+ var my=++cuSeq;drawBsub();cuSkel(35);
+ var t=CUT[cuCat];if(!t||!S.user.id)return;
+ J('/rbx/inv/v2/users/'+S.user.id+'/inventory?assetTypes='+t+'&limit=50&sortOrder=Desc').then(function(r){
+  var d=(r.data||[]).slice(0,56);if(my!==cuSeq||!d.length)return;
+  return J('/rbx/thumbs/v1/assets?assetIds='+d.map(function(x){return x.assetId}).join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t2){
+   if(my!==cuSeq)return;var im={};(t2.data||[]).forEach(function(x){if(x.imageUrl)im[x.targetId]=x.imageUrl});
+   $('cuGrid').innerHTML=d.map(function(x){return '<div class="it" data-p="" data-n="'+e2(x.assetName||'')+'"><div class="ph">'+(im[x.assetId]?'<img src="'+e2(im[x.assetId])+'" alt="">':'')+'<span class="dt">Details</span></div></div>'}).join('')})}).catch(function(){});
+}
+$('cuCats').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;[].forEach.call(document.querySelectorAll('#cuCats button'),function(x){x.classList.toggle('on',x===b)});cuCat=b.dataset.k;loadCust()});
+$('bsr').addEventListener('click',function(e){var b=e.target.closest('.bs');if(!b)return;cuSub=b.dataset.n;drawBsub()});
+/* Buy item dialog */
+function openBuy(name,price,img){
+ price=Number(price)||0;var plus=S.prem!==false,pb=plus?Math.round(price*.1):0,tot=price-pb,open=false;
+ function draw(){
+  var sv=plus?'<div class="sv'+(open?' op':'')+'"><button class="svh" id="svT"><i>'+I('rplus-r',22)+'</i><span>Saving <i class="ri">'+I('robux-r',14)+'</i>'+pb+' with Plus</span><i class="chv">'+I(open?'chevu-r':'chevd-r',22)+'</i></button>'+(open?'<div class="svb"><div><span>Subtotal</span><b><i class="ri">'+I('robux-r',15)+'</i>'+fmt(price)+'</b></div><div><span>Plus benefit (10% off on eligible items)</span><b>- <i class="ri">'+I('robux-r',15)+'</i>'+pb+'</b></div><hr><div><span>Total</span><b><i class="ri">'+I('robux-r',15)+'</i>'+fmt(tot)+'</b></div></div>':'')+'</div>':'';
+  $('buyBox').innerHTML='<div class="by-h"><b>Buy item</b><button class="by-x" id="byX" aria-label="Close">'+I('x-r',28)+'</button></div><div class="by-i"><span class="by-p"><img src="'+e2(img||'')+'" alt=""></span><div><b>'+e2(name||'Item')+'</b><small>Permanent</small><div class="by-pr"><i>'+I('robux-r',20)+'</i><b>'+fmt(tot)+'</b>'+(plus&&pb?'<s><i>'+I('robux-r',14)+'</i>'+fmt(price)+'</s>':'')+'</div></div></div>'+sv+'<label class="by-c"><input type="checkbox" checked><i></i>Wear item after purchase</label><button class="by-b" id="byB">Buy</button>';
+  $('byX').addEventListener('click',function(){$('buy').hidden=true});
+  var t=$('svT');if(t)t.addEventListener('click',function(){open=!open;draw()});
+  $('byB').addEventListener('click',function(){if(S.robux>=tot){S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);$('buy').hidden=true}else{$('byB').textContent='Not enough Robux'}});
+ }
+ draw();$('buy').hidden=false;
+}
+$('buy').addEventListener('mousedown',function(e){if(e.target===$('buy'))$('buy').hidden=true});
+$('avBuy').addEventListener('click',function(){var it=document.querySelector('#avRows .it.sel');if(!it)return;var im=it.querySelector('.ph img');openBuy(it.querySelector('b').textContent,it.dataset.p,im&&im.src)});
 
 /* ---------- window controls (Electron) ---------- */
 var pc=window.pc||null;
