@@ -1142,8 +1142,8 @@ function playAnim(g){if(g){if(anQ.length<12)anQ.push(g)}if(anPlaying||!anQ.lengt
  gl.linkProgram(p);gl.useProgram(p);
  var bf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,bf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);var al=gl.getAttribLocation(p,'a');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
  var tx=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tx);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
- cv.width=540;cv.height=960;gl.viewport(0,0,540,960);gl.clearColor(0,0,0,0);
- function draw(){if(stop)return;if(v.readyState>=2){gl.clear(gl.COLOR_BUFFER_BIT);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,v);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
+ function fit(){var w=Math.round((v.videoWidth||1080)/2),h=v.videoHeight||960;if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;gl.viewport(0,0,w,h)}}cv.width=720;cv.height=1280;gl.viewport(0,0,720,1280);gl.clearColor(0,0,0,0);v.addEventListener('loadedmetadata',fit);
+ function draw(){if(stop)return;if(v.readyState>=2){fit();gl.clear(gl.COLOR_BUFFER_BIT);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,v);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
   if(v.requestVideoFrameCallback)v.requestVideoFrameCallback(draw);else requestAnimationFrame(draw)}
  c.innerHTML='';c.appendChild(cv);v.onended=fin;v.onerror=fin;setTimeout(fin,15000);
  v.muted=false;var pr=v.play();if(pr&&pr.catch)pr.catch(function(){v.muted=true;v.play().catch(fin)});
