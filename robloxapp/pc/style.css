@@ -637,3 +637,9 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 @keyframes spn{to{transform:rotate(360deg)}}
 .mv{display:none!important}
 .av-3d canvas{width:100%!important;height:100%!important}
+
+.ptoast{left:772px;top:32px;transform:none;gap:22px;font-size:17px;animation:ptin .25s cubic-bezier(.2,.7,.3,1)}
+.ptoast .plg{width:40px;height:40px;background:none;border-radius:0;transform:none;display:grid;place-items:center;color:#111}
+.ptoast .plg svg{display:block}
+@keyframes ptin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.ptoast.out{opacity:0;transition:opacity .35s}
