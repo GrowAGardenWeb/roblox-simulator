@@ -44,17 +44,30 @@ function show(box,uid,opt){
    if(el.parentNode!==box)box.appendChild(el);
    R.RBXRenderer.setRendererSize(box.clientWidth,box.clientHeight);
    var sc=R.RBXRenderer.firstScene;
-   try{sc.scene.background=null;R.RBXRenderer.renderer&&R.RBXRenderer.renderer.setClearColor(0,0);if(sc.plane)sc.plane.visible=false;if(sc.shadowPlane)sc.shadowPlane.visible=false}catch(x){}
+   /* same scene set-up as the mobile app (transparent background, no floor, its light rig) */
+   try{
+    sc.scene.background=null;R.RBXRenderer.renderer&&R.RBXRenderer.renderer.setClearColor(0,0);if(sc.plane)sc.plane.visible=false;if(sc.shadowPlane)sc.shadowPlane.visible=false;
+    if(sc.ambientLight)sc.ambientLight.intensity=2.8;
+    if(sc.directionalLight){sc.directionalLight.castShadow=false;sc.directionalLight.intensity=.45;sc.directionalLight.position.set(-4,9,-9)}
+    if(sc.directionalLight2){sc.directionalLight2.intensity=.4;sc.directionalLight2.position.set(6,5,-4)}
+    if(sc.directionalLight){var L=sc.directionalLight.constructor,l1=new L(0xffffff,.6);l1.position.set(0,12,-1.5);var l2=new L(0xffffff,.45);l2.position.set(0,6,9);sc.scene.add(l1,l2)}
+   }catch(x){}
+   rend.doCameraUpdateOnLoad=false;rend.doCameraUpdate=false;
+   var D=R.RBXRenderer.controls;
+   function cam(){
+    rend.doCameraUpdateOnLoad=false;rend.doCameraUpdate=false;D=R.RBXRenderer.controls;if(!D)return;
+    D.target.set(0,3,0);var d=7.6346,t=5*Math.PI/180;
+    D.object.position.set(0,3+d*Math.sin(t),-d*Math.cos(t));D.object.lookAt(D.target);
+    D.enableZoom=false;D.enablePan=false;D.minPolarAngle=D.maxPolarAngle=Math.PI/2-t;D.enableDamping=true;D.dampingFactor=.15;D.rotateSpeed=1.6;D.update();
+    /* keep the feet centred on the turntable like the mobile app */
+    try{var f=[];sc.scene.updateMatrixWorld(true);sc.scene.traverse(function(o){if(/^(Left|Right)Foot_/.test(o.name))f.push(o.matrixWorld.elements)});
+     if(f.length>=2){var dx=f.reduce(function(s,m){return s+m[12]},0)/f.length-D.target.x,dz=f.reduce(function(s,m){return s+m[14]},0)/f.length-D.target.z;D.target.x+=dx;D.target.z+=dz;D.object.position.x+=dx;D.object.position.z+=dz;D.update()}}catch(x){}
+   }
    rend.startAnimating();
    return rend.setMainAnimation('idle').then(function(){
-    var D=R.RBXRenderer.controls;
-    function cam(){
-     rend.doCameraUpdateOnLoad=false;rend.doCameraUpdate=false;if(!D)return;
-     D.target.set(0,3,0);var d=7.6346,t=5*Math.PI/180;
-     D.object.position.set(0,3+d*Math.sin(t),-d*Math.cos(t));D.object.lookAt(D.target);
-     D.enableZoom=false;D.enablePan=false;D.minPolarAngle=D.maxPolarAngle=Math.PI/2-t;D.enableDamping=true;D.dampingFactor=.15;D.rotateSpeed=1.6;D.update();
-    }
     cam();
+    /* the engine keeps adding meshes for a while: re-frame until the scene stops changing (same as the mobile app) */
+    var last=-1,calm=0,iv=setInterval(function(){var n=(sc.scene&&sc.scene.children&&sc.scene.children.length)||0;if(n===last){if(n>8&&++calm>=3){cam();clearInterval(iv)}}else{last=n;calm=0;cam()}},500);setTimeout(function(){clearInterval(iv)},90000);
     var ro=new ResizeObserver(function(){if(box.clientWidth>0){R.RBXRenderer.setRendererSize(box.clientWidth,box.clientHeight);cam()}});ro.observe(box);
     if(cur&&cur.ro)cur.ro.disconnect();cur={ro:ro,rend:rend};
     return rend;
