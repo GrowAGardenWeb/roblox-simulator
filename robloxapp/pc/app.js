@@ -611,7 +611,7 @@ schQ.addEventListener('input',function(){
 function schRun(v){
  var my=++schSeq;schData={q:v,people:[],games:[],items:[],gimg:{},pimg:{},bimg:{}};schDraw();
  searchUsers(v,25).then(function(l){
-  if(my!==schSeq)return;schData.people=l;schDraw();
+  if(my!==schSeq)return;schData.people=l;schDraw();if(window.Av3D)l.slice(0,3).forEach(function(u){window.Av3D.prefetch(u.id)});
   var ids=l.map(function(u){return u.id});
   heads(ids).then(function(m){if(my!==schSeq)return;schData.pimg=m;schDraw()});
   J('/rbx/thumbs/v1/users/avatar?userIds='+ids.join(',')+'&size=150x150&format=Webp&isCircular=false').then(function(t){if(my!==schSeq)return;var m={};(t.data||[]).forEach(function(x){if(x.imageUrl)m[x.targetId]=x.imageUrl});schData.bimg=m;schDraw()}).catch(function(){});
@@ -648,6 +648,7 @@ $('schBody').addEventListener('click',function(e){
  var u=e.target.closest('.up');if(u){var us=schData&&schData.people.filter(function(x){return String(x.id)===u.dataset.id})[0];if(us){if(e.target.closest('.pl')){addFriendQuick(us,e.target.closest('.pl'));return}openPf(us)}return}
  var g=e.target.closest('.sg');if(g&&g.dataset.u){var im=g.querySelector('img'),nm=g.querySelector('b').textContent,r=recentGet().filter(function(x){return x.u!==g.dataset.u});r.unshift({u:g.dataset.u,name:nm,img:im&&im.src});try{localStorage.setItem('pc.recent',JSON.stringify(r.slice(0,10)))}catch(x){}}
 });
+$('schBody').addEventListener('mouseover',function(e){var u=e.target.closest('.up');if(u&&window.Av3D&&!u.__pf){u.__pf=1;window.Av3D.prefetch(u.dataset.id)}});
 function addFriendQuick(u,el){el.classList.add('done')}
 function openPf(u){
  pfUser=u;var bi=(schData.bimg[u.id]||''),hd=schData.pimg[u.id]||'';
@@ -687,6 +688,6 @@ function wc(id,fn){$(id).addEventListener('click',function(){if(pc&&pc[fn])pc[fn
 wc('wmin','min');wc('wmax','max');wc('wcls','close');
 $('tb').addEventListener('dblclick',function(e){if(!e.target.closest('.tb-btns')&&pc&&pc.max)pc.max()});
 
-renderMe();renderFriends();setBal();
+renderMe();renderFriends();setBal();if(/^https?:$/.test(location.protocol)&&window.Av3D)setTimeout(function(){window.Av3D.boot().catch(function(){})},1500);
 loadGames().catch(function(){});
 })();

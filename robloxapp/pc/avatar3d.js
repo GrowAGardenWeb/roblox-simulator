@@ -35,21 +35,26 @@ function boot(){
 }
 var Q=Promise.resolve(),tok=0;
 function show(box,uid,opt){var t=++tok;Q=Q.catch(function(){}).then(function(){if(t!==tok)throw Error('superseded');return doShow(box,uid,opt)});return Q}
+var MC={};
+function getModel(R,uid){return MC[uid]||(MC[uid]=R.API.Avatar.GetUserAvatarModel(Number(uid)).catch(function(e){delete MC[uid];throw e}))}
+function hideRig(r){try{if(!r.currentRig)return;for(var n of r.currentRig.GetDescendants()){var d=r.renderScene&&r.renderScene.renderDescs&&r.renderScene.renderDescs.get(n);if(!d)continue;var rs=d.results||(d.result?[d.result]:[]);for(var m of rs)if(m)m.visible=false}}catch(x){}}
+function kill(r){try{r.stopAnimating()}catch(x){}hideRig(r);var t=0;(function w(){if(r.currentlyUpdating&&t++<100)return void setTimeout(w,300);setTimeout(function(){try{hideRig(r);r.destroy()}catch(x){}},2500)})()}
 function doShow(box,uid,opt){
  opt=opt||{};var log=opt.log||function(){},LF=opt.lift!=null?opt.lift:LIFT;
  return boot().then(function(E){
   var R=E.R;log('Loading avatar…');
-  return R.API.Avatar.GetUserAvatarModel(Number(uid)).then(function(model){
+  return getModel(R,uid).then(function(model0){
+   var model=model0.clone();
    if(!model||model instanceof Response)throw Error('avatar model '+(model&&model.status));
-   var reuse=!!(cur&&cur.rend),rend=reuse?cur.rend:new R.OutfitRenderer(E.auth,model);
-   /* one renderer for the whole page: a new person is loaded into it (like the mobile app does when the outfit changes), so two models never stack */
-   if(reuse){try{rend.setOutfitModel(model)}catch(x){}}
-   else if(rend.backgroundRenderer){rend.backgroundRenderer.cameraAffectsTransparency=false;rend.backgroundRenderer.cameraAffectsRotation=false}
+   /* every person gets a clean renderer built from their own model (never from the previous person's); the old one is hidden at once and destroyed a moment later, like the mobile app does, so two models never stack */
+   if(cur&&cur.rend){var old=cur.rend;cur.rend=null;kill(old)}
+   var rend=new R.OutfitRenderer(E.auth,model);
+   if(rend.backgroundRenderer){rend.backgroundRenderer.cameraAffectsTransparency=false;rend.backgroundRenderer.cameraAffectsRotation=false}
    var assets0=model.clone().outfit.toJson().assets.slice();
    var el=R.RBXRenderer.getRendererElement();
    el.style.cssText='width:100%;height:100%;display:block;touch-action:none';
    if(el.parentNode!==box)box.appendChild(el);
-   R.RBXRenderer.setRendererSize(box.clientWidth,box.clientHeight);
+   R.RBXRenderer.setRendererSize(box.clientWidth||opt.w||595,box.clientHeight||opt.h||392);
    var sc=R.RBXRenderer.firstScene;
    /* same scene set-up as the mobile app (transparent background, no floor, its light rig) */
    try{
@@ -57,7 +62,7 @@ function doShow(box,uid,opt){
     if(sc.ambientLight)sc.ambientLight.intensity=2.8;
     if(sc.directionalLight){sc.directionalLight.castShadow=false;sc.directionalLight.intensity=.45;sc.directionalLight.position.set(-4,9,-9)}
     if(sc.directionalLight2){sc.directionalLight2.intensity=.4;sc.directionalLight2.position.set(6,5,-4)}
-    if(sc.directionalLight){var L=sc.directionalLight.constructor,l1=new L(0xffffff,.6);l1.position.set(0,12,-1.5);var l2=new L(0xffffff,.45);l2.position.set(0,6,9);sc.scene.add(l1,l2)}
+    if(sc.directionalLight&&!sc.__rig){sc.__rig=1;var L=sc.directionalLight.constructor,l1=new L(0xffffff,.6);l1.position.set(0,12,-1.5);var l2=new L(0xffffff,.45);l2.position.set(0,6,9);sc.scene.add(l1,l2)}
    }catch(x){}
    rend.doCameraUpdateOnLoad=false;rend.doCameraUpdate=false;
    var D=R.RBXRenderer.controls;
@@ -75,7 +80,7 @@ function doShow(box,uid,opt){
     cam();
     /* the engine keeps adding meshes for a while: re-frame until the scene stops changing (same as the mobile app) */
     var last=-1,calm=0,iv=setInterval(function(){var n=(sc.scene&&sc.scene.children&&sc.scene.children.length)||0;if(n===last){if(n>8&&++calm>=3){cam();clearInterval(iv)}}else{last=n;calm=0;cam()}},500);setTimeout(function(){clearInterval(iv)},90000);
-    var ro=new ResizeObserver(function(){if(box.clientWidth>0){R.RBXRenderer.setRendererSize(box.clientWidth,box.clientHeight);cam()}});ro.observe(box);
+    var ro=new ResizeObserver(function(){if(box.clientWidth>0&&cur&&cur.rend===rend){R.RBXRenderer.setRendererSize(box.clientWidth,box.clientHeight);cam()}});ro.observe(box);
     if(cur&&cur.ro)cur.ro.disconnect();cur={ro:ro,rend:rend,base:model,assets:assets0,R:R,owner:opt.owner||'me'};
     return rend;
    });
@@ -94,5 +99,5 @@ function wear(id,type,name){
  rebuild();return true;
 }
 function unwear(id){if(!cur)return false;id=Number(id);cur.assets=cur.assets.filter(function(x){return Number(x.id)!==id});rebuild();return true}
-window.Av3D={show:show,boot:boot,wear:wear,unwear:unwear,has:has,ready:function(){return !!cur&&!!cur.assets},owner:function(){return cur&&cur.owner}};
+window.Av3D={show:show,boot:boot,prefetch:function(uid){return boot().then(function(E){return getModel(E.R,uid)}).catch(function(){})},wear:wear,unwear:unwear,has:has,ready:function(){return !!cur&&!!cur.assets},owner:function(){return cur&&cur.owner}};
 })();
