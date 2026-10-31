@@ -33,7 +33,7 @@ function PPOST(url,body){
  return go('/rbxproxy?u='+encodeURIComponent(url)).catch(function(){return go(VP+encodeURIComponent(url))});
 }
 /* same three sources the mobile app uses: exact username, omni-search and user search */
-function searchUsers(q){
+function searchUsers(q,lim){
  q=String(q||'').trim();var enc=encodeURIComponent(q),seen={},order=[],ok=0;
  function add(a){a.forEach(function(x){var k=String(x.id);if(x.id&&!seen[k]){seen[k]=x;order.push(k)}})}
  var jobs=[
@@ -45,7 +45,7 @@ function searchUsers(q){
   if(!ok)throw Error('Couldn’t reach Roblox. Try again in a moment. ['+FAILS.slice(-3).join(' · ')+']');
   var l=order.map(function(k){return seen[k]});
   l.sort(function(a,b){return (String(b.name).toLowerCase()===q.toLowerCase())-(String(a.name).toLowerCase()===q.toLowerCase())});
-  return l.slice(0,10);
+  return l.slice(0,lim||10);
  });
 }
 function findUser(q){
@@ -547,6 +547,97 @@ function openBuy(name,price,img,it){
 $('buy').addEventListener('mousedown',function(e){if(e.target===$('buy'))$('buy').hidden=true});
 $('avBuy').addEventListener('click',function(){var l=document.querySelectorAll('#avRows .it.sel');if(l.length>1){window.drawCo()}else if(l.length===1&&$('avBuy').dataset.m==='own'){avMode('c')}else if(l.length===1){var it=l[0],im=it.querySelector('.ph img');openBuy(it.querySelector('b').textContent,it.dataset.p,im&&im.src,it)}});
 
+/* ---------- Search ---------- */
+var sch=$('s-sch'),schQ=$('schQ'),schTab='top',schSeq=0,schTm=null,schData=null;
+function recentGet(){try{return JSON.parse(localStorage.getItem('pc.recent')||'[]')}catch(e){return[]}}
+function openSch(){
+ document.querySelector('.main').hidden=true;$('s-av').hidden=true;sch.hidden=false;sch.classList.remove('in');void sch.offsetWidth;sch.classList.add('in');
+ schQ.value='';$('schClr').hidden=true;$('schTabs').hidden=true;$('schCancel').style.display='';document.querySelector('.sch-r').style.display='none';schHome();setTimeout(function(){schQ.focus({preventScroll:true})},60);
+}
+function closeSch(){sch.hidden=true;closePf();document.querySelector('.main').hidden=false;[].forEach.call(document.querySelectorAll('.sb'),function(x){x.classList.toggle('on',x.dataset.s==='home')})}
+$('q').addEventListener('focus',function(){this.blur();openSch()});
+document.querySelector('.search').addEventListener('click',function(e){e.preventDefault();openSch()});
+$('schBack').addEventListener('click',function(){if(schQ.value.trim()){schQ.value='';$('schClr').hidden=true;$('schTabs').hidden=true;schHome()}else closeSch()});
+$('schCancel').addEventListener('click',closeSch);
+$('schClr').addEventListener('click',function(){schQ.value='';$('schClr').hidden=true;$('schTabs').hidden=true;schHome();schQ.focus()});
+function gc(g,img){var r=(g.totalUpVotes!=null?pct(g)+'%':''),p=g.playerCount!=null?kfmt(g.playerCount):'';return '<div class="sg" data-u="'+(g.universeId||'')+'"><img class="t" src="'+e2(img||'')+'" alt=""><b>'+e2(g.name)+'</b><div class="r">'+(r?I('like-f',15)+'<span>'+r+'</span>':'')+(p?I('user-f',15)+'<span>'+p+'</span>':'')+'</div></div>'}
+function gthumbs(ids){
+ if(!ids.length)return Promise.resolve({});
+ return J('/rbx/thumbs/v1/games/multiget/thumbnails?universeIds='+ids.join(',')+'&countPerUniverse=1&size=768x432&format=Webp&isCircular=false').then(function(r){var m={};(r.data||[]).forEach(function(x){if(x.thumbnails&&x.thumbnails[0])m[x.universeId]=x.thumbnails[0].imageUrl});return m}).catch(function(){return {}});
+}
+function schHome(){
+ var my=++schSeq,rec=recentGet(),chips=['Tycoon','Escape','Survival','Story','Escape Room','Tower Defense','Sandbox','RPG','Quiz','Life'];
+ $('schBody').innerHTML='<div class="sh-box" id="schHome">'+(rec.length?'<h3>Recently Visited</h3><div class="sg-row" id="recRow">'+rec.map(function(g){return gc(g,g.img)}).join('')+'</div>':'')+'<h3>Try searching for</h3><div class="sch-ch">'+chips.map(function(c){return '<button>'+e2(c)+'</button>'}).join('')+'</div><h3>Trending Games in '+e2(CH.cty[0])+'</h3><div class="sg-row" id="trRow"></div></div>';
+ [].forEach.call(document.querySelectorAll('.sch-ch button'),function(b){b.addEventListener('click',function(){schQ.value=b.textContent;schQ.dispatchEvent(new Event('input'))})});
+ var sid=Math.random().toString(36).slice(2,12);
+ J('/rbx/apis/explore-api/v1/get-sort-content?sessionId='+sid+'&sortId=top-trending&device=computer&country='+(CH.cty[1]||'all')).then(function(r){
+  var g=(r.games||[]).slice(0,12);return gthumbs(g.map(function(x){return x.universeId})).then(function(im){if(my!==schSeq)return;var el=$('trRow');if(el)el.innerHTML=g.map(function(x){return gc(x,im[x.universeId])}).join('')})}).catch(function(){});
+}
+schQ.addEventListener('input',function(){
+ var v=schQ.value.trim();$('schClr').hidden=!schQ.value;clearTimeout(schTm);
+ if(!v){$('schTabs').hidden=true;$('schCancel').style.display='';document.querySelector('.sch-r').style.display='none';schHome();return}
+ $('schTabs').hidden=false;$('schCancel').style.display='none';document.querySelector('.sch-r').style.display='';schTm=setTimeout(function(){schRun(v)},260);
+});
+[].forEach.call(document.querySelectorAll('#schTabs button'),function(b){b.addEventListener('click',function(){schTab=b.dataset.t;[].forEach.call(document.querySelectorAll('#schTabs button'),function(x){x.classList.toggle('on',x===b)});schDraw()})});
+function schRun(v){
+ var my=++schSeq;schData={q:v,people:[],games:[],items:[],gimg:{},pimg:{},bimg:{}};schDraw();
+ searchUsers(v,25).then(function(l){
+  if(my!==schSeq)return;schData.people=l;schDraw();
+  var ids=l.map(function(u){return u.id});
+  heads(ids).then(function(m){if(my!==schSeq)return;schData.pimg=m;schDraw()});
+  J('/rbx/thumbs/v1/users/avatar?userIds='+ids.join(',')+'&size=150x150&format=Webp&isCircular=false').then(function(t){if(my!==schSeq)return;var m={};(t.data||[]).forEach(function(x){if(x.imageUrl)m[x.targetId]=x.imageUrl});schData.bimg=m;schDraw()}).catch(function(){});
+ }).catch(function(){});
+ J('/rbx/apis/search-api/omni-search?searchQuery='+encodeURIComponent(v)+'&pageToken=&sessionId='+Date.now()).then(function(r){
+  var g=[];(r.searchResults||[]).forEach(function(s){if(s.contentGroupType==='Game')(s.contents||[]).forEach(function(c){g.push({universeId:c.universeId,name:c.name,playerCount:c.playerCount,totalUpVotes:c.totalUpVotes,totalDownVotes:c.totalDownVotes})})});
+  schData.games=g.slice(0,24);schDraw();
+  return gthumbs(schData.games.map(function(x){return x.universeId})).then(function(m){if(my!==schSeq)return;schData.gimg=m;schDraw()});
+ }).catch(function(){});
+ catSearch({category:1,keyword:v},30).then(function(l){if(my!==schSeq)return;schData.items=l.slice(0,12);schDraw()}).catch(function(){});
+}
+function ucard(u,round){
+ var im=schData.pimg[u.id]||'',bi=schData.bimg[u.id]||'';
+ if(round)return '<div class="up" data-id="'+u.id+'"><span class="ph"><img src="'+e2(im)+'" alt=""><i class="pl">'+I('plus-r',18)+'</i></span><b>'+e2(u.display||u.name)+'</b><small>@'+e2(u.name)+'</small></div>';
+ return '<div class="up sq" data-id="'+u.id+'"><span class="ph"><img src="'+e2(bi||im)+'" alt=""><i class="pl">'+I('plusp-r',20)+'</i></span><b>'+e2(u.display||u.name)+'</b><small>@'+e2(u.name)+'</small></div>';
+}
+function schDraw(){
+ if(!schData)return;var d=schData,h='';
+ var P=d.people,G=d.games,tab=schTab;
+ if(tab==='top'){
+  if(P.length)h+='<h3 class="sh2">People <i>'+I('chevr-r',18)+'</i></h3><div class="up-row">'+P.slice(0,12).map(function(u){return ucard(u,1)}).join('')+'</div>';
+  if(G.length)h+='<h3 class="sh2">Games <i>'+I('chevr-r',18)+'</i></h3><div class="sg-grid">'+G.slice(0,12).map(function(g){return gc(g,d.gimg[g.universeId])}).join('')+'</div>';
+  if(d.items.length)h+='<h3 class="sh2">Style your avatar</h3><div class="avg row" style="margin:12px 0 0">'+d.items.map(itCard).join('')+'</div>';
+ }else if(tab==='games'){h+='<div class="sg-grid">'+G.map(function(g){return gc(g,d.gimg[g.universeId])}).join('')+'</div>'}
+ else h+='<div class="up-grid">'+P.map(function(u){return ucard(u,0)}).join('')+'</div>';
+ if(!h)h='<p class="sch-empty">'+(tab==='people'||tab==='top'?'Searching…':'')+'</p>';
+ var sc=$('schBody').scrollTop;$('schBody').innerHTML='<div class="sh-box">'+h+'</div>';$('schBody').scrollTop=sc;
+}
+/* profile panel */
+var pfUser=null;
+function closePf(){$('pf').classList.remove('on');$('pfScrim').classList.remove('on');setTimeout(function(){$('pf').hidden=true;$('pfScrim').hidden=true},260)}
+$('pfScrim').addEventListener('mousedown',closePf);
+$('schBody').addEventListener('click',function(e){
+ var u=e.target.closest('.up');if(u){var us=schData&&schData.people.filter(function(x){return String(x.id)===u.dataset.id})[0];if(us){if(e.target.closest('.pl')){addFriendQuick(us,e.target.closest('.pl'));return}openPf(us)}return}
+ var g=e.target.closest('.sg');if(g&&g.dataset.u){var im=g.querySelector('img'),nm=g.querySelector('b').textContent,r=recentGet().filter(function(x){return x.u!==g.dataset.u});r.unshift({u:g.dataset.u,name:nm,img:im&&im.src});try{localStorage.setItem('pc.recent',JSON.stringify(r.slice(0,10)))}catch(x){}}
+});
+function addFriendQuick(u,el){el.classList.add('done');el.innerHTML=I('ccheck-r',20)}
+function openPf(u){
+ pfUser=u;var bi=(schData.bimg[u.id]||''),hd=schData.pimg[u.id]||'';
+ $('pf').innerHTML='<button class="pf-x" id="pfX" aria-label="Close">'+I('x-r',24)+'</button><div class="pf-av"><img id="pfFig" src="" alt=""></div><div class="pf-id"><img id="pfHead" src="'+e2(hd)+'" alt=""><div><b>'+e2(u.display||u.name)+'</b><small>@'+e2(u.name)+'</small></div></div><div class="pf-st"><span id="pfFr">… Friends</span><span id="pfFo">… Followers</span><span id="pfFw">… Following</span></div><div class="pf-bt"><button class="pb1" id="pfAdd">Add friend</button><button class="pb2">Add trusted friend</button><button class="pb3" id="pfMore" aria-label="More">'+I('three-dots-h',22)+'</button></div><div class="pf-mn" id="pfMenu" hidden><button data-a="send">Send Robux</button><button data-a="follow">Follow</button><button>About this profile</button><button>Block</button><button>Report</button></div><h3 class="pf-h">Currently Wearing</h3><div class="pf-wr" id="pfWr"></div><button class="pf-full">View full profile</button>';
+ $('pf').hidden=false;$('pfScrim').hidden=false;void $('pf').offsetWidth;$('pf').classList.add('on');$('pfScrim').classList.add('on');
+ $('pfX').addEventListener('click',closePf);
+ $('pfMore').addEventListener('click',function(e){e.stopPropagation();$('pfMenu').hidden=!$('pfMenu').hidden});
+ $('pf').addEventListener('click',function(e){if(!e.target.closest('#pfMore'))$('pfMenu').hidden=true});
+ $('pfMenu').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.a==='send'){pick={id:u.id,name:u.name,display:u.display,img:hd};amt='';sr.hidden=false;viewAmt();bigHead(pick,function(x){var i=document.querySelector('.pf-id img');})}});
+ $('pfAdd').addEventListener('click',function(){this.textContent='Pending';this.classList.add('pend')});
+ J('/rbx/thumbs/v1/users/avatar?userIds='+u.id+'&size=420x420&format=Png&isCircular=false').then(function(t){var x=t.data&&t.data[0]&&t.data[0].imageUrl;if(x)$('pfFig').src=x}).catch(function(){});
+ ['friends','followers','followings'].forEach(function(k,i){J('/rbx/friends/v1/users/'+u.id+'/'+k+'/count').then(function(r){var n=r.count!=null?r.count:0,el=$(['pfFr','pfFo','pfFw'][i]);if(el)el.textContent=fmt(n)+' '+['Friends','Followers','Following'][i]}).catch(function(){var el=$(['pfFr','pfFo','pfFw'][i]);if(el)el.textContent='0 '+['Friends','Followers','Following'][i]})});
+ J('/rbx/avatar/v1/users/'+u.id+'/currently-wearing').then(function(r){
+  var ids=(r.assetIds||[]).slice(0,8);if(!ids.length)return;
+  return J('/rbx/thumbs/v1/assets?assetIds='+ids.join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t){
+   var m={};(t.data||[]).forEach(function(x){m[x.targetId]=x.imageUrl});
+   return Promise.all(ids.map(function(id){return J('/rbx/catalog/v1/catalog/items/'+id+'/details?itemType=Asset').catch(function(){return null})})).then(function(ds){
+    $('pfWr').innerHTML=ids.map(function(id,i){var d=ds[i]||{},p=d.price==null?'':(d.price===0?'Free':'<i>'+I('robux-r',15)+'</i>'+fmt(d.price));return '<div class="pw"><span class="ph"><img src="'+e2(m[id]||'')+'" alt=""></span><b>'+e2(d.name||'Item')+'</b><small>'+p+'</small></div>'}).join('')})})}).catch(function(){});
+}
 /* ---------- window controls (Electron) ---------- */
 var pc=window.pc||null;
 function wc(id,fn){$(id).addEventListener('click',function(){if(pc&&pc[fn])pc[fn]()})}
