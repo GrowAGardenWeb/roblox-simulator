@@ -34,7 +34,7 @@ function boot(){
  return P;
 }
 function show(box,uid,opt){
- opt=opt||{};var log=opt.log||function(){};
+ opt=opt||{};var log=opt.log||function(){},LF=opt.lift!=null?opt.lift:LIFT;
  return boot().then(function(E){
   var R=E.R;log('Loading avatar…');
   return R.API.Avatar.GetUserAvatarModel(Number(uid)).then(function(model){
@@ -58,8 +58,8 @@ function show(box,uid,opt){
    var D=R.RBXRenderer.controls;
    function cam(){
     rend.doCameraUpdateOnLoad=false;rend.doCameraUpdate=false;D=R.RBXRenderer.controls;if(!D)return;
-    D.target.set(0,3+LIFT,0);var d=7.6346,t=5*Math.PI/180;
-    D.object.position.set(0,3+LIFT+d*Math.sin(t),-d*Math.cos(t));D.object.lookAt(D.target);
+    D.target.set(0,3+LF,0);var d=7.6346,t=5*Math.PI/180;
+    D.object.position.set(0,3+LF+d*Math.sin(t),-d*Math.cos(t));D.object.lookAt(D.target);
     D.enableZoom=false;D.enablePan=false;D.minPolarAngle=D.maxPolarAngle=Math.PI/2-t;D.enableDamping=true;D.dampingFactor=.15;D.rotateSpeed=1.6;D.update();
     /* keep the feet centred on the turntable like the mobile app */
     try{var f=[];sc.scene.updateMatrixWorld(true);sc.scene.traverse(function(o){if(/^(Left|Right)Foot_/.test(o.name))f.push(o.matrixWorld.elements)});
@@ -71,7 +71,7 @@ function show(box,uid,opt){
     /* the engine keeps adding meshes for a while: re-frame until the scene stops changing (same as the mobile app) */
     var last=-1,calm=0,iv=setInterval(function(){var n=(sc.scene&&sc.scene.children&&sc.scene.children.length)||0;if(n===last){if(n>8&&++calm>=3){cam();clearInterval(iv)}}else{last=n;calm=0;cam()}},500);setTimeout(function(){clearInterval(iv)},90000);
     var ro=new ResizeObserver(function(){if(box.clientWidth>0){R.RBXRenderer.setRendererSize(box.clientWidth,box.clientHeight);cam()}});ro.observe(box);
-    if(cur&&cur.ro)cur.ro.disconnect();cur={ro:ro,rend:rend,base:model,assets:assets0,R:R};
+    if(cur&&cur.ro)cur.ro.disconnect();cur={ro:ro,rend:rend,base:model,assets:assets0,R:R,owner:opt.owner||'me'};
     return rend;
    });
   });
@@ -89,5 +89,5 @@ function wear(id,type,name){
  rebuild();return true;
 }
 function unwear(id){if(!cur)return false;id=Number(id);cur.assets=cur.assets.filter(function(x){return Number(x.id)!==id});rebuild();return true}
-window.Av3D={show:show,boot:boot,wear:wear,unwear:unwear,has:has,ready:function(){return !!cur&&!!cur.assets}};
+window.Av3D={show:show,boot:boot,wear:wear,unwear:unwear,has:has,ready:function(){return !!cur&&!!cur.assets},owner:function(){return cur&&cur.owner}};
 })();

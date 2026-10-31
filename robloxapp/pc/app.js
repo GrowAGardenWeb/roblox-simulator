@@ -410,6 +410,7 @@ function avUser(){
  if(S.user.id)go(S.user.id);else findUser(S.user.name).then(function(u){S.user.id=u.id;save();go(u.id)}).catch(function(){});
 }
 function showAv(on){
+ if(on&&avInit&&window.Av3D&&window.Av3D.owner&&window.Av3D.owner()&&window.Av3D.owner()!=='me'){window.__av3d=0;avUser()}
  $('s-av').hidden=!on;document.querySelector('.main').hidden=on;
  if(on){$('avRb').textContent=kc(S.robux);$('avHead').src=S.user.img||'img/av_me.webp';
   if(!avInit){avInit=true;avStatic();loadAv();avUser();}}
@@ -624,7 +625,7 @@ function schRun(v){
 }
 function ucard(u,round){
  var im=schData.pimg[u.id]||'',bi=schData.bimg[u.id]||'';
- if(round)return '<div class="up" data-id="'+u.id+'"><span class="ph"><img src="'+e2(im)+'" alt=""><i class="pl">'+I('plus-r',18)+'</i></span><b>'+e2(u.display||u.name)+'</b><small>@'+e2(u.name)+'</small></div>';
+ if(round)return '<div class="up" data-id="'+u.id+'"><span class="ph"><img src="'+e2(im)+'" alt=""><i class="pl"></i></span><b>'+e2(u.display||u.name)+'</b><small>@'+e2(u.name)+'</small></div>';
  return '<div class="up sq" data-id="'+u.id+'"><span class="ph"><img src="'+e2(bi||im)+'" alt=""><i class="pl">'+I('plusp-r',20)+'</i></span><b>'+e2(u.display||u.name)+'</b><small>@'+e2(u.name)+'</small></div>';
 }
 function schDraw(){
@@ -647,17 +648,17 @@ $('schBody').addEventListener('click',function(e){
  var u=e.target.closest('.up');if(u){var us=schData&&schData.people.filter(function(x){return String(x.id)===u.dataset.id})[0];if(us){if(e.target.closest('.pl')){addFriendQuick(us,e.target.closest('.pl'));return}openPf(us)}return}
  var g=e.target.closest('.sg');if(g&&g.dataset.u){var im=g.querySelector('img'),nm=g.querySelector('b').textContent,r=recentGet().filter(function(x){return x.u!==g.dataset.u});r.unshift({u:g.dataset.u,name:nm,img:im&&im.src});try{localStorage.setItem('pc.recent',JSON.stringify(r.slice(0,10)))}catch(x){}}
 });
-function addFriendQuick(u,el){el.classList.add('done');el.innerHTML=I('ccheck-r',20)}
+function addFriendQuick(u,el){el.classList.add('done')}
 function openPf(u){
  pfUser=u;var bi=(schData.bimg[u.id]||''),hd=schData.pimg[u.id]||'';
- $('pf').innerHTML='<button class="pf-x" id="pfX" aria-label="Close">'+I('x-r',24)+'</button><div class="pf-av"><img id="pfFig" src="" alt=""></div><div class="pf-id"><img id="pfHead" src="'+e2(hd)+'" alt=""><div><b>'+e2(u.display||u.name)+'</b><small>@'+e2(u.name)+'</small></div></div><div class="pf-st"><span id="pfFr">… Friends</span><span id="pfFo">… Followers</span><span id="pfFw">… Following</span></div><div class="pf-bt"><button class="pb1" id="pfAdd">Add friend</button><button class="pb2">Add trusted friend</button><button class="pb3" id="pfMore" aria-label="More">'+I('three-dots-h',22)+'</button></div><div class="pf-mn" id="pfMenu" hidden><button data-a="send">Send Robux</button><button data-a="follow">Follow</button><button>About this profile</button><button>Block</button><button>Report</button></div><h3 class="pf-h">Currently Wearing</h3><div class="pf-wr" id="pfWr"></div><button class="pf-full">View full profile</button>';
+ $('pf').innerHTML='<button class="pf-x" id="pfX" aria-label="Close">'+I('x-r',24)+'</button><div class="pf-av"><div class="pf-3d" id="pf3d"></div></div><div class="pf-id"><img id="pfHead" src="'+e2(hd)+'" alt=""><div><b>'+e2(u.display||u.name)+'</b><small>@'+e2(u.name)+'</small></div></div><div class="pf-st"><span id="pfFr">… Friends</span><span id="pfFo">… Followers</span><span id="pfFw">… Following</span></div><div class="pf-bt"><button class="pb1" id="pfAdd">Add friend</button><button class="pb2">Add trusted friend</button><button class="pb3" id="pfMore" aria-label="More">'+I('three-dots-h',22)+'</button></div><div class="pf-mn" id="pfMenu" hidden><button data-a="send">Send Robux</button><button data-a="follow">Follow</button><button>About this profile</button><button>Block</button><button>Report</button></div><h3 class="pf-h">Currently Wearing</h3><div class="pf-wr" id="pfWr"></div><button class="pf-full">View full profile</button>';
  $('pf').hidden=false;$('pfScrim').hidden=false;void $('pf').offsetWidth;$('pf').classList.add('on');$('pfScrim').classList.add('on');
  $('pfX').addEventListener('click',closePf);
  $('pfMore').addEventListener('click',function(e){e.stopPropagation();$('pfMenu').hidden=!$('pfMenu').hidden});
  $('pf').addEventListener('click',function(e){if(!e.target.closest('#pfMore'))$('pfMenu').hidden=true});
  $('pfMenu').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.a==='send'){pick={id:u.id,name:u.name,display:u.display,img:hd};amt='';sr.hidden=false;viewAmt();bigHead(pick,function(x){var i=document.querySelector('.pf-id img');})}});
  $('pfAdd').addEventListener('click',function(){this.textContent='Pending';this.classList.add('pend')});
- J('/rbx/thumbs/v1/users/avatar?userIds='+u.id+'&size=420x420&format=Png&isCircular=false').then(function(t){var x=t.data&&t.data[0]&&t.data[0].imageUrl;if(x)$('pfFig').src=x}).catch(function(){});
+ if(/^https?:$/.test(location.protocol)&&window.Av3D)setTimeout(function(){window.Av3D.show($('pf3d'),u.id,{owner:'pf',lift:.25,log:function(){}}).catch(function(e){console.warn('profile 3D failed',e)})},280);
  ['friends','followers','followings'].forEach(function(k,i){J('/rbx/friends/v1/users/'+u.id+'/'+k+'/count').then(function(r){var n=r.count!=null?r.count:0,el=$(['pfFr','pfFo','pfFw'][i]);if(el)el.textContent=fmt(n)+' '+['Friends','Followers','Following'][i]}).catch(function(){var el=$(['pfFr','pfFo','pfFw'][i]);if(el)el.textContent='0 '+['Friends','Followers','Following'][i]})});
  J('/rbx/avatar/v1/users/'+u.id+'/currently-wearing').then(function(r){
   var ids=(r.assetIds||[]).slice(0,8);if(!ids.length)return;
