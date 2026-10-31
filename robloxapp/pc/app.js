@@ -404,7 +404,7 @@ function avUser(){
    $('avBg').hidden=false;av3dMsg('Checking the avatar server…');
    return window.Av3D.status().then(function(st){
     if(!st.authed){av3dMsg('Avatar server says not ready: '+JSON.stringify(st.raw||'no answer').slice(0,120),1)}
-    return window.Av3D.show($('av3d'),ids,{zoom:1.25,log:av3dMsg}).catch(function(e){
+    return window.Av3D.show($('av3d'),ids,{zoom:1.25,log:av3dMsg,uid:id,get:J}).catch(function(e){
      /* same fallback as the mobile app: exact 2D render of the same items */
      av3dMsg('3D failed ('+(e&&e.message)+'), trying the exact render…',1);
      return window.Av3D.render2d(ids).then(function(u){if(!u)throw e;$('avFig').src=u;$('avFig').hidden=false;$('avBg').hidden=false;$('avFb').hidden=true;window.__av3d=2;av3dMsg('3D avatar: '+(e&&e.message)+' (showing the exact render)',1);throw {done:1}});

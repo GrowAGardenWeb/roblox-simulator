@@ -579,3 +579,11 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .isk .pr{height:12px;width:30%;margin-top:6px;border-radius:6px;background:#f0f1f3}
 .isk:hover .ph{border-color:transparent}
 .g .hv .pb,.g .hv .pb svg{color:#fff;fill:#fff}
+
+/* buy bar overlays the avatar (it must not shrink it) and slides in */
+.av-r.buying>img.av-fb,.av-r.buying .av-bg,.av-r.buying .av-3d{bottom:0;height:100%}
+.av-buy{box-shadow:0 -1px 0 #0000000d;animation:buyin .22s cubic-bezier(.2,.7,.3,1)}
+@keyframes buyin{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}
+.buy-box{animation:srbox .22s cubic-bezier(.2,.7,.3,1)}
+/* amount / confirm: everything rises together */
+.am>:nth-child(n),.cf>:nth-child(n){animation-delay:0s!important}
