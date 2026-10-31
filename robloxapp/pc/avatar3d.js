@@ -2,7 +2,7 @@
    (robloxapp/assets/dist-*.js, FLAGS, FETCH_FUNC through the Vercel proxy, OutfitRenderer + idle animation),
    so accessories, animations and effects are drawn by the same engine. */
 (function(){
-var VB='https://create-app-iota.vercel.app',LIB='/robloxapp/assets/dist-CjbySSkN-D81REfjO.js',P=null,cur=null;
+var LIFT=.95,VB='https://create-app-iota.vercel.app',LIB='/robloxapp/assets/dist-CjbySSkN-D81REfjO.js',P=null,cur=null;
 function boot(){
  if(P)return P;
  P=(async function(){
@@ -40,6 +40,7 @@ function show(box,uid,opt){
   return R.API.Avatar.GetUserAvatarModel(Number(uid)).then(function(model){
    if(!model||model instanceof Response)throw Error('avatar model '+(model&&model.status));
    var rend=new R.OutfitRenderer(E.auth,model);
+   var assets0=model.clone().outfit.toJson().assets.slice();
    var el=R.RBXRenderer.getRendererElement();
    el.style.cssText='width:100%;height:100%;display:block;touch-action:none';
    if(el.parentNode!==box)box.appendChild(el);
@@ -57,8 +58,8 @@ function show(box,uid,opt){
    var D=R.RBXRenderer.controls;
    function cam(){
     rend.doCameraUpdateOnLoad=false;rend.doCameraUpdate=false;D=R.RBXRenderer.controls;if(!D)return;
-    D.target.set(0,3,0);var d=7.6346,t=5*Math.PI/180;
-    D.object.position.set(0,3+d*Math.sin(t),-d*Math.cos(t));D.object.lookAt(D.target);
+    D.target.set(0,3+LIFT,0);var d=7.6346,t=5*Math.PI/180;
+    D.object.position.set(0,3+LIFT+d*Math.sin(t),-d*Math.cos(t));D.object.lookAt(D.target);
     D.enableZoom=false;D.enablePan=false;D.minPolarAngle=D.maxPolarAngle=Math.PI/2-t;D.enableDamping=true;D.dampingFactor=.15;D.rotateSpeed=1.6;D.update();
     /* keep the feet centred on the turntable like the mobile app */
     try{var f=[];sc.scene.updateMatrixWorld(true);sc.scene.traverse(function(o){if(/^(Left|Right)Foot_/.test(o.name))f.push(o.matrixWorld.elements)});
@@ -70,11 +71,23 @@ function show(box,uid,opt){
     /* the engine keeps adding meshes for a while: re-frame until the scene stops changing (same as the mobile app) */
     var last=-1,calm=0,iv=setInterval(function(){var n=(sc.scene&&sc.scene.children&&sc.scene.children.length)||0;if(n===last){if(n>8&&++calm>=3){cam();clearInterval(iv)}}else{last=n;calm=0;cam()}},500);setTimeout(function(){clearInterval(iv)},90000);
     var ro=new ResizeObserver(function(){if(box.clientWidth>0){R.RBXRenderer.setRendererSize(box.clientWidth,box.clientHeight);cam()}});ro.observe(box);
-    if(cur&&cur.ro)cur.ro.disconnect();cur={ro:ro,rend:rend};
+    if(cur&&cur.ro)cur.ro.disconnect();cur={ro:ro,rend:rend,base:model,assets:assets0,R:R};
     return rend;
    });
   });
  });
 }
-window.Av3D={show:show,boot:boot};
+var ACC={8:1,41:1,42:1,43:1,44:1,45:1,46:1,47:1,19:1};
+function rebuild(){
+ if(!cur)return;var r=cur.base.clone(),j=r.outfit.toJson();j.assets=cur.assets.slice();r.outfit.fromJson(j);cur.rend.setOutfitModel(r);
+}
+function has(id){return !!cur&&!!cur.assets&&cur.assets.some(function(x){return Number(x.id)===Number(id)})}
+function wear(id,type,name){
+ if(!cur)return false;id=Number(id);type=Number(type)||0;
+ if(!ACC[type]&&type)cur.assets=cur.assets.filter(function(x){return !(x.assetType&&x.assetType.id===type)});
+ if(!has(id))cur.assets.push({id:id,name:name||'',assetType:{id:type,name:''}});
+ rebuild();return true;
+}
+function unwear(id){if(!cur)return false;id=Number(id);cur.assets=cur.assets.filter(function(x){return Number(x.id)!==id});rebuild();return true}
+window.Av3D={show:show,boot:boot,wear:wear,unwear:unwear,has:has,ready:function(){return !!cur&&!!cur.assets}};
 })();

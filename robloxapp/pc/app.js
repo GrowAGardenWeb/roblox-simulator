@@ -5,7 +5,7 @@ function fmt(n){return Number(n).toLocaleString('en-US')}
 
 /* ---------- state (saved in this browser / app) ---------- */
 var KEY='pc.state.v2';
-function def(){return {user:{id:0,name:'munfuja',display:'munfuja',img:''},robux:1000,friends:[],req:'45',total:'',bell:'3',prem:true,ver:false,dark:false}}
+function def(){return {owned:{},ownedItems:[],user:{id:0,name:'munfuja',display:'munfuja',img:''},robux:1000,friends:[],req:'45',total:'',bell:'3',prem:true,ver:false,dark:false}}
 var S=def();
 try{var r0=JSON.parse(localStorage.getItem(KEY)||'null');if(r0)S=Object.assign(def(),r0)}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -335,7 +335,7 @@ function plusOn(){return S.prem!==false}
 function pbOf(p){p=Number(p)||0;return plusOn()&&p>0?Math.floor(p*.1):0}
 var TYPES={8:'Hat',41:'Hair',42:'Face Accessory',43:'Neck',44:'Shoulder',45:'Front',46:'Back',47:'Waist',64:'T-Shirt',65:'Shirt',66:'Pants',67:'Jacket',68:'Sweater',69:'Shorts',70:'Shoes',71:'Shoes',72:'Skirt',17:'Head',18:'Face',2:'T-Shirt',11:'Shirt',12:'Pants',61:'Emote',79:'Head',78:'Face',24:'Animation',48:'Animation',49:'Animation',50:'Animation',51:'Animation',52:'Animation',53:'Animation',54:'Animation',55:'Animation',56:'Animation',32:'Package',19:'Gear',92:'Background'};
 function itCard(x){
- return '<div class="it" data-t="'+e2(TYPES[x.assetType]||'Item')+'" data-p="'+(x.price==null?'':x.price)+'"><div class="ph">'+(x.img?'<img src="'+e2(x.img)+'" alt="">':'')+'<span class="dt">Details</span></div><b>'+e2(x.name)+'</b><div class="cr"><span>'+e2(x.creator||'Roblox')+'</span><i>'+I('ver-f',16)+'</i></div><div class="pr">'+(x.price==null?'':(x.price===0?'Free':'<i>'+I('robux-r',16)+'</i>'+fmt(x.price-pbOf(x.price))))+'</div></div>'}
+ return '<div class="it'+(S.owned&&x.id&&S.owned[x.id]?' own':'')+'" data-id="'+(x.id||'')+'" data-ty="'+(x.assetType||'')+'" data-t="'+e2(TYPES[x.assetType]||'Item')+'" data-p="'+(x.price==null?'':x.price)+'"><div class="ph">'+(x.img?'<img src="'+e2(x.img)+'" alt="">':'')+'<span class="dt">Details</span></div><b>'+e2(x.name)+'</b><div class="cr"><span>'+e2(x.creator||'Roblox')+'</span><i>'+I('ver-f',16)+'</i></div><div class="pr">'+(x.price==null?'':(x.price===0?'Free':'<i>'+I('robux-r',16)+'</i>'+fmt(x.price-pbOf(x.price))))+'</div></div>'}
 function avSec(title,items,extra){return '<h3 class="avh"'+(extra&&extra.mt?' style="margin-top:22px"':'')+'>'+e2(title)+(extra&&extra.all?'<a>See All</a>':'')+'</h3><div class="avg">'+items.map(itCard).join('')+'</div>'}
 function chipsHtml(q){return q.chips?'<div class="mchips" id="mchips">'+q.chips.map(function(c){return '<button data-c="'+c[1]+'" class="'+((avChip==null?q.chips[0][1]:avChip)===c[1]?'on':'')+'">'+e2(c[0])+'</button>'}).join('')+'</div>':''}
 function avStatic(){
@@ -351,7 +351,7 @@ function catSearch(q,limit,cursor){
   var d=(r.data||[]).slice(0,limit),a=d.filter(function(e){return e.itemType==='Asset'}).map(function(e){return e.id}),b=d.filter(function(e){return e.itemType==='Bundle'}).map(function(e){return e.id}),im={},jobs=[];
   if(a.length)jobs.push(J('/rbx/thumbs/v1/assets?assetIds='+a.join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t){(t.data||[]).forEach(function(x){if(x.imageUrl)im['Asset'+x.targetId]=x.imageUrl})}).catch(function(){}));
   if(b.length)jobs.push(J('/rbx/thumbs/v1/bundles/thumbnails?bundleIds='+b.join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t){(t.data||[]).forEach(function(x){if(x.imageUrl)im['Bundle'+x.targetId]=x.imageUrl})}).catch(function(){}));
-  return Promise.all(jobs).then(function(){var o=d.map(function(e){return {name:e.name,creator:e.creatorName,assetType:Number(e.assetType),price:(e.isOffSale||e.priceStatus==='Off Sale')?null:(e.lowestPrice!=null?e.lowestPrice:e.price),img:im[e.itemType+e.id]}});o.next=r.nextPageCursor||'';return o})});
+  return Promise.all(jobs).then(function(){var o=d.map(function(e){return {id:e.id,itype:e.itemType,name:e.name,creator:e.creatorName,assetType:Number(e.assetType),price:(e.isOffSale||e.priceStatus==='Off Sale')?null:(e.lowestPrice!=null?e.lowestPrice:e.price),img:im[e.itemType+e.id]}});o.next=r.nextPageCursor||'';return o})});
 }
 function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
 function rnd(q,n){return catSearch({category:q.category,subcategory:q.subcategory,keyword:q.keyword,sort:Math.floor(Math.random()*4)},30).then(function(l){return shuf(l).slice(0,n)})}
@@ -400,7 +400,7 @@ function av3dMsg(t,err){if(!err){var e0=$('av3dErr');if(e0)e0.remove();return}va
 function avUser(){
  var go=function(id){
   if(!/^https?:$/.test(location.protocol))return;
-  window.Av3D.show($('av3d'),id,{log:av3dMsg}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true;av3dMsg('')}).catch(function(e){console.warn('3D avatar failed',e);av3dMsg('3D avatar: '+(e&&e.message||'failed'),1)});
+  window.Av3D.show($('av3d'),id,{log:av3dMsg}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true;av3dMsg('');cuSync()}).catch(function(e){console.warn('3D avatar failed',e);av3dMsg('3D avatar: '+(e&&e.message||'failed'),1)});
  };
  if(S.user.id)go(S.user.id);else findUser(S.user.name).then(function(u){S.user.id=u.id;save();go(u.id)}).catch(function(){});
 }
@@ -417,8 +417,9 @@ $('avRows').addEventListener('click',function(e){var b=e.target.closest('#mchips
  function sels(){return [].slice.call(document.querySelectorAll('#avRows .it.sel'))}
  function upd(){
   var l=sels();bar.hidden=!l.length;$('avR').classList.toggle('buying',!!l.length);
-  if(l.length===1){var pr=l[0].dataset.p;$('avBuy').dataset.m='one';$('avBuy').innerHTML=pr===''?'Off sale':(pr==='0'?'Free':I('robux-r',20)+'<span>'+fmt(Number(pr)-pbOf(pr))+'</span>');$('avClr').innerHTML=I('three-dots-h',26)}
-  else if(l.length){$('avBuy').dataset.m='many';$('avBuy').textContent='View Checkout ('+l.length+')';$('avClr').innerHTML=I('trash-r',24)}
+  if(l.length===1&&l[0].classList.contains('own')){$('avBuy').dataset.m='own';$('avBuy').className='bb gray';$('avBuy').textContent='Manage in Customize';$('avClr').innerHTML=I('three-dots-h',26)}
+  else if(l.length===1){$('avBuy').className='bb';var pr=l[0].dataset.p;$('avBuy').dataset.m='one';$('avBuy').innerHTML=pr===''?'Off sale':(pr==='0'?'Free':I('robux-r',20)+'<span>'+fmt(Number(pr)-pbOf(pr))+'</span>');$('avClr').innerHTML=I('three-dots-h',26)}
+  else if(l.length){$('avBuy').className='bb';$('avBuy').dataset.m='many';$('avBuy').textContent='View Checkout ('+l.length+')';$('avClr').innerHTML=I('trash-r',24)}
   if(!l.length)closeCo();
  }
  window.avSelUpd=upd;
@@ -436,7 +437,7 @@ $('avRows').addEventListener('click',function(e){var b=e.target.closest('#mchips
   co.hidden=false;
   $('coB').addEventListener('click',closeCo);
   co.querySelectorAll('.co-x').forEach(function(b){b.addEventListener('click',function(){sels()[+b.dataset.i].classList.remove('sel');upd();if(sels().length)drawCo()})});
-  $('coBuy').addEventListener('click',function(){if(S.robux<tot){$('coBuy').textContent='Not enough Robux';return}S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);purchased();sels().forEach(function(x){x.classList.remove('sel')});upd()});
+  $('coBuy').addEventListener('click',function(){if(S.robux<tot){$('coBuy').textContent='Not enough Robux';return}var wi=co.querySelector('.by-c input');var wr=!wi||wi.checked;var bt=$('coBuy');bt.disabled=true;bt.classList.add('wait');var ls=sels();setTimeout(function(){S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);purchased();ls.forEach(function(x){own(x,x.querySelector('b').textContent,(x.querySelector('.ph img')||{}).src,wr)});upd();closeCo()},1000)});
  }
  window.drawCo=drawCo;
 })();
@@ -475,6 +476,12 @@ function cuTail(l){
  }).catch(function(){});
 }
 var cuTailFor='';
+var INVT={Hat:8,HairAccessory:41,FaceAccessory:42,NeckAccessory:43,ShoulderAccessory:44,FrontAccessory:45,BackAccessory:46,WaistAccessory:47,TShirt:2,Shirt:11,Pants:12,TShirtAccessory:64,ShirtAccessory:65,PantsAccessory:66,JacketAccessory:67,SweaterAccessory:68,ShortsAccessory:69,LeftShoeAccessory:70,RightShoeAccessory:71,DressSkirtAccessory:72,Gear:19};
+function cuSync(){[].forEach.call(document.querySelectorAll('#cuGrid .it'),function(e){e.classList.toggle('sel',!!(window.Av3D&&window.Av3D.has(e.dataset.id)))})}
+function cuOwned(){
+ var h=S.ownedItems.map(function(x){return '<div class="it" data-id="'+e2(x.id)+'" data-ty="'+x.ty+'" data-p="" data-n="'+e2(x.name)+'"><div class="ph">'+(x.img?'<img src="'+e2(x.img)+'" alt="">':'')+'<span class="dt">Details</span></div></div>'}).join('');
+ if(h)$('cuGrid').insertAdjacentHTML('afterbegin',h);cuSync();
+}
 function loadCust(){
  var my=++cuSeq;drawBsub();cuSkel(0);cuTailFor=cuCat;
  var g=$('cuGrid');if(!$('cuTail')){var t=document.createElement('div');t.id='cuTail';g.parentNode.appendChild(t)}$('cuTail').innerHTML='';
@@ -487,30 +494,44 @@ function loadCust(){
   if(!d.length){cuTail();return}
   return J('/rbx/thumbs/v1/assets?assetIds='+d.map(function(x){return x.assetId}).join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t2){
    if(my!==cuSeq)return;var im={};(t2.data||[]).forEach(function(x){if(x.imageUrl)im[x.targetId]=x.imageUrl});
-   $('cuGrid').innerHTML=d.map(function(x){return '<div class="it" data-p="" data-n="'+e2(x.assetName||'')+'"><div class="ph">'+(im[x.assetId]?'<img src="'+e2(im[x.assetId])+'" alt="">':'')+'<span class="dt">Details</span></div><b class="nm1">'+e2(x.assetName||'')+'</b></div>'}).join('');cuTail()})}).catch(function(){cuTail()});
+   $('cuGrid').innerHTML=d.map(function(x){return '<div class="it" data-id="'+x.assetId+'" data-ty="'+(INVT[x.assetType]||'')+'" data-p="" data-n="'+e2(x.assetName||'')+'"><div class="ph">'+(im[x.assetId]?'<img src="'+e2(im[x.assetId])+'" alt="">':'')+'<span class="dt">Details</span></div><b class="nm1">'+e2(x.assetName||'')+'</b></div>'}).join('');cuOwned();cuTail()})}).catch(function(){cuOwned();cuTail()});
 }
+$('cuGrid').addEventListener('click',function(e){
+ var it=e.target.closest('.it');if(!it||!it.dataset.id||!window.Av3D||!window.Av3D.ready())return;
+ var id=it.dataset.id;if(window.Av3D.has(id))window.Av3D.unwear(id);else window.Av3D.wear(id,it.dataset.ty,it.dataset.n);cuSync();
+});
 $('cuCats').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;[].forEach.call(document.querySelectorAll('#cuCats button'),function(x){x.classList.toggle('on',x===b)});cuCat=b.dataset.k;cuSub=cuDef();loadCust()});
 $('bsr').addEventListener('click',function(e){var b=e.target.closest('.bsc');if(!b)return;cuSub=b.dataset.n;drawBsub();loadCust()});
 /* Buy item dialog */
+function own(it,name,img,wear){
+ if(!it||!it.dataset.id)return;var id=it.dataset.id,ty=Number(it.dataset.ty)||0;
+ S.owned[id]=1;S.ownedItems=S.ownedItems.filter(function(x){return x.id!==id});S.ownedItems.unshift({id:id,ty:ty,name:name,img:img});save();
+ it.classList.add('own');it.classList.remove('sel');if(window.avSelUpd)window.avSelUpd();
+ if(wear&&window.Av3D&&window.Av3D.ready())window.Av3D.wear(id,ty,name);
+}
 function purchased(){
  var t=document.createElement('div');t.className='ptoast';t.innerHTML='<i class="bilogo"></i><b>Purchased!</b>';$('s-av').appendChild(t);
  var s=document.querySelector('.av-s');if(s)s.classList.add('ld');
  setTimeout(function(){if(s)s.classList.remove('ld')},1400);
  setTimeout(function(){t.classList.add('out')},2600);setTimeout(function(){t.remove()},3000);
 }
-function openBuy(name,price,img){
+function openBuy(name,price,img,it){
  price=Number(price)||0;var pb=pbOf(price),plus=pb>0,tot=price-pb,open=false;
  function draw(){
   var sv=plus?'<div class="sv'+(open?' op':'')+'"><button class="svh" id="svT"><i>'+I('rplus-r',22)+'</i><span>Saving <i class="ri">'+I('robux-r',14)+'</i>'+pb+' with Plus</span><i class="chv">'+I(open?'chevu-r':'chevd-r',22)+'</i></button>'+(open?'<div class="svb"><div><span>Subtotal</span><b><i class="ri">'+I('robux-r',15)+'</i>'+fmt(price)+'</b></div><div><span>Plus benefit (10% off on eligible items)</span><b>- <i class="ri">'+I('robux-r',15)+'</i>'+pb+'</b></div><hr><div><span>Total</span><b><i class="ri">'+I('robux-r',15)+'</i>'+fmt(tot)+'</b></div></div>':'')+'</div>':'';
   $('buyBox').innerHTML='<div class="by-h"><b>Buy item</b><button class="by-x" id="byX" aria-label="Close">'+I('x-r',28)+'</button></div><div class="by-i"><span class="by-p"><img src="'+e2(img||'')+'" alt=""></span><div><b>'+e2(name||'Item')+'</b><small>Permanent</small><div class="by-pr">'+'<i>'+I('robux-r',20)+'</i><b>'+fmt(tot)+'</b>'+''+(plus&&pb?'<s><i>'+I('robux-r',14)+'</i>'+fmt(price)+'</s>':'')+'</div></div></div>'+sv+'<label class="by-c"><input type="checkbox" checked><i></i>Wear item after purchase</label><button class="by-b" id="byB">Buy</button>';
   $('byX').addEventListener('click',function(){$('buy').hidden=true});
   var t=$('svT');if(t)t.addEventListener('click',function(){open=!open;draw()});
-  $('byB').addEventListener('click',function(){if(S.robux>=tot){S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);$('buy').hidden=true;purchased()}else{$('byB').textContent='Not enough Robux'}});
+  $('byB').addEventListener('click',function(){
+   if(S.robux<tot){$('byB').textContent='Not enough Robux';return}
+   var wearIt=$('buyBox').querySelector('.by-c input').checked,b=$('byB');b.disabled=true;b.classList.add('wait');
+   setTimeout(function(){S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);$('buy').hidden=true;purchased();own(it,name,img,wearIt)},1000);
+  });
  }
  draw();$('buy').hidden=false;
 }
 $('buy').addEventListener('mousedown',function(e){if(e.target===$('buy'))$('buy').hidden=true});
-$('avBuy').addEventListener('click',function(){var l=document.querySelectorAll('#avRows .it.sel');if(l.length>1){window.drawCo()}else if(l.length===1){var it=l[0],im=it.querySelector('.ph img');openBuy(it.querySelector('b').textContent,it.dataset.p,im&&im.src)}});
+$('avBuy').addEventListener('click',function(){var l=document.querySelectorAll('#avRows .it.sel');if(l.length>1){window.drawCo()}else if(l.length===1&&$('avBuy').dataset.m==='own'){avMode('c')}else if(l.length===1){var it=l[0],im=it.querySelector('.ph img');openBuy(it.querySelector('b').textContent,it.dataset.p,im&&im.src,it)}});
 
 /* ---------- window controls (Electron) ---------- */
 var pc=window.pc||null;

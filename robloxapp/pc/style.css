@@ -653,3 +653,8 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .av-s.ld::after{border-color:#e3e5e8;border-top-color:#c3c6cc}
 
 #avFig,#avFb{display:none!important}
+
+.av-buy .bb.gray{background:#dfe1e5;color:#393b3d;font-weight:600}
+.av-buy .bb.gray:hover{background:#d5d8dd}
+.by-b.wait,.co .by-b.wait{background:#a2b2f8;cursor:default}
+.it.own .pr{visibility:visible}
