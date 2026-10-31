@@ -63,8 +63,11 @@ function withHead(u){return heads([u.id]).then(function(m){u.img=m[u.id]||'';ret
 /* ---------- home: header, friends ---------- */
 function loadFriendsOf(id){
  return J('/rbx/friends/v1/users/'+id+'/friends').then(function(r){
-  var list=(r.data||[]).map(function(f){return {id:f.id,name:f.name,display:f.displayName||f.name,img:''}});
+  var list=(r.data||[]).map(function(f){return {id:f.id,name:f.name||'',display:f.displayName||f.name||'',img:''}});
   S.friends=list;S.total='';save();renderFriends();
+  /* the friends list only gives ids: ask Roblox for the names, like the mobile app does */
+  var nch=[];for(var q=0;q<list.length;q+=100)nch.push(list.slice(q,q+100));
+  Promise.all(nch.map(function(c){return PPOST('https://users.roblox.com/v1/users',{userIds:c.map(function(f){return f.id}),excludeBannedUsers:true}).then(function(r2){var m={};(r2.data||[]).forEach(function(u){m[u.id]=u});c.forEach(function(f){var u=m[f.id];if(u){f.name=u.name;f.display=u.displayName||u.name}})}).catch(function(){return Promise.all(c.slice(0,24).map(function(f){return J('/rbx/users/v1/users/'+f.id).then(function(u){f.name=u.name;f.display=u.displayName||u.name}).catch(function(){})}))})})).then(function(){save();renderFriends();var l2=$('apL');if(l2)l2.innerHTML=apFriendsHtml()});
   var chunks=[];for(var i=0;i<list.length;i+=100)chunks.push(list.slice(i,i+100));
   return Promise.all(chunks.map(function(c){return heads(c.map(function(f){return f.id}))})).then(function(ms){var m={};ms.forEach(function(x){Object.keys(x).forEach(function(k){m[k]=x[k]})});list.forEach(function(f){f.img=m[f.id]||''});save();renderFriends();var l=$('apL');if(l)l.innerHTML=apFriendsHtml()});
  }).catch(function(){});
