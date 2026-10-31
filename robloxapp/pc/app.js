@@ -481,7 +481,7 @@ $('avRows').addEventListener('click',function(e){var b=e.target.closest('#mchips
   co.hidden=false;
   $('coB').addEventListener('click',closeCo);
   co.querySelectorAll('.co-x').forEach(function(b){b.addEventListener('click',function(){sels()[+b.dataset.i].classList.remove('sel');upd();if(sels().length)drawCo()})});
-  $('coBuy').addEventListener('click',function(){if(S.robux<tot){$('coBuy').textContent='Not enough Robux';return}S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);sels().forEach(function(x){x.classList.remove('sel')});upd()});
+  $('coBuy').addEventListener('click',function(){if(S.robux<tot){$('coBuy').textContent='Not enough Robux';return}S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);purchased();sels().forEach(function(x){x.classList.remove('sel')});upd()});
  }
  window.drawCo=drawCo;
 })();
@@ -537,14 +537,20 @@ function loadCust(){
 $('cuCats').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;[].forEach.call(document.querySelectorAll('#cuCats button'),function(x){x.classList.toggle('on',x===b)});cuCat=b.dataset.k;cuSub=cuDef();loadCust()});
 $('bsr').addEventListener('click',function(e){var b=e.target.closest('.bsc');if(!b)return;cuSub=b.dataset.n;drawBsub();loadCust()});
 /* Buy item dialog */
+function purchased(){
+ var t=document.createElement('div');t.className='ptoast';t.innerHTML='<span class="plg"><i></i></span><b>Purchased!</b>';$('s-av').appendChild(t);
+ var s=document.querySelector('.av-s');if(s)s.classList.add('ld');
+ setTimeout(function(){if(s)s.classList.remove('ld')},1400);
+ setTimeout(function(){t.classList.add('out')},2600);setTimeout(function(){t.remove()},3000);
+}
 function openBuy(name,price,img){
  price=Number(price)||0;var pb=pbOf(price),plus=pb>0,tot=price-pb,open=false;
  function draw(){
   var sv=plus?'<div class="sv'+(open?' op':'')+'"><button class="svh" id="svT"><i>'+I('rplus-r',22)+'</i><span>Saving <i class="ri">'+I('robux-r',14)+'</i>'+pb+' with Plus</span><i class="chv">'+I(open?'chevu-r':'chevd-r',22)+'</i></button>'+(open?'<div class="svb"><div><span>Subtotal</span><b><i class="ri">'+I('robux-r',15)+'</i>'+fmt(price)+'</b></div><div><span>Plus benefit (10% off on eligible items)</span><b>- <i class="ri">'+I('robux-r',15)+'</i>'+pb+'</b></div><hr><div><span>Total</span><b><i class="ri">'+I('robux-r',15)+'</i>'+fmt(tot)+'</b></div></div>':'')+'</div>':'';
-  $('buyBox').innerHTML='<div class="by-h"><b>Buy item</b><button class="by-x" id="byX" aria-label="Close">'+I('x-r',28)+'</button></div><div class="by-i"><span class="by-p"><img src="'+e2(img||'')+'" alt=""></span><div><b>'+e2(name||'Item')+'</b><small>Permanent</small><div class="by-pr">'+(price===0?'<b>Free</b>':'<i>'+I('robux-r',20)+'</i><b>'+fmt(tot)+'</b>')+''+(plus&&pb?'<s><i>'+I('robux-r',14)+'</i>'+fmt(price)+'</s>':'')+'</div></div></div>'+sv+'<label class="by-c"><input type="checkbox" checked><i></i>Wear item after purchase</label><button class="by-b" id="byB">Buy</button>';
+  $('buyBox').innerHTML='<div class="by-h"><b>Buy item</b><button class="by-x" id="byX" aria-label="Close">'+I('x-r',28)+'</button></div><div class="by-i"><span class="by-p"><img src="'+e2(img||'')+'" alt=""></span><div><b>'+e2(name||'Item')+'</b><small>Permanent</small><div class="by-pr">'+'<i>'+I('robux-r',20)+'</i><b>'+fmt(tot)+'</b>'+''+(plus&&pb?'<s><i>'+I('robux-r',14)+'</i>'+fmt(price)+'</s>':'')+'</div></div></div>'+sv+'<label class="by-c"><input type="checkbox" checked><i></i>Wear item after purchase</label><button class="by-b" id="byB">Buy</button>';
   $('byX').addEventListener('click',function(){$('buy').hidden=true});
   var t=$('svT');if(t)t.addEventListener('click',function(){open=!open;draw()});
-  $('byB').addEventListener('click',function(){if(S.robux>=tot){S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);$('buy').hidden=true}else{$('byB').textContent='Not enough Robux'}});
+  $('byB').addEventListener('click',function(){if(S.robux>=tot){S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);$('buy').hidden=true;purchased()}else{$('byB').textContent='Not enough Robux'}});
  }
  draw();$('buy').hidden=false;
 }
