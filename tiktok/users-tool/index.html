@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Users grabber</title>
+<style>
+body{margin:0;background:#0b0d17;color:#fff;font:16px/1.45 -apple-system,Helvetica,Arial,sans-serif;padding:22px;max-width:560px;margin:0 auto}
+h1{font-size:24px;margin:0 0 6px}p{color:#c9cbd6}ol{padding-left:20px}li{margin:10px 0}b{color:#fff}
+textarea{width:100%;height:110px;background:#161a2b;color:#9fe3a8;border:1px solid #2a3050;border-radius:10px;padding:10px;font:12px monospace;box-sizing:border-box}
+button{background:#fe2c55;color:#fff;border:0;border-radius:12px;font-size:17px;font-weight:700;padding:14px 18px;width:100%;margin-top:10px}.ok{color:#7be28f;font-weight:700;margin-top:8px;min-height:22px}
+</style></head><body>
+<h1>Users grabber</h1>
+<p>Marcador rápido (máximo 40 segundos): en cualquier página de TikTok (un video con comentarios, una búsqueda, un hashtag, el perfil con seguidores…) baja solo a toda velocidad y junta todos los <b>@usuarios</b> que ve. Va sumando entre páginas.</p>
+<ol>
+<li>Toca <b>Copiar marcador</b>, agrégalo a Marcadores de Safari como <b>Users</b> y pega el código en la dirección.</li>
+<li>Abre una página de TikTok con gente (por ejemplo los comentarios de un video) y toca el marcador <b>Users</b>.</li>
+<li>Se detiene solo. Toca <b>Copiar</b> (o <b>Guardar users.txt</b>) en el cuadro rojo.</li>
+<li>En la app: Edit LIVE → <b>Import users from .txt</b>, o pégalos en "Real usernames".</li>
+</ol>
+<textarea id="t" readonly></textarea>
+<button id="c" type="button">Copiar marcador</button>
+<div class="ok" id="ok"></div>
+<script>
+function grab(){
+ var W=window,D=document,MAXMS=40000;
+ W.__ttu=W.__ttu||{};
+ var box=D.getElementById('__ttubox');
+ if(!box){box=D.createElement('div');box.id='__ttubox';box.style.cssText='position:fixed;left:10px;right:10px;top:10px;z-index:2147483647;background:#fe2c55;color:#fff;font:600 15px -apple-system,Arial;padding:12px 14px;border-radius:14px;box-shadow:0 6px 24px #0008';D.body.appendChild(box)}
+ function say(h){box.innerHTML=h}
+ function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+ var BAD={'explore':1,'following':1,'foryou':1,'live':1,'upload':1,'search':1,'tag':1,'music':1,'video':1,'photo':1,'discover':1,'about':1,'login':1,'privacy':1,'terms':1,'inbox':1,'messages':1,'profile':1,'friends':1,'tiktok':1};
+ function add(u){u=String(u||'').replace(/^@/,'').trim();if(!/^[A-Za-z0-9._]{2,30}$/.test(u)||BAD[u.toLowerCase()]||/\.(com|net|org)$/i.test(u)&&u.split('.').length>3)return 0;var k=u.toLowerCase();if(W.__ttu[k])return 0;W.__ttu[k]=u;return 1}
+ function scan(){var n=0;
+  [].forEach.call(D.querySelectorAll('a[href*="/@"]'),function(a){var m=(a.getAttribute('href')||'').match(/\/@([A-Za-z0-9._]{2,30})/);if(m)n+=add(m[1])});
+  [].forEach.call(D.querySelectorAll('[data-e2e*="username"],[data-e2e*="user-unique"],[data-e2e*="uniqueid"]'),function(e){n+=add(e.textContent)});
+  var t=(D.body.innerText||'');var re=/@([A-Za-z0-9._]{2,30})/g,m;while((m=re.exec(t)))n+=add(m[1]);
+  return n}
+ function scrollers(){var out=[D.scrollingElement||D.documentElement],all=D.querySelectorAll('div,ul,section,main');for(var i=0;i<all.length&&out.length<12;i++){var e=all[i];if(e.scrollHeight>e.clientHeight+80&&e.clientHeight>120){var o=getComputedStyle(e).overflowY;if(o==='auto'||o==='scroll')out.push(e)}}return out}
+ function more(){[].forEach.call(D.querySelectorAll('button,div[role=button],span'),function(b){var t=(b.innerText||'').trim();if(t.length<40&&/^(view|ver|show|mostrar)\s*(more|\d+|más|replies|respuestas)|^(view|ver)\s+\d+/i.test(t)){try{b.click()}catch(_){}}})}
+ function count(){return Object.keys(W.__ttu).length}
+ function names(){return Object.keys(W.__ttu).map(function(k){return W.__ttu[k]})}
+ function copy(){var t=names().join('\n');try{var ta=D.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0';D.body.appendChild(ta);ta.select();var ok=D.execCommand('copy');ta.remove();if(ok)return true}catch(_){}if(navigator.clipboard)navigator.clipboard.writeText(t);return true}
+ function save(){var f=new File([names().join('\n')],'users.txt',{type:'text/plain'});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'users.txt'}).catch(function(){})}else{var a=D.createElement('a');a.href=URL.createObjectURL(f);a.download='users.txt';D.body.appendChild(a);a.click()}}
+ function done(){say('Listo: <b>'+count()+'</b> usuarios.<br><button id="__c" style="margin:8px 6px 0 0;padding:9px 14px;border:0;border-radius:10px;font-weight:700">Copiar</button><button id="__s" style="margin:8px 6px 0 0;padding:9px 14px;border:0;border-radius:10px;font-weight:700">Guardar users.txt</button><button id="__r" style="margin-top:8px;padding:9px 14px;border:0;border-radius:10px;font-weight:700">Vaciar</button><div style="font-weight:400;font-size:13px;margin-top:6px">Abre otra página y toca el marcador otra vez para sumar más.</div>');
+  D.getElementById('__c').onclick=function(){copy();this.textContent='Copiado ✓'};D.getElementById('__s').onclick=save;D.getElementById('__r').onclick=function(){W.__ttu={};done()}}
+ (async function(){
+  var t0=Date.now(),idle=0;scan();
+  while(Date.now()-t0<MAXMS&&idle<14){
+   more();var sc=scrollers();sc.forEach(function(e){try{e.scrollTop=e.scrollHeight}catch(_){}});
+   await sleep(170);var n=scan();say('Buscando usuarios… <b>'+count()+'</b> ('+Math.round((Date.now()-t0)/1000)+'s)');
+   if(n===0)idle++;else idle=0}
+  done();
+ })();
+}
+var code='javascript:'+encodeURIComponent('('+grab.toString()+')()');
+document.getElementById('t').value=code;
+document.getElementById('c').onclick=function(){var t=document.getElementById('t');t.focus();t.select();t.setSelectionRange(0,999999);var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+ if(!ok&&navigator.clipboard)navigator.clipboard.writeText(code).then(function(){document.getElementById('ok').textContent='Copiado ✓'});else document.getElementById('ok').textContent=ok?'Copiado ✓':'Mantén presionado el cuadro y copia'};
+</script></body></html>
