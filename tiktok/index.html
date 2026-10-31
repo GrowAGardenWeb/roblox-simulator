@@ -661,7 +661,7 @@ body.inst *{transition:none!important}
   <div class="es" id="mkEs"><h4>Edit LIVE<button type="button" id="mkEsX">Done</button></h4>
     <div class="g2"><div><label>Viewers</label><input data-k="viewers" inputmode="numeric"></div><div><label>Fans (white pill)</label><input data-k="likes" inputmode="numeric"></div></div>
     <div class="g2"><div><label>Host likes</label><input data-k="hl" inputmode="numeric"></div><div><label>Est. earnings ($)</label><input data-k="est" inputmode="decimal"></div></div>
-    <label>Host name</label><input data-k="host"><label>Chat messages (one per line)</label><textarea data-k="chat" rows="3"></textarea><label class="ck"><input type="checkbox" data-k="auto"> Auto activity (viewers, likes, chat)</label><label class="ck"><input type="checkbox" data-k="gS"> Auto gifts · Small (1–100 coins)</label><label class="ck"><input type="checkbox" data-k="gM"> Auto gifts · Medium (100–1,000)</label><label class="ck"><input type="checkbox" data-k="gB"> Auto gifts · Big (1,000–10,000+)</label><label>Gifts per second</label><input data-k="gps" inputmode="decimal" placeholder="0 = none, e.g. 10">
+    <label>Host name</label><input data-k="host"><label>Real usernames for chat and gifts (one per line, photos from unavatar.io)</label><textarea data-k="users" rows="4" spellcheck="false" autocapitalize="none"></textarea><label>Chat messages (one per line)</label><textarea data-k="chat" rows="3"></textarea><label class="ck"><input type="checkbox" data-k="auto"> Auto activity (viewers, likes, chat)</label><label class="ck"><input type="checkbox" data-k="gS"> Auto gifts · Small (1–100 coins)</label><label class="ck"><input type="checkbox" data-k="gM"> Auto gifts · Medium (100–1,000)</label><label class="ck"><input type="checkbox" data-k="gB"> Auto gifts · Big (1,000–10,000+)</label><label>Gifts per second</label><input data-k="gps" inputmode="decimal" placeholder="0 = none, e.g. 10">
 <label>LIVE goal · gift</label><input id="gSearch" placeholder="Search a gift (Rose, Lion…)" autocomplete="off"><div class="gres" id="gRes"></div><div class="g2"><div><label>Goal amount</label><input data-k="goalT" inputmode="numeric"></div><div><label>Received so far</label><input data-k="goalC" inputmode="numeric"></div></div><div class="gbt"><button type="button" data-g="S">Send small</button><button type="button" data-g="M">Send medium</button><button type="button" data-g="B">Send big</button></div><label>Host message</label><input data-k="msg">
   </div>
 </div>
@@ -758,7 +758,7 @@ var DEF={bal:{amt:'4.38',cur:'USD',coins:'0',tx:'Exchange of Coins: USD0.02',rc:
  following:'10',followers:'10000',likes:'10000',bio:'',link:'',inbox:'99+',
  hls:[],newB:true,
  drafts:{on:false,n:'7',size:'208.7MB',img:'v1'},
- vids:[],live:{viewers:'0',likes:'166',hl:'0',est:'6.80',host:'',msg:'Sigueme y comenta tu user!',title:'',auto:true,gps:'0.7',goalId:'doughnut',goalT:'100',goalC:'0',gS:true,gM:true,gB:true,chat:'hola\nyooo\nhola bro\npocooo\nsaludos\nque haces\nsigueme\n🔥🔥\njaja\nbuen live'}};
+ vids:[],live:{viewers:'0',likes:'166',hl:'0',est:'6.80',host:'',msg:'Sigueme y comenta tu user!',title:'',auto:true,gps:'0.7',users:'kendra_no1\neskibiritoilet36\nonti_vv\nclippedjayy\n41med\nthefinancialwolf\nprescaled\nirecordcars.com',goalId:'doughnut',goalT:'100',goalC:'0',gS:true,gM:true,gB:true,chat:'hola\nyooo\nhola bro\npocooo\nsaludos\nque haces\nsigueme\n🔥🔥\njaja\nbuen live'}};
 var S;
 function clone(o){return JSON.parse(JSON.stringify(o))}
 function load(){try{var r=JSON.parse(localStorage.getItem(KEY)||'null');S=r?Object.assign(clone(DEF),r):clone(DEF);S.tabs=5;S.bal=Object.assign(clone(DEF).bal,S.bal||{});S.feed=Object.assign(clone(DEF).feed,S.feed||{});S.inb=Object.assign(clone(DEF).inb,S.inb||{});S.live=Object.assign(clone(DEF).live,S.live||{})}catch(e){S=clone(DEF)}}
@@ -1047,10 +1047,14 @@ mk.addEventListener('click',function(e){var t=e.target;
 var PH={};function ph(i){return Math.random()<.65?(Math.random()<.5?'https://i.pravatar.cc/120?img='+(1+Math.floor(Math.random()*70)):'https://randomuser.me/api/portraits/'+(Math.random()<.5?'men':'women')+'/'+Math.floor(Math.random()*90)+'.jpg'):''}
 var NM=['tem hm','PrettyMoon.56','MATI✨','Ian Álvarez','el bro','soysuco_3951','Renzo11🎩','colen💙','Valeria','xX_Gamer_Xx','Dani','Sofi🌸','Kevin','Mau','luna_rbx','Carlos','Fer','Ana_099','Emi_x','Pablo.rbx','lauu🦋','Santi_77','Hugo','Mia💜','jorge_gt','Cami✨','Alex_09','nico.rbx','Rocío','Tomás','Vale_xo','kiara🌙','Dylan','Isa_22','el_wero','sofi.gt','Leo🔥','Mari','Bruno','Dana_','JuanMx','Pau🍓'],CL=['#6b4fbb','#c2415d','#2b8a6e','#b87a2b','#3b6fb8','#8a3b8a','#4a4a52'],simT=null,joined=0;
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
-var lastW='';function who(){var n=pick(NM),tr=0;while(n===lastW&&tr++<5)n=pick(NM);lastW=n;if(!(n in PH))PH[n]=ph();return n}
+var lastW='',UF={};
+function realUsers(){return String(L().users||'').split(/[\n,\s]+/).map(function(x){return x.replace(/^@/,'').trim()}).filter(Boolean)}
+function who(){var ru=realUsers(),n,tr=0;do{n=(ru.length&&Math.random()<.65)?pick(ru):pick(NM)}while(n===lastW&&tr++<6);lastW=n;
+ if(!(n in PH)){if(ru.indexOf(n)>-1){PH[n]='https://unavatar.io/tiktok/'+encodeURIComponent(n);UF[n]='https://unavatar.io/'+encodeURIComponent(n)}else PH[n]=ph()}return n}
+function phImg(nm){if(!PH[nm])return '';return '<img src="'+PH[nm]+'"'+(UF[nm]?' data-f="'+UF[nm]+'"':'')+' onerror="if(this.dataset.f){this.src=this.dataset.f;this.dataset.f=\'\'}else this.remove()" alt="">'}
 function bump(k){var l=L(),n=+String(l[k]).replace(/[,\s]/g,'');if(!isFinite(n))return;l[k]=String(n+Math.max(1,Math.round(n*Math.random()*.004)))}
 function cmsg(kind,nm,txt){var c=$('lvChat'),d=document.createElement('div');d.className='cmi'+(kind==='sys'?' sys':'')+(kind==='chat'?' two':'');
- var av=kind==='sys'?'<i class="ca">♪</i>':(kind==='host'?'<i class="ca"><img src="'+esc(src(S.avatar,'avatar'))+'" alt=""></i>':'<i class="ca" style="background:'+pick(CL)+'">'+(PH[nm]?'<img src="'+PH[nm]+'" onerror="this.remove()" alt="">':'')+esc(String(nm).charAt(0).toUpperCase())+'</i>');
+ var av=kind==='sys'?'<i class="ca">♪</i>':(kind==='host'?'<i class="ca"><img src="'+esc(src(S.avatar,'avatar'))+'" alt=""></i>':'<i class="ca" style="background:'+pick(CL)+'">'+phImg(nm)+esc(String(nm).charAt(0).toUpperCase())+'</i>');
  var body=kind==='sys'?'<div>'+esc(txt)+'</div>':kind==='chat'?'<div><span class="nm">'+esc(nm)+'</span><b>'+esc(txt)+'</b></div>':kind==='host'?'<div><span class="nm">'+esc(nm)+'<em class="hs">Host</em></span><b>'+esc(txt)+'</b></div>':'<div><span class="nm">'+esc(nm)+'</span> <span class="tx">'+esc(txt)+'</span></div>';
  d.innerHTML=av+body;c.appendChild(d);while(c.children.length>7)c.removeChild(c.firstChild)}
 function tick(){if(!mk.classList.contains('lon'))return;var l=L(),r=Math.random();
@@ -1072,7 +1076,7 @@ function pickGift(){var L_=L(),tiers=[];if(L_.gS!==false)tiers.push(['S',84]);if
 function pickGiftT(t){if(t==='S'&&Math.random()<.75){var tn=GIFTS.filter(function(g){return g.t==='S'&&g.c<=9});if(tn.length)return pick(tn)}var a=GIFTS.filter(function(g){return g.t===t&&(t!=='B'||g.a)});return a.length?pick(a):null}
 var gq=[];
 function gfx(g,nm){var l=L();sCoins+=g.c;if(nm)sGif[nm]=1;if(g.id===l.goalId)l.goalC=String((+String(l.goalC).replace(/\D/g,'')||0)+1);l.est=(parseFloat(l.est||0)+g.c*.005).toFixed(2);if(Math.random()<.6)bump('likes')}
-function mkBanner(g,nm,now){var key=nm+'|'+g.id,el=document.createElement('div');el.className='gb';var col=pick(CL);el.innerHTML='<i class="ca2" style="background:'+col+'">'+(PH[nm]?'<img src="'+PH[nm]+'" onerror="this.remove()" alt="">':'')+esc(String(nm).charAt(0).toUpperCase())+'</i><div class="tx"><b>'+esc(nm)+'</b><small>sent '+esc(g.n)+'</small></div><i class="gi">'+gicon(g)+'</i><span class="x"><i>x</i>1</span>';
+function mkBanner(g,nm,now){var key=nm+'|'+g.id,el=document.createElement('div');el.className='gb';var col=pick(CL);el.innerHTML='<i class="ca2" style="background:'+col+'">'+phImg(nm)+esc(String(nm).charAt(0).toUpperCase())+'</i><div class="tx"><b>'+esc(nm)+'</b><small>sent '+esc(g.n)+'</small></div><i class="gi">'+gicon(g)+'</i><span class="x"><i>x</i>1</span>';
  $('lvGifts').appendChild(el);var b={el:el,key:key,n:1,t:now};b.o=setTimeout(function(){rmGb(b)},3200);gbs.push(b);gfx(g,nm);if(g.a)playAnim(g)}
 function gnext(){while(gbs.length<2&&gq.length){var q=gq.shift();mkBanner(q.g,q.nm,Date.now())}paint()}
 function gift(g,who_){if(!g)return null;var nm=who_||who(),now=Date.now(),key=nm+'|'+g.id;
