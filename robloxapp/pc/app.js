@@ -399,7 +399,6 @@ function wornIds(as){
 function av3dMsg(t,err){if(!err){var e0=$('av3dErr');if(e0)e0.remove();return}var e=$('av3dErr');if(!t){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='av3dErr';$('avR').appendChild(e)}e.className='av-err av-err2'+(err?'':' av-info');e.textContent=t}
 function avUser(){
  var go=function(id){
-  J('/rbx/thumbs/v1/users/avatar?userIds='+id+'&size=720x720&format=Png&isCircular=false').then(function(t){var u=t.data&&t.data[0]&&t.data[0].imageUrl;if(!u||window.__av3d)return;$('avFig').src=u;$('avBg').hidden=false;$('avFb').hidden=true}).catch(function(){});
   if(!/^https?:$/.test(location.protocol))return;
   window.Av3D.show($('av3d'),id,{log:av3dMsg}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true;av3dMsg('')}).catch(function(e){console.warn('3D avatar failed',e);av3dMsg('3D avatar: '+(e&&e.message||'failed'),1)});
  };

@@ -651,3 +651,5 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .ptoast .bilogo:after{content:"";position:absolute;width:7.5px;height:7.5px;background:#fff;top:calc(50% - 3.75px);left:calc(50% - 3.75px)}
 .ptoast b{font-size:17px;font-weight:700}
 .av-s.ld::after{border-color:#e3e5e8;border-top-color:#c3c6cc}
+
+#avFig,#avFb{display:none!important}
