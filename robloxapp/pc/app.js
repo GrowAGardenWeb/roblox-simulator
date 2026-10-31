@@ -416,12 +416,20 @@ $('avRows').addEventListener('click',function(e){var b=e.target.closest('#mchips
  var bar=document.createElement('div');bar.className='av-buy';bar.hidden=true;bar.innerHTML='<button class="bb" id="avBuy"></button><button class="bm" id="avClr" aria-label="Clear">'+I('trash-r',24)+'</button>';$('avR').appendChild(bar);
  function sels(){return [].slice.call(document.querySelectorAll('#avRows .it.sel'))}
  function upd(){
-  var l=sels();bar.hidden=!l.length;$('avR').classList.toggle('buying',!!l.length);
+  var l=sels();syncPrev();bar.hidden=!l.length;$('avR').classList.toggle('buying',!!l.length);
   if(l.length===1&&l[0].classList.contains('own')){$('avBuy').dataset.m='own';$('avBuy').className='bb gray';$('avBuy').textContent='Manage in Customize';$('avClr').innerHTML=I('three-dots-h',26)}
   else if(l.length===1){$('avBuy').className='bb';var pr=l[0].dataset.p;$('avBuy').dataset.m='one';$('avBuy').innerHTML=pr===''?'Off sale':(pr==='0'?'Free':I('robux-r',20)+'<span>'+fmt(Number(pr)-pbOf(pr))+'</span>');$('avClr').innerHTML=I('three-dots-h',26)}
   else if(l.length){$('avBuy').className='bb';$('avBuy').dataset.m='many';$('avBuy').textContent='View Checkout ('+l.length+')';$('avClr').innerHTML=I('trash-r',24)}
   if(!l.length)closeCo();
  }
+ var prev={};
+ function syncPrev(){
+  if(!window.Av3D||!window.Av3D.ready())return;
+  var l=sels(),on={};
+  l.forEach(function(it){var id=it.dataset.id;if(!id)return;on[id]=it;if(!prev[id]&&!window.Av3D.has(id)){window.Av3D.wear(id,it.dataset.ty,(it.querySelector('b')||{}).textContent);prev[id]=1}});
+  Object.keys(prev).forEach(function(id){if(!on[id]){window.Av3D.unwear(id);delete prev[id]}});
+ }
+ window.avPrevKeep=function(id,keep){if(prev[id]){delete prev[id];if(!keep)window.Av3D.unwear(id)}};
  window.avSelUpd=upd;
  $('avRows').addEventListener('click',function(e){var it=e.target.closest('.it');if(!it||it.classList.contains('isk'))return;it.classList.toggle('sel');upd()});
  $('avClr').addEventListener('click',function(){if(sels().length>1||$('avBuy').dataset.m==='many'){sels().forEach(function(x){x.classList.remove('sel')});upd()}});
@@ -507,7 +515,8 @@ function own(it,name,img,wear){
  if(!it||!it.dataset.id)return;var id=it.dataset.id,ty=Number(it.dataset.ty)||0;
  S.owned[id]=1;S.ownedItems=S.ownedItems.filter(function(x){return x.id!==id});S.ownedItems.unshift({id:id,ty:ty,name:name,img:img});save();
  it.classList.add('own');it.classList.remove('sel');if(window.avSelUpd)window.avSelUpd();
- if(wear&&window.Av3D&&window.Av3D.ready())window.Av3D.wear(id,ty,name);
+ if(window.avPrevKeep)window.avPrevKeep(id,wear);
+ if(wear&&window.Av3D&&window.Av3D.ready()&&!window.Av3D.has(id))window.Av3D.wear(id,ty,name);
 }
 function purchased(){
  var t=document.createElement('div');t.className='ptoast';t.innerHTML='<i class="bilogo"></i><b>Purchased!</b>';$('s-av').appendChild(t);
