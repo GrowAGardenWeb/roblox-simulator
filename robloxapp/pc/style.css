@@ -375,3 +375,10 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 
 .dli .di{width:28px;display:grid;place-items:center;margin-right:32px;flex:none;color:#232527}
 .dhr{top:621px}
+
+.logo{width:104px;height:auto;margin-left:-4px}
+.g:hover .hv{display:block}.g.nohv .hv{display:none}
+.g .hv{padding:12px;left:-12px;right:-12px;top:-12px}
+.g .hv .hx{position:absolute;right:24px;top:24px;width:32px;height:32px;border-radius:50%;background:#fff;display:grid;place-items:center;z-index:2;color:#232527}
+.g .hv .hx:hover{background:#eef0f2}
+.logo{margin-left:-1px}
