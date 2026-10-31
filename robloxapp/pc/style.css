@@ -689,3 +689,26 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .fq.op>button i{transform:rotate(180deg)}
 .fq p{display:none;padding:0 12px 18px;font-size:13.5px;line-height:19px;color:#4b4e55}
 .fq.op p{display:block}
+
+/* Robux page from screenshots */
+.rb-col{width:850px;max-width:none;padding-bottom:60px;position:relative}
+.rb-col:before{display:none}
+.rb-col>*{position:static}
+.rbx-top{display:block;width:850px;height:1175px;user-select:none;pointer-events:none}
+#rbHot{position:absolute;left:0;top:0;width:850px;height:0}
+.hot{position:absolute;width:200px;height:40px;border-radius:6px;background:transparent;transition:background-color .12s}
+.hot:hover{background:#00000010}
+.hot.blue:hover{background:#00000018}
+.hot:active{transform:scale(.99)}
+#rbFaq{margin-top:0}
+.fq2{margin-top:16px}
+.fq2:first-child{margin-top:0}
+.fqb{display:block;width:850px;height:58px;padding:0;margin:0}
+.fqb img{display:block;width:850px;height:58px}
+.fqb:hover img{filter:brightness(.985)}
+.fq2 p{display:none;margin:-6px 0 0 47px;width:752px;padding:12px 12px 14px;font-size:13.5px;line-height:19px;color:#4b4e55;border:1px solid #dcdee2;border-top:0;border-radius:0 0 8px 8px}
+.fq2.op p{display:block;animation:rbin .2s ease}
+.rb-pill{left:872px;margin-left:0;top:16px}
+.rb-pill{min-width:204px}.rb-sc{overflow-x:hidden}
+.rb-col>.rb-pill{position:absolute;left:872px;top:16px;width:auto;margin:0}.rb-col>#rbHot{position:absolute}
+.fqb:hover img{filter:none}.fq2 p{margin-top:-2px}

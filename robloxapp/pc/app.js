@@ -180,13 +180,12 @@ document.querySelector('.menu').addEventListener('click',openDrw);
 $('scrim').addEventListener('mousedown',closeDrw);
 
 /* ---------- Robux page ---------- */
-var PK=[[24000,22500,1500,'$4,999.00'],[11000,10000,1000,'$2,499.00'],[5250,4500,750,'$1,299.00'],[3625,3150,475,'$799.00'],[2000,1700,300,'$499.00']];
-function rrow(p,x,blue){return '<div class="rr"><div class="a">'+I('robux-r',30)+'<b>'+fmt(p[0])+'</b><s>'+I('robux-r',22)+'<span>'+fmt(p[1])+'</span></s></div><span class="pl">+ '+fmt(p[2])+' more</span>'+(x||'')+'<button class="bt'+(blue?' b':'')+'">'+p[3]+'</button></div>'}
-$('rbRows').innerHTML=PK.map(function(p){return rrow(p)}).join('');
-$('rbPk').innerHTML=rrow([1500,1200,300,'$299.00'],'<span class="pl">'+I('star-r',14)+'For you</span>',true)+rrow([1000,800,200,'$249.00'])+rrow([500,400,100,'$129.00']);
+/* Robux page: the real page is two screenshots joined (grey background and font are unique), with the live parts on top */
+var HOT=[501,561,621,681,741,908,968,1028];
+$('rbHot').innerHTML=HOT.map(function(t,i){return '<button class="hot'+(i===5?' blue':'')+'" style="top:'+t+'px;left:'+(i<5?579:578)+'px" aria-label="Buy"></button>'}).join('');
 var FAQ=[['What are Robux?','Robux is the virtual currency you use to buy items for your avatar and perks in experiences.'],['Where are my Robux?','Your Robux are added to your balance as soon as the purchase finishes. You can see your balance at the top of this page.'],['Do Robux expire?','No, Robux you buy do not expire.'],['How to redeem your gift card?','Open the redeem page, enter the PIN on the back of your gift card and your Robux or credit are added to your account.']];
-$('rbPk').parentNode.insertAdjacentHTML('beforeend','<h2 class="faq">FAQ</h2>'+FAQ.map(function(f){return '<div class="fq"><button>'+e2(f[0])+'<i>'+I('chevd-r',22)+'</i></button><p>'+e2(f[1])+'</p></div>'}).join(''));
-[].forEach.call(document.querySelectorAll('.fq>button'),function(b){b.addEventListener('click',function(){b.parentNode.classList.toggle('op')})});
+$('rbFaq').innerHTML=FAQ.map(function(f,i){return '<div class="fq2"><button class="fqb" aria-label="'+e2(f[0])+'"><img src="img/rbx_f'+i+'.webp" alt=""></button><p>'+e2(f[1])+'</p></div>'}).join('');
+[].forEach.call(document.querySelectorAll('.fqb'),function(b){b.addEventListener('click',function(){b.parentNode.classList.toggle('op')})});
 function openRb(){$('rb').hidden=false}
 function closeRb(){$('rb').hidden=true}
 $('openRb').addEventListener('click',openRb);$('rbX').addEventListener('click',closeRb);
