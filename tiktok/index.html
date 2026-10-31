@@ -223,7 +223,9 @@ body.inst *{transition:none!important}
 .scr{position:absolute;inset:0;overflow:hidden;background:#fff;padding-bottom:calc(169*var(--u))}
 .scr.disc,.scr.inb{overflow-y:auto;scrollbar-width:none}.scr.disc::-webkit-scrollbar,.scr.inb::-webkit-scrollbar{display:none}
 .scr.home{background:#15171d;color:#fff}
-#fvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#15171d}
+#fvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}#fvid.wide{object-fit:contain}
+.r4.saved .rico{background:#fcbd1f}
+.stoast{position:absolute;left:calc(34*var(--u));right:calc(34*var(--u));bottom:calc(228*var(--u));height:calc(78*var(--u));border-radius:calc(14*var(--u));background:#2a2a2ae6;color:#fff;display:flex;align-items:center;padding:0 calc(26*var(--u));font-size:calc(27*var(--u));font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;z-index:6}.stoast.on{opacity:1}.stoast span{margin-left:auto;color:#ffffffb3;font-weight:500}
 .fshade{position:absolute;inset:0;background:linear-gradient(#0000004d,#0000 22%,#0000 58%,#00000099);pointer-events:none}
 .fhint{position:absolute;left:0;right:0;top:46%;text-align:center;color:#ffffff80;font-size:calc(28*var(--u));padding:0 calc(80*var(--u))}
 .fhint.off{display:none}
@@ -367,7 +369,7 @@ body.inst *{transition:none!important}
     <video id="fvid" playsinline loop muted></video>
     <div class="fshade"></div>
     <div class="fhint" id="fhint">Upload a video in the editor and it plays here.</div>
-    <div class="ftop"><svg class="live" viewBox="0 0 30 30"><rect x="3" y="8" width="24" height="17" rx="3" fill="none" stroke="#fff" stroke-width="2.4"/><path d="M10 3l5 5 5-5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><text x="15" y="21.5" text-anchor="middle" font-size="8.6" font-weight="800" fill="#fff" font-family="-apple-system,Helvetica,Arial">LIVE</text></svg><span class="ft d">Merida</span><span class="ft d">Drama</span><span class="ft d">Following</span><span class="ft d">Shop</span><span class="ft on">For You<i></i></span><img class="fs" src="img/s_search.webp" alt=""></div>
+    <div class="ftop"><svg class="live" viewBox="0 0 30 30"><rect x="2" y="6" width="26" height="18" rx="5" fill="none" stroke="#fff" stroke-width="2.2"/><text x="15" y="18.6" text-anchor="middle" font-size="7.4" font-weight="800" fill="#fff" font-family="-apple-system,Helvetica,Arial">LIVE</text></svg><span class="ft d">Merida</span><span class="ft d">Drama</span><span class="ft d">Following</span><span class="ft d">Shop</span><span class="ft on">For You<i></i></span><img class="fs" src="img/s_search.webp" alt=""></div>
     <div class="rail">
       <div class="r1"><img class="rav b-av" alt=""><i class="rpl"><svg viewBox="0 0 24 24"><path d="M12 6v12M6 12h12" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></i></div>
       <div class="r2"><i class="rico" style="--m:url(img/rl_heart.webp);width:calc(70.0*var(--u));height:calc(63.6*var(--u))"></i><b id="fL"></b></div>
@@ -377,7 +379,7 @@ body.inst *{transition:none!important}
       <div class="r6"><img class="b-av" alt=""></div>
     </div>
     <div class="fcap"><div class="frp" id="frp" hidden><svg viewBox="0 0 24 24"><path d="M4 11V9a3 3 0 0 1 3-3h10l-2.5-2.500M20 13v2a3 3 0 0 1-3 3H7l2.500 2.500" fill="none" stroke="#fff" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></svg>Repost to followers</div><div class="fn"><span class="b-name"></span><svg class="vbf" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#4fd0e2"/><path d="M8.2 11.2l3 3.1 4.8-4.9" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><em class="fdt" id="fdt" hidden></em></div><p id="fCap"></p><p class="fseet" id="fSee" hidden>See translation</p><p class="fsnd">&#9835; <span id="fSnd"></span></p></div>
-    <div class="fsr"><img src="img/s_search.webp" alt=""><span id="fSr"></span><svg viewBox="0 0 14 14"><path d="M4.500 1.500l5.500 5.500-5.500 5.500" fill="none" stroke="#fff" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></svg></div><i class="fbar"><u></u></i>
+    <div class="fsr"><img src="img/s_search.webp" alt=""><span id="fSr"></span><svg viewBox="0 0 14 14"><path d="M4.500 1.500l5.500 5.500-5.500 5.500" fill="none" stroke="#fff" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></svg></div><i class="fbar"></i><div class="stoast" id="stoast">Saved ✓<span>Collections ›</span></div>
   </section>
   <section class="scr disc" id="scrDisc" hidden>
     <div class="dtop"><div class="dsb"><img src="img/s_search.webp" alt=""><span>Search</span></div><img class="dsc" src="img/s_scan.webp" alt=""></div>
@@ -646,13 +648,17 @@ function likeIt(on){
  r2.classList.remove('pop');void r2.offsetWidth;r2.classList.toggle('liked',!!likedMap[v.src]);if(likedMap[v.src])r2.classList.add('pop');
  var el=$('fL'),n=Number(String(v.l).replace(/,/g,''));if(/^\d+$/.test(String(v.l).replace(/,/g,''))){var d=likedMap[v.src]?1:0;el.textContent=fmt(String(n+d))}
 }
-function bigHeart(x,y){
- var h=document.createElement('div');h.className='bigh';h.style.left=x+'px';h.style.top=y+'px';h.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 21.2C5 16.1 2.4 12.5 2.4 8.9 2.4 6 4.6 3.9 7.3 3.9c1.9 0 3.5 1 4.7 2.900 1.200-1.900 2.800-2.900 4.700-2.900 2.700 0 4.900 2.100 4.900 5 0 3.600-2.600 7.200-9.600 12.300z" fill="#fe2c55"/></svg>';scr.home.appendChild(h);setTimeout(function(){h.remove()},900);
+var svT;
+function saveIt(){var r=document.querySelector('.r4');var on=r.classList.toggle('saved');var t=$('stoast');if(on){t.classList.add('on');clearTimeout(svT);svT=setTimeout(function(){t.classList.remove('on')},2400)}else t.classList.remove('on')}
+document.querySelector('.r4').addEventListener('click',function(e){e.stopPropagation();saveIt()});
+$('fvid').addEventListener('loadedmetadata',function(){this.classList.toggle('wide',this.videoWidth>this.videoHeight)});
+function bigHeart(x,y){x+=Math.random()*40-20;y+=Math.random()*40-20;
+ var h=document.createElement('div');h.className='bigh';h.style.left=x+'px';h.style.top=y+'px';h.style.rotate=(Math.random()*50-25)+'deg';h.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 21.2C5 16.1 2.4 12.5 2.4 8.9 2.4 6 4.6 3.9 7.3 3.9c1.9 0 3.5 1 4.7 2.900 1.200-1.900 2.800-2.900 4.700-2.900 2.700 0 4.900 2.100 4.900 5 0 3.600-2.600 7.200-9.600 12.300z" fill="#fe2c55"/></svg>';scr.home.appendChild(h);setTimeout(function(){h.remove()},900);
 }
 function go(n){cur=n;Object.keys(scr).forEach(function(k){scr[k].hidden=k!==n});document.querySelector('.top').style.display=n==='profile'?'':'none';app.classList.toggle('dk',n==='home');qa('#nav button[data-s]',function(b){if(b.dataset.s!=='mk')b.classList.toggle('on',b.dataset.s===n)});if(n==='home')feedPlay();else feedStop();theme();if(n==='profile')requestAnimationFrame(moveAll)}
 $('nav').addEventListener('click',function(e){var b=e.target.closest('button[data-s]');if(!b||b.dataset.s==='mk')return;go(b.dataset.s)});
 var fy=0,lastTap=0,lastX=0,lastY=0;
-function tapAt(x,y){var t=Date.now();if(t-lastTap<320&&Math.hypot(x-lastX,y-lastY)<60){lastTap=0;var r=scr.home.getBoundingClientRect();likeIt(true);bigHeart(x-r.left,y-r.top);return true}lastTap=t;lastX=x;lastY=y;return false}
+function tapAt(x,y){var t=Date.now();if(t-lastTap<320&&Math.hypot(x-lastX,y-lastY)<60){lastTap=t;lastX=x;lastY=y;var r=scr.home.getBoundingClientRect();likeIt(true);bigHeart(x-r.left,y-r.top);return true}lastTap=t;lastX=x;lastY=y;return false}
 scr.home.addEventListener('touchstart',function(e){fy=e.touches[0].clientY},{passive:true});
 scr.home.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientY-fy;if(Math.abs(d)>70){fIdx+=d<0?1:-1;feedPlay()}else{if(e.target.closest('.rail'))return;var tx=e.changedTouches[0].clientX,ty=e.changedTouches[0].clientY;if(!tapAt(tx,ty)){setTimeout(function(){if(lastTap&&Date.now()-lastTap>=300){if(fvid.paused)fvid.play();else fvid.pause()}},310)}}});
 scr.home.addEventListener('click',function(e){if(e.target.closest('.r2')){likeIt();return}if(e.detail&&!('ontouchstart' in window)){if(e.target.closest('.rail'))return;if(e.detail>=2){tapAt(e.clientX,e.clientY);tapAt(e.clientX,e.clientY);return}if(fvid.paused)fvid.play();else fvid.pause()}});
