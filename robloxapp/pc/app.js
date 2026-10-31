@@ -397,47 +397,11 @@ function wornIds(as){
  return out;
 }
 function av3dMsg(t,err){if(!err){var e0=$('av3dErr');if(e0)e0.remove();return}var e=$('av3dErr');if(!t){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='av3dErr';$('avR').appendChild(e)}e.className='av-err av-err2'+(err?'':' av-info');e.textContent=t}
-/* the mobile app's own avatar engine (animations, accessories, effects), shown from the same code in an iframe */
-var mvFrame=null;
-function mobileViewer(){
- if(!/^https?:$/.test(location.protocol))return;
- if(!mvFrame){
-  mvFrame=document.createElement('iframe');mvFrame.className='mv';
-  mvFrame.src='/robloxapp/#/avatar';$('avR').insertBefore(mvFrame,$('avR').firstChild);
- }
- var tries=0;
- (function drive(){
-  tries++;if(tries>80)return;
-  try{
-   var w=mvFrame.contentWindow,d=w.document;
-   if(!d||!d.body)return setTimeout(drive,500);
-   if(!d.getElementById('mvcss')){var st=d.createElement('style');st.id='mvcss';st.textContent='.bottomnav,.hud-up,.v-hit{display:none!important}html,body{background:transparent!important}';d.head.appendChild(st)}
-   var v=d.querySelector('[data-testid=avatar-viewer]');
-   if(v&&!mvFrame.dataset.down){mvFrame.dataset.down='1';
-    ['pointerdown','pointerup'].forEach(function(t){v.dispatchEvent(new w.PointerEvent(t,{bubbles:true,clientX:5,clientY:5,pointerId:1}))})}
-   var cv=d.querySelector('.av-engine canvas');
-   if(cv){mvFrame.classList.add('on');window.__av3d=3;$('av3d').hidden=true;$('avFig').hidden=true;av3dMsg('');return}
-   setTimeout(drive,800);
-  }catch(e){setTimeout(drive,800)}
- })();
-}
 function avUser(){
- /* same method as the mobile app: worn items -> 3D render on the Vercel server -> three.js */
- var showFig=function(id){J('/rbx/thumbs/v1/users/avatar?userIds='+id+'&size=720x720&format=Png&isCircular=false').then(function(t){var u=t.data&&t.data[0]&&t.data[0].imageUrl;if(!u||window.__av3d)return;$('avFig').src=u;$('avBg').hidden=false;$('avFb').hidden=true}).catch(function(){})};
  var go=function(id){
-  showFig(id);mobileViewer();
-  J('/rbx/avatar/v1/users/'+id+'/avatar').then(function(a){
-   var ids=wornIds(a.assets||[]);if(!ids.length)throw Error('no assets');
-   $('avBg').hidden=false;av3dMsg('Checking the avatar server…');
-   return window.Av3D.status().then(function(st){
-    if(!st.authed){av3dMsg('Avatar server says not ready: '+JSON.stringify(st.raw||'no answer').slice(0,120),1)}
-    return window.Av3D.show($('av3d'),ids,{zoom:1.25,log:av3dMsg,uid:id,get:J}).catch(function(e){
-     /* same fallback as the mobile app: exact 2D render of the same items */
-     av3dMsg('3D failed ('+(e&&e.message)+'), trying the exact render…',1);
-     return window.Av3D.render2d(ids).then(function(u){if(!u)throw e;$('avFig').src=u;$('avFig').hidden=false;$('avBg').hidden=false;$('avFb').hidden=true;window.__av3d=2;av3dMsg('3D avatar: '+(e&&e.message)+' (showing the exact render)',1);throw {done:1}});
-    });
-   }).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true;av3dMsg('')})
-  }).catch(function(e){if(e&&e.done)return;console.warn('3D avatar failed',e&&e.message);av3dMsg('3D avatar: '+(e&&e.message||'failed')+(FAILS.length?' ['+FAILS.slice(-2).join(' · ')+']':''),1)});
+  J('/rbx/thumbs/v1/users/avatar?userIds='+id+'&size=720x720&format=Png&isCircular=false').then(function(t){var u=t.data&&t.data[0]&&t.data[0].imageUrl;if(!u||window.__av3d)return;$('avFig').src=u;$('avBg').hidden=false;$('avFb').hidden=true}).catch(function(){});
+  if(!/^https?:$/.test(location.protocol))return;
+  window.Av3D.show($('av3d'),id,{log:av3dMsg}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true;av3dMsg('')}).catch(function(e){console.warn('3D avatar failed',e);av3dMsg('3D avatar: '+(e&&e.message||'failed'),1)});
  };
  if(S.user.id)go(S.user.id);else findUser(S.user.name).then(function(u){S.user.id=u.id;save();go(u.id)}).catch(function(){});
 }

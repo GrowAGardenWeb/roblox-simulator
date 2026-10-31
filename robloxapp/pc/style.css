@@ -635,3 +635,5 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .av-s.ld svg{opacity:0}
 .av-s.ld::after{content:"";position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border:3px solid #d5d7dc;border-top-color:#232527;border-radius:50%;animation:spn .8s linear infinite}
 @keyframes spn{to{transform:rotate(360deg)}}
+.mv{display:none!important}
+.av-3d canvas{width:100%!important;height:100%!important}
