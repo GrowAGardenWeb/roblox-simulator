@@ -399,27 +399,19 @@ function wornIds(as){
 function av3dMsg(t,err){var e=$('av3dErr');if(!t){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='av3dErr';$('avR').appendChild(e)}e.className='av-err av-err2'+(err?'':' av-info');e.textContent=t}
 /* the mobile app's own avatar engine (animations, accessories, effects), shown from the same code in an iframe */
 var mvFrame=null;
-function mobileViewer(name){
+function mobileViewer(){
  if(!/^https?:$/.test(location.protocol))return;
  if(!mvFrame){
-  mvFrame=document.createElement('iframe');mvFrame.className='mv';mvFrame.setAttribute('allow','');
-  mvFrame.src='/headless/#/avatar';$('avR').insertBefore(mvFrame,$('avR').firstChild);
+  mvFrame=document.createElement('iframe');mvFrame.className='mv';
+  mvFrame.src='/robloxapp/#/avatar';$('avR').insertBefore(mvFrame,$('avR').firstChild);
  }
- var tries=0,loaded=false;
+ var tries=0;
  (function drive(){
-  tries++;if(tries>60)return;
+  tries++;if(tries>80)return;
   try{
    var w=mvFrame.contentWindow,d=w.document;
-   if(!d||!d.body){return setTimeout(drive,500)}
-   if(!d.getElementById('mvcss')){var st=d.createElement('style');st.id='mvcss';st.textContent='.bottomnav,.hud-up,.v-hit,[data-testid=hl-panel]{display:none!important}html,body{background:transparent!important}';d.head.appendChild(st)}
-   var inp=d.querySelector('[data-testid=hl-user]');
-   if(!inp){w.dispatchEvent(new w.Event('ro-hlpanel'));return setTimeout(drive,600)}
-   if(!loaded){
-    var set=Object.getOwnPropertyDescriptor(w.HTMLInputElement.prototype,'value').set;set.call(inp,name);inp.dispatchEvent(new w.Event('input',{bubbles:true}));
-    var b=d.querySelector('[data-testid=hl-load]');if(b){b.click();loaded=true}
-    var c=d.querySelector('[data-testid=hl-close]');if(c)c.click();
-    return setTimeout(drive,800);
-   }
+   if(!d||!d.body)return setTimeout(drive,500);
+   if(!d.getElementById('mvcss')){var st=d.createElement('style');st.id='mvcss';st.textContent='.bottomnav,.hud-up,.v-hit{display:none!important}html,body{background:transparent!important}';d.head.appendChild(st)}
    var v=d.querySelector('[data-testid=avatar-viewer]');
    if(v&&!mvFrame.dataset.down){mvFrame.dataset.down='1';
     ['pointerdown','pointerup'].forEach(function(t){v.dispatchEvent(new w.PointerEvent(t,{bubbles:true,clientX:5,clientY:5,pointerId:1}))})}
@@ -433,7 +425,7 @@ function avUser(){
  /* same method as the mobile app: worn items -> 3D render on the Vercel server -> three.js */
  var showFig=function(id){J('/rbx/thumbs/v1/users/avatar?userIds='+id+'&size=720x720&format=Png&isCircular=false').then(function(t){var u=t.data&&t.data[0]&&t.data[0].imageUrl;if(!u||window.__av3d)return;$('avFig').src=u;$('avBg').hidden=false;$('avFb').hidden=true}).catch(function(){})};
  var go=function(id){
-  showFig(id);mobileViewer(S.user.name);
+  showFig(id);mobileViewer();
   J('/rbx/avatar/v1/users/'+id+'/avatar').then(function(a){
    var ids=wornIds(a.assets||[]);if(!ids.length)throw Error('no assets');
    $('avBg').hidden=false;av3dMsg('Checking the avatar server…');
