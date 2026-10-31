@@ -581,7 +581,8 @@ body.inst *{transition:none!important}
   <div class="es" id="mkEs"><h4>Edit LIVE<button type="button" id="mkEsX">Done</button></h4>
     <div class="g2"><div><label>Viewers</label><input data-k="viewers" inputmode="numeric"></div><div><label>Fans (white pill)</label><input data-k="likes" inputmode="numeric"></div></div>
     <div class="g2"><div><label>Host likes</label><input data-k="hl" inputmode="numeric"></div><div><label>Est. earnings ($)</label><input data-k="est" inputmode="decimal"></div></div>
-    <label>Host name</label><input data-k="host"><label>Chat messages (one per line)</label><textarea data-k="chat" rows="3"></textarea><label class="ck"><input type="checkbox" data-k="auto"> Auto activity (viewers, likes, chat)</label><label class="ck"><input type="checkbox" data-k="gS"> Auto gifts · Small (1–100 coins)</label><label class="ck"><input type="checkbox" data-k="gM"> Auto gifts · Medium (100–1,000)</label><label class="ck"><input type="checkbox" data-k="gB"> Auto gifts · Big (1,000–10,000+)</label><label>LIVE goal · gift</label><input id="gSearch" placeholder="Search a gift (Rose, Lion…)" autocomplete="off"><div class="gres" id="gRes"></div><div class="g2"><div><label>Goal amount</label><input data-k="goalT" inputmode="numeric"></div><div><label>Received so far</label><input data-k="goalC" inputmode="numeric"></div></div><div class="gbt"><button type="button" data-g="S">Send small</button><button type="button" data-g="M">Send medium</button><button type="button" data-g="B">Send big</button></div><label>Host message</label><input data-k="msg">
+    <label>Host name</label><input data-k="host"><label>Chat messages (one per line)</label><textarea data-k="chat" rows="3"></textarea><label class="ck"><input type="checkbox" data-k="auto"> Auto activity (viewers, likes, chat)</label><label class="ck"><input type="checkbox" data-k="gS"> Auto gifts · Small (1–100 coins)</label><label class="ck"><input type="checkbox" data-k="gM"> Auto gifts · Medium (100–1,000)</label><label class="ck"><input type="checkbox" data-k="gB"> Auto gifts · Big (1,000–10,000+)</label><label>Gifts per second</label><input data-k="gps" inputmode="decimal" placeholder="0 = none, e.g. 10">
+<label>LIVE goal · gift</label><input id="gSearch" placeholder="Search a gift (Rose, Lion…)" autocomplete="off"><div class="gres" id="gRes"></div><div class="g2"><div><label>Goal amount</label><input data-k="goalT" inputmode="numeric"></div><div><label>Received so far</label><input data-k="goalC" inputmode="numeric"></div></div><div class="gbt"><button type="button" data-g="S">Send small</button><button type="button" data-g="M">Send medium</button><button type="button" data-g="B">Send big</button></div><label>Host message</label><input data-k="msg">
   </div>
 </div>
 
@@ -670,7 +671,7 @@ var DEF={bal:{amt:'4.38',cur:'USD',coins:'0',tx:'Exchange of Coins: USD0.02',rc:
  following:'10',followers:'10000',likes:'10000',bio:'',link:'',inbox:'99+',
  hls:[],newB:true,
  drafts:{on:false,n:'7',size:'208.7MB',img:'v1'},
- vids:[],live:{viewers:'0',likes:'166',hl:'0',est:'6.80',host:'',msg:'Sigueme y comenta tu user!',title:'',auto:true,goalId:'doughnut',goalT:'100',goalC:'0',gS:true,gM:true,gB:true,chat:'hola\nyooo\nhola bro\npocooo\nsaludos\nque haces\nsigueme\n🔥🔥\njaja\nbuen live'}};
+ vids:[],live:{viewers:'0',likes:'166',hl:'0',est:'6.80',host:'',msg:'Sigueme y comenta tu user!',title:'',auto:true,gps:'0.7',goalId:'doughnut',goalT:'100',goalC:'0',gS:true,gM:true,gB:true,chat:'hola\nyooo\nhola bro\npocooo\nsaludos\nque haces\nsigueme\n🔥🔥\njaja\nbuen live'}};
 var S;
 function clone(o){return JSON.parse(JSON.stringify(o))}
 function load(){try{var r=JSON.parse(localStorage.getItem(KEY)||'null');S=r?Object.assign(clone(DEF),r):clone(DEF);S.tabs=5;S.bal=Object.assign(clone(DEF).bal,S.bal||{});S.feed=Object.assign(clone(DEF).feed,S.feed||{});S.inb=Object.assign(clone(DEF).inb,S.inb||{});S.live=Object.assign(clone(DEF).live,S.live||{})}catch(e){S=clone(DEF)}}
@@ -924,13 +925,16 @@ function cmsg(kind,nm,txt){var c=$('lvChat'),d=document.createElement('div');d.c
  var body=kind==='sys'?'<div>'+esc(txt)+'</div>':kind==='chat'?'<div><span class="nm">'+esc(nm)+'</span><b>'+esc(txt)+'</b></div>':kind==='host'?'<div><span class="nm">'+esc(nm)+'<em class="hs">Host</em></span><b>'+esc(txt)+'</b></div>':'<div><span class="nm">'+esc(nm)+'</span> <span class="tx">'+esc(txt)+'</span></div>';
  d.innerHTML=av+body;c.appendChild(d);while(c.children.length>7)c.removeChild(c.firstChild)}
 function tick(){if(!mk.classList.contains('lon'))return;var l=L(),r=Math.random();
- if(Math.random()<.2){var gg=(lastG&&Math.random()<.15)?lastG:{g:(Math.random()<.3&&GIFTS.filter(function(x){return x.id===l.goalId})[0])||pickGift(),w:null};if(gg.g){lastG={g:gg.g,w:gift(gg.g,gg.w)};if(gg.g.a&&!gg.w&&Math.random()<.3){var nn=1+Math.floor(Math.random()*3),who2=lastG.w,gx=gg.g;for(var q=1;q<=nn;q++)setTimeout(function(){if(mk.classList.contains('lon'))gift(gx,who2)},q*1500)}paint();save();simT=setTimeout(tick,700+Math.random()*900);return}}
  if(r<.42){cmsg('join',who(),'joined');joined++;bump('viewers');if(Math.random()<.75)bump('likes')}
  else if(r<.72){var m=String(l.chat||'').split('\n').filter(Boolean);cmsg('chat',who(),m.length?pick(m):'hola')}
  else{cmsg('like',who(),'liked the LIVE');bump('hl');var rr=mk.getBoundingClientRect();heart(rr.right-30,rr.bottom-110)}
  paint();save();simT=setTimeout(tick,900+Math.random()*1400)}
-function startSim(){joined=0;lastG=null;gbs=[];$('lvGifts').innerHTML='';$('lvGan').innerHTML='';anPlaying=false;anQ=[];$('lvChat').innerHTML='';cmsg('sys','','Welcome to TikTok LIVE! Have fun interacting with your viewers in real time. Creators must be 18 or older to go LIVE. Viewers must be 18 or older to recharge and send Gifts. Remember to create a safe viewing experience by following our Community Guidelines.');cmsg('host',L().host||S.name,L().msg);clearTimeout(simT);if(L().auto!==false)simT=setTimeout(tick,1200)}
-function stopSim(){clearTimeout(simT)}
+var gT=null;
+function doGift(){var l=L(),gg=(lastG&&Math.random()<.15)?lastG:{g:(Math.random()<.3&&GIFTS.filter(function(x){return x.id===l.goalId})[0])||pickGift(),w:null};
+ if(gg.g){lastG={g:gg.g,w:gift(gg.g,gg.w)};if(gg.g.a&&!gg.w&&Math.random()<.3){var nn=1+Math.floor(Math.random()*3),who2=lastG.w,gx=gg.g;for(var q=1;q<=nn;q++)setTimeout(function(){if(mk.classList.contains('lon'))gift(gx,who2)},q*1500)}paint();save()}}
+function gtick(){clearTimeout(gT);if(!mk.classList.contains('lon')||L().auto===false)return;var r=parseFloat(L().gps);if(r>0){doGift();gT=setTimeout(gtick,Math.min(5000,1000/Math.min(r,30))*(.6+Math.random()*.8))}else gT=setTimeout(gtick,1000)}
+function startSim(){joined=0;lastG=null;gbs=[];$('lvGifts').innerHTML='';$('lvGan').innerHTML='';anPlaying=false;anQ=[];$('lvChat').innerHTML='';cmsg('sys','','Welcome to TikTok LIVE! Have fun interacting with your viewers in real time. Creators must be 18 or older to go LIVE. Viewers must be 18 or older to recharge and send Gifts. Remember to create a safe viewing experience by following our Community Guidelines.');cmsg('host',L().host||S.name,L().msg);clearTimeout(simT);if(L().auto!==false){simT=setTimeout(tick,1200);gT=setTimeout(gtick,1500)}}
+function stopSim(){clearTimeout(simT);clearTimeout(gT)}
 
 var GIFTS=[],lastG=null,gbs=[];
 fetch('gifts/gifts.json').then(function(r){return r.ok?r.json():[]}).then(function(j){if(Array.isArray(j)){var m={};j.forEach(function(x){var k=x.n+'|'+x.c,o=m[k];if(!o||(x.a&&!o.a))m[k]=x});GIFTS=j.filter(function(x){return m[x.n+'|'+x.c]===x})}}).catch(function(){});
@@ -970,7 +974,7 @@ function heart(x,y){var r=mk.getBoundingClientRect(),h=document.createElement('d
 $('gSearch').addEventListener('input',function(){var q=this.value.trim().toLowerCase(),r=$('gRes');if(!q){r.innerHTML='';return}var m=GIFTS.filter(function(x){return x.n.toLowerCase().indexOf(q)>-1}).slice(0,12);r.innerHTML=m.map(function(x){return '<div data-id="'+x.id+'"><img src="gifts/icons/'+x.id+'.webp" alt="">'+esc(x.n)+'<small>'+x.c.toLocaleString('en-US')+'</small></div>'}).join('')});
 $('gRes').addEventListener('click',function(e){var d=e.target.closest('[data-id]');if(!d)return;L().goalId=d.dataset.id;L().goalC='0';$('gSearch').value='';$('gRes').innerHTML='';qa('#mkEs [data-k=goalC]',function(i){i.value='0'});paint();save()});
 function openEs(){qa('#mkEs input,#mkEs textarea',function(i){if(i.type==='checkbox')i.checked=L()[i.dataset.k]!==false;else i.value=L()[i.dataset.k]||(i.dataset.k==='host'?S.name:'')});$('mkEs').classList.add('on')}
-qa('#mkEs input,#mkEs textarea',function(i){i.addEventListener('input',function(){L()[i.dataset.k]=i.type==='checkbox'?i.checked:i.value;if(i.dataset.k==='auto'){stopSim();if(i.checked&&mk.classList.contains('lon'))simT=setTimeout(tick,600)}paint();save()})});
+qa('#mkEs input,#mkEs textarea',function(i){i.addEventListener('input',function(){L()[i.dataset.k]=i.type==='checkbox'?i.checked:i.value;if(i.dataset.k==='auto'){stopSim();if(i.checked&&mk.classList.contains('lon')){simT=setTimeout(tick,600);gT=setTimeout(gtick,800)}}if(i.dataset.k==='gps'){clearTimeout(gT);if(mk.classList.contains('lon'))gT=setTimeout(gtick,200)}paint();save()})});
 window.addEventListener('resize',function(){if(mk.classList.contains('on'))tabPos()});
 })();
 
