@@ -433,7 +433,7 @@ body.inst *{transition:none!important}
 .cx .cmi.sys .ca{background:#3a3a3c}.cx .cmi.sys div{font-weight:500;color:#ffffffe0;text-shadow:0 1px 3px #0008}
 .cx .cmi .lv{display:inline-block;background:#2a3b8f;border-radius:calc(8*var(--u));padding:0 calc(10*var(--u));font-size:calc(26*var(--u));font-weight:700;margin-right:calc(8*var(--u));color:#fff}
 .cx .cmi .hs{background:#ffffff30;color:#fff;border-radius:calc(8*var(--u));padding:0 calc(10*var(--u));font-size:calc(24*var(--u));margin-left:calc(10*var(--u));font-style:normal}
-.cx .bb2{position:absolute;left:0;right:0;bottom:0;height:calc(180*var(--u));display:flex;align-items:center;gap:calc(14*var(--u));padding:0 calc(24*var(--u))}
+.cx .bb2{z-index:8;position:absolute;left:0;right:0;bottom:0;height:calc(180*var(--u));display:flex;align-items:center;gap:calc(14*var(--u));padding:0 calc(24*var(--u))}
 .cx .bb2 button{width:calc(75.4*var(--u));height:calc(75.4*var(--u));padding:0}.cx .bb2 button img{width:100%;height:100%}.cx .bb2 .sp{flex:1}
 .cx .fh{position:absolute;pointer-events:none;width:calc(80*var(--u));height:calc(80*var(--u));animation:fh 1.6s ease-out forwards;z-index:9}
 @keyframes fh{0%{transform:translateY(0) scale(.5);opacity:1}100%{transform:translateY(calc(-520*var(--u))) translateX(var(--dx)) scale(1.1);opacity:0}}
@@ -447,7 +447,7 @@ body.inst *{transition:none!important}
 .cx .gb .gi{position:absolute;left:calc(258*var(--u));top:calc(7*var(--u));width:calc(74*var(--u));height:calc(74*var(--u));display:block}.cx .gb .gi img{width:100%;height:100%;object-fit:contain;display:block;max-width:none}
 .cx .gb .x{position:absolute;left:calc(372*var(--u));top:calc(8*var(--u));font-size:calc(52*var(--u));font-weight:800;font-style:italic;color:#fff;text-shadow:0 2px 6px #0008;white-space:nowrap;line-height:1}.cx .gb .x.p{animation:xp .25s ease-out}
 @keyframes xp{0%{transform:scale(1.7)}100%{transform:scale(1)}}
-.cx .gan{position:absolute;inset:0 0 calc(180*var(--u)) 0;pointer-events:none;overflow:hidden;z-index:6}
+.cx .gan{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:6}
 .cx .gan canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cx .gan .bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 46%,#ffffff40,#0000 55%);animation:gbg 3.4s ease-out forwards}
 @keyframes gbg{0%{opacity:0}15%{opacity:1}80%{opacity:1}100%{opacity:0}}
