@@ -1,75 +1,66 @@
-/* 3D avatar viewer: same method as the mobile app.
-   1) worn asset ids from Roblox  2) POST /avatar/render3d on the Vercel server -> {obj, mtl, aabb}
-   3) /avatar/cdn/<hash> files are loaded with three.js (OBJ + MTL) and drawn in a canvas you can drag to rotate. */
+/* Avatar viewer: the same RoAvatar library and settings the mobile app uses
+   (robloxapp/assets/dist-*.js, FLAGS, FETCH_FUNC through the Vercel proxy, OutfitRenderer + idle animation),
+   so accessories, animations and effects are drawn by the same engine. */
 (function(){
-var BASE='https://create-app-iota.vercel.app',LIBS=[
- 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
- 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js',
- 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js'];
-var libP=null;
-function loadScript(u){return new Promise(function(res,rej){var s=document.createElement('script');s.src=u;s.onload=res;s.onerror=function(){rej(Error('lib '+u))};document.head.appendChild(s)})}
-function libs(){if(!libP)libP=LIBS.reduce(function(p,u){return p.then(function(){return loadScript(u)})},Promise.resolve());return libP}
-function vid(){var k='larp-vid-m',v='';try{v=localStorage.getItem(k)||'';if(!/^[a-f0-9]{16}$/.test(v)){v=Array.from({length:16},function(){return Math.floor(Math.random()*16).toString(16)}).join('');localStorage.setItem(k,v)}}catch(e){v=''}return v}
-function cdn(h){return BASE+'/avatar/cdn/'+h+(vid()?'?_v='+vid():'')}
-/* Roblox's own 3D thumbnail (same files the website viewer loads) */
-function rbxHost(h){var i=31;for(var k=0;k<h.length;k++)i^=h.charCodeAt(k);return 'https://t'+(i%8)+'.rbxcdn.com/'+h}
-function roblox3d(uid,get){
- if(!uid||!get)return Promise.reject(Error('no user'));
- var n=0;
- return (function poll(){return get('/rbx/thumbs/v1/users/avatar-3d?userId='+uid).then(function(r){
-  if(r.state==='Completed'&&r.imageUrl)return fetch(r.imageUrl).then(function(x){return x.json()}).then(function(m){return {meta:m,url:rbxHost}});
-  if(r.state==='Error'||r.state==='Blocked'||++n>14)throw Error('3D thumbnail '+(r.state||'timeout'));
-  return new Promise(function(res){setTimeout(res,1000)}).then(poll)})})();
+var VB='https://create-app-iota.vercel.app',LIB='/robloxapp/assets/dist-CjbySSkN-D81REfjO.js',P=null,cur=null;
+function boot(){
+ if(P)return P;
+ P=(async function(){
+  var R=await import(LIB);
+  R.FLAGS.ONLINE_ASSETS=true;
+  R.FLAGS.ASSETS_PATH='/robloxapp/roavatar/assets/rbxasset/';
+  R.FLAGS.RIG_PATH='/robloxapp/roavatar/assets/';
+  R.FLAGS.USE_WORKERS=false;
+  R.FLAGS.FETCH_FUNC=async function(e,t){
+   var n=typeof e==='string'?e:e instanceof URL?e.href:e.url,ext=/^https:\/\/([\w-]+\.)*(roblox\.com|rbxcdn\.com)(\/|$)/.test(n),
+       i=ext?await fetch(VB+'/api/rbx?u='+encodeURIComponent(n),t):await fetch(e,t);
+   if(!ext)return i;
+   try{
+    var buf=await i.clone().arrayBuffer(),u=new Uint8Array(buf);
+    if(u.length>2&&u[0]===31&&u[1]===139){
+     var g=new DecompressionStream('gzip'),out=await new Response(new Response(buf).body.pipeThrough(g)).arrayBuffer(),h=new Headers(i.headers);
+     h.delete('content-encoding');h.delete('content-length');
+     return new Response(out,{status:i.status,statusText:i.statusText,headers:h});
+    }
+   }catch(x){}
+   return i;
+  };
+  if(!await R.RBXRenderer.fullSetup(true,true,true))throw Error('renderer setup failed');
+  try{var pr=Math.min(2,window.devicePixelRatio||1),rd=(R.RBXRenderer.getRenderer&&R.RBXRenderer.getRenderer())||R.RBXRenderer.renderer;if(rd&&rd.getPixelRatio()>pr)rd.setPixelRatio(pr)}catch(x){}
+  return {R:R,auth:new R.Authentication()};
+ })();
+ P.catch(function(){P=null});
+ return P;
 }
-function render3d(ids){
- return fetch(BASE+'/avatar/render3d'+(vid()?'?_v='+vid():''),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({assetIds:ids})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error(j.error||'render3d '+r.status);return j})});
-}
-var cur=null;
-function show(box,ids,opt){
- opt=opt||{};
- opt=opt||{};var zoom=opt.zoom||1.25,log=opt.log||function(){};
- log('3D: asking the servers… ('+ids.length+' items)');
- var timeout=new Promise(function(_,rej){setTimeout(function(){rej(Error('timed out (no 3D model after 45s)'))},45000)});
- var A=render3d(ids).then(function(m){return {meta:m,url:cdn,from:'avatar server'}});
- var B=roblox3d(opt.uid,opt.get).then(function(r){r.from='Roblox';return r});
- var first=new Promise(function(res,rej){var f=0,errs=[];[A,B].forEach(function(p){p.then(res,function(e){errs.push(e&&e.message);if(++f===2)rej(Error(errs.join(' / ')))})})});
- var main=Promise.all([first.then(function(m){log('3D: loading the model ('+m.from+')…');return m}),libs()]).then(function(r){
-  var meta=r[0].meta,CDN=r[0].url,T=window.THREE;
-  if(cur){cur.dead=true;cancelAnimationFrame(cur.raf);try{cur.renderer.dispose()}catch(e){}if(cur.el&&cur.el.parentNode)cur.el.parentNode.removeChild(cur.el)}
-  var W=box.clientWidth||600,H=box.clientHeight||800;
-  var renderer=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
-  renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));renderer.setSize(W,H);renderer.outputEncoding=T.sRGBEncoding;
-  box.appendChild(renderer.domElement);renderer.domElement.className='av3d';
-  var scene=new T.Scene(),cam=new T.PerspectiveCamera(30,W/H,.1,100);
-  scene.add(new T.AmbientLight(0xffffff,.9));var d1=new T.DirectionalLight(0xffffff,.8);d1.position.set(-3,6,-8);scene.add(d1);var d2=new T.DirectionalLight(0xdfe7ff,.25);d2.position.set(5,2,-4);scene.add(d2);
-  var pivot=new T.Group();scene.add(pivot);
-  var a=meta.aabb,ctr=new T.Vector3((a.min.x+a.max.x)/2,(a.min.y+a.max.y)/2,(a.min.z+a.max.z)/2);
-  var st={dead:false,renderer:renderer,el:renderer.domElement,yaw:0,target:0,raf:0};cur=st;
-  var mgr=new T.LoadingManager();mgr.setURLModifier(function(u){return /^(blob:|data:)/.test(u)?u:CDN(u.split('/').pop())});
-  return new Promise(function(res2,rej2){
-   new T.MTLLoader(mgr).load(CDN(meta.mtl),function(mtl){
-    mtl.preload();var base={};
-    Object.keys(mtl.materials).forEach(function(k){
-     var m=mtl.materials[k];base[k]=m.color.clone();m.side=T.DoubleSide;if(m.specular)m.specular.set(0);m.alphaMap=null;m.transparent=false;m.opacity=1;
-     var info=mtl.materialsInfo&&mtl.materialsInfo[k],kd=info&&info.map_kd;
-     if(kd){m.color.set(0xffffff);m.map=null;new T.TextureLoader().load(CDN(kd.split('/').pop()),function(t){var c=document.createElement('canvas');c.width=t.image.width;c.height=t.image.height;var g=c.getContext('2d');g.fillStyle='#'+base[k].getHexString();g.fillRect(0,0,c.width,c.height);g.drawImage(t.image,0,0);var tx=new T.CanvasTexture(c);tx.encoding=T.sRGBEncoding;tx.flipY=true;tx.anisotropy=4;m.map=tx;m.needsUpdate=true})}
-    });
-    var ol=new T.OBJLoader(mgr);ol.setMaterials(mtl);
-    ol.load(CDN(meta.obj),function(obj){
-     if(st.dead)return;obj.position.sub(ctr);pivot.add(obj);
-     var h=a.max.y-a.min.y,r2=h*.8/Math.tan(cam.fov*Math.PI/360)/zoom;cam.position.set(0,h*.1,-r2);cam.lookAt(0,h*.06,0);
-     var down=null;var el=renderer.domElement;el.style.cursor='grab';
-     el.addEventListener('pointerdown',function(e){down={x:e.clientX,t:st.target};el.setPointerCapture&&el.setPointerCapture(e.pointerId);el.style.cursor='grabbing'});
-     el.addEventListener('pointermove',function(e){if(down)st.target=down.t+(e.clientX-down.x)*.018});
-     ['pointerup','pointercancel'].forEach(function(n){el.addEventListener(n,function(){down=null;el.style.cursor='grab'})});
-     (function loop(){if(st.dead)return;st.yaw+=(st.target-st.yaw)*.4;pivot.rotation.y=st.yaw;renderer.render(scene,cam);st.raf=requestAnimationFrame(loop)})();
-     res2()},null,function(){rej2(Error('obj'))});
-   },null,function(){rej2(Error('mtl'))});
+function show(box,uid,opt){
+ opt=opt||{};var log=opt.log||function(){};
+ return boot().then(function(E){
+  var R=E.R;log('Loading avatar…');
+  return R.API.Avatar.GetUserAvatarModel(Number(uid)).then(function(model){
+   if(!model||model instanceof Response)throw Error('avatar model '+(model&&model.status));
+   var rend=new R.OutfitRenderer(E.auth,model);
+   var el=R.RBXRenderer.getRendererElement();
+   el.style.cssText='width:100%;height:100%;display:block;touch-action:none';
+   if(el.parentNode!==box)box.appendChild(el);
+   R.RBXRenderer.setRendererSize(box.clientWidth,box.clientHeight);
+   var sc=R.RBXRenderer.firstScene;
+   try{sc.scene.background=null;R.RBXRenderer.renderer&&R.RBXRenderer.renderer.setClearColor(0,0);if(sc.plane)sc.plane.visible=false;if(sc.shadowPlane)sc.shadowPlane.visible=false}catch(x){}
+   rend.startAnimating();
+   return rend.setMainAnimation('idle').then(function(){
+    var D=R.RBXRenderer.controls;
+    function cam(){
+     rend.doCameraUpdateOnLoad=false;rend.doCameraUpdate=false;if(!D)return;
+     D.target.set(0,3,0);var d=7.6346,t=5*Math.PI/180;
+     D.object.position.set(0,3+d*Math.sin(t),-d*Math.cos(t));D.object.lookAt(D.target);
+     D.enableZoom=false;D.enablePan=false;D.minPolarAngle=D.maxPolarAngle=Math.PI/2-t;D.enableDamping=true;D.dampingFactor=.15;D.rotateSpeed=1.6;D.update();
+    }
+    cam();
+    var ro=new ResizeObserver(function(){if(box.clientWidth>0){R.RBXRenderer.setRendererSize(box.clientWidth,box.clientHeight);cam()}});ro.observe(box);
+    if(cur&&cur.ro)cur.ro.disconnect();cur={ro:ro,rend:rend};
+    return rend;
+   });
   });
  });
- return Promise.race([main,timeout]);
 }
-function status(){return fetch(BASE+'/avatar/status'+(vid()?'?_v='+vid():'')).then(function(r){return r.json()}).then(function(e){return {raw:e,authed:!!(e.authed!=null?e.authed:e.ok)}}).catch(function(){return {authed:false,raw:null}})}
-function render2d(ids){return fetch(BASE+'/avatar/render'+(vid()?'?_v='+vid():''),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({assetIds:ids,exact:true,lookId:''})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error(j.error||j.reason||'render '+r.status);return j.imageUrl})})}
-window.Av3D={show:show,status:status,render2d:render2d};
+window.Av3D={show:show,boot:boot};
 })();
