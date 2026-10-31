@@ -123,14 +123,14 @@ function drawStatic(){
  $('chartRows').innerHTML=CSEC.map(function(s,k){
   var st=CSTAT[k],pre=k===0?'c_t':k===1?'c_u':'',cards='';
   if(st.length)cards=st.map(function(g,i){return ccard(g[0],g[1],g[2],'img/'+pre+i+'.webp')}).join('');
-  else for(var i=0;i<10;i++)cards+='<div class="cc"><img class="t" alt=""><b></b></div>';
+  else for(var i=0;i<16;i++)cards+='<div class="cc"><img class="t" alt=""><b></b></div>';
   return crowHtml(s,cards)}).join('');
  [].forEach.call(document.querySelectorAll('#chartRows img.t'),function(i){i.classList.add('ld')});
 }
 var chSeq=0;
 function loadCharts(){
  var my=++chSeq,sid=Math.random().toString(36).slice(2,12),q='&device='+CH.dev[1]+'&country='+CH.cty[1];
- return Promise.all(CSEC.map(function(s){return J('/rbx/apis/explore-api/v1/get-sort-content?sessionId='+sid+'&sortId='+s[0]+q).then(function(r){return (r.games||[]).slice(0,12)}).catch(function(){return null})})).then(function(res){
+ return Promise.all(CSEC.map(function(s){return J('/rbx/apis/explore-api/v1/get-sort-content?sessionId='+sid+'&sortId='+s[0]+q).then(function(r){return (r.games||[]).slice(0,30)}).catch(function(){return null})})).then(function(res){
   if(my!==chSeq||!res.some(function(x){return x&&x.length}))return;
   var ids=[];res.forEach(function(x){(x||[]).forEach(function(g){ids.push(g.universeId)})});
   var ch=[];for(var i=0;i<ids.length;i+=100)ch.push(J('/rbx/thumbs/v1/games/icons?universeIds='+ids.slice(i,i+100).join(',')+'&returnPolicy=PlaceHolder&size=256x256&format=Webp&isCircular=false').catch(function(){return {data:[]}}));
