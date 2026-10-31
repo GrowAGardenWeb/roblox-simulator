@@ -396,7 +396,7 @@ function wornIds(as){
  for(var i=as.length-1;i>=0;i--){var x=as[i];if(acc[x.t]||x.t===61){if(out.indexOf(x.id)<0)out.unshift(x.id);continue}var k=(x.t===17||x.t===79)?'head':x.t;if(seen[k])continue;seen[k]=1;out.unshift(x.id)}
  return out;
 }
-function av3dMsg(t,err){var e=$('av3dErr');if(!t){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='av3dErr';$('avR').appendChild(e)}e.className='av-err av-err2'+(err?'':' av-info');e.textContent=t}
+function av3dMsg(t,err){if(!err){var e0=$('av3dErr');if(e0)e0.remove();return}var e=$('av3dErr');if(!t){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='av3dErr';$('avR').appendChild(e)}e.className='av-err av-err2'+(err?'':' av-info');e.textContent=t}
 /* the mobile app's own avatar engine (animations, accessories, effects), shown from the same code in an iframe */
 var mvFrame=null;
 function mobileViewer(){
