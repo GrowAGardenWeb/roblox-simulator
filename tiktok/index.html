@@ -299,6 +299,7 @@ body.inst *{transition:none!important}
 [hidden]{display:none!important}
 .tabs.five button{flex:1;padding:0}
 .cell{cursor:pointer}
+.cell .pin{position:absolute;top:calc(12*var(--u));left:calc(12*var(--u));background:#fe2c55;color:#fff;font-size:calc(24*var(--u));font-weight:700;line-height:1;padding:calc(7*var(--u)) calc(12*var(--u));border-radius:calc(6*var(--u))}
 .cell .vtag{position:absolute;top:calc(12*var(--u));right:calc(12*var(--u));width:calc(40*var(--u));height:calc(40*var(--u));border-radius:50%;background:#00000066;display:grid;place-items:center}
 .cell .vtag svg{width:calc(20*var(--u));height:calc(20*var(--u))}
 /* video viewer */
@@ -686,6 +687,13 @@ body.inst *{transition:none!important}
 <aside class="ed" id="ed" aria-hidden="true"><div class="ed-in">
   <div class="ed-bar"><button class="rst" id="reset" type="button">Reset</button><h2>Edit profile</h2><button class="done" id="done" type="button">Done</button></div>
   
+  <div class="card"><h3>Load from user</h3>
+    <p class="hint" style="margin-top:0">Loads a whole profile: photo, name, username, bio, link, followers, following, likes, verified and every video with its views and pin. First save the file with the <a href="profile-tool/" target="_blank" style="color:#fe2c55;font-weight:700">Profile grabber</a> (bookmark that runs on tiktok.com/@user), then pick it here.</p>
+    <div class="ac"><label class="btn" for="fProf">Choose profile.json</label></div><input type="file" id="fProf" accept=".json,application/json" hidden>
+    <div class="fld" style="margin-top:12px"><label for="eProf">…or paste the JSON</label><textarea id="eProf" rows="3" spellcheck="false" placeholder='{"name":"…","handle":"…","followers":"…","videos":[…]}'></textarea></div>
+    <div class="ac"><button class="btn" id="loadProf" type="button">Load profile</button></div>
+    <p class="hint" id="profMsg"></p>
+  </div>
   <div class="card"><h3>Profile</h3>
     <div class="fld"><label>Photo</label><div class="pic"><img class="pv" id="pvAv" alt=""><div class="ac"><label class="btn" for="fAv">Change photo</label><button class="btn g" id="rmAv" type="button">Default</button></div><input type="file" id="fAv" accept="image/*"></div></div>
     <div class="fld"><label for="eName">Name</label><input type="text" id="eName" maxlength="40" autocomplete="off"></div>
@@ -756,7 +764,7 @@ function clone(o){return JSON.parse(JSON.stringify(o))}
 function load(){try{var r=JSON.parse(localStorage.getItem(KEY)||'null');S=r?Object.assign(clone(DEF),r):clone(DEF);S.tabs=5;S.bal=Object.assign(clone(DEF).bal,S.bal||{});S.feed=Object.assign(clone(DEF).feed,S.feed||{});S.inb=Object.assign(clone(DEF).inb,S.inb||{});S.live=Object.assign(clone(DEF).live,S.live||{})}catch(e){S=clone(DEF)}}
 var st=null;function save(){clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){try{alert('The pictures are too big to keep. Use smaller ones.')}catch(_){}}},250)}
 function $(id){return document.getElementById(id)}
-function src(v,d){return v&&String(v).indexOf('data:')===0?v:'img/'+(v||d)+'.webp'}
+function src(v,d){return v&&/^(data:|https?:)/.test(String(v))?v:'img/'+(v||d)+'.webp'}
 function fmt(v){v=String(v==null?'':v).trim();if(!/^\d+(\.\d+)?$/.test(v))return v;var n=parseFloat(v);
  function t1(x){return (Math.floor(x*10)/10).toFixed(1).replace(/\.0$/,'')}
  if(n>=1e9)return t1(n/1e9)+'B';if(n>=1e6)return t1(n/1e6)+'M';if(n>=1e4)return t1(n/1e3)+'K';return String(Math.round(n))}
@@ -785,7 +793,7 @@ function render(){
  $('hls').innerHTML=h;$('hls').style.display=h?'':'none';
  var g='';
  if(S.drafts.on)g+='<div class="cell"><img src="'+esc(src(S.drafts.img,'v1'))+'" alt=""><span class="dr">Drafts: '+esc(S.drafts.n)+'</span><div class="ov">'+STACK+esc(S.drafts.size)+'</div></div>';
- S.vids.forEach(function(v,i){g+='<div class="cell" data-i="'+i+'"><img src="'+esc(src(v.img,'v2'))+'" alt="">'+(v.label?'<div class="lab">'+esc(v.label)+'</div>':(v.views?'<div class="ov">'+PLAY+esc(v.views)+'</div>':''))+(v.vid?'<span class="vtag"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" fill="#fff"/></svg></span>':'')+'</div>'});
+ S.vids.forEach(function(v,i){g+='<div class="cell" data-i="'+i+'"><img src="'+esc(src(v.img,'v2'))+'" alt="">'+(v.label?'<div class="lab">'+esc(v.label)+'</div>':(v.views?'<div class="ov">'+PLAY+esc(v.views)+'</div>':''))+(v.pin?'<div class="pin">Pinned</div>':'')+(v.vid?'<span class="vtag"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" fill="#fff"/></svg></span>':'')+'</div>'});
  $('grid').innerHTML=g;
  renderMore();updEmpty();
  requestAnimationFrame(moveAll);
@@ -833,7 +841,7 @@ function fill(){
  $('pvAv').src=src(S.avatar,'avatar');$('pvAv').style.background=S.avBg;
  var h='';S.hls.forEach(function(x,i){h+='<div class="li"><img class="pv c" src="'+esc(src(x.img,'hl'))+'" data-hp="'+i+'" alt=""><div class="f"><input type="text" value="'+esc(x.name)+'" data-hn="'+i+'" maxlength="20" placeholder="Name"><div class="ac"><button class="btn g" data-hp="'+i+'" type="button">Photo</button><button class="btn r" data-hd="'+i+'" type="button">Delete</button></div></div></div>'});
  $('eHls').innerHTML=h||'<p class="hint">No highlights.</p>';
- var v='';S.vids.forEach(function(x,i){v+='<div class="li"><img class="pv" src="'+esc(src(x.img,'v2'))+'" data-vp="'+i+'" alt=""><div class="f"><div class="lb">Views'+(x.vid?'<span class="tg">video added</span>':'')+'</div><input type="text" value="'+esc(x.views)+'" data-vv="'+i+'" placeholder="Views, for example 36.9K or 1200000"><input type="text" value="'+esc(x.label)+'" data-vl="'+i+'" placeholder="Label over the video"><div class="ac"><button class="btn" data-vv2="'+i+'" type="button">'+(x.vid?'Change video':'Upload video')+'</button>'+(x.vid?'<button class="btn g" data-vx="'+i+'" type="button">Remove video</button>':'')+'<button class="btn g" data-vp="'+i+'" type="button">Cover</button><button class="btn g" data-vu="'+i+'" type="button">Up</button><button class="btn r" data-vd="'+i+'" type="button">Delete</button></div></div></div>'});
+ var v='';S.vids.forEach(function(x,i){v+='<div class="li"><img class="pv" src="'+esc(src(x.img,'v2'))+'" data-vp="'+i+'" alt=""><div class="f"><div class="lb">Views'+(x.vid?'<span class="tg">video added</span>':'')+'</div><input type="text" value="'+esc(x.views)+'" data-vv="'+i+'" placeholder="Views, for example 36.9K or 1200000"><input type="text" value="'+esc(x.label)+'" data-vl="'+i+'" placeholder="Label over the video"><div class="ac"><button class="btn" data-vv2="'+i+'" type="button">'+(x.vid?'Change video':'Upload video')+'</button>'+(x.vid?'<button class="btn g" data-vx="'+i+'" type="button">Remove video</button>':'')+'<button class="btn g" data-vp="'+i+'" type="button">Cover</button><button class="btn g" data-vpin="'+i+'" type="button">'+(x.pin?'Unpin':'Pin')+'</button><button class="btn g" data-vu="'+i+'" type="button">Up</button><button class="btn r" data-vd="'+i+'" type="button">Delete</button></div></div></div>'});
  $('eVids').innerHTML=v||'<p class="hint">No videos.</p>';
  var cl='';S.cols.forEach(function(x,k){cl+='<div class="li" style="grid-template-columns:1fr auto"><div class="f"><input type="text" value="'+esc(x.name)+'" data-cn="'+k+'" maxlength="30"><label class="tog" style="padding:0;font-size:13px">Private (lock)<input type="checkbox" data-cl="'+k+'"'+(x.lock?' checked':'')+'></label></div><button class="btn r" data-cd="'+k+'" type="button">Delete</button></div>'});
  $('eCols').innerHTML=cl||'<p class="hint">No collections.</p>';
@@ -865,10 +873,23 @@ fVid.addEventListener('change',function(){var f=fVid.files&&fVid.files[0];fVid.v
 $('eVids').addEventListener('input',function(e){var t=e.target;if(t.dataset.vv!=null){S.vids[+t.dataset.vv].views=t.value}else if(t.dataset.vl!=null){S.vids[+t.dataset.vl].label=t.value}else return;render();save()});
 $('eVids').addEventListener('click',function(e){var t=e.target.closest('[data-vp],[data-vd],[data-vu],[data-vv2],[data-vx]');if(!t)return;
  if(t.dataset.vd!=null){var d=S.vids.splice(+t.dataset.vd,1)[0];if(d&&d.vid)vDel(d.vid);sync()}
+ else if(t.dataset.vpin!=null){var pv=S.vids[+t.dataset.vpin];pv.pin=!pv.pin;sync()}
  else if(t.dataset.vu!=null){var i=+t.dataset.vu;if(i>0){var x=S.vids.splice(i,1)[0];S.vids.splice(i-1,0,x);sync()}}
  else if(t.dataset.vv2!=null){vidIdx=+t.dataset.vv2;fVid.click()}
  else if(t.dataset.vx!=null){var it=S.vids[+t.dataset.vx];if(it.vid){vDel(it.vid);it.vid=null}sync()}
  else{var j=+t.dataset.vp;pickImage(420,function(dd){S.vids[j].img=dd;sync()})}});
+
+function applyProfile(j){
+ if(!j||typeof j!=='object')throw new Error('bad');
+ if(j.name!=null)S.name=String(j.name);if(j.handle!=null)S.handle=String(j.handle).replace(/^@/,'');if(j.bio!=null)S.bio=String(j.bio);if(j.link!=null)S.link=String(j.link);
+ if(j.verified!=null)S.ver=!!j.verified;
+ ['followers','following','likes'].forEach(function(k){if(j[k]!=null&&j[k]!=='')S[k]=String(j[k])});
+ if(j.avatar)S.avatar=j.avatar;
+ if(Array.isArray(j.videos)){S.vids=j.videos.map(function(v){return{img:v.img||'v2',views:v.views!=null?String(v.views):'',label:'',vid:null,pin:!!v.pinned||!!v.pin}})}
+ sync()}
+function loadProfText(t){var m=$('profMsg');try{var j=JSON.parse(t);applyProfile(j);m.textContent='Loaded @'+S.handle+': '+(j.videos?j.videos.length:0)+' videos'+(j.videos&&j.videos.some(function(v){return v.pinned||v.pin})?' (with pinned)':'')+'.'}catch(e){m.textContent='That does not look like a profile.json file.'}}
+$('fProf').addEventListener('change',function(){var f=this.files&&this.files[0];this.value='';if(!f)return;var r=new FileReader();r.onload=function(){loadProfText(String(r.result))};r.readAsText(f)});
+$('loadProf').addEventListener('click',function(){var t=$('eProf').value.trim();if(!t){$('profMsg').textContent='Paste the JSON first or choose the file.';return}loadProfText(t);$('eProf').value=''});
 $('addVid').addEventListener('click',function(){S.vids.unshift({img:'v2',views:'0',label:'',vid:null});sync()});
 /* viewer */
 var vw=$('vw'),vp=$('vp'),vurl=null,muted=false;
