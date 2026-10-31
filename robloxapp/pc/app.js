@@ -345,35 +345,49 @@ function avStatic(){
  else h+='<div class="avg">'+rec.map(itCard).join('')+'</div>';
  $('avRows').innerHTML=h;[].forEach.call(document.querySelectorAll('#avRows .it'),function(e,i){if(avCat!=='all'||i>=21){e.querySelector('b').style.visibility='hidden';e.querySelector('.cr').style.visibility='hidden'}})}
 function catSearch(q,limit,cursor){
- var p='Category='+q.category+'&Limit='+limit+'&SortType='+(q.sort||1)+'&IncludeNotForSale=false'+(q.subcategory?'&Subcategory='+q.subcategory:'')+(q.keyword?'&Keyword='+encodeURIComponent(q.keyword):'')+(q.extra||'')+(cursor?'&Cursor='+cursor:'');
+ var p='Category='+q.category+'&Limit='+limit+'&SortType='+(q.sort==null?1:q.sort)+'&IncludeNotForSale=false'+(q.subcategory?'&Subcategory='+q.subcategory:'')+(q.keyword?'&Keyword='+encodeURIComponent(q.keyword):'')+(q.extra||'')+(cursor?'&Cursor='+cursor:'');
  return J('/rbx/catalog/v1/search/items/details?'+p).then(function(r){
   var d=(r.data||[]).slice(0,limit),a=d.filter(function(e){return e.itemType==='Asset'}).map(function(e){return e.id}),b=d.filter(function(e){return e.itemType==='Bundle'}).map(function(e){return e.id}),im={},jobs=[];
   if(a.length)jobs.push(J('/rbx/thumbs/v1/assets?assetIds='+a.join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t){(t.data||[]).forEach(function(x){if(x.imageUrl)im['Asset'+x.targetId]=x.imageUrl})}).catch(function(){}));
   if(b.length)jobs.push(J('/rbx/thumbs/v1/bundles/thumbnails?bundleIds='+b.join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t){(t.data||[]).forEach(function(x){if(x.imageUrl)im['Bundle'+x.targetId]=x.imageUrl})}).catch(function(){}));
-  return Promise.all(jobs).then(function(){return d.map(function(e){return {name:e.name,creator:e.creatorName,assetType:Number(e.assetType),price:(e.isOffSale||e.priceStatus==='Off Sale')?null:(e.lowestPrice!=null?e.lowestPrice:e.price),img:im[e.itemType+e.id]}})})});
+  return Promise.all(jobs).then(function(){var o=d.map(function(e){return {name:e.name,creator:e.creatorName,assetType:Number(e.assetType),price:(e.isOffSale||e.priceStatus==='Off Sale')?null:(e.lowestPrice!=null?e.lowestPrice:e.price),img:im[e.itemType+e.id]}});o.next=r.nextPageCursor||'';return o})});
 }
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function rnd(q,n){return catSearch({category:q.category,subcategory:q.subcategory,keyword:q.keyword,sort:Math.floor(Math.random()*4)},30).then(function(l){return shuf(l).slice(0,n)})}
 var BGW=[{category:1,extra:'&AssetTypes=AvatarBackground'},{category:1,extra:'&assetTypeIds=92'},{category:1,keyword:'background'}];
 function catItems(q,limit){
  if(!q.bg)return catSearch(q,limit);
  var k=0;return (function next(){if(k>=BGW.length)return Promise.resolve([]);var w=BGW[k++];return catSearch(w,60).then(function(l){l=l.filter(function(x){return x.assetType===92});return l.length?l.slice(0,limit):next()}).catch(next)})();
 }
 function avErr(w){var e=$('avErrT');if(!e){e=document.createElement('div');e.id='avErrT';e.className='av-err';$('avSc').insertBefore(e,$('avSc').firstChild)}e.textContent=w+' did not load. '+(FAILS.length?'['+FAILS.slice(-3).join(' · ')+']':'')}
-function loadAv(){var e0=$('avErrT');if(e0)e0.remove();
- var my=++avSeq,q=CATQ[avCat];
+var avNext='',avBusy=false;
+function avRow(title,items,extra){return '<h3 class="avh"'+(extra&&extra.mt?' style="margin-top:22px"':'')+'>'+e2(title)+(extra&&extra.all?'<a>See All</a>':'')+'</h3><div class="avg row">'+items.map(itCard).join('')+'</div>'}
+function loadAv(){
+ var e0=$('avErrT');if(e0)e0.remove();
+ var my=++avSeq,q=CATQ[avCat];avNext='';
  if(avCat==='all'){
-  Promise.all([catItems({category:1},21),catItems({category:18,subcategory:37},7),catItems({category:11},14),catItems({category:3,sort:2},14)]).then(function(r){
+  Promise.all([rnd({category:1},21),rnd({category:18,subcategory:37},14),rnd({category:11},14),catSearch({category:3,sort:2},14)]).then(function(r){
    if(my!==avSeq)return;if(!r[0].length){avErr('Marketplace');return}
-   $('avRows').innerHTML=avSec('Recommended For You',r[0])+avSec('Discover Futuristic Styles',r[1],{mt:1,all:1})+(r[2].length?avSec('Worth A Look',r[2],{mt:1}):'')+(r[3].length?avSec('Trending Clothing',r[3],{mt:1}):'');
+   $('avRows').innerHTML=avSec('Recommended For You',r[0])+avRow('Discover Futuristic Styles',r[1],{mt:1,all:1})+(r[2].length?avRow('Worth A Look',r[2],{mt:1}):'')+(r[3].length?avRow('Trending Clothing',r[3],{mt:1}):'');
   }).catch(function(){avErr('Marketplace')});
   return;
  }
  var sub=q.chips?(avChip==null?q.chips[0][1]:avChip):q.subcategory;
- catItems({category:q.category,subcategory:sub,keyword:q.keyword,bg:q.bg},28).then(function(l){
-  if(my!==avSeq)return;
-  $('avRows').innerHTML=chipsHtml(q)+(l.length?'<div class="avg">'+l.map(itCard).join('')+'</div>':'<div class="il-none">'+(avCat==='backgrounds'?'Unlock free exclusive backgrounds with Plus.':'No items')+'</div>');
- }).catch(function(){});
+ var done=function(l,add){
+  if(my!==avSeq)return;avNext=l.next||'';
+  if(add){var g=document.querySelector('#avRows .avg.pg');if(g)g.insertAdjacentHTML('beforeend',l.map(itCard).join(''));return}
+  $('avRows').innerHTML=chipsHtml(q)+(l.length?'<div class="avg pg">'+l.map(itCard).join('')+'</div>':'<div class="il-none">'+(avCat==='backgrounds'?'Unlock free exclusive backgrounds with Plus.':'No items')+'</div>');
+ };
+ (q.bg?catItems({category:q.category,bg:true},30):catSearch({category:q.category,subcategory:sub,keyword:q.keyword},30)).then(function(l){done(l)}).catch(function(){avErr('Marketplace')});
+ avMore=function(){
+  if(!avNext||avBusy||q.bg)return;avBusy=true;
+  catSearch({category:q.category,subcategory:sub,keyword:q.keyword},30,avNext).then(function(l){avBusy=false;done(l,true)}).catch(function(){avBusy=false});
+ };
 }
+var avMore=function(){};
+$('avSc').addEventListener('scroll',function(){var e=this;if(e.scrollTop+e.clientHeight>e.scrollHeight-600)avMore()},{passive:true});
 document.addEventListener('load',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.closest&&t.closest('.it .ph'))t.classList.add('ld')},true);
+function av3dMsg(t,err){var e=$('av3dErr');if(!t){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='av3dErr';$('avR').appendChild(e)}e.className='av-err av-err2'+(err?'':' av-info');e.textContent=t}
 function avUser(){
  /* same method as the mobile app: worn items -> 3D render on the Vercel server -> three.js */
  var showFig=function(id){J('/rbx/thumbs/v1/users/avatar?userIds='+id+'&size=720x720&format=Png&isCircular=false').then(function(t){var u=t.data&&t.data[0]&&t.data[0].imageUrl;if(!u||window.__av3d)return;$('avFig').src=u;$('avBg').hidden=false;$('avFb').hidden=true}).catch(function(){})};
@@ -381,9 +395,9 @@ function avUser(){
   showFig(id);
   J('/rbx/avatar/v1/users/'+id+'/avatar').then(function(a){
    var ids=(a.assets||[]).map(function(x){return x.id});if(!ids.length)throw Error('no assets');
-   $('avBg').hidden=false;
-   return window.Av3D.show($('av3d'),ids,{zoom:1.25}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true})
-  }).catch(function(e){console.warn('3D avatar failed',e&&e.message);var t=$('av3dErr');if(!t){t=document.createElement('div');t.id='av3dErr';t.className='av-err av-err2';$('avR').appendChild(t)}t.textContent='3D avatar: '+(e&&e.message||'failed')+(FAILS.length?' ['+FAILS.slice(-2).join(' · ')+']':'')});
+   $('avBg').hidden=false;av3dMsg('Loading 3D avatar…');
+   return window.Av3D.show($('av3d'),ids,{zoom:1.25,log:av3dMsg}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true;av3dMsg('')})
+  }).catch(function(e){console.warn('3D avatar failed',e&&e.message);av3dMsg('3D avatar: '+(e&&e.message||'failed')+(FAILS.length?' ['+FAILS.slice(-2).join(' · ')+']':''),1)});
  };
  if(S.user.id)go(S.user.id);else findUser(S.user.name).then(function(u){S.user.id=u.id;save();go(u.id)}).catch(function(){});
 }
