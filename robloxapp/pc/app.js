@@ -337,7 +337,7 @@ function avSec(title,items,extra){return '<h3 class="avh"'+(extra&&extra.mt?' st
 function chipsHtml(q){return q.chips?'<div class="mchips" id="mchips">'+q.chips.map(function(c){return '<button data-c="'+c[1]+'" class="'+((avChip==null?q.chips[0][1]:avChip)===c[1]?'on':'')+'">'+e2(c[0])+'</button>'}).join('')+'</div>':''}
 function avStatic(){
  var q=CATQ[avCat],h=chipsHtml(q),sk=function(n){var o='';for(var i=0;i<n;i++)o+='<div class="it isk"><div class="ph"></div><b></b><div class="cr"></div><div class="pr"></div></div>';return o};
- if(avCat==='all')h+='<h3 class="avh">Recommended For You</h3><div class="avg">'+sk(21)+'</div><h3 class="avh" style="margin-top:22px">Discover Futuristic Styles</h3><div class="avg row">'+sk(8)+'</div>';
+ if(avCat==='all')h+='<h3 class="avh">Recommended For You</h3><div class="avg">'+sk(21)+'</div><h3 class="avh" style="margin-top:22px">Explore Styles</h3><div class="avg row">'+sk(8)+'</div>';
  else h+='<div class="avg pg">'+sk(28)+'</div>';
  $('avRows').innerHTML=h;
 }
@@ -366,7 +366,7 @@ function loadAv(){
  if(avCat==='all'){
   Promise.all([rnd({category:1},21),rnd({category:18,subcategory:37},14),rnd({category:11},14),catSearch({category:3,sort:2},14)]).then(function(r){
    if(my!==avSeq)return;if(!r[0].length){avErr('Marketplace');return}
-   $('avRows').innerHTML=avSec('Recommended For You',r[0])+avRow('Discover Futuristic Styles',r[1],{mt:1,all:1})+(r[2].length?avRow('Worth A Look',r[2],{mt:1}):'')+(r[3].length?avRow('Trending Clothing',r[3],{mt:1}):'');
+   $('avRows').innerHTML=avSec('Recommended For You',r[0])+avRow('Explore Styles',r[1],{mt:1,all:1})+(r[2].length?avRow('Worth A Look',r[2],{mt:1}):'')+(r[3].length?avRow('Trending Clothing',r[3],{mt:1}):'');
   }).catch(function(){avErr('Marketplace')});
   return;
  }
@@ -432,25 +432,53 @@ function avMode(m){var bb=document.querySelector('.av-buy');if(bb&&m==='c'){bb.h
 $('avM').addEventListener('click',function(){avMode('m')});
 $('avC').addEventListener('click',function(){avMode('c')});
 /* Customize */
-var cuCat='all',cuSeq=0,cuSub='Full Body';
+var cuCat='all',cuSeq=0,cuSub='';
 var CUT={all:'Hat,HairAccessory,FaceAccessory,NeckAccessory,ShoulderAccessory,FrontAccessory,BackAccessory,WaistAccessory',accessories:'Hat,HairAccessory,FaceAccessory,NeckAccessory,ShoulderAccessory,FrontAccessory,BackAccessory,WaistAccessory',clothing:'Shirt,Pants,TShirt',emotes:'EmoteAnimation',animations:'RunAnimation,WalkAnimation,FallAnimation,JumpAnimation,IdleAnimation,ClimbAnimation,SwimAnimation'};
 function cuSkel(n){var h='';for(var i=0;i<n;i++)h+='<div class="it"><div class="ph"><span class="dt">Details</span></div></div>';$('cuGrid').innerHTML=h}
+var CUS={
+ body:[['Full Body','full-body','bundle',0],['Hair','hair','DynamicHead',0],['Head','head','DynamicHead',0],['Build','build','',0],['Skin','skin','',0]],
+ clothing:[['Top','top','TShirtAccessory,ShirtAccessory,SweaterAccessory',[[59],[58],[62]]],['Outerwear','outerwear','JacketAccessory',[[61]]],['Bottom','bottom','PantsAccessory,ShortsAccessory,DressSkirtAccessory',[[60],[63],[65]]],['Shoes','shoes','LeftShoeAccessory,RightShoeAccessory',[[64]]],['Shirt Classic','classic-shirt','Shirt',[[56]]],['Pants Classic','classic-pants','Pants',[[57]]],['T-Shirt Classic','classic-tshirt','TShirt',[[55]]],['Clear','clear','',0]],
+ accessories:[['Head','head-accessory','Hat',[[54]]],['Face','face-accessory','FaceAccessory',[[21]]],['Neck','neck','NeckAccessory',[[22]]],['Back','back','BackAccessory',[[25]]],['Waist','waist','WaistAccessory',[[26]]],['Shoulder','shoulder','ShoulderAccessory',[[23]]],['Front','front','FrontAccessory',[[24]]],['Gear','gear','',[[5]]],['Clear','clear','',0]],
+ animations:[['Full Set','full-set','',[[38]]],['Idle','idle','IdleAnimation',[[38]]],['Walk','walk','WalkAnimation',[[38]]],['Run','run','RunAnimation',[[38]]],['Jump','jump','JumpAnimation',[[38]]],['Fall','fall','FallAnimation',[[38]]],['Climb','climb','ClimbAnimation',[[38]]],['Swim','swim','SwimAnimation',[[38]]],['Clear','clear','',0]]
+};
+var CUCAT={clothing:3,accessories:11,animations:12};
+function cuDef(){var l=CUS[cuCat];return l?l[0][0]:''}
 function drawBsub(){
- var on=cuCat==='body';$('bsub').hidden=!on;if(!on)return;
- var S2=[['Full Body','<img src="img/av_me.webp" alt="">'],['Hair','<i data-ic="plusp-r">'+I('person-plus-h',40)+'</i>'],['Head',''],['Build','<i>'+I('build-r',36)+'</i>'],['Skin','<b class="skc"></b>']];
- $('bsr').innerHTML=S2.map(function(s){return '<div class="bsc'+(cuSub===s[0]?' on':'')+'" data-n="'+s[0]+'"><span>'+s[1]+'</span><em>'+s[0]+'</em></div>'}).join('');
+ var l=CUS[cuCat];$('bsub').hidden=!l;if(!l)return;
+ if(!cuSub||!l.some(function(x){return x[0]===cuSub}))cuSub=l[0][0];
+ $('bsr').innerHTML=l.map(function(s){
+  var inner=s[0]==='Clear'?'<i>'+I('av-clear',34)+'</i>':(s[0]==='Skin'?'<b class="skc"></b>':'<i>'+I('av-'+s[1],34)+'</i>'+(s[0]!=='Full Body'&&cuCat!=='body'?'<u>'+I('av-plus',14)+'</u>':''));
+  return '<div class="bsc'+(cuSub===s[0]?' on':'')+'" data-n="'+s[0]+'"><span>'+inner+'</span><em>'+s[0]+'</em></div>'}).join('');
+ var bp=document.querySelector('.bpl');if(bp)bp.style.display=cuCat==='body'?'':'none';
 }
+function cuTail(l){
+ /* You May Also Like + Shop for More (clothing, accessories, animations) */
+ var q=CUCAT[cuCat],sc=null;if(!q){return}
+ var sel=(CUS[cuCat]||[]).filter(function(x){return x[0]===cuSub})[0];sc=sel&&sel[3]&&sel[3][0]?sel[3][0][0]:undefined;
+ catSearch({category:q,subcategory:sc,sort:2},30).then(function(r){
+  if(!r.length||cuCat!==cuTailFor)return;
+  var el=$('cuTail');if(!el)return;
+  el.innerHTML='<h3 class="avh">You May Also Like</h3><div class="avg row">'+r.slice(0,6).map(function(x){return itCard(x).replace('<div class="pr">','<div class="pr clk">')}).join('')+'</div><button class="shopmore" id="shopMore">Shop for More</button>';
+  $('shopMore').addEventListener('click',function(){avMode('m');var b=document.querySelector('#cats button[data-k="'+cuCat+'"]');if(b)b.click()});
+ }).catch(function(){});
+}
+var cuTailFor='';
 function loadCust(){
- var my=++cuSeq;drawBsub();cuSkel(35);
- var t=CUT[cuCat];if(!t||!S.user.id)return;
+ var my=++cuSeq;drawBsub();cuSkel(0);cuTailFor=cuCat;
+ var g=$('cuGrid');if(!$('cuTail')){var t=document.createElement('div');t.id='cuTail';g.parentNode.appendChild(t)}$('cuTail').innerHTML='';
+ var sel=(CUS[cuCat]||[]).filter(function(x){return x[0]===cuSub})[0],t=sel?sel[2]:CUT[cuCat];
+ if(sel&&sel[2]==='bundle'){cuTail();return}
+ if(!t)t=CUT[cuCat];
+ if(!t||!S.user.id||!t){cuTail();return}
  J('/rbx/inv/v2/users/'+S.user.id+'/inventory?assetTypes='+t+'&limit=50&sortOrder=Desc').then(function(r){
-  var d=(r.data||[]).slice(0,56);if(my!==cuSeq||!d.length)return;
+  var d=(r.data||[]).slice(0,56);if(my!==cuSeq)return;
+  if(!d.length){cuTail();return}
   return J('/rbx/thumbs/v1/assets?assetIds='+d.map(function(x){return x.assetId}).join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t2){
    if(my!==cuSeq)return;var im={};(t2.data||[]).forEach(function(x){if(x.imageUrl)im[x.targetId]=x.imageUrl});
-   $('cuGrid').innerHTML=d.map(function(x){return '<div class="it" data-p="" data-n="'+e2(x.assetName||'')+'"><div class="ph">'+(im[x.assetId]?'<img src="'+e2(im[x.assetId])+'" alt="">':'')+'<span class="dt">Details</span></div></div>'}).join('')})}).catch(function(){});
+   $('cuGrid').innerHTML=d.map(function(x){return '<div class="it" data-p="" data-n="'+e2(x.assetName||'')+'"><div class="ph">'+(im[x.assetId]?'<img src="'+e2(im[x.assetId])+'" alt="">':'')+'<span class="dt">Details</span></div><b class="nm1">'+e2(x.assetName||'')+'</b></div>'}).join('');cuTail()})}).catch(function(){cuTail()});
 }
-$('cuCats').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;[].forEach.call(document.querySelectorAll('#cuCats button'),function(x){x.classList.toggle('on',x===b)});cuCat=b.dataset.k;loadCust()});
-$('bsr').addEventListener('click',function(e){var b=e.target.closest('.bsc');if(!b)return;cuSub=b.dataset.n;drawBsub()});
+$('cuCats').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;[].forEach.call(document.querySelectorAll('#cuCats button'),function(x){x.classList.toggle('on',x===b)});cuCat=b.dataset.k;cuSub=cuDef();loadCust()});
+$('bsr').addEventListener('click',function(e){var b=e.target.closest('.bsc');if(!b)return;cuSub=b.dataset.n;drawBsub();loadCust()});
 /* Buy item dialog */
 function openBuy(name,price,img){
  price=Number(price)||0;var plus=S.prem!==false,pb=plus?Math.round(price*.1):0,tot=price-pb,open=false;

@@ -587,3 +587,16 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .buy-box{animation:srbox .22s cubic-bezier(.2,.7,.3,1)}
 /* amount / confirm: everything rises together */
 .am>:nth-child(n),.cf>:nth-child(n){animation-delay:0s!important}
+
+.bsc span u{position:absolute;right:6px;bottom:6px;text-decoration:none;display:grid;place-items:center;color:#232527}
+.bsc span{position:relative}
+.bsc i{color:#b6b8be}.bsc.on i{color:#232527}
+.bsr{overflow-x:auto;scrollbar-width:none}.bsr::-webkit-scrollbar{display:none}
+.bsc{flex:none}
+.cg .it .nm1{display:none}
+#cuTail .avh{margin-top:26px}
+.shopmore{display:block;width:calc(100% - 30px);margin:10px 15px 24px;height:50px;border:1px solid #232527;border-radius:8px;font-size:15.5px;font-weight:600;text-align:center;color:#232527}
+.shopmore:hover{background:#f3f4f6}
+.pr.clk::after{content:"";width:14px;height:14px;border:1.5px solid #232527;border-radius:50%;margin-left:6px;display:inline-block}
+.avg.cg:empty{display:none}
+#cuTail .cr{display:none}#cuTail .avg.row .it{width:146px}
