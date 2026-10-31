@@ -405,7 +405,7 @@ function av3dMsg(t,err){if(!err){var e0=$('av3dErr');if(e0)e0.remove();return}va
 function avUser(){
  var go=function(id){
   if(!/^https?:$/.test(location.protocol))return;
-  window.Av3D.show($('av3d'),id,{log:av3dMsg}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true;av3dMsg('');cuSync()}).catch(function(e){console.warn('3D avatar failed',e);av3dMsg('3D avatar: '+(e&&e.message||'failed'),1)});
+  window.Av3D.show($('av3d'),id,{log:av3dMsg}).then(function(){window.__av3d=1;$('avFig').hidden=true;$('avFb').hidden=true;av3dMsg('');cuSync()})    .catch(function(e){if(e&&e.message==='superseded')return;console.warn('3D avatar failed',e);av3dMsg('3D avatar: '+(e&&e.message||'failed'),1)});
  };
  if(S.user.id)go(S.user.id);else findUser(S.user.name).then(function(u){S.user.id=u.id;save();go(u.id)}).catch(function(){});
 }
@@ -658,7 +658,7 @@ function openPf(u){
  $('pf').addEventListener('click',function(e){if(!e.target.closest('#pfMore'))$('pfMenu').hidden=true});
  $('pfMenu').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.a==='send'){pick={id:u.id,name:u.name,display:u.display,img:hd};amt='';sr.hidden=false;viewAmt();bigHead(pick,function(x){var i=document.querySelector('.pf-id img');})}});
  $('pfAdd').addEventListener('click',function(){this.textContent='Pending';this.classList.add('pend')});
- if(/^https?:$/.test(location.protocol)&&window.Av3D)setTimeout(function(){window.Av3D.show($('pf3d'),u.id,{owner:'pf',lift:.25,log:function(){}}).catch(function(e){console.warn('profile 3D failed',e)})},280);
+ if(/^https?:$/.test(location.protocol)&&window.Av3D)setTimeout(function(){window.Av3D.show($('pf3d'),u.id,{owner:'pf',lift:.25,log:function(){}}).catch(function(e){if(e&&e.message==='superseded')return;console.warn('profile 3D failed',e)})},280);
  ['friends','followers','followings'].forEach(function(k,i){J('/rbx/friends/v1/users/'+u.id+'/'+k+'/count').then(function(r){var n=r.count!=null?r.count:0,el=$(['pfFr','pfFo','pfFw'][i]);if(el)el.textContent=fmt(n)+' '+['Friends','Followers','Following'][i]}).catch(function(){var el=$(['pfFr','pfFo','pfFw'][i]);if(el)el.textContent='0 '+['Friends','Followers','Following'][i]})});
  J('/rbx/avatar/v1/users/'+u.id+'/currently-wearing').then(function(r){
   var ids=(r.assetIds||[]).slice(0,8);if(!ids.length)return;
