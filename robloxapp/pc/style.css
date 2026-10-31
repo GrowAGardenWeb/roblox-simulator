@@ -643,3 +643,11 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .ptoast .plg svg{display:block}
 @keyframes ptin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .ptoast.out{opacity:0;transition:opacity .35s}
+
+/* Purchased! toast: same shape as the mobile app's (bi-toast / bi-logo), scaled for the PC layout */
+.ptoast{left:706px;top:30px;width:408px;height:50px;transform:none;gap:0;background:#ffffffe6;z-index:70;animation:ptin .25s cubic-bezier(.2,.7,.3,1)}
+.ptoast .plg{display:none}
+.ptoast .bilogo{flex:none;width:34px;height:34px;margin:0 21px 0 16px;background:#202227;border-radius:2px;position:relative;transform:rotate(14deg)}
+.ptoast .bilogo:after{content:"";position:absolute;width:7.5px;height:7.5px;background:#fff;top:calc(50% - 3.75px);left:calc(50% - 3.75px)}
+.ptoast b{font-size:17px;font-weight:700}
+.av-s.ld::after{border-color:#e3e5e8;border-top-color:#c3c6cc}
