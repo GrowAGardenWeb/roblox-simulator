@@ -14,20 +14,22 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 var PX=/^https?:$/.test(location.protocol)&&!window.pc;
 var HOST={apis:'apis',thumbs:'thumbnails',users:'users',friends:'friends',games:'games',catalog:'catalog'};
 function D(p){var m=p.match(/^\/rbx\/([a-z]+)\/(.*)$/);return 'https://'+HOST[m[1]]+'.roblox.com/'+m[2]}
+var VP='https://create-app-iota.vercel.app/api/rbx?u=';
 var FAILS=[];
 function note(u,e){var m=(String(u).match(/^\/?([a-z]+(?:\/[a-z]+)?)/)||[,'?'])[1];FAILS.push(m+' '+((e&&e.message)||e));if(FAILS.length>6)FAILS.shift()}
 function F1(u){return fetch(u).then(function(r){if(!r.ok)throw Error(r.status);return r.json()},function(e){throw Error('blocked')}).catch(function(e){note(u,e);throw e})}
 function J(p){
  if(!PX)return F1(D(p));
- return F1(p).catch(function(){return F1('/rbxproxy?u='+encodeURIComponent(D(p)))}).catch(function(){return F1('/api/rbx?u='+encodeURIComponent(D(p)))});
+ return F1(VP+encodeURIComponent(D(p))).catch(function(){return F1(p)}).catch(function(){return F1('/rbxproxy?u='+encodeURIComponent(D(p)))});
 }
 function PGET(url){
  if(!PX)return F1(url);
- return F1('/rbxproxy?u='+encodeURIComponent(url)).catch(function(){return F1('/api/rbx?u='+encodeURIComponent(url))});
+ return F1(VP+encodeURIComponent(url)).catch(function(){return F1('/rbxproxy?u='+encodeURIComponent(url))});
 }
 function PPOST(url,body){
- var u=PX?'/rbxproxy?u='+encodeURIComponent(url):url;
- return fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw Error(r.status);return r.json()},function(){throw Error('blocked')}).catch(function(e){note(u,e);throw e});
+ function go(u){return fetch(u,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw Error(r.status);return r.json()},function(){throw Error('blocked')}).catch(function(e){note(u,e);throw e})}
+ if(!PX)return go(url);
+ return go('/rbxproxy?u='+encodeURIComponent(url)).catch(function(){return go(VP+encodeURIComponent(url))});
 }
 /* same three sources the mobile app uses: exact username, omni-search and user search */
 function searchUsers(q){
