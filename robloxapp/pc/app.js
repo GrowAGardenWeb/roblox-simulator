@@ -60,6 +60,14 @@ function heads(ids,size){
 function withHead(u){return heads([u.id]).then(function(m){u.img=m[u.id]||'';return u})}
 
 /* ---------- home: header, friends ---------- */
+function loadFriendsOf(id){
+ return J('/rbx/friends/v1/users/'+id+'/friends').then(function(r){
+  var list=(r.data||[]).map(function(f){return {id:f.id,name:f.name,display:f.displayName||f.name,img:''}});
+  S.friends=list;S.total='';save();renderFriends();
+  var chunks=[];for(var i=0;i<list.length;i+=100)chunks.push(list.slice(i,i+100));
+  return Promise.all(chunks.map(function(c){return heads(c.map(function(f){return f.id}))})).then(function(ms){var m={};ms.forEach(function(x){Object.keys(x).forEach(function(k){m[k]=x[k]})});list.forEach(function(f){f.img=m[f.id]||''});save();renderFriends();var l=$('apL');if(l)l.innerHTML=apFriendsHtml()});
+ }).catch(function(){});
+}
 function renderMe(){
  $('meName').textContent=S.user.display||S.user.name;
  var im=S.user.img||'img/av_me.webp';$('meAv').src=im;$('sideAv').src=S.user.img||'img/av_side.webp';
@@ -269,7 +277,7 @@ function openAp(focusF){
  $('apPR').addEventListener('click',function(){S.user.img='';save();renderMe();$('apPh').src='img/av_me.webp'});
  $('apUB').addEventListener('click',function(){
   var q=$('apU').value;apMsg('apUM','Loading…');
-  findUser(q).then(withHead).then(function(u){S.user=u;save();renderMe();$('apD').value=u.display||u.name;$('apN').value=u.name;$('apPh').src=u.img||'img/av_me.webp';apMsg('apUM','Loaded '+(u.display||u.name),1)}).catch(function(e){apMsg('apUM',e&&e.message||'Couldn’t load that user.')})});
+  findUser(q).then(withHead).then(function(u){S.user=u;save();renderMe();loadFriendsOf(u.id);$('apD').value=u.display||u.name;$('apN').value=u.name;$('apPh').src=u.img||'img/av_me.webp';apMsg('apUM','Loaded '+(u.display||u.name),1)}).catch(function(e){apMsg('apUM',e&&e.message||'Couldn’t load that user.')})});
  $('apRB').addEventListener('click',function(){var n=Math.max(0,Math.min(999999999,Math.floor(Number(String($('apR').value).replace(/\D/g,''))||0)));S.robux=n;save();setBal();$('apR').value=n});
  $('apFB').addEventListener('click',function(){
   var q=$('apF').value;apMsg('apFM','Loading…');
@@ -309,28 +317,47 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!ap.hidd
 
 /* ---------- Avatar page (Marketplace) ---------- */
 var AVN=[['The Crook',900],['Jack O\' Bandana',86],['New Years Kitty',50],['Halloween Ninja H...',90],['Bass Blast Should...',50],['Overseer Lapel Pin',50],['Sinister F.',716],['Dark Camo Paintb...',86],['Beautiful Orange ...',86],['Telamon\'s Vampir...',450],['Horse with Cowbo...',176],['Neon Transparent',270],['Ninja Mask of Fire',81],['Gearpunk Bucket',900],['Skeleton',450],['Davy Bazooka',225],['ROBLOX Santa',86],['Overseer Berserker',180],['Blue 8-Bit Headph...',720],['Andrew\'s Beard',113],['Spooky Tie',50]];
-var CATQ={all:{category:1},avatars:{category:2},backgrounds:{category:1,keyword:'background'},body:{category:4},clothing:{category:3},accessories:{category:11},animations:{category:12},makeup:{category:1,keyword:'makeup'}};
+var CATQ={all:{category:1},avatars:{category:18,subcategory:37},body:{category:18,chips:[['Full Bodies',37],['Hair',20],['Heads',66]]},clothing:{category:3,chips:[['Shirts',59],['T-Shirts',58],['Sweaters',62],['Jackets',61],['Pants',60],['Dresses & Skirts',65],['Shorts',63],['Shoes',64],['Classic Shirts',56],['Classic T-Shirts',55],['Classic Pants',57]]},accessories:{category:11,chips:[['Head',54],['Face',21],['Neck',22],['Shoulder',23],['Front',24],['Back',25],['Waist',26],['Gear',5]]},animations:{category:12,chips:[['Bundles',38],['Emotes',39]]},backgrounds:{category:1,bg:true},makeup:{category:1,keyword:'makeup'}};
+var avChip=null;
 var avCat='all',avSeq=0,avInit=false;
 function kc(n){n=Number(n)||0;return n>=1e6?(n/1e6).toFixed(n>=1e7?0:1).replace(/\.0$/,'')+'M':n>=1e3?(n/1e3).toFixed(n>=1e4?0:1).replace(/\.0$/,'')+'K':String(n)}
 function itCard(x){
- return '<div class="it" data-p="'+(x.price==null?'':x.price)+'"><div class="ph">'+(x.img?'<img src="'+e2(x.img)+'" alt="">':'')+'<span class="dt">Details</span></div><b>'+e2(x.name)+'</b><div class="cr"><span>'+e2(x.creator||'Roblox')+'</span><i>'+I('ver-f',16)+'</i></div><div class="pr">'+(x.price==null?'':'<i>'+I('robux-r',16)+'</i>'+fmt(x.price))+'</div></div>'}
-function avRowsHtml(rec,fut){
- return '<h3 class="avh">Recommended For You</h3><div class="avg">'+rec.map(itCard).join('')+'</div>'+
-  '<h3 class="avh" style="margin-top:22px">Discover Futuristic Styles<a>See All</a></h3><div class="avg fut">'+fut.map(itCard).join('')+'</div>';
-}
-function avStatic(){var rec=AVN.map(function(n,i){return {name:n[0],price:n[1],img:avCat==='all'?'img/it'+i+'.webp':''}}),fut=[];for(var i=0;i<7;i++)fut.push({name:'',price:null});$('avRows').innerHTML=avRowsHtml(rec,fut);[].forEach.call(document.querySelectorAll('#avRows .fut .it b,#avRows .fut .it .cr'),function(e){e.style.visibility='hidden'})}
-function catItems(q,limit){
- var p='Category='+q.category+'&Limit='+limit+'&SortType=1&IncludeNotForSale=false'+(q.keyword?'&Keyword='+encodeURIComponent(q.keyword):'');
+ return '<div class="it" data-p="'+(x.price==null?'':x.price)+'"><div class="ph">'+(x.img?'<img src="'+e2(x.img)+'" alt="">':'')+'<span class="dt">Details</span></div><b>'+e2(x.name)+'</b><div class="cr"><span>'+e2(x.creator||'Roblox')+'</span><i>'+I('ver-f',16)+'</i></div><div class="pr">'+(x.price==null?'':(x.price===0?'Free':'<i>'+I('robux-r',16)+'</i>'+fmt(x.price)))+'</div></div>'}
+function avSec(title,items,extra){return '<h3 class="avh"'+(extra&&extra.mt?' style="margin-top:22px"':'')+'>'+e2(title)+(extra&&extra.all?'<a>See All</a>':'')+'</h3><div class="avg">'+items.map(itCard).join('')+'</div>'}
+function chipsHtml(q){return q.chips?'<div class="mchips" id="mchips">'+q.chips.map(function(c){return '<button data-c="'+c[1]+'" class="'+((avChip==null?q.chips[0][1]:avChip)===c[1]?'on':'')+'">'+e2(c[0])+'</button>'}).join('')+'</div>':''}
+function avStatic(){
+ var q=CATQ[avCat],n=avCat==='all'?21:28,rec=[];
+ for(var i=0;i<n;i++)rec.push(avCat==='all'?{name:AVN[i][0],price:AVN[i][1],img:'img/it'+i+'.webp'}:{name:'',price:null});
+ var h=chipsHtml(q);
+ if(avCat==='all'){var fut=[];for(var k=0;k<7;k++)fut.push({name:'',price:null});h+=avSec('Recommended For You',rec)+avSec('Discover Futuristic Styles',fut,{mt:1,all:1})}
+ else h+='<div class="avg">'+rec.map(itCard).join('')+'</div>';
+ $('avRows').innerHTML=h;[].forEach.call(document.querySelectorAll('#avRows .it'),function(e,i){if(avCat!=='all'||i>=21){e.querySelector('b').style.visibility='hidden';e.querySelector('.cr').style.visibility='hidden'}})}
+function catSearch(q,limit,cursor){
+ var p='Category='+q.category+'&Limit='+limit+'&SortType='+(q.sort||1)+'&IncludeNotForSale=false'+(q.subcategory?'&Subcategory='+q.subcategory:'')+(q.keyword?'&Keyword='+encodeURIComponent(q.keyword):'')+(q.extra||'')+(cursor?'&Cursor='+cursor:'');
  return J('/rbx/catalog/v1/search/items/details?'+p).then(function(r){
   var d=(r.data||[]).slice(0,limit),a=d.filter(function(e){return e.itemType==='Asset'}).map(function(e){return e.id}),b=d.filter(function(e){return e.itemType==='Bundle'}).map(function(e){return e.id}),im={},jobs=[];
   if(a.length)jobs.push(J('/rbx/thumbs/v1/assets?assetIds='+a.join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t){(t.data||[]).forEach(function(x){if(x.imageUrl)im['Asset'+x.targetId]=x.imageUrl})}).catch(function(){}));
   if(b.length)jobs.push(J('/rbx/thumbs/v1/bundles/thumbnails?bundleIds='+b.join(',')+'&size=420x420&format=Webp&isCircular=false').then(function(t){(t.data||[]).forEach(function(x){if(x.imageUrl)im['Bundle'+x.targetId]=x.imageUrl})}).catch(function(){}));
-  return Promise.all(jobs).then(function(){return d.map(function(e){return {name:e.name,creator:e.creatorName,price:(e.isOffSale||e.priceStatus==='Off Sale')?null:(e.lowestPrice!=null?e.lowestPrice:e.price),img:im[e.itemType+e.id]}})})});
+  return Promise.all(jobs).then(function(){return d.map(function(e){return {name:e.name,creator:e.creatorName,assetType:Number(e.assetType),price:(e.isOffSale||e.priceStatus==='Off Sale')?null:(e.lowestPrice!=null?e.lowestPrice:e.price),img:im[e.itemType+e.id]}})})});
+}
+var BGW=[{category:1,extra:'&AssetTypes=AvatarBackground'},{category:1,extra:'&assetTypeIds=92'},{category:1,keyword:'background'}];
+function catItems(q,limit){
+ if(!q.bg)return catSearch(q,limit);
+ var k=0;return (function next(){if(k>=BGW.length)return Promise.resolve([]);var w=BGW[k++];return catSearch(w,60).then(function(l){l=l.filter(function(x){return x.assetType===92});return l.length?l.slice(0,limit):next()}).catch(next)})();
 }
 function loadAv(){
- var my=++avSeq;
- Promise.all([catItems(CATQ[avCat],21),catItems({category:1,keyword:'futuristic'},7)]).then(function(r){
-  if(my!==avSeq||!r[0].length)return;$('avRows').innerHTML=avRowsHtml(r[0],r[1]);
+ var my=++avSeq,q=CATQ[avCat];
+ if(avCat==='all'){
+  Promise.all([catItems({category:1},21),catItems({category:18,subcategory:37},7),catItems({category:11},14),catItems({category:3,sort:2},14)]).then(function(r){
+   if(my!==avSeq||!r[0].length)return;
+   $('avRows').innerHTML=avSec('Recommended For You',r[0])+avSec('Discover Futuristic Styles',r[1],{mt:1,all:1})+(r[2].length?avSec('Worth A Look',r[2],{mt:1}):'')+(r[3].length?avSec('Trending Clothing',r[3],{mt:1}):'');
+  }).catch(function(){});
+  return;
+ }
+ var sub=q.chips?(avChip==null?q.chips[0][1]:avChip):q.subcategory;
+ catItems({category:q.category,subcategory:sub,keyword:q.keyword,bg:q.bg},28).then(function(l){
+  if(my!==avSeq)return;
+  $('avRows').innerHTML=chipsHtml(q)+(l.length?'<div class="avg">'+l.map(itCard).join('')+'</div>':'<div class="il-none">'+(avCat==='backgrounds'?'Unlock free exclusive backgrounds with Plus.':'No items')+'</div>');
  }).catch(function(){});
 }
 document.addEventListener('load',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.closest&&t.closest('.it .ph'))t.classList.add('ld')},true);
@@ -353,7 +380,8 @@ function showAv(on){
   if(!avInit){avInit=true;avStatic();loadAv();avUser();}}
 }
 [].forEach.call(document.querySelectorAll('.sb'),function(b){b.addEventListener('click',function(){showAv(b.dataset.s==='me')})});
-$('cats').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;[].forEach.call(document.querySelectorAll('#cats button'),function(x){x.classList.toggle('on',x===b)});avCat=b.dataset.k;avStatic();loadAv()});
+$('cats').addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;[].forEach.call(document.querySelectorAll('#cats button'),function(x){x.classList.toggle('on',x===b)});avCat=b.dataset.k;avChip=null;avStatic();loadAv()});
+$('avRows').addEventListener('click',function(e){var b=e.target.closest('#mchips button');if(!b)return;avChip=Number(b.dataset.c);avStatic();loadAv()});
 ;(function(){
  var bar=document.createElement('div');bar.className='av-buy';bar.hidden=true;bar.innerHTML='<button class="bb" id="avBuy"></button><button class="bm" aria-label="More">'+I('three-dots-h',26)+'</button>';$('avR').appendChild(bar);
  $('avRows').addEventListener('click',function(e){var it=e.target.closest('.it');if(!it)return;var was=it.classList.contains('sel');[].forEach.call(document.querySelectorAll('#avRows .it.sel'),function(x){x.classList.remove('sel')});
