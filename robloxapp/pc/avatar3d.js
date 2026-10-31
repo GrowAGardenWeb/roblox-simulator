@@ -55,5 +55,7 @@ function show(box,ids,opt){
  });
  return Promise.race([main,timeout]);
 }
-window.Av3D={show:show};
+function status(){return fetch(BASE+'/avatar/status'+(vid()?'?_v='+vid():'')).then(function(r){return r.json()}).then(function(e){return {raw:e,authed:!!(e.authed!=null?e.authed:e.ok)}}).catch(function(){return {authed:false,raw:null}})}
+function render2d(ids){return fetch(BASE+'/avatar/render'+(vid()?'?_v='+vid():''),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({assetIds:ids,exact:true,lookId:''})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error(j.error||j.reason||'render '+r.status);return j.imageUrl})})}
+window.Av3D={show:show,status:status,render2d:render2d};
 })();
