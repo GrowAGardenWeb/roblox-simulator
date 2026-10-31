@@ -122,7 +122,7 @@ img{display:block;max-width:none}
 input[type=file]{display:none}
 /* balance screen */
 .app.bo .nav{visibility:hidden;transition:visibility 0s .4s}
-.bal{bottom:calc(-1*env(safe-area-inset-bottom,0px));position:absolute;inset:0;z-index:30;overflow-y:auto;scrollbar-width:none;background:linear-gradient(#f4f4f400 0,#f4f4f4 32%) top/100% 100% no-repeat,linear-gradient(90deg,#a5d9e6,#f3e6f7 52%,#eaa2b0) top/100% 100%,#f4f4f4;transform:translateX(100%);visibility:hidden;transition:transform .38s cubic-bezier(.32,.72,0,1),visibility 0s .38s;padding:var(--st,calc(105*var(--u))) 0 calc(110*var(--u));box-sizing:border-box;display:flex;flex-direction:column;max-width:460px;margin:0 auto}
+.bal{position:fixed;top:0;bottom:0;left:max(0px,calc((100vw - 460px)/2));width:min(100vw,460px);z-index:30;overflow-y:auto;scrollbar-width:none;background:linear-gradient(#f4f4f400 0,#f4f4f4 32%) top/100% 100% no-repeat,linear-gradient(90deg,#a5d9e6,#f3e6f7 52%,#eaa2b0) top/100% 100%,#f4f4f4;transform:translateX(100%);visibility:hidden;transition:transform .38s cubic-bezier(.32,.72,0,1),visibility 0s .38s;padding:var(--st,calc(105*var(--u))) 0 calc(110*var(--u));box-sizing:border-box;display:flex;flex-direction:column;}
 
 /* loader sheet + skeletons + get coins */
 body.inst *{transition:none!important}
@@ -134,7 +134,7 @@ body.inst *{transition:none!important}
 @keyframes shm{to{background-position:-200% 0}}
 .bal.sk1 #bTx,.bal.sk1 .c0>img{visibility:hidden}
 .bal.sk1 .br2,.bal.sk2 .br2{display:none}
-.gc{position:absolute;inset:0;z-index:31;background:#f3f3f3;display:none;flex-direction:column;max-width:460px;margin:0 auto;overflow-y:auto;scrollbar-width:none;padding-top:var(--st,calc(105*var(--u)))}
+.gc{position:fixed;top:0;bottom:0;left:max(0px,calc((100vw - 460px)/2));width:min(100vw,460px);z-index:31;background:#f3f3f3;display:none;flex-direction:column;overflow-y:auto;scrollbar-width:none;padding-top:var(--st,calc(105*var(--u)))}
 .gc.on{display:flex}
 .gc .gh{position:relative;height:calc(90*var(--u));margin-top:calc(25*var(--u));display:flex;align-items:center;justify-content:space-between;padding:0 calc(30*var(--u)) 0 calc(36*var(--u))}
 .gc .gh b{position:absolute;left:0;right:0;text-align:center;font-size:calc(35*var(--u));font-weight:700;pointer-events:none}
