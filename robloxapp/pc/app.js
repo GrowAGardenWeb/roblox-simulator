@@ -331,8 +331,11 @@ var CATQ={all:{category:1},avatars:{category:18,subcategory:37},body:{category:1
 var avChip=null;
 var avCat='all',avSeq=0,avInit=false;
 function kc(n){n=Number(n)||0;return n>=1e6?(n/1e6).toFixed(n>=1e7?0:1).replace(/\.0$/,'')+'M':n>=1e3?(n/1e3).toFixed(n>=1e4?0:1).replace(/\.0$/,'')+'K':String(n)}
+function plusOn(){return S.prem!==false}
+function pbOf(p){p=Number(p)||0;return plusOn()&&p>0?Math.floor(p*.1):0}
+var TYPES={8:'Hat',41:'Hair',42:'Face Accessory',43:'Neck',44:'Shoulder',45:'Front',46:'Back',47:'Waist',64:'T-Shirt',65:'Shirt',66:'Pants',67:'Jacket',68:'Sweater',69:'Shorts',70:'Shoes',71:'Shoes',72:'Skirt',17:'Head',18:'Face',2:'T-Shirt',11:'Shirt',12:'Pants',61:'Emote',79:'Head',78:'Face',24:'Animation',48:'Animation',49:'Animation',50:'Animation',51:'Animation',52:'Animation',53:'Animation',54:'Animation',55:'Animation',56:'Animation',32:'Package',19:'Gear',92:'Background'};
 function itCard(x){
- return '<div class="it" data-p="'+(x.price==null?'':x.price)+'"><div class="ph">'+(x.img?'<img src="'+e2(x.img)+'" alt="">':'')+'<span class="dt">Details</span></div><b>'+e2(x.name)+'</b><div class="cr"><span>'+e2(x.creator||'Roblox')+'</span><i>'+I('ver-f',16)+'</i></div><div class="pr">'+(x.price==null?'':(x.price===0?'Free':'<i>'+I('robux-r',16)+'</i>'+fmt(x.price)))+'</div></div>'}
+ return '<div class="it" data-t="'+e2(TYPES[x.assetType]||'Item')+'" data-p="'+(x.price==null?'':x.price)+'"><div class="ph">'+(x.img?'<img src="'+e2(x.img)+'" alt="">':'')+'<span class="dt">Details</span></div><b>'+e2(x.name)+'</b><div class="cr"><span>'+e2(x.creator||'Roblox')+'</span><i>'+I('ver-f',16)+'</i></div><div class="pr">'+(x.price==null?'':(x.price===0?'Free':'<i>'+I('robux-r',16)+'</i>'+fmt(x.price-pbOf(x.price))))+'</div></div>'}
 function avSec(title,items,extra){return '<h3 class="avh"'+(extra&&extra.mt?' style="margin-top:22px"':'')+'>'+e2(title)+(extra&&extra.all?'<a>See All</a>':'')+'</h3><div class="avg">'+items.map(itCard).join('')+'</div>'}
 function chipsHtml(q){return q.chips?'<div class="mchips" id="mchips">'+q.chips.map(function(c){return '<button data-c="'+c[1]+'" class="'+((avChip==null?q.chips[0][1]:avChip)===c[1]?'on':'')+'">'+e2(c[0])+'</button>'}).join('')+'</div>':''}
 function avStatic(){
@@ -394,11 +397,43 @@ function wornIds(as){
  return out;
 }
 function av3dMsg(t,err){var e=$('av3dErr');if(!t){if(e)e.remove();return}if(!e){e=document.createElement('div');e.id='av3dErr';$('avR').appendChild(e)}e.className='av-err av-err2'+(err?'':' av-info');e.textContent=t}
+/* the mobile app's own avatar engine (animations, accessories, effects), shown from the same code in an iframe */
+var mvFrame=null;
+function mobileViewer(name){
+ if(!/^https?:$/.test(location.protocol))return;
+ if(!mvFrame){
+  mvFrame=document.createElement('iframe');mvFrame.className='mv';mvFrame.setAttribute('allow','');
+  mvFrame.src='/headless/#/avatar';$('avR').insertBefore(mvFrame,$('avR').firstChild);
+ }
+ var tries=0,loaded=false;
+ (function drive(){
+  tries++;if(tries>60)return;
+  try{
+   var w=mvFrame.contentWindow,d=w.document;
+   if(!d||!d.body){return setTimeout(drive,500)}
+   if(!d.getElementById('mvcss')){var st=d.createElement('style');st.id='mvcss';st.textContent='.bottomnav,.hud-up,.v-hit,[data-testid=hl-panel]{display:none!important}html,body{background:transparent!important}';d.head.appendChild(st)}
+   var inp=d.querySelector('[data-testid=hl-user]');
+   if(!inp){w.dispatchEvent(new w.Event('ro-hlpanel'));return setTimeout(drive,600)}
+   if(!loaded){
+    var set=Object.getOwnPropertyDescriptor(w.HTMLInputElement.prototype,'value').set;set.call(inp,name);inp.dispatchEvent(new w.Event('input',{bubbles:true}));
+    var b=d.querySelector('[data-testid=hl-load]');if(b){b.click();loaded=true}
+    var c=d.querySelector('[data-testid=hl-close]');if(c)c.click();
+    return setTimeout(drive,800);
+   }
+   var v=d.querySelector('[data-testid=avatar-viewer]');
+   if(v&&!mvFrame.dataset.down){mvFrame.dataset.down='1';
+    ['pointerdown','pointerup'].forEach(function(t){v.dispatchEvent(new w.PointerEvent(t,{bubbles:true,clientX:5,clientY:5,pointerId:1}))})}
+   var cv=d.querySelector('.av-engine canvas');
+   if(cv){mvFrame.classList.add('on');window.__av3d=3;$('av3d').hidden=true;$('avFig').hidden=true;av3dMsg('');return}
+   setTimeout(drive,800);
+  }catch(e){setTimeout(drive,800)}
+ })();
+}
 function avUser(){
  /* same method as the mobile app: worn items -> 3D render on the Vercel server -> three.js */
  var showFig=function(id){J('/rbx/thumbs/v1/users/avatar?userIds='+id+'&size=720x720&format=Png&isCircular=false').then(function(t){var u=t.data&&t.data[0]&&t.data[0].imageUrl;if(!u||window.__av3d)return;$('avFig').src=u;$('avBg').hidden=false;$('avFb').hidden=true}).catch(function(){})};
  var go=function(id){
-  showFig(id);
+  showFig(id);mobileViewer(S.user.name);
   J('/rbx/avatar/v1/users/'+id+'/avatar').then(function(a){
    var ids=wornIds(a.assets||[]);if(!ids.length)throw Error('no assets');
    $('avBg').hidden=false;av3dMsg('Checking the avatar server…');
@@ -427,7 +462,7 @@ $('avRows').addEventListener('click',function(e){var b=e.target.closest('#mchips
  function sels(){return [].slice.call(document.querySelectorAll('#avRows .it.sel'))}
  function upd(){
   var l=sels();bar.hidden=!l.length;$('avR').classList.toggle('buying',!!l.length);
-  if(l.length===1){var pr=l[0].dataset.p;$('avBuy').dataset.m='one';$('avBuy').innerHTML=pr===''?'Off sale':I('robux-r',20)+'<span>'+(pr==='0'?'Free':fmt(pr))+'</span>';$('avClr').innerHTML=I('three-dots-h',26)}
+  if(l.length===1){var pr=l[0].dataset.p;$('avBuy').dataset.m='one';$('avBuy').innerHTML=pr===''?'Off sale':(pr==='0'?'Free':I('robux-r',20)+'<span>'+fmt(Number(pr)-pbOf(pr))+'</span>');$('avClr').innerHTML=I('three-dots-h',26)}
   else if(l.length){$('avBuy').dataset.m='many';$('avBuy').textContent='View Checkout ('+l.length+')';$('avClr').innerHTML=I('trash-r',24)}
   if(!l.length)closeCo();
  }
@@ -439,10 +474,10 @@ $('avRows').addEventListener('click',function(e){var b=e.target.closest('#mchips
  function closeCo(){co.hidden=true}
  function drawCo(){
   var l=sels();if(!l.length){closeCo();upd();return}
-  var plus=S.prem!==false,sum=0,rows=l.map(function(it,i){var p=Number(it.dataset.p)||0,np=plus?p-Math.round(p*.1):p;sum+=p;var im=it.querySelector('.ph img');
-   return '<div class="co-i"><span class="co-p"><img src="'+e2(im?im.src:'')+'" alt=""></span><div><b>'+e2(it.querySelector('b').textContent)+'</b><small>Item</small><div class="co-pr"><i>'+I('robux-r',16)+'</i>'+fmt(np)+(plus&&p!==np?'<s><i>'+I('robux-r',12)+'</i>'+fmt(p)+'</s>':'')+'</div></div><button class="co-x" data-i="'+i+'" aria-label="Remove">'+I('x-r',22)+'</button></div>'}).join('');
-  var save=plus?Math.round(sum*.1):0,tot=sum-save;
-  co.innerHTML='<div class="co-h"><button id="coB" aria-label="Back">'+I('chevl-r',26)+'</button><b>Checkout</b></div><div class="co-l">'+rows+'<label class="by-c"><input type="checkbox" checked><i></i>Wear items after purchase</label></div><div class="co-f">'+(plus?'<div class="co-s"><i>'+I('rplus-r',20)+'</i><span>Saving <i class="ri">'+I('robux-r',13)+'</i>'+fmt(save)+' with Plus</span></div>':'')+'<div class="co-t"><b>Total ('+l.length+' items)</b><span>'+(save?'<s><i class="ri">'+I('robux-r',12)+'</i>'+fmt(sum)+'</s>':'')+'<i class="ri">'+I('robux-r',18)+'</i>'+fmt(tot)+'</span></div><button class="by-b" id="coBuy">Buy</button></div>';
+  var plus=S.prem!==false,sum=0,rows=l.map(function(it,i){var p=Number(it.dataset.p)||0,np=p-pbOf(p);sum+=p;var im=it.querySelector('.ph img');
+   return '<div class="co-i"><span class="co-p"><img src="'+e2(im?im.src:'')+'" alt=""></span><div><b>'+e2(it.querySelector('b').textContent)+'</b><small>'+e2(it.dataset.t||'Item')+'</small><div class="co-pr">'+(p===0?'Free':'<i>'+I('robux-r',16)+'</i>'+fmt(np))+(p!==np?'<s><i>'+I('robux-r',12)+'</i>'+fmt(p)+'</s>':'')+'</div></div><button class="co-x" data-i="'+i+'" aria-label="Remove">'+I('x-r',22)+'</button></div>'}).join('');
+  var save=0;l.forEach(function(it){save+=pbOf(it.dataset.p)});var tot=sum-save;
+  co.innerHTML='<div class="co-h"><button id="coB" aria-label="Back">'+I('chevl-r',26)+'</button><b>Checkout</b></div><div class="co-l">'+rows+'<label class="by-c"><input type="checkbox" checked><i></i>Wear items after purchase</label></div><div class="co-f">'+(plus&&save>0?'<div class="co-s"><i>'+I('rplus-r',20)+'</i><span>Saving <i class="ri">'+I('robux-r',13)+'</i>'+fmt(save)+' with Plus</span></div>':'')+'<div class="co-t"><b>Total ('+l.length+' items)</b><span>'+(save?'<s><i class="ri">'+I('robux-r',12)+'</i>'+fmt(sum)+'</s>':'')+'<i class="ri">'+I('robux-r',18)+'</i>'+fmt(tot)+'</span></div><button class="by-b" id="coBuy">Buy</button></div>';
   co.hidden=false;
   $('coB').addEventListener('click',closeCo);
   co.querySelectorAll('.co-x').forEach(function(b){b.addEventListener('click',function(){sels()[+b.dataset.i].classList.remove('sel');upd();if(sels().length)drawCo()})});
@@ -503,10 +538,10 @@ $('cuCats').addEventListener('click',function(e){var b=e.target.closest('button[
 $('bsr').addEventListener('click',function(e){var b=e.target.closest('.bsc');if(!b)return;cuSub=b.dataset.n;drawBsub();loadCust()});
 /* Buy item dialog */
 function openBuy(name,price,img){
- price=Number(price)||0;var plus=S.prem!==false,pb=plus?Math.round(price*.1):0,tot=price-pb,open=false;
+ price=Number(price)||0;var pb=pbOf(price),plus=pb>0,tot=price-pb,open=false;
  function draw(){
   var sv=plus?'<div class="sv'+(open?' op':'')+'"><button class="svh" id="svT"><i>'+I('rplus-r',22)+'</i><span>Saving <i class="ri">'+I('robux-r',14)+'</i>'+pb+' with Plus</span><i class="chv">'+I(open?'chevu-r':'chevd-r',22)+'</i></button>'+(open?'<div class="svb"><div><span>Subtotal</span><b><i class="ri">'+I('robux-r',15)+'</i>'+fmt(price)+'</b></div><div><span>Plus benefit (10% off on eligible items)</span><b>- <i class="ri">'+I('robux-r',15)+'</i>'+pb+'</b></div><hr><div><span>Total</span><b><i class="ri">'+I('robux-r',15)+'</i>'+fmt(tot)+'</b></div></div>':'')+'</div>':'';
-  $('buyBox').innerHTML='<div class="by-h"><b>Buy item</b><button class="by-x" id="byX" aria-label="Close">'+I('x-r',28)+'</button></div><div class="by-i"><span class="by-p"><img src="'+e2(img||'')+'" alt=""></span><div><b>'+e2(name||'Item')+'</b><small>Permanent</small><div class="by-pr"><i>'+I('robux-r',20)+'</i><b>'+fmt(tot)+'</b>'+(plus&&pb?'<s><i>'+I('robux-r',14)+'</i>'+fmt(price)+'</s>':'')+'</div></div></div>'+sv+'<label class="by-c"><input type="checkbox" checked><i></i>Wear item after purchase</label><button class="by-b" id="byB">Buy</button>';
+  $('buyBox').innerHTML='<div class="by-h"><b>Buy item</b><button class="by-x" id="byX" aria-label="Close">'+I('x-r',28)+'</button></div><div class="by-i"><span class="by-p"><img src="'+e2(img||'')+'" alt=""></span><div><b>'+e2(name||'Item')+'</b><small>Permanent</small><div class="by-pr">'+(price===0?'<b>Free</b>':'<i>'+I('robux-r',20)+'</i><b>'+fmt(tot)+'</b>')+''+(plus&&pb?'<s><i>'+I('robux-r',14)+'</i>'+fmt(price)+'</s>':'')+'</div></div></div>'+sv+'<label class="by-c"><input type="checkbox" checked><i></i>Wear item after purchase</label><button class="by-b" id="byB">Buy</button>';
   $('byX').addEventListener('click',function(){$('buy').hidden=true});
   var t=$('svT');if(t)t.addEventListener('click',function(){open=!open;draw()});
   $('byB').addEventListener('click',function(){if(S.robux>=tot){S.robux-=tot;save();setBal();$('avRb').textContent=kc(S.robux);$('buy').hidden=true}else{$('byB').textContent='Not enough Robux'}});
