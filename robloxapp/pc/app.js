@@ -52,9 +52,10 @@ function findUser(q){
  if(/^\d+$/.test(q))return J('/rbx/users/v1/users/'+q).then(function(u){return {id:u.id,name:u.name,display:u.displayName||u.name}}).catch(function(){throw Error('No user with that ID.')});
  return searchUsers(q).then(function(l){if(!l.length)throw Error('No user found.');return l[0]});
 }
-function heads(ids){
+function heads(ids,size){
  if(!ids.length)return Promise.resolve({});
- return J('/rbx/thumbs/v1/users/avatar-headshot?userIds='+ids.join(',')+'&size=150x150&format=Webp').then(function(t){var m={};(t.data||[]).forEach(function(x){if(x.imageUrl)m[x.targetId]=x.imageUrl});return m}).catch(function(){return {}});
+ size=size||'150x150';
+ return J('/rbx/thumbs/v1/users/avatar-headshot?userIds='+ids.join(',')+'&size='+size+'&format='+(size==='150x150'?'Webp':'Png')).then(function(t){var m={};(t.data||[]).forEach(function(x){if(x.imageUrl)m[x.targetId]=x.imageUrl});return m}).catch(function(){return {}});
 }
 function withHead(u){return heads([u.id]).then(function(m){u.img=m[u.id]||'';return u})}
 
@@ -77,7 +78,7 @@ function setBal(){$('rbBal').textContent=fmt(S.robux);$('rbPill').textContent=fm
 function pct(g){var t=(g.totalUpVotes||0)+(g.totalDownVotes||0);return t?Math.round(100*g.totalUpVotes/t):0}
 function gcard(name,rate,img){
  return '<div class="g"><img class="t" src="'+e2(img||'')+'" alt=""><b>'+e2(name)+'</b><div class="r">'+I('like-f',15)+'<span>'+e2(rate)+'</span></div>'+
-  '<div class="hv"><img class="t" src="'+e2(img||'')+'" alt=""><b>'+e2(name)+'</b><div class="r">'+I('like-f',15)+'<span>'+e2(rate)+'</span></div><button class="pb" aria-label="Play">'+I('play-f',26)+'</button></div></div>';
+  '<div class="hv"><button class="hx" aria-label="Close">'+I('x-r',20)+'</button><img class="t" src="'+e2(img||'')+'" alt=""><b>'+e2(name)+'</b><div class="r">'+I('like-f',15)+'<span>'+e2(rate)+'</span></div><button class="pb" aria-label="Play">'+I('play-f',26)+'</button></div></div>';
 }
 var STATIC=[['[NUCLEAR WARFARE] God Simulati...','79% Rating'],['[🍀] Spin To Upgrade! [GUILDS + GO...','68% Rating'],['Prison Life','85% Rating'],['[🎃] 📱 Build a Phone Empire','87% Rating'],['[EVENT] San Diego Roleplay','85% Rating'],['🍀 Tower Of Luck [1.8]','54% Rating']];
 $('games').innerHTML=STATIC.map(function(g,i){return gcard(g[0],g[1],'img/g'+i+'.webp')}).join('');
@@ -144,6 +145,7 @@ function closeDd(){[].forEach.call(document.querySelectorAll('.dd'),function(d){
  var r=b.getBoundingClientRect(),w=$('win').getBoundingClientRect();d.style.left=(r.left-w.left)+'px';d.style.top=(r.bottom-w.top+6)+'px';$('win').appendChild(d);
  d.addEventListener('click',function(ev){var o=ev.target.closest('button');if(!o)return;var it=L.filter(function(x){return x[1]===o.dataset.v})[0];CH[k]=it;b.querySelector('span').textContent=it[0];closeDd();drawStatic();loadCharts()})})});
 document.addEventListener('click',closeDd);
+document.addEventListener('click',function(e){var b=e.target.closest('.hx');if(!b)return;var g=b.closest('.g');g.classList.add('nohv');g.addEventListener('mouseleave',function f(){g.classList.remove('nohv');g.removeEventListener('mouseleave',f)})});
 drawStatic();
 
 /* ---------- left menu drawer ---------- */
@@ -171,7 +173,8 @@ $('openRb').addEventListener('click',openRb);$('rbX').addEventListener('click',c
 
 /* ---------- Send Robux modal ---------- */
 var sr=$('sr'),box=$('srBox'),pick=null,amt='',peopleTimer=null;
-function pav(f){return '<img src="'+e2(f.img||'')+'" alt="">'}
+function pav(f,big){return '<img src="'+e2((big&&f.big)||f.img||'')+'" alt="">'}
+function bigHead(f,cb){if(f.big)return cb&&cb(f.big);heads([f.id],'420x420').then(function(m){if(m[f.id]){f.big=m[f.id];cb&&cb(f.big)}})}
 function head(t,nobal){return '<div class="sh"><span class="ti">'+I('rplus-r',26)+(t||'Send Robux')+'</span><span class="bl">'+(nobal?'':I('robux-r',20)+fmt(S.robux))+'</span><button class="cl" id="srX" aria-label="Close">'+I('x-r',24)+'</button></div>'}
 function bindX(){$('srX').addEventListener('click',closeSr)}
 function openSr(){pick=null;amt='';sr.hidden=false;viewPick('')}
@@ -198,13 +201,13 @@ function viewPick(q){
     if(my!==seq)return;people=l;fill();
     heads(l.map(function(u){return u.id})).then(function(m){if(my!==seq)return;l.forEach(function(u){u.img=m[u.id]||''});fill()})}).catch(function(){})},220)}
  inp.addEventListener('input',function(){fill();look()});fill();
- $('srBody').addEventListener('click',function(e){var t=e.target.closest('.fx');if(!t)return;var f=t.dataset.s==='f'?S.friends[+t.dataset.i]:people.filter(function(p){return !S.friends.some(function(f){return String(f.id)===String(p.id)})})[+t.dataset.i];if(!f)return;pick=f;amt='';closeRb();viewAmt()});
+ $('srBody').addEventListener('click',function(e){var t=e.target.closest('.fx');if(!t)return;var f=t.dataset.s==='f'?S.friends[+t.dataset.i]:people.filter(function(p){return !S.friends.some(function(f){return String(f.id)===String(p.id)})})[+t.dataset.i];if(!f)return;pick=f;amt='';closeRb();viewAmt();bigHead(f,function(u){var i=document.querySelector('.pf img');if(i)i.src=u})});
  inp.focus({preventScroll:true});
 }
 function viewAmt(){
  box.className='sr-box amt am';
  var chips=[25,50,100,200].map(function(n){return '<button data-v="'+n+'">'+I('robux-r',21)+n+'</button>'}).join('');
- box.innerHTML=head()+'<span class="pf">'+pav(pick)+'</span><div class="nm">'+e2(pick.display||pick.name)+'</div><div class="big">'+I('robux-r',44)+'<span id="amV">0</span><input id="amI" inputmode="numeric" autocomplete="off"></div><div class="chips">'+chips+'</div><button class="nx" id="amN">Next</button><p class="nt">Robux are sent instantly with no fees</p>';
+ box.innerHTML=head()+'<span class="pf">'+pav(pick,1)+'</span><div class="nm">'+e2(pick.display||pick.name)+'</div><div class="big">'+I('robux-r',44)+'<span id="amV">0</span><input id="amI" inputmode="numeric" autocomplete="off"></div><div class="chips">'+chips+'</div><button class="nx" id="amN">Next</button><p class="nt">Robux are sent instantly with no fees</p>';
  bindX();
  var inp=$('amI');
  function upd(){var n=+amt||0;$('amV').textContent=fmt(n);$('amN').className='nx'+(n>0&&n<=S.robux?' on':'')}
@@ -215,8 +218,9 @@ function viewAmt(){
 }
 function viewConfirm(n){
  box.className='sr-box cf';
- box.innerHTML=head()+'<div class="c1"><span class="pf">'+pav(pick)+'</span><div class="nm">'+e2(pick.display||pick.name)+'</div><div class="hd">@'+e2(pick.name)+'</div><div class="ln"><span>'+I('cal-f',20)+'Connected 3 months</span><span>'+I('ppl-f',22)+'1 mutual friend</span></div><div class="jn">'+I('info-f',18)+'Joined in 2021</div></div><div class="c2"><div class="v">'+I('robux-r',44)+fmt(n)+'</div><p>The recipient will get '+fmt(n)+' Robux.</p></div><div class="bs"><button class="s" id="cfS">Send</button><button class="e" id="cfE">Edit</button></div><p class="ntt">You need an age check or parental consent to send Robux. Once you send, you cannot cancel.</p>';
+ box.innerHTML=head()+'<div class="c1"><span class="pf">'+pav(pick,1)+'</span><div class="nm">'+e2(pick.display||pick.name)+'</div><div class="hd">@'+e2(pick.name)+'</div><div class="ln"><span>'+I('cal-f',20)+'Connected 3 months</span><span>'+I('ppl-f',22)+'1 mutual friend</span></div><div class="jn">'+I('info-f',18)+'Joined in 2021</div></div><div class="c2"><div class="v">'+I('robux-r',44)+fmt(n)+'</div><p>The recipient will get '+fmt(n)+' Robux.</p></div><div class="bs"><button class="s" id="cfS">Send</button><button class="e" id="cfE">Edit</button></div><p class="ntt">You need an age check or parental consent to send Robux. Once you send, you cannot cancel.</p>';
  bindX();
+ bigHead(pick,function(u){var i=document.querySelector('.pf img');if(i)i.src=u});
  $('cfE').addEventListener('click',viewAmt);
  $('cfS').addEventListener('click',function(){S.robux-=n;save();setBal();closeSr()});
 }
