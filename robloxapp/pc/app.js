@@ -220,13 +220,13 @@ function viewPick(q){
     if(my!==seq)return;people=l;fill();
     heads(l.map(function(u){return u.id})).then(function(m){if(my!==seq)return;l.forEach(function(u){u.img=m[u.id]||''});fill()})}).catch(function(){})},220)}
  inp.addEventListener('input',function(){fill();look()});fill();
- $('srBody').addEventListener('click',function(e){var t=e.target.closest('.fx');if(!t)return;var f=t.dataset.s==='f'?S.friends[+t.dataset.i]:people.filter(function(p){return !S.friends.some(function(f){return String(f.id)===String(p.id)})})[+t.dataset.i];if(!f)return;pick=f;amt='';closeRb();viewAmt();bigHead(f,function(u){var i=document.querySelector('.pf img');if(i)i.src=u})});
+ $('srBody').addEventListener('click',function(e){var t=e.target.closest('.fx');if(!t)return;var f=t.dataset.s==='f'?S.friends[+t.dataset.i]:people.filter(function(p){return !S.friends.some(function(f){return String(f.id)===String(p.id)})})[+t.dataset.i];if(!f)return;pick=f;amt='';closeRb();viewAmt();bigHead(f,function(u){var i=document.querySelector('.apf img');if(i)i.src=u})});
  inp.focus({preventScroll:true});
 }
 function viewAmt(){
  box.className='sr-box amt am';
  var chips=[25,50,100,200].map(function(n){return '<button data-v="'+n+'">'+I('robux-r',21)+n+'</button>'}).join('');
- box.innerHTML=head()+'<span class="pf">'+pav(pick,1)+'</span><div class="nm">'+e2(pick.display||pick.name)+'</div><div class="big">'+I('robux-r',44)+'<span id="amV">0</span><input id="amI" inputmode="numeric" autocomplete="off"></div><div class="chips">'+chips+'</div><button class="nx" id="amN">Next</button><p class="nt">Robux are sent instantly with no fees</p>';
+ box.innerHTML=head()+'<span class="apf">'+pav(pick,1)+'</span><div class="nm">'+e2(pick.display||pick.name)+'</div><div class="big">'+I('robux-r',44)+'<span id="amV">0</span><input id="amI" inputmode="numeric" autocomplete="off"></div><div class="chips">'+chips+'</div><button class="nx" id="amN">Next</button><p class="nt">Robux are sent instantly with no fees</p>';
  bindX();
  var inp=$('amI');
  function upd(){var n=+amt||0;$('amV').textContent=fmt(n);$('amN').className='nx'+(n>0&&n<=S.robux?' on':'')}
@@ -237,9 +237,9 @@ function viewAmt(){
 }
 function viewConfirm(n){
  box.className='sr-box cf';
- box.innerHTML=head()+'<div class="c1"><span class="pf">'+pav(pick,1)+'</span><div class="nm">'+e2(pick.display||pick.name)+'</div><div class="hd">@'+e2(pick.name)+'</div><div class="ln"><span>'+I('cal-f',20)+'Connected 3 months</span><span>'+I('ppl-f',22)+'1 mutual friend</span></div><div class="jn">'+I('info-f',18)+'Joined in 2021</div></div><div class="c2"><div class="v">'+I('robux-r',44)+fmt(n)+'</div><p>The recipient will get '+fmt(n)+' Robux.</p></div><div class="bs"><button class="s" id="cfS">Send</button><button class="e" id="cfE">Edit</button></div><p class="ntt">You need an age check or parental consent to send Robux. Once you send, you cannot cancel.</p>';
+ box.innerHTML=head()+'<div class="c1"><span class="apf">'+pav(pick,1)+'</span><div class="nm">'+e2(pick.display||pick.name)+'</div><div class="hd">@'+e2(pick.name)+'</div><div class="ln"><span>'+I('cal-f',20)+'Connected 3 months</span><span>'+I('ppl-f',22)+'1 mutual friend</span></div><div class="jn">'+I('info-f',18)+'Joined in 2021</div></div><div class="c2"><div class="v">'+I('robux-r',44)+fmt(n)+'</div><p>The recipient will get '+fmt(n)+' Robux.</p></div><div class="bs"><button class="s" id="cfS">Send</button><button class="e" id="cfE">Edit</button></div><p class="ntt">You need an age check or parental consent to send Robux. Once you send, you cannot cancel.</p>';
  bindX();
- bigHead(pick,function(u){var i=document.querySelector('.pf img');if(i)i.src=u});
+ bigHead(pick,function(u){var i=document.querySelector('.apf img');if(i)i.src=u});
  $('cfE').addEventListener('click',viewAmt);
  $('cfS').addEventListener('click',function(){
   if(box.dataset.busy)return;box.dataset.busy='1';
