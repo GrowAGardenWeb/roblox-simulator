@@ -557,3 +557,6 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .pk-a{width:calc(100% - 48px);left:24px;right:auto}
 .pk .pk-a{width:calc(100% - 48px);height:40px;text-align:center;display:block}
 .pk .pk-x{width:28px;height:28px;text-align:center;display:grid}
+
+.av-err{margin:14px 15px 0;padding:10px 12px;border-radius:8px;background:#fdecec;color:#a12626;font-size:12.5px;line-height:17px;word-break:break-word}
+.av-err2{position:absolute;left:18px;right:18px;bottom:18px;margin:0;z-index:6}
