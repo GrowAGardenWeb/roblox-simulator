@@ -638,6 +638,20 @@ function openPf(u){
    return Promise.all(ids.map(function(id){return J('/rbx/catalog/v1/catalog/items/'+id+'/details?itemType=Asset').catch(function(){return null})})).then(function(ds){
     $('pfWr').innerHTML=ids.map(function(id,i){var d=ds[i]||{},p=d.price==null?'':(d.price===0?'Free':'<i>'+I('robux-r',15)+'</i>'+fmt(d.price));return '<div class="pw"><span class="ph"><img src="'+e2(m[id]||'')+'" alt=""></span><b>'+e2(d.name||'Item')+'</b><small>'+p+'</small></div>'}).join('')})})}).catch(function(){});
 }
+/* images that are still loading (or failed) stay invisible, so no broken-image icon ever shows over the grey placeholder */
+(function(){
+ function tag(i){
+  if(i.__tg)return;i.__tg=1;
+  var s=i.getAttribute('src');
+  if(!s){i.classList.add('pend');}
+  else if(!(i.complete&&i.naturalWidth))i.classList.add('pend');
+  i.addEventListener('load',function(){i.classList.remove('pend','bad')});
+  i.addEventListener('error',function(){i.classList.remove('pend');i.classList.add('bad')});
+ }
+ function scan(n){if(n.nodeType!==1)return;if(n.tagName==='IMG')tag(n);else[].forEach.call(n.querySelectorAll('img'),tag)}
+ scan(document.body);
+ new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(scan);if(m.type==='attributes'&&m.target.tagName==='IMG'){var i=m.target;i.__tg=0;i.classList.remove('bad');tag(i)}})}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['src']});
+})();
 /* ---------- window controls (Electron) ---------- */
 var pc=window.pc||null;
 function wc(id,fn){$(id).addEventListener('click',function(){if(pc&&pc[fn])pc[fn]()})}
