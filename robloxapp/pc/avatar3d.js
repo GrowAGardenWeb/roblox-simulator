@@ -6,6 +6,7 @@ var VB='https://create-app-iota.vercel.app',LIB='/robloxapp/assets/dist-CjbySSkN
 function boot(){
  if(P)return P;
  P=(async function(){
+  if(typeof window.DracoDecoderModule==='undefined')throw Error('draco_decoder.js is missing');
   var R=await import(LIB);
   R.FLAGS.ONLINE_ASSETS=true;
   R.FLAGS.ASSETS_PATH='/robloxapp/roavatar/assets/rbxasset/';
