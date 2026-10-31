@@ -658,3 +658,34 @@ html.dk .win img#logo,html.dk .win .tb-ic{filter:none}
 .av-buy .bb.gray:hover{background:#d5d8dd}
 .by-b.wait,.co .by-b.wait{background:#a2b2f8;cursor:default}
 .it.own .pr{visibility:visible}
+
+/* 1:1 hover shapes measured from the real app */
+.sb::before{content:"";position:absolute;left:8px;top:0;width:48px;height:63px;border-radius:8px;background:transparent}
+.sb:hover::before,.sb.on:hover::before{background:#eeeff1}
+.sb>*{position:absolute}
+.sb .si,.sb i[data-ic]{z-index:1}
+.tabs{height:47px;border-bottom:1px solid #e3e5e8}
+.tabs button{height:47px;padding:0 13px;border-radius:0}
+.tabs button:hover,.tabs button.on:hover{background:#edeef1}
+.tabs button.on:after{height:2px;background:#202227;bottom:-1px}
+.seg{height:32px;border-radius:16px;background:#efeff2;padding:2px}
+.seg button{border-radius:14px;padding:0 10px}
+.seg button.on{background:#dfe1e5}
+.seg button:hover:not(.on){background:#e6e7eb}
+.av-tools{width:44px}
+.av-tools .tb1{border-radius:0;margin-bottom:0;background:#ffffffd9;box-shadow:none}
+.av-tools .tb1:nth-child(1){border-radius:22px 22px 0 0}
+.av-tools .tb1:nth-child(2){border-radius:0 0 22px 22px}
+.av-tools .tb2{border-radius:22px;background:#ffffffb3;box-shadow:none;margin-top:12px}
+/* Robux page extras */
+.rb h1{position:relative}
+.rb-col:before{content:"";position:absolute;left:-120px;right:-120px;top:96px;height:290px;background:radial-gradient(ellipse at center,#00000008 0,transparent 70%),repeating-linear-gradient(0deg,#0000000a 0 1px,transparent 1px 22px),repeating-linear-gradient(90deg,#0000000a 0 1px,transparent 1px 22px);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 72%);mask-image:radial-gradient(ellipse at center,#000 30%,transparent 72%);pointer-events:none}
+.rb-col>*{position:relative}
+.rb-card.w .rr+.rr{margin-top:0}
+.rb h2.faq{margin-top:48px}
+.fq{border:1px solid #dcdee2;border-radius:8px;margin-top:16px;overflow:hidden}
+.fq>button{display:flex;align-items:center;width:100%;height:56px;padding:0 20px 0 12px;font-size:14px;font-weight:700;color:#232527}
+.fq>button i{margin-left:auto;display:grid;place-items:center;transition:transform .2s}
+.fq.op>button i{transform:rotate(180deg)}
+.fq p{display:none;padding:0 12px 18px;font-size:13.5px;line-height:19px;color:#4b4e55}
+.fq.op p{display:block}
