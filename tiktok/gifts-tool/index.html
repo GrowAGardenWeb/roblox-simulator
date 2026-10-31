@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Gifts grabber</title>
+<style>
+body{margin:0;background:#0b0d17;color:#fff;font:16px/1.45 -apple-system,Helvetica,Arial,sans-serif;padding:22px;max-width:560px;margin:0 auto}
+h1{font-size:24px;margin:0 0 6px}p{color:#c9cbd6}ol{padding-left:20px}li{margin:10px 0}
+textarea{width:100%;height:110px;background:#161a2b;color:#9fe3a8;border:1px solid #2a3050;border-radius:10px;padding:10px;font:12px monospace;box-sizing:border-box}
+button{background:#fe2c55;color:#fff;border:0;border-radius:12px;font-size:17px;font-weight:700;padding:14px 18px;width:100%;margin-top:10px}
+b{color:#fff}.ok{color:#7be28f;font-weight:700;margin-top:8px;min-height:22px}
+</style></head><body>
+<h1>Gifts grabber</h1>
+<p>Un marcador que, en streamtoearn.io/gifts, saca la foto y el nombre de todos los regalos y los guarda en un archivo para que me lo mandes.</p>
+<ol>
+<li>Toca <b>Copiar marcador</b> (abajo).</li>
+<li>En Safari agrega cualquier página a marcadores (Compartir → Agregar marcador) y ponle de nombre <b>Gifts</b>.</li>
+<li>Abre Marcadores → Editar → toca <b>Gifts</b> → borra la dirección y <b>pega</b> lo copiado → Listo.</li>
+<li>Entra a <b>streamtoearn.io/gifts</b>, elige un filtro de costo y toca el marcador <b>Gifts</b>. Espera a que termine (baja solo para cargar todos).</li>
+<li>Cambia el filtro de costo y vuelve a tocar <b>Gifts</b> para sumar los demás. Cuando tengas todos, toca <b>Guardar archivo</b> en el cuadro que sale y mándamelo.</li>
+</ol>
+<textarea id="t" readonly></textarea>
+<button id="c" type="button">Copiar marcador</button>
+<div class="ok" id="ok"></div>
+<script>
+function grab(){
+  var W=window,D=document;
+  if(!/streamtoearn|gift/i.test(location.href)&&!confirm('Esta no parece la página de regalos. ¿Seguir?'))return;
+  W.__ttg=W.__ttg||{};
+  var box=D.getElementById('__ttgbox');
+  if(!box){box=D.createElement('div');box.id='__ttgbox';box.style.cssText='position:fixed;left:10px;right:10px;top:10px;z-index:2147483647;background:#fe2c55;color:#fff;font:600 15px -apple-system,Arial;padding:12px 14px;border-radius:14px;box-shadow:0 6px 24px #0008';D.body.appendChild(box)}
+  function say(h){box.innerHTML=h}
+  function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+  function count(){return Object.keys(W.__ttg).length}
+  function buttons(){
+    say('Regalos guardados: <b>'+count()+'</b><br><button id="__s" style="margin:8px 6px 0 0;padding:9px 14px;border:0;border-radius:10px;font-weight:700">Guardar archivo</button><button id="__r" style="margin-top:8px;padding:9px 14px;border:0;border-radius:10px;font-weight:700">Reiniciar</button><div style="font-weight:400;font-size:13px;margin-top:6px">Cambia el filtro de costo y toca el marcador otra vez para sumar más.</div>');
+    D.getElementById('__s').onclick=save;D.getElementById('__r').onclick=function(){W.__ttg={};buttons()};
+  }
+  function tier(c){return c<=100?'S':c<=1000?'M':'B'}
+  function slug(n){return String(n).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'gift'}
+  function bigImgs(e){var n=0,a=e.querySelectorAll('img');for(var j=0;j<a.length;j++){var q=a[j].getBoundingClientRect();if(q.width>=40&&q.height>=40)n++}return n}
+  function cards(){
+    var out=[],imgs=D.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var im=imgs[i],r=im.getBoundingClientRect();
+      if(r.width<40||r.height<40)continue;
+      var src=im.currentSrc||im.src||im.getAttribute('data-src');if(!src||src.indexOf('data:image/svg')===0)continue;
+      var el=im,card=null;
+      for(var k=0;k<6&&el.parentElement;k++){
+        el=el.parentElement;
+        if(bigImgs(el)>1)break;
+        card=el;
+        var ls=(el.innerText||'').split('\n').map(function(x){return x.trim()}).filter(Boolean);
+        if(ls.length>=2)break;
+      }
+      if(!card)continue;
+      var lines=(card.innerText||'').split('\n').map(function(x){return x.trim()}).filter(Boolean);
+      var cost=null,name=null;
+      lines.forEach(function(l){
+        var m=l.match(/^(\d[\d.,]*)\s*[^\w\s]{0,2}$/);
+        if(m&&cost===null)cost=parseInt(l.replace(/[^\d]/g,''),10);
+        else if(!name&&!/^\d[\d.,]*\s*[^\w\s]{0,2}$/.test(l))name=l;
+      });
+      if(!name||cost===null||isNaN(cost))continue;
+      out.push({n:name,c:cost,src:src});
+    }
+    return out;
+  }
+  function toData(src){
+    return fetch(src,{mode:'cors'}).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(f.result)};f.onerror=rej;f.readAsDataURL(b)})})
+    .catch(function(){return new Promise(function(res){var im=new Image();im.crossOrigin='anonymous';im.onload=function(){try{var c=D.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext('2d').drawImage(im,0,0);res(c.toDataURL('image/png'))}catch(e){res(null)}};im.onerror=function(){res(null)};im.src=src})});
+  }
+  function save(){
+    var arr=Object.keys(W.__ttg).map(function(k){return W.__ttg[k]}),used={};
+    arr.sort(function(a,b){return a.c-b.c});
+    arr.forEach(function(g){var id=slug(g.n),n=id,i=2;while(used[n])n=id+'-'+(i++);used[n]=1;g.id=n;g.t=tier(g.c)});
+    var json=JSON.stringify(arr.map(function(g){return{id:g.id,n:g.n,c:g.c,t:g.t,src:g.src,img:g.img||null}}));
+    var file=new File([json],'gifts.json',{type:'application/json'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'gifts.json'}).catch(function(){})}
+    else{var a=D.createElement('a');a.href=URL.createObjectURL(file);a.download='gifts.json';D.body.appendChild(a);a.click()}
+  }
+  (async function(){
+    say('Cargando regalos…');
+    var last=-1,same=0;
+    for(var i=0;i<80&&same<3;i++){
+      W.scrollTo(0,D.documentElement.scrollHeight);await sleep(450);
+      var h=D.documentElement.scrollHeight;if(h===last)same++;else{same=0;last=h}
+    }
+    var cs=cards(),fresh=cs.filter(function(c){return !W.__ttg[c.src]});
+    if(!cs.length){say('No encontré regalos en esta página. Mándame una captura y lo ajusto.<br><button onclick="this.parentNode.remove()" style="margin-top:8px;padding:8px 12px;border:0;border-radius:10px">Cerrar</button>');return}
+    var done=0,idx=0;
+    async function worker(){while(idx<fresh.length){var c=fresh[idx++];c.img=await toData(c.src);W.__ttg[c.src]=c;done++;say('Descargando fotos… '+done+'/'+fresh.length)}}
+    await Promise.all([worker(),worker(),worker(),worker(),worker()]);
+    buttons();
+  })();
+}
+var code='javascript:'+encodeURIComponent('('+grab.toString()+')()');
+document.getElementById('t').value=code;
+document.getElementById('c').onclick=function(){var t=document.getElementById('t');t.focus();t.select();t.setSelectionRange(0,999999);var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+ if(!ok&&navigator.clipboard)navigator.clipboard.writeText(code).then(function(){document.getElementById('ok').textContent='Copiado ✓'});else document.getElementById('ok').textContent=ok?'Copiado ✓':'Mantén presionado el cuadro y copia'};
+</script></body></html>
