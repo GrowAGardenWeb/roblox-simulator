@@ -1330,7 +1330,7 @@ var PGD={"a.Balance_t": "Balance", "a.tot": "Total estimated balance", "a.mxn": 
  document.addEventListener('click',function(e){var p=e.target.closest('.pgx');if(!p)return;
   if(e.target.closest('[data-pgback]')){hide(p);return}
   var g=e.target.closest('[data-go]');if(g){pgOpenCr('av');return}
-  var t=e.target.closest('[data-tab]');if(t){var w=t.dataset.tab;load(function(){tab(w)});return}
+  var t=e.target.closest('[data-tab]');if(t){tab(t.dataset.tab);return}
   if(e.target.closest('[data-golive]')){pgCloseAll();closeBal();if(window.openMk)window.openMk('lv');return}});
  var lpT=null;
  function lp(e){var h=e.target.closest&&e.target.closest('.pgx .hs');if(!h)return;var p=h.closest('.pgx');clearTimeout(lpT);lpT=setTimeout(function(){p.classList.add('tedit')},450)}
