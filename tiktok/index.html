@@ -1196,23 +1196,29 @@ var NM=[],CL=['#6b4fbb','#c2415d','#2b8a6e','#b87a2b','#3b6fb8','#8a3b8a','#4a4a
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
 var lastW='',UF={};
 function realUsers(){return String(L().users||'').split(/[\n,\s]+/).map(function(x){return x.replace(/^@/,'').trim()}).filter(Boolean)}
-function who(){var ru=realUsers();if(!ru.length)return null;var n,tr=0;do{n=pick(ru)}while(n===lastW&&ru.length>1&&tr++<8);lastW=n;
- if(!(n in PH)){PH[n]='https://unavatar.io/tiktok/'+encodeURIComponent(n);UF[n]='https://unavatar.io/'+encodeURIComponent(n)}return n}
+var JS={},LA={},GA={};
+function setPh(n){if(!(n in PH)){PH[n]='https://unavatar.io/tiktok/'+encodeURIComponent(n);UF[n]='https://unavatar.io/'+encodeURIComponent(n)}}
+function joinOne(n){var ru=realUsers().filter(function(x){return !JS[x]});if(!n){if(!ru.length)return null;n=pick(ru)}JS[n]=1;LA[n]=Date.now();setPh(n);cmsg('join',n,'joined');joined++;bump('viewers');return n}
+function who(kind){var all=realUsers(),now=Date.now();if(!all.length)return null;
+ var gap=kind==='gift'?12000:kind==='chat'?4000:2500,T=kind==='gift'?GA:LA,ok=all.filter(function(x){return x!==lastW&&now-(T[x]||0)>gap&&now-(LA[x]||0)>(kind==='gift'?0:0)});
+ if(!ok.length)ok=all.filter(function(x){return x!==lastW&&now-(T[x]||0)>gap});
+ if(!ok.length)return null;
+ var n=pick(ok);if(!JS[n])joinOne(n);lastW=n;T[n]=now;if(kind==='gift')LA[n]=now;setPh(n);return n}
 function phImg(nm){if(!PH[nm])return '';return '<img src="'+PH[nm]+'"'+(UF[nm]?' data-f="'+UF[nm]+'"':'')+' onerror="if(this.dataset.f){this.src=this.dataset.f;this.dataset.f=\'\'}else this.remove()" alt="">'}
 function bump(k){var l=L(),n=+String(l[k]).replace(/[,\s]/g,'');if(!isFinite(n))return;l[k]=String(n+Math.max(1,Math.round(n*Math.random()*.004)))}
 function cmsg(kind,nm,txt){var c=$('lvChat'),d=document.createElement('div');d.className='cmi'+(kind==='sys'?' sys':'')+(kind==='chat'?' two':'');
  var av=kind==='sys'?'<i class="ca">♪</i>':(kind==='host'?'<i class="ca"><img src="'+esc(src(S.avatar,'avatar'))+'" alt=""></i>':'<i class="ca" style="background:'+pick(CL)+'">'+phImg(nm)+esc(String(nm).charAt(0).toUpperCase())+'</i>');
  var body=kind==='sys'?'<div>'+esc(txt)+'</div>':kind==='chat'?'<div><span class="nm">'+esc(nm)+'</span><b>'+esc(txt)+'</b></div>':kind==='host'?'<div><span class="nm">'+esc(nm)+'<em class="hs">Host</em></span><b>'+esc(txt)+'</b></div>':'<div><span class="nm">'+esc(nm)+'</span> <span class="tx">'+esc(txt)+'</span></div>';
  d.innerHTML=av+body;c.appendChild(d);while(c.children.length>7)c.removeChild(c.firstChild)}
-function tick(){if(!mk.classList.contains('lon'))return;var l=L(),r=Math.random(),w=who();
- if(w){
-  if(r<.34){cmsg('join',w,'joined');joined++;bump('viewers')}
-  else if(r<.84){var m=String(l.chat||'').split('\n').filter(Boolean),t=m.length?pick(m):'hola',ru=realUsers();t=t.replace(/\{u\}/g,function(){return Math.random()<.8?w:pick(ru)});cmsg('chat',w,t)}
-  else{cmsg('like',w,'liked the LIVE');bump('hl');var rr=mk.getBoundingClientRect();heart(rr.right-30,rr.bottom-110)}
+function tick(){if(!mk.classList.contains('lon'))return;var l=L(),r=Math.random(),ru=realUsers(),un=ru.filter(function(x){return !JS[x]}).length,pj=un?Math.min(.3,.04+un/ru.length*.3):0;
+ if(ru.length){
+  if(r<pj){joinOne()}
+  else if(r<.82){var w=who('chat'),m=String(l.chat||'').split('\n').filter(Boolean),t=m.length?pick(m):'hola';if(w){t=t.replace(/\{u\}/g,function(){return Math.random()<.8?w:pick(ru)});cmsg('chat',w,t)}}
+  else{var w2=who('like');if(w2){cmsg('like',w2,'liked the LIVE');bump('hl');var rr=mk.getBoundingClientRect();heart(rr.right-30,rr.bottom-110)}}
  }
  paint();save();simT=setTimeout(tick,w?500+Math.random()*1000:1500)}
 var gT=null;
-function doGift(){var l=L(),bg=null;if(l.bprio&&boardOf().length&&Math.random()<.5){var be=pick(boardOf());bg=GIFTS.filter(function(x){return x.id===be.id})[0]||null}var gg=(lastG&&Math.random()<.15)?lastG:{g:bg||(Math.random()<.3&&GIFTS.filter(function(x){return x.id===l.goalId})[0])||pickGift(),w:null};
+function doGift(){var l=L(),bg=null;if(l.bprio&&boardOf().length&&Math.random()<.5){var be=pick(boardOf());bg=GIFTS.filter(function(x){return x.id===be.id})[0]||null}var gg={g:bg||(Math.random()<.3&&GIFTS.filter(function(x){return x.id===l.goalId})[0])||pickGift(),w:null};
  if(gg.g){lastG={g:gg.g,w:gift(gg.g,gg.w)};if(gg.g.a&&!gg.w&&Math.random()<.3){var nn=1+Math.floor(Math.random()*3),who2=lastG.w,gx=gg.g;for(var q=1;q<=nn;q++)setTimeout(function(){if(mk.classList.contains('lon'))gift(gx,who2)},q*1500)}paint();save()}}
 function gtick(){clearTimeout(gT);if(!mk.classList.contains('lon')||L().auto===false)return;var r=parseFloat(L().gps);if(r>0){doGift();gT=setTimeout(gtick,Math.min(5000,1000/Math.min(r,30))*(.6+Math.random()*.8))}else gT=setTimeout(gtick,1000)}
 
@@ -1234,7 +1240,7 @@ $('bdList').addEventListener('click',function(e){var x=e.target.closest('[data-b
 $('bSearch').addEventListener('input',function(){var q=this.value.trim().toLowerCase(),r=$('bRes');if(!q){r.innerHTML='';return}var m=GIFTS.filter(function(x){return x.n.toLowerCase().indexOf(q)>-1}).slice(0,12);r.innerHTML=m.map(function(x){return '<div data-id="'+x.id+'"><img src="gifts/icons/'+x.id+'.webp" alt="">'+esc(x.n)+'<small>'+x.c.toLocaleString('en-US').replace(/,/g,'')+'</small></div>'}).join('')});
 $('bRes').addEventListener('click',function(e){var d=e.target.closest('[data-id]');if(!d)return;var g=GIFTS.filter(function(x){return x.id===d.dataset.id})[0];if(!g)return;boardAdd(g);$('bSearch').value='';$('bRes').innerHTML='';renderBdList();paint();save()});
 $('lvBoard').addEventListener('click',function(e){if(e.target.closest('#bdCh'))this.classList.toggle('col')});
-function startSim(){boardTimers();joined=0;sStart=Date.now();sCoins=0;sGif={};lastG=null;gbs=[];gq=[];$('lvGifts').innerHTML='';$('lvGan').innerHTML='';anPlaying=false;anQ=[];$('lvChat').innerHTML='';cmsg('sys','','Welcome to TikTok LIVE! Have fun interacting with your viewers in real time. Creators must be 18 or older to go LIVE. Viewers must be 18 or older to recharge and send Gifts. Remember to create a safe viewing experience by following our Community Guidelines.');cmsg('host',L().host||S.name,L().msg);clearTimeout(simT);if(L().auto!==false){simT=setTimeout(tick,1200);gT=setTimeout(gtick,1500)}}
+function startSim(){JS={};LA={};GA={};lastW='';boardTimers();joined=0;sStart=Date.now();sCoins=0;sGif={};lastG=null;gbs=[];gq=[];$('lvGifts').innerHTML='';$('lvGan').innerHTML='';anPlaying=false;anQ=[];$('lvChat').innerHTML='';cmsg('sys','','Welcome to TikTok LIVE! Have fun interacting with your viewers in real time. Creators must be 18 or older to go LIVE. Viewers must be 18 or older to recharge and send Gifts. Remember to create a safe viewing experience by following our Community Guidelines.');cmsg('host',L().host||S.name,L().msg);clearTimeout(simT);if(L().auto!==false){simT=setTimeout(tick,1200);gT=setTimeout(gtick,1500)}}
 function stopSim(){clearTimeout(simT);clearTimeout(gT);bT.forEach(clearTimeout);bT=[]}
 
 var GIFTS=[],lastG=null,gbs=[];
@@ -1247,7 +1253,7 @@ function gfx(g,nm){var l=L();boardFx(g);sCoins+=g.c;if(nm)sGif[nm]=1;if(g.id===l
 function mkBanner(g,nm,now){var key=nm+'|'+g.id,el=document.createElement('div');el.className='gb';var col=pick(CL);el.innerHTML='<i class="ca2" style="background:'+col+'">'+phImg(nm)+esc(String(nm).charAt(0).toUpperCase())+'</i><div class="tx"><b>'+esc(nm)+'</b><small>sent '+esc(g.n)+'</small></div><i class="gi">'+gicon(g)+'</i><span class="x"><i>x</i>1</span>';
  $('lvGifts').appendChild(el);var b={el:el,key:key,n:1,t:now};b.o=setTimeout(function(){rmGb(b)},3200);gbs.push(b);gfx(g,nm);if(g.a)playAnim(g)}
 function gnext(){while(gbs.length<2&&gq.length){var q=gq.shift();mkBanner(q.g,q.nm,Date.now())}paint()}
-function gift(g,who_){if(!g)return null;var nm=who_||who();if(!nm)return null;var now=Date.now(),key=nm+'|'+g.id;
+function gift(g,who_){if(!g)return null;var nm=who_||who('gift');if(!nm)return null;var now=Date.now(),key=nm+'|'+g.id;
  var ex=gbs.filter(function(b){return b.key===key&&now-b.t<5000})[0];
  if(ex){ex.n++;ex.t=now;if(g.a)playAnim(g);gfx(g,nm);var x=ex.el.querySelector('.x');x.innerHTML='<i>x</i>'+ex.n;x.classList.remove('p');void x.offsetWidth;x.classList.add('p');clearTimeout(ex.o);ex.o=setTimeout(function(){rmGb(ex)},3200)}
  else if(gbs.length<2&&!gq.length)mkBanner(g,nm,now);
