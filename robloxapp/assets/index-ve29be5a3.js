@@ -4250,25 +4250,25 @@ function RoRndToast(e){window.dispatchEvent(new CustomEvent(`ro-toast`,{detail:e
 var RoRndSleep=e=>new Promise(t=>setTimeout(t,e)),
 RoRndPick=(e,t)=>[...e].sort(()=>Math.random()-.5).slice(0,t),
 RoRndZones=[
-{tab:`Body`,key:`full-body`,bundle:!0,src:[[18,37]]},
-{tab:`Body`,key:`hair`,t:[41],src:[[18,20]]},
-{tab:`Body`,key:`head`,t:[17,79],src:[[18,66]]},
-{tab:`Clothing`,key:`top`,t:[64,65,68],src:[[3,59],[3,58],[3,62]]},
-{tab:`Clothing`,key:`outerwear`,t:[67],src:[[3,61]]},
-{tab:`Clothing`,key:`bottom`,t:[66,69,72],src:[[3,60],[3,65],[3,63]]},
-{tab:`Clothing`,key:`shoes`,t:[70,71],src:[[3,64]]},
-{tab:`Clothing`,key:`classic-shirt`,t:[11],src:[[3,56]]},
-{tab:`Clothing`,key:`classic-pants`,t:[12],src:[[3,57]]},
-{tab:`Clothing`,key:`classic-tshirt`,t:[2],src:[[3,55]]},
-{tab:`Accessories`,key:`head-accessory`,t:[8],src:[[11,54]]},
-{tab:`Accessories`,key:`face-accessory`,t:[42],src:[[11,21]]},
-{tab:`Accessories`,key:`neck`,t:[43],src:[[11,22]]},
-{tab:`Accessories`,key:`back`,t:[46],src:[[11,25]]},
-{tab:`Accessories`,key:`waist`,t:[47],src:[[11,26]]},
-{tab:`Accessories`,key:`shoulder`,t:[44],src:[[11,23]]},
-{tab:`Accessories`,key:`front`,t:[45],src:[[11,24]]},
-{tab:`Accessories`,key:`gear`,t:[19],src:[[11,5]]},
-{tab:`Emotes`,key:`emote`,t:[61],src:[[12,39]]}
+{tab:`Body`,key:`full-body`,bundle:!0,src:[[18,37,0]]},
+{tab:`Body`,key:`hair`,t:[41],src:[[18,20,41]]},
+{tab:`Body`,key:`head`,t:[17,79],src:[[18,66,17]]},
+{tab:`Clothing`,key:`top`,t:[64,65,68],src:[[3,59,65],[3,58,64],[3,62,68]]},
+{tab:`Clothing`,key:`outerwear`,t:[67],src:[[3,61,67]]},
+{tab:`Clothing`,key:`bottom`,t:[66,69,72],src:[[3,60,66],[3,65,72],[3,63,69]]},
+{tab:`Clothing`,key:`shoes`,t:[70,71],src:[[3,64,70]]},
+{tab:`Clothing`,key:`classic-shirt`,t:[11],src:[[3,56,11]]},
+{tab:`Clothing`,key:`classic-pants`,t:[12],src:[[3,57,12]]},
+{tab:`Clothing`,key:`classic-tshirt`,t:[2],src:[[3,55,2]]},
+{tab:`Accessories`,key:`head-accessory`,t:[8],src:[[11,54,8]]},
+{tab:`Accessories`,key:`face-accessory`,t:[42],src:[[11,21,42]]},
+{tab:`Accessories`,key:`neck`,t:[43],src:[[11,22,43]]},
+{tab:`Accessories`,key:`back`,t:[46],src:[[11,25,46]]},
+{tab:`Accessories`,key:`waist`,t:[47],src:[[11,26,47]]},
+{tab:`Accessories`,key:`shoulder`,t:[44],src:[[11,23,44]]},
+{tab:`Accessories`,key:`front`,t:[45],src:[[11,24,45]]},
+{tab:`Accessories`,key:`gear`,t:[19],src:[[11,5,19]]},
+{tab:`Emotes`,key:`emote`,t:[61],src:[[12,39,61]]}
 ],
 RoRndRun={abort:!1,busy:!1};
 function RoRndOv(){
@@ -4290,18 +4290,26 @@ o.querySelector(`.rnd-bar i`).style.width=Math.max(0,Math.min(100,t||0))+`%`;
 let r=o.querySelector(`.rnd-go`);
 if(n){r.hidden=!1,r.textContent=n.label,r.onclick=n.run}else r.hidden=!0
 }
+async function RoRndCat(e){
+for(let t=0;t<3;t++){
+try{return await R(e)}catch{await RoRndSleep(700*(t+1))}
+}
+return{items:[],next:``}
+}
 async function RoRndFetchZone(e){
 let t=[],n=new Set,i=e.bundle?null:new Set(e.t);
-for(let[r,a]of e.src){
+for(let[r,a,d]of e.src){
 let o=``,s=[1,2,3][Math.floor(Math.random()*3)];
-for(let c=0;c<2;c++){
-let l;
-try{l=await R({category:r,subcategory:a,limit:60,sort:s,cursor:o})}catch{break}
+for(let c=0;c<4;c++){
+let l=await RoRndCat({category:r,subcategory:a,limit:60,sort:s,cursor:o});
 for(let u of l.items||[]){
-let d=String(u.id);
-if(n.has(d))continue;
-if(e.bundle){if(u.type!==`Bundle`)continue}else if(u.type===`Bundle`||!i.has(Number(u.assetTypeId)))continue;
-n.add(d),t.push(u)
+let f=String(u.id);
+if(n.has(f))continue;
+if(e.bundle){if(u.type!==`Bundle`)continue;n.add(f),t.push(u);continue}
+if(u.type===`Bundle`)continue;
+let h=u.assetTypeId,m=typeof h==`number`?h:/^\d+$/.test(String(h))?Number(h):d;
+if(!i.has(m))continue;
+n.add(f),t.push({...u,assetTypeId:m})
 }
 if(!(o=l.next)||t.length>=60*e.src.length)break
 }
@@ -4408,7 +4416,14 @@ RoRndSay(`Opening Customize…`,96);
 try{sessionStorage.setItem(`heads_dialog_seen`,`1`)}catch{}
 nav.goTab(`avatar`,{mode:`customize`});
 await RoRndWaitFor(()=>document.querySelector(`[data-testid="avatar-screen"][data-mode="customize"]`),1e4);
-await RoRndSleep(3500);
+RoRndSay(`Loading your avatar\u2026`,97);
+let shown=()=>document.querySelector(`[data-testid="roavatar"].shown`);
+await RoRndWaitFor(shown,6e4);
+for(let k=0,t=0;t<4&&k<4;t++){
+await RoRndSleep(500);
+if(!shown()){k++,t=-1,await RoRndWaitFor(shown,3e4)}
+}
+
 if(RoRndRun.abort)throw Error(`cancelled`);
 await new Promise(res=>RoRndSay(`Ready. Start recording your screen, then tap Start.`,100,{label:`Start`,run:res}));
 for(let c=3;c>0;c--)RoRndSay(String(c),100,null),await RoRndSleep(900);
