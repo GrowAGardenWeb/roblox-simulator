@@ -4344,15 +4344,15 @@ s<1?requestAnimationFrame(a):i()
 requestAnimationFrame(a)
 })
 }
-async function RoRndTour(e){
-let t=[...new Set(RoRndZones.map(e=>e.tab))];
+async function RoRndTour(){
+let t=[...new Set(RoRndZones.map(e=>e.tab))],per=Math.max(600,(3e4-t.length*350-RoRndZones.length*350)/RoRndZones.length);
 for(let n of t){
 if(RoRndRun.abort)return;
 let r=document.querySelector(`[data-testid="tab-${n}"]`);
 if(!r)continue;
 r.scrollIntoView({inline:`center`,block:`nearest`});
 r.click();
-await RoRndSleep(900);
+await RoRndSleep(350);
 for(let i of RoRndZones.filter(e=>e.tab===n)){
 if(RoRndRun.abort)return;
 if(n!==`Emotes`){
@@ -4360,14 +4360,13 @@ let a=await RoRndWaitFor(()=>document.querySelector(`[data-testid="cz-slot-${i.k
 if(!a)continue;
 a.click()
 }
-await RoRndSleep(500);
+await RoRndSleep(150);
 let o=document.querySelector(`[data-testid="sheet-body"]`);
 if(!o)continue;
 o.scrollTop=0;
-await RoRndSleep(300);
-let s=document.querySelectorAll(`[data-testid="cz-item"]`).length;
-await RoRndScroll(o,Math.min(4200,1400+s*55));
-await RoRndSleep(400)
+await RoRndSleep(100);
+await RoRndScroll(o,per);
+await RoRndSleep(100)
 }
 }
 }
@@ -4431,7 +4430,6 @@ RoRndClose();
 let stop=()=>{RoRndRun.abort=!0};
 window.addEventListener(`pointerdown`,stop,!0);
 try{await RoRndTour()}finally{window.removeEventListener(`pointerdown`,stop,!0)}
-RoRndToast(`Done`)
 }catch(e){
 RoRndClose();
 e&&e.message!==`cancelled`&&RoRndToast(e.message||`Randomize failed.`)
