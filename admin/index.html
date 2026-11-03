@@ -101,6 +101,19 @@
     </table>
   </div>
 
+  <div class="card">
+    <strong style="font-size:14px;">Randomize (Customize del robloxapp)</strong>
+    <p class="sub" style="margin:6px 0 0;">Cuentas reales de Roblox (usuario o ID, separadas por coma) entre las que el boton "Randomize" elige al azar para copiar skin + inventario, y el rango de Robux que muestra. Aplica para todos los que usen la app.</p>
+    <label>Cuentas (usuario o ID)</label>
+    <input id="rndPoolInput" type="text" placeholder="munfuja22, 9005180985, otracuenta" autocomplete="off" />
+    <label>Robux minimo</label>
+    <input id="rndMinInput" type="number" min="0" step="1" placeholder="ej. 10000" />
+    <label>Robux maximo</label>
+    <input id="rndMaxInput" type="number" min="1" step="1" placeholder="ej. 500000" />
+    <button id="rndSaveBtn" onclick="saveRandomizeConfig()">Guardar</button>
+    <div id="rndStatus"></div>
+  </div>
+
 <script>
 var WORKER_URL = 'https://moneyscripts-stripe.pamelalunaescuela.workers.dev';
 
@@ -306,8 +319,57 @@ async function loadKeysList() {
   }
 }
 
-document.getElementById('secretInput').addEventListener('change', function () { loadList(); loadKeysList(); });
-if (document.getElementById('secretInput').value) { loadList(); loadKeysList(); }
+function setRndStatus(msg, ok) {
+  var el = document.getElementById('rndStatus');
+  el.textContent = msg;
+  el.className = ok ? 'ok' : 'err';
+}
+
+async function loadRandomizeConfig() {
+  var secret = getSecret();
+  if (!secret) return;
+  try {
+    var res = await fetch(WORKER_URL + '/admin/randomize-config?secret=' + encodeURIComponent(secret));
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+    document.getElementById('rndPoolInput').value = (data.pool || []).join(', ');
+    document.getElementById('rndMinInput').value = data.min;
+    document.getElementById('rndMaxInput').value = data.max;
+  } catch (err) {
+    setRndStatus('Error cargando: ' + err.message, false);
+  }
+}
+
+async function saveRandomizeConfig() {
+  var secret = getSecret();
+  if (!secret) { setRndStatus('Falta el admin secret', false); return; }
+  var pool = document.getElementById('rndPoolInput').value.trim();
+  var min = Number(document.getElementById('rndMinInput').value);
+  var max = Number(document.getElementById('rndMaxInput').value);
+  if (!pool) { setRndStatus('Pon al menos una cuenta', false); return; }
+  if (!(max > min) || min < 0) { setRndStatus('Rango de Robux invalido', false); return; }
+
+  var btn = document.getElementById('rndSaveBtn');
+  btn.disabled = true;
+  setRndStatus('Guardando...', true);
+  try {
+    var res = await fetch(WORKER_URL + '/admin/randomize-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: secret, pool: pool, min: min, max: max }),
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+    setRndStatus('Guardado: ' + data.pool.length + ' cuenta(s), ' + data.min + '-' + data.max + ' Robux', true);
+  } catch (err) {
+    setRndStatus('Error: ' + err.message, false);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('secretInput').addEventListener('change', function () { loadList(); loadKeysList(); loadRandomizeConfig(); });
+if (document.getElementById('secretInput').value) { loadList(); loadKeysList(); loadRandomizeConfig(); }
 </script>
 </body>
 </html>
