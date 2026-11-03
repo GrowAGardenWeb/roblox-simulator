@@ -32,13 +32,6 @@
 //                                   for `hours` hours from the moment it's redeemed.
 //   POST /admin/keys/revoke         { secret, code } -> { ok }  (only works on an unredeemed code)
 //
-//   GET  /randomize-config          (public) -> { pool: [usernameOrId...], min, max }
-//                                   Robloxapp's Customize > Randomize button reads this to pick
-//                                   which real Roblox account to copy the look/inventory from and
-//                                   what Robux range to show. Set from the admin panel.
-//   GET  /admin/randomize-config    ?secret=ADMIN_SECRET -> { pool, min, max }
-//   POST /admin/randomize-config    { secret, pool: "a,b,c" | [...], min, max } -> { pool, min, max }
-//
 // Requires a KV namespace bound as MS_KV (Settings -> Bindings -> KV Namespace).
 //
 // Optional: set DISCORD_WEBHOOK_URL as a Worker secret (wrangler secret put /
@@ -148,15 +141,6 @@ export default {
       }
       if (url.pathname === '/admin/keys/revoke' && request.method === 'POST') {
         return await handleKeysRevoke(request, env, origin);
-      }
-      if (url.pathname === '/randomize-config' && request.method === 'GET') {
-        return await handleRandomizeConfigGet(request, env, origin);
-      }
-      if (url.pathname === '/admin/randomize-config' && request.method === 'GET') {
-        return await handleAdminRandomizeConfigGet(request, env, origin);
-      }
-      if (url.pathname === '/admin/randomize-config' && request.method === 'POST') {
-        return await handleAdminRandomizeConfigSet(request, env, origin);
       }
       return new Response('Not found', { status: 404, headers: corsHeaders(origin) });
     } catch (err) {
@@ -525,58 +509,6 @@ function randomKeyCode() {
     if (i === 4) out += '-';
   }
   return out;
-}
-
-const RANDOMIZE_CONFIG_KEY = 'config:randomize';
-const DEFAULT_RANDOMIZE_CONFIG = { pool: ['9005180985'], min: 10000, max: 500000 };
-
-async function getRandomizeConfig(env) {
-  const raw = await env.MS_KV.get(RANDOMIZE_CONFIG_KEY);
-  if (!raw) return DEFAULT_RANDOMIZE_CONFIG;
-  try {
-    const parsed = JSON.parse(raw);
-    return {
-      pool: Array.isArray(parsed.pool) && parsed.pool.length ? parsed.pool : DEFAULT_RANDOMIZE_CONFIG.pool,
-      min: Number.isFinite(parsed.min) ? parsed.min : DEFAULT_RANDOMIZE_CONFIG.min,
-      max: Number.isFinite(parsed.max) ? parsed.max : DEFAULT_RANDOMIZE_CONFIG.max,
-    };
-  } catch {
-    return DEFAULT_RANDOMIZE_CONFIG;
-  }
-}
-
-// Public — the app reads this to know which accounts/Robux range to randomize between.
-async function handleRandomizeConfigGet(request, env, origin) {
-  const config = await getRandomizeConfig(env);
-  return json(config, 200, origin);
-}
-
-async function handleAdminRandomizeConfigGet(request, env, origin) {
-  const secret = new URL(request.url).searchParams.get('secret');
-  if (!checkAdminSecret(env, secret)) return json({ error: 'Invalid admin secret' }, 401, origin);
-  const config = await getRandomizeConfig(env);
-  return json(config, 200, origin);
-}
-
-async function handleAdminRandomizeConfigSet(request, env, origin) {
-  let body;
-  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
-  if (!checkAdminSecret(env, body.secret)) return json({ error: 'Invalid admin secret' }, 401, origin);
-
-  const pool = Array.isArray(body.pool)
-    ? body.pool.map((e) => String(e).trim()).filter(Boolean)
-    : String(body.pool || '').split(',').map((e) => e.trim()).filter(Boolean);
-  if (!pool.length) return json({ error: 'Pool cannot be empty' }, 400, origin);
-
-  const min = Number(body.min);
-  const max = Number(body.max);
-  if (!Number.isFinite(min) || !Number.isFinite(max) || min < 0 || max <= min) {
-    return json({ error: 'Invalid Robux range' }, 400, origin);
-  }
-
-  const config = { pool, min: Math.floor(min), max: Math.floor(max) };
-  await env.MS_KV.put(RANDOMIZE_CONFIG_KEY, JSON.stringify(config));
-  return json(config, 200, origin);
 }
 
 async function handleKeysList(request, env, origin) {
