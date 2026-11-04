@@ -20,15 +20,15 @@ body[data-screen="lobby"] #bgfill{background-image:url(assets/lobby_poster.jpg)}
 body[data-screen="treasure"] #bgfill{background-image:url(assets/bg_treasure.webp)}
 body[data-screen="shop"] #bgfill{background-image:url(assets/bg_shop.webp)}
 body[data-screen="vbucks"] #bgfill{background-image:url(assets/bg_vbucks.webp)}
-#bgfx{position:absolute;inset:0;z-index:0;background:transparent center/100% 100% no-repeat}
-#vwrap{position:absolute;left:0;top:0;width:1564px;height:720px;z-index:1;transform-origin:0 0;transform:translate(0,-.15px) scale(1.27935);background:url(assets/lobby_ext.jpg) 0 0/100% 100%}
-#bg{position:absolute;left:142px;top:0;width:1280px;height:720px;object-fit:fill;z-index:1;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%);background:transparent;pointer-events:none}
+#bgfx{position:absolute;left:-300px;top:-90px;width:2600px;height:1101px;z-index:0;background:transparent 0 0/100% 100% no-repeat}
+#vwrap{position:absolute;left:0;top:0;width:1940px;height:880px;z-index:1;transform-origin:0 0;transform:translate(-241.8px,-102.5px) scale(1.27935);background:url(assets/lobby_ext.jpg) 0 0/100% 100%}
+#bg{position:absolute;left:330px;top:80px;width:1280px;height:720px;object-fit:fill;z-index:1;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%);background:transparent;pointer-events:none}
 #bg::-webkit-media-controls,#bg::-webkit-media-controls-panel,#bg::-webkit-media-controls-start-playback-button,#bg::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none;opacity:0}
 body:not([data-screen="lobby"]) #vwrap{visibility:hidden}
-body[data-screen="treasure"] #bgfx{background-image:url(assets/bg_treasure.webp)}
-body[data-screen="shop"] #bgfx{background-image:url(assets/bg_shop.webp)}
-body[data-screen="vbucks"] #bgfx{background-image:url(assets/bg_vbucks.webp)}
-#stage{position:fixed;left:50%;top:50%;width:2000px;height:921px;transform-origin:center;overflow:hidden;z-index:2;user-select:none;color:#fff}
+body[data-screen="treasure"] #bgfx{background-image:url(assets/bg_treasure_ext.jpg)}
+body[data-screen="shop"] #bgfx{background-image:url(assets/bg_shop_ext.jpg)}
+body[data-screen="vbucks"] #bgfx{background-image:url(assets/bg_vbucks_ext.jpg)}
+#stage{position:fixed;left:50%;top:50%;width:2000px;height:921px;transform-origin:center;overflow:visible;z-index:2;user-select:none;color:#fff}
 .screen{position:absolute;inset:0}.screen[hidden]{display:none}
 .gl{position:absolute;pointer-events:none}.gl.btn{pointer-events:auto;cursor:pointer}
 .pack{position:absolute;inset:0;pointer-events:none}
