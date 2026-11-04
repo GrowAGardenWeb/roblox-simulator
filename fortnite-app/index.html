@@ -15,6 +15,10 @@
 :root{--yellow:#f5f21a;--ink:#14141c;--f-display:"Montserrat",Arial,sans-serif;--f-ui:"Montserrat",Arial,sans-serif}
 *{box-sizing:border-box;margin:0}
 html,body{height:100%;overflow:hidden;background:#0a1a33;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#bgfill{position:fixed;inset:-40px;z-index:0;background:#0a1a33 center/cover no-repeat;filter:blur(22px) brightness(.9)}
+body[data-screen="lobby"] #bgfill{background-image:url(assets/lobby_poster.jpg)}
+body[data-screen="treasure"] #bgfill{background-image:url(assets/bg_treasure.webp)}
+body[data-screen="shop"] #bgfill{background-image:url(assets/bg_shop.webp)}
 #bgfx{position:absolute;inset:0;z-index:0;background:#0a1a33 center/100% 100% no-repeat}
 body[data-screen="lobby"] #bgfx{background-image:url(assets/lobby_poster.jpg)}
 #bg{position:absolute;left:0;top:0;width:2000px;height:921px;object-fit:cover;z-index:1;background:transparent;pointer-events:none}
@@ -68,6 +72,7 @@ body[data-screen="shop"] #bgfx{background-image:url(assets/bg_shop.webp)}
 @keyframes up{from{transform:translate(-50%,0)}to{transform:translate(-50%,-110px);opacity:0}}
 .bubble{transform:translate(-50%,0)}
 </style></head><body data-screen="lobby">
+<div id="bgfill"></div>
 <div id="stage">
 <div id="bgfx"></div>
 <video id="bg" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback x-webkit-airplay="deny" preload="auto" poster="assets/lobby_poster.jpg" src="assets/lobby.mp4"></video>
