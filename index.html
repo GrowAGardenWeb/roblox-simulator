@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Lobby</title>
 <style>
 @font-face{font-family:"Montserrat";font-weight:500;src:url(assets/fonts/montserrat-latin-500-normal.woff2) format("woff2")}
@@ -72,6 +72,7 @@ body[data-screen="shop"] #bgfx{background-image:url(assets/bg_shop.webp)}
 @keyframes up{from{transform:translate(-50%,0)}to{transform:translate(-50%,-110px);opacity:0}}
 .bubble{transform:translate(-50%,0)}
 </style></head><body data-screen="lobby">
+<div id="sa" style="position:fixed;left:0;top:0;width:0;height:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);visibility:hidden"></div>
 <div id="bgfill"></div>
 <div id="bgfx"></div>
 <video id="bg" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback x-webkit-airplay="deny" preload="auto" poster="assets/lobby_poster.jpg" src="assets/lobby.mp4"></video>
@@ -183,7 +184,7 @@ function showNews(i){nimgs.forEach((n,j)=>n.classList.toggle("on",j===i));nt.tex
 showNews(0);setInterval(()=>{ni=(ni+1)%nimgs.length;showNews(ni)},3000);
 /* escala */
 function vw(){const v=window.visualViewport;return v&&v.width&&v.height?[v.width,v.height]:[innerWidth,innerHeight]}
-function fit(){const [w,h]=vw();const s=Math.min(w/2000,h/921);st.style.transform="translate(-50%,-50%) scale("+s+")"}
+function fit(){let [w,h]=vw();const cs=getComputedStyle($("#sa"));w-=2*Math.max(parseFloat(cs.paddingLeft)||0,parseFloat(cs.paddingRight)||0);h-=2*Math.max(parseFloat(cs.paddingTop)||0,parseFloat(cs.paddingBottom)||0);const s=Math.min(w/2000,h/921);st.style.transform="translate(-50%,-50%) scale("+s+")"}
 ["resize","orientationchange","pageshow","load"].forEach(e=>addEventListener(e,()=>{fit();setTimeout(fit,150);setTimeout(fit,600)}));
 if(window.visualViewport)visualViewport.addEventListener("resize",fit);
 setInterval(fit,700);fit();
