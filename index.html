@@ -15,14 +15,14 @@
 :root{--yellow:#f5f21a;--ink:#14141c;--f-display:"Montserrat",Arial,sans-serif;--f-ui:"Montserrat",Arial,sans-serif}
 *{box-sizing:border-box;margin:0}
 html,body{height:100%;overflow:hidden;background:#0a1a33;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-#bgfx{position:fixed;inset:0;z-index:0;background:#0a1a33 center/cover no-repeat}
+#bgfx{position:absolute;inset:0;z-index:0;background:#0a1a33 center/100% 100% no-repeat}
 body[data-screen="lobby"] #bgfx{background-image:url(assets/lobby_poster.jpg)}
-#bg{position:fixed;inset:0;width:100vw;height:100vh;object-fit:cover;z-index:1;background:transparent;pointer-events:none}
+#bg{position:absolute;left:0;top:0;width:2000px;height:921px;object-fit:cover;z-index:1;background:transparent;pointer-events:none}
 #bg::-webkit-media-controls,#bg::-webkit-media-controls-panel,#bg::-webkit-media-controls-start-playback-button,#bg::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none;opacity:0}
 body:not([data-screen="lobby"]) #bg{visibility:hidden}
 body[data-screen="treasure"] #bgfx{background-image:url(assets/bg_treasure.webp)}
 body[data-screen="shop"] #bgfx{background-image:url(assets/bg_shop.webp)}
-#stage{position:absolute;left:50%;top:50%;width:2000px;height:921px;transform-origin:center;overflow:hidden;z-index:2;user-select:none;color:#fff}
+#stage{position:fixed;left:50%;top:50%;width:2000px;height:921px;transform-origin:center;overflow:hidden;z-index:2;user-select:none;color:#fff}
 .screen{position:absolute;inset:0}.screen[hidden]{display:none}
 .px{position:absolute;display:block;pointer-events:none;-webkit-user-drag:none}
 .px[hidden]{display:none}
@@ -68,9 +68,9 @@ body[data-screen="shop"] #bgfx{background-image:url(assets/bg_shop.webp)}
 @keyframes up{from{transform:translate(-50%,0)}to{transform:translate(-50%,-110px);opacity:0}}
 .bubble{transform:translate(-50%,0)}
 </style></head><body data-screen="lobby">
+<div id="stage">
 <div id="bgfx"></div>
 <video id="bg" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback x-webkit-airplay="deny" preload="auto" poster="assets/lobby_poster.jpg" src="assets/lobby.mp4"></video>
-<div id="stage">
 <div id="nav" style="position:absolute;inset:0;z-index:10"><img class="px ic" src="assets/ic_search.webp" alt="" draggable="false" style="left:92.05px;top:34.87px;width:54.39px;height:54.39px;" ><img class="px ic" src="assets/ic_heart.webp" alt="" draggable="false" style="left:190.38px;top:36.96px;width:64.85px;height:55.09px;" ><img class="px ic tab" src="assets/ic_play.webp" alt="" draggable="false" style="left:298.47px;top:32.78px;width:57.88px;height:57.88px;" data-go="lobby" id="ic-lobby"><img class="px ic tab" src="assets/ic_chest.webp" alt="" draggable="false" style="left:397.49px;top:32.78px;width:64.16px;height:57.88px;" data-go="treasure" id="ic-treasure"><img class="px ic tab" src="assets/ic_cart.webp" alt="" draggable="false" style="left:509.07px;top:41.14px;width:50.21px;height:46.03px;" data-go="shop" id="ic-shop"><img class="px ic" src="assets/ic_shirt.webp" alt="" draggable="false" style="left:613.67px;top:34.87px;width:50.91px;height:54.39px;" ><img class="px ic" src="assets/ic_star.webp" alt="" draggable="false" style="left:713.39px;top:29.29px;width:67.64px;height:57.88px;" ><img class="px ic" src="assets/ic_excl.webp" alt="" draggable="false" style="left:820.08px;top:33.47px;width:48.81px;height:57.18px;" ><img class="px ic" src="assets/ic_trophy.webp" alt="" draggable="false" style="left:920.50px;top:36.96px;width:57.18px;height:50.91px;" ><img class="px ic" src="assets/ic_shield.webp" alt="" draggable="false" style="left:1027.89px;top:29.29px;width:62.76px;height:61.37px;" ><img class="px ic" src="assets/ic_vbucks.webp" alt="" draggable="false" style="left:1126.92px;top:33.47px;width:57.88px;height:57.18px;" ><img class="px tile" src="assets/tile_lobby.webp" alt="" draggable="false" style="left:276.85px;top:25.10px;width:99.72px;height:74.62px;" data-tile="lobby" hidden><img class="px tile" src="assets/tile_treasure.webp" alt="" draggable="false" style="left:377.96px;top:24.41px;width:106.00px;height:74.62px;" data-tile="treasure" hidden><img class="px tile" src="assets/tile_shop.webp" alt="" draggable="false" style="left:485.36px;top:25.10px;width:99.72px;height:74.62px;" data-tile="shop" hidden><div class="t navlabel" data-t="nav.labels.lobby" data-lab="lobby" style="left:326.7px;top:121px;font-size:24.4px;font-family:Montserrat;font-weight:800;transform:translate(-50%,-50%)" hidden></div><div class="t navlabel" data-t="nav.labels.treasure" data-lab="treasure" style="left:431.0px;top:121px;font-size:24.4px;font-family:Montserrat;font-weight:800;transform:translate(-50%,-50%)" hidden></div><div class="t navlabel" data-t="nav.labels.shop" data-lab="shop" style="left:535.2px;top:121px;font-size:24.4px;font-family:Montserrat;font-weight:800;transform:translate(-50%,-50%)" hidden></div><div class="t lt hv" data-t="nav.vbucks" style="left:1214.1px;top:60.3px;font-size:24.7px;font-family:'Montserrat';font-weight:800;transform:translate(-50%,-50%);"></div><img class="px " src="assets/avatar.webp" alt="" draggable="false" style="left:1776.15px;top:25.80px;width:94.14px;height:94.14px;" ></div>
 <div id="screens" style="position:absolute;inset:0;z-index:2">
 <section class="screen" data-screen="lobby">
@@ -174,7 +174,7 @@ nimgs.forEach(()=>dots.appendChild(document.createElement("span")));
 function showNews(i){nimgs.forEach((n,j)=>n.classList.toggle("on",j===i));nt.textContent=T.news[i];[...dots.children].forEach((d,j)=>d.classList.toggle("on",j===i))}
 showNews(0);setInterval(()=>{ni=(ni+1)%nimgs.length;showNews(ni)},3000);
 /* escala */
-function vw(){const v=window.visualViewport;return [Math.max(innerWidth,document.documentElement.clientWidth,v?v.width:0),Math.max(innerHeight,document.documentElement.clientHeight,v?v.height:0)]}
+function vw(){const v=window.visualViewport;return v&&v.width&&v.height?[v.width,v.height]:[innerWidth,innerHeight]}
 function fit(){const [w,h]=vw();const s=Math.min(w/2000,h/921);st.style.transform="translate(-50%,-50%) scale("+s+")"}
 ["resize","orientationchange","pageshow","load"].forEach(e=>addEventListener(e,()=>{fit();setTimeout(fit,150);setTimeout(fit,600)}));
 if(window.visualViewport)visualViewport.addEventListener("resize",fit);
