@@ -147,6 +147,9 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitAll);fitAll
 const bgv=$("#bg");bgv.muted=true;bgv.defaultMuted=true;bgv.controls=false;
 function tryPlay(){const p=bgv.play();if(p&&p.catch)p.catch(()=>{})}
 tryPlay();bgv.addEventListener("loadeddata",tryPlay);
+/* si iOS bloquea el autoplay (modo bajo consumo) no mostrar el botón nativo: se deja la imagen fija */
+function chk(){bgv.style.visibility=(bgv.paused||bgv.readyState<2)?"hidden":"";}
+setTimeout(chk,1500);setTimeout(chk,3500);bgv.addEventListener("playing",()=>{bgv.style.visibility=""});
 ["pointerdown","touchstart","click","keydown"].forEach(ev=>addEventListener(ev,tryPlay,{passive:true}));
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)tryPlay()});
 /* estado Ready */
