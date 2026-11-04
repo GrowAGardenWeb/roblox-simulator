@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Lobby</title>
 <style>
 @font-face{font-family:"Montserrat";font-weight:500;src:url(assets/fonts/montserrat-latin-500-normal.woff2) format("woff2")}
@@ -14,17 +14,17 @@
 
 :root{--yellow:#f5f21a;--ink:#14141c;--f-display:"Montserrat",Arial,sans-serif;--f-ui:"Montserrat",Arial,sans-serif}
 *{box-sizing:border-box;margin:0}
-html,body{height:100%;overflow:hidden;background:#0a1a33;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-#bgfill{display:none;position:fixed;inset:-40px;z-index:0;background:#0a1a33 center/cover no-repeat;filter:blur(22px) brightness(.9)}
+html,body{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none;background:#0a1a33;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#bgfill{position:fixed;inset:-40px;z-index:0;background:#0a1a33 center/cover no-repeat;filter:blur(22px) brightness(.9)}
 body[data-screen="lobby"] #bgfill{background-image:url(assets/lobby_poster.jpg)}
 body[data-screen="treasure"] #bgfill{background-image:url(assets/bg_treasure.webp)}
 body[data-screen="shop"] #bgfill{background-image:url(assets/bg_shop.webp)}
 body[data-screen="vbucks"] #bgfill{background-image:url(assets/bg_vbucks.webp)}
-#bgfx{position:fixed;inset:0;z-index:0;background:#0a1a33 center/cover no-repeat}
-body[data-screen="lobby"] #bgfx{background-image:url(assets/lobby_poster.jpg)}
-#bg{position:fixed;left:0;top:0;width:100%;height:100%;object-fit:cover;z-index:1;background:transparent;pointer-events:none}
+#bgfx{position:absolute;inset:0;z-index:0;background:transparent center/100% 100% no-repeat}
+#vwrap{position:absolute;left:0;top:0;width:1564px;height:720px;z-index:1;transform-origin:0 0;transform:translate(0,-.15px) scale(1.27935);background:url(assets/lobby_ext.jpg) 0 0/100% 100%}
+#bg{position:absolute;left:142px;top:0;width:1280px;height:720px;object-fit:fill;z-index:1;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%);background:transparent;pointer-events:none}
 #bg::-webkit-media-controls,#bg::-webkit-media-controls-panel,#bg::-webkit-media-controls-start-playback-button,#bg::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none;opacity:0}
-body:not([data-screen="lobby"]) #bg{visibility:hidden}
+body:not([data-screen="lobby"]) #vwrap{visibility:hidden}
 body[data-screen="treasure"] #bgfx{background-image:url(assets/bg_treasure.webp)}
 body[data-screen="shop"] #bgfx{background-image:url(assets/bg_shop.webp)}
 body[data-screen="vbucks"] #bgfx{background-image:url(assets/bg_vbucks.webp)}
@@ -35,6 +35,7 @@ body[data-screen="vbucks"] #bgfx{background-image:url(assets/bg_vbucks.webp)}
 .screen.play .pack{animation:rise .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d)}
 .screen.play .pack .card{pointer-events:none}
 @keyframes rise{from{transform:translateY(70px);opacity:0}to{transform:none;opacity:1}}
+.slot{position:absolute;width:42px;height:42px;border-radius:50%;background:rgba(34,32,30,.8);pointer-events:none}.slot:before,.slot:after{content:"";position:absolute;left:50%;top:50%;background:#fff;border-radius:2px;transform:translate(-50%,-50%)}.slot:before{width:20px;height:5px}.slot:after{width:5px;height:20px}
 .px{position:absolute;display:block;pointer-events:none;-webkit-user-drag:none}
 .px[hidden]{display:none}
 .btn,.tab,.card{pointer-events:auto;cursor:pointer}.btn:active,.tab:active{filter:brightness(.92)}
@@ -83,9 +84,9 @@ body[data-screen="vbucks"] #bgfx{background-image:url(assets/bg_vbucks.webp)}
 </style></head><body data-screen="lobby">
 <div id="sa" style="position:fixed;left:0;top:0;width:0;height:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);visibility:hidden"></div>
 <div id="bgfill"></div>
-<div id="bgfx"></div>
-<video id="bg" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback x-webkit-airplay="deny" preload="auto" poster="assets/lobby_poster.jpg" src="assets/lobby_pp.mp4"></video>
 <div id="stage">
+<div id="bgfx"></div>
+<div id="vwrap"><video id="bg" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback x-webkit-airplay="deny" preload="auto" poster="assets/lobby_poster.jpg" src="assets/lobby_pp.mp4"></video></div>
 <div id="nav" style="position:absolute;inset:0;z-index:10"><img class="px ic" src="assets/ic_search.webp" alt="" draggable="false" style="left:92.05px;top:34.87px;width:54.39px;height:54.39px;" ><img class="px ic" src="assets/ic_heart.webp" alt="" draggable="false" style="left:190.38px;top:36.96px;width:64.85px;height:55.09px;" ><img class="px ic tab" src="assets/ic_play.webp" alt="" draggable="false" style="left:298.47px;top:32.78px;width:57.88px;height:57.88px;" data-go="lobby" id="ic-lobby"><img class="px ic tab" src="assets/ic_chest.webp" alt="" draggable="false" style="left:397.49px;top:32.78px;width:64.16px;height:57.88px;" data-go="treasure" id="ic-treasure"><img class="px ic tab" src="assets/ic_cart.webp" alt="" draggable="false" style="left:509.07px;top:41.14px;width:50.21px;height:46.03px;" data-go="shop" id="ic-shop"><img class="px ic" src="assets/ic_shirt.webp" alt="" draggable="false" style="left:613.67px;top:34.87px;width:50.91px;height:54.39px;" ><img class="px ic" src="assets/ic_star.webp" alt="" draggable="false" style="left:713.39px;top:29.29px;width:67.64px;height:57.88px;" ><img class="px ic" src="assets/ic_excl.webp" alt="" draggable="false" style="left:820.08px;top:33.47px;width:48.81px;height:57.18px;" ><img class="px ic" src="assets/ic_trophy.webp" alt="" draggable="false" style="left:920.50px;top:36.96px;width:57.18px;height:50.91px;" ><img class="px ic" src="assets/ic_shield.webp" alt="" draggable="false" style="left:1027.89px;top:29.29px;width:62.76px;height:61.37px;" ><img class="px tile" src="assets/tile_vbucks.webp" alt="" draggable="false" style="left:1103.21px;top:23.71px;width:156.90px;height:76.01px;" data-tile="vbucks" hidden><img class="px ic tab keep" src="assets/ic_vbucks.webp" alt="" draggable="false" style="left:1126.92px;top:33.47px;width:57.88px;height:57.18px;" data-go="vbucks" id="ic-vbucks"><img class="px tile" src="assets/tile_lobby.webp" alt="" draggable="false" style="left:276.85px;top:25.10px;width:99.72px;height:74.62px;" data-tile="lobby" hidden><img class="px tile" src="assets/tile_treasure.webp" alt="" draggable="false" style="left:377.96px;top:24.41px;width:106.00px;height:74.62px;" data-tile="treasure" hidden><img class="px tile" src="assets/tile_shop.webp" alt="" draggable="false" style="left:485.36px;top:25.10px;width:99.72px;height:74.62px;" data-tile="shop" hidden><div class="t navlabel" data-t="nav.labels.lobby" data-lab="lobby" style="left:326.7px;top:121px;font-size:24.4px;font-family:Montserrat;font-weight:800;transform:translate(-50%,-50%)" hidden></div><div class="t navlabel" data-t="nav.labels.treasure" data-lab="treasure" style="left:431.0px;top:121px;font-size:24.4px;font-family:Montserrat;font-weight:800;transform:translate(-50%,-50%)" hidden></div><div class="t navlabel" data-t="nav.labels.shop" data-lab="shop" style="left:535.2px;top:121px;font-size:24.4px;font-family:Montserrat;font-weight:800;transform:translate(-50%,-50%)" hidden></div><div class="t navlabel" data-t="nav.labels.vbucks" data-lab="vbucks" style="left:1181.5px;top:121px;font-size:24.4px;font-family:Montserrat;font-weight:800;transform:translate(-50%,-50%)" hidden></div><div class="t lt hv" data-t="nav.vbucks" style="left:1214.1px;top:60.3px;font-size:24.7px;font-family:'Montserrat';font-weight:800;transform:translate(-50%,-50%);"></div><img class="px " src="assets/avatar.webp" alt="" draggable="false" style="left:1776.15px;top:25.80px;width:94.14px;height:94.14px;" ></div>
 <div id="screens" style="position:absolute;inset:0;z-index:2">
 <section class="screen" data-screen="lobby">
@@ -94,7 +95,7 @@ body[data-screen="vbucks"] #bgfx{background-image:url(assets/bg_vbucks.webp)}
  <div class="newsbox"><img class="px news" src="assets/news_arsenal.webp" alt="" draggable="false" style="left:62.06px;top:145.75px;width:309.62px;height:174.34px;" data-i="0"><img class="px news" src="assets/news_pase.webp" alt="" draggable="false" style="left:62.06px;top:145.75px;width:309.62px;height:174.34px;" data-i="1"><img class="px news" src="assets/news_recibe.webp" alt="" draggable="false" style="left:62.06px;top:145.75px;width:309.62px;height:174.34px;" data-i="2"><img class="px news" src="assets/news_cazatesoros.webp" alt="" draggable="false" style="left:62.06px;top:145.75px;width:309.62px;height:174.34px;" data-i="3">
   <div class="t newstext" id="newstext" style="left:74.6px;top:235px;width:260px"></div><div class="dots" id="dots"></div></div>
  <img class="px " src="assets/hex.webp" alt="" draggable="false" style="left:867.50px;top:126.22px;width:41.14px;height:42.54px;" ><div class="t it" data-t="player.partyIndex" style="left:872px;top:160px;font-size:20px;transform:translateY(-50%);"></div><div class="t lt nm" data-t="player.name" style="left:1002.6px;top:146.2px;font-size:27.1px;font-family:'Montserrat';font-weight:700;transform:translate(-50%,-50%);"></div><i class="phone"></i><div class="t st" data-t="player.status" style="left:913px;top:197px;font-size:28px;transform:translateY(-50%);opacity:.95"></div>
- <img class="px" src="assets/slot.webp" alt="" style="left:765.0px;top:506.3px;width:48.1px;height:47.4px"><img class="px" src="assets/slot.webp" alt="" style="left:1157.9px;top:505.3px;width:48.1px;height:47.4px"><img class="px" src="assets/slot.webp" alt="" style="left:1338.9px;top:497.3px;width:48.1px;height:47.4px">
+ <div class="slot" style="left:768.1px;top:509.0px"></div><div class="slot" style="left:1161.0px;top:508.0px"></div><div class="slot" style="left:1342.0px;top:500.0px"></div>
  <div class="gl "  style="left:62px;top:413px;width:304px;height:367px;border-radius:12px;background:rgba(72,54,34,0.92)"></div><div class="t lt title" data-t="mode.title.0" style="left:213.8px;top:474.8px;font-size:79.2px;font-family:'Passion One';font-weight:700;transform:translate(-50%,-50%);"></div><div class="t lt title" data-t="mode.title.1" style="left:213.8px;top:533.2px;font-size:76.2px;font-family:'Passion One';font-weight:700;transform:translate(-50%,-50%);"></div>
  <img class="px " src="assets/mode_select.webp" alt="" draggable="false" style="left:76.01px;top:592.75px;width:277.55px;height:85.08px;" ><div class="t lt sel" data-t="mode.selector.0" style="left:223.5px;top:616.0px;font-size:26.7px;font-family:'Montserrat';font-weight:700;transform:translate(-50%,-50%);"></div><div class="t lt sel" data-t="mode.selector.1" style="left:173.5px;top:649.6px;font-size:26.9px;font-family:'Montserrat';font-weight:700;transform:translate(-50%,-50%);"></div>
  <img class="px btn" src="assets/mode_play.webp" alt="" draggable="false" style="left:76.01px;top:692.47px;width:277.55px;height:73.22px;" data-act="ready"><div class="t lt ink" data-t="mode.cta" style="left:213.6px;top:714.4px;font-size:36.3px;font-family:'Montserrat';font-weight:900;transform:translate(-50%,-50%);"></div><div class="t lt ink" data-t="mode.sub" style="left:214.8px;top:754.7px;font-size:24.3px;font-family:'Montserrat';font-weight:800;transform:translate(-50%,-50%);"></div>
@@ -175,7 +176,11 @@ function go(s){
   $$(".ic.tab:not(.keep)").forEach(x=>x.style.visibility=x.dataset.go===s?"hidden":"visible");
   if(s==="lobby")tryPlay();$$(".screen").forEach(x=>x.classList.remove("play"));const cur=$(`[data-screen="${s}"]`);void cur.offsetWidth;cur.classList.add("play");
 }
-$$(".ic.tab").forEach(t=>t.addEventListener("pointerdown",e=>{e.preventDefault();go(t.dataset.go)}));
+/* zonas de toque amplias sobre los iconos de la barra (funciona igual en Safari y en la app de inicio) */
+$$(".ic.tab").forEach(t=>{const z=document.createElement("div");z.className="hit";z.dataset.go=t.dataset.go;const l=parseFloat(t.style.left),w=parseFloat(t.style.width);z.style.cssText=`position:absolute;left:${l+w/2-48}px;top:0;width:96px;height:130px;z-index:30;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent`;$("#nav").appendChild(z)});
+let lastGo=0;function tap(e){const z=e.target.closest&&e.target.closest("[data-go]");if(!z)return;const n=Date.now();if(n-lastGo<250)return;lastGo=n;e.preventDefault();go(z.dataset.go)}
+["pointerup","touchend","click"].forEach(ev=>document.addEventListener(ev,tap,{passive:false}));
+document.addEventListener("touchmove",e=>e.preventDefault(),{passive:false});
 /* acciones */
 const chat=$("#chat"),log=$("#chatlog"),inp=$("#chatin");inp.placeholder=T.chat.placeholder;
 function say(m){const d=document.createElement("div"),b=document.createElement("b");b.textContent=T.player.name+" ";d.append(b,document.createTextNode(m));log.appendChild(d);while(log.children.length>6)log.firstChild.remove()}
