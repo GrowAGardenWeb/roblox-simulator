@@ -89,20 +89,10 @@ renderGrid();
 var busy=false;
 $('menu').addEventListener('click',function(){if(busy)return;busy=true;$('pgK').classList.add('on');setTimeout(function(){$('pgS').classList.add('on');$('pgS').scrollTop=0;$('pgK').classList.remove('on');busy=false},900)});
 $('back').addEventListener('click',function(){$('pgS').classList.remove('on')});
-/* long press: photo = change, text = edit */
-var lp=null,lpEl=null,moved=false,sx=0,sy=0,pick=null;
-function start(e){var t=e.target;var ph=t.closest&&t.closest('[data-ph]'),tx=t.closest&&t.closest('.gx');var el=ph||tx;if(!el||(tx&&tx.getAttribute('contenteditable')==='true'))return;moved=false;var p=e.touches?e.touches[0]:e;sx=p.clientX;sy=p.clientY;lpEl=el;clearTimeout(lp);
- lp=setTimeout(function(){lp=null;if(moved)return;
-  if(ph){window.__lpDone=true;pick=ph.dataset.ph;$('fi').value='';$('fi').multiple=false;$('fi').click()}
-  else{lpEl.setAttribute('contenteditable','true');lpEl.focus();var r=document.createRange();r.selectNodeContents(lpEl);var s=getSelection();s.removeAllRanges();s.addRange(r);if(navigator.vibrate)try{navigator.vibrate(10)}catch(_){}}},480)}
-function mv(e){var p=e.touches?e.touches[0]:e;if(Math.abs(p.clientX-sx)>10||Math.abs(p.clientY-sy)>10){moved=true;clearTimeout(lp)}}
-function end(){clearTimeout(lp)}
-document.addEventListener('touchstart',start,{passive:true});document.addEventListener('touchmove',mv,{passive:true});document.addEventListener('touchend',end);document.addEventListener('touchcancel',end);
-document.addEventListener('mousedown',start);document.addEventListener('mousemove',function(e){if(e.buttons)mv(e)});document.addEventListener('mouseup',end);
-document.addEventListener('contextmenu',function(e){if(e.target.closest&&e.target.closest('[data-ph],.gx'))e.preventDefault()});
+var pick=null;
 $('fi').addEventListener('change',function(){var fs=[].slice.call(this.files||[]);if(!fs.length||!pick)return;var k=pick;if(k!=='add')fs=fs.slice(0,1);
  fs.forEach(function(f){var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var mx=(/^post/.test(k)||k==='add')?900:700,sc=Math.min(1,mx/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);var du=c.toDataURL('image/jpeg',.82);if(/^post/.test(k)){S.posts[+k.slice(4)]=du}else if(k==='add'){S.posts.push(du)}else{S.ph[k]=du}save();photos();renderGrid();if($('sh').classList.contains('on'))buildSh()};im.src=rd.result};rd.readAsDataURL(f)})});
-document.addEventListener('focusout',function(e){var el=e.target;if(el.classList&&el.classList.contains('gx')){el.removeAttribute('contenteditable')}});
+
 document.addEventListener('input',function(e){var el=e.target;if(!el.dataset||el.dataset.k==null)return;S.t[el.dataset.k]=el.textContent;qa('[data-k="'+el.dataset.k+'"]',function(o){if(o!==el)o.textContent=el.textContent});save()});
 document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.k!=null){e.preventDefault();e.target.blur()}});
 document.addEventListener('paste',function(e){var el=e.target;if(!el.dataset||el.dataset.k==null)return;e.preventDefault();var t=(e.clipboardData||window.clipboardData).getData('text').replace(/\s+/g,' ');document.execCommand('insertText',false,t)});
@@ -120,6 +110,5 @@ $('shB').addEventListener('input',function(e){var k=e.target.dataset.sk;if(!k)re
 $('shB').addEventListener('click',function(e){var dl=e.target.closest('[data-del]');if(dl){S.posts.splice(+dl.dataset.del,1);save();renderGrid();buildSh();return}var b=e.target.closest('[data-pk]');if(b){pick=b.dataset.pk;$('fi').value='';$('fi').multiple=(pick==='add');$('fi').click();return}
  if(e.target.id==='rst'&&confirm('¿Restablecer todos los textos y fotos?')){S.t={};S.ph={};save();location.reload()}});
 
-document.addEventListener('click',function(e){if(e.target.closest('[data-ph]')&&!window.__lpDone)openSh();window.__lpDone=false});
-if(!localStorage.getItem('ig.hint')){setTimeout(function(){hint('Toca una foto para editar todo');try{localStorage.setItem('ig.hint','1')}catch(e){}},900)}
+document.addEventListener('click',function(e){var a=e.target.closest('#pgP .wr > [data-ph="avatar"]');if(a)openSh()});
 </script></body></html>
