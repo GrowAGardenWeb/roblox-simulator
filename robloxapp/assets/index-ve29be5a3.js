@@ -4285,6 +4285,22 @@ RoFmSet({x:nx,y:parseFloat(b.style.top)})
 };
 b.addEventListener(`pointerup`,end),b.addEventListener(`pointercancel`,end)
 }
+function RoRbxStep(e,t,n){
+e=Math.max(0,Math.floor(Number(e)||0)),t=Math.min(999999999,Math.max(0,Math.floor(Number(t)||0)));
+clearInterval(globalThis.__roStepT);
+let d=t-e,g=Math.max(e,t)>=1e6?1e5:Math.max(e,t)>=1e3?100:1,s=g;
+for(let m of[1,2,5].flatMap(x=>[1,10,100,1e3,1e4,1e5,1e6].map(y=>x*y)).sort((a,b)=>a-b))if(m>=g&&Math.abs(d)/m<=40){s=m;break}
+let a=[];
+if(d>0){for(let v=Math.floor(e/s)*s+s;v<t;v+=s)a.push(v)}else if(d<0){for(let v=Math.ceil(e/s)*s-s;v>t;v-=s)a.push(v)}
+a.push(t);
+let i=0,o=Math.max(40,Math.min(160,Math.round(3200/a.length))),paint=v=>{let el=document.querySelector(`[data-testid=fm-bal]`);el&&(el.textContent=Mn(v))};
+if(!d){paint(t),n&&n();return}
+globalThis.__roStepT=setInterval(()=>{
+let v=a[i++];
+Ln.save({robux:String(v)}),paint(v);
+i>=a.length&&(clearInterval(globalThis.__roStepT),n&&n())
+},o)
+}
 function RoFmClosePanel(){document.getElementById(`fm-panel-root`)?.remove()}
 function RoFmTogglePanel(){document.getElementById(`fm-panel-root`)?RoFmClosePanel():RoFmOpenPanel()}
 function RoFmIcon(e){return`<i class="fm-ic" style="-webkit-mask-image:url(/robloxapp/icons/roblox/regular/${e}.svg);mask-image:url(/robloxapp/icons/roblox/regular/${e}.svg)"></i>`}
@@ -4293,16 +4309,16 @@ RoFmClosePanel();
 let t=RoFmGet(),root=document.createElement(`div`);
 root.id=`fm-panel-root`,root.className=`fm-full`,root.setAttribute(`data-testid`,`fm-panel`);
 let sl=(k,name,icon,min,max)=>`<section class="fm-card"><h4>${RoFmIcon(icon)}${name}<em data-testid="fm-val-${k}">${t[k]}</em></h4><input class="fm-rng" type="range" min="${min}" max="${max}" step="1" value="${t[k]}" data-k="${k}" data-testid="fm-range-${k}"><button class="fm-b" data-reset="${k}">Reset</button></section>`;
-root.innerHTML=`<div class="fm-sheet"><div class="fm-top"><svg class="fm-logo" viewBox="0 0 1280 1280" aria-hidden="true"><path fill="#4d86ff" fill-rule="evenodd" d="M361 157L1121 363L917 1121L158 917ZM562 505L774 563L717 774L506 716Z"/></svg><b class="fm-title">Delta Pro Max</b><button class="fm-x" aria-label="Close" data-testid="fm-close"></button></div><div class="fm-body"><section class="fm-card"><h4>${RoFmIcon(`robux`)}Robux</h4><input class="fm-in" type="number" inputmode="numeric" min="0" step="1" value="${Number(Ln.get().robux)||0}" data-testid="fm-robux-input"><button class="fm-b pri" data-testid="fm-robux-set">Set Robux</button></section>${sl(`ws`,`WalkSpeed`,`person-running`,0,200)}${sl(`jp`,`JumpPower`,`person-jumping`,0,300)}<p class="fm-note">Speed and Jump only work in the game test.</p></div></div>`;
+root.innerHTML=`<div class="fm-sheet"><div class="fm-top"><svg class="fm-logo" viewBox="0 0 1280 1280" aria-hidden="true"><path fill="#4d86ff" fill-rule="evenodd" d="M361 157L1121 363L917 1121L158 917ZM562 505L774 563L717 774L506 716Z"/></svg><b class="fm-title">Delta Pro Max</b><button class="fm-x" aria-label="Close" data-testid="fm-close"></button></div><div class="fm-body"><section class="fm-card"><h4>${RoFmIcon(`robux`)}Robux<em data-testid="fm-bal">${Mn(Number(Ln.get().robux)||0)}</em></h4><input class="fm-in" type="number" inputmode="numeric" min="0" step="1" value="${Number(Ln.get().robux)||0}" data-testid="fm-robux-input"><button class="fm-b pri" data-testid="fm-robux-set">Set Robux</button></section>${sl(`ws`,`WalkSpeed`,`person-running`,0,200)}${sl(`jp`,`JumpPower`,`person-jumping`,0,300)}<p class="fm-note">Speed and Jump only work in the game test.</p></div></div>`;
 root.addEventListener(`pointerdown`,e=>{e.target===root&&RoFmClosePanel()});
 let off=e=>{e.key===`Escape`&&RoFmClosePanel()};
 window.addEventListener(`keydown`,off,{once:!0});
 root.querySelector(`.fm-x`).onclick=()=>RoFmClosePanel();
 let inp=root.querySelector(`.fm-in`);
 root.querySelector(`[data-testid=fm-robux-set]`).onclick=()=>{
-let err=Ln.save({robux:inp.value});
-if(err){RoRndToast(err);return}
-RoRndToast(`Robux updated`)
+let v=Math.floor(Number(inp.value));
+if(!(v>=0)){RoRndToast(`Enter a valid amount`);return}
+RoRbxStep(Number(Ln.get().robux)||0,v)
 };
 root.querySelectorAll(`.fm-rng`).forEach(r=>{
 r.oninput=()=>{root.querySelector(`[data-testid=fm-val-${r.dataset.k}]`).textContent=r.value,RoFmSet({[r.dataset.k]:Number(r.value)})}
