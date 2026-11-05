@@ -24,6 +24,16 @@ html,body{margin:0;height:100%;background:#fff;overflow:hidden;font-family:'Inst
 .bdg svg{width:48%;height:48%}
 .hs{position:absolute;background:none;border:0;padding:0}
 .rd{position:absolute;border-radius:50%;background:#ff3040;border:calc(3*var(--u)) solid #e4e4e4}
+
+.sh{position:fixed;inset:0;z-index:30;display:none}.sh.on{display:block}
+.sh .bk{position:absolute;inset:0;background:#0000008c;opacity:0;transition:opacity .25s}.sh.in .bk{opacity:1}
+.sh .sc{position:absolute;left:50%;bottom:0;width:min(100vw,460px);max-height:88%;transform:translate(-50%,100%);transition:transform .3s cubic-bezier(.32,.72,0,1);background:#fff;border-radius:20px 20px 0 0;display:flex;flex-direction:column;font-family:'Instrument Sans',-apple-system,Arial,sans-serif;color:#0c0f14}.sh.in .sc{transform:translate(-50%,0)}
+.sh .hd{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 10px;font-weight:700;font-size:17px}.sh .hd button{background:none;border:0;color:#0095f6;font:inherit;font-weight:700}
+.sh .bd{overflow-y:auto;padding:0 18px 28px;-webkit-overflow-scrolling:touch}
+.sh h5{margin:18px 0 8px;font-size:13px;color:#686f78;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.sh .ph3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.sh .ph3 button{border:0;background:#f1f2f4;border-radius:12px;padding:8px;font:inherit;font-size:13px;font-weight:600;color:#0c0f14}.sh .ph3 img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;margin-bottom:6px}
+.sh label{display:block;font-size:12px;color:#686f78;margin:10px 0 4px}.sh input[type=text]{width:100%;height:42px;border:1px solid #dbdbdb;border-radius:10px;padding:0 12px;font:inherit;font-size:15px;background:#fafafa}
+.sh .rs{margin-top:20px;width:100%;height:44px;border:0;border-radius:10px;background:#f1f2f4;color:#ed4956;font:inherit;font-weight:700}
 .hint{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:#262626ee;color:#fff;font-size:13px;padding:9px 14px;border-radius:20px;opacity:0;transition:.25s;pointer-events:none;z-index:20;white-space:nowrap}.hint.on{opacity:1;transform:translateX(-50%)}
 </style></head><body>
 <div class="app" id="app">
@@ -47,6 +57,7 @@ html,body{margin:0;height:100%;background:#fff;overflow:hidden;font-family:'Inst
   <button class="hs" id="back" aria-label="Atrás" style="left:0;top:calc(80*var(--u));width:calc(190*var(--u));height:calc(190*var(--u))"></button>
  </div></div>
 </div>
+<div class="sh" id="sh"><div class="bk"></div><div class="sc"><div class="hd"><span>Editar todo</span><button type="button" id="shX">Listo</button></div><div class="bd" id="shB"></div></div></div>
 <input type="file" id="fi" accept="image/*" hidden>
 <div class="hint" id="hint"></div>
 <script>
@@ -69,7 +80,7 @@ $('back').addEventListener('click',function(){$('pgS').classList.remove('on')});
 var lp=null,lpEl=null,moved=false,sx=0,sy=0,pick=null;
 function start(e){var t=e.target;var ph=t.closest&&t.closest('[data-ph]'),tx=t.closest&&t.closest('.gx');var el=ph||tx;if(!el||(tx&&tx.getAttribute('contenteditable')==='true'))return;moved=false;var p=e.touches?e.touches[0]:e;sx=p.clientX;sy=p.clientY;lpEl=el;clearTimeout(lp);
  lp=setTimeout(function(){lp=null;if(moved)return;
-  if(ph){pick=ph.dataset.ph;$('fi').value='';$('fi').click()}
+  if(ph){window.__lpDone=true;pick=ph.dataset.ph;$('fi').value='';$('fi').click()}
   else{lpEl.setAttribute('contenteditable','true');lpEl.focus();var r=document.createRange();r.selectNodeContents(lpEl);var s=getSelection();s.removeAllRanges();s.addRange(r);if(navigator.vibrate)try{navigator.vibrate(10)}catch(_){}}},480)}
 function mv(e){var p=e.touches?e.touches[0]:e;if(Math.abs(p.clientX-sx)>10||Math.abs(p.clientY-sy)>10){moved=true;clearTimeout(lp)}}
 function end(){clearTimeout(lp)}
@@ -81,5 +92,20 @@ document.addEventListener('focusout',function(e){var el=e.target;if(el.classList
 document.addEventListener('input',function(e){var el=e.target;if(!el.dataset||el.dataset.k==null)return;S.t[el.dataset.k]=el.textContent;qa('[data-k="'+el.dataset.k+'"]',function(o){if(o!==el)o.textContent=el.textContent});save()});
 document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.k!=null){e.preventDefault();e.target.blur()}});
 document.addEventListener('paste',function(e){var el=e.target;if(!el.dataset||el.dataset.k==null)return;e.preventDefault();var t=(e.clipboardData||window.clipboardData).getData('text').replace(/\s+/g,' ');document.execCommand('insertText',false,t)});
-if(!localStorage.getItem('ig.hint')){setTimeout(function(){hint('Deja presionada una foto o un texto para editar');try{localStorage.setItem('ig.hint','1')}catch(e){}},900)}
+
+/* edit panel */
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function buildSh(){var h='<h5>Fotos</h5><div class="ph3">'+[['avatar','Foto de perfil'],['story','Historia'],['grid','Publicación']].map(function(a){var i=document.querySelector('[data-ph="'+a[0]+'"]');return '<button type="button" data-pk="'+a[0]+'"><img src="'+i.src+'" alt="">'+a[1]+'</button>'}).join('')+'</div>';
+ var gp=[],gs=[];Object.keys(D).forEach(function(k){(k[0]==='s'&&k!=='story'?gs:gp).push(k)});
+ function grp(t,ks){return '<h5>'+t+'</h5>'+ks.map(function(k){return '<label>'+esc(D[k])+'</label><input type="text" data-sk="'+k+'" value="'+esc(val(k))+'" autocomplete="off" spellcheck="false">'}).join('')}
+ h+=grp('Perfil',gp)+grp('Configuración',gs)+'<button class="rs" type="button" id="rst">Restablecer todo</button>';$('shB').innerHTML=h}
+function openSh(){buildSh();$('sh').classList.add('on');requestAnimationFrame(function(){requestAnimationFrame(function(){$('sh').classList.add('in')})})}
+function closeSh(){$('sh').classList.remove('in');setTimeout(function(){$('sh').classList.remove('on')},300)}
+$('shX').addEventListener('click',closeSh);$('sh').querySelector('.bk').addEventListener('click',closeSh);
+$('shB').addEventListener('input',function(e){var k=e.target.dataset.sk;if(!k)return;S.t[k]=e.target.value;save();fill()});
+$('shB').addEventListener('click',function(e){var b=e.target.closest('[data-pk]');if(b){pick=b.dataset.pk;$('fi').value='';$('fi').click();return}
+ if(e.target.id==='rst'&&confirm('¿Restablecer todos los textos y fotos?')){S.t={};S.ph={};save();location.reload()}});
+$('fi').addEventListener('change',function(){if($('sh').classList.contains('on'))setTimeout(buildSh,400)});
+document.addEventListener('click',function(e){if(e.target.closest('[data-ph]')&&!window.__lpDone)openSh();window.__lpDone=false});
+if(!localStorage.getItem('ig.hint')){setTimeout(function(){hint('Toca una foto para editar todo');try{localStorage.setItem('ig.hint','1')}catch(e){}},900)}
 </script></body></html>
