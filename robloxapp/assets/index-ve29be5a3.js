@@ -4262,7 +4262,7 @@ if(!t.on){b&&b.remove(),RoFmClosePanel();return}
 if(b)return;
 b=document.createElement(`div`);
 b.id=`fm-ball`,b.className=`fm-ball`,b.setAttribute(`role`,`button`),b.setAttribute(`aria-label`,`Roblox menu`),b.setAttribute(`data-testid`,`fm-ball`);
-b.innerHTML=`<svg viewBox="0 0 1280 1280" aria-hidden="true"><path fill="#e8232a" fill-rule="evenodd" d="M361 157L1121 363L917 1121L158 917ZM562 505L774 563L717 774L506 716Z"/></svg>`;
+b.innerHTML=`<img class="fm-pic" src="/robloxapp/site-assets/ninja.jpg" alt="" draggable="false">`;
 let[x,y]=RoFmClamp(t.x==null?window.innerWidth-60:t.x,t.y==null?Math.round(window.innerHeight*.55):t.y);
 b.style.left=x+`px`,b.style.top=y+`px`;
 document.body.appendChild(b);
