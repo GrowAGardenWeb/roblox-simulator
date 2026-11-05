@@ -32,9 +32,9 @@ body[data-screen="vbucks"] #bgfx{background-image:url(assets/bg_vbucks_ext.jpg)}
 .screen{position:absolute;inset:0}.screen[hidden]{display:none}
 .gl{position:absolute;pointer-events:none}.gl.btn{pointer-events:auto;cursor:pointer}
 .pack{position:absolute;inset:0;pointer-events:none}
-.screen.play .pack{animation:rise .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d)}
+.screen.play .pack{animation:rise .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--d) + 120ms)}
 .screen.play .pack .card{pointer-events:none}
-@keyframes rise{from{transform:translateY(70px);opacity:0}to{transform:none;opacity:1}}
+@keyframes rise{0%{transform:translateY(46px) scale(.94);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
 .slot{position:absolute;width:42px;height:42px;border-radius:50%;background:rgba(34,32,30,.8);pointer-events:none}.slot:before,.slot:after{content:"";position:absolute;left:50%;top:50%;background:#fff;border-radius:2px;transform:translate(-50%,-50%)}.slot:before{width:20px;height:5px}.slot:after{width:5px;height:20px}
 .px{position:absolute;display:block;pointer-events:none;-webkit-user-drag:none}
 .px[hidden]{display:none}
@@ -174,7 +174,7 @@ function go(s){
   $$("[data-tile]").forEach(x=>x.hidden=x.dataset.tile!==s);
   $$("[data-lab]").forEach(x=>x.hidden=x.dataset.lab!==s);
   $$(".ic.tab:not(.keep)").forEach(x=>x.style.visibility=x.dataset.go===s?"hidden":"visible");
-  if(s==="lobby")tryPlay();$$(".screen").forEach(x=>x.classList.remove("play"));const cur=$(`[data-screen="${s}"]`);void cur.offsetWidth;cur.classList.add("play");
+  if(s==="lobby")tryPlay();$$(".screen").forEach(x=>x.classList.remove("play"));const cur=$(`.screen[data-screen="${s}"]`);void cur.offsetWidth;cur.classList.add("play");
 }
 /* zonas de toque amplias sobre los iconos de la barra (funciona igual en Safari y en la app de inicio) */
 $$(".ic.tab").forEach(t=>{const z=document.createElement("div");z.className="hit";z.dataset.go=t.dataset.go;const l=parseFloat(t.style.left),w=parseFloat(t.style.width);z.style.cssText=`position:absolute;left:${l+w/2-48}px;top:0;width:96px;height:130px;z-index:30;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent`;$("#nav").appendChild(z)});
