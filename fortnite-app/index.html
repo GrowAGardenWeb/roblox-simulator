@@ -141,6 +141,11 @@ body{-webkit-touch-callout:none}#stage,#stage *{-webkit-user-select:none;user-se
 #cfm .back{left:60px;top:800px;width:150px;height:62px;background:#0b5fd8;border:3px solid #7fb4ff;display:flex;align-items:center;justify-content:center;font:italic 400 28px 'Archivo Black';cursor:pointer}
 #cfm .send{position:absolute;inset:0;display:none;background:radial-gradient(#06236d,#02071c 70%);}#cfm .send span{position:absolute;left:0;width:2000px;top:430px;text-align:center;font:italic 400 40px 'Archivo Black'}
 #cfm .done{position:absolute;inset:0;display:none;background:linear-gradient(#02071c 0,#02071c 30%,#0a2a9c 38%,#0a2a9c 62%,#02071c 72%)}#cfm .done h3{position:absolute;left:0;width:2000px;top:300px;margin:0;text-align:center;font:italic 400 100px 'Archivo Black';transform:scaleX(.92)}#cfm .done p{position:absolute;left:0;width:2000px;top:430px;margin:0;text-align:center;font:italic 400 34px 'Archivo Black';color:#33d9fe}#cfm .done p b{color:#fff;font-weight:400}#cfm .done .ok{left:880px;top:520px;width:240px;height:76px;background:#0b5fd8;display:flex;align-items:center;justify-content:center;font:italic 400 38px 'Archivo Black';position:absolute;transform:skewX(-8deg);cursor:pointer}
+#cfm .back{left:1740px!important;top:800px!important}#cfm .wopt{left:1500px;top:800px;width:220px;height:62px;background:#0b5fd8;border:3px solid #7fb4ff;display:flex;align-items:center;justify-content:center;font:italic 400 24px 'Archivo Black';cursor:pointer;color:#bfe3ff}#cfm .refund{left:0;width:2000px;top:880px;text-align:center;font:italic 400 15px 'Archivo Black';color:#9db6e6}#cfm .wprev{left:1500px;top:640px;width:114px;height:156px;border:3px solid #fff;overflow:hidden;display:block}#cfm .wprev img{width:100%;height:100%;object-fit:cover;display:block}
+#wrp{position:absolute;inset:0;z-index:41;display:none;background:linear-gradient(#02071c 0,#041046 28%,#0a2a9c 40%,#0a2a9c 78%,#02071c 100%);color:#fff}#wrp.on{display:block}#wrp>*{position:absolute}#wrp h2{left:0;width:2000px;top:130px;margin:0;text-align:center;font:italic 400 70px 'Archivo Black';transform:scaleX(.92)}
+#wrp .wt{top:260px;width:228px;height:312px;border:4px solid transparent;overflow:hidden;cursor:pointer;box-sizing:content-box}#wrp .wt.sel{border-color:#fff;box-shadow:0 0 24px #9fd0ff}#wrp .wt img{width:100%;height:100%;display:block;object-fit:cover}
+#wrp .ok{left:830px;top:640px;width:340px;height:66px;background:#0b5fd8;display:flex;align-items:center;justify-content:center;font:italic 400 28px 'Archivo Black';cursor:pointer;transform:skewX(-8deg)}
+#cfm .done .wimg{position:absolute;left:880px;top:90px;width:240px;height:200px;object-fit:cover;border-radius:10px;display:none}
 </style></head><body data-screen="lobby">
 <div id="sa" style="position:fixed;left:0;top:0;width:0;height:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);visibility:hidden"></div>
 <div id="bgfill"></div>
@@ -312,10 +317,11 @@ setInterval(fit,700);fit();
 go("lobby");const h=location.hash.slice(1);if(["lobby","treasure","shop","vbucks"].includes(h))go(h);
 })();
 </script>
-<div id="cfm"><div class="h1">CONFIRM PURCHASE</div><div class="h2">GIFTING</div><img class="av" id="cfav" alt=""><div class="who" id="cfwho"></div><div class="cnt" id="cfcnt"></div><div class="iname" id="cfname"></div><div id="cfth"></div><div class="pbox"><i class="coin"></i><span id="cfp"></span></div><div class="buy" id="cfbuy"><i></i><b>PURCHASE GIFT!</b><u>(HOLD)</u></div><div class="err" id="cferr">NOT ENOUGH V-BUCKS</div><div class="back" id="cfback">BACK</div><div class="send" id="cfsend"><span>SENDING GIFT...</span></div><div class="done" id="cfdone"><h3>GIFT SENT!</h3><p>YOU SUCCESSFULLY SENT <b id="cfto"></b> A GIFT!</p><div class="ok" id="cfok"><span style="transform:skewX(8deg)">BACK</span></div></div></div>
+<div id="cfm"><div class="h1">CONFIRM PURCHASE</div><div class="h2">GIFTING</div><img class="av" id="cfav" alt=""><div class="who" id="cfwho"></div><div class="cnt" id="cfcnt"></div><div class="iname" id="cfname"></div><div id="cfth"></div><div class="pbox"><i class="coin"></i><span id="cfp"></span></div><div class="buy" id="cfbuy"><i></i><b>PURCHASE GIFT!</b><u>(HOLD)</u></div><div class="err" id="cferr">NOT ENOUGH V-BUCKS</div><div class="refund">Gifts purchased are not refundable. For more info visit fn.gg/giftingpolicy</div><div class="wprev" id="wprev"><img id="wprevi" alt=""></div><div class="wopt" id="wopt">WRAP OPTIONS</div><div class="back" id="cfback">BACK</div><div class="send" id="cfsend"><span>SENDING GIFT...</span></div><div class="done" id="cfdone"><img class="wimg" id="wimg" alt=""><h3>GIFT SENT!</h3><p>YOU SUCCESSFULLY SENT <b id="cfto"></b> A GIFT!</p><div class="ok" id="cfok"><span style="transform:skewX(8deg)">BACK</span></div></div></div>
+<div id="wrp"><h2>PERSONALIZE YOUR GIFT</h2><div class="ok" id="wok"><span style="transform:skewX(8deg)">CONFIRM WRAPPING</span></div></div>
 <script>
 (function(){
-const $=s=>document.querySelector(s),g=$('.screen[data-screen="gift"]'),stage=$("#stage");stage.appendChild($("#cfm"));
+const $=s=>document.querySelector(s),g=$('.screen[data-screen="gift"]'),stage=$("#stage");stage.appendChild($("#cfm"));stage.appendChild($("#wrp"));
 const inp=document.createElement("input");inp.id="gsin";inp.type="text";inp.setAttribute("autocomplete","off");inp.setAttribute("autocapitalize","off");inp.setAttribute("spellcheck","false");inp.setAttribute("enterkeyhint","search");inp.maxLength=20;
 const x=document.createElement("i");x.id="gsx";const sr=document.createElement("div");sr.id="srch";sr.innerHTML='<img src="assets/gift_nolist.webp" alt=""><div class="none">NO PLAYER FOUND</div>';
 g.append(inp,x,sr);
@@ -348,6 +354,14 @@ buy.addEventListener("pointerdown",e=>{e.stopPropagation();e.preventDefault();ho
 ["pointerup","pointerleave","pointercancel"].forEach(ev=>buy.addEventListener(ev,cancel));
 function send(){const it=window.__itm||{};const er=$("#cferr");if(!window.fnGifts()){er.textContent="NO GIFTS LEFT TODAY";er.style.display="block";fill.style.width="0";return}er.textContent="NOT ENOUGH V-BUCKS";if(!window.fnSpend(+String(it.price||0).replace(/\D/g,""))){$("#cferr").style.display="block";fill.style.width="0";return}window.fnGiftUse();
  $("#cfsend").style.display="block";setTimeout(()=>{$("#cfsend").style.display="none";$("#cfto").textContent=tgt.toUpperCase();$("#cfdone").style.display="block"},1700)}
+showWrap();
+
+/* envoltorio del regalo */
+const W=$("#wrp");let wsel=0,wtmp=0;window.__wrap=0;const wx=[300,600,900,1200].map(x=>x+30);
+[0,1,2,3].forEach(i=>{const d=document.createElement("div");d.className="wt";d.style.left=(380+i*300)+"px";d.innerHTML='<img src="assets/wrap'+i+'.webp" alt="">';d.onclick=()=>{wtmp=i;W.querySelectorAll(".wt").forEach((e,k)=>e.classList.toggle("sel",k===i))};W.appendChild(d)});
+function showWrap(){const i=window.__wrap;$("#wprevi").src="assets/wrap"+i+".webp";$("#wimg").src="assets/wrap"+i+".webp";$("#wimg").style.display="block"}
+$("#wopt").addEventListener("click",()=>{wtmp=window.__wrap;W.querySelectorAll(".wt").forEach((e,k)=>e.classList.toggle("sel",k===wtmp));W.classList.add("on")});
+$("#wok").addEventListener("click",()=>{window.__wrap=wtmp;showWrap();W.classList.remove("on")});
 $("#cfback").addEventListener("click",()=>C.classList.remove("on"));
 $("#cfok").addEventListener("click",()=>{C.classList.remove("on");inp.value="";render();if(window.go)go("detail")});
 })();
