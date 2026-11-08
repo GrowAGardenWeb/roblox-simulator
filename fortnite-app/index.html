@@ -389,7 +389,7 @@ document.getElementById("mpc").onclick=()=>P.classList.remove("on");
 let t0=0,raf=0,sx=0,sy=0,on=false,wt=0;const HOLD=800,WAIT=1800;
 function stop(){clearTimeout(wt);on=false;cancelAnimationFrame(raf);bar.style.display="none";fill.style.width="0"}
 function tick(){if(!on)return;const p=Math.min(1,(performance.now()-t0)/HOLD);fill.style.width=p*100+"%";if(p>=1){stop();open();return}raf=requestAnimationFrame(tick)}
-document.addEventListener("pointerdown",e=>{if(P.classList.contains("on")||e.pointerType==="mouse"&&e.button)return;if(e.target.closest&&e.target.closest("#modp,input,textarea,[contenteditable]"))return;sx=e.clientX;sy=e.clientY;bar.style.left=sx+"px";bar.style.top=sy+"px";on=true;wt=setTimeout(()=>{if(!on)return;bar.style.display="block";fill.style.width="0";t0=performance.now();raf=requestAnimationFrame(tick)},WAIT)},true);
+document.addEventListener("pointerdown",e=>{if(P.classList.contains("on")||e.pointerType==="mouse"&&e.button)return;if(e.target.closest&&e.target.closest("#modp,#cfm,#wrp,input,textarea,[contenteditable]"))return;sx=e.clientX;sy=e.clientY;bar.style.left=sx+"px";bar.style.top=sy+"px";on=true;wt=setTimeout(()=>{if(!on)return;bar.style.display="block";fill.style.width="0";t0=performance.now();raf=requestAnimationFrame(tick)},WAIT)},true);
 document.addEventListener("pointermove",e=>{if(on&&Math.hypot(e.clientX-sx,e.clientY-sy)>14)stop()},true);
 ["pointerup","pointercancel","touchend","touchcancel"].forEach(ev=>document.addEventListener(ev,stop,true));
 document.addEventListener("contextmenu",e=>{if(!e.target.closest||!e.target.closest("input"))e.preventDefault()});
