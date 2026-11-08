@@ -46,9 +46,9 @@ function grab(){
     if(!mt){st.textContent='Este navegador no puede grabar WebM (prueba en Chrome)';return}
     var rec=new MediaRecorder(c.captureStream(30),{mimeType:mt,videoBitsPerSecond:8000000}),parts=[];
     rec.ondataavailable=function(e){if(e.data.size)parts.push(e.data)};
-    rec.onstop=function(){var o=new Blob(parts,{type:'video/webm'}),n=name(u).replace(/\.\w{2,4}$/,'')+'.webm',f=new File([o],n,{type:'video/webm'});
-     if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f]}).then(function(){st.textContent='Listo (.webm)'}).catch(function(){st.textContent='Cancelado'});return}
-     var a=D.createElement('a');a.href=URL.createObjectURL(o);a.download=n;D.body.appendChild(a);a.click();st.textContent='Listo (.webm)'};
+    rec.onstop=function(){var o=new Blob(parts,{type:'video/webm'});o.slice(0,6000).arrayBuffer().then(function(ab){var u8=new Uint8Array(ab),has=false;for(var q=0;q<u8.length-3;q++){if(u8[q]==0x53&&u8[q+1]==0xC0&&u8[q+2]==0x81&&u8[q+3]==1){has=true;break}}st.textContent=has?'Listo (.webm con transparencia)':'⚠ Este navegador NO guardó la transparencia (sale negro). Usa Chrome en computadora/Android.';});var n=name(u).replace(/\.\w{2,4}$/,'')+'.webm',f=new File([o],n,{type:'video/webm'});
+     if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f]}).then(function(){}).catch(function(){st.textContent='Cancelado'});return}
+     var a=D.createElement('a');a.href=URL.createObjectURL(o);a.download=n;D.body.appendChild(a);a.click();};
     function draw(){x.clearRect(0,0,w,h);x.drawImage(v,0,0,w,h);var im=x.getImageData(0,0,w,h),d=im.data;
      for(var i=0;i<d.length;i+=4){var m=Math.max(d[i],d[i+1],d[i+2]);if(m>=40){continue}var a=m<=5?0:(m-5)/35,k=a>0?1/Math.max(a*0.9,0.05):0;d[i]=Math.min(255,d[i]*k);d[i+1]=Math.min(255,d[i+1]*k);d[i+2]=Math.min(255,d[i+2]*k);d[i+3]=a*255}
      x.putImageData(im,0,0)}
