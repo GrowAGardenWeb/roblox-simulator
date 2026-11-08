@@ -12,7 +12,7 @@ button{background:#fe2c55;color:#fff;border:0;border-radius:12px;font-size:17px;
 <li>Toca <b>Copiar marcador</b>.</li>
 <li>En Safari agrega cualquier página a Marcadores, ponle de nombre <b>Videos</b>, edítalo y pega lo copiado en la dirección.</li>
 <li>Abre la página donde está el video (la página, no la imagen de Google), deja que el video empiece a reproducirse y toca el marcador <b>Videos</b>.</li>
-<li>Toca <b>Guardar</b> junto al video. En iPhone se abre el menú de compartir: elige <b>Guardar en Archivos</b>.</li>
+<li>Toca <b>Guardar WebM (sin fondo)</b> junto al video: lo convierte a .webm y quita el fondo negro mientras lo reproduce (dura lo mismo que el video). Usa Chrome en computadora o Android para obtener transparencia real; <b>Guardar original</b> baja el .mp4 tal cual.</li><li style="display:none"> En iPhone se abre el menú de compartir: elige <b>Guardar en Archivos</b>.</li>
 </ol>
 <p><b>Limitación:</b> si el video es de YouTube, TikTok o de una transmisión protegida (blob / HLS), la página no entrega el archivo y no se puede bajar así. Ahí el marcador lo avisa.</p>
 <textarea id="t" readonly></textarea>
@@ -35,13 +35,35 @@ function grab(){
    if(navigator.canShare&&navigator.canShare({files:[f]})){return navigator.share({files:[f]}).then(function(){st.textContent='Listo'}).catch(function(){st.textContent='Cancelado'})}
    var a=D.createElement('a');a.href=URL.createObjectURL(b);a.download=name(u);D.body.appendChild(a);a.click();st.textContent='Listo'})
   .catch(function(){st.textContent='La página no deja bajarlo directo; se abre en otra pestaña (mantén presionado → Descargar)';W.open(u,'_blank')})}
+ function webm(u,st){st.textContent='Descargando…';
+  fetch(u).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){
+   var v=D.createElement('video');v.muted=true;v.playsInline=true;v.src=URL.createObjectURL(b);
+   v.onloadedmetadata=function(){
+    var w=v.videoWidth,h=v.videoHeight,c=D.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d',{willReadFrequently:true});
+    var types=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'],mt='';
+    if(!W.MediaRecorder){st.textContent='Este navegador no puede grabar WebM (prueba en Chrome)';return}
+    for(var i=0;i<types.length;i++){if(MediaRecorder.isTypeSupported(types[i])){mt=types[i];break}}
+    if(!mt){st.textContent='Este navegador no puede grabar WebM (prueba en Chrome)';return}
+    var rec=new MediaRecorder(c.captureStream(30),{mimeType:mt,videoBitsPerSecond:8000000}),parts=[];
+    rec.ondataavailable=function(e){if(e.data.size)parts.push(e.data)};
+    rec.onstop=function(){var o=new Blob(parts,{type:'video/webm'}),n=name(u).replace(/\.\w{2,4}$/,'')+'.webm',f=new File([o],n,{type:'video/webm'});
+     if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f]}).then(function(){st.textContent='Listo (.webm)'}).catch(function(){st.textContent='Cancelado'});return}
+     var a=D.createElement('a');a.href=URL.createObjectURL(o);a.download=n;D.body.appendChild(a);a.click();st.textContent='Listo (.webm)'};
+    function draw(){x.clearRect(0,0,w,h);x.drawImage(v,0,0,w,h);var im=x.getImageData(0,0,w,h),d=im.data;
+     for(var i=0;i<d.length;i+=4){var m=Math.max(d[i],d[i+1],d[i+2]);if(m>=40){continue}var a=m<=5?0:(m-5)/35,k=a>0?1/Math.max(a*0.9,0.05):0;d[i]=Math.min(255,d[i]*k);d[i+1]=Math.min(255,d[i+1]*k);d[i+2]=Math.min(255,d[i+2]*k);d[i+3]=a*255}
+     x.putImageData(im,0,0)}
+    function loop(){if(v.ended||v.paused&&v.currentTime>0){return}draw();(v.requestVideoFrameCallback?v.requestVideoFrameCallback(loop):requestAnimationFrame(loop))}
+    v.onended=function(){draw();setTimeout(function(){rec.stop()},150)};
+    st.textContent='Quitando el fondo y grabando WebM… ('+Math.ceil(v.duration)+' s)';
+    rec.start();v.play().then(loop).catch(function(){st.textContent='No se pudo reproducir el video'})}
+  }).catch(function(){st.textContent='La página no deja bajarlo directo; ábrelo y vuelve a intentar desde ahí'})}
  var urls=Object.keys(found);
  box.innerHTML='<div style="font-size:16px;margin-bottom:6px">Videos encontrados: '+urls.length+'</div>';
  if(!urls.length){var p=D.createElement('div');p.style.cssText='font-weight:400;color:#c9cbd6';p.textContent='No encontré archivos de video. Si el video es de YouTube, TikTok u otra transmisión protegida, no se puede bajar así. Deja que el video se reproduzca unos segundos y toca el marcador otra vez.';box.appendChild(p)}
  urls.forEach(function(u){var row=D.createElement('div');row.style.cssText='border-top:1px solid #2a3050;padding:8px 0';
   var t=D.createElement('div');t.style.cssText='font-weight:400;font-size:12px;color:#9fb0d0;word-break:break-all';t.textContent=(/^blob:|\.m3u8/i.test(u)?'[no descargable] ':'')+u;row.appendChild(t);
   var st=D.createElement('span');st.style.cssText='font-weight:400;font-size:12px;color:#7be28f';
-  if(!/^blob:|\.m3u8/i.test(u)){row.appendChild(btn('Guardar',function(){save(u,st)}))}
+  if(!/^blob:|\.m3u8/i.test(u)){row.appendChild(btn('Guardar WebM (sin fondo)',function(){webm(u,st)}));row.appendChild(btn('Guardar original',function(){save(u,st)}))}
   row.appendChild(btn('Abrir',function(){W.open(u,'_blank')}));row.appendChild(st);box.appendChild(row)});
  box.appendChild(btn('Cerrar',function(){box.remove()}));
 }
