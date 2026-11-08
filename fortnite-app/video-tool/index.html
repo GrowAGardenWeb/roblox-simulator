@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Video grabber</title>
+<style>
+body{margin:0;background:#0b0d17;color:#fff;font:16px/1.45 -apple-system,Helvetica,Arial,sans-serif;padding:22px;max-width:560px;margin:0 auto}
+h1{font-size:24px;margin:0 0 6px}p{color:#c9cbd6}ol{padding-left:20px}li{margin:10px 0}b{color:#fff}
+textarea{width:100%;height:110px;background:#161a2b;color:#9fe3a8;border:1px solid #2a3050;border-radius:10px;padding:10px;font:12px monospace;box-sizing:border-box}
+button{background:#fe2c55;color:#fff;border:0;border-radius:12px;font-size:17px;font-weight:700;padding:14px 18px;width:100%;margin-top:10px}.ok{color:#7be28f;font-weight:700;margin-top:8px;min-height:22px}
+</style></head><body>
+<h1>Video grabber</h1>
+<p>Marcador para bajar videos de cualquier página (por ejemplo los videos de personajes que salen en Google o en un sitio de skins). Encuentra todos los videos de la página y te deja guardarlos.</p>
+<ol>
+<li>Toca <b>Copiar marcador</b>.</li>
+<li>En Safari agrega cualquier página a Marcadores, ponle de nombre <b>Videos</b>, edítalo y pega lo copiado en la dirección.</li>
+<li>Abre la página donde está el video (la página, no la imagen de Google), deja que el video empiece a reproducirse y toca el marcador <b>Videos</b>.</li>
+<li>Toca <b>Guardar</b> junto al video. En iPhone se abre el menú de compartir: elige <b>Guardar en Archivos</b>.</li>
+</ol>
+<p><b>Limitación:</b> si el video es de YouTube, TikTok o de una transmisión protegida (blob / HLS), la página no entrega el archivo y no se puede bajar así. Ahí el marcador lo avisa.</p>
+<textarea id="t" readonly></textarea>
+<button id="c" type="button">Copiar marcador</button>
+<div class="ok" id="ok"></div>
+<script>
+function grab(){
+ var W=window,D=document;
+ var old=D.getElementById('__vgbox');if(old)old.remove();
+ var box=D.createElement('div');box.id='__vgbox';box.style.cssText='position:fixed;left:8px;right:8px;top:8px;max-height:80vh;overflow:auto;z-index:2147483647;background:#161a2b;color:#fff;font:600 14px -apple-system,Arial;padding:12px;border-radius:14px;box-shadow:0 6px 24px #000a';D.body.appendChild(box);
+ function btn(t,fn){var b=D.createElement('button');b.textContent=t;b.style.cssText='margin:6px 6px 0 0;padding:9px 14px;border:0;border-radius:10px;font-weight:700;background:#fe2c55;color:#fff';b.onclick=fn;return b}
+ var found={};
+ function add(u,note){if(!u||/^(javascript:|about:)/.test(u))return;try{u=new URL(u,location.href).href}catch(e){return}if(!found[u])found[u]=note||''}
+ [].forEach.call(D.querySelectorAll('video'),function(v){add(v.currentSrc||v.src,'video');[].forEach.call(v.querySelectorAll('source'),function(s){add(s.src,'source')})});
+ [].forEach.call(D.querySelectorAll('source[src],a[href]'),function(e){var u=e.src||e.href||'';if(/\.(mp4|webm|mov|m4v|m3u8)(\?|#|$)/i.test(u))add(u,'enlace')});
+ try{performance.getEntriesByType('resource').forEach(function(r){if(/\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(r.name)||r.initiatorType==='video')add(r.name,'red')})}catch(e){}
+ function name(u){var n=u.split('?')[0].split('/').pop()||'video';if(!/\.\w{2,4}$/.test(n))n+='.mp4';return decodeURIComponent(n)}
+ function save(u,st){st.textContent='Descargando…';
+  fetch(u).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){var f=new File([b],name(u),{type:b.type||'video/mp4'});
+   if(navigator.canShare&&navigator.canShare({files:[f]})){return navigator.share({files:[f]}).then(function(){st.textContent='Listo'}).catch(function(){st.textContent='Cancelado'})}
+   var a=D.createElement('a');a.href=URL.createObjectURL(b);a.download=name(u);D.body.appendChild(a);a.click();st.textContent='Listo'})
+  .catch(function(){st.textContent='La página no deja bajarlo directo; se abre en otra pestaña (mantén presionado → Descargar)';W.open(u,'_blank')})}
+ var urls=Object.keys(found);
+ box.innerHTML='<div style="font-size:16px;margin-bottom:6px">Videos encontrados: '+urls.length+'</div>';
+ if(!urls.length){var p=D.createElement('div');p.style.cssText='font-weight:400;color:#c9cbd6';p.textContent='No encontré archivos de video. Si el video es de YouTube, TikTok u otra transmisión protegida, no se puede bajar así. Deja que el video se reproduzca unos segundos y toca el marcador otra vez.';box.appendChild(p)}
+ urls.forEach(function(u){var row=D.createElement('div');row.style.cssText='border-top:1px solid #2a3050;padding:8px 0';
+  var t=D.createElement('div');t.style.cssText='font-weight:400;font-size:12px;color:#9fb0d0;word-break:break-all';t.textContent=(/^blob:|\.m3u8/i.test(u)?'[no descargable] ':'')+u;row.appendChild(t);
+  var st=D.createElement('span');st.style.cssText='font-weight:400;font-size:12px;color:#7be28f';
+  if(!/^blob:|\.m3u8/i.test(u)){row.appendChild(btn('Guardar',function(){save(u,st)}))}
+  row.appendChild(btn('Abrir',function(){W.open(u,'_blank')}));row.appendChild(st);box.appendChild(row)});
+ box.appendChild(btn('Cerrar',function(){box.remove()}));
+}
+var code='javascript:'+encodeURIComponent('('+grab.toString()+')()');
+document.getElementById('t').value=code;
+document.getElementById('c').onclick=function(){var t=document.getElementById('t');t.focus();t.select();t.setSelectionRange(0,999999);var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+ if(!ok&&navigator.clipboard)navigator.clipboard.writeText(code).then(function(){document.getElementById('ok').textContent='Copiado ✓'});else document.getElementById('ok').textContent=ok?'Copiado ✓':'Mantén presionado el cuadro y copia'};
+</script></body></html>
