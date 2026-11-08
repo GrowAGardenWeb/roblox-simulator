@@ -111,7 +111,7 @@ body{-webkit-touch-callout:none}#stage,#stage *{-webkit-user-select:none;user-se
 #lpbar{position:fixed;z-index:99998;width:130px;height:12px;border-radius:7px;background:rgba(10,20,60,.75);border:2px solid #fff;transform:translate(-50%,-150%);pointer-events:none;display:none;overflow:hidden}
 #lpbar i{display:block;height:100%;width:0;background:#fffa00}
 #modp{position:fixed;inset:0;z-index:99999;background:rgba(3,8,30,.72);display:none;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif}
-#modp.on{display:flex}#modp .card{width:min(360px,86vw);max-height:92vh;overflow:auto;background:linear-gradient(#1c4fb8,#0d2a73);border:3px solid #fff;border-radius:18px;padding:16px;color:#fff;box-shadow:0 10px 40px #000a}
+#modp.on{display:flex}#modp .card{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;width:min(360px,86vw);max-height:92vh;overflow:auto;background:linear-gradient(#1c4fb8,#0d2a73);border:3px solid #fff;border-radius:18px;padding:16px;color:#fff;box-shadow:0 10px 40px #000a}
 #modp h2{margin:0 0 10px;font:italic 400 22px 'Archivo Black',sans-serif}#modp label{display:block;font:800 11px Montserrat;letter-spacing:.06em;margin:10px 0 4px;color:#cfe3ff}
 #modp select{width:100%;box-sizing:border-box;background:#0a1d55;color:#fff;border:2px solid #5d8be0;border-radius:10px;padding:10px;font:700 16px Montserrat}#modp input{width:100%;box-sizing:border-box;background:#0a1d55;color:#fff;border:2px solid #5d8be0;border-radius:10px;padding:10px;font:700 17px Montserrat;-webkit-user-select:text;user-select:text}
 #modp .b{display:flex;gap:8px;margin-top:14px}#modp button{flex:1;border:0;border-radius:10px;padding:11px;font:italic 400 15px 'Archivo Black',sans-serif;color:#0a1d55;background:#fffa00}#modp button.g{background:#bcd7ff}
@@ -311,7 +311,7 @@ const nat=!!(it.url&&APPLE&&!natFail[ik]),want=nat?it.url:it.src;const [pcx,pby,
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#giftpass")){window.curItem="pass";go("gift");return}const o=e.target.closest&&e.target.closest("[data-item]");if(o)window.curItem=o.dataset.item},true);
 let lastGo=0;function tap(e){const z=e.target.closest&&e.target.closest("[data-go]");if(!z)return;const n=Date.now();if(n-lastGo<250)return;lastGo=n;e.preventDefault();go(z.dataset.go)}
 ["pointerup","touchend","click"].forEach(ev=>document.addEventListener(ev,tap,{passive:false}));
-document.addEventListener("touchmove",e=>{if(e.target.closest&&e.target.closest("#shopscroll"))return;e.preventDefault()},{passive:false});
+document.addEventListener("touchmove",e=>{if(e.target.closest&&e.target.closest("#shopscroll,#modp .card"))return;e.preventDefault()},{passive:false});
 /* acciones */
 const chat=$("#chat"),log=$("#chatlog"),inp=$("#chatin");inp.placeholder=T.chat.placeholder;
 function say(m){const d=document.createElement("div"),b=document.createElement("b");b.textContent=T.player.name+" ";d.append(b,document.createTextNode(m));log.appendChild(d);while(log.children.length>6)log.firstChild.remove()}
