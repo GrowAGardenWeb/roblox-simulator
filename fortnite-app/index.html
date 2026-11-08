@@ -201,6 +201,16 @@ document.addEventListener("click",e=>{const z=e.target.closest&&e.target.closest
  const o=document.createElement("div");o.className="opn";o.style.cssText="left:0;top:366px;width:230px;height:237px";o.dataset.go2="detail";sa.appendChild(o)})();
 function fitSx(){document.querySelectorAll(".sx[data-w]").forEach(el=>{if(el.closest("[hidden]"))return;el.style.fontSize=el.style.fontSize;const w=el.getBoundingClientRect().width/(document.getElementById("stage").getBoundingClientRect().width/2000);const t=+el.dataset.w;if(w>0&&t>0){el.style.fontSize=(parseFloat(el.style.fontSize)*t/w).toFixed(1)+"px"}el.dataset.fit=1})}
 document.fonts&&document.fonts.ready.then(()=>setTimeout(fitSx,50));
+
+/* tienda: desplazamiento por filas con desvanecido, como en la app real */
+(function(){const sc=document.getElementById("shopscroll");if(!sc)return;const img=sc.querySelector("img"),K=0.697;
+ const ROWS=[55,526,1000,1473,1916,2622,3097,3571,4043,4714,5400,5915,6356,6860,7333].map(v=>Math.max(0,v*K-18));
+ const ttl=document.querySelector('[data-t="shop.title"]');let cur=-1,tm=null,snapping=false;
+ const secOf=i=>i<=4?TEXTS.shop.title:i<=8?TEXTS.shop.sec1:i===9?TEXTS.shop.sec2:TEXTS.shop.sec3;
+ function nearest(){let b=0,d=1e9;ROWS.forEach((r,i)=>{const x=Math.abs(r-sc.scrollTop);if(x<d){d=x;b=i}});return b}
+ function setTitle(i){const t=secOf(i);if(!ttl||ttl.textContent===t)return;ttl.style.transition="opacity .18s";ttl.style.opacity=0;setTimeout(()=>{ttl.textContent=t;ttl.style.opacity=1},180)}
+ sc.addEventListener("scroll",()=>{if(snapping)return;img.style.transition="opacity .12s";img.style.opacity=.72;setTitle(nearest());clearTimeout(tm);tm=setTimeout(()=>{const i=nearest();snapping=true;sc.style.scrollBehavior="smooth";sc.scrollTo({top:ROWS[i]});img.style.transition="opacity .4s";img.style.opacity=1;setTimeout(()=>{snapping=false;sc.style.scrollBehavior=""},420)},110)},{passive:true});
+})();
 let lastGo=0;function tap(e){const z=e.target.closest&&e.target.closest("[data-go]");if(!z)return;const n=Date.now();if(n-lastGo<250)return;lastGo=n;e.preventDefault();go(z.dataset.go)}
 ["pointerup","touchend","click"].forEach(ev=>document.addEventListener(ev,tap,{passive:false}));
 document.addEventListener("touchmove",e=>{if(e.target.closest&&e.target.closest("#shopscroll"))return;e.preventDefault()},{passive:false});
