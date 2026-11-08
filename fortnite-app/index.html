@@ -34,7 +34,7 @@ body[data-screen="vbucks"] #bgfx{background-image:url(assets/bg_vbucks_ext.jpg)}
 #ldr{position:absolute;inset:-60px -300px;z-index:6;background:radial-gradient(ellipse at 50% 52%,#4a9df8 0,#2f78dd 38%,#2147b6 78%,#1b3aa5 100%);opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s;pointer-events:auto}#ldr.on{opacity:1;visibility:visible;transition:opacity .12s}
 #ldr i{position:absolute;left:50%;top:52%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;border:12px solid transparent;border-top-color:#fff;border-right-color:#fff;filter:drop-shadow(0 2px 6px rgba(0,40,120,.25));animation:ldrs .9s linear infinite;-webkit-mask:linear-gradient(135deg,transparent 0,#000 40%)}
 @keyframes ldrs{to{transform:rotate(360deg)}}
-.itemvid{position:absolute;width:2px;height:2px;opacity:0;pointer-events:none}#itemcv{position:absolute;left:1000px;top:0;width:921px;height:921px;z-index:1;opacity:0;transition:opacity .35s;pointer-events:none}#itemcv.on{opacity:1}
+.itemvid{position:absolute;width:2px;height:2px;opacity:0;pointer-events:none}#itemcv{position:absolute;left:1000px;top:0;width:921px;height:921px;z-index:1;opacity:0;transition:opacity .35s;pointer-events:none}#itemcv.on{opacity:1}.itemvid.nat{left:1000px;top:0;width:921px;height:921px;opacity:1;z-index:1;object-fit:contain;transition:opacity .35s}
 #thumbs .tsl{position:absolute;top:349px;width:109px;height:134px;border-radius:16px;background:#4662ac;overflow:hidden;z-index:1}
 #thumbs .tsl:first-child{box-shadow:0 0 0 4px #cfe8ff,0 0 0 6px rgba(20,50,110,.6)}
 #thumbs .tsl img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
@@ -228,16 +228,20 @@ document.fonts&&document.fonts.ready.then(()=>setTimeout(fitSx,50));
 /* video del objeto: fondo quitado con canal alfa apilado (color | alfa) */
 (function(){const v=document.getElementById("itemvid"),cv=document.getElementById("itemcv");if(!v||!cv)return;
  const g=cv.getContext("2d"),tmp=document.createElement("canvas");tmp.width=1280;tmp.height=640;const tg=tmp.getContext("2d",{willReadFrequently:true});
- const ITEMS={flacko:{th:"f",src:"assets/items/flacko_a.mp4",title:"FLACKO HELICOPTER",price:"2000"},rocky:{th:"f",src:"assets/items/rocky_a.mp4",title:"ROCKY RUGAHAND",price:"1500"},pumpkin:{th:"p",src:"assets/items/pumpkin_a.mp4",title:"PUMPKIN KING",price:"2000",tag:""},tung:{th:"t",src:"assets/items/tung_a.mp4",title:"TUNG TUNG TUNG SAHUR",price:"1500",tag:"",sub:"EMOTE"}};
+ const ITEMS={flacko:{th:"f",url:"https://cosmo.fdeb.live.use1a.on.epicgames.com/v1/item/PmzwWuUTd02TP24Zalsj5Vm47qtjy-I9X3MxY82nQb8/mp4-sm",src:"assets/items/flacko_a.mp4",title:"FLACKO HELICOPTER",price:"2000"},rocky:{th:"f",src:"assets/items/rocky_a.mp4",title:"ROCKY RUGAHAND",price:"1500"},pumpkin:{th:"p",src:"assets/items/pumpkin_a.mp4",title:"PUMPKIN KING",price:"2000",tag:""},tung:{th:"t",src:"assets/items/tung_a.mp4",title:"TUNG TUNG TUNG SAHUR",price:"1500",tag:"",sub:"EMOTE"}};
  window.curItem="flacko";let run=false;
  function draw(){if(!run)return;if(v.readyState>=2){tg.drawImage(v,0,0,1280,640);const d=tg.getImageData(0,0,1280,640).data,o=g.createImageData(640,640),od=o.data;
    for(let y=0;y<640;y++){let i=y*1280*4,j=y*640*4;for(let x=0;x<640;x++){od[j]=d[i];od[j+1]=d[i+1];od[j+2]=d[i+2];od[j+3]=d[i+640*4];i+=4;j+=4}}g.putImageData(o,0,0);cv.classList.add("on")}
   if(v.requestVideoFrameCallback)v.requestVideoFrameCallback(draw);else requestAnimationFrame(draw)}
  function put(k,txt){const el=document.querySelector('[data-t="det.'+k+'"]');if(el){el.removeAttribute("data-w");el.textContent=txt;TEXTS.det[k]=txt}}
- window.itemVid=on=>{if(!on){run=false;v.pause();cv.classList.remove("on");return}const it=ITEMS[window.curItem]||ITEMS.flacko;
-  if(!v.src||!v.src.endsWith(it.src)){cv.classList.remove("on");v.src=it.src}
+ const APPLE=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)&&/Safari/.test(navigator.userAgent)&&!/Chrome|CriOS|FxiOS|Android/.test(navigator.userAgent);let natFail={};
+ v.addEventListener("error",()=>{if(v.classList.contains("nat")){natFail[window.curItem]=1;window.itemVid(false);window.itemVid(true)}});
+ window.itemVid=on=>{if(!on){run=false;v.pause();v.classList.remove("nat");cv.classList.remove("on");return}const it=ITEMS[window.curItem]||ITEMS.flacko;
+  const nat=!!(it.url&&APPLE&&!natFail[window.curItem]),want=nat?it.url:it.src;
+  v.classList.toggle("nat",nat);
+  if(v.dataset.want!==want){cv.classList.remove("on");v.dataset.want=want;v.src=want}
   document.querySelectorAll("#thumbs .tsl").forEach((el,i)=>{el.className="tsl"+(it.th==="t"?" pad":"");el.innerHTML='<img src="assets/items/t_'+it.th+(it.th==='t'?[2,0,1][i]:i)+'.webp" alt="">'});setTimeout(()=>put("det4",it.title),90);setTimeout(()=>put("det6",it.price),90);setTimeout(()=>{put("det1",it.tag===undefined?"ICON SERIES":it.tag);put("det2",it.sub||"OUTFIT - FORTNITE STYLE")},90);
-  v.currentTime=0;v.play().catch(()=>{});if(!run){run=true;draw()}}})();
+  v.currentTime=0;v.play().catch(()=>{});if(nat){run=false}else if(!run){run=true;draw()}}})();
 document.addEventListener("click",e=>{const o=e.target.closest&&e.target.closest("[data-item]");if(o)window.curItem=o.dataset.item},true);
 let lastGo=0;function tap(e){const z=e.target.closest&&e.target.closest("[data-go]");if(!z)return;const n=Date.now();if(n-lastGo<250)return;lastGo=n;e.preventDefault();go(z.dataset.go)}
 ["pointerup","touchend","click"].forEach(ev=>document.addEventListener(ev,tap,{passive:false}));
