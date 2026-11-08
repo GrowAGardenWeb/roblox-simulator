@@ -19,7 +19,7 @@
 //   GET  /admin/whitelist/list      ?secret=ADMIN_SECRET -> { entries: [{email,product,expiresAt,addedAt}] }
 //   POST /admin/whitelist/add       { secret, email, product, days? } -> { ok }
 //                                   product: 'mobile' | 'headless' | 'robloxpc' | 'cashapp' |
-//                                   'phantom' | 'exodus' | 'paypal' | 'megapack' | 'all'
+//                                   'phantom' | 'exodus' | 'paypal' | 'fortnite' | 'megapack' | 'all'
 //                                   days: optional — omit/0 for permanent, e.g. 30 for one month
 //   POST /admin/whitelist/remove    { secret, email } -> { ok }
 //
@@ -67,6 +67,7 @@ const PRODUCTS = {
   exodus: { price: 'price_1URNWkFvaDdMVYC9loqRm93S', mode: 'subscription' },
   paypal: { price: 'price_1URNXNFvaDdMVYC9IOd576dU', mode: 'subscription' },
   megapack: { price: 'price_1URNVSFvaDdMVYC9M1EwD63O', mode: 'subscription' },
+  fortnite: { price: 'price_1UZbz6FvaDdMVYC9HFKmOM3u', mode: 'subscription' },
 };
 
 // Products to create in Stripe (Live mode), all recurring/month unless noted:
