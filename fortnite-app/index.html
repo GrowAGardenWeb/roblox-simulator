@@ -346,27 +346,27 @@ function cancel(){hold=0;cancelAnimationFrame(raf);fill.style.width="0"}
 function tick(){if(!hold)return;const p=Math.min(1,(performance.now()-t0)/HOLD);fill.style.width=p*100+"%";if(p>=1){hold=0;send();return}raf=requestAnimationFrame(tick)}
 buy.addEventListener("pointerdown",e=>{e.stopPropagation();e.preventDefault();hold=1;t0=performance.now();raf=requestAnimationFrame(tick)});
 ["pointerup","pointerleave","pointercancel"].forEach(ev=>buy.addEventListener(ev,cancel));
-function send(){const it=window.__itm||{};if(!window.fnSpend(+String(it.price||0).replace(/\D/g,""))){$("#cferr").style.display="block";fill.style.width="0";return}
+function send(){const it=window.__itm||{};const er=$("#cferr");if(!window.fnGifts()){er.textContent="NO GIFTS LEFT TODAY";er.style.display="block";fill.style.width="0";return}er.textContent="NOT ENOUGH V-BUCKS";if(!window.fnSpend(+String(it.price||0).replace(/\D/g,""))){$("#cferr").style.display="block";fill.style.width="0";return}window.fnGiftUse();
  $("#cfsend").style.display="block";setTimeout(()=>{$("#cfsend").style.display="none";$("#cfto").textContent=tgt.toUpperCase();$("#cfdone").style.display="block"},1700)}
 $("#cfback").addEventListener("click",()=>C.classList.remove("on"));
 $("#cfok").addEventListener("click",()=>{C.classList.remove("on");inp.value="";render();if(window.go)go("detail")});
 })();
 </script>
 <div id="lpbar"><i></i></div>
-<div id="modp"><div class="card"><h2>MOD PANEL</h2><label>DISPLAY NAME</label><input id="mpn" maxlength="16" autocomplete="off" autocapitalize="off" spellcheck="false"><label>V-BUCKS</label><input id="mpv" inputmode="numeric" maxlength="9" autocomplete="off"><div class="b"><button id="mpa" type="button">APPLY</button><button class="g" id="mpc" type="button">CLOSE</button></div></div></div>
+<div id="modp"><div class="card"><h2>MOD PANEL</h2><label>DISPLAY NAME</label><input id="mpn" maxlength="16" autocomplete="off" autocapitalize="off" spellcheck="false"><label>V-BUCKS</label><input id="mpv" inputmode="numeric" maxlength="9" autocomplete="off"><label>GIFTS PER DAY (NUMBER OR INFINITE)</label><input id="mpg" maxlength="9" autocomplete="off" placeholder="5, 100, infinite"><div class="b"><button id="mpa" type="button">APPLY</button><button class="g" id="mpc" type="button">CLOSE</button></div></div></div>
 <script>
 (function(){
-window.fmtN=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,",");const DEFW={nav:49,det:58.8,gif:71.8};const KEY="fn_mod",DEF={name:TEXTS.player.name,vb:TEXTS.nav.vbucks};let M;try{M=Object.assign({},DEF,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){M=Object.assign({},DEF)}
+window.fmtN=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,",");const DEFW={nav:49,det:58.8,gif:71.8};const KEY="fn_mod",DEF={name:TEXTS.player.name,vb:TEXTS.nav.vbucks,gm:"5",gl:5};let M;try{M=Object.assign({},DEF,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){M=Object.assign({},DEF)}
 function setT(path,val){const el=document.querySelector('[data-t="'+path+'"]');if(el){el.removeAttribute("data-w");el.textContent=val}}
 function anchor(){const sc=document.getElementById("stage").getBoundingClientRect().width/2000;
  const nv=document.querySelector('[data-t="nav.vbucks"]');if(nv){if(!nv.dataset.l0){nv.dataset.l0=(parseFloat(nv.style.left)-DEFW.nav/2)}nv.style.transform="translateY(-50%)";nv.style.left=nv.dataset.l0+"px";nv.style.textAlign="left"}
  [["det.det0",58.8],["gif.gif0",71.8],["det.det3",147.8],["gif.gif22",370],["gif.gif3",420]].forEach(([k,ow])=>{const el=document.querySelector('[data-t="'+k+'"]');if(!el||el.closest("[hidden]"))return;if(!el.dataset.fs)el.dataset.fs=parseFloat(el.style.fontSize);el.style.fontSize=el.dataset.fs+"px";const R={"det.det0":[1838,150],"det.det3":[1835,175]}[k];const lim=R?R[1]:ow;let w=el.getBoundingClientRect().width/sc;if(w>lim){el.style.fontSize=Math.max(el.dataset.fs*0.5,el.dataset.fs*lim/w)+"px";w=el.getBoundingClientRect().width/sc}if(R&&w){const L=R[0]-w;el.style.left=L+"px";if(k==="det.det0"){const c=el.parentElement.querySelector(".coin");if(c)c.style.left=(L-8-parseFloat(c.style.width))+"px"}}})}
 function apply(){TEXTS.player.name=M.name;const F=fmtN(M.vb);TEXTS.nav.vbucks=F;TEXTS.det.det3=M.name;TEXTS.det.det0=F;TEXTS.gif.gif0=F;
- setT("player.name",M.name);setT("nav.vbucks",F);setT("det.det3",M.name);setT("det.det0",F);setT("gif.gif0",F);anchor()}
-window.fnSpend=p=>{if((+M.vb)<p)return false;M.vb=String((+M.vb)-p);try{localStorage.setItem(KEY,JSON.stringify(M))}catch(e){}apply();return true};apply();setTimeout(apply,400);setTimeout(apply,1500);setInterval(anchor,400);
+ setT("player.name",M.name);setT("nav.vbucks",F);setT("det.det3",M.name);setT("det.det0",F);setT("gif.gif0",F);const inf=M.gm==="inf";setT("gif.gif2",inf?"UNLIMITED DAILY GIFTS":(M.gl+" / "+M.gm+" DAILY GIFTS LEFT"));anchor()}
+window.fnGifts=()=>M.gm==="inf"||M.gl>0;window.fnGiftUse=()=>{if(M.gm!=="inf"&&M.gl>0){M.gl--;try{localStorage.setItem(KEY,JSON.stringify(M))}catch(e){}apply()}};window.fnSpend=p=>{if((+M.vb)<p)return false;M.vb=String((+M.vb)-p);try{localStorage.setItem(KEY,JSON.stringify(M))}catch(e){}apply();return true};apply();setTimeout(apply,400);setTimeout(apply,1500);setInterval(anchor,400);
 const bar=document.getElementById("lpbar"),fill=bar.firstChild,P=document.getElementById("modp"),N=document.getElementById("mpn"),V=document.getElementById("mpv");
-function open(){N.value=M.name;V.value=M.vb;P.classList.add("on")}
-function save(){M.name=(N.value.trim()||DEF.name).slice(0,16);M.vb=(V.value.replace(/\D/g,"")||"0");try{localStorage.setItem(KEY,JSON.stringify(M))}catch(e){}apply()}
+const GI=document.getElementById("mpg");function open(){N.value=M.name;V.value=M.vb;GI.value=M.gm==="inf"?"infinite":M.gm;P.classList.add("on")}
+function save(){M.name=(N.value.trim()||DEF.name).slice(0,16);M.vb=(V.value.replace(/\D/g,"")||"0");{const g=GI.value.trim().toLowerCase();const ngm=/^(inf|unlimited|∞)/.test(g)?"inf":String(Math.max(0,parseInt(g.replace(/\D/g,""))||0));if(ngm!==M.gm){M.gm=ngm;M.gl=ngm==="inf"?0:+ngm}}try{localStorage.setItem(KEY,JSON.stringify(M))}catch(e){}apply()}
 document.getElementById("mpa").onclick=()=>{save();P.classList.remove("on")};
 document.getElementById("mpc").onclick=()=>P.classList.remove("on");
 let t0=0,raf=0,sx=0,sy=0,on=false,wt=0;const HOLD=800,WAIT=1800;
