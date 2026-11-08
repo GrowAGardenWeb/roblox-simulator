@@ -239,7 +239,7 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden)tryPlay()}
 let ready=false;const status=$('[data-t="player.status"]');
 /* navegación entre pantallas */
 window.go=go;function go(s){
-  document.body.dataset.screen=s;try{fit()}catch(e){}
+  document.body.dataset.screen=s;try{fit();setTimeout(()=>{try{fitSx();nudge()}catch(e){}},120);setTimeout(()=>{try{nudge()}catch(e){}},600)}catch(e){}
   $$(".screen").forEach(x=>x.hidden=x.dataset.screen!==s);
   $$("[data-tile]").forEach(x=>x.hidden=x.dataset.tile!==s);
   $$("[data-lab]").forEach(x=>x.hidden=x.dataset.lab!==s);
@@ -310,7 +310,9 @@ function showNews(i){nimgs.forEach((n,j)=>n.classList.toggle("on",j===i));nt.tex
 showNews(0);setInterval(()=>{ni=(ni+1)%nimgs.length;showNews(ni)},3000);
 /* escala */
 function vw(){const v=window.visualViewport;return v&&v.width&&v.height?[v.width,v.height]:[innerWidth,innerHeight]}
-function fit(){if(window.__kb)return;let [w,h]=vw();const full=/^(detail|gift)$/.test(document.body.dataset.screen||"");const cs=getComputedStyle($("#sa"));if(!full){w-=2*Math.max(parseFloat(cs.paddingLeft)||0,parseFloat(cs.paddingRight)||0);h-=2*Math.max(parseFloat(cs.paddingTop)||0,parseFloat(cs.paddingBottom)||0)}const s=full?Math.max(w/2000,h/921):Math.min(w/2000,h/921);st.style.transform="translate(-50%,-50%) scale("+s+")"}
+function fit(){if(window.__kb)return;let [w,h]=vw();const full=/^(detail|gift)$/.test(document.body.dataset.screen||"");const cs=getComputedStyle($("#sa"));if(!full){w-=2*Math.max(parseFloat(cs.paddingLeft)||0,parseFloat(cs.paddingRight)||0);h-=2*Math.max(parseFloat(cs.paddingTop)||0,parseFloat(cs.paddingBottom)||0)}const s=full?Math.max(w/2000,h/921):Math.min(w/2000,h/921);st.style.transform="translate3d(-50%,-50%,0) scale("+s+")";window.__fs=s}
+function nudge(){const s=window.__fs;if(!s)return;st.style.transform="translate3d(-50%,-50%,0) scale("+(s*1.002)+")";requestAnimationFrame(()=>requestAnimationFrame(()=>{st.style.transform="translate3d(-50%,-50%,0) scale("+s+")"}))}
+window.__nudge=nudge;[300,900,1800,3500].forEach(t=>setTimeout(()=>{try{fitSx();nudge()}catch(e){}},t));
 ["resize","orientationchange","pageshow","load"].forEach(e=>addEventListener(e,()=>{fit();setTimeout(fit,150);setTimeout(fit,600)}));
 if(window.visualViewport)visualViewport.addEventListener("resize",fit);
 setInterval(fit,700);fit();
