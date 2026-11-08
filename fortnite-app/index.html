@@ -42,7 +42,7 @@ body[data-screen="vbucks"] #bgfx{background-image:url(assets/bg_vbucks_ext.jpg)}
 #thumbs .tsl.pad img{inset:10px;width:calc(100% - 20px);height:calc(100% - 20px)}
 .scr2 .full{position:absolute;left:0;top:0;width:2000px;height:921px;display:block;max-width:none;pointer-events:none}
 .scr2{z-index:8;background:#1a55c0}.scr2 .sx{text-shadow:none;pointer-events:none}.scr2 .hz{position:absolute;pointer-events:auto;cursor:pointer;z-index:3}
-.coin{position:absolute;border-radius:50%;background:#fff;pointer-events:none}.coin:after{content:"V";position:absolute;inset:0;display:grid;place-items:center;font:900 62% 'Montserrat';color:#14357f}
+.coin{position:absolute;border-radius:50%;background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23fff'/><path d='M31 30H49L55 47L61 30H79L66 62H44Z' fill='%2314357f'/></svg>") center/100% 100% no-repeat;pointer-events:none}
 body[data-screen="detail"] #nav,body[data-screen="gift"] #nav{display:none}
 body[data-screen="detail"] #bgfill,body[data-screen="gift"] #bgfill{background:#14398f}
 body[data-screen="detail"] #vwrap,body[data-screen="gift"] #vwrap{visibility:hidden}
@@ -199,7 +199,7 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden)tryPlay()}
 let ready=false;const status=$('[data-t="player.status"]');
 /* navegación entre pantallas */
 function go(s){
-  document.body.dataset.screen=s;
+  document.body.dataset.screen=s;try{fit()}catch(e){}
   $$(".screen").forEach(x=>x.hidden=x.dataset.screen!==s);
   $$("[data-tile]").forEach(x=>x.hidden=x.dataset.tile!==s);
   $$("[data-lab]").forEach(x=>x.hidden=x.dataset.lab!==s);
@@ -266,7 +266,7 @@ function showNews(i){nimgs.forEach((n,j)=>n.classList.toggle("on",j===i));nt.tex
 showNews(0);setInterval(()=>{ni=(ni+1)%nimgs.length;showNews(ni)},3000);
 /* escala */
 function vw(){const v=window.visualViewport;return v&&v.width&&v.height?[v.width,v.height]:[innerWidth,innerHeight]}
-function fit(){let [w,h]=vw();const cs=getComputedStyle($("#sa"));w-=2*Math.max(parseFloat(cs.paddingLeft)||0,parseFloat(cs.paddingRight)||0);h-=2*Math.max(parseFloat(cs.paddingTop)||0,parseFloat(cs.paddingBottom)||0);const s=Math.min(w/2000,h/921);st.style.transform="translate(-50%,-50%) scale("+s+")"}
+function fit(){let [w,h]=vw();const full=/^(detail|gift)$/.test(document.body.dataset.screen||"");const cs=getComputedStyle($("#sa"));if(!full){w-=2*Math.max(parseFloat(cs.paddingLeft)||0,parseFloat(cs.paddingRight)||0);h-=2*Math.max(parseFloat(cs.paddingTop)||0,parseFloat(cs.paddingBottom)||0)}const s=full?Math.max(w/2000,h/921):Math.min(w/2000,h/921);st.style.transform="translate(-50%,-50%) scale("+s+")"}
 ["resize","orientationchange","pageshow","load"].forEach(e=>addEventListener(e,()=>{fit();setTimeout(fit,150);setTimeout(fit,600)}));
 if(window.visualViewport)visualViewport.addEventListener("resize",fit);
 setInterval(fit,700);fit();
