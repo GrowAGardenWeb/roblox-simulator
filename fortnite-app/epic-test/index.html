@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Epic video test</title>
+<style>
+body{margin:0;background:#0b0d17;color:#fff;font:15px/1.45 -apple-system,Helvetica,Arial,sans-serif;padding:16px;max-width:620px;margin:0 auto}
+h1{font-size:22px;margin:0 0 8px}input{width:100%;box-sizing:border-box;background:#161a2b;color:#9fe3a8;border:1px solid #2a3050;border-radius:10px;padding:10px;font:12px monospace}
+button{background:#fe2c55;color:#fff;border:0;border-radius:12px;font-size:16px;font-weight:700;padding:12px;width:100%;margin-top:10px}
+.row{display:flex;gap:8px;margin-top:12px}.box{flex:1;aspect-ratio:1;background:linear-gradient(#1a55c0,#0b2f7a);border-radius:12px;position:relative;overflow:hidden}
+.box video,.box canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.box small{position:absolute;left:6px;top:4px;font-size:11px;z-index:3;color:#fff;text-shadow:0 0 3px #000}
+#log{margin-top:12px;background:#161a2b;border-radius:10px;padding:10px;font:12px/1.5 monospace;white-space:pre-wrap;word-break:break-all}.ok{color:#7be28f}.bad{color:#ff8a8a}
+</style></head><body>
+<h1>Epic video test</h1>
+<input id="u" value="https://cosmo.fdeb.live.use1a.on.epicgames.com/v1/item/PmzwWuUTd02TP24Zalsj5Vm47qtjy-I9X3MxY82nQb8/mp4-sm">
+<button id="go" type="button">Probar link directo</button>
+<div class="row">
+ <div class="box"><small>1. Directo (video normal)</small><video id="v1" muted loop playsinline autoplay></video></div>
+ <div class="box"><small>2. Fondo quitado (blend)</small><video id="v2" muted loop playsinline autoplay style="mix-blend-mode:screen"></video></div>
+ <div class="box"><small>3. Alfa en canvas</small><canvas id="cv" width="640" height="640"></canvas></div>
+</div>
+<div id="log"></div>
+<script>
+var L=document.getElementById('log');function log(t,c){var d=document.createElement('div');d.textContent=t;if(c)d.className=c;L.appendChild(d)}
+document.getElementById('go').onclick=function(){
+ L.textContent='';var u=document.getElementById('u').value.trim();
+ var v1=document.getElementById('v1'),v2=document.getElementById('v2');
+ v1.src=u;v2.src=u;v1.play().catch(function(){});v2.play().catch(function(){});
+ v1.onloadeddata=function(){log('1/2 Reproducción directa: OK ('+v1.videoWidth+'x'+v1.videoHeight+')','ok')};
+ v1.onerror=function(){log('1/2 Reproducción directa: FALLÓ (el navegador no pudo cargar el link)','bad')};
+ // canvas: needs CORS
+ var v=document.createElement('video');v.crossOrigin='anonymous';v.muted=true;v.loop=true;v.playsInline=true;
+ v.onerror=function(){log('3 Canvas: el servidor NO permite CORS, no se puede leer el video para quitar el fondo','bad')};
+ v.onloadeddata=function(){
+  var c=document.getElementById('cv'),x=c.getContext('2d',{willReadFrequently:true});c.width=v.videoWidth;c.height=v.videoHeight;
+  try{x.drawImage(v,0,0);x.getImageData(0,0,1,1);log('3 Canvas: CORS OK, se puede quitar el fondo en vivo','ok')}catch(e){log('3 Canvas: video bloqueado para lectura (tainted): '+e.message,'bad');return}
+  function draw(){x.drawImage(v,0,0);var im=x.getImageData(0,0,c.width,c.height),d=im.data;
+   for(var i=0;i<d.length;i+=4){var m=Math.max(d[i],d[i+1],d[i+2]);if(m>=40)continue;var a=m<=5?0:(m-5)/35,k=a>0?1/Math.max(a*.9,.05):0;d[i]=Math.min(255,d[i]*k);d[i+1]=Math.min(255,d[i+1]*k);d[i+2]=Math.min(255,d[i+2]*k);d[i+3]=a*255}
+   x.putImageData(im,0,0);v.requestVideoFrameCallback?v.requestVideoFrameCallback(draw):requestAnimationFrame(draw)}
+  v.play().then(draw)};
+ v.src=u;
+ fetch(u,{mode:'cors'}).then(function(r){log('fetch con CORS: OK (estado '+r.status+', tipo '+r.headers.get('content-type')+')','ok')}).catch(function(e){log('fetch con CORS: bloqueado ('+e.message+')','bad')});
+ log('Probando '+u.slice(0,70)+'…');
+};
+</script></body></html>
