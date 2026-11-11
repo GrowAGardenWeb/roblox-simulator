@@ -227,3 +227,19 @@ html.tbw-ch.oldui .page.chl .chl-new{left:auto;right:18px;top:20px}
 html.tbw-ch.oldui .page.chl .chl-search{left:14px;right:14px;top:70px;width:auto;height:38px;border:1.5px solid rgba(128,128,128,.55);border-radius:22px;display:flex;align-items:center;justify-content:flex-start;padding:0 12px;gap:10px;box-sizing:border-box;background:transparent;cursor:text}
 html.tbw-ch.oldui .page.chl .chl-search::after{content:"Search";font-size:15px;line-height:1;color:inherit;color:rgba(128,128,128,.9)}
 html.tbw-ch.oldui .page.chl .chl-scroll{top:118px}
+/* iPad: Buy item / Robux pop-ups dim the whole screen (rail included) and sit centered */html.tablet #root:has(.srb-root,.bi-scrim) .tb-col{z-index:530;box-shadow:none}
+html.tablet .bi-scrim.bi-scrim,html.tablet .srb-root.srb-root{background:#0006}
+html.tablet.dark .bi-scrim.bi-scrim,html.tablet.dark .srb-root.srb-root{background:#fff6}
+html.tablet:has(.srb-root,.bi-scrim) .tb-rail:after{content:"";position:absolute;inset:0;background:#0006;pointer-events:auto}
+html.tablet.dark:has(.srb-root,.bi-scrim) .tb-rail:after,html.tablet.dark #root:has(.srb-root,.bi-scrim):after{background:#fff6}
+
+html.tablet.tbw .bi-modal{left:calc(50% - 31px / var(--s,1))}
+/* iPad split Avatar: the buy bar sits at the bottom of the avatar pane */html.tbw-av .page.avatar .a-sheet.a-sheet{overflow:visible}
+html.tbw-av .page.avatar .a-checkout{left:100%;right:auto;width:72.414%;bottom:0;background:transparent}
+html.tbw-av .page.avatar .a-checkout :is(.bi-price,.a-view){left:16px;right:62px;width:auto}
+html.tbw-av .page.avatar .a-checkout .bi-manage{left:16px;right:62px;width:auto}
+html.tbw-av .page.avatar .a-checkout :is(.bi-more,.a-trash){left:auto;right:16px}
+html.tbw-ch.oldui .page.chl .chl-search.chl-sq::after{content:none}
+.chl-sq input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:inherit;padding:0;-webkit-appearance:none;appearance:none}
+.chl-sq input::placeholder{color:rgba(128,128,128,.9)}
+.chl-sq input::-webkit-search-cancel-button{-webkit-appearance:none}
