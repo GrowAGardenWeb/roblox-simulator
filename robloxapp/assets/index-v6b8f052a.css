@@ -258,3 +258,46 @@ html.tbw-se .page.search .s-cancel{left:auto;right:20px;width:auto}
 html.tablet .bi-scrim{bottom:-40px}
 html.tablet .bi-modal :is(.bi-buy,.bi-up){width:calc(100% - 26px)}
 html.tablet.dark .bi-modal{background:#f4f5fb;box-shadow:0 0 0 1px #cecfd5}
+html.tbfull .tb-rail{display:none}
+/* iPad Trades like Roblox's: full screen, the list on the left and the selected trade on the right */.page.trp.trp-tb{top:0;--trt:60px}
+.page.trp.trp-tb.trp-hasban{--trt:114px}
+.trp-tb>.trp-hd{height:40px;background:#e9eaee;border-bottom:0}
+.trp-tb>.trp-hd b{top:auto;bottom:4px;font-size:18px;line-height:22px}
+.trp-tb>.trp-hd .trp-acct{position:absolute;top:3px;left:60px;right:60px;text-align:center;color:#393b3d;font-size:8.5px;font-weight:500;line-height:12px}
+.trp-tb>.trp-hd .trp-x{top:2px;left:4px}
+.trp-ban{position:absolute;top:60px;left:6.8%;right:8%;height:44px;background:#ebecef;display:flex;align-items:center;justify-content:center;padding:0 48px;box-sizing:border-box;color:#393b3d;font-size:13px}
+.trp-ban>span{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.trp-banr{background:#393b3d;width:12px;height:12px;flex:none;-webkit-mask:50%/contain no-repeat;mask:50%/contain no-repeat;display:inline-block}
+.trp-banx{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:0 0;border:0;padding:4px;cursor:pointer;line-height:0}
+.trp-banxi{background:#202227;width:18px;height:18px;display:block;-webkit-mask:50%/contain no-repeat;mask:50%/contain no-repeat}
+.trp-tb>.trp-scroll{top:var(--trt);left:8.5%;right:auto;width:24.7%}
+.trp-tb>.trp-scroll h1{left:0;top:22px;font-size:25px;line-height:30px}
+.trp-tb>.trp-scroll .trp-info{left:auto;right:40px;top:22px}
+.trp-tb>.trp-scroll .trp-gear{left:auto;right:0;top:22px}
+.trp-tb>.trp-scroll .trp-chips{left:0;top:76px}
+.trp-tb>.trp-scroll .trp-chips button{height:27px;padding:0 10px;font-size:12.5px;border-radius:14px}
+.trp-tb>.trp-scroll .trp-list{top:116px}
+.trp-tb .trp-row{height:70px}
+.trp-tb .trp-row.on{background:#ececef}
+.trp-tb .trp-row img,.trp-tb .trp-row>i{top:15px;left:12px}
+.trp-tb .trp-row b{top:18px;font-size:14px;font-weight:500}
+.trp-tb .trp-row span{top:38px;font-size:11px}
+.trp-tb .trp-row em{top:12px;font-size:10px}
+.trp-tb .trp-empty{top:150px}
+.trp-side{position:absolute;top:var(--trt);bottom:0;left:35.15%;right:0;border-left:1px solid #e3e4e8}
+.trp-side .page.trd{top:0;background:transparent}
+.trp-side .trd>.trp-hd,.trp-side .trd-back{display:none}
+.trp-side .trd>.trp-scroll{top:0;padding:0 0 40px 40px;right:auto;width:min(520px,calc(100% - 60px))}
+.trp-side .trd-t{margin:14px 0 18px!important;font-size:26px!important;line-height:32px!important}
+.trp-side .trd-sec{border-bottom:1px solid #e3e4e8;margin-bottom:18px;padding-bottom:22px}
+.trp-side .trd-sec h3{font-size:17px;font-weight:600;margin:0 0 12px}
+.trp-side .trd-grid{grid-template-columns:repeat(auto-fill,106px);gap:14px 12px;padding-left:8px}
+.trp-side .trd-it b{font-size:13px;font-weight:400;line-height:16px;margin-top:6px}
+.trp-side .trd-v{font-size:13px;font-weight:400}
+.trp-side .trd-tot{margin-top:24px;font-size:13px}
+.trp-side .trd-tot b{font-size:16px}
+.trp-side .trd-sec:last-of-type{border-bottom:0}
+.trp-side .trd-t{white-space:nowrap}
+.trp-side .trd-lim.trd-lim{left:5.9px;right:auto}
+.trp-side .trd>.trp-scroll{width:auto;right:0}
+.trp-side .trd-sec{max-width:480px}
