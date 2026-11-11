@@ -254,3 +254,6 @@ html.tbw-av .page.avatar .av-view[data-rbg] .roav-bg{visibility:hidden}
 html.tbw-av .page.avatar .av-view.av-view{height:calc(100% + var(--safe-top) / var(--s) + 20px)!important}
 /* iPad search: full width */html.tbw-se .page.search .s-field{width:auto;right:96px}
 html.tbw-se .page.search .s-cancel{left:auto;right:20px;width:auto}
+/* iPad: the Buy item card is the same on-screen size as Roblox's on iPad (about 342pt wide), not shrunk with the phone column */html.tablet .bi-modal{width:calc(325.7px / var(--s,1));box-sizing:border-box}
+html.tablet .bi-scrim{bottom:-40px}
+html.tablet .bi-modal :is(.bi-buy,.bi-up){width:calc(100% - 26px)}
