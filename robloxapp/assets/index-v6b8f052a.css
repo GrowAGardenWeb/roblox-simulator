@@ -301,3 +301,20 @@ html.tbfull .tb-rail{display:none}
 .trp-side .trd-lim.trd-lim{left:5.9px;right:auto}
 .trp-side .trd>.trp-scroll{width:auto;right:0}
 .trp-side .trd-sec{max-width:480px}
+/* iPad Settings like Roblox's: header across the page, the list in a wide centred column */html.tbw-set .rset .rset-h button{top:4px}
+html.tbw-set .rset .rset-back{left:26px}
+html.tbw-set .rset .rset-t{top:13px;font-size:17px}
+html.tbw-set .rset .rset-rbx{left:auto;right:52px}
+html.tbw-set .rset .rset-bell{left:auto;right:14px}
+html.tbw-set .rset .rset-ico{width:20px;height:20px}
+html.tbw-set .rset .rset-list{top:81px;left:13.5%;right:12%}
+html.tbw-set .rset .rset-row{width:100%;margin-left:0;height:42px;padding:0 10px 0 0;font-size:13.5px;color:#2a2c31}
+html.tbw-set .rset .rset-chev{width:15px;height:15px}
+html.tbw-set .page.rset{top:0}
+/* iPad split Avatar: bigger tiles, 5 across like Roblox; "Recommended For You" shows two rows */html.tbw-av .page.avatar .il-row .il-card{width:calc(((100vw - 62px) * .58 / var(--s,1) - 75px) / 5)!important;flex:none}
+html.tbw-av .page.avatar .il-row .il-img{width:100%!important;height:auto!important;aspect-ratio:1}
+html.tbw-av .page.avatar .il-row-in{gap:12px}
+html.tbw-av .page.avatar .il-scroll{height:180px}
+html.tbw-av .page.avatar .il-all>.il-row:first-child .il-scroll{height:auto}
+html.tbw-av .page.avatar .il-all>.il-row:first-child .il-row-in{width:auto;flex-wrap:wrap;row-gap:14px}
+html.tbw-av .page.avatar .il-all>.il-row:first-child .il-card:nth-child(n+11){display:none}
