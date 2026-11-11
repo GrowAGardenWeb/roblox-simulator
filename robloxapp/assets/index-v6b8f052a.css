@@ -230,8 +230,8 @@ html.tbw-ch.oldui .page.chl .chl-scroll{top:118px}
 /* iPad: Buy item / Robux pop-ups dim the whole screen (rail included) and sit centered */html.tablet #root:has(.srb-root,.bi-scrim) .tb-col{z-index:530;box-shadow:none}
 html.tablet .bi-scrim.bi-scrim,html.tablet .srb-root.srb-root{background:#0006}
 html.tablet.dark .bi-scrim.bi-scrim,html.tablet.dark .srb-root.srb-root{background:#fff6}
-html.tablet:has(.srb-root,.bi-scrim) .tb-rail:after{content:"";position:absolute;inset:0;background:#0006;pointer-events:auto}
-html.tablet.dark:has(.srb-root,.bi-scrim) .tb-rail:after,html.tablet.dark #root:has(.srb-root,.bi-scrim):after{background:#fff6}
+html.tablet:has(.srb-root,.bi-scrim,.ps-root) .tb-rail:after{content:"";position:absolute;inset:0;background:#0006;pointer-events:auto}
+html.tablet.dark:has(.srb-root,.bi-scrim,.ps-root) .tb-rail:after,html.tablet.dark #root:has(.srb-root,.bi-scrim):after{background:#fff6}
 
 html.tablet.tbw .bi-modal{left:calc(50% - 31px / var(--s,1))}
 /* iPad split Avatar: the buy bar sits at the bottom of the avatar pane */html.tbw-av .page.avatar .a-sheet.a-sheet{overflow:visible}
@@ -243,3 +243,14 @@ html.tbw-ch.oldui .page.chl .chl-search.chl-sq::after{content:none}
 .chl-sq input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:inherit;padding:0;-webkit-appearance:none;appearance:none}
 .chl-sq input::placeholder{color:rgba(128,128,128,.9)}
 .chl-sq input::-webkit-search-cancel-button{-webkit-appearance:none}
+/* iPad: own profile opens as a panel on the right, over the page */html.tbp .tb-col .ps-root{visibility:visible;pointer-events:auto}
+html.tbw-pf .ps-sheet.ps-sheet{top:0!important;left:auto;right:0;width:360px;border-top:0;border-left:1px solid #c9ccd2;animation-name:tb-pf-in}
+html.tbw-pf .ps-scrim{top:0}
+html.tbw-pf .ps-scrim-top{display:none}
+@keyframes tb-pf-in{0%{transform:translateX(100%)}}
+html.tbw-pf .ps-handle{display:none}
+/* iPad split Avatar: the chosen background fills the whole avatar pane */html.tbw-av .page.avatar .av-view[data-rbg]:before{content:"";z-index:2;pointer-events:none;background:var(--rbg) 50% 42%/cover no-repeat;position:absolute;inset:0}
+html.tbw-av .page.avatar .av-view[data-rbg] .roav-bg{visibility:hidden}
+html.tbw-av .page.avatar .av-view.av-view{height:calc(100% + var(--safe-top) / var(--s) + 20px)!important}
+/* iPad search: full width */html.tbw-se .page.search .s-field{width:auto;right:96px}
+html.tbw-se .page.search .s-cancel{left:auto;right:20px;width:auto}
