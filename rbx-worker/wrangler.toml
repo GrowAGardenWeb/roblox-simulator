@@ -1,0 +1,6 @@
+name = "moneyscripts-rbx"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# Public Roblox API proxy. No secrets and no KV needed.
+# The apps expect it at https://moneyscripts-rbx.<your-subdomain>.workers.dev
