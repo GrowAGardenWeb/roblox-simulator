@@ -45,15 +45,53 @@
   .chip{flex:none;height:40.7px;padding:0 19px;border-radius:999px;background:#fff;font-size:12.5px;font-weight:500;white-space:nowrap;scroll-snap-align:start}
   .h-new{color:var(--red);margin-top:33.3px}
   .heroes{gap:11px;padding:0 20px;margin-top:18.7px}
-  .hero{flex:none;width:380px;height:520px;border-radius:28px;position:relative;overflow:hidden;scroll-snap-align:start}
+  .heroes+.heroes{margin-top:36.7px}
+  .hero{flex:none;width:380px;height:540px;border-radius:28px;position:relative;overflow:hidden;scroll-snap-align:start;color:#fff}
   .hero.a{background:#edc4d5}
-  .hero.b{background:#b7cce7}
-  .hero img{position:absolute;left:0;top:28px;display:block}
-  .hero.a img{width:380px;height:342px}
-  .hero.b img{width:29px;height:342px}
-  .hero .band{position:absolute;left:0;right:0;top:370px;bottom:0}
-  .hero.a .band{background:linear-gradient(#4a1727,#3a101e)}
-  .hero.b .band{background:linear-gradient(#1e346d,#132654)}
+  .hero.c{background:#f2c9b7}
+  .hero img{position:absolute;left:0;display:block}
+  .hero.a img{top:28px;width:380px;height:342px}
+  .hero.c img{top:0;width:380px;height:370.7px}
+  .hero.s{background-size:100% 100%}
+  .hero.s img{top:0;width:29px;height:540px}
+  .hero.s1{background-image:url(assets/sliver1f.png)}
+  .hero.s2{background-image:url(assets/sliver2f.png)}
+  .hero .b1,.hero .b2{position:absolute;left:0;right:0}
+  .hero .b1{top:370.7px;height:89.3px;background:#51172b}
+  .hero .b2{top:460px;bottom:0;background:#3d1120}
+  .hero .nw{position:absolute;left:24px;top:391.3px;font-size:12.3px;line-height:14px;font-weight:500;letter-spacing:.1px}
+  .hero .tt{position:absolute;left:24px;top:407px;font-size:27.4px;line-height:32px;font-weight:700;letter-spacing:.2px;white-space:nowrap}
+  .hero .pr{position:absolute;left:24px;top:482px;width:244px;font-size:12px;line-height:18px;font-weight:400}
+  .hero .pr sup{font-size:9px;line-height:0;vertical-align:5px}
+  .hero .buy{position:absolute;right:24px;top:482px;width:59.3px;height:35.7px;border-radius:999px;background:#fff;color:#000;font-size:15px;font-weight:600}
+
+  /* "Ways to save / Holiday picks / Personalization" sections */
+  .sec{margin-top:36.6px;color:var(--red)}
+  .cards{gap:10px;padding:0 20px;margin-top:18.7px}
+  .sc{flex:none;width:293px;height:436px;border-radius:28px;position:relative;overflow:hidden;scroll-snap-align:start;background:#f8f8f8;border:1px solid #e3e3e4}
+  .sc img{position:absolute;left:0;top:0;display:block}
+  .sc .im{width:291px;height:229.7px}
+  .sc.s{background-size:100% 100%;border:0;background-color:#f9f9fb}
+  .sc.s img{width:117px;height:436px}
+  .sc.pers .im{height:77.3px}
+  .sc.pers{background:#fff}
+  .sc .ct{position:absolute;left:24px;top:251px;font-size:21.7px;line-height:26px;font-weight:700;letter-spacing:.2px;white-space:nowrap;display:flex;align-items:center}
+  .sc .ct svg{width:18.6px;height:18.6px;fill:currentColor;margin:-2px 1px 0 0;flex:none}
+  .sc .cs{position:absolute;left:24px;right:22px;top:280px;font-size:14.5px;line-height:20px;font-weight:500;color:#87878b}
+  .sc .cs sup{font-size:9px;line-height:0;vertical-align:4px}
+  .sc.hol{background:#396fa0;border:0;color:#fff}
+  .sc.hol .im{width:293px;height:231px}
+  .sc.hol .hs{position:absolute;left:24px;top:250px;font-size:13px;line-height:16px;font-weight:500}
+  .sc.hol .hb{position:absolute;left:24px;top:267.3px;font-size:21.3px;line-height:29px;font-weight:700;letter-spacing:.2px}
+
+  /* top bar (appears once the large title has scrolled away) + bottom scroll-edge shade */
+  .nav{position:fixed;top:0;left:0;right:0;max-width:520px;margin:0 auto;height:calc(var(--safe-top) + 58px);z-index:15;pointer-events:none;opacity:0;transition:opacity .22s;
+    background:linear-gradient(rgba(242,242,247,.62),rgba(242,242,247,.3) 70%,rgba(242,242,247,0));
+    -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);-webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent)}
+  .navt{position:fixed;top:calc(var(--safe-top) + 14.6px);left:0;right:0;text-align:center;font-size:17px;line-height:22px;font-weight:600;z-index:16;pointer-events:none;opacity:0;transition:opacity .22s}
+  .nav.on,.navt.on{opacity:1}
+  .edge{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:0 auto;height:122px;z-index:10;pointer-events:none;
+    background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.012) 10px,rgba(0,0,0,.029) 20px,rgba(0,0,0,.058) 30px,rgba(0,0,0,.099) 40px,rgba(0,0,0,.149) 50px,rgba(0,0,0,.194) 60px,rgba(0,0,0,.236) 70px,rgba(0,0,0,.256) 80px,rgba(0,0,0,.265) 100px)}
 
   .empty{padding:calc(var(--safe-top) + 190px) 20px 0;color:#8a8a8e;font-size:15px}
 
@@ -115,8 +153,38 @@
 
     <h2 class="h-new">The latest</h2>
     <div class="rail heroes">
-      <div class="hero a"><img src="assets/hero1.jpg" alt=""><div class="band"></div></div>
-      <div class="hero b"><img src="assets/hero2.jpg" alt=""><div class="band"></div></div>
+      <div class="hero a"><img src="assets/hero1.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">iPhone 18 Pro</div>
+        <div class="pr">From $1749 or $72.87/mo. for 24 mo. at 0% APR<sup>&#8251;</sup></div><button class="buy">Buy</button></div>
+      <div class="hero s s1"><img src="assets/sliver1.jpg" alt=""></div>
+    </div>
+    <div class="rail heroes">
+      <div class="hero c"><img src="assets/hero3.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">iPhone Duo</div>
+        <div class="pr">From $2999 or $124.96/mo. for 24 mo. at 0% APR<sup>&#8251;</sup></div><button class="buy">Buy</button></div>
+      <div class="hero s s2"><img src="assets/sliver2.jpg" alt=""></div>
+    </div>
+
+    <h2 class="sec">Ways to save</h2>
+    <div class="rail cards">
+      <div class="sc"><img class="im" src="assets/trade.jpg" alt="">
+        <div class="ct"><svg viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>Trade In</div>
+        <p class="cs">Trade in your current device. Get credit towards a new one.<sup>&para;</sup></p></div>
+      <div class="sc s" style="background-image:url(assets/trade2f.png)"><img src="assets/trade2.jpg" alt=""></div>
+    </div>
+
+    <h2 class="sec">Holiday picks</h2>
+    <div class="rail cards">
+      <div class="sc hol"><img class="im" src="assets/holiday.jpg" alt="">
+        <div class="hs">Holiday accessories</div>
+        <div class="hb">Everything&rsquo;s<br>better together.</div></div>
+      <div class="sc s" style="background-image:url(assets/holiday2f.png)"><img src="assets/holiday2.jpg" alt=""></div>
+    </div>
+
+    <h2 class="sec">Personalization</h2>
+    <div class="rail cards">
+      <div class="sc pers"><img class="im" src="assets/pers.jpg" alt=""></div>
+      <div class="sc s pers" style="background-image:url(assets/pers2f.png)"><img src="assets/pers2.jpg" style="height:77.3px" alt=""></div>
     </div>
   </section>
 
@@ -125,6 +193,9 @@
   <section class="pg" id="pg-bag"><div class="top"><h1>Bag</h1><button class="avatar" aria-label="Account">EH</button></div><p class="empty">Your bag is empty.</p></section>
 
 </div>
+
+<div class="nav"></div><div class="navt" id="navt">Products</div>
+<div class="edge"></div>
 
 <nav class="dock glass" aria-label="Tabs">
   <i class="lens"></i>
@@ -156,10 +227,17 @@
     lens.style.transform='translateX('+x+'px)';
     if(animate){lens.classList.remove('go');void lens.offsetWidth;lens.classList.add('go')}
   }
+  var nav=document.querySelector('.nav'),navt=document.getElementById('navt'),names={foryou:'For You',products:'Products',further:'Go Further',bag:'Bag'};
+  function syncNav(){
+    var p=document.querySelector('.pg.on'),on=p.scrollTop>50;
+    nav.classList.toggle('on',on);navt.classList.toggle('on',on);
+  }
+  pgs.forEach(function(p){p.addEventListener('scroll',syncNav,{passive:true})});
   tabs.forEach(function(t){
     t.addEventListener('click',function(){
       tabs.forEach(function(x){x.classList.toggle('on',x===t)});
       pgs.forEach(function(p){p.classList.toggle('on',p.id==='pg-'+t.dataset.pg)});
+      navt.textContent=names[t.dataset.pg];syncNav();
       place(t,true);
     });
   });
