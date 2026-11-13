@@ -46,24 +46,24 @@
   .h-new{color:var(--red);margin-top:32.3px}
   .heroes{gap:11px;padding:0 20px;margin-top:18.7px}
   .heroes+.heroes{margin-top:36.7px}
-  .hero{flex:none;width:380px;height:540px;border-radius:28px;position:relative;overflow:hidden;scroll-snap-align:start;color:#fff}
-  .hero.a{background:#edc4d5}
-  .hero.c{background:#f2c9b7}
+  .hero{flex:none;width:380px;height:540px;border-radius:28px;position:relative;overflow:hidden;scroll-snap-align:start;color:var(--ink,#fff)}
+  .hero{background:var(--bg)}
+  .hero.a{--bg:#edc4d5}
+  .hero.c{--bg:#f2c9b7}
   .hero img{position:absolute;left:0;display:block}
   .hero.a img{top:28px;width:380px;height:342px}
-  .hero.c img{top:0;width:380px;height:370.7px}
+  .hero.i img{top:0;width:380px;height:370.7px}
   .hero.s{background-size:100% 100%}
   .hero.s img{top:0;width:29px;height:540px}
-  .hero.s1{background-image:url(assets/sliver1f.png)}
   .hero.s2{background-image:url(assets/sliver2f.png)}
   .hero .b1,.hero .b2{position:absolute;left:0;right:0}
-  .hero .b1{top:370.7px;height:89.3px;background:#51172b}
-  .hero .b2{top:460px;bottom:0;background:#3d1120}
+  .hero .b1{top:370.7px;height:89.3px;background:var(--b1,#51172b)}
+  .hero .b2{top:460px;bottom:0;background:var(--b2,#3d1120)}
   .hero .nw{position:absolute;left:24px;top:391.3px;font-size:12.3px;line-height:14px;font-weight:500;letter-spacing:.1px}
   .hero .tt{position:absolute;left:24px;top:407px;font-size:27.4px;line-height:32px;font-weight:700;letter-spacing:.2px;white-space:nowrap}
-  .hero .pr{position:absolute;left:24px;top:482px;width:244px;font-size:12px;line-height:18px;font-weight:400}
+  .hero .pr{position:absolute;left:24px;top:482px;height:35.7px;display:flex;align-items:center;width:244px;font-size:12px;line-height:18px;font-weight:400}
   .hero .pr sup{font-size:9px;line-height:0;vertical-align:5px}
-  .hero .buy{position:absolute;right:24px;top:482px;width:59.3px;height:35.7px;border-radius:999px;background:#fff;color:#000;font-size:15px;font-weight:600}
+  .hero .buy{position:absolute;right:24px;top:482px;width:59.3px;height:35.7px;border-radius:999px;background:var(--buy,#fff);color:var(--buyc,#000);font-size:15px;font-weight:600}
 
   /* "Ways to save / Holiday picks / Personalization" sections */
   .sec{margin-top:36.6px;color:var(--red)}
@@ -154,13 +154,24 @@
     <div class="rail heroes">
       <div class="hero a"><img src="assets/hero1.jpg" alt=""><div class="b1"></div><div class="b2"></div>
         <div class="nw">New</div><div class="tt">iPhone 18 Pro</div>
-        <div class="pr">From $1749 or $72.87/mo. for 24 mo. at 0% APR<sup>&#8251;</sup></div><button class="buy">Buy</button></div>
-      <div class="hero s s1"><img src="assets/sliver1.jpg" alt=""></div>
+        <div class="pr"><span>From $1749 or $72.87/mo. for 24 mo. at 0% APR<sup>&#9674;</sup></span></div><button class="buy">Buy</button></div>
+      <div class="hero i" style="--bg:#b7cce7;--b1:#1b3574;--b2:#142756"><img src="assets/hero4.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">Apple Watch Series 12</div>
+        <div class="pr"><span>From $549 or $46.99/mo. for 12 mo. at 4.99% APR<sup>&#9674;</sup></span></div><button class="buy">Buy</button></div>
+      <div class="hero i" style="--bg:#c1b7e5;--b1:#0a2149;--b2:#061936"><img src="assets/hero5.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New 14&Prime; model</div><div class="tt">MacBook Pro</div>
+        <div class="pr"><span>From $2799</span></div><button class="buy">Buy</button></div>
+      <div class="hero i" style="--bg:#a5ccac;--b1:#284b43;--b2:#1d3732"><img src="assets/hero6.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">Apple HomeView</div>
+        <div class="pr"><span>$429</span></div><button class="buy">Buy</button></div>
+      <div class="hero i" style="--bg:#f5c661;--b1:#faecae;--b2:#fefac5;--ink:#000;--buy:#000;--buyc:#fff"><img src="assets/hero7.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">iPad mini</div>
+        <div class="pr"><span>From $949</span></div><button class="buy">Buy</button></div>
     </div>
     <div class="rail heroes">
-      <div class="hero c"><img src="assets/hero3.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+      <div class="hero c i"><img src="assets/hero3.jpg" alt=""><div class="b1"></div><div class="b2"></div>
         <div class="nw">New</div><div class="tt">iPhone Duo</div>
-        <div class="pr">From $2999 or $124.96/mo. for 24 mo. at 0% APR<sup>&#8251;</sup></div><button class="buy">Buy</button></div>
+        <div class="pr"><span>From $2999 or $124.96/mo. for 24 mo. at 0% APR<sup>&#9674;</sup></span></div><button class="buy">Buy</button></div>
       <div class="hero s s2"><img src="assets/sliver2.jpg" alt=""></div>
     </div>
 
