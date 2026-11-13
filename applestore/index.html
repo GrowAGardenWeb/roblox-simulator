@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Apple Store">
+<meta name="theme-color" content="#f2f2f6">
+<title>Apple Store</title>
+<style>
+  :root{
+    --bg:#f2f2f6;
+    --ink:#000;
+    --red:#cc3136;
+    --blue:#2860d5;
+    --safe-top:env(safe-area-inset-top,0px);
+    --safe-bottom:env(safe-area-inset-bottom,0px);
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+  body{overflow:hidden}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-appearance:none;appearance:none}
+
+  #app{position:fixed;inset:0;max-width:520px;margin:0 auto;overflow:hidden}
+  .pg{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:none;padding-bottom:calc(130px + var(--safe-bottom))}
+  .pg.on{display:block}
+
+  /* large title row: cap top at 128px, baseline at 152px (iPhone Pro Max layout) */
+  .top{position:relative;height:calc(var(--safe-top) + 100px)}
+  h1{position:absolute;left:20px;top:calc(var(--safe-top) + 60px);font-size:34px;line-height:41px;font-weight:700;letter-spacing:.37px;white-space:nowrap}
+  .avatar{position:absolute;right:20px;top:calc(var(--safe-top) + 57px);width:36px;height:36px;border-radius:50%;background:linear-gradient(#a5b5d7,#8088ba);color:#fff;font-size:15px;font-weight:700;letter-spacing:.2px;display:flex;align-items:center;justify-content:center}
+
+  .rail{scroll-padding-left:20px;display:flex;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+  .rail::-webkit-scrollbar{display:none}
+  .cats{gap:8.7px;padding:0 20px;margin-top:24.7px}
+  .cat{flex:none;width:104.3px;height:123.6px;background:#fff;border-radius:14px;position:relative;scroll-snap-align:start;overflow:hidden}
+  .cat img{position:absolute;left:8px;top:8px;width:calc(100% - 16px);height:auto;display:block}
+  .cat span{position:absolute;left:0;right:0;top:89.4px;text-align:center;font-size:12.4px;line-height:20px;font-weight:400}
+
+  h2{font-size:22px;line-height:28px;font-weight:700;letter-spacing:.35px;padding:0 20px;white-space:nowrap}
+  .h-acc{margin-top:calc(332px - 307.3px)}
+  .chips{gap:8px;padding:0 20px;margin-top:19.3px}
+  .chip{flex:none;height:40.7px;padding:0 19px;border-radius:999px;background:#fff;font-size:12.5px;font-weight:500;white-space:nowrap;scroll-snap-align:start}
+  .h-new{color:var(--red);margin-top:33.3px}
+  .heroes{gap:11px;padding:0 20px;margin-top:18.7px}
+  .hero{flex:none;width:380px;height:520px;border-radius:28px;position:relative;overflow:hidden;scroll-snap-align:start}
+  .hero.a{background:#edc4d5}
+  .hero.b{background:#b7cce7}
+  .hero img{position:absolute;left:0;top:28px;display:block}
+  .hero.a img{width:380px;height:342px}
+  .hero.b img{width:29px;height:342px}
+  .hero .band{position:absolute;left:0;right:0;top:370px;bottom:0}
+  .hero.a .band{background:linear-gradient(#4a1727,#3a101e)}
+  .hero.b .band{background:linear-gradient(#1e346d,#132654)}
+
+  .empty{padding:calc(var(--safe-top) + 190px) 20px 0;color:#8a8a8e;font-size:15px}
+
+  /* floating glass tab bar + search button */
+  .dock,.sbtn{position:fixed;bottom:calc(var(--safe-bottom) + 22px);height:61px;border-radius:999px;z-index:20;
+    background:rgba(240,203,219,.8);
+    -webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.38),inset 1px 1px 3px rgba(255,255,255,.55),0 4px 18px rgba(0,0,0,.14)}
+  .dock{left:max(20px,calc(50% - 220px + 20px));width:calc(min(100vw,440px) - 91px);max-width:328.6px;display:flex;padding:0 8px}
+  .sbtn{left:max(357.3px,calc(50% - 220px + 357.3px));width:61.6px;display:flex;align-items:center;justify-content:center}
+  .tab{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:13px;color:#240b14}
+  .tab svg{width:24px;height:24px;display:block;fill:currentColor}
+  .tab i{font-style:normal;font-size:12px;line-height:14px;font-weight:600;margin-top:6px;letter-spacing:-.05px;white-space:nowrap}
+  .tab.on{color:var(--blue)}
+  .tab.on:before{content:"";position:absolute;left:50%;top:4px;width:87px;height:53px;margin-left:-43.5px;border-radius:27px;background:rgba(69,0,8,.15);z-index:-1}
+  .tab>*{position:relative}
+  .sbtn svg{width:28px;height:28px;stroke:#111;fill:none;stroke-width:2.3;stroke-linecap:round}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <section class="pg on" id="pg-products">
+    <div class="top">
+      <h1>Products</h1>
+      <button class="avatar" aria-label="Account">EH</button>
+    </div>
+
+    <div class="rail cats">
+      <button class="cat"><img src="assets/cat-iphone.jpg" alt=""><span>iPhone</span></button>
+      <button class="cat"><img src="assets/cat-watch.jpg" alt=""><span>Apple Watch</span></button>
+      <button class="cat"><img src="assets/cat-ipad.jpg" alt=""><span>iPad</span></button>
+      <button class="cat"><img src="assets/cat-mac.jpg" alt=""><span>Mac</span></button>
+    </div>
+
+    <h2 class="h-acc">Accessories</h2>
+    <div class="rail chips">
+      <button class="chip">Holiday Picks</button>
+      <button class="chip">All Accessories</button>
+      <button class="chip">MagSafe</button>
+      <button class="chip">Watch Bands</button>
+    </div>
+
+    <h2 class="h-new">The latest</h2>
+    <div class="rail heroes">
+      <div class="hero a"><img src="assets/hero1.jpg" alt=""><div class="band"></div></div>
+      <div class="hero b"><img src="assets/hero2.jpg" alt=""><div class="band"></div></div>
+    </div>
+  </section>
+
+  <section class="pg" id="pg-foryou"><div class="top"><h1>For You</h1><button class="avatar" aria-label="Account">EH</button></div></section>
+  <section class="pg" id="pg-further"><div class="top"><h1>Go Further</h1><button class="avatar" aria-label="Account">EH</button></div></section>
+  <section class="pg" id="pg-bag"><div class="top"><h1>Bag</h1><button class="avatar" aria-label="Account">EH</button></div><p class="empty">Your bag is empty.</p></section>
+
+</div>
+
+<nav class="dock" aria-label="Tabs">
+  <button class="tab" data-pg="foryou">
+    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path fill="#fff" d="M8.2 4.6l1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z"/><rect x="5.6" y="13.2" width="12.8" height="1.7" rx=".85" fill="#fff"/><rect x="5.6" y="16.6" width="8" height="1.7" rx=".85" fill="#fff"/></svg>
+    <i>For You</i>
+  </button>
+  <button class="tab on" data-pg="products">
+    <svg viewBox="0 0 34 24" style="width:33px"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="21" height="14" rx="2.2"/><path d="M1 20.5h25"/><rect x="21.5" y="6.5" width="9.5" height="15.5" rx="2.4" fill="#d9a9bb" fill-opacity=".001"/></g></svg>
+    <i>Products</i>
+  </button>
+  <button class="tab" data-pg="further">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5"/><path fill="#fff" d="M17.4 6.6l-3.1 7.7-7.7 3.1 3.1-7.7z"/><circle cx="12" cy="12" r="1.5"/></svg>
+    <i>Go Further</i>
+  </button>
+  <button class="tab" data-pg="bag">
+    <svg viewBox="0 0 24 24"><rect x="3.5" y="8" width="17" height="14" rx="3.2"/><path d="M8.2 10V7a3.8 3.8 0 0 1 7.6 0v3" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg>
+    <i>Bag</i>
+  </button>
+</nav>
+<button class="sbtn" aria-label="Search"><svg viewBox="0 0 28 28"><circle cx="12.5" cy="12.5" r="8.2"/><path d="M18.6 18.6L25 25"/></svg></button>
+
+<script>
+(function(){
+  try{var st=new URLSearchParams(location.search).get('st');if(st!==null)document.documentElement.style.setProperty('--safe-top',st+'px')}catch(e){}
+  var tabs=document.querySelectorAll('.tab'),pgs=document.querySelectorAll('.pg');
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){
+      tabs.forEach(function(x){x.classList.toggle('on',x===t)});
+      pgs.forEach(function(p){p.classList.toggle('on',p.id==='pg-'+t.dataset.pg)});
+    });
+  });
+})();
+</script>
+</body>
+</html>
