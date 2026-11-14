@@ -103,8 +103,8 @@
   .pdp-in{position:relative}
   .pdp-scroll img{display:block;width:100%;height:auto}
   .pdp-buy{position:absolute;left:41.5%;width:17%;background:none;border:0}
-  .pdp-bar{transition:opacity .2s}
-  .pdp-bar.off{opacity:0;pointer-events:none}
+  .pdp-bar{transition:transform .38s cubic-bezier(.32,.72,0,1)}
+  .pdp-bar.off{transform:translateY(calc(100% + var(--safe-bottom) + 30px));pointer-events:none}
   .pdp-x.light{background:rgba(255,255,255,.92);box-shadow:0 6px 18px rgba(0,0,0,.12)}
   .pdp-x.light svg{stroke:#111}
   .pdp-x{transition:background .2s}
