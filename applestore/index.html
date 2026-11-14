@@ -295,6 +295,9 @@
   .acctc{position:relative;width:296px;background:#fff;border-radius:20px;padding:26px 16px 18px;text-align:center;transform:scale(.88);opacity:0;transition:transform .25s cubic-bezier(.32,.72,0,1),opacity .2s}
   .acctm.on .acctc{transform:scale(1);opacity:1}
   .acch{display:block;font-size:17.5px;font-weight:700;white-space:nowrap;color:#3b86f7}
+  .acctfg{text-align:left;margin-bottom:12px}
+  .acctfg span{display:block;font-size:12.5px;color:#8a8a8d;margin-bottom:4px}
+  .acctfg input{width:100%;height:40px;border-radius:10px;border:1px solid #e0e0e3;padding:0 11px;font-size:15.5px;font-family:inherit;background:#f7f7f9;color:#111}
   .accp{margin-top:6px;font-size:14.5px;color:#6e6e73}
   .accb{display:block;width:100%;margin-top:20px;padding:12px 0;border-radius:12px;background:#3b86f7;color:#fff;font-size:16px;font-weight:600}
   .sheet.on .sh-p{transform:translate(-50%,0)}
@@ -698,7 +701,7 @@
   <div class="sh-h"><button class="xc" id="cX"><svg viewBox="0 0 20 20" width="19" height="19" stroke="#111" stroke-width="2.1" stroke-linecap="round" fill="none"><path d="M3 3l14 14M17 3L3 17"/></svg></button><span class="ct2">Checkout</span></div>
   <div class="sh-s" id="cScroll"><div class="cin2" id="cin">
     <div class="cd" id="cA" style="height:97.5px"><i class="rb" id="cGiftRad" style="left:51px;top:37.8px"></i><div class="t semi" style="left:119px;top:20px;font-size:17px;display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="8" width="18" height="5" rx="1"/><path d="M5 13v8h14v-8M12 8v13M12 8c-1-4-6-4.500-5-1.500 1 2 4 1.500 5 1.500zM12 8c1-4 6-4.500 5-1.500-1 2-4 1.500-5 1.500z"/></svg> This order is a gift</div><div class="t gr" style="left:119px;top:42.5px;font-size:14.8px;line-height:18.2px">Includes a digital gift message. Pickup is<br>unavailable for gift items.</div></div>
-    <div class="cd" id="cG" style="height:222px" hidden><div class="r" style="top:14px"><em>Digital Gift<br>Message</em><div class="v2"><b>From:</b><br><span id="cFrom">Ernesto</span></div><svg class="chv" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg></div>
+    <div class="cd" id="cG" style="height:222px" hidden><div class="r" style="top:14px"><em>Digital Gift<br>Message</em><div class="v2"><b>From:</b><br><span id="cFrom">Carlos Scripps</span></div><svg class="chv" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg></div>
       <div class="dl"><b>Delivery details:</b><br><span id="cDel">Gift revealed, Blue theme</span></div><i class="ln" style="top:100px"></i>
       <div class="rd" style="top:132px"><i class="rb on"></i><span>Send when gift ships</span></div><i class="ln" style="top:158px"></i><div class="rd" style="top:186px"><i class="rb"></i><span>Send on a specific date</span></div></div>
     <div class="cd" id="cB" style="height:67.3px"><div class="t" style="left:20px;top:23.5px;font-size:16.5px">Postcode</div><div class="t gr" style="left:122px;top:23.5px;font-size:16.5px">Enter</div><svg class="chv" style="top:26px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg></div>
@@ -740,7 +743,7 @@
       <p class="t gr lg" style="top:427px">&plusmn; Payment plans available on approved credit for iPhone and<br>Apple Watch purchases over $99, Mac purchases over $199,<br>and iPad purchases over $199. Offer valid on qualifying<br>purchases of eligible Apple products, at Apple Store locations,<br><a>apple.com/ca</a>, on the Apple Store app and by calling<br>1-800-MY-APPLE. Financing provided by Affirm, and all<br>transactions are subject to approval. Financing offers may vary<br>from time to time and may be amended or cancelled at any time.<br>See <a>apple.com/ca/shop/browse/financing</a> for more information.<br>Quebec residents: Learn more about financing <a>here</a>.</p>
       <p class="t gr lg" style="top:622px">7.99% APR Representative example based on $1099 purchase:<br>Total repayment amount of $1,192.79 paid over 24 monthly<br>payments of $49.70 at 7.99% APR. Total interest charges and<br>cost of borrowing $93.79. Example transaction amount does not<br>include applicable taxes, which must be paid in full at time of<br>shipment or pickup.</p>
       <div class="opill" style="top:760px">FAQs</div><div class="opill" style="top:803px">Call Apple</div>
-      <div class="t gr" style="left:0;right:0;top:843px;text-align:center;font-size:16.5px;line-height:20px">Account: name@icloud.com</div><i class="ln" style="top:889px;left:21px;right:20px"></i>
+      <div class="t gr" id="acctEmailShow" style="left:0;right:0;top:843px;text-align:center;font-size:16.5px;line-height:20px">Account: carlos.scripps@icloud.com</div><i class="ln" style="top:889px;left:21px;right:20px"></i>
       <div class="t" style="left:0;right:0;top:897px;text-align:center;font-size:16px;line-height:22px">Apple Sales and Refund Policy</div><div class="t" style="left:0;right:0;top:936px;text-align:center;font-size:16px;line-height:22px">Apple Privacy Policy</div>
       <div class="t gr" style="left:0;right:0;top:969px;text-align:center;font-size:16px;line-height:22px">Copyright &copy; 2026 Apple Inc. All rights reserved.</div></div>
   </div></div>
@@ -783,6 +786,9 @@
   <button class="gnx" id="odBack" aria-label="Back" style="left:20px;right:auto"><svg viewBox="0 0 14 22" width="13" height="21" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2L3 11l8 9"/></svg></button><div class="odt">Order Details</div>
 </div></div>
 <div class="acctm" id="acctm" aria-hidden="true"><div class="sh-bd"></div><div class="acctc">
+  <div class="acctfg"><span>Name</span><input id="acctNameIn" autocapitalize="words" autocomplete="off"></div>
+  <div class="acctfg"><span>Email</span><input id="acctEmailIn" inputmode="email" autocapitalize="off" autocomplete="off"></div>
+  <i class="ln" style="margin:4px 0 14px"></i>
   <b class="acch">discord.gg/moneyscripts</b>
   <p class="accp">Join our Discord</p>
   <button class="accb" id="acctX">Done</button>
@@ -814,6 +820,12 @@
 <script>
 (function(){
   try{var st=new URLSearchParams(location.search).get('st');if(st!==null)document.documentElement.style.setProperty('--safe-top',st+'px')}catch(e){}
+  var ACC={name:'Carlos Scripps',email:'carlos.scripps@icloud.com'};
+  function acctInitials(n){var p=n.trim().split(/\s+/);return((p[0]||'')[0]||'')+((p[1]||'')[0]||'')}
+  function applyAcct(){
+    document.querySelectorAll('.avatar').forEach(function(b){b.textContent=acctInitials(ACC.name).toUpperCase()});
+    var es=document.getElementById('acctEmailShow');if(es)es.textContent='Account: '+ACC.email;
+  }
   var tabs=document.querySelectorAll('.tab'),pgs=document.querySelectorAll('.pg'),lens=document.querySelector('.lens');
   function place(t,animate){
     var x=t.offsetLeft+t.offsetWidth/2-lens.offsetWidth/2;
@@ -924,7 +936,7 @@
   document.querySelectorAll('.gopt').forEach(function(b){b.addEventListener('click',function(){bag.rv=+b.dataset.rv;document.querySelectorAll('.gopt').forEach(function(x){x.classList.toggle('sel',x===b)})})});
   document.querySelectorAll('.ths img').forEach(function(im){im.addEventListener('click',function(){bag.theme=+im.dataset.t;document.querySelectorAll('.ths img').forEach(function(x){x.classList.toggle('on',x===im)});$('pvImg').src='assets/buy/pv'+bag.theme+'.jpg'})});
   var TN=['Blue','Red','Orange','Multicolor'];
-  function pvSync(){$('pvFrom').textContent=$('gFrom').value||'Ernesto'}
+  function pvSync(){$('pvFrom').textContent=$('gFrom').value||ACC.name}
   $('gFrom').addEventListener('input',pvSync);pvSync();
   var BFC=['linear-gradient(135deg,#6fd2a4,#8fe0a0)','linear-gradient(135deg,#d58fc9,#f0a3d6)','linear-gradient(135deg,#f27d96,#f7a36a)','linear-gradient(135deg,#a6dd6f,#e2e66f)'];
   function clipHalf(c,gt){ // polygon of rect 400x710 where (x+y>c) if gt else (x+y<c)
@@ -955,7 +967,7 @@
   });
   function fillChk(){
     renderBag();var g=bag.gift,care=st.c==='plus'&&st.p!==null,t=bagTotal(),mon=st.p==='m';
-    $('cFrom').textContent=$('gFrom').value||'Ernesto';$('cDel').textContent=(bag.rv?'Gift revealed':'Gift hidden')+', '+TN[bag.theme]+' theme';
+    $('cFrom').textContent=$('gFrom').value||ACC.name;$('cDel').textContent=(bag.rv?'Gift revealed':'Gift hidden')+', '+TN[bag.theme]+' theme';
     $('cGiftRad').classList.toggle('on',g);$('cG').hidden=!g;
     var nm=(st.m===null?NM[0]:NM[st.m])+(st.s!==null?' '+SZ[st.s]:'')+(st.f!==null?' '+FN[st.f]:'');
     $('cName').innerHTML=nm.replace(/^(iPhone 18 Pro( Max)?) /,'$1<br>');
@@ -1024,10 +1036,17 @@
   $('gnX').addEventListener('click',function(){closeSheet($('gnf'))});
 
   var acctm=$('acctm');
-  document.querySelectorAll('.avatar').forEach(function(b){b.addEventListener('click',function(){acctm.classList.add('on');acctm.setAttribute('aria-hidden','false')})});
-  function closeAcct(){acctm.classList.remove('on');acctm.setAttribute('aria-hidden','true')}
+  document.querySelectorAll('.avatar').forEach(function(b){b.addEventListener('click',function(){$('acctNameIn').value=ACC.name;$('acctEmailIn').value=ACC.email;acctm.classList.add('on');acctm.setAttribute('aria-hidden','false')})});
+  function closeAcct(){
+    var n=$('acctNameIn').value.trim(),e=$('acctEmailIn').value.trim();
+    if(n)ACC.name=n;
+    if(e)ACC.email=e;
+    applyAcct();
+    acctm.classList.remove('on');acctm.setAttribute('aria-hidden','true');
+  }
   $('acctX').addEventListener('click',closeAcct);
   acctm.querySelector('.sh-bd').addEventListener('click',closeAcct);
+  applyAcct();
 
   /* purchase confirmation (clearly marked as a simulator) */
   var tyEl=$('ty'),odEl=$('od');
