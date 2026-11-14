@@ -347,6 +347,9 @@
   .sheet.on{visibility:visible;transition:visibility 0s}
   .sh-bd{position:absolute;inset:0;background:rgba(0,0,0,.26);opacity:0;transition:opacity .4s}
   .sheet.on .sh-bd{opacity:1}
+  #chk .sh-bd,#frm .sh-bd,#gift .sh-bd{background:linear-gradient(#fff calc(var(--safe-top) + 3px),#f2f2f6 0)}
+  #ty .sh-bd,#od .sh-bd,#gnf .sh-bd{background:#fff}
+  #chk .sh-p,#frm .sh-p,#gift .sh-p,#ty .sh-p,#od .sh-p,#gnf .sh-p{border-radius:0}
   .sh-p{position:absolute;left:50%;top:calc(var(--safe-top) + 13px);bottom:0;width:100%;max-width:520px;transform:translate(-50%,100%);transition:transform .45s cubic-bezier(.32,.72,0,1);background:#f2f2f6;border-radius:36px 36px 0 0;overflow:hidden}
   .acctm{position:absolute;inset:0;z-index:95;visibility:hidden;transition:visibility 0s .25s;display:flex;align-items:center;justify-content:center}
   .acctm.on{visibility:visible;transition:visibility 0s}
