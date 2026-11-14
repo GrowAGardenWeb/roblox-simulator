@@ -364,12 +364,10 @@
   .so b{position:absolute;left:118px;top:13px;font-weight:400;font-size:16.5px;line-height:20px}
   .so span{position:absolute;left:118px;font-size:15px;line-height:18px;color:#8a8a8d;white-space:nowrap}
   .so span:nth-of-type(1){top:31px}.so span:nth-of-type(2){top:49px}
-  .adp{position:absolute;left:50%;bottom:0;width:100%;max-width:520px;transform:translate(-50%,100%);transition:transform .35s cubic-bezier(.32,.72,0,1);background:#f2f2f6;border-radius:28px 28px 0 0;padding:22px 20px calc(var(--safe-bottom) + 20px)}
-  #adr.on .adp{transform:translate(-50%,0)}
-  .adh{text-align:center;font-size:17px;font-weight:600;margin-bottom:16px}
   .adb{display:block;width:100%;height:50px;border-radius:25px;background:#fff;font-size:17px;margin-bottom:10px;color:#111}
   .adb.pr{background:#3b86f7;color:#a0fcff;font-weight:500}.adb.cx{color:#3b86f7;background:transparent}
-  #adr textarea,#adr input{width:100%;border:1px solid #c7c7cb;border-radius:20px;background:#fff;padding:14px 16px;font:16px/22px var(--font);outline:0;resize:none;margin-bottom:12px;-webkit-appearance:none}
+  #cAddrIn textarea,#cAddrIn input{width:100%;border:1px solid #c7c7cb;border-radius:20px;background:#fff;padding:14px 16px;font:16px/22px var(--font);outline:0;resize:none;margin-bottom:12px;-webkit-appearance:none}
+  #cAddrMenu .fr{border-bottom:1px solid #e3e3e6}#cAddrMenu .fr:last-child{border-bottom:0}
   .mrow{display:flex;align-items:center;gap:6px;margin-bottom:12px}.mrow input{margin:0;flex:1}.mrow span{font-size:16px;color:#8a8a8d;white-space:nowrap}
   .fin{padding:104px 20px 160px}
   .fh{padding:0 20px;margin:20px 0 6px;font-size:17px;line-height:22px;font-weight:600;color:#8a8a8d}
@@ -728,25 +726,32 @@
         <div class="so" style="top:84px"><i class="rb" style="left:51px;top:42.5px"></i><b>Ships: 3-5 business days</b><span>Expedited Shipping - Free</span><span>Delivery date pending payment approval.</span></div><i class="ln" style="top:168px;left:118px"></i>
         <div class="so" style="top:168px"><i class="rb" style="left:51px;top:42.5px"></i><b>Pickup Store</b><span>Select an Apple Store for availability</span><span>Pickup date pending payment approval.</span></div></div></div>
     <div class="cd" id="cD" style="height:1297.5px">
-      <div class="t gr" style="left:20px;top:24px;font-size:16.5px;line-height:20px">Shipping<br>Address</div><div class="t" id="cAddr" style="left:122px;top:24px;font-size:16.5px;line-height:20px">Enter address</div><div id="cAddrRow" style="position:absolute;left:0;right:0;top:0;height:88px;cursor:pointer"></div><svg class="chv" style="top:28px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:87.9px"></i>
-      <div class="t gr" style="left:20px;top:112px;font-size:16.5px">Payment</div><div class="t" id="cPayT" style="left:122px;top:112px;font-size:16.5px">Enter payment</div><div id="cPayRow" style="position:absolute;left:0;right:0;top:92px;height:64px;cursor:pointer"></div><svg class="chv" style="top:116px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:156.3px"></i>
-      <div class="t gr" style="left:20px;top:171px;font-size:16.5px">Summary</div><div class="t" style="left:122px;top:171px;font-size:16.5px">Bag Subtotal</div><b class="t amt2" id="cSub" style="right:20px;top:171px"></b>
-      <div class="t" style="left:122px;top:223px;font-size:16.5px">Free Shipping</div><b class="t amt2" style="right:20px;top:223px">$0.00</b><i class="ln" style="top:283.3px;left:107.5px"></i>
-      <div class="t" style="left:122px;top:303px;font-size:16.5px">Order Total</div><b class="t amt2" id="cTot" style="right:20px;top:303px"></b>
-      <p class="t gr imp2" style="left:20px;top:360px"><b>Important:</b> The estimated taxes are based on the shipping<br>address. The final sales tax, if applicable, will be applied<br>once your order ships and your final invoice is issued.</p>
-      <div id="cSvc"><i class="ln" style="top:423.2px;left:0;right:0"></i>
-        <div class="t semi2" style="left:20px;top:451px;font-size:16.5px">Services billed separately</div>
-        <span class="ti" style="left:24.4px;top:495.9px;width:41px;height:40px;border-radius:9px;position:absolute"><svg viewBox="0 0 24 24" style="fill:#e8392f"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></span>
-        <div class="t semi2" style="left:80px;top:490px;font-size:16.3px;line-height:20px">AppleCare+ for iPhone 18 Pro Max</div><div class="t" id="cCareP" style="left:80px;top:512px;font-size:16.3px;line-height:20px">$154.99/yr. until cancelled</div>
-        <div class="t" style="left:80px;top:534px;font-size:16.3px;line-height:20px">Billed to your selected AppleCare+<br>payment method</div>
-        <p class="t gr" style="left:80px;top:588px;font-size:16.1px;line-height:20.1px">You will be billed starting when your device<br>ships or is picked up in-store and when a<br>payment is successfully processed. Your<br>coverage will continue as long as you<br>continue making payments. <span id="cCareK">Annual<br>coverage is one year in duration and<br>automatically renews every year until</span><br>cancelled. Cancel anytime in Settings &gt;<br>Apple Account or in the Apple Support app<br>at least a day before each renewal date.<br>Applicable fees and taxes will be applied at<br>time of charge.</p>
-        <div class="t" style="left:20px;top:864px;font-size:16px;line-height:20px">Applicable fees and taxes will be applied at time of charge.</div>
-        <i class="ln" style="top:920.6px;left:0;right:0"></i>
-        <div class="t gr" style="left:16.3px;top:943px;font-size:14.4px;line-height:18px">AppleCare+ <span id="cPlanT">annual</span> plan(s)</div>
-        <p class="t gr tm" style="left:16.3px;top:975px">By choosing to continue below, you agree to the AppleCare+<br>Terms and Conditions. You agree AppleCare+ coverage and<br>billing begins at the time of purchase if you already have your<br>device or when the device is shipped or picked up in a store<br>and will be charged to the card provided, and for monthly or<br>annual recurring payment AppleCare+, if linked to an Apple<br>Account, the payment source associated with your Apple<br>Account.</p>
-        <p class="t gr tm" style="left:16.3px;top:1137px">You also acknowledge and agree to receive all plan<br>documentation, including the AppleCare+ Terms and<br>Conditions, and Plan Confirmation, if any, electronically and<br>that you are over 18 years of age.</p>
-        <p class="t gr tm" style="left:16.3px;top:1227px">Monthly and annual AppleCare plans automatically renew so<br>long as you continue to pay or until cancelled.</p>
-        <div class="t" style="left:20px;top:1275px;font-size:16.1px;line-height:20px;color:#3b86f7">AppleCare+ Terms and Conditions</div></div></div>
+      <div class="t gr" style="left:20px;top:24px;font-size:16.5px;line-height:20px">Shipping<br>Address</div><div class="t" id="cAddr" style="left:122px;top:24px;font-size:16.5px;line-height:20px">Enter address</div><div id="cAddrRow" style="position:absolute;left:0;right:0;top:0;height:88px;cursor:pointer"></div><svg class="chv" id="cAddrChv" style="top:28px;transition:transform .2s" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:87.9px"></i>
+      <div id="cAddrIn" style="position:absolute;left:0;right:0;top:88px;height:0;overflow:hidden">
+        <div id="cAddrMenu" hidden><div class="fr lk" id="cAddrSetBtn">Set Address</div><div class="fr lk" id="cAddrMailBtn">Send Address Form to Mail</div></div>
+        <div id="cAddrSetF" hidden style="padding:14px 20px"><textarea id="cAddrText" rows="3" placeholder="Street, city, postcode"></textarea><button class="adb pr" id="cAddrSaveBtn">Save Address</button></div>
+        <div id="cAddrMailF" hidden style="padding:14px 20px"><div class="mrow"><input id="cAddrUser" placeholder="name" autocapitalize="off" autocorrect="off"><span>@icloud.com</span></div><button class="adb pr" id="cAddrSendBtn">Send</button></div>
+      </div>
+      <div id="cAddrPush" style="position:absolute;left:0;right:0;top:92px">
+      <div class="t gr" style="left:20px;top:20px;font-size:16.5px">Payment</div><div class="t" id="cPayT" style="left:122px;top:20px;font-size:16.5px">Enter payment</div><div id="cPayRow" style="position:absolute;left:0;right:0;top:0px;height:64px;cursor:pointer"></div><svg class="chv" style="top:24px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:64.3px"></i>
+      <div class="t gr" style="left:20px;top:79px;font-size:16.5px">Summary</div><div class="t" style="left:122px;top:79px;font-size:16.5px">Bag Subtotal</div><b class="t amt2" id="cSub" style="right:20px;top:79px"></b>
+      <div class="t" style="left:122px;top:131px;font-size:16.5px">Free Shipping</div><b class="t amt2" style="right:20px;top:131px">$0.00</b><i class="ln" style="top:191.3px;left:107.5px"></i>
+      <div class="t" style="left:122px;top:211px;font-size:16.5px">Order Total</div><b class="t amt2" id="cTot" style="right:20px;top:211px"></b>
+      <p class="t gr imp2" style="left:20px;top:268px"><b>Important:</b> The estimated taxes are based on the shipping<br>address. The final sales tax, if applicable, will be applied<br>once your order ships and your final invoice is issued.</p>
+      <div id="cSvc"><i class="ln" style="top:331.2px;left:0;right:0"></i>
+        <div class="t semi2" style="left:20px;top:359px;font-size:16.5px">Services billed separately</div>
+        <span class="ti" style="left:24.4px;top:403.9px;width:41px;height:40px;border-radius:9px;position:absolute"><svg viewBox="0 0 24 24" style="fill:#e8392f"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></span>
+        <div class="t semi2" style="left:80px;top:398px;font-size:16.3px;line-height:20px">AppleCare+ for iPhone 18 Pro Max</div><div class="t" id="cCareP" style="left:80px;top:420px;font-size:16.3px;line-height:20px">$154.99/yr. until cancelled</div>
+        <div class="t" style="left:80px;top:442px;font-size:16.3px;line-height:20px">Billed to your selected AppleCare+<br>payment method</div>
+        <p class="t gr" style="left:80px;top:496px;font-size:16.1px;line-height:20.1px">You will be billed starting when your device<br>ships or is picked up in-store and when a<br>payment is successfully processed. Your<br>coverage will continue as long as you<br>continue making payments. <span id="cCareK">Annual<br>coverage is one year in duration and<br>automatically renews every year until</span><br>cancelled. Cancel anytime in Settings &gt;<br>Apple Account or in the Apple Support app<br>at least a day before each renewal date.<br>Applicable fees and taxes will be applied at<br>time of charge.</p>
+        <div class="t" style="left:20px;top:772px;font-size:16px;line-height:20px">Applicable fees and taxes will be applied at time of charge.</div>
+        <i class="ln" style="top:828.6px;left:0;right:0"></i>
+        <div class="t gr" style="left:16.3px;top:851px;font-size:14.4px;line-height:18px">AppleCare+ <span id="cPlanT">annual</span> plan(s)</div>
+        <p class="t gr tm" style="left:16.3px;top:883px">By choosing to continue below, you agree to the AppleCare+<br>Terms and Conditions. You agree AppleCare+ coverage and<br>billing begins at the time of purchase if you already have your<br>device or when the device is shipped or picked up in a store<br>and will be charged to the card provided, and for monthly or<br>annual recurring payment AppleCare+, if linked to an Apple<br>Account, the payment source associated with your Apple<br>Account.</p>
+        <p class="t gr tm" style="left:16.3px;top:1045px">You also acknowledge and agree to receive all plan<br>documentation, including the AppleCare+ Terms and<br>Conditions, and Plan Confirmation, if any, electronically and<br>that you are over 18 years of age.</p>
+        <p class="t gr tm" style="left:16.3px;top:1135px">Monthly and annual AppleCare plans automatically renew so<br>long as you continue to pay or until cancelled.</p>
+        <div class="t" style="left:20px;top:1183px;font-size:16.1px;line-height:20px;color:#3b86f7">AppleCare+ Terms and Conditions</div></div>
+      </div></div>
     <div class="eg" id="cE"><div class="cd" style="position:absolute;left:20px;top:0;width:400px;height:107px"><b class="t" style="left:16.3px;top:28px;font-size:17px;line-height:20px;font-weight:700">Still have questions?</b><span class="t" style="left:16.3px;top:53px;font-size:12.6px;line-height:16px">Connect with a Specialist for answers.</span><i class="ci c1"></i><i class="ci c2"></i></div>
       <p class="t gr lg" style="top:138px">By tapping Place Order, you accept and agree to the Apple<br>Sales and Refund Policy, Apple Product Terms and Conditions, if<br>applicable, and Apple&rsquo;s Privacy Policy.</p>
       <p class="t gr lg" style="top:230px">If the payment method you use today matches what&rsquo;s on file<br>with your Apple ID, we&rsquo;ll automatically link your account so you<br>can manage your coverage in your Account Settings.</p>
@@ -760,12 +765,6 @@
   </div></div>
   <div class="pob"><button class="po">Place Order</button></div></div></div>
 
-<div class="sheet" id="adr" aria-hidden="true" style="z-index:60"><div class="sh-bd"></div><div class="adp">
-  <div class="adh"><b id="adT">Address</b></div>
-  <div id="adMenu"><button class="adb" id="adSet">Set Address Manually</button><button class="adb" id="adMail">Send Address Form to Mail</button><button class="adb cx" id="adCancel">Cancel</button></div>
-  <div id="adSetF" hidden><textarea id="adText" rows="3" placeholder="Street, city, postcode"></textarea><button class="adb pr" id="adSave">Save Address</button><button class="adb cx" id="adBack1">Back</button></div>
-  <div id="adMailF" hidden><div class="mrow"><input id="adUser" placeholder="name" autocapitalize="off" autocorrect="off"><span>@icloud.com</span></div><button class="adb pr" id="adSend">Send</button><button class="adb cx" id="adBack2">Back</button></div>
-</div></div>
 <div class="sheet" id="frm" aria-hidden="true" style="z-index:70"><div class="sh-bd"></div><div class="sh-p" style="top:calc(var(--safe-top) + 3px)">
   <div class="sh-h" style="height:90px"><button class="pcan" id="fCancel" style="top:20px">Cancel</button><span id="fTitle" style="top:31px"></span><button class="pnext" id="fSave" style="top:20px">Save</button></div>
   <div class="sh-s" id="fScroll"><div class="fin" id="fBody"></div></div>
@@ -989,19 +988,28 @@
     $('cCareK').innerHTML=mon?'Monthly<br>coverage continues every month until':'Annual<br>coverage is one year in duration and<br>automatically renews every year until';
     $('cPlanT').textContent=mon?'monthly':'annual';
     $('cCare').hidden=!care;$('cSvc').hidden=!care;$('cShip').style.top=(care?274.7:123.7)+'px';
-    var cH=care?526:375,dH=care?1297.5:415,y=74.1,gap=17.7;
+    $('cAddrPush').style.top=(92+addrExtra)+'px';
+    var cH=care?526:375,dH=(care?1297.5:415)+addrExtra,y=74.1,gap=17.7;
     function put(id,h,hide){var e=$(id);if(hide)return;e.style.top=y+'px';e.style.height=h+'px';y+=h+gap}
     put('cA',97.5);put('cG',222,!g);put('cB',67.3);put('cC',cH);put('cD',dH);
     $('cE').style.top=y+'px';$('cin').style.height=(y+1060)+'px';
   }
   $('gNext').addEventListener('click',function(){var f=$('gFrom');if(!f.value.trim()){f.focus();f.style.borderColor='#e8392f';return}f.style.borderColor='';fillChk();$('cScroll').scrollTop=0;openSheet(chk)});
-  function adShow(m){$('adMenu').hidden=m!=='menu';$('adSetF').hidden=m!=='set';$('adMailF').hidden=m!=='mail';$('adT').textContent=m==='mail'?'Send Address Form':(m==='set'?'Set Address':'Address')}
-  $('cAddrRow').addEventListener('click',function(){adShow('menu');openSheet($('adr'))});
-  $('adCancel').addEventListener('click',function(){closeSheet($('adr'))});
-  $('adSet').addEventListener('click',function(){adShow('set')});$('adMail').addEventListener('click',function(){adShow('mail')});
-  $('adBack1').addEventListener('click',function(){adShow('menu')});$('adBack2').addEventListener('click',function(){adShow('menu')});
-  $('adSave').addEventListener('click',function(){var v=$('adText').value.trim();if(!v)return;$('cAddr').textContent=v.split('\n')[0];closeSheet($('adr'))});
-  $('adSend').addEventListener('click',function(){var u=$('adUser').value.trim().replace(/@.*$/,'');if(!u)return;$('cAddr').textContent='Form sent to '+u+'@icloud.com';closeSheet($('adr'))});
+  var addrState='closed',addrExtra=0;
+  function addrRelayout(){
+    $('cAddrMenu').hidden=addrState!=='menu';
+    $('cAddrSetF').hidden=addrState!=='set';
+    $('cAddrMailF').hidden=addrState!=='mail';
+    $('cAddrIn').style.height=addrState==='closed'?'0px':'auto';
+    addrExtra=addrState==='closed'?0:$('cAddrIn').scrollHeight;
+    $('cAddrChv').style.transform=addrState==='closed'?'':'rotate(90deg)';
+    fillChk();
+  }
+  $('cAddrRow').addEventListener('click',function(){addrState=addrState==='closed'?'menu':'closed';addrRelayout()});
+  $('cAddrSetBtn').addEventListener('click',function(){addrState='set';addrRelayout();$('cAddrText').focus()});
+  $('cAddrMailBtn').addEventListener('click',function(){addrState='mail';addrRelayout();$('cAddrUser').focus()});
+  $('cAddrSaveBtn').addEventListener('click',function(){var v=$('cAddrText').value.trim();if(!v)return;$('cAddr').textContent=v.split('\n')[0];addrState='closed';addrRelayout()});
+  $('cAddrSendBtn').addEventListener('click',function(){var u=$('cAddrUser').value.trim().replace(/@.*$/,'');if(!u)return;$('cAddr').textContent='Form sent to '+u+'@icloud.com';addrState='closed';addrRelayout()});
 
   /* Shipping / Payment forms */
   var frm=$('frm'),fMode='ship';
@@ -1034,7 +1042,6 @@
     document.querySelectorAll('#fBody .fr.lk').forEach(function(r){r.addEventListener('click',function(){var tx=r.textContent;if(/Copy/.test(tx)){var o=m==='ship'?'b':'s',d=m==='ship'?'s':'b';['F','L','C','S','A','T','P','Z'].forEach(function(k){var a=document.getElementById(o+k),b=document.getElementById(d+k);if(a&&b&&a.value)b.value=a.value})}})});
   }
   function openForm(m){buildForm(m);$('fScroll').scrollTop=0;openSheet(frm)}
-  $('adSet').addEventListener('click',function(){closeSheet($('adr'));openForm('ship')});
   $('cPayRow').addEventListener('click',function(){openForm('pay')});
   $('fCancel').addEventListener('click',function(){closeSheet(frm)});
   $('fSave').addEventListener('click',function(){
