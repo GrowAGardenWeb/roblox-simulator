@@ -873,7 +873,7 @@
   }
   $('gNext').addEventListener('click',function(){var f=$('gFrom');if(!f.value.trim()){f.focus();f.style.borderColor='#e8392f';return}f.style.borderColor='';fillChk();$('cScroll').scrollTop=0;openSheet(chk)});
   function adShow(m){$('adMenu').hidden=m!=='menu';$('adSetF').hidden=m!=='set';$('adMailF').hidden=m!=='mail';$('adT').textContent=m==='mail'?'Send Address Form':(m==='set'?'Set Address':'Address')}
-  $('cAddrRow').addEventListener('click',function(){if(!bag.gift)return;adShow('menu');openSheet($('adr'))});
+  $('cAddrRow').addEventListener('click',function(){adShow('menu');openSheet($('adr'))});
   $('adCancel').addEventListener('click',function(){closeSheet($('adr'))});
   $('adSet').addEventListener('click',function(){adShow('set')});$('adMail').addEventListener('click',function(){adShow('mail')});
   $('adBack1').addEventListener('click',function(){adShow('menu')});$('adBack2').addEventListener('click',function(){adShow('menu')});
