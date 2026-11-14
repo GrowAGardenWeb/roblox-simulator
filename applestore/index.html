@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Apple Store">
-<meta name="theme-color" content="#f2f2f6">
+<meta name="theme-color" content="#f2f2f6" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#f2f2f6" media="(prefers-color-scheme: dark)">
 <title>Apple Store</title>
 <style>
   :root{
@@ -99,6 +99,7 @@
 
   /* product page (opens from the iPhone 18 Pro card) */
   .pdp{position:fixed;inset:0;max-width:520px;margin:0 auto;z-index:50;background:#161617;visibility:hidden;transform:translateY(100%);transition:transform .45s cubic-bezier(.32,.72,0,1),visibility 0s .45s}
+  .pdp:not(.on),.pdp:not(.on) .pdp-scroll{background:transparent!important;transition:transform .45s cubic-bezier(.32,.72,0,1),visibility 0s .45s,background 0s .45s}
   .pdp.on{visibility:visible;transform:none;transition:transform .45s cubic-bezier(.32,.72,0,1),visibility 0s}
   .pdp-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;font-size:0;background:#161617}
   .pdp-in{position:relative}
