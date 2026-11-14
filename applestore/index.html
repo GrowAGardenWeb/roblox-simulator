@@ -381,6 +381,34 @@
   .fsb span{flex:1}
   .gnf-in{font-size:0}.gnf-in img{display:block;width:100%;height:auto}
   .gnx{position:absolute;right:20px;top:20px;width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:0 3px 14px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;z-index:5}
+  .simb{position:absolute;left:0;right:0;top:0;height:22px;background:#ff9f0a;color:#111;font-size:11.5px;font-weight:700;letter-spacing:.6px;text-align:center;line-height:22px;z-index:8}
+  .tyi{position:relative;height:900px;padding-top:22px}
+  .tyc{position:absolute;left:203px;top:125px}
+  .tyi h1{position:absolute;left:0;right:0;top:160px;text-align:center;font-size:34px;font-weight:700;letter-spacing:.3px}
+  .tyi .g1{position:absolute;left:0;right:0;top:234px;text-align:center;color:#8a8a8d;font-size:14.3px}
+  .tyi .g1+.tym+.g1{top:298px;margin:0}
+  .tym{position:absolute;left:0;right:0;top:262px;text-align:center;font-size:14.3px;color:#111}
+  #tyNo{top:334px}
+  .tyl{position:absolute;left:17px;right:17px;top:400px;height:1px;background:#e6e6e8}
+  .sirit{position:absolute;left:0;right:0;top:436px;text-align:center;font-size:16px}
+  .sirib{position:absolute;left:140px;top:482px;width:154px;height:52px;border-radius:12px;background:#2c2c2e;color:#fff;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:12px}
+  .sirib i{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff,#c36bd0 40%,#4a8df0 75%)}
+  .tyg{position:absolute;left:0;right:0;top:560px;height:22px;background:#f2f2f6}
+  .tyi h2{position:absolute;left:24px;right:24px;top:645px;font-size:23px;line-height:33px;font-weight:700}
+  .odl{position:absolute;left:24px;top:760px;color:#3b86f7;font-size:17px;display:flex;align-items:center;gap:8px}
+  .odi{position:relative;height:900px;font-size:15px;padding-top:22px}
+  .odi>*{position:absolute}
+  .odi img{left:24px;top:150px;width:80px;height:100px;object-fit:cover;border-radius:6px}
+  .odn{left:178px;top:160px;right:44px;font-size:15.5px;line-height:20px;font-weight:600}
+  .odp{left:178px;top:218px;font-size:15.5px;font-weight:600}
+  .odh{display:block;left:16px;right:0;height:1px;background:#ececee}
+  .odi h3{left:32px;top:296px;font-size:20px;font-weight:700}
+  .g2{left:32px;right:24px;top:344px;white-space:nowrap;font-size:14px;color:#8a8a8d;font-size:15px}
+  .prg{left:32px;right:32px;top:395px;height:9px;border-radius:5px;background:#ececf0}.prg i{display:block;width:12%;height:100%;border-radius:5px;background:#4ec26a}
+  .pl4{left:32px;right:32px;top:420px;display:flex;justify-content:space-between;font-size:14px;line-height:19px;color:#8a8a8d}.pl4 b{color:#000;font-weight:700}
+  .lab{left:32px;color:#8a8a8d;font-size:15px}.val{left:176px;right:20px;font-size:15px;line-height:20px;white-space:pre-line}.val.bl{color:#3b86f7}
+  .cnl{left:0;right:0;top:848px;text-align:center;color:#3b86f7;font-size:17px}
+  .odt{position:absolute;left:0;right:0;top:32px;text-align:center;font-size:17px;font-weight:600;pointer-events:none;z-index:5}
   .opill{position:absolute;left:20px;width:400px;height:34px;border-radius:17px;border:1.5px solid #8a8a8d;text-align:center;line-height:31px;font-size:17px;color:#8a8a8d}
   .cd .r{position:absolute;left:0;right:0;height:60px}
   .cd em{position:absolute;left:20px;top:0;font-style:normal;color:#8a8a8d;font-size:15.3px;line-height:20px}
@@ -718,6 +746,29 @@
   <div class="sh-s"><div class="gnf-in"><img src="assets/gift/g0.jpg" alt=""><img src="assets/gift/g1.jpg" alt=""><img src="assets/gift/g2.jpg" alt=""></div></div>
   <button class="gnx" id="gnX" aria-label="Close"><svg viewBox="0 0 20 20" width="19" height="19" stroke="#111" stroke-width="2.1" stroke-linecap="round" fill="none"><path d="M3 3l14 14M17 3L3 17"/></svg></button>
 </div></div>
+<div class="sheet" id="ty" aria-hidden="true" style="z-index:80"><div class="sh-bd"></div><div class="sh-p" style="top:calc(var(--safe-top) + 3px);background:#fff">
+  <div class="simb">SIMULATOR &mdash; not a real order</div>
+  <div class="sh-s"><div class="tyi">
+    <svg class="tyc" viewBox="0 0 34 34" width="34" height="34" fill="none" stroke="#4ec26a" stroke-width="2.4"><circle cx="17" cy="17" r="15.500"/><path d="M10 17.500l5 5 9-10.500" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h1>Thank you.</h1><p class="g1">We&rsquo;re sending your order confirmation to:</p><p class="tym" id="tyMail"></p>
+    <p class="g1" style="margin-top:42px">Your order number is:</p><p class="tym" id="tyNo"></p>
+    <i class="tyl"></i><p class="sirit">Create a Siri Shortcut to check your recent orders.</p><button class="sirib"><i></i>Add to Siri</button>
+    <div class="tyg"></div><h2>A few more things to check out.</h2><button class="odl" id="odOpen">View order details <svg viewBox="0 0 9 15" width="8" height="13" fill="none" stroke="#3b86f7" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg></button>
+  </div></div>
+  <button class="gnx" id="tyX" aria-label="Done" style="background:#3b86f7"><svg viewBox="0 0 20 20" width="19" height="19" stroke="#a0fcff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M3.500 10.500l4.500 4.500L16.500 5.500"/></svg></button>
+</div></div>
+<div class="sheet" id="od" aria-hidden="true" style="z-index:90"><div class="sh-bd"></div><div class="sh-p" style="top:calc(var(--safe-top) + 3px);background:#fff">
+  <div class="simb">SIMULATOR &mdash; not a real order</div>
+  <div class="sh-s"><div class="odi">
+    <img id="odImg" src="assets/buy/th_maroon.jpg" alt=""><b class="odn" id="odName"></b><span class="odp" id="odPrice"></span>
+    <i class="odh" style="top:268px"></i><h3 id="odArr">Arrives</h3><p class="g2">We&rsquo;re preparing your order and will notify you when it ships.</p>
+    <div class="prg"><i></i></div><div class="pl4"><b>Processing</b><span>Preparing to<br>Ship</span><span>Shipped</span><span>Delivered</span></div>
+    <i class="odh" style="top:540px"></i><div class="lab" style="top:567px">Ships to</div><div class="val" id="odShip" style="top:567px"></div><div class="val bl" style="top:690px">Edit</div>
+    <i class="odh" style="top:735px;left:150px"></i><div class="lab" style="top:766px">Delivers</div><div class="val" id="odDel" style="top:766px"></div>
+    <i class="odh" style="top:820px;left:0"></i><div class="cnl">Cancel Item</div>
+  </div></div>
+  <button class="gnx" id="odBack" aria-label="Back" style="left:20px;right:auto"><svg viewBox="0 0 14 22" width="13" height="21" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2L3 11l8 9"/></svg></button><div class="odt">Order Details</div>
+</div></div>
 <div class="nav"></div><div class="navt" id="navt">Products</div>
 <div class="edge"></div>
 
@@ -946,6 +997,22 @@
   });
   document.querySelector('#giftRow .gi').addEventListener('click',function(){openSheet($('gnf'));$('gnf').querySelector('.sh-s').scrollTop=0});
   $('gnX').addEventListener('click',function(){closeSheet($('gnf'))});
+
+  /* purchase confirmation (clearly marked as a simulator) */
+  var tyEl=$('ty'),odEl=$('od');
+  function dateRange(){var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],a=new Date(Date.now()+5*864e5),b=new Date(Date.now()+6*864e5),f=function(d){return m[d.getMonth()]+' '+d.getDate()};return f(a)+' - '+f(b)}
+  document.querySelector('.po').addEventListener('click',function(){
+    var addr=$('cAddr').textContent,mail=/icloud\.com/.test(addr)?addr.replace('Form sent to ',''):'your email';
+    $('tyMail').textContent=mail;$('tyNo').textContent='SIM-'+String(Date.now()).slice(-8);
+    var nm=(st.m===null?NM[0]:NM[st.m])+(st.s!==null?' '+SZ[st.s]:'')+(st.f!==null?' '+FN[st.f]:''),t=bagTotal();
+    $('odName').textContent=nm;$('odPrice').textContent=money(t);$('odImg').src='assets/buy/th_'+(st.f!==null?FK[st.f]:'maroon')+'.jpg';
+    var dr=dateRange();$('odArr').textContent='Arrives '+dr;$('odDel').textContent=dr+' by Standard Delivery';
+    $('odShip').textContent=/Enter address|Form sent/.test(addr)?'(no address set)':addr;
+    $('ty').querySelector('.sh-s').scrollTop=0;openSheet(tyEl);
+  });
+  $('odOpen').addEventListener('click',function(){openSheet(odEl)});
+  $('odBack').addEventListener('click',function(){closeSheet(odEl)});
+  $('tyX').addEventListener('click',function(){closeSheet(odEl);closeSheet(tyEl);closeSheet(chk);closeSheet(gift);also.classList.remove('on');closeBuy();closePdp();bag.on=false;bag.gift=false;renderBag();document.querySelector('.tab[data-pg="products"]').click()});
   $('cX').addEventListener('click',function(){closeSheet(chk);closeSheet(gift)});
   document.querySelectorAll('#cG .rd').forEach(function(r){r.addEventListener('click',function(){document.querySelectorAll('#cG .rb').forEach(function(x){x.classList.toggle('on',x.parentNode===r)})})});
   $('cGiftRad').addEventListener('click',function(){bag.gift=!bag.gift;fillChk()});
