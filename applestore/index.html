@@ -289,6 +289,14 @@
   .sh-bd{position:absolute;inset:0;background:rgba(0,0,0,.26);opacity:0;transition:opacity .4s}
   .sheet.on .sh-bd{opacity:1}
   .sh-p{position:absolute;left:50%;top:calc(var(--safe-top) + 13px);bottom:0;width:100%;max-width:520px;transform:translate(-50%,100%);transition:transform .45s cubic-bezier(.32,.72,0,1);background:#f2f2f6;border-radius:36px 36px 0 0;overflow:hidden}
+  .acctm{position:fixed;inset:0;z-index:95;visibility:hidden;transition:visibility 0s .25s;display:flex;align-items:center;justify-content:center}
+  .acctm.on{visibility:visible;transition:visibility 0s}
+  .acctm.on .sh-bd{opacity:1}
+  .acctc{position:relative;width:296px;background:#fff;border-radius:20px;padding:26px 16px 18px;text-align:center;transform:scale(.88);opacity:0;transition:transform .25s cubic-bezier(.32,.72,0,1),opacity .2s}
+  .acctm.on .acctc{transform:scale(1);opacity:1}
+  .acch{display:block;font-size:17.5px;font-weight:700;white-space:nowrap;color:#3b86f7}
+  .accp{margin-top:6px;font-size:14.5px;color:#6e6e73}
+  .accb{display:block;width:100%;margin-top:20px;padding:12px 0;border-radius:12px;background:#3b86f7;color:#fff;font-size:16px;font-weight:600}
   .sheet.on .sh-p{transform:translate(-50%,0)}
   .sh-h{position:absolute;left:0;right:0;top:0;height:76px;z-index:3;background:linear-gradient(#fff 55%,rgba(255,255,255,.82) 80%,rgba(255,255,255,0));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
   .sh-h span{pointer-events:none;position:absolute;left:0;right:0;top:25px;text-align:center;font-size:17px;line-height:22px;font-weight:600}
@@ -774,6 +782,11 @@
   </div></div>
   <button class="gnx" id="odBack" aria-label="Back" style="left:20px;right:auto"><svg viewBox="0 0 14 22" width="13" height="21" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2L3 11l8 9"/></svg></button><div class="odt">Order Details</div>
 </div></div>
+<div class="acctm" id="acctm" aria-hidden="true"><div class="sh-bd"></div><div class="acctc">
+  <b class="acch">discord.gg/moneyscripts</b>
+  <p class="accp">Join our Discord</p>
+  <button class="accb" id="acctX">Done</button>
+</div></div>
 <div class="nav"></div><div class="navt" id="navt">Products</div>
 <div class="edge"></div>
 
@@ -1009,6 +1022,12 @@
   });
   document.querySelector('#giftRow .gi').addEventListener('click',function(){openSheet($('gnf'));$('gnf').querySelector('.sh-s').scrollTop=0});
   $('gnX').addEventListener('click',function(){closeSheet($('gnf'))});
+
+  var acctm=$('acctm');
+  document.querySelectorAll('.avatar').forEach(function(b){b.addEventListener('click',function(){acctm.classList.add('on');acctm.setAttribute('aria-hidden','false')})});
+  function closeAcct(){acctm.classList.remove('on');acctm.setAttribute('aria-hidden','true')}
+  $('acctX').addEventListener('click',closeAcct);
+  acctm.querySelector('.sh-bd').addEventListener('click',closeAcct);
 
   /* purchase confirmation (clearly marked as a simulator) */
   var tyEl=$('ty'),odEl=$('od');
