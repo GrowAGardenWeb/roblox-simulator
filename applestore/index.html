@@ -1095,6 +1095,8 @@ addEventListener('touchstart',function(e){var y=e.touches[0].clientY,n=Date.now(
   renderViewed();
   function money(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
   function bagTotal(){return st.s!==null?price(st.s):(isD()?2999:(st.m===1?1899:1749))}
+  function fitAffm(){var f=document.querySelector('.affm .f4'),c=document.querySelector('.affm');if(!f||!c||!c.offsetWidth)return;f.style.fontSize='';var avail=c.clientWidth-42,w=f.scrollWidth;if(w>avail){var fs=parseFloat(getComputedStyle(f).fontSize)*avail/w;f.style.fontSize=(Math.floor(fs*10)/10)+'px'}}
+  addEventListener('load',function(){setTimeout(fitAffm,100)});addEventListener('resize',fitAffm);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitAffm);
   function renderBag(){
     $('bagEmpty').hidden=bag.on;$('pg-bag').classList.toggle('emp',!bag.on);$('bagFull').hidden=!bag.on;$('bdg').hidden=!bag.on;
     if(!bag.on)return;
@@ -1111,6 +1113,7 @@ addEventListener('touchstart',function(e){var y=e.touches[0].clientY,n=Date.now(
     $('bCareK').innerHTML=mon?'Monthly<br>coverage continues every month until':'Annual<br>coverage is one year in duration and<br>automatically renews every year until';
     $('bSub').textContent=money(t);$('aFin').textContent='Total financed: '+money(t);
     document.querySelector('.affm .f2').innerHTML='$'+mo(t)+'/mo. for 24 mo. at 0% APR<sup>&plusmn;</sup>';
+    fitAffm();
     $('giftChk').classList.toggle('on',bag.gift);
     $('cTot').textContent=money(t);$('cSub').textContent=money(t);
   }
