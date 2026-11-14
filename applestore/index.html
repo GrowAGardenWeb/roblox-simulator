@@ -326,7 +326,8 @@
   .rvw[hidden]{display:none}
   .rvw>*{position:absolute}
   .rcf{left:28.7px;top:-1.4px;width:387px;height:auto}
-  .rph{left:136px;top:113px;width:168px;height:auto;mix-blend-mode:multiply}
+  .rph{left:136px;top:113px;width:168px;height:auto}
+  .bf{position:absolute;left:20px;width:400px;height:710px;display:none;pointer-events:none;transform-origin:0 0;z-index:2}
   .rt1{left:0;right:0;top:372px;text-align:center;font-size:22.3px;line-height:26px;font-weight:500}
   .rt2{left:0;right:0;top:404px;text-align:center;font-size:17px;line-height:24px}
   .rt3{left:0;right:0;top:433px;text-align:center;font-size:15.2px;line-height:22px;color:#8a8a8d}
@@ -625,7 +626,8 @@
     <h3 style="top:983.5px">Choose an animated theme</h3>
     <div class="ths" style="top:1015.5px"><img data-t="0" class="on" src="assets/buy/tt0.jpg" alt=""><img data-t="1" src="assets/buy/tt1.jpg" alt=""><img data-t="2" src="assets/buy/tt2.jpg" alt=""><img data-t="3" src="assets/buy/tt3.jpg" alt=""></div>
     <div class="pvw" id="pvw" style="top:1127.5px"><img id="pvImg" src="assets/buy/pv0.jpg" alt=""><div class="pvb"></div><div class="pvt">A gift for you is on<br>its way.</div><div class="pvf">From <span id="pvFrom"></span></div><button class="rvb" id="rvBtn">Reveal Gift</button></div>
-    <div class="rvw" id="rvw" style="top:1127.5px" hidden><img class="rcf" src="assets/buy/rv_conf.png" alt=""><img class="rph" id="rvPhone" src="assets/buy/rv_phone.jpg" alt=""><div class="rt1" id="rvT"></div><div class="rt2">Quantity 1</div><div class="rt3" id="rvC">With AppleCare+</div><button class="rrp" id="rvRp"><svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="#3b86f7" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="10"/><path d="M7 11.500c0-2.500 2-4 4.200-4H15M13 5.200l2.200 2.300-2.200 2.300M15 11.500c0 2.500-2 4-4.200 4H7M9 17.800l-2.200-2.300L9 13.200"/></svg>Replay</button></div>
+    <div class="bf" id="bf" style="top:1127.5px"></div>
+    <div class="rvw" id="rvw" style="top:1127.5px" hidden><img class="rcf" src="assets/buy/rv_conf.png" alt=""><img class="rph" id="rvPhone" src="assets/buy/rv_phone.png" alt=""><div class="rt1" id="rvT"></div><div class="rt2">Quantity 1</div><div class="rt3" id="rvC">With AppleCare+</div><button class="rrp" id="rvRp"><svg viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="#3b86f7" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="10"/><path d="M7 11.500c0-2.500 2-4 4.200-4H15M13 5.200l2.200 2.300-2.200 2.300M15 11.500c0 2.500-2 4-4.200 4H7M9 17.800l-2.200-2.300L9 13.200"/></svg>Replay</button></div>
   </div></div></div></div>
 <div class="sheet" id="chk" aria-hidden="true"><div class="sh-bd"></div><div class="sh-p">
   <div class="sh-h"><button class="xc" id="cX"><svg viewBox="0 0 20 20" width="19" height="19" stroke="#111" stroke-width="2.1" stroke-linecap="round" fill="none"><path d="M3 3l14 14M17 3L3 17"/></svg></button><span class="ct2">Checkout</span></div>
@@ -824,12 +826,33 @@
   var TN=['Blue','Red','Orange','Multicolor'];
   function pvSync(){$('pvFrom').textContent=$('gFrom').value||'Ernesto'}
   $('gFrom').addEventListener('input',pvSync);pvSync();
+  var BFC=['linear-gradient(135deg,#6fd2a4,#8fe0a0)','linear-gradient(135deg,#d58fc9,#f0a3d6)','linear-gradient(135deg,#f27d96,#f7a36a)','linear-gradient(135deg,#a6dd6f,#e2e66f)'];
+  function clipHalf(c,gt){ // polygon of rect 400x710 where (x+y>c) if gt else (x+y<c)
+    var W=400,H=710,P=[[0,0],[W,0],[W,H],[0,H]],out=[],f=function(q){return gt?q[0]+q[1]-c:c-q[0]-q[1]};
+    for(var i=0;i<4;i++){var A=P[i],B=P[(i+1)%4],fa=f(A),fb=f(B);
+      if(fa>=0)out.push(A);
+      if((fa>=0)!==(fb>=0)){var t=fa/(fa-fb);out.push([A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t])}}
+    return out.length<3?'polygon(0 0,0 0,0 0)':'polygon('+out.map(function(q){return q[0].toFixed(1)+'px '+q[1].toFixed(1)+'px'}).join(',')+')';
+  }
+  var peeling=false;
   $('rvBtn').addEventListener('click',function(){
+    if(peeling)return;peeling=true;
     var nm=(st.m===null?NM[0]:NM[st.m])+(st.s!==null?' '+SZ[st.s]:'')+(st.f!==null?' '+FN[st.f]:''),care=st.c==='plus'&&st.p!==null;
-    $('rvT').textContent=nm;$('rvC').hidden=!care;$('rvPhone').src=st.f===3?'assets/buy/rv_phone.jpg':'assets/buy/main.jpg';
-    $('pvw').hidden=true;$('rvw').hidden=false;
+    $('rvT').textContent=nm;$('rvC').hidden=!care;$('rvPhone').src=st.f===3?'assets/buy/rv_phone.png':'assets/buy/main_t.png';
+    $('rvw').hidden=false;var pv=$('pvw'),bf=$('bf');bf.style.background=BFC[bag.theme];bf.style.display='block';
+    var t0=null,T=1300,MAX=1110;
+    function step(ts){
+      if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/T),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2,c=60+e*(MAX-60);
+      pv.style.clipPath=clipHalf(c,true);
+      bf.style.clipPath=clipHalf(c,false);bf.style.transform='matrix(0,-1,-1,0,'+c+','+c+')';
+      if(k<1)requestAnimationFrame(step);else{pv.hidden=true;pv.style.clipPath='';bf.style.display='none';peeling=false}
+    }
+    requestAnimationFrame(step);
   });
-  $('rvRp').addEventListener('click',function(){$('rvw').hidden=true;$('pvw').hidden=false});
+  $('rvRp').addEventListener('click',function(){
+    var pv=$('pvw');$('rvw').hidden=true;pv.hidden=false;pv.style.clipPath='';
+    pv.style.visibility='hidden';setTimeout(function(){pv.style.visibility=''},1100);
+  });
   function fillChk(){
     renderBag();var g=bag.gift,care=st.c==='plus'&&st.p!==null,t=bagTotal(),mon=st.p==='m';
     $('cFrom').textContent=$('gFrom').value||'Ernesto';$('cDel').textContent=(bag.rv?'Gift revealed':'Gift hidden')+', '+TN[bag.theme]+' theme';
