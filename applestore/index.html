@@ -291,7 +291,7 @@
   .sh-p{position:absolute;left:50%;top:calc(var(--safe-top) + 13px);bottom:0;width:100%;max-width:520px;transform:translate(-50%,100%);transition:transform .45s cubic-bezier(.32,.72,0,1);background:#f2f2f6;border-radius:36px 36px 0 0;overflow:hidden}
   .sheet.on .sh-p{transform:translate(-50%,0)}
   .sh-h{position:absolute;left:0;right:0;top:0;height:76px;z-index:3;background:linear-gradient(#fff 55%,rgba(255,255,255,.82) 80%,rgba(255,255,255,0));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-  .sh-h span{position:absolute;left:0;right:0;top:25px;text-align:center;font-size:17px;line-height:22px;font-weight:600}
+  .sh-h span{pointer-events:none;position:absolute;left:0;right:0;top:25px;text-align:center;font-size:17px;line-height:22px;font-weight:600}
   .pcan{position:absolute;left:20px;top:21px;height:44px;width:86px;border-radius:22px;background:#fff;font-size:17px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
   .pnext{position:absolute;right:20px;top:21px;height:44px;width:69px;border-radius:22px;background:#3b86f7;color:#a0fcff;font-size:17px;font-weight:500;box-shadow:0 3px 12px rgba(40,100,220,.3)}
   .xc{position:absolute;left:20px;top:21px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.1)}
@@ -359,6 +359,25 @@
   .adb.pr{background:#3b86f7;color:#a0fcff;font-weight:500}.adb.cx{color:#3b86f7;background:transparent}
   #adr textarea,#adr input{width:100%;border:1px solid #c7c7cb;border-radius:20px;background:#fff;padding:14px 16px;font:16px/22px var(--font);outline:0;resize:none;margin-bottom:12px;-webkit-appearance:none}
   .mrow{display:flex;align-items:center;gap:6px;margin-bottom:12px}.mrow input{margin:0;flex:1}.mrow span{font-size:16px;color:#8a8a8d;white-space:nowrap}
+  .fin{padding:104px 20px 160px}
+  .fh{padding:0 20px;margin:20px 0 6px;font-size:17px;line-height:22px;font-weight:600;color:#8a8a8d}
+  .fcard{background:#fff;border-radius:26px;margin-bottom:6px;overflow:hidden}
+  .fr{position:relative;height:48.9px;display:flex;align-items:center;padding:0 20px;font-size:16.5px}
+  .fr+.fr::before{content:"";position:absolute;left:20px;right:20px;top:0;height:1px;background:#e6e6e8}
+  .fr>span{width:168px;flex:none;white-space:nowrap}
+  .fr input{flex:1;min-width:0;border:0;background:transparent;font:16.5px var(--font);color:#3b86f7;outline:0;padding:0;-webkit-appearance:none}
+  .fr input::placeholder{color:#bdbdc2}
+  .fr input.half{flex:none;width:68px}.fr i.vs{width:1px;height:24px;background:#e6e6e8;margin:0 12px}
+  .fr.lk{color:#3b86f7}.fr .ctry{color:#000}
+  .fr .sr{margin-left:auto}
+  .fnote{padding:0 20px;margin:14px 0 32px;font-size:14.5px;color:#8a8a8d}
+  .ftg{position:relative;background:#fff;border-radius:26px;height:80px;display:flex;align-items:center;padding:0 20px;font-size:16.5px;margin-top:52px}
+  .tgl{position:absolute;right:20px;width:62px;height:37px;border-radius:19px;background:#d4d4d8;cursor:pointer;transition:background .2s}
+  .tgl::after{content:"";position:absolute;left:2px;top:2px;width:33px;height:33px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .2s}
+  .tgl.on{background:#34c759}.tgl.on::after{transform:translateX(25px)}
+  .fr .tgl{right:20px}
+  .fsb{position:absolute;left:29px;right:29px;bottom:calc(var(--safe-bottom) + 8px);height:48px;border-radius:24px;background:rgba(251,251,253,.96);box-shadow:0 8px 24px rgba(0,0,0,.1);display:flex;align-items:center;padding:0 22px;gap:14px;font-size:18px;color:#8a8a8d;z-index:4}
+  .fsb span{flex:1}
   .opill{position:absolute;left:20px;width:400px;height:34px;border-radius:17px;border:1.5px solid #8a8a8d;text-align:center;line-height:31px;font-size:17px;color:#8a8a8d}
   .cd .r{position:absolute;left:0;right:0;height:60px}
   .cd em{position:absolute;left:20px;top:0;font-style:normal;color:#8a8a8d;font-size:15.3px;line-height:20px}
@@ -650,7 +669,7 @@
         <div class="so" style="top:168px"><i class="rb" style="left:51px;top:42.5px"></i><b>Pickup Store</b><span>Select an Apple Store for availability</span><span>Pickup date pending payment approval.</span></div></div></div>
     <div class="cd" id="cD" style="height:1297.5px">
       <div class="t gr" style="left:20px;top:24px;font-size:16.5px;line-height:20px">Shipping<br>Address</div><div class="t" id="cAddr" style="left:122px;top:24px;font-size:16.5px;line-height:20px">Enter address</div><div id="cAddrRow" style="position:absolute;left:0;right:0;top:0;height:88px;cursor:pointer"></div><svg class="chv" style="top:28px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:87.9px"></i>
-      <div class="t gr" style="left:20px;top:112px;font-size:16.5px">Payment</div><div class="t" style="left:122px;top:112px;font-size:16.5px">Enter payment</div><svg class="chv" style="top:116px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:156.3px"></i>
+      <div class="t gr" style="left:20px;top:112px;font-size:16.5px">Payment</div><div class="t" id="cPayT" style="left:122px;top:112px;font-size:16.5px">Enter payment</div><div id="cPayRow" style="position:absolute;left:0;right:0;top:92px;height:64px;cursor:pointer"></div><svg class="chv" style="top:116px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:156.3px"></i>
       <div class="t gr" style="left:20px;top:171px;font-size:16.5px">Summary</div><div class="t" style="left:122px;top:171px;font-size:16.5px">Bag Subtotal</div><b class="t amt2" id="cSub" style="right:20px;top:171px"></b>
       <div class="t" style="left:122px;top:223px;font-size:16.5px">Free Shipping</div><b class="t amt2" style="right:20px;top:223px">$0.00</b><i class="ln" style="top:283.3px;left:107.5px"></i>
       <div class="t" style="left:122px;top:303px;font-size:16.5px">Order Total</div><b class="t amt2" id="cTot" style="right:20px;top:303px"></b>
@@ -683,9 +702,14 @@
 
 <div class="sheet" id="adr" aria-hidden="true" style="z-index:60"><div class="sh-bd"></div><div class="adp">
   <div class="adh"><b id="adT">Address</b></div>
-  <div id="adMenu"><button class="adb" id="adSet">Set Address</button><button class="adb" id="adMail">Send Address Form to Mail</button><button class="adb cx" id="adCancel">Cancel</button></div>
+  <div id="adMenu"><button class="adb" id="adSet">Set Address Manually</button><button class="adb" id="adMail">Send Address Form to Mail</button><button class="adb cx" id="adCancel">Cancel</button></div>
   <div id="adSetF" hidden><textarea id="adText" rows="3" placeholder="Street, city, postcode"></textarea><button class="adb pr" id="adSave">Save Address</button><button class="adb cx" id="adBack1">Back</button></div>
   <div id="adMailF" hidden><div class="mrow"><input id="adUser" placeholder="name" autocapitalize="off" autocorrect="off"><span>@icloud.com</span></div><button class="adb pr" id="adSend">Send</button><button class="adb cx" id="adBack2">Back</button></div>
+</div></div>
+<div class="sheet" id="frm" aria-hidden="true" style="z-index:70"><div class="sh-bd"></div><div class="sh-p" style="top:calc(var(--safe-top) + 3px)">
+  <div class="sh-h" style="height:90px"><button class="pcan" id="fCancel" style="top:20px">Cancel</button><span id="fTitle" style="top:31px"></span><button class="pnext" id="fSave" style="top:20px">Save</button></div>
+  <div class="sh-s" id="fScroll"><div class="fin" id="fBody"></div></div>
+  <div class="fsb"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round"><circle cx="10.500" cy="10.500" r="7"/><path d="M16 16l5 5"/></svg><span>Search for a place or address</span><svg viewBox="0 0 20 26" width="19" height="25" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><rect x="6" y="1" width="8" height="15" rx="4"/><path d="M2 12a8 8 0 0 0 16 0M10 20v5"/></svg></div>
 </div></div>
 <div class="nav"></div><div class="navt" id="navt">Products</div>
 <div class="edge"></div>
@@ -879,6 +903,40 @@
   $('adBack1').addEventListener('click',function(){adShow('menu')});$('adBack2').addEventListener('click',function(){adShow('menu')});
   $('adSave').addEventListener('click',function(){var v=$('adText').value.trim();if(!v)return;$('cAddr').textContent=v.split('\n')[0];closeSheet($('adr'))});
   $('adSend').addEventListener('click',function(){var u=$('adUser').value.trim().replace(/@.*$/,'');if(!u)return;$('cAddr').textContent='Form sent to '+u+'@icloud.com';closeSheet($('adr'))});
+
+  /* Shipping / Payment forms */
+  var frm=$('frm'),fMode='ship';
+  function row(l,ph,id,extra){return '<div class="fr"><span>'+l+'</span><input id="'+id+'" placeholder="'+ph+'" autocomplete="off" autocapitalize="off"'+(extra||'')+'>'+(l==='Street Address'?'<svg class="sr" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#3b86f7" stroke-width="2.2" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M15.500 15.500L21 21"/></svg>':'')+'</div>'}
+  function two(l,p1,p2,i1,i2){return '<div class="fr"><span>'+l+'</span><input id="'+i1+'" class="half" placeholder="'+p1+'"><i class="vs"></i><input id="'+i2+'" placeholder="'+p2+'"></div>'}
+  function addrRows(px){return row('First Name','Required',px+'F')+row('Last Name','Required',px+'L')+row('Company Name','Optional',px+'C')+row('Street Address','Required',px+'S')+row('Apt., Suite, Bldg.','Optional',px+'A')+row('Town/City','Required',px+'T')+row('Province','Required',px+'P')+row('Postal Code','Required',px+'Z')+'<div class="fr"><span>Country/Region</span><b style="font-weight:400" class="ctry">Canada</b></div>'}
+  var TG=function(i,on){return '<div class="tgl'+(on?' on':'')+'" id="'+i+'"></div>'};
+  function buildForm(m){
+    fMode=m;$('fTitle').textContent=m==='ship'?'Shipping Information':'Payment';
+    var h='';
+    if(m==='ship'){
+      h+='<div class="fh" style="margin-top:0">Shipping Address</div><div class="fcard"><div class="fr lk">Import from Contacts</div><div class="fr lk">Copy Billing Address</div></div><div style="height:38px"></div>';
+      h+='<div class="fcard">'+addrRows('s')+two('Phone','Required','Required','sP1','sP2')+'<div class="fr"><span style="width:auto">This is a business address</span>'+TG('sBiz')+'</div></div>';
+    }else{
+      h+='<div class="fh" style="margin-top:0">Payment Method</div><div class="fcard">'+row('Credit Card Number','Required','pN',' inputmode="numeric" maxlength="19"')+row('Security Code','Required','pC',' inputmode="numeric" maxlength="4"')+row('Month','MM','pM',' inputmode="numeric" maxlength="2"')+row('Year','YYYY','pY',' inputmode="numeric" maxlength="4"')+'</div>';
+      h+='<div class="fnote">Accepted Payment methods: Visa, Mastercard, AMEX.</div>';
+      h+='<div class="fcard"><div class="fr lk">Import from Contacts</div><div class="fr lk">Copy from Shipping Address</div></div>';
+      h+='<div class="fh" style="margin-top:34px">Billing Address</div><div class="fcard">'+addrRows('b')+two('Phone','Required','Required','bP1','bP2')+two('Alternate Phone','Optional','Optional','bQ1','bQ2')+row('Email','Required','bE')+'</div>';
+      h+='<div class="ftg"><span>Save as my default credit card information</span>'+TG('pDef')+'</div>';
+    }
+    $('fBody').innerHTML=h;
+    document.querySelectorAll('#fBody .tgl').forEach(function(t){t.addEventListener('click',function(){t.classList.toggle('on')})});
+    document.querySelectorAll('#fBody .fr.lk').forEach(function(r){r.addEventListener('click',function(){var tx=r.textContent;if(/Copy/.test(tx)){var o=m==='ship'?'b':'s',d=m==='ship'?'s':'b';['F','L','C','S','A','T','P','Z'].forEach(function(k){var a=document.getElementById(o+k),b=document.getElementById(d+k);if(a&&b&&a.value)b.value=a.value})}})});
+  }
+  function openForm(m){buildForm(m);$('fScroll').scrollTop=0;openSheet(frm)}
+  $('adSet').addEventListener('click',function(){closeSheet($('adr'));openForm('ship')});
+  $('cPayRow').addEventListener('click',function(){openForm('pay')});
+  $('fCancel').addEventListener('click',function(){closeSheet(frm)});
+  $('fSave').addEventListener('click',function(){
+    var v=function(i){var e=$(i);return e?e.value.trim():''};
+    if(fMode==='ship'){var n=(v('sF')+' '+v('sL')).trim(),st1=v('sS');if(n||st1)$('cAddr').textContent=[n,st1].filter(Boolean).join(', ')}
+    else{var d=v('pN').replace(/\D/g,'');if(d)$('cPayT').textContent='•••'+d.slice(-4)}
+    closeSheet(frm);
+  });
   $('cX').addEventListener('click',function(){closeSheet(chk);closeSheet(gift)});
   document.querySelectorAll('#cG .rd').forEach(function(r){r.addEventListener('click',function(){document.querySelectorAll('#cG .rb').forEach(function(x){x.classList.toggle('on',x.parentNode===r)})})});
   $('cGiftRad').addEventListener('click',function(){bag.gift=!bag.gift;fillChk()});
