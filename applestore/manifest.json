@@ -1,0 +1,11 @@
+{
+  "name": "Apple Store",
+  "short_name": "Apple Store",
+  "start_url": "/applestore/",
+  "scope": "/applestore/",
+  "display": "standalone",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "portrait",
+  "background_color": "#f2f2f6",
+  "theme_color": "#f2f2f6"
+}
