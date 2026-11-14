@@ -10,7 +10,10 @@
 <meta name="apple-mobile-web-app-title" content="Apple Store">
 <meta name="theme-color" content="#f2f2f6" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#f2f2f6" media="(prefers-color-scheme: dark)">
 <title>Apple Store</title>
-<script>(function(){var sa=navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);if(!sa)return;function fit(){var H=Math.max(screen.width,screen.height);document.documentElement.style.setProperty('--app-h',(innerHeight>=innerWidth&&innerHeight<H-4)?H+'px':'')}fit();addEventListener('resize',fit);addEventListener('orientationchange',function(){setTimeout(fit,300)})})();</script>
+<script>(function(){var sa=navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);if(!sa)return;var R=document.documentElement,manual=/[?&]st=/.test(location.search);
+function probe(){var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)';(document.body||R).appendChild(d);var cs=getComputedStyle(d),t=parseFloat(cs.paddingTop)||0,b=parseFloat(cs.paddingBottom)||0;d.remove();return[t,b]}
+function fit(){var H=Math.max(screen.width,screen.height),W=Math.min(screen.width,screen.height);if(innerHeight<innerWidth)return;R.style.setProperty('--app-h',H+'px');if(manual)return;var m=probe(),t=m[0],b=m[1];if(!t&&H>=812){t=H>=874?62:(H>=852?59:47);b=34}R.style.setProperty('--safe-top',t+'px');R.style.setProperty('--safe-bottom',b+'px')}
+fit();[100,400,1000,2500].forEach(function(ms){setTimeout(fit,ms)});addEventListener('DOMContentLoaded',fit);addEventListener('load',fit);addEventListener('resize',fit);addEventListener('pageshow',fit);addEventListener('orientationchange',function(){setTimeout(fit,300)});document.addEventListener('visibilitychange',function(){if(!document.hidden){fit();setTimeout(fit,300)}})})();</script>
 <style>
   :root{
     --bg:#f2f2f6;
