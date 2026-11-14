@@ -133,11 +133,9 @@
   .pdp.duo .pdp-x svg{stroke:#111}
   .duo .pdp-bar{background:rgba(242,242,245,.9);box-shadow:0 8px 24px rgba(0,0,0,.12),inset 0 0 0 .5px rgba(255,255,255,.6)}
   .duo .pdp-bar button{background:#eaeaf0}
-  .d-hero{background:linear-gradient(#fff,#f3f3f5);text-align:center;padding:calc(var(--safe-top) + 22px) 0 0;margin-bottom:21px}
-  .d-hero .d-t{display:block;font-size:25px;line-height:30px;font-weight:600}
-  .d-hero .d-h{font-size:38px;line-height:44px;font-weight:700;letter-spacing:-.4px;margin:8px 0 0;padding:0}
+  .d-hero{background:#fdfdfd;padding:var(--safe-top) 0 0;margin-bottom:21px}
+  .d-hero video{display:block;width:100%;height:auto;background:#fdfdfd}
   .duo .dimg{display:block;height:auto;margin:30px auto 0}
-  .d-hero .dimg{width:100%;margin:18px 0 0}
   .d-card{position:relative;background:#f5f5f7;border-radius:24px;margin:0 auto 20px;width:78.3%;overflow:hidden;padding:58px 0;text-align:center}
   .d-card.fl{padding-bottom:0}
   .d-hd{font-size:17.5px;line-height:20.2px;font-weight:600;letter-spacing:-.1px;padding:0 4%}
@@ -683,7 +681,7 @@
 </div>
 <div class="pdp duo" id="pdpD" aria-hidden="true">
   <div class="pdp-scroll" id="pdpDScroll"><div id="pdpDIn">
-    <section class="d-hero"><b class="d-t">iPhone Duo</b><h3 class="d-h">Hello, hello.</h3><img class="dimg" src="assets/duo/hero.jpg" alt=""></section>
+    <section class="d-hero"><video id="dVid" src="assets/duo/hero.mp4" poster="assets/duo/hero_poster.jpg" muted loop playsinline webkit-playsinline preload="auto"></video></section>
     <div class="d-card"><p class="d-hd">The largest iPhone display<sup>1</sup> ever.<br>In a thin, foldable design.</p><button class="d-ar">View in AR <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3M12 7l4 2.2v4.6L12 16l-4-2.2V9.2zM8 9.2l4 2.3 4-2.3M12 11.5V16"/></svg></button><img class="dimg" style="width:81.7%;margin-top:32px" src="assets/duo/tv.jpg" alt=""></div>
     <div class="d-card"><p class="d-hd">More ways to iPhone.<br>Reimagined iOS experiences<br>for ultimate versatility.</p><img class="dimg" style="width:75%" src="assets/duo/ios.jpg" alt=""></div>
     <div class="d-card fl"><p class="d-hd">48MP Dual Fusion camera system.<br>And all-new ways to shoot<br>from front to back.</p><img class="dimg" style="width:100%;margin-top:29px" src="assets/duo/cam.jpg" alt=""></div>
@@ -961,8 +959,8 @@
   document.getElementById('pdpX').addEventListener('click',closePdp);
   var pdpD=document.getElementById('pdpD'),pdpDS=document.getElementById('pdpDScroll'),pdpDBar=document.getElementById('pdpDBar'),dTrade=document.getElementById('dTrade');
   function syncPdpD(){pdpDBar.classList.toggle('off',pdpDS.scrollTop+pdpDS.clientHeight>dTrade.offsetTop+150)}
-  function openPdpD(){pdpD.classList.add('on');pdpD.setAttribute('aria-hidden','false');pdpDS.scrollTop=0;syncPdpD();trackView('iphoneduo','iPhone Duo','assets/duo/final.jpg')}
-  function closePdpD(){pdpD.classList.remove('on');pdpD.setAttribute('aria-hidden','true')}
+  function openPdpD(){pdpD.classList.add('on');pdpD.setAttribute('aria-hidden','false');pdpDS.scrollTop=0;syncPdpD();var v=document.getElementById('dVid');v.currentTime=0;var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});trackView('iphoneduo','iPhone Duo','assets/duo/final.jpg')}
+  function closePdpD(){pdpD.classList.remove('on');pdpD.setAttribute('aria-hidden','true');setTimeout(function(){if(!pdpD.classList.contains('on'))document.getElementById('dVid').pause()},500)}
   pdpDS.addEventListener('scroll',syncPdpD,{passive:true});
   document.querySelector('.hero.c').addEventListener('click',openPdpD);
   document.getElementById('pdpDX').addEventListener('click',closePdpD);
