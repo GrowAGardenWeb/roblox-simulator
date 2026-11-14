@@ -869,6 +869,7 @@
   pgs.forEach(function(p){p.addEventListener('scroll',syncNav,{passive:true})});
   tabs.forEach(function(t){
     t.addEventListener('click',function(){
+      document.getElementById('also').classList.remove('on');document.getElementById('buy').classList.remove('on');document.getElementById('pdp').classList.remove('on');['gift','chk','adr'].forEach(function(i){document.getElementById(i).classList.remove('on')});
       tabs.forEach(function(x){x.classList.toggle('on',x===t)});
       pgs.forEach(function(p){p.classList.toggle('on',p.id==='pg-'+t.dataset.pg)});
       navt.textContent=names[t.dataset.pg];syncNav();
