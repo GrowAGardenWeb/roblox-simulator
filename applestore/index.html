@@ -100,7 +100,14 @@
   .pdp{position:fixed;inset:0;max-width:520px;margin:0 auto;z-index:50;background:#161617;visibility:hidden;transform:translateY(100%);transition:transform .45s cubic-bezier(.32,.72,0,1),visibility 0s .45s}
   .pdp.on{visibility:visible;transform:none;transition:transform .45s cubic-bezier(.32,.72,0,1),visibility 0s}
   .pdp-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;font-size:0;background:#161617}
+  .pdp-in{position:relative}
   .pdp-scroll img{display:block;width:100%;height:auto}
+  .pdp-buy{position:absolute;left:41.5%;width:17%;background:none;border:0}
+  .pdp-bar{transition:opacity .2s}
+  .pdp-bar.off{opacity:0;pointer-events:none}
+  .pdp-x.light{background:rgba(255,255,255,.92);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+  .pdp-x.light svg{stroke:#111}
+  .pdp-x{transition:background .2s}
   .pdp-x{position:absolute;top:23.8px;right:20.5px;width:47px;height:47px;border-radius:50%;background:rgba(18,18,18,.82);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);z-index:2}
   .pdp-x svg{width:20px;height:20px;stroke:#fff;stroke-width:2.1;stroke-linecap:round;fill:none}
   .pdp-bar{position:absolute;left:20px;right:20px;bottom:calc(var(--safe-bottom) + 11px);height:76px;border-radius:26px;z-index:2;display:flex;align-items:center;padding:0 20px;
@@ -109,6 +116,85 @@
   .pdp-bar p sup{font-size:9px;line-height:0;vertical-align:4px}
   .pdp-bar button{flex:none;width:75px;height:31px;border-radius:999px;background:#f5f3f8;color:#0a7aff;font-size:16px;font-weight:600}
   .hero.a{cursor:pointer}
+
+
+  /* Buy screen */
+  .buy{position:fixed;inset:0;max-width:520px;margin:0 auto;z-index:12;background:#fff;color:#000;visibility:hidden;transform:translateX(100%);transition:transform .4s cubic-bezier(.32,.72,0,1),visibility 0s .4s}
+  .buy.on{visibility:visible;transform:none;transition:transform .4s cubic-bezier(.32,.72,0,1),visibility 0s}
+  .buy-s{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+  .bp{position:relative;width:100%;height:4600px}
+  .buy .a{position:absolute;white-space:nowrap}
+  .buy sup{font-size:.62em;line-height:0;vertical-align:.5em}
+  .cp sup,.p1 sup,.xp sup,.sl sup{font-size:.95em;vertical-align:.4em}
+  .t-new{color:#ef9242}.t-blue{color:#3b86f7}
+  .buy .h2 b{font-weight:700}
+  .buy .h2{font-weight:400;letter-spacing:.35px}
+  .pill{width:80px;height:30px;border-radius:15px;background:#e9e9ea;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13.7px;white-space:nowrap}
+  .oc{position:absolute;left:20px;width:400px;border:1px solid #c7c7cb;border-radius:24px;background:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .oc.sel{border-color:#3b86f7;box-shadow:inset 0 0 0 1.4px #3b86f7}
+  .buy .oc.cc,.buy .oc.pl{position:relative}
+  .ct{font-weight:600;font-size:16.5px;line-height:20px}
+  .cs{font-size:12.15px;line-height:16px;color:#8a8a8d}
+  .cp{font-size:12.35px;line-height:20.5px;text-align:right;white-space:nowrap}
+  .oc.dis{border-color:#dadadd;cursor:default}.oc.dis .ct,.oc.dis .cp{color:#b5b5b8}
+  .info{position:absolute;left:20px;width:400px;height:76px;border-radius:38px;background:#f4f4f5;font-size:12.3px;line-height:17.7px;display:flex;align-items:center;padding-left:20px;white-space:nowrap;overflow:hidden}
+  .info>.a{position:absolute;right:31px;top:29.5px}
+  .info.vid{padding-left:93px}
+  .info.vid img{position:absolute;left:0;top:0;width:80px;height:75.7px;display:block}
+  .dots i{display:inline-block;width:34px;height:34px;border-radius:50%;margin-right:10px;vertical-align:top;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);cursor:pointer}
+  .dots i.on::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid #3b86f7}
+  .tr{text-align:center}.tr .a{left:0;right:0;font-size:14.5px;line-height:20px}
+  .tt1{font-weight:600}
+  .cb{font-weight:600;font-size:14.1px;line-height:20px}.cb2{font-size:13.9px;line-height:20px}
+  .hr{height:1px;background:#e8e8ea;display:block}
+  .bl{list-style:none;font-size:12.2px;line-height:17px;color:#8a8a8d;margin:0;padding:0}
+  .bl li{position:relative;padding-left:9px;margin-bottom:7px}.bl li::before{content:"\2022";position:absolute;left:0;font-size:8px;top:0}
+  .bc{position:absolute;left:0;right:0;top:2239px;padding:0}
+  .bc .oc.cc{left:0;margin-left:20px}
+  .plans .wq{margin-top:15px;margin-left:20px;font-size:15.3px;line-height:20px}
+  .plans .oc.pl{margin-left:20px}
+  .pt{left:9.6px;top:18.6px;font-size:15.4px;line-height:22px}
+  .pp{right:10px;top:30px;font-size:10.6px;line-height:14px;color:#8a8a8d}
+  .fn{margin:7.9px 25px 0;font-size:10.6px;line-height:13px;color:#8a8a8d;white-space:nowrap}
+  .plans+.nc{margin-top:18.5px!important}
+  .bs{position:relative;margin-top:75px;padding-bottom:300px}
+  .s-top{position:relative;height:100px}
+  .s-top img{position:absolute}
+  .sl{left:116px;font-size:12.2px;line-height:16px}
+  .st1{font-size:15.5px;line-height:20px;top:-6px}
+  .s-care{position:relative;height:106px}
+  .bs.nc .s-care{display:none}
+  .s-div{display:block;height:1px;background:#e8e8ea;margin:23.2px 16px 0}
+  .bs.nc .s-div{margin-top:18px}
+  .need{margin:27.3px 0 0 17px;font-size:15.5px;line-height:20px}
+  .nb{margin:7.2px 16px 0;font-size:12.5px;line-height:18px;color:#8a8a8d;white-space:nowrap}
+  .save{margin:9.7px 0 0 29px;height:24px;display:flex;align-items:center;gap:8px;color:#3b86f7;font-size:15.5px}
+  .a2{margin:58.7px 0 0 20.5px;font-size:22px;line-height:28px;font-weight:700;letter-spacing:.35px}
+  .bx{margin:40.3px 0 0 8px;width:421px;height:423px;border-radius:28px;overflow:hidden;background:#f2f2f6}
+  .trk{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .trk::-webkit-scrollbar{display:none}
+  .trk img{flex:none;width:421px;height:423px;scroll-snap-align:start;display:block;object-fit:cover}
+  .dts{margin-top:25.3px;display:flex;justify-content:center;gap:9.6px}
+  .dts i{width:7.7px;height:7.7px;border-radius:50%;background:#c4c4c8;display:block}.dts i.on{background:#000}
+  .cap{margin-top:17px;text-align:center;font-size:13.9px;line-height:20px}
+  .gl{margin-top:20.8px;text-align:center;font-size:13.9px;line-height:20px;font-weight:600}
+  .envp{margin:35.3px 0 0;text-align:center;font-size:12.3px;line-height:18px;white-space:nowrap}
+  .envp a{color:#3b86f7}
+  .drow{margin:36px 0 0 29.6px;display:flex;align-items:flex-start;gap:19px;font-size:13.2px;line-height:18px}
+  .drow svg{flex:none;margin-top:-3px}
+  .b-top{position:absolute;top:0;left:0;right:0;height:calc(var(--safe-top) + 53px);pointer-events:none;background:linear-gradient(rgba(253,253,253,.94),rgba(253,253,253,.82) 62%,rgba(253,253,253,0));-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+  .b-back{position:absolute;left:20px;top:calc(var(--safe-top) + 3px);width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.13);display:flex;align-items:center;justify-content:center;z-index:2}
+  .b-acts{position:absolute;right:20px;top:calc(var(--safe-top) + 3px);width:99.3px;height:44px;border-radius:22px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.13);display:flex;align-items:center;justify-content:space-around;padding:0 4px;z-index:2}
+  .b-bar{position:absolute;left:20px;right:20px;bottom:calc(var(--safe-bottom) + 60px);height:46px;border-radius:23px;z-index:3;background:rgba(250,250,250,.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 8px 26px rgba(0,0,0,.12),inset 0 0 0 .5px rgba(0,0,0,.06);overflow:hidden;transition:height .35s cubic-bezier(.32,.72,0,1),border-radius .35s}
+  .b-bar.x{height:150.7px;border-radius:28px}
+  .p1{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;transition:opacity .2s;white-space:nowrap}
+  .b-bar.x .p1{opacity:0}
+  .xrow,.xhr,.xp,.atb{opacity:0;transition:opacity .25s;pointer-events:none}
+  .b-bar.x .xrow,.b-bar.x .xhr,.b-bar.x .xp,.b-bar.x .atb{opacity:1;pointer-events:auto}
+  .xrow{position:absolute;left:26px;right:31px;top:11.5px;height:20px;display:flex;justify-content:space-between;align-items:center;font-size:13.2px}
+  .xhr{position:absolute;left:26px;right:26px;top:42px;height:1px;background:#e5e5e7}
+  .xp{position:absolute;left:26px;top:57.8px;font-size:13.2px;font-weight:600;line-height:20px;white-space:nowrap}
+  .atb{position:absolute;left:12px;right:12px;top:90px;height:50px;border-radius:25px;background:#3881f0;color:#9bfafe;font-size:17px;font-weight:600}
 
   .empty{padding:calc(var(--safe-top) + 190px) 20px 0;color:#8a8a8e;font-size:15px}
 
@@ -224,7 +310,7 @@
 </div>
 
 <div class="pdp" id="pdp" aria-hidden="true">
-  <div class="pdp-scroll" id="pdpScroll">
+  <div class="pdp-scroll" id="pdpScroll"><div class="pdp-in" id="pdpIn">
     <img src="assets/pdp/s0.jpg" alt="">
     <img src="assets/pdp/s1.jpg" alt="">
     <img src="assets/pdp/s2.jpg" alt="">
@@ -234,9 +320,72 @@
     <img src="assets/pdp/s6.jpg" alt="">
     <img src="assets/pdp/s7.jpg" alt="">
     <img src="assets/pdp/s8.jpg" alt="">
-  </div>
+    <img src="assets/pdp/s9.jpg" alt="">
+    <button class="pdp-buy" id="pdpBuy" aria-label="Buy"></button>
+  </div></div>
   <button class="pdp-x" id="pdpX" aria-label="Close"><svg viewBox="0 0 20 20"><path d="M2.5 2.5l15 15M17.5 2.5l-15 15"/></svg></button>
-  <div class="pdp-bar"><p>From $1749 or $72.87/mo. for 24 mo. at 0%<br>APR<sup>&#9674;</sup></p><button>Buy</button></div>
+  <div class="pdp-bar" id="pdpBar"><p>From $1749 or $72.87/mo. for 24 mo. at 0%<br>APR<sup>&#9674;</sup></p><button>Buy</button></div>
+</div>
+
+<div class="buy" id="buy" aria-hidden="true">
+  <div class="buy-s" id="buyS"><div class="bp" id="bp">
+<div class="a t-new" style="left:20.6px;top:135.6px;font-size:13.2px;line-height:16px;">New</div>
+<div class="a t-title" style="left:20px;top:159.4px;font-size:34px;line-height:41px;font-weight:700;letter-spacing:.37px">Buy iPhone 18 Pro</div>
+<svg class="a" style="left:26.7px;top:224.7px;width:15.7px;height:15.3px" viewBox="0 0 16 16" fill="none" stroke="#6b6b6b" stroke-width="1.1"><path d="M8 1.2c2.2 0 3.3 1.7 3.9 3.2.6-.1 2.9.2 3.1 2.6.2 1.9-1.4 3-2.1 3.3.1 1.6-.7 3.9-3 4.3-1 .2-1.5-.2-1.9-.2s-.9.4-1.9.2c-2.3-.4-3.1-2.7-3-4.3-.7-.3-2.3-1.4-2.1-3.3.2-2.4 2.5-2.7 3.1-2.6C4.7 2.9 5.8 1.2 8 1.2z"/><circle cx="8" cy="8.2" r="2.2" stroke="#e08a3a"/></svg><div class="a " style="left:51.1px;top:225.0px;font-size:12.25px;line-height:16px;">Apple Intelligence and Siri AI<sup style='font-size:8px;line-height:0;vertical-align:5px'>3</sup></div><svg class="a" style="left:235.5px;top:226.4px;width:13px;height:13px" viewBox="0 0 14 14" fill="none" stroke="#3b86f7" stroke-width="1.2"><circle cx="7" cy="7" r="6.2"/><path d="M7 6.2v4M7 3.8v.1" stroke-linecap="round" stroke-width="1.5"/></svg>
+<img class="a" src="assets/buy/main.jpg" alt="" style="left:132.3px;top:280.7px;width:174.7px;height:233px">
+<svg class="a" style="left:106px;top:552px;width:15px;height:14px" viewBox="0 0 15 14"><path fill="#3b86f7" d="M7.5 0C3.4 0 0 2.7 0 6.1c0 1.7.9 3.2 2.3 4.3-.1 1-.5 2-1.2 2.7 1.5 0 2.7-.6 3.5-1.3.9.3 1.8.4 2.9.4 4.1 0 7.5-2.7 7.5-6.1S11.6 0 7.5 0z"/></svg><div class="a t-blue" style="left:129px;top:550.0px;font-size:13.85px;line-height:18px;">Chat with an iPhone Specialist</div>
+<div class="a pill" style="left:135px;top:590.3px">Gallery</div><div class="a pill" style="left:225px;top:590.3px"><svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="#111" stroke-width="1.5" stroke-linecap="round"><path d="M10 4v2M10 14v2M4.5 7l1.8 1M13.7 12l1.8 1M4.5 13l1.8-1M13.7 8l1.8-1"/><path d="M3 5.5V4a1 1 0 0 1 1-1h1.5M14.5 3H16a1 1 0 0 1 1 1v1.5M17 14.5V16a1 1 0 0 1-1 1h-1.5M5.5 17H4a1 1 0 0 1-1-1v-1.5"/></svg><span>AR</span></div>
+<div class="a h2" style="left:20px;top:671.7px;font-size:22px;line-height:28px;"><b>Model.</b> Which is best for you?</div>
+<div class="oc mdl" data-m="0" style="top:723px;height:80px"><div class="a ct" style="left:13.4px;top:22px">iPhone 18 Pro</div><div class="a cs" style="left:13.4px;top:42px">6.3-inch display<sup>1</sup></div><div class="a cp" style="right:14px;top:16.5px;line-height:20.5px">From $1749 or $72.87/mo. for<br>24 mo. at 0% APR<sup>&#9651;</sup></div></div>
+<div class="oc mdl" data-m="1" style="top:811px;height:80px"><div class="a ct" style="left:13.4px;top:22px">iPhone 18 Pro Max</div><div class="a cs" style="left:13.4px;top:42px">6.9-inch display<sup>1</sup></div><div class="a cp" style="right:14px;top:16.5px;line-height:20.5px">From $1899 or $79.12/mo. for<br>24 mo. at 0% APR<sup>&#9651;</sup></div></div>
+<div class="a info" style="top:911px">Explore the differences in screen size and battery life<br>between models.<svg class="a" style="right:31px;width:17px;height:17px" viewBox="0 0 17 17"><circle cx="8.5" cy="8.5" r="8.5" fill="#000"/><path d="M8.5 4.5v8M4.5 8.5h8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+<div class="a h2" style="left:20px;top:1034.0px;font-size:22px;line-height:28px;"><b>Finish.</b> Pick your favourite.</div>
+<div class="a dots" style="left:26px;top:1105.3px"><i data-f="0" style="background:#461b22"></i><i data-f="1" style="background:#e9f1fc"></i><i data-f="2" style="background:#f6f6f6"></i><i data-f="3" style="background:#3c3c3c"></i></div>
+<div class="a h2" style="left:20px;top:1182.0px;font-size:22px;line-height:28px;"><b>Storage.</b> How much space do you need?</div>
+<div class="oc st dis" data-s="0" style="top:1233.7px;height:80px"><div class="a ct" style="left:13.4px;top:29.5px;font-size:15.2px;line-height:21px">256GB<sup>2</sup></div><div class="a cp" style="right:14px;top:16px;line-height:24.4px"></div></div>
+<div class="oc st dis" data-s="1" style="top:1321.7px;height:80px"><div class="a ct" style="left:13.4px;top:29.5px;font-size:15.2px;line-height:21px">512GB<sup>2</sup></div><div class="a cp" style="right:14px;top:16px;line-height:24.4px"></div></div>
+<div class="oc st dis" data-s="2" style="top:1409.7px;height:80px"><div class="a ct" style="left:13.4px;top:29.5px;font-size:15.2px;line-height:21px">1TB<sup>2</sup></div><div class="a cp" style="right:14px;top:16px;line-height:24.4px"></div></div>
+<div class="oc st dis" data-s="3" style="top:1497.7px;height:80px"><div class="a ct" style="left:13.4px;top:29.5px;font-size:15.2px;line-height:21px">2TB<sup>2</sup></div><div class="a cp" style="right:14px;top:16px;line-height:24.4px"></div></div>
+<div class="a info vid" style="top:1597.7px"><img src="assets/buy/face1.jpg" alt=""><span>Get a better understanding of how much<br>storage you&rsquo;ll need.</span></div>
+<div class="a h2" style="left:20px;top:1718.5px;font-size:22px;line-height:32.5px;"><b>Apple Trade In.</b> Get $40&ndash;$1500 credit<br>towards your new iPhone.<sup style="font-size:14px;line-height:0;vertical-align:8px">&#9674;</sup></div>
+<div class="oc tr" data-t="0" style="top:1804.3px;height:95.7px"><div class="a tt1" style="top:20px">Select an iPhone</div><div class="a tt2" style="top:52px">Answer a few questions to get your estimate.</div></div>
+<div class="oc tr" data-t="1" style="top:1910.3px;height:95.7px"><div class="a tt1" style="top:37px">No trade-in</div></div>
+<div class="a info" style="top:2026.3px">Learn how to save with a trade-in or recycle your<br>device for free.<svg class="a" style="right:31px;width:17px;height:17px" viewBox="0 0 17 17"><circle cx="8.5" cy="8.5" r="8.5" fill="#000"/><path d="M8.5 4.5v8M4.5 8.5h8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+<div class="a h2" style="left:20px;top:2156.2px;font-size:22px;line-height:31px;"><b>AppleCare coverage.</b> Peace of mind in<br>every plan.<sup style="font-size:16px;line-height:0;vertical-align:6px">&sect;</sup></div>
+<div class="bc" id="bc">
+  <div class="oc cc" data-c="plus" style="position:relative;height:253.4px"><div class="a" style="left:17px;top:23px"><svg viewBox="0 0 24 24" style="width:16px;height:19px;fill:#d02c1e"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></div><div class="a cb" style="left:14.4px;top:53px">AppleCare+</div><div class="a cb2" style="left:14.4px;top:77px">$15.49/mo. or $154.99/yr. until cancelled</div><i class="a hr" style="left:14.4px;right:20px;top:106.5px"></i>
+    <ul class="a bl" style="left:14.4px;top:117px"><li>Unlimited repairs for accidents like drops and spills</li><li>24/7 priority support from Apple experts</li><li>Express Replacement Service &mdash; we&rsquo;ll ship you a replacement<br>so you don&rsquo;t have to wait for a repair</li><li>Battery replacements at no extra charge</li></ul></div>
+  <div class="plans" id="plans" hidden>
+    <div class="wq">Which AppleCare coverage plan would you like?</div>
+    <div class="oc pl" data-p="m" style="position:relative;height:82.3px;margin-top:15.6px"><div class="a pt">Monthly coverage until<br>cancelled</div><div class="a pp">$15.49/mo.</div></div>
+    <div class="oc pl" data-p="a" style="position:relative;height:82.3px;margin-top:10px"><div class="a pt">Annual coverage until<br>cancelled</div><div class="a pp">$154.99/yr.</div></div>
+    <p class="fn">AppleCare coverage and recurring payments begin when your device<br>ships or is picked up. Your plan renews automatically until cancelled.<br>Cancel at any time. See terms for complete details.</p>
+  </div>
+  <div class="oc cc nc" data-c="none" style="position:relative;height:80px;margin-top:10.3px"><div class="a cb" style="left:14.4px;top:25.8px">No AppleCare coverage</div></div>
+  <div class="info vid" style="position:relative;margin:20.4px 0 0;left:0"><img src="assets/buy/face2.jpg" alt=""><span>Explore the features and coverage of<br>AppleCare. Terms and fees apply.</span></div>
+  <div class="bs nc" id="bs">
+    <div class="s-top"><img src="assets/buy/glacier.jpg" alt="" style="left:29.6px;top:0;width:52.5px;height:66.9px;position:absolute;border-radius:6px">
+      <div class="a sl st1" id="sTitle" style="top:-6px">iPhone 18 Pro</div><div class="a sl" id="sPrice" style="top:16px"></div><div class="a sl" style="top:33px">or</div><div class="a sl" id="sMonthly" style="top:60px"></div><div class="a sl" id="sFin" style="top:81px"></div></div>
+    <div class="s-care"><div class="a sl" style="top:22px">AppleCare+</div><div class="a sl" id="sCare1" style="top:42px"></div><div class="a sl" id="sCare2" style="top:62px"></div><div class="a sl" id="sCare3" style="top:83px;color:#3b86f7">Pay monthly with Affirm<sup>&#9651;</sup></div></div>
+    <i class="s-div"></i>
+    <div class="need">Need a moment?</div>
+    <p class="nb">Keep all your selections by saving this <span id="sName">iPhone 18 Pro</span> to Your Saves, then come back anytime and pick up right<br>where you left off.</p>
+    <div class="save"><svg viewBox="0 0 16 20" width="14" height="19" fill="none" stroke="#3b86f7" stroke-width="1.6" stroke-linejoin="round"><path d="M2 1.5h12v17l-6-4.5-6 4.5z"/></svg><span>Save for later</span></div>
+    <h2 class="a2">What&rsquo;s in the Box</h2>
+    <div class="bx" id="bx"><div class="trk" id="trk"><img src="assets/buy/box1.jpg" alt=""><img src="assets/buy/box2.jpg" alt=""></div></div>
+    <div class="dts"><i class="on"></i><i></i></div>
+    <div class="cap" id="cap">iPhone 18 Pro Max</div>
+    <div class="gl">Our environmental goals.</div>
+    <p class="envp">As part of our efforts to reach <a>carbon neutrality by 2030</a>,<br>iPhone 18 Pro and iPhone 18 Pro Max do not include a power<br>adapter or EarPods. Included in the box is a USB-C Charge<br>Cable that supports fast charging and is compatible with USB-C<br>power adapters.</p>
+    <div class="drow"><svg viewBox="0 0 26 26" width="24" height="24" fill="none" stroke="#555" stroke-width="1.5" stroke-linejoin="round"><path d="M3 8l10-5 10 5v10l-10 5-10-5zM3 8l10 5 10-5M13 13v10"/></svg><span>Get free delivery, or pick up available items at an<br>Apple Store</span></div>
+    <div class="drow"><svg viewBox="0 0 26 26" width="24" height="24" fill="none" stroke="#555" stroke-width="1.5" stroke-linejoin="round"><rect x="3" y="9" width="20" height="14" rx="1.5"/><path d="M2 9h22v-3H2zM13 6v17M13 6c-1-3-5-4-5-1.5S11 6 13 6zm0 0c1-3 5-4 5-1.5S15 6 13 6z"/></svg><span>Add a free digital gift message</span></div>
+  </div>
+</div>
+  </div></div>
+  <div class="b-top"></div>
+  <button class="b-back" id="bBack" aria-label="Back"><svg viewBox="0 0 14 22" width="13" height="21" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2L3 11l8 9"/></svg></button>
+  <div class="b-acts"><svg viewBox="0 0 24 28" width="22" height="26" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v15M7.5 6.5L12 2l4.5 4.5M7 11H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V13a2 2 0 0 0-2-2h-2"/></svg><svg viewBox="0 0 20 26" width="18" height="24" fill="none" stroke="#444" stroke-width="2" stroke-linejoin="round"><path d="M3 2h14v21l-7-5-7 5z"/></svg></div>
+  <div class="b-bar" id="bBar"><div class="p1" id="bp1"></div><div class="xrow"><b>Show delivery and pickup details</b><svg viewBox="0 0 14 8" width="14" height="8" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7l6-6 6 6"/></svg></div><i class="xhr"></i><div class="xp" id="bp2"></div><button class="atb">Add to Bag</button></div>
 </div>
 
 <div class="nav"></div><div class="navt" id="navt">Products</div>
@@ -273,11 +422,71 @@
     if(animate){lens.classList.remove('go');void lens.offsetWidth;lens.classList.add('go')}
   }
   var pdp=document.getElementById('pdp'),pdpS=document.getElementById('pdpScroll');
-  function openPdp(){pdp.classList.add('on');pdp.setAttribute('aria-hidden','false');pdpS.scrollTop=0}
+  function openPdp(){pdp.classList.add('on');pdp.setAttribute('aria-hidden','false');pdpS.scrollTop=0;layoutPdp();syncPdp()}
+  var pdpX=document.getElementById('pdpX'),pdpBar=document.getElementById('pdpBar'),pdpBuy=document.getElementById('pdpBuy'),pdpIn=document.getElementById('pdpIn');
+  function layoutPdp(){var k=pdpIn.clientWidth/440;pdpBuy.style.top=(7314.7*k)+'px';pdpBuy.style.height=(31.7*k)+'px'}
+  function syncPdp(){var k=pdpIn.clientWidth/440,t=pdpS.scrollTop/k,vh=pdpS.clientHeight/k;pdpX.classList.toggle('light',t+47>=6640);pdpBar.classList.toggle('off',t+vh>7314)}
+  pdpS.addEventListener('scroll',syncPdp,{passive:true});window.addEventListener('resize',layoutPdp);layoutPdp();
   function closePdp(){pdp.classList.remove('on');pdp.setAttribute('aria-hidden','true')}
   document.querySelector('.hero.a').addEventListener('click',openPdp);
   document.getElementById('pdpX').addEventListener('click',closePdp);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closePdp()});
+
+  /* Buy screen state */
+  var buy=document.getElementById('buy'),buyS=document.getElementById('buyS'),bp=document.getElementById('bp'),bc=document.getElementById('bc'),bBar=document.getElementById('bBar');
+  var st={m:null,f:null,s:null,t:null,c:null,p:null};
+  var MAXP=[1899,2199,2799,3699],NM=['iPhone 18 Pro','iPhone 18 Pro Max'],FN=['Maroon','Glacier','Silver','Graphite'],SZ=['256GB','512GB','1TB','2TB'];
+  function mo(n){return (Math.floor(n/24*100)/100).toFixed(2)}
+  function price(i){return st.m===0?MAXP[i]-150:MAXP[i]}
+  function render(){
+    var q=function(a,r){return (r||document).querySelectorAll(a)},AP='△';
+    q('.mdl').forEach(function(e,i){e.classList.toggle('sel',st.m===i)});
+    q('.dots i').forEach(function(e,i){e.classList.toggle('on',st.f===i)});
+    q('.st').forEach(function(e,i){
+      var en=st.f!==null,pr=price(i),m=mo(pr);
+      e.classList.toggle('dis',!en);e.classList.toggle('sel',st.s===i);
+      e.querySelector('.cp').innerHTML=en?('$'+pr+' or $'+m+'/mo. for 24<br>mo. at 0% APR<sup>'+AP+'</sup>'):('From $'+pr+' or $'+m+(m.length>5?'/mo.<br>for 24 mo.':'/mo. for<br>24 mo.')+' at 0% APR<sup>'+AP+'</sup>');
+    });
+    q('.tr').forEach(function(e,i){e.classList.toggle('sel',st.t===i)});
+    q('.cc').forEach(function(e){e.classList.toggle('sel',st.c===e.getAttribute('data-c'))});
+    var pl=document.getElementById('plans');pl.hidden=st.c!=='plus';
+    q('.pl').forEach(function(e){e.classList.toggle('sel',st.p===e.getAttribute('data-p'))});
+    // price / summary
+    var base=st.m===null?1749:(st.m===0?1749:1899),tot=st.s!==null?price(st.s):base,txt=(st.s===null?'From ':'')+'$'+tot+' or $'+mo(tot)+'/mo. for 24 mo. at 0% APR';
+    document.getElementById('bp1').innerHTML=txt+'<sup>'+AP+'</sup>';
+    document.getElementById('bp2').innerHTML=txt.replace('From ','')+'<sup>'+AP+'</sup>';
+    bBar.classList.toggle('x',st.c!==null);
+    var nm=(st.m===null?NM[0]:NM[st.m])+(st.s!==null?' '+SZ[st.s]:'')+(st.f!==null?' '+FN[st.f]:'');
+    document.getElementById('sTitle').textContent=nm;document.getElementById('sName').textContent=nm;
+    document.getElementById('sPrice').textContent='$'+tot;
+    document.getElementById('sMonthly').innerHTML='$'+mo(tot)+'/mo. for 24 mo. at 0% APR<sup>'+AP+'</sup>';
+    document.getElementById('sFin').textContent='$'+tot+' total financed';
+    var bs=document.getElementById('bs'),care=st.c==='plus'&&st.p!==null;
+    bs.classList.toggle('nc',!care);
+    document.getElementById('sCare1').textContent=st.p==='m'?'$15.49/mo. until cancelled':'$154.99/yr. until cancelled';
+    document.getElementById('sCare2').textContent=st.p==='m'?'Monthly payments billed separately':'Annual payments billed separately';
+    layoutBuy();
+  }
+  function layoutBuy(){bp.style.height=(bc.offsetTop+bc.offsetHeight)+'px'}
+  buy.addEventListener('click',function(e){
+    var el=e.target.closest('[data-m],[data-f],[data-s],[data-t],[data-c],[data-p]');if(!el)return;
+    if(el.dataset.m!==undefined)st.m=+el.dataset.m;
+    else if(el.dataset.f!==undefined)st.f=+el.dataset.f;
+    else if(el.dataset.s!==undefined){if(st.f===null)return;st.s=+el.dataset.s}
+    else if(el.dataset.t!==undefined)st.t=+el.dataset.t;
+    else if(el.dataset.c!==undefined){st.c=el.dataset.c;if(st.c!=='plus')st.p=null}
+    else if(el.dataset.p!==undefined)st.p=el.dataset.p;
+    render();
+  });
+  var trk=document.getElementById('trk'),dts=document.querySelectorAll('.dts i');
+  trk.addEventListener('scroll',function(){var i=Math.round(trk.scrollLeft/421);dts.forEach(function(d,k){d.classList.toggle('on',k===i)});document.getElementById('cap').textContent=i?'USB-C Charge Cable':'iPhone 18 Pro Max'},{passive:true});
+  function openBuy(){closePdp();buy.classList.add('on');buy.setAttribute('aria-hidden','false');buyS.scrollTop=0;render()}
+  function closeBuy(){buy.classList.remove('on');buy.setAttribute('aria-hidden','true')}
+  document.getElementById('bBack').addEventListener('click',closeBuy);
+  document.getElementById('pdpBuy').addEventListener('click',openBuy);
+  document.querySelector('.pdp-bar button').addEventListener('click',openBuy);
+  document.querySelectorAll('.hero .buy').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();if(b.closest('.hero.a'))openBuy()})});
+  render();
   var nav=document.querySelector('.nav'),navt=document.getElementById('navt'),names={foryou:'For You',products:'Products',further:'Go Further',bag:'Bag'};
   function syncNav(){
     var p=document.querySelector('.pg.on'),on=p.scrollTop>50;
