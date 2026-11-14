@@ -570,11 +570,11 @@
   <div class="sh-h"><button class="pcan" id="gCancel">Cancel</button><span>Gifting</span><button class="pnext" id="gNext">Next</button></div>
   <div class="sh-s" id="gScroll"><div class="gin">
     <img class="stk" src="assets/buy/stickers.png" alt=""><h1 class="gh">Create a<br>memorable<br>moment.</h1><p class="gp">Make their day with a fun digital gift message. We&rsquo;ll<br>send the link to their inbox or mobile phone when<br>it&rsquo;s time.</p>
-    <h3 style="top:444.5px">Include a digital gift message</h3><textarea id="gMsg" maxlength="90" placeholder="Optional" style="top:473.8px;height:139px"></textarea><span class="cnt" style="top:617px" id="gMsgC">0/90</span>
-    <h3 style="top:660.5px">Let them know who it&rsquo;s from</h3><input id="gFrom" maxlength="62" placeholder="Required" style="top:682px;height:79.4px"><span class="cnt" style="top:772.6px" id="gFromC">0/62</span>
-    <h3 class="h4" style="top:809px">Do you want to show them what&rsquo;s on the way?</h3><p class="gp2" style="top:828.5px">Share gift details early with the digital gift message, or keep them<br>secret until delivery.</p>
+    <h3 style="top:441.8px">Include a digital gift message</h3><textarea id="gMsg" maxlength="90" placeholder="Optional" style="top:473.8px;height:139px"></textarea><span class="cnt" style="top:617px" id="gMsgC">0/90</span>
+    <h3 style="top:650px">Let them know who it&rsquo;s from</h3><textarea id="gFrom" maxlength="62" rows="1" placeholder="Required" style="top:682px;height:79.4px"></textarea><span class="cnt" style="top:765.5px" id="gFromC">0/62</span>
+    <h3 class="h4" style="top:784px">Do you want to show them what&rsquo;s on the way?</h3><p class="gp2" style="top:805px">Share gift details early with the digital gift message, or keep them<br>secret until delivery.</p>
     <button class="gopt sel" data-rv="1" style="left:20px;top:860px">Yes, reveal gift</button><button class="gopt" data-rv="0" style="left:225.5px;top:860px">No, keep it a surprise</button>
-    <h3 style="top:994.8px">Choose an animated theme</h3>
+    <h3 style="top:983.5px">Choose an animated theme</h3>
     <div class="ths" style="top:1015.5px"><img data-t="0" class="on" src="assets/buy/tt0.jpg" alt=""><img data-t="1" src="assets/buy/tt1.jpg" alt=""><img data-t="2" src="assets/buy/tt2.jpg" alt=""><img data-t="3" src="assets/buy/tt3.jpg" alt=""></div>
     <div class="pvw" style="top:1127.5px"><img id="pvImg" src="assets/buy/pv0.jpg" alt=""><div class="pvb"></div><div class="pvt">A gift for you is on<br>its way.</div></div>
   </div></div></div></div>
@@ -729,7 +729,7 @@
   $('chkBtn').addEventListener('click',function(){renderBag();if(bag.gift){$('gScroll').scrollTop=0;openSheet(gift)}else{$('cScroll').scrollTop=0;fillChk();openSheet(chk)}});
   $('gCancel').addEventListener('click',function(){closeSheet(gift)});
   function cnt(i,c,m){var f=function(){$(c).textContent=$(i).value.length+'/'+m};$(i).addEventListener('input',f);f()}
-  cnt('gMsg','gMsgC',90);cnt('gFrom','gFromC',62);
+  $('gFrom').addEventListener('keydown',function(e){if(e.key==='Enter')e.preventDefault()});cnt('gMsg','gMsgC',90);cnt('gFrom','gFromC',62);
   document.querySelectorAll('.gopt').forEach(function(b){b.addEventListener('click',function(){bag.rv=+b.dataset.rv;document.querySelectorAll('.gopt').forEach(function(x){x.classList.toggle('sel',x===b)})})});
   document.querySelectorAll('.ths img').forEach(function(im){im.addEventListener('click',function(){bag.theme=+im.dataset.t;document.querySelectorAll('.ths img').forEach(function(x){x.classList.toggle('on',x===im)});$('pvImg').src='assets/buy/pv'+bag.theme+'.jpg'})});
   var TN=['Blue','Red','Orange','Multicolor'];
