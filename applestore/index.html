@@ -1005,7 +1005,7 @@
       h+='<div class="fh" style="margin-top:0">Shipping Address</div><div class="fcard"><div class="fr lk">Import from Contacts</div><div class="fr lk">Copy Billing Address</div></div><div style="height:38px"></div>';
       h+='<div class="fcard">'+addrRows('s')+two('Phone','Required','Required','sP1','sP2')+'<div class="fr"><span style="width:auto">This is a business address</span>'+TG('sBiz')+'</div></div>';
     }else{
-      h+='<div class="fh" style="margin-top:0">Payment Method</div><div class="fcard">'+row('Credit Card Number','Required','pN',' inputmode="numeric" maxlength="19"')+row('Security Code','Required','pC',' inputmode="numeric" maxlength="4"')+row('Month','MM','pM',' inputmode="numeric" maxlength="2"')+row('Year','YYYY','pY',' inputmode="numeric" maxlength="4"')+'</div>';
+      h+='<div class="fh" style="margin-top:0">Payment Method</div><div class="fcard">'+row('Credit Card Number','Required','pN',' inputmode="numeric" maxlength="19"')+row('Security Code','Required','pC',' type="password" inputmode="numeric" maxlength="4"')+row('Month','MM','pM',' inputmode="numeric" maxlength="2"')+row('Year','YYYY','pY',' inputmode="numeric" maxlength="4"')+'</div>';
       h+='<div class="fnote">Accepted Payment methods: Visa, Mastercard, AMEX.</div>';
       h+='<div class="fcard"><div class="fr lk">Import from Contacts</div><div class="fr lk">Copy from Shipping Address</div></div>';
       h+='<div class="fh" style="margin-top:34px">Billing Address</div><div class="fcard">'+addrRows('b')+two('Phone','Required','Required','bP1','bP2')+two('Alternate Phone','Optional','Optional','bQ1','bQ2')+row('Email','Required','bE')+'</div>';
