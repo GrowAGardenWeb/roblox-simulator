@@ -268,18 +268,16 @@
   .al-c{position:absolute;right:20px;top:calc(var(--safe-top) + 3px);width:103px;height:44px;border-radius:22px;background:#fbfbfd;font-size:17px;box-shadow:0 3px 12px rgba(0,0,0,.1)}
   .al-s{position:absolute;inset:0;overflow-y:auto;padding-top:calc(var(--safe-top) + 57px)}
   .g2{display:grid;grid-template-columns:220px 220px;width:440px;max-width:100%;margin:0 auto}
-  .cell{position:relative;height:453px;border-bottom:1px solid #e6e6e8;text-align:center}
+  .cell{position:relative;height:453px;border-bottom:1px solid #e6e6e8;text-align:center;overflow:hidden}
   .cell+.cell{border-left:1px solid #e6e6e8}
-  .cell.r2{height:300px}
-  .cell img{position:absolute;left:50%;top:21px;width:auto;height:117px;transform:translateX(-50%)}
-  .cell:nth-child(-n+2) img{top:28px;height:112px;object-fit:contain}
-  .cell em{position:absolute;left:0;right:0;top:129px;font-style:normal;color:#ef9242;font-size:11.5px;line-height:14px;top:176px}
-  .cell h4{position:absolute;left:8px;right:8px;top:194px;font-size:15.6px;line-height:20px;font-weight:500}
-  .cell .pr{position:absolute;left:0;right:0;top:248px;font-size:16px;line-height:20px}
-  .cell .sw{position:absolute;left:0;right:0;top:321px;display:flex;justify-content:center;align-items:center;gap:8px;color:#8a8a8d;font-size:12.5px}
+  .cell img{position:absolute;left:50%;top:21px;transform:translateX(-50%);display:block}
+  .cell:nth-child(-n+2) img{top:28px;height:112px;width:auto;object-fit:contain}
+  .cell em{position:absolute;left:0;right:0;top:178px;font-style:normal;color:#ef9242;font-size:11.5px;line-height:14px}
+  .cell h4{position:absolute;left:6px;right:6px;top:200px;font-size:15.6px;line-height:20px;font-weight:500}
+  .cell .pr{position:absolute;left:0;right:0;top:278px;font-size:16px;line-height:20px}
+  .cell .sw{position:absolute;left:0;right:0;top:364px;display:flex;justify-content:center;align-items:center;gap:8px;color:#8a8a8d;font-size:12.5px;line-height:20px}
   .sw i{width:19.5px;height:19.5px;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
-  .cell small{position:absolute;left:0;right:0;top:353px;color:#8a8a8d;font-size:12.2px;white-space:nowrap}
-  .cell.r2 em{top:140px}.cell.r2 h4{top:158px}
+  .cell small{position:absolute;left:0;right:0;top:404px;color:#8a8a8d;font-size:12.2px;line-height:16px;white-space:nowrap}
   .bk{position:absolute;right:18px;top:19px;width:14px;height:21px;border:2px solid #3b86f7;border-radius:2px 2px 0 0;border-bottom:0}
   .bk::after{content:"";position:absolute;left:-2px;right:-2px;bottom:-5px;height:8px;background:linear-gradient(135deg,transparent 50%,#fff 50%) left/50% 100% no-repeat,linear-gradient(225deg,transparent 50%,#fff 50%) right/50% 100% no-repeat}
   .toast{position:absolute;left:50%;top:calc(var(--safe-top) + 58px);transform:translateX(-50%);height:55px;padding:0 20px 0 18px;border-radius:28px;background:#fdfdfe;box-shadow:0 10px 30px rgba(0,0,0,.14);display:flex;align-items:center;gap:15px;font-size:17px;font-weight:600;white-space:nowrap;z-index:3;transition:opacity .4s}
@@ -296,7 +294,10 @@
   .pcan{position:absolute;left:20px;top:21px;height:44px;width:86px;border-radius:22px;background:#fff;font-size:17px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
   .pnext{position:absolute;right:20px;top:21px;height:44px;width:69px;border-radius:22px;background:#3b86f7;color:#a0fcff;font-size:17px;font-weight:500;box-shadow:0 3px 12px rgba(40,100,220,.3)}
   .xc{position:absolute;left:20px;top:21px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.1)}
-  .sh-h .ct2{top:25px}
+  .sh-h .ct2{top:31px}
+  #chk .sh-p{top:calc(var(--safe-top) + 3px)}
+  #chk .sh-h{height:90px}
+  #chk .xc{top:20px}
   .sh-s{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
   .gin{position:relative;height:1500px;background:linear-gradient(#fff,#f2f2f6 330px) top/100% 330px no-repeat}
   .gin>*{position:absolute}
@@ -318,33 +319,58 @@
   .pvb{position:absolute;left:0;right:0;top:290px;bottom:0;background:#f2f2f6;border:1px solid #d6d6da;border-top:0;border-radius:0 0 32px 32px;box-shadow:none}
   .pvb{border-left:1px solid #d6d6da;border-right:1px solid #d6d6da}
   .pvt{position:absolute;left:0;right:0;top:392px;text-align:center;font-size:33px;line-height:47.8px;font-weight:600;letter-spacing:.1px}
-  .cin{position:relative;height:1200px}
-  .cin>*{position:absolute}
-  .ccard{left:20px;width:400px;background:#fff;border-radius:26px;overflow:hidden}
-  .ccard>*{position:absolute}
-  .ccard .r{left:0;right:0;height:60px}
-  .ccard em{position:absolute;left:20px;top:0;font-style:normal;color:#8a8a8d;font-size:15.3px;line-height:20px}
-  .v2{position:absolute;left:118.5px;top:0;font-size:15.3px;line-height:20px;color:#8a8a8d}
-  .v2 b{font-weight:400}
+  .cin2{position:relative;height:3300px}
+  .cin2>.cd{position:absolute;left:20px;width:400px}
+  .cd{background:#fff;border-radius:26px;overflow:hidden}
+  .cd .t,.eg .t{position:absolute;white-space:nowrap;line-height:20px}
+  .eg{position:absolute;left:0;right:0;height:1050px}
+  .eg>.t{left:25.3px}
+  .t.gr{color:#8a8a8d}.t.semi{font-weight:600}.t.semi2{font-weight:600;line-height:20px}
+  .cd .t.tm,.eg .t.lg,.cd .t.imp2{line-height:18.06px}
+  .lg{font-size:14.4px;line-height:18.06px}
+  .lg a,.imp2 a{color:#3b86f7}
+  .tm{font-size:14.4px;line-height:18.06px}
+  .amt2{font-weight:400;font-size:16.5px;line-height:20px}
+  .imp2{font-size:14.3px;line-height:18.4px}.imp2 b{font-weight:600}
+  .rb{position:absolute;width:22px;height:22px;border-radius:50%;border:1.5px solid #c7c7cb;background:#fff;box-sizing:border-box;cursor:pointer}
+  .rb.on{background:#3b86f7;border-color:#3b86f7}
+  .rb.on::after{content:"";position:absolute;left:6px;top:2.5px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(40deg)}
+  .so{position:absolute;left:0;right:0;height:84px}
+  .so b{position:absolute;left:118px;top:13px;font-weight:400;font-size:16.5px;line-height:20px}
+  .so span{position:absolute;left:118px;font-size:15px;line-height:18px;color:#8a8a8d;white-space:nowrap}
+  .so span:nth-of-type(1){top:31px}.so span:nth-of-type(2){top:49px}
+  .pill{position:absolute;left:20px;width:400px;height:34px;border-radius:17px;border:1.5px solid #8a8a8d;text-align:center;line-height:31px;font-size:17px;color:#8a8a8d}
+  .cd .r{position:absolute;left:0;right:0;height:60px}
+  .cd em{position:absolute;left:20px;top:0;font-style:normal;color:#8a8a8d;font-size:15.3px;line-height:20px}
+  .v2{position:absolute;left:118.5px;top:0;font-size:15.3px;line-height:20px;color:#8a8a8d}.v2 b{font-weight:400}
   .chv{position:absolute;right:20px;top:20px}
-  .dl{left:118.5px;top:74px;font-size:15.3px;line-height:20px;color:#8a8a8d}.dl b{font-weight:500;color:#444}
-  .ln{left:20px;right:0;height:1px;background:#e6e6e8}
-  .rd{left:0;right:0;height:22px}
-  .rd .rb{position:absolute;left:51px;top:-12px;width:22px;height:22px;border-radius:50%;border:1.5px solid #c7c7cb;background:#fff}
-  .rd .rb.on{background:#3b86f7;border-color:#3b86f7}
-  .rd .rb.on::after{content:"";position:absolute;left:6px;top:2.5px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(40deg)}
+  .dl{position:absolute;left:118.5px;top:60px;font-size:15.3px;line-height:20px;color:#8a8a8d}.dl b{font-weight:500;color:#444}
+  .ln{position:absolute;left:20px;right:20px;height:1px;background:#e6e6e8;display:block}
+  .cd>.rd{position:absolute;left:0;right:0;height:22px}
+  .rd .rb{left:51px;top:-12px}
   .rd span{position:absolute;left:118.5px;top:-12px;font-size:16.5px;line-height:24px}
-  .lr{left:0;right:0;height:50px}
-  .lr em{left:20px;top:0;line-height:21px}
-  .lr>span{position:absolute;left:122px;top:0;font-size:16.5px;line-height:21px}
-  .amt{position:absolute;right:20px;top:0;font-size:16.5px;line-height:21px;font-weight:400}
-  .lr .chv{top:6px}
-  .imp{left:20px;top:402px;font-size:14.3px;line-height:18.4px;color:#8a8a8d;white-space:nowrap}.imp b{font-weight:600}
-  .ccard .sq{left:16.3px;top:28px;font-size:17px;line-height:20px;font-weight:700}
-  .ccard .sq2{left:16.3px;top:53px;font-size:12.6px;line-height:16px}
-  .by{left:0;right:0;top:958px;text-align:center;font-size:12.5px;line-height:16px;color:#8a8a8d}
-  .pob{position:absolute;left:0;right:0;bottom:0;height:calc(var(--safe-bottom) + 76px);z-index:3;background:linear-gradient(rgba(242,242,246,0),rgba(242,242,246,.9) 30%);}
-  .po{position:absolute;left:44px;right:44px;top:6px;height:37px;border-radius:19px;background:#3b86f7;color:#a0fcff;font-size:17px}
+  /* Buy screen end */
+  .rw0{display:block;height:1px;background:#e6e6e8;margin-top:40px}
+  .rw{height:83.6px;display:flex;align-items:center;justify-content:space-between;padding:0 18px 0 20.5px;border-bottom:1px solid #e6e6e8;font-size:21.3px;font-weight:600;position:relative}
+  .rw .chv{position:static}
+  .cmpl{margin-top:34.6px;text-align:center;color:#3b86f7;font-size:16.7px;line-height:20px}
+  .cmpi{display:block;margin:16px 0 0 57.3px;width:348.7px;height:auto}
+  .sq3{position:relative;height:105.7px;margin-top:20px}
+  .sq3 b{position:absolute;left:24.4px;top:15.4px;font-size:17px;line-height:20px;font-weight:700}
+  .sq3 span{position:absolute;left:24.4px;top:42.3px;font-size:13.2px;line-height:16px}
+  .sq3 .ci{top:14px}.sq3 .c1{left:312px}.sq3 .c2{left:372px}
+  .ftn{position:relative;height:115.6px;background:#f2f2f6;width:100%}
+  .ftn p{position:absolute;left:20px;top:35px;font-size:14.4px;line-height:18.06px;color:#8a8a8d;white-space:nowrap}
+  .ftn u{position:absolute;right:-13px;bottom:-1px;text-decoration:none;color:#3b86f7;font-size:15.5px;padding-left:10px;background:linear-gradient(90deg,rgba(242,242,246,0),#f2f2f6 14px)}
+  /* empty bag */
+  #pg-bag.emp .top h1,#pg-bag.emp .edit{display:none}
+  .bt{display:none}#pg-bag.emp .bt{display:block;position:absolute;left:0;right:0;top:calc(var(--safe-top) + 14.5px);text-align:center;font-size:17px;line-height:22px;font-weight:600}
+  .empc{display:none}#pg-bag.emp .empc{display:block;position:absolute;left:0;right:0;top:calc(var(--safe-top) + 352px);text-align:center}
+  .empc svg{display:block;margin:0 auto;width:54px;height:67px}
+  .empc h2{margin-top:15px;font-size:24.4px;line-height:34px;font-weight:700;padding:0;letter-spacing:.2px}
+  .empc p{margin-top:4px;color:#8a8a8d;font-size:16.7px;line-height:22px}
+  .pob{position:absolute;left:0;right:0;bottom:0;height:calc(var(--safe-bottom) + 95px);z-index:3;background:linear-gradient(rgba(251,251,253,0),#fbfbfd 18%)}
+  .po{position:absolute;left:8px;right:8px;top:20px;height:44px;border-radius:22px;background:#3b86f7;color:#a0fcff;font-size:17px}
 
   .empty{padding:calc(var(--safe-top) + 190px) 20px 0;color:#8a8a8e;font-size:15px}
 
@@ -456,7 +482,7 @@
   <section class="pg" id="pg-foryou"><div class="top"><h1>For You</h1><button class="avatar" aria-label="Account">EH</button></div></section>
   <section class="pg" id="pg-further"><div class="top"><h1>Go Further</h1><button class="avatar" aria-label="Account">EH</button></div></section>
 <section class="pg" id="pg-bag"><div class="top"><h1>Bag</h1><button class="edit">Editar</button></div>
-  <p class="empty" id="bagEmpty">Your bag is empty.</p>
+  <div class="bt">Bag</div><div class="empc" id="bagEmpty"><svg viewBox="0 0 54 67" fill="none" stroke="#8e8e93" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="20" width="48" height="44" rx="8"/><path d="M15 20v-6a12 12 0 0 1 24 0v6"/></svg><h2>Your bag is empty.</h2><p>Continue browsing the Apple Store or buy an item<br>you&rsquo;ve previously saved.</p></div>
   <div id="bagFull" hidden>
     <div class="bc2 ca">Pay monthly for eligible items in your order when<br>you choose Affirm at checkout. <u>Financing details,<br>including Quebec</u></div>
     <div class="bc2 cb" id="cardB"><img id="bThumb" src="assets/buy/th_maroon.jpg" alt=""><b class="bn" id="bName"></b><span class="bpr" id="bPrice"></span>
@@ -547,6 +573,12 @@
     <p class="envp">As part of our efforts to reach <a>carbon neutrality by 2030</a>,<br>iPhone 18 Pro and iPhone 18 Pro Max do not include a power<br>adapter or EarPods. Included in the box is a USB-C Charge<br>Cable that supports fast charging and is compatible with USB-C<br>power adapters.</p>
     <div class="drow"><svg viewBox="0 0 26 26" width="24" height="24" fill="none" stroke="#555" stroke-width="1.5" stroke-linejoin="round"><path d="M3 8l10-5 10 5v10l-10 5-10-5zM3 8l10 5 10-5M13 13v10"/></svg><span>Get free delivery, or pick up available items at an<br>Apple Store</span></div>
     <div class="drow"><svg viewBox="0 0 26 26" width="24" height="24" fill="none" stroke="#555" stroke-width="1.5" stroke-linejoin="round"><rect x="3" y="9" width="20" height="14" rx="1.5"/><path d="M2 9h22v-3H2zM13 6v17M13 6c-1-3-5-4-5-1.5S11 6 13 6zm0 0c1-3 5-4 5-1.5S15 6 13 6z"/></svg><span>Add a free digital gift message</span></div>
+    <i class="rw0"></i><div class="rw"><span>Tech Specs</span><svg class="chv" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg></div><div class="rw"><span>Frequently Asked Questions</span><svg class="chv" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg></div>
+    <div class="cmpl">Compare iPhone models <svg viewBox="0 0 9 15" width="8" height="13" fill="none" stroke="#3b86f7" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg></div>
+    <img class="cmpi" src="assets/buy/compare.jpg" alt="">
+    <div class="sq3"><b>Still have questions?</b><span>Connect with a Specialist for answers.</span><i class="ci c1"></i><i class="ci c2"></i></div>
+    <div class="ftn"><p>&#9651; Trade-in values will vary based on the condition, year and<br>configuration of your eligible trade-in device. Not all de<u>Read more</u></p></div>
+    <div style="height:180px"></div>
   </div>
 </div>
   </div></div>
@@ -559,10 +591,7 @@
 <div class="also" id="also" aria-hidden="true">
   <div class="al-h"><button class="al-b" id="alBack" aria-label="Back"><svg viewBox="0 0 14 22" width="13" height="21" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2L3 11l8 9"/></svg></button><span>You may also like</span><button class="al-c" id="alCont">Continue</button></div>
   <div class="al-s">
-    <div class="g2"><div class="cell"><img src="assets/buy/al1.jpg" alt=""><i class="bk"></i><em>New</em><h4>iPhone 18 Pro Max<br>TechWoven Case with<br>MagSafe &ndash; Black</h4><p class="pr">$79</p><div class="sw"><i style="background:#8a4a4a"></i><i style="background:#6d6a3c"></i><i style="background:#8d8662"></i><i style="background:#566283"></i><span>+2 more</span></div><small>Free Shipping | Delivery: In stock</small></div>
-    <div class="cell"><img src="assets/buy/al2.jpg" alt=""><i class="bk"></i><em>New</em><h4>iPhone 18 Pro Max<br>Silicone Case with<br>MagSafe - Black</h4><p class="pr">$69</p><div class="sw"><i style="background:#4a1d27"></i><i style="background:#8b8353"></i><i style="background:#d7e3f2"></i><i style="background:#3c4048"></i><span>+2 more</span></div><small>Free Shipping | Delivery: In stock</small></div>
-    <div class="cell r2"><img src="assets/buy/al3.jpg" alt="" style="height:125px"><i class="bk"></i><em>New</em><h4>Wrist Strap &ndash; Taupe</h4><p class="pr" style="top:236px">$39</p></div>
-    <div class="cell r2"><img src="assets/buy/al4.jpg" alt="" style="height:129px"><i class="bk"></i><em>New</em><h4>iPhone 18 Pro Max Clear<br>Case with MagSafe</h4><p class="pr" style="top:236px">$69</p></div></div>
+    <div class="g2"><div class="cell"><img src="assets/buy/al1.jpg" alt=""><i class="bk"></i><em>New</em><h4>iPhone 18 Pro Max<br>TechWoven Case with<br>MagSafe &ndash; Black</h4><p class="pr">$79</p><div class="sw"><i style="background:#8a4a4a"></i><i style="background:#6d6a3c"></i><i style="background:#8d8662"></i><i style="background:#566283"></i><span>+2 more</span></div><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/al2.jpg" alt=""><i class="bk"></i><em>New</em><h4>iPhone 18 Pro Max<br>Silicone Case with<br>MagSafe - Black</h4><p class="pr">$69</p><div class="sw"><i style="background:#4a1d27"></i><i style="background:#8b8353"></i><i style="background:#d7e3f2"></i><i style="background:#3c4048"></i><span>+2 more</span></div><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/al3.jpg" alt="" style="width:23.7px;height:125px;top:37.5px"><i class="bk"></i><em>New</em><h4>Wrist Strap &ndash; Taupe</h4><p class="pr">$39</p><div class="sw"><i style="background:#5b2338"></i><i style="background:#8a8460"></i><i style="background:#b9cbe8"></i><i style="background:#5c5a55"></i><span>+2 more</span></div><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/al4.jpg" alt="" style="width:58px;height:123px;top:38.5px"><i class="bk"></i><em>New</em><h4>iPhone 18 Pro Max Clear<br>Case with MagSafe</h4><p class="pr">$69</p><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/p_wallet.jpg" alt="" style="width:48.7px;height:72.7px;top:63.6px"><i class="bk"></i><em>New</em><h4>iPhone FineWoven Wallet<br>with MagSafe &ndash; Dark Olive</h4><p class="pr">$79</p><div class="sw"><i style="background:#5b2338"></i><i style="background:#6b6a3a"></i><i style="background:#7d92bf"></i><i style="background:#9c2e82"></i><span>+2 more</span></div><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/p_cross.jpg" alt="" style="width:35.3px;height:113.0px;top:43.5px"><i class="bk"></i><em>New</em><h4>Crossbody Strap - Black</h4><p class="pr">$79</p><div class="sw"><i style="background:#5b2338"></i><i style="background:#8a8460"></i><i style="background:#b9cbe8"></i><i style="background:#2c3038"></i><span>+5 more</span></div><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/p_belkin.jpg" alt="" style="width:61.3px;height:113.3px;top:43.4px"><i class="bk"></i><h4>Belkin UltraGlass 2<br>Screen Protector for<br>iPhone 18 Pro Max | iPho&hellip;</h4><p class="pr">$54.95</p><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/p_herschel.jpg" alt="" style="width:77.7px;height:71.0px;top:64.5px"><i class="bk"></i><h4>Herschel Cloud Sling<br>for iPhone</h4><p class="pr">$79.95</p><div class="sw"><i style="background:#e8c9dc"></i><i style="background:#2a2a2d"></i><span></span></div><small>Free Shipping | Ships: 4-6 weeks</small></div><div class="cell"><img src="assets/buy/p_w40.jpg" alt="" style="width:119.0px;height:112.7px;top:43.6px"><i class="bk"></i><h4>40W Dynamic Power<br>Adapter with 60W Max</h4><p class="pr">$49</p><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/p_ms1.jpg" alt="" style="width:84.0px;height:90.0px;top:55.0px"><i class="bk"></i><h4>MagSafe Charger (1m)</h4><p class="pr">$55</p><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/p_ms2.jpg" alt="" style="width:84.0px;height:90.0px;top:55.0px"><i class="bk"></i><h4>MagSafe Charger (2m)</h4><p class="pr">$75</p><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/p_w20.jpg" alt="" style="width:74.0px;height:107.7px;top:46.1px"><i class="bk"></i><h4>20W USB-C<br>Power Adapter</h4><p class="pr">$25</p><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/p_c60.jpg" alt="" style="width:74.3px;height:80.3px;top:59.9px"><i class="bk"></i><h4>60W USB-C Charge Cable<br>(1m)</h4><p class="pr">$25</p><small>Free Shipping | Delivery: In stock</small></div><div class="cell"><img src="assets/buy/p_c240.jpg" alt="" style="width:87.7px;height:93.3px;top:53.4px"><i class="bk"></i><h4>240W USB-C Charge<br>Cable (2m)</h4><p class="pr">$35</p><small>Free Shipping | Delivery: In stock</small></div></div>
   </div>
   <div class="toast" id="toast"><svg viewBox="0 0 30 30" width="29" height="29" fill="none" stroke="#111" stroke-width="2"><circle cx="15" cy="15" r="13.500"/><path d="M9 15.500l4 4 8-9" stroke-linecap="round" stroke-linejoin="round"/></svg>Product added to Bag</div>
 </div>
@@ -580,19 +609,53 @@
   </div></div></div></div>
 <div class="sheet" id="chk" aria-hidden="true"><div class="sh-bd"></div><div class="sh-p">
   <div class="sh-h"><button class="xc" id="cX"><svg viewBox="0 0 20 20" width="19" height="19" stroke="#111" stroke-width="2.1" stroke-linecap="round" fill="none"><path d="M3 3l14 14M17 3L3 17"/></svg></button><span class="ct2">Checkout</span></div>
-  <div class="sh-s" id="cScroll"><div class="cin">
-    <div class="ccard" style="top:78px;height:260px"><div class="r" style="top:14px"><em>Digital Gift<br>Message</em><div class="v2"><b>From:</b><br><span id="cFrom">Ernesto</span></div><svg class="chv" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.500 1.500l6 6-6 6"/></svg></div>
-      <div class="dl"><b>Delivery details:</b><br><span id="cDel">Gift revealed, Blue theme</span></div><i class="ln" style="top:120px"></i>
-      <div class="rd" style="top:158px"><i class="rb on"></i><span>Send when gift ships</span></div><i class="ln" style="top:176px"></i><div class="rd" style="top:210px"><i class="rb"></i><span>Send on a specific date</span></div></div>
-    <div class="ccard" style="top:356px;height:456px"><div class="lr" style="top:16px"><em>Contact<br>Details</em><span>Enter Details</span><svg class="chv" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.500 1.500l6 6-6 6"/></svg></div><i class="ln" style="top:72px"></i>
-      <div class="lr" style="top:90px"><em>Gift Cards</em><span>Add a gift card</span><svg class="chv" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.500 1.500l6 6-6 6"/></svg></div><i class="ln" style="top:140px"></i>
-      <div class="lr" style="top:158px"><em>Payment</em><span>Enter payment</span><svg class="chv" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.500 1.500l6 6-6 6"/></svg></div><i class="ln" style="top:208px"></i>
-      <div class="lr" style="top:226px"><em>Summary</em><span>Bag Subtotal</span><b class="amt" id="cSub"></b></div>
-      <div class="lr" style="top:272px"><span>Free Shipping</span><b class="amt">$0.00</b></div><i class="ln" style="top:318px;left:128px"></i>
-      <div class="lr" style="top:332px"><span>Order Total</span><b class="amt" id="cTot"></b></div><i class="ln" style="top:392px;left:0;right:0"></i>
-      <p class="imp"><b>Important:</b> The estimated taxes are based on the shipping<br>address. The final sales tax, if applicable, will be applied<br>once your order ships and your final invoice is issued.</p></div>
-    <div class="ccard" style="top:830px;height:107px"><b class="sq">Still have questions?</b><span class="sq2">Connect with a Specialist for answers.</span><i class="ci c1"></i><i class="ci c2"></i></div>
-    <p class="by">By tapping Place Order, you accept and agree to the Apple<br>Store Terms of Sale and the Apple Privacy Policy.</p><div style="height:170px"></div>
+  <div class="sh-s" id="cScroll"><div class="cin2" id="cin">
+    <div class="cd" id="cA" style="height:97.5px"><i class="rb" id="cGiftRad" style="left:51px;top:37.8px"></i><div class="t semi" style="left:119px;top:20px;font-size:17px;display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="8" width="18" height="5" rx="1"/><path d="M5 13v8h14v-8M12 8v13M12 8c-1-4-6-4.500-5-1.500 1 2 4 1.500 5 1.500zM12 8c1-4 6-4.500 5-1.500-1 2-4 1.500-5 1.500z"/></svg> This order is a gift</div><div class="t gr" style="left:119px;top:42.5px;font-size:14.8px;line-height:18.2px">Includes a digital gift message. Pickup is<br>unavailable for gift items.</div></div>
+    <div class="cd" id="cG" style="height:222px" hidden><div class="r" style="top:14px"><em>Digital Gift<br>Message</em><div class="v2"><b>From:</b><br><span id="cFrom">Ernesto</span></div><svg class="chv" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg></div>
+      <div class="dl"><b>Delivery details:</b><br><span id="cDel">Gift revealed, Blue theme</span></div><i class="ln" style="top:100px"></i>
+      <div class="rd" style="top:132px"><i class="rb on"></i><span>Send when gift ships</span></div><i class="ln" style="top:158px"></i><div class="rd" style="top:186px"><i class="rb"></i><span>Send on a specific date</span></div></div>
+    <div class="cd" id="cB" style="height:67.3px"><div class="t" style="left:20px;top:23.5px;font-size:16.5px">Postcode</div><div class="t gr" style="left:122px;top:23.5px;font-size:16.5px">Enter</div><svg class="chv" style="top:26px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg></div>
+    <div class="cd" id="cC" style="height:526px">
+      <img id="cThumb" src="assets/buy/th_maroon.jpg" alt="" style="position:absolute;left:44.5px;top:17.7px;width:35.3px;height:43.5px;border-radius:3px;object-fit:cover">
+      <div class="t" id="cName" style="left:118px;top:13.5px;font-size:16.5px;line-height:21px"></div>
+      <div class="t" id="cPrice" style="right:11px;top:13.8px;font-size:16.5px;line-height:20.1px;text-align:right"></div>
+      <div id="cCare"><i class="ln" style="top:123.7px;left:118px;right:10px"></i><span class="ti" style="left:121px;top:133.2px;width:33px;height:33.5px;border-radius:8px;position:absolute"><svg viewBox="0 0 24 24" style="fill:#e8392f"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></span>
+        <div class="t semi2" id="cCareT" style="left:168px;top:129px;font-size:16.5px;line-height:20.1px"></div>
+        <div class="t gr" style="left:168px;top:205px;font-size:14.6px;line-height:18px">Automatically registered with your<br>Apple hardware. Billed separately.<br>Cancel anytime.</div></div>
+      <div id="cShip" style="position:absolute;left:0;right:0;top:274.7px;height:250px"><i class="ln" style="top:0;left:20px"></i>
+        <div class="so" style="top:0"><i class="rb on" style="left:51px;top:42.5px"></i><b>Ships: 3-5 business days</b><span>Standard Shipping - Free</span><span>Delivery date pending payment approval.</span></div><i class="ln" style="top:84px;left:118px"></i>
+        <div class="so" style="top:84px"><i class="rb" style="left:51px;top:42.5px"></i><b>Ships: 3-5 business days</b><span>Expedited Shipping - Free</span><span>Delivery date pending payment approval.</span></div><i class="ln" style="top:168px;left:118px"></i>
+        <div class="so" style="top:168px"><i class="rb" style="left:51px;top:42.5px"></i><b>Pickup Store</b><span>Select an Apple Store for availability</span><span>Pickup date pending payment approval.</span></div></div></div>
+    <div class="cd" id="cD" style="height:1297.5px">
+      <div class="t gr" style="left:20px;top:24px;font-size:16.5px;line-height:20px">Shipping<br>Address</div><div class="t" style="left:122px;top:24px;font-size:16.5px">Enter address</div><svg class="chv" style="top:28px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:87.9px"></i>
+      <div class="t gr" style="left:20px;top:112px;font-size:16.5px">Payment</div><div class="t" style="left:122px;top:112px;font-size:16.5px">Enter payment</div><svg class="chv" style="top:116px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:156.3px"></i>
+      <div class="t gr" style="left:20px;top:171px;font-size:16.5px">Summary</div><div class="t" style="left:122px;top:171px;font-size:16.5px">Bag Subtotal</div><b class="t amt2" id="cSub" style="right:20px;top:171px"></b>
+      <div class="t" style="left:122px;top:223px;font-size:16.5px">Free Shipping</div><b class="t amt2" style="right:20px;top:223px">$0.00</b><i class="ln" style="top:283.3px;left:107.5px"></i>
+      <div class="t" style="left:122px;top:303px;font-size:16.5px">Order Total</div><b class="t amt2" id="cTot" style="right:20px;top:303px"></b>
+      <p class="t gr imp2" style="left:20px;top:360px"><b>Important:</b> The estimated taxes are based on the shipping<br>address. The final sales tax, if applicable, will be applied<br>once your order ships and your final invoice is issued.</p>
+      <div id="cSvc"><i class="ln" style="top:423.2px;left:0;right:0"></i>
+        <div class="t semi2" style="left:20px;top:451px;font-size:16.5px">Services billed separately</div>
+        <span class="ti" style="left:24.4px;top:495.9px;width:41px;height:40px;border-radius:9px;position:absolute"><svg viewBox="0 0 24 24" style="fill:#e8392f"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></span>
+        <div class="t semi2" style="left:80px;top:490px;font-size:16.3px;line-height:20px">AppleCare+ for iPhone 18 Pro Max</div><div class="t" id="cCareP" style="left:80px;top:512px;font-size:16.3px;line-height:20px">$154.99/yr. until cancelled</div>
+        <div class="t" style="left:80px;top:534px;font-size:16.3px;line-height:20px">Billed to your selected AppleCare+<br>payment method</div>
+        <p class="t gr" style="left:80px;top:588px;font-size:16.1px;line-height:20.1px">You will be billed starting when your device<br>ships or is picked up in-store and when a<br>payment is successfully processed. Your<br>coverage will continue as long as you<br>continue making payments. <span id="cCareK">Annual<br>coverage is one year in duration and<br>automatically renews every year until</span><br>cancelled. Cancel anytime in Settings &gt;<br>Apple Account or in the Apple Support app<br>at least a day before each renewal date.<br>Applicable fees and taxes will be applied at<br>time of charge.</p>
+        <div class="t" style="left:20px;top:864px;font-size:16px;line-height:20px">Applicable fees and taxes will be applied at time of charge.</div>
+        <i class="ln" style="top:920.6px;left:0;right:0"></i>
+        <div class="t gr" style="left:16.3px;top:943px;font-size:14.4px;line-height:18px">AppleCare+ <span id="cPlanT">annual</span> plan(s)</div>
+        <p class="t gr tm" style="left:16.3px;top:975px">By choosing to continue below, you agree to the AppleCare+<br>Terms and Conditions. You agree AppleCare+ coverage and<br>billing begins at the time of purchase if you already have your<br>device or when the device is shipped or picked up in a store<br>and will be charged to the card provided, and for monthly or<br>annual recurring payment AppleCare+, if linked to an Apple<br>Account, the payment source associated with your Apple<br>Account.</p>
+        <p class="t gr tm" style="left:16.3px;top:1137px">You also acknowledge and agree to receive all plan<br>documentation, including the AppleCare+ Terms and<br>Conditions, and Plan Confirmation, if any, electronically and<br>that you are over 18 years of age.</p>
+        <p class="t gr tm" style="left:16.3px;top:1227px">Monthly and annual AppleCare plans automatically renew so<br>long as you continue to pay or until cancelled.</p>
+        <div class="t" style="left:20px;top:1275px;font-size:16.1px;line-height:20px;color:#3b86f7">AppleCare+ Terms and Conditions</div></div></div>
+    <div class="eg" id="cE"><div class="cd" style="position:absolute;left:20px;top:0;width:400px;height:107px"><b class="t" style="left:16.3px;top:28px;font-size:17px;line-height:20px;font-weight:700">Still have questions?</b><span class="t" style="left:16.3px;top:53px;font-size:12.6px;line-height:16px">Connect with a Specialist for answers.</span><i class="ci c1"></i><i class="ci c2"></i></div>
+      <p class="t gr lg" style="top:138px">By tapping Place Order, you accept and agree to the Apple<br>Sales and Refund Policy, Apple Product Terms and Conditions, if<br>applicable, and Apple&rsquo;s Privacy Policy.</p>
+      <p class="t gr lg" style="top:230px">If the payment method you use today matches what&rsquo;s on file<br>with your Apple ID, we&rsquo;ll automatically link your account so you<br>can manage your coverage in your Account Settings.</p>
+      <p class="t gr lg" style="top:322px">This amount is the estimated total of all initial monthly payments<br>in this order; the actual monthly payment amount is shown when<br>you check out. Financing provided, and all transactions are<br>subject to approval by Affirm.</p>
+      <p class="t gr lg" style="top:427px">&plusmn; Payment plans available on approved credit for iPhone and<br>Apple Watch purchases over $99, Mac purchases over $199,<br>and iPad purchases over $199. Offer valid on qualifying<br>purchases of eligible Apple products, at Apple Store locations,<br><a>apple.com/ca</a>, on the Apple Store app and by calling<br>1-800-MY-APPLE. Financing provided by Affirm, and all<br>transactions are subject to approval. Financing offers may vary<br>from time to time and may be amended or cancelled at any time.<br>See <a>apple.com/ca/shop/browse/financing</a> for more information.<br>Quebec residents: Learn more about financing <a>here</a>.</p>
+      <p class="t gr lg" style="top:622px">7.99% APR Representative example based on $1099 purchase:<br>Total repayment amount of $1,192.79 paid over 24 monthly<br>payments of $49.70 at 7.99% APR. Total interest charges and<br>cost of borrowing $93.79. Example transaction amount does not<br>include applicable taxes, which must be paid in full at time of<br>shipment or pickup.</p>
+      <div class="pill" style="top:760px">FAQs</div><div class="pill" style="top:803px">Call Apple</div>
+      <div class="t gr" style="left:0;right:0;top:843px;text-align:center;font-size:16.5px;line-height:20px">Account: name@icloud.com</div><i class="ln" style="top:889px;left:21px;right:20px"></i>
+      <div class="t" style="left:0;right:0;top:897px;text-align:center;font-size:16px;line-height:22px">Apple Sales and Refund Policy</div><div class="t" style="left:0;right:0;top:936px;text-align:center;font-size:16px;line-height:22px">Apple Privacy Policy</div>
+      <div class="t gr" style="left:0;right:0;top:969px;text-align:center;font-size:16px;line-height:22px">Copyright &copy; 2026 Apple Inc. All rights reserved.</div></div>
   </div></div>
   <div class="pob"><button class="po">Place Order</button></div></div></div>
 
@@ -702,7 +765,7 @@
   function money(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
   function bagTotal(){return st.s!==null?price(st.s):(st.m===1?1899:1749)}
   function renderBag(){
-    $('bagEmpty').hidden=bag.on;$('bagFull').hidden=!bag.on;$('bdg').hidden=!bag.on;
+    $('bagEmpty').hidden=bag.on;$('pg-bag').classList.toggle('emp',!bag.on);$('bagFull').hidden=!bag.on;$('bdg').hidden=!bag.on;
     if(!bag.on)return;
     var t=bagTotal(),care=st.c==='plus'&&st.p!==null,nm=(st.m===null?NM[0]:NM[st.m])+(st.s!==null?' '+SZ[st.s]:'')+(st.f!==null?' '+FN[st.f]:'');
     $('bName').innerHTML=nm.replace(/^(iPhone 18 Pro( Max)?) /,'$1<br>');
@@ -733,10 +796,29 @@
   document.querySelectorAll('.gopt').forEach(function(b){b.addEventListener('click',function(){bag.rv=+b.dataset.rv;document.querySelectorAll('.gopt').forEach(function(x){x.classList.toggle('sel',x===b)})})});
   document.querySelectorAll('.ths img').forEach(function(im){im.addEventListener('click',function(){bag.theme=+im.dataset.t;document.querySelectorAll('.ths img').forEach(function(x){x.classList.toggle('on',x===im)});$('pvImg').src='assets/buy/pv'+bag.theme+'.jpg'})});
   var TN=['Blue','Red','Orange','Multicolor'];
-  function fillChk(){$('cFrom').textContent=bag.gift?($('gFrom').value||'Ernesto'):'';$('cDel').textContent=(bag.rv?'Gift revealed':'Gift hidden')+', '+TN[bag.theme]+' theme';renderBag();var g=bag.gift;document.querySelectorAll('#chk .ccard')[0].style.display=g?'':'none';var c=document.querySelectorAll('#chk .ccard');var off=g?0:-278;c[1].style.top=(356+off)+'px';c[2].style.top=(830+off)+'px';document.querySelector('#chk .by').style.top=(958+off)+'px'}
+  function fillChk(){
+    renderBag();var g=bag.gift,care=st.c==='plus'&&st.p!==null,t=bagTotal(),mon=st.p==='m';
+    $('cFrom').textContent=$('gFrom').value||'Ernesto';$('cDel').textContent=(bag.rv?'Gift revealed':'Gift hidden')+', '+TN[bag.theme]+' theme';
+    $('cGiftRad').classList.toggle('on',g);$('cG').hidden=!g;
+    var nm=(st.m===null?NM[0]:NM[st.m])+(st.s!==null?' '+SZ[st.s]:'')+(st.f!==null?' '+FN[st.f]:'');
+    $('cName').innerHTML=nm.replace(/^(iPhone 18 Pro( Max)?) /,'$1<br>');
+    $('cPrice').innerHTML=money(t)+' or<br>$'+mo(t)+'/mo. for<br>24 mo. at 0%<br>APR&plusmn;';
+    $('cThumb').src='assets/buy/th_'+(st.f!==null?FK[st.f]:'maroon')+'.jpg';
+    $('cCareT').innerHTML='AppleCare+ for<br>'+(st.m===0?'iPhone 18 Pro':'iPhone 18 Pro Max')+' - '+(mon?'monthly':'annual')+'<br>coverage';
+    $('cCareP').textContent=mon?'$15.49/mo. until cancelled':'$154.99/yr. until cancelled';
+    $('cCareK').innerHTML=mon?'Monthly<br>coverage continues every month until':'Annual<br>coverage is one year in duration and<br>automatically renews every year until';
+    $('cPlanT').textContent=mon?'monthly':'annual';
+    $('cCare').hidden=!care;$('cSvc').hidden=!care;$('cShip').style.top=(care?274.7:123.7)+'px';
+    var cH=care?526:375,dH=care?1297.5:415,y=74.1,gap=17.7;
+    function put(id,h,hide){var e=$(id);if(hide)return;e.style.top=y+'px';e.style.height=h+'px';y+=h+gap}
+    put('cA',97.5);put('cG',222,!g);put('cB',67.3);put('cC',cH);put('cD',dH);
+    $('cE').style.top=y+'px';$('cin').style.height=(y+1060)+'px';
+  }
   $('gNext').addEventListener('click',function(){var f=$('gFrom');if(!f.value.trim()){f.focus();f.style.borderColor='#e8392f';return}f.style.borderColor='';fillChk();$('cScroll').scrollTop=0;openSheet(chk)});
   $('cX').addEventListener('click',function(){closeSheet(chk);closeSheet(gift)});
-  document.querySelectorAll('#chk .rd').forEach(function(r){r.addEventListener('click',function(){document.querySelectorAll('#chk .rb').forEach(function(x){x.classList.toggle('on',x.parentNode===r)})})});
+  document.querySelectorAll('#cG .rd').forEach(function(r){r.addEventListener('click',function(){document.querySelectorAll('#cG .rb').forEach(function(x){x.classList.toggle('on',x.parentNode===r)})})});
+  $('cGiftRad').addEventListener('click',function(){bag.gift=!bag.gift;fillChk()});
+  document.querySelectorAll('#cShip .so').forEach(function(r){r.addEventListener('click',function(){document.querySelectorAll('#cShip .rb').forEach(function(x){x.classList.toggle('on',x.parentNode===r)})})});
   var _r=render;render=function(){_r();var k=st.f!==null?FK[st.f]:'maroon';$('boxImg').src='assets/buy/box_'+k+'.jpg';$('sThumb').src='assets/buy/th_'+k+'.jpg';document.querySelector('.xrow b').textContent=st.s!==null?'Delivery details updated':'Show delivery and pickup details';if(bag.on)renderBag()};
   renderBag();
   var nav=document.querySelector('.nav'),navt=document.getElementById('navt'),names={foryou:'For You',products:'Products',further:'Go Further',bag:'Bag'};
