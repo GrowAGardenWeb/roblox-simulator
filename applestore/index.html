@@ -748,7 +748,6 @@
   <button class="gnx" id="gnX" aria-label="Close"><svg viewBox="0 0 20 20" width="19" height="19" stroke="#111" stroke-width="2.1" stroke-linecap="round" fill="none"><path d="M3 3l14 14M17 3L3 17"/></svg></button>
 </div></div>
 <div class="sheet" id="ty" aria-hidden="true" style="z-index:80"><div class="sh-bd"></div><div class="sh-p" style="top:calc(var(--safe-top) + 3px);background:#fff">
-  <div class="simb">SIMULATOR &mdash; not a real order</div>
   <div class="sh-s"><div class="tyi">
     <svg class="tyc" viewBox="0 0 34 34" width="34" height="34" fill="none" stroke="#4ec26a" stroke-width="2.4"><circle cx="17" cy="17" r="15.500"/><path d="M10 17.500l5 5 9-10.500" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <h1>Thank you.</h1><p class="g1">We&rsquo;re sending your order confirmation to:</p><p class="tym" id="tyMail"></p>
@@ -759,7 +758,6 @@
   <button class="gnx" id="tyX" aria-label="Done" style="background:#3b86f7"><svg viewBox="0 0 20 20" width="19" height="19" stroke="#a0fcff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M3.500 10.500l4.500 4.500L16.500 5.500"/></svg></button>
 </div></div>
 <div class="sheet" id="od" aria-hidden="true" style="z-index:90"><div class="sh-bd"></div><div class="sh-p" style="top:calc(var(--safe-top) + 3px);background:#fff">
-  <div class="simb">SIMULATOR &mdash; not a real order</div>
   <div class="sh-s"><div class="odi">
     <div class="odpr"><img id="odImg" src="assets/buy/th_maroon.jpg" alt=""><div><b class="odn" id="odName"></b><span class="odp" id="odPrice"></span></div></div>
     <i class="odh"></i><h3 id="odArr">Arrives</h3><p class="g2">We&rsquo;re preparing your order and will notify you when it ships.</p>
@@ -1004,7 +1002,7 @@
   function dateRange(){var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],a=new Date(Date.now()+5*864e5),b=new Date(Date.now()+6*864e5),f=function(d){return m[d.getMonth()]+' '+d.getDate()};return f(a)+' - '+f(b)}
   document.querySelector('.po').addEventListener('click',function(){
     var addr=$('cAddr').textContent,mail=/icloud\.com/.test(addr)?addr.replace('Form sent to ',''):'your email';
-    $('tyMail').textContent=mail;$('tyNo').textContent='SIM-'+String(Date.now()).slice(-8);
+    $('tyMail').textContent=mail;$('tyNo').textContent='W'+String(Date.now()).slice(-6)+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
     var nm=(st.m===null?NM[0]:NM[st.m])+(st.s!==null?' '+SZ[st.s]:'')+(st.f!==null?' '+FN[st.f]:''),t=bagTotal();
     $('odName').textContent=nm;$('odPrice').textContent=money(t);$('odImg').src='assets/buy/th_'+(st.f!==null?FK[st.f]:'maroon')+'.jpg';
     var dr=dateRange();$('odArr').textContent='Arrives '+dr;$('odDel').textContent=dr+' by Standard Delivery';
