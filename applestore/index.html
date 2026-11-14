@@ -350,7 +350,7 @@
   .so b{position:absolute;left:118px;top:13px;font-weight:400;font-size:16.5px;line-height:20px}
   .so span{position:absolute;left:118px;font-size:15px;line-height:18px;color:#8a8a8d;white-space:nowrap}
   .so span:nth-of-type(1){top:31px}.so span:nth-of-type(2){top:49px}
-  .pill{position:absolute;left:20px;width:400px;height:34px;border-radius:17px;border:1.5px solid #8a8a8d;text-align:center;line-height:31px;font-size:17px;color:#8a8a8d}
+  .opill{position:absolute;left:20px;width:400px;height:34px;border-radius:17px;border:1.5px solid #8a8a8d;text-align:center;line-height:31px;font-size:17px;color:#8a8a8d}
   .cd .r{position:absolute;left:0;right:0;height:60px}
   .cd em{position:absolute;left:20px;top:0;font-style:normal;color:#8a8a8d;font-size:15.3px;line-height:20px}
   .v2{position:absolute;left:118.5px;top:0;font-size:15.3px;line-height:20px;color:#8a8a8d}.v2 b{font-weight:400}
@@ -664,7 +664,7 @@
       <p class="t gr lg" style="top:322px">This amount is the estimated total of all initial monthly payments<br>in this order; the actual monthly payment amount is shown when<br>you check out. Financing provided, and all transactions are<br>subject to approval by Affirm.</p>
       <p class="t gr lg" style="top:427px">&plusmn; Payment plans available on approved credit for iPhone and<br>Apple Watch purchases over $99, Mac purchases over $199,<br>and iPad purchases over $199. Offer valid on qualifying<br>purchases of eligible Apple products, at Apple Store locations,<br><a>apple.com/ca</a>, on the Apple Store app and by calling<br>1-800-MY-APPLE. Financing provided by Affirm, and all<br>transactions are subject to approval. Financing offers may vary<br>from time to time and may be amended or cancelled at any time.<br>See <a>apple.com/ca/shop/browse/financing</a> for more information.<br>Quebec residents: Learn more about financing <a>here</a>.</p>
       <p class="t gr lg" style="top:622px">7.99% APR Representative example based on $1099 purchase:<br>Total repayment amount of $1,192.79 paid over 24 monthly<br>payments of $49.70 at 7.99% APR. Total interest charges and<br>cost of borrowing $93.79. Example transaction amount does not<br>include applicable taxes, which must be paid in full at time of<br>shipment or pickup.</p>
-      <div class="pill" style="top:760px">FAQs</div><div class="pill" style="top:803px">Call Apple</div>
+      <div class="opill" style="top:760px">FAQs</div><div class="opill" style="top:803px">Call Apple</div>
       <div class="t gr" style="left:0;right:0;top:843px;text-align:center;font-size:16.5px;line-height:20px">Account: name@icloud.com</div><i class="ln" style="top:889px;left:21px;right:20px"></i>
       <div class="t" style="left:0;right:0;top:897px;text-align:center;font-size:16px;line-height:22px">Apple Sales and Refund Policy</div><div class="t" style="left:0;right:0;top:936px;text-align:center;font-size:16px;line-height:22px">Apple Privacy Policy</div>
       <div class="t gr" style="left:0;right:0;top:969px;text-align:center;font-size:16px;line-height:22px">Copyright &copy; 2026 Apple Inc. All rights reserved.</div></div>
@@ -763,7 +763,7 @@
   });
   var trk=document.getElementById('trk'),dts=document.querySelectorAll('.dts i');
   trk.addEventListener('scroll',function(){var i=Math.round(trk.scrollLeft/421);dts.forEach(function(d,k){d.classList.toggle('on',k===i)});document.getElementById('cap').textContent=i?'USB-C Charge Cable':'iPhone 18 Pro Max'},{passive:true});
-  function openBuy(){closePdp();buy.classList.add('on');buy.setAttribute('aria-hidden','false');buyS.scrollTop=0;render()}
+  function openBuy(){pdp.style.transition='none';closePdp();void pdp.offsetWidth;pdp.style.transition='';buy.classList.add('on');buy.setAttribute('aria-hidden','false');buyS.scrollTop=0;render()}
   function closeBuy(){buy.classList.remove('on');buy.setAttribute('aria-hidden','true')}
   document.getElementById('bBack').addEventListener('click',closeBuy);
   document.getElementById('pdpBuy').addEventListener('click',openBuy);
