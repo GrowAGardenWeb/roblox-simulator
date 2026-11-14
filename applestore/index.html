@@ -48,7 +48,7 @@
   .hero,.sc{scroll-snap-stop:always}
   .heroes{gap:11px;padding:0 20px;margin-top:18.7px}
   .heroes+.heroes{margin-top:36.7px}
-  .hero{flex:none;width:380px;height:540px;border-radius:28px;position:relative;overflow:hidden;scroll-snap-align:start;color:var(--ink,#fff)}
+  .hero{--ink:#fff;flex:none;width:380px;height:540px;border-radius:28px;position:relative;overflow:hidden;scroll-snap-align:start;color:var(--ink)}
   .hero{background:var(--bg)}
   .hero.a{--bg:#edc4d5}
   .hero.c{--bg:#f2c9b7}
@@ -507,24 +507,30 @@
       <div class="hero a"><img src="assets/hero1.jpg" alt=""><div class="b1"></div><div class="b2"></div>
         <div class="nw">New</div><div class="tt">iPhone 18 Pro</div>
         <div class="pr"><span>From $1749 or $72.87/mo. for 24 mo. at 0% APR<sup>&#9674;</sup></span></div><button class="buy">Buy</button></div>
-      <div class="hero i" style="--bg:#b7cce7;--b1:#1b3574;--b2:#142756"><img src="assets/hero4.jpg" alt=""><div class="b1"></div><div class="b2"></div>
-        <div class="nw">New</div><div class="tt">Apple Watch Series 12</div>
-        <div class="pr"><span>From $549 or $46.99/mo. for 12 mo. at 4.99% APR<sup>&#9674;</sup></span></div><button class="buy">Buy</button></div>
-      <div class="hero i" style="--bg:#c1b7e5;--b1:#0a2149;--b2:#061936"><img src="assets/hero5.jpg" alt=""><div class="b1"></div><div class="b2"></div>
-        <div class="nw">New 14&Prime; model</div><div class="tt">MacBook Pro</div>
-        <div class="pr"><span>From $2799</span></div><button class="buy">Buy</button></div>
-      <div class="hero i" style="--bg:#a5ccac;--b1:#284b43;--b2:#1d3732"><img src="assets/hero6.jpg" alt=""><div class="b1"></div><div class="b2"></div>
-        <div class="nw">New</div><div class="tt">Apple HomeView</div>
-        <div class="pr"><span>$429</span></div><button class="buy">Buy</button></div>
-      <div class="hero i" style="--bg:#f5c661;--b1:#faecae;--b2:#fefac5;--ink:#000;--buy:#000;--buyc:#fff"><img src="assets/hero7.jpg" alt=""><div class="b1"></div><div class="b2"></div>
-        <div class="nw">New</div><div class="tt">iPad mini</div>
-        <div class="pr"><span>From $949</span></div><button class="buy">Buy</button></div>
-    </div>
-    <div class="rail heroes">
       <div class="hero c i"><img src="assets/hero3.jpg" alt=""><div class="b1"></div><div class="b2"></div>
         <div class="nw">New</div><div class="tt">iPhone Duo</div>
         <div class="pr"><span>From $2999 or $124.96/mo. for 24 mo. at 0% APR<sup>&#9674;</sup></span></div><button class="buy">Buy</button></div>
-      <div class="hero s s2"><img src="assets/sliver2.jpg" alt=""></div>
+      <div class="hero i" style="--bg:#e07342"><img src="assets/hero8.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">Apple Watch Ultra 4</div>
+        <div class="pr"><span>From $1099 or $94.07/mo. for 12 mo. at 4.99% APR<sup>&#9674;</sup></span></div><button class="buy">Buy</button></div>
+      <div class="hero i" style="--bg:#b7cce7;--b1:#1b3574;--b2:#142756"><img src="assets/hero9.jpg" alt=""><div class="b1" style="height:100px"></div><div class="b2" style="top:470.7px"></div>
+        <div class="nw">New</div><div class="tt" style="white-space:normal;width:300px;font-size:23px;line-height:26px">MacBook Pro<br>PROLED XDR Display</div>
+        <div class="pr" style="top:490px"><span>From $3999</span></div><button class="buy" style="top:490px">Buy</button></div>
+      <div class="hero i" style="--bg:#dfde8e;--b1:#4a5b30;--b2:#374223"><img src="assets/hero10.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">Apple TV 4K</div>
+        <div class="pr"><span>$429</span></div><button class="buy">Buy</button></div>
+      <div class="hero i" style="--bg:#f1ab92"><img src="assets/hero11.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">AirPods 5</div>
+        <div class="pr"><span>From $179</span></div><button class="buy">Buy</button></div>
+      <div class="hero i" style="--bg:#69b590;--b1:#284b44;--b2:#1d3732"><img src="assets/hero12.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">HomePod mini 2</div>
+        <div class="pr"><span>$199</span></div><button class="buy">Buy</button></div>
+      <div class="hero i" style="--bg:#e6a1c7;--b1:#3a054e;--b2:#2c0439"><img src="assets/hero13.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">iMac</div>
+        <div class="pr"><span>From $2099</span></div><button class="buy">Buy</button></div>
+      <div class="hero i" style="--bg:#f5c661;--b1:#faecae;--b2:#fefac5;--ink:#000;--buy:#000;--buyc:#fff"><img src="assets/hero7.jpg" alt=""><div class="b1"></div><div class="b2"></div>
+        <div class="nw">New</div><div class="tt">iPad mini</div>
+        <div class="pr"><span>From $949</span></div><button class="buy">Buy</button></div>
     </div>
 
     <h2 class="sec">Ways to save</h2>
@@ -981,6 +987,13 @@
       h+='<div class="ftg"><span>Save as my default credit card information</span>'+TG('pDef')+'</div>';
     }
     $('fBody').innerHTML=h;
+    if(m==='pay'){
+      var rd=function(n){var s='';for(var i=0;i<n;i++)s+=Math.floor(Math.random()*10);return s};
+      $('pN').value='9'+rd(3)+' '+rd(4)+' '+rd(4)+' '+rd(4);
+      $('pC').value=rd(3);
+      $('pM').value=String(1+Math.floor(Math.random()*12)).padStart(2,'0');
+      $('pY').value=String(new Date().getFullYear()+1+Math.floor(Math.random()*5));
+    }
     document.querySelectorAll('#fBody .tgl').forEach(function(t){t.addEventListener('click',function(){t.classList.toggle('on')})});
     document.querySelectorAll('#fBody .fr.lk').forEach(function(r){r.addEventListener('click',function(){var tx=r.textContent;if(/Copy/.test(tx)){var o=m==='ship'?'b':'s',d=m==='ship'?'s':'b';['F','L','C','S','A','T','P','Z'].forEach(function(k){var a=document.getElementById(o+k),b=document.getElementById(d+k);if(a&&b&&a.value)b.value=a.value})}})});
   }
