@@ -350,6 +350,13 @@
   .so b{position:absolute;left:118px;top:13px;font-weight:400;font-size:16.5px;line-height:20px}
   .so span{position:absolute;left:118px;font-size:15px;line-height:18px;color:#8a8a8d;white-space:nowrap}
   .so span:nth-of-type(1){top:31px}.so span:nth-of-type(2){top:49px}
+  .adp{position:absolute;left:50%;bottom:0;width:100%;max-width:520px;transform:translate(-50%,100%);transition:transform .35s cubic-bezier(.32,.72,0,1);background:#f2f2f6;border-radius:28px 28px 0 0;padding:22px 20px calc(var(--safe-bottom) + 20px)}
+  #adr.on .adp{transform:translate(-50%,0)}
+  .adh{text-align:center;font-size:17px;font-weight:600;margin-bottom:16px}
+  .adb{display:block;width:100%;height:50px;border-radius:25px;background:#fff;font-size:17px;margin-bottom:10px;color:#111}
+  .adb.pr{background:#3b86f7;color:#a0fcff;font-weight:500}.adb.cx{color:#3b86f7;background:transparent}
+  #adr textarea,#adr input{width:100%;border:1px solid #c7c7cb;border-radius:20px;background:#fff;padding:14px 16px;font:16px/22px var(--font);outline:0;resize:none;margin-bottom:12px;-webkit-appearance:none}
+  .mrow{display:flex;align-items:center;gap:6px;margin-bottom:12px}.mrow input{margin:0;flex:1}.mrow span{font-size:16px;color:#8a8a8d;white-space:nowrap}
   .opill{position:absolute;left:20px;width:400px;height:34px;border-radius:17px;border:1.5px solid #8a8a8d;text-align:center;line-height:31px;font-size:17px;color:#8a8a8d}
   .cd .r{position:absolute;left:0;right:0;height:60px}
   .cd em{position:absolute;left:20px;top:0;font-style:normal;color:#8a8a8d;font-size:15.3px;line-height:20px}
@@ -639,7 +646,7 @@
         <div class="so" style="top:84px"><i class="rb" style="left:51px;top:42.5px"></i><b>Ships: 3-5 business days</b><span>Expedited Shipping - Free</span><span>Delivery date pending payment approval.</span></div><i class="ln" style="top:168px;left:118px"></i>
         <div class="so" style="top:168px"><i class="rb" style="left:51px;top:42.5px"></i><b>Pickup Store</b><span>Select an Apple Store for availability</span><span>Pickup date pending payment approval.</span></div></div></div>
     <div class="cd" id="cD" style="height:1297.5px">
-      <div class="t gr" style="left:20px;top:24px;font-size:16.5px;line-height:20px">Shipping<br>Address</div><div class="t" style="left:122px;top:24px;font-size:16.5px">Enter address</div><svg class="chv" style="top:28px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:87.9px"></i>
+      <div class="t gr" style="left:20px;top:24px;font-size:16.5px;line-height:20px">Shipping<br>Address</div><div class="t" id="cAddr" style="left:122px;top:24px;font-size:16.5px;line-height:20px">Enter address</div><div id="cAddrRow" style="position:absolute;left:0;right:0;top:0;height:88px;cursor:pointer"></div><svg class="chv" style="top:28px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:87.9px"></i>
       <div class="t gr" style="left:20px;top:112px;font-size:16.5px">Payment</div><div class="t" style="left:122px;top:112px;font-size:16.5px">Enter payment</div><svg class="chv" style="top:116px" viewBox="0 0 9 15" width="9" height="15" fill="none" stroke="#c4c4c8" stroke-width="2" stroke-linecap="round"><path d="M1.5 1.5l6 6-6 6"/></svg><i class="ln" style="top:156.3px"></i>
       <div class="t gr" style="left:20px;top:171px;font-size:16.5px">Summary</div><div class="t" style="left:122px;top:171px;font-size:16.5px">Bag Subtotal</div><b class="t amt2" id="cSub" style="right:20px;top:171px"></b>
       <div class="t" style="left:122px;top:223px;font-size:16.5px">Free Shipping</div><b class="t amt2" style="right:20px;top:223px">$0.00</b><i class="ln" style="top:283.3px;left:107.5px"></i>
@@ -671,6 +678,12 @@
   </div></div>
   <div class="pob"><button class="po">Place Order</button></div></div></div>
 
+<div class="sheet" id="adr" aria-hidden="true" style="z-index:60"><div class="sh-bd"></div><div class="adp">
+  <div class="adh"><b id="adT">Address</b></div>
+  <div id="adMenu"><button class="adb" id="adSet">Set Address</button><button class="adb" id="adMail">Send Address Form to Mail</button><button class="adb cx" id="adCancel">Cancel</button></div>
+  <div id="adSetF" hidden><textarea id="adText" rows="3" placeholder="Street, city, postcode"></textarea><button class="adb pr" id="adSave">Save Address</button><button class="adb cx" id="adBack1">Back</button></div>
+  <div id="adMailF" hidden><div class="mrow"><input id="adUser" placeholder="name" autocapitalize="off" autocorrect="off"><span>@icloud.com</span></div><button class="adb pr" id="adSend">Send</button><button class="adb cx" id="adBack2">Back</button></div>
+</div></div>
 <div class="nav"></div><div class="navt" id="navt">Products</div>
 <div class="edge"></div>
 
@@ -835,6 +848,13 @@
     $('cE').style.top=y+'px';$('cin').style.height=(y+1060)+'px';
   }
   $('gNext').addEventListener('click',function(){var f=$('gFrom');if(!f.value.trim()){f.focus();f.style.borderColor='#e8392f';return}f.style.borderColor='';fillChk();$('cScroll').scrollTop=0;openSheet(chk)});
+  function adShow(m){$('adMenu').hidden=m!=='menu';$('adSetF').hidden=m!=='set';$('adMailF').hidden=m!=='mail';$('adT').textContent=m==='mail'?'Send Address Form':(m==='set'?'Set Address':'Address')}
+  $('cAddrRow').addEventListener('click',function(){if(!bag.gift)return;adShow('menu');openSheet($('adr'))});
+  $('adCancel').addEventListener('click',function(){closeSheet($('adr'))});
+  $('adSet').addEventListener('click',function(){adShow('set')});$('adMail').addEventListener('click',function(){adShow('mail')});
+  $('adBack1').addEventListener('click',function(){adShow('menu')});$('adBack2').addEventListener('click',function(){adShow('menu')});
+  $('adSave').addEventListener('click',function(){var v=$('adText').value.trim();if(!v)return;$('cAddr').textContent=v.split('\n')[0];closeSheet($('adr'))});
+  $('adSend').addEventListener('click',function(){var u=$('adUser').value.trim().replace(/@.*$/,'');if(!u)return;$('cAddr').textContent='Form sent to '+u+'@icloud.com';closeSheet($('adr'))});
   $('cX').addEventListener('click',function(){closeSheet(chk);closeSheet(gift)});
   document.querySelectorAll('#cG .rd').forEach(function(r){r.addEventListener('click',function(){document.querySelectorAll('#cG .rb').forEach(function(x){x.classList.toggle('on',x.parentNode===r)})})});
   $('cGiftRad').addEventListener('click',function(){bag.gift=!bag.gift;fillChk()});
