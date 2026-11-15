@@ -93,7 +93,10 @@
     const bgFor = (name) => (light ? '' : bgNorm[norm(name)] || '');
     const arr = (v) => (v ? [].concat(v) : []);
     const vidsFor = (e) => { const o = [...arr(all[e.offerId]), ...arr(all[e.name]), ...arr(byNorm[norm(e.name)]), ...arr(byNorm[norm(e.nameEs)])]; e.items.forEach((i) => o.push(...arr(byNorm[norm(i.name)]), ...arr(byNorm[norm(i.nameEs)]))); return [...new Set(o)]; };
-    const vidFor = (e) => vidsFor(e)[0] || '';
+    const lead = (e) => e.items.find((i) => i.type === 'outfit') || e.items[0];
+    const ownOf = (i) => (i ? [...arr(byNorm[norm(i.nameEs)]), ...arr(byNorm[norm(i.name)])][0] || '' : '');
+    // video por defecto: el del artículo o el de su pieza principal. Nunca el de una pieza acompañante (mochila, pico...)
+    const vidFor = (e) => arr(all[e.offerId])[0] || arr(all[e.name])[0] || arr(byNorm[norm(e.name)])[0] || arr(byNorm[norm(e.nameEs)])[0] || ownOf(lead(e)) || '';
     const E = (shop.entries || []).filter((e) => !BAD(e)).slice(0, lvl >= 2 ? 80 : 1e9);
     if (!old || !ITEMS || !E.length) return;
 
@@ -160,8 +163,8 @@
         const title = String(e.name).toUpperCase();
         const thumbs = (e.kind === 'jam' ? [e.image] : e.items.map((i) => i.icon || i.featured).filter(Boolean));
         const n = Math.max(1, e.items.length || e.tracks.length || 1);
-        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), vdef: vidFor(e), iv: e.items.map((i) => [...arr(byNorm[norm(i.nameEs)]), ...arr(byNorm[norm(i.name)])][0] || ''), urls: vidsFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), nameRaw: e.name, reg: e.regularPrice > e.finalPrice ? e.regularPrice : null, tag: '',
-          sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : String(e.items[0]?.type || 'ITEM').toUpperCase(), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], jam: e.kind === 'jam' } };
+        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), vdef: vidFor(e), iv: e.items.map((i) => ownOf(i)), ty: e.items.map((i) => i.type), urls: vidsFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), nameRaw: e.name, reg: e.regularPrice > e.finalPrice ? e.regularPrice : null, tag: '',
+          sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : String(e.items[0]?.type || 'ITEM').toUpperCase(), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], feat: e.items.map((i) => i.featured || i.icon || e.image), jam: e.kind === 'jam' } };
         const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail';
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
         if (a) t.style.setProperty('--a', mix(a, 1.12)); if (b || a) t.style.setProperty('--b', mix(b || a, .8));
@@ -256,16 +259,15 @@
     document.addEventListener('click', (ev) => {
       const th = ev.target.closest && ev.target.closest('#thumbs .tsl'); if (!th) return;
       const it = ITEMS[window.curItem]; if (!it || !it.iv) return;
-      const i = [...th.parentNode.children].indexOf(th), u = it.iv[i] || it.vdef;
-      if (u && u !== it.url) { it.url = u; window.itemVid && window.itemVid(true); }
+      const i = [...th.parentNode.children].indexOf(th), u = it.iv[i] || '';
+      it.dyn.cur = i; it.url = u; window.itemVid && window.itemVid(true); apply();
     }, true);
     const apply = () => {
       const scr = document.body.dataset.screen, it = ITEMS[window.curItem];
-      if (it && it.vdef !== undefined && scr === 'detail' && it.url !== it.vdef && !it.__touched) { it.url = it.vdef; }
       const dyn = it && it.dyn && scr === 'detail';
       art.style.display = dyn && !(APPLE && it.url) ? 'block' : 'none';
       if (!dyn) return;
-      if (art.dataset.src !== it.dyn.image) { art.dataset.src = it.dyn.image; art.src = it.dyn.image; }
+      const shownImg = (it.dyn.cur != null && it.dyn.feat && it.dyn.feat[it.dyn.cur]) || it.dyn.image; if (art.dataset.src !== shownImg) { art.dataset.src = shownImg; art.src = shownImg; }
       const lab = { det5: it.sub === 'BUNDLE' ? 'The price for included items is:' : 'The price is:', det9: it.sub === 'BUNDLE' ? 'VIEW BUNDLE' : it.dyn.jam ? 'PREVIEW TRACK' : 'VIEW ITEM' };
       for (const k in lab) { const el = document.querySelector('[data-t="det.' + k + '"]'); if (el && el.textContent !== lab[k]) { el.removeAttribute('data-w'); el.textContent = lab[k]; } }
       document.querySelectorAll('#thumbs .tsl').forEach((el, i) => {
@@ -274,8 +276,9 @@
         if (el.dataset.u !== u) { el.dataset.u = u; el.innerHTML = '<img src="' + u + '" alt="" draggable="false">'; }
       });
     };
-    new MutationObserver(() => { setTimeout(apply, 40); setTimeout(apply, 250); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
+    new MutationObserver(() => { const k = ITEMS[window.curItem]; if (k && k.dyn && document.body.dataset.screen === 'detail') { k.dyn.cur = undefined; k.url = k.vdef; } setTimeout(apply, 40); setTimeout(apply, 250); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     step('listo'); setTimeout(() => step('estable'), 3000);
+    window.__isCharVid = (it) => { if (!it) return false; if (!it.dyn) return it.sub === undefined || /OUTFIT/.test(it.sub); const i = it.iv ? it.iv.indexOf(it.url) : -1, t = i >= 0 ? it.ty[i] : (it.ty && it.ty.includes('outfit') ? 'outfit' : it.ty && it.ty[0]); return t === 'outfit'; };
     window.__shopDyn = { count: E.length, sections: secs.length };
   }
 })();

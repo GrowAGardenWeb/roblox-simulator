@@ -161,6 +161,7 @@
     try {
       if (Date.now() - lastHolo < 700) return; lastHolo = Date.now(); // evita que se repita dos veces seguidas
       if (!['detail', 'gift'].includes(document.body.dataset.screen)) return; // en el lobby (home) el personaje carga normal
+      try { if (window.__isCharVid && window.__isCharVid((window.ITEMS_ALL() || {})[window.curItem])) return; } catch (e) {} // a los personajes no se les aplica el holograma
       const cv = document.getElementById('itemcv'), ref = el.style.left ? el : cv; if (!ref || !ref.parentNode) return;
       el.classList.remove('fxholo'); void el.offsetWidth; el.classList.add('fxholo');
       el.addEventListener('animationend', function f(e) { if (e.animationName === 'fxHolo') { el.classList.remove('fxholo'); el.removeEventListener('animationend', f); } });
