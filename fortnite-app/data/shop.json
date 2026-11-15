@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15T01:27:31.499Z",
+ "updated": "2026-11-15T01:28:55.715Z",
  "source": {
   "api": "fortnite-api.com/v2/shop",
   "site": "error: https://www.fortnite.com/item-shop?lang=en-US -> HTTP 403"
@@ -10,9 +10,33 @@
   "sections": 21,
   "jam": 78,
   "bundles": 21,
+  "backgrounds": 20,
+  "bgError": null,
   "withVideo": 0,
   "siteVideos": 0,
   "siteOffers": 0
+ },
+ "backgrounds": {
+  "KERNEL HEARTS": "https://cdn2.unrealengine.com/sk-SectionBG_IslandOverlook-a84f12aa.png",
+  "MEGA MAN": "https://cdn2.unrealengine.com/sk-SectionBG_IslandOverlook-a84f12aa.png",
+  "HYPE CIRCUIT": "https://cdn2.unrealengine.com/sk-Billboard_Hexes_SectionBG-2f51702a.png",
+  "HATSUNE MIKU": "https://cdn2.unrealengine.com/sk-Billboard_CactusBait_SectionBG-d3e98b55.png",
+  "MAIN STAGE MOMENT": "https://cdn2.unrealengine.com/sk-SectionBG_EWC-c298b0f1.png",
+  "NO SWEAT": "https://cdn2.unrealengine.com/sk-Default_BG_0000_Pyschadelic-Rays-1dcd8a80.png",
+  "ISHOWSPEED": "https://cdn2.unrealengine.com/sk-Billboard_LocketSnug_SectionBG-4ea7ed8b.png",
+  "VOLKSWAGEN GOLF GTI": "https://cdn2.unrealengine.com/31-40-billboard-motormonth-sectionbg-v1-1920x1080-9e0f7b2eaabc.jpg",
+  "RIVIAN R1S": "https://cdn2.unrealengine.com/billboard-jam-section-1920x1080-e49106e4cc28.jpg",
+  "FRIDAY THE 13TH": "https://cdn2.unrealengine.com/sk-Billboard_SWVehicle_Section-1b21bddd.png",
+  "TWINZER": "https://cdn2.unrealengine.com/sk-Default_BG_0009_Purple-Rays-9ecc8840.png",
+  "MAIN CHARACTER ENERGY": "https://cdn2.unrealengine.com/sk-Default_BG_0003_Heavenly-Rays-3231768e.png",
+  "GET YOUR KICKS": "https://cdn2.unrealengine.com/sk-Kicks---Deep-Blue-d4a4cea8.png",
+  "MARVEL": "https://cdn2.unrealengine.com/sk-SectionBG_Cave2-355962cd.png",
+  "LIL UZI VERT": "https://cdn2.unrealengine.com/sk-Billboard_RookGecko_BG-e67da5f6.png",
+  "VICTORY PARTY": "https://cdn2.unrealengine.com/sk-Billboard_VictoryVibes_SectionBG-edae1985.png",
+  "ONE PIECE": "https://cdn2.unrealengine.com/sk-Billboard_FlipperBalm_SectionBG-d4a58825.png",
+  "BUGATTI CENTODIECI": "https://cdn2.unrealengine.com/sk-Billboard_GoalsandGlory_BG-af32dde9.png",
+  "A$AP ROCKY": "https://cdn2.unrealengine.com/sk-Billboard_TonicMail_SectionBG-6a32f9b4.png",
+  "JAM TRACKS": "https://cdn2.unrealengine.com/default-sparks-sectionbg-v1-1920x1080-9b27879ce008.jpg"
  },
  "sections": [
   {
@@ -29,7 +53,8 @@
     "useWidePreview": true,
     "displayType": "tileGrid"
    },
-   "count": 1
+   "count": 1,
+   "background": "https://cdn2.unrealengine.com/sk-SectionBG_IslandOverlook-a84f12aa.png"
   },
   {
    "id": "Megaman",
@@ -45,7 +70,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 10
+   "count": 10,
+   "background": "https://cdn2.unrealengine.com/sk-SectionBG_IslandOverlook-a84f12aa.png"
   },
   {
    "id": "FND111526",
@@ -61,7 +87,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 8
+   "count": 8,
+   "background": "https://cdn2.unrealengine.com/sk-Billboard_Hexes_SectionBG-2f51702a.png"
   },
   {
    "id": "PirateCactus1",
@@ -77,7 +104,8 @@
     "useWidePreview": true,
     "displayType": "tileGrid"
    },
-   "count": 7
+   "count": 7,
+   "background": "https://cdn2.unrealengine.com/sk-Billboard_CactusBait_SectionBG-d3e98b55.png"
   },
   {
    "id": "LatinGram",
@@ -93,7 +121,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 18
+   "count": 18,
+   "background": "https://cdn2.unrealengine.com/sk-SectionBG_EWC-c298b0f1.png"
   },
   {
    "id": "NoSweat111026",
@@ -109,7 +138,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 8
+   "count": 8,
+   "background": "https://cdn2.unrealengine.com/sk-Default_BG_0000_Pyschadelic-Rays-1dcd8a80.png"
   },
   {
    "id": "IShowPirate1",
@@ -125,7 +155,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 5
+   "count": 5,
+   "background": "https://cdn2.unrealengine.com/sk-Billboard_LocketSnug_SectionBG-4ea7ed8b.png"
   },
   {
    "id": "VWGolf",
@@ -142,7 +173,8 @@
     "useWidePreview": true,
     "displayType": "tileGrid"
    },
-   "count": 1
+   "count": 1,
+   "background": "https://cdn2.unrealengine.com/31-40-billboard-motormonth-sectionbg-v1-1920x1080-9e0f7b2eaabc.jpg"
   },
   {
    "id": "RivianR1SJordanWheel",
@@ -159,7 +191,8 @@
     "useWidePreview": true,
     "displayType": "tileGrid"
    },
-   "count": 1
+   "count": 1,
+   "background": "https://cdn2.unrealengine.com/billboard-jam-section-1920x1080-e49106e4cc28.jpg"
   },
   {
    "id": "Friday",
@@ -175,7 +208,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 6
+   "count": 6,
+   "background": "https://cdn2.unrealengine.com/sk-Billboard_SWVehicle_Section-1b21bddd.png"
   },
   {
    "id": "Twinzer",
@@ -192,7 +226,8 @@
     "useWidePreview": true,
     "displayType": "tileGrid"
    },
-   "count": 1
+   "count": 1,
+   "background": "https://cdn2.unrealengine.com/sk-Default_BG_0009_Purple-Rays-9ecc8840.png"
   },
   {
    "id": "BR111526",
@@ -208,7 +243,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 22
+   "count": 22,
+   "background": "https://cdn2.unrealengine.com/sk-Default_BG_0003_Heavenly-Rays-3231768e.png"
   },
   {
    "id": "1115Kicks",
@@ -224,7 +260,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 12
+   "count": 12,
+   "background": "https://cdn2.unrealengine.com/sk-Kicks---Deep-Blue-d4a4cea8.png"
   },
   {
    "id": "FantasticSurfer",
@@ -240,7 +277,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 9
+   "count": 9,
+   "background": "https://cdn2.unrealengine.com/sk-SectionBG_Cave2-355962cd.png"
   },
   {
    "id": "LilRook",
@@ -306,7 +344,8 @@
      }
     ]
    },
-   "count": 14
+   "count": 14,
+   "background": "https://cdn2.unrealengine.com/sk-Billboard_RookGecko_BG-e67da5f6.png"
   },
   {
    "id": "VV111526",
@@ -322,7 +361,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 8
+   "count": 8,
+   "background": "https://cdn2.unrealengine.com/sk-Billboard_VictoryVibes_SectionBG-edae1985.png"
   },
   {
    "id": "ConclusionC111426",
@@ -338,7 +378,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 23
+   "count": 23,
+   "background": "https://cdn2.unrealengine.com/sk-Billboard_FlipperBalm_SectionBG-d4a58825.png"
   },
   {
    "id": "BugCento2",
@@ -355,7 +396,8 @@
     "useWidePreview": true,
     "displayType": "tileGrid"
    },
-   "count": 1
+   "count": 1,
+   "background": "https://cdn2.unrealengine.com/sk-Billboard_GoalsandGlory_BG-af32dde9.png"
   },
   {
    "id": "AsapRocky",
@@ -371,7 +413,8 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 13
+   "count": 13,
+   "background": "https://cdn2.unrealengine.com/sk-Billboard_TonicMail_SectionBG-6a32f9b4.png"
   },
   {
    "id": "JT111326",
@@ -387,7 +430,8 @@
     "useWidePreview": false,
     "displayType": "expandableList"
    },
-   "count": 74
+   "count": 74,
+   "background": "https://cdn2.unrealengine.com/default-sparks-sectionbg-v1-1920x1080-9b27879ce008.jpg"
   },
   {
    "id": null,
