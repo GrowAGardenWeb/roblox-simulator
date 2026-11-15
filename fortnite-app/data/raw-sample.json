@@ -1,0 +1,162 @@
+{
+ "keys": [
+  "hash",
+  "date",
+  "vbuckIcon",
+  "entries"
+ ],
+ "sample": [
+  {
+   "regularPrice": 500,
+   "finalPrice": 500,
+   "devName": "[VIRTUAL]1 x Therefore I Am for 500 MtxCurrency",
+   "offerId": "v2:/041922819b2f194fdbde94619f459449b2c8a4cbed8f0b401cae3da38c8c5bc2",
+   "inDate": "2026-11-01T00:00:00Z",
+   "outDate": "2026-11-30T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -27,
+   "layoutId": "JT111326.96",
+   "layout": {
+    "id": "JT111326",
+    "name": "Jam Tracks",
+    "index": 60,
+    "rank": 180,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "expandableList"
+   },
+   "colors": {
+    "color1": "3a306cff",
+    "color3": "5e40ceff",
+    "textBackgroundColor": "694fc3ff"
+   },
+   "tileSize": "Size_1_x_1",
+   "newDisplayAssetPath": "SparksCMSVisualTest135",
+   "tracks": [
+    {
+     "id": "sid_placeholder_135",
+     "devName": "thereforeiam",
+     "title": "Therefore I Am",
+     "artist": "Billie Eilish",
+     "releaseYear": 2020,
+     "bpm": 94,
+     "duration": 176,
+     "difficulty": {
+      "vocals": 3,
+      "guitar": 1,
+      "bass": 2,
+      "plasticBass": 1,
+      "drums": 1,
+      "plasticDrums": 1
+     },
+     "albumArt": "https://cdn.fortnite-api.com/tracks/5490d3a354f6f6c9.jpg",
+     "added": "2024-04-23T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "regularPrice": 800,
+   "finalPrice": 800,
+   "devName": "[VIRTUAL]1 x Long Legs for 800 MtxCurrency",
+   "offerId": "v2:/59654075fb83290269cecc0ee4cd9f4429a8fd469551be331e31282433c66fa3",
+   "inDate": "2026-11-13T00:00:00Z",
+   "outDate": "2026-11-15T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -6,
+   "layoutId": "alc.0",
+   "colors": {
+    "color1": "290f07ff",
+    "color3": "824100ff",
+    "textBackgroundColor": "824100ff"
+   },
+   "tileSize": "Size_1_x_1",
+   "displayAssetPath": "/Game/Catalog/DisplayAssets/DA_Featured_Backpack_Bid131Blackwidowfemale",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S6/DAv2_Backpack_BlackWidowFemale",
+   "brItems": [
+    {
+     "id": "BID_131_BlackWidowfemale",
+     "name": "Long Legs",
+     "description": "Stretch your legs.",
+     "type": {
+      "value": "backpack",
+      "displayValue": "Back Bling",
+      "backendValue": "AthenaBackpack"
+     },
+     "rarity": {
+      "value": "legendary",
+      "displayValue": "Legendary",
+      "backendValue": "EFortRarity::Legendary"
+     },
+     "set": {
+      "value": "Arachnid",
+      "text": "Part of the Arachnid set.",
+      "backendValue": "BlackWidow"
+     },
+     "introduction": {
+      "chapter": "1",
+      "season": "6",
+      "text": "Introduced in Chapter 1, Season 6.",
+      "backendValue": 6
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/bid_131_blackwidowfemale/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_131_blackwidowfemale/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_131_blackwidowfemale/featured.png"
+     },
+     "added": "2019-11-20T12:50:39Z"
+    }
+   ]
+  },
+  {
+   "regularPrice": 500,
+   "finalPrice": 500,
+   "devName": "[VIRTUAL]1 x TBD (SID_Placeholder_500) for 500 MtxCurrency",
+   "offerId": "v2:/e7ee90fe1e617b25afeb3011b08c3e779b16fc3f34d6fb87bd8191e5d8fddb37",
+   "inDate": "2026-11-01T00:00:00Z",
+   "outDate": "2026-11-30T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -46,
+   "layoutId": "JT111326.96",
+   "layout": {
+    "id": "JT111326",
+    "name": "Jam Tracks",
+    "index": 60,
+    "rank": 180,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "expandableList"
+   },
+   "colors": {
+    "color1": "3a306cff",
+    "color3": "5e40ceff",
+    "textBackgroundColor": "694fc3ff"
+   },
+   "tileSize": "Size_1_x_1",
+   "newDisplayAssetPath": "sid_placeholder_500",
+   "tracks": [
+    {
+     "id": "sid_placeholder_500",
+     "devName": "theemptinessmachine",
+     "title": "The Emptiness Machine",
+     "artist": "Linkin Park",
+     "releaseYear": 2024,
+     "bpm": 92,
+     "duration": 195,
+     "difficulty": {
+      "vocals": 2,
+      "guitar": 1,
+      "bass": 1,
+      "plasticBass": 1,
+      "drums": 2,
+      "plasticDrums": 2
+     },
+     "albumArt": "https://cdn.fortnite-api.com/tracks/9a95b07e32db4fc7.jpg",
+     "added": "2025-03-25T17:23:58Z"
+    }
+   ]
+  }
+ ]
+}
