@@ -122,7 +122,7 @@
   };
   const mkTile = (it) => {
     const d = document.createElement('div'); d.className = 'tl' + (cur() === it.key ? ' sel' : ''); d.dataset.k = it.key;
-    d.innerHTML = '<img loading="lazy" decoding="async" alt="">' + (real() === it.key ? '<b class="eq">&#10003;</b>' : ''); d.firstChild.src = it.icon;
+    d.innerHTML = '<img loading="lazy" decoding="async" alt="">'; d.firstChild.src = it.icon;
     d.onclick = () => { show(it); window.SFX && SFX.play('click'); };
     return d;
   };
