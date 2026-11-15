@@ -41,6 +41,7 @@
   #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:visible;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
   #shoprow.dyn .dt .di{position:absolute;inset:-26px -8px 14px -8px;background-position:center bottom;background-size:contain;background-repeat:no-repeat}
   #shoprow.dyn .dt.bundle .di{inset:-24px 0 10px 0;background-size:auto 100%;background-position:center bottom;background-repeat:no-repeat;filter:none}
+  #shoprow.dyn .dt.map{background:url(assets/maptex.webp) center/cover,linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));background-blend-mode:overlay}
   #shoprow.dyn .dt.bundle.wide{height:262px;margin-bottom:34px}
   html.shoplite #shoprow.dyn .dt{animation:none!important}
   #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;border-radius:14px;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
@@ -168,6 +169,7 @@
         const comp = e.kind === 'bundle' && e.items.length > 1 && (e.image === e.items[0].featured || e.image === e.items[0].icon);
         const isNew = e.inDate && (Date.now() - new Date(e.inDate)) < 36 * 3600e3;
         const lead = e.items.find((i) => i.type === 'outfit') || e.items[0];
+        if (shop.textures && shop.textures[e.sectionId]) t.classList.add('map');
         if (comp) t.classList.add('comp'); if (e.kind === 'bundle' && w >= 3) t.classList.add('wide');
         if (!comp && e.kind === 'item' && e.items[0]?.type === 'outfit') t.classList.add('outfit');
         t.innerHTML = (comp ? '<div class="cmp"></div>' : '') + '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (e.banner ? '<div class="bd bn"></div>' : isNew ? '<div class="bd nw">NEW</div>' : e.kind === 'bundle' && !comp ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '') + '<i class="pl"></i>';

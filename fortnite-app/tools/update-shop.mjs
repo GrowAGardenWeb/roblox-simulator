@@ -125,11 +125,18 @@ try {
     if (tex && sec.name) { backgrounds[sec.name.trim().toUpperCase()] = tex; sec.background = tex; }
   }
 } catch (e) { bgError = String(e.message || e); }
+// secciones con fondo de mapa (billboard BG): sus casillas llevan la textura de pergamino
+const textures = {};
+for (const sec of sections) {
+  const u = entries.filter((e) => e.sectionId === sec.id).flatMap((e) => e.images || []).find((x) => /unrealengine\.com\/.*billboard.*_bg[-_.]/i.test(x) && !/section/i.test(x));
+  if (u) textures[sec.id] = u;
+}
 const snapshot = {
   updated: new Date().toISOString(),
   source: { api: apiError ? `error: ${apiError}` : 'fortnite-api.com/v2/shop', site: site.ok ? 'fortnite.com/item-shop' : `error: ${site.error}` },
   counts: { entries: entries.length, shown: shown.length, sections: sections.length, jam: shown.filter((e) => e.kind === 'jam').length, bundles: shown.filter((e) => e.kind === 'bundle').length, backgrounds: Object.keys(backgrounds).length, bgError, withVideo: entries.filter((e) => e.videos.length).length, siteVideos: site.videos.length, siteOffers: site.offers.length },
   backgrounds,
+  textures,
   sections,
   entries,
   site: { videos: site.videos, offers: site.offers, nextDataKeys: site.nextDataKeys || null },
