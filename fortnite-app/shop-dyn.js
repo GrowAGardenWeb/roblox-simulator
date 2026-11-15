@@ -12,7 +12,9 @@
   #shoprow.dyn .dgrid{display:grid;grid-template-columns:repeat(4,230px);grid-auto-flow:dense;gap:10px 8px}
   #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:hidden;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
   #shoprow.dyn .dt .di{position:absolute;inset:0 0 30px 0;background-position:center 60%;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 6px 8px rgba(0,0,30,.35))}
-  #shoprow.dyn .dt.bundle .di{inset:0 0 28px 0;background-size:cover;background-position:center;filter:none}
+  #shoprow.dyn .dt.bundle .di{inset:0 0 28px 0;background-size:auto 100%;background-position:center 30%;background-repeat:no-repeat;filter:none}
+  #shoprow.dyn .dt.bundle .di::before{content:'';position:absolute;inset:-20px;background-image:inherit;background-size:cover;background-position:center;filter:blur(18px) brightness(.8) saturate(1.2);z-index:-1}
+  #shoprow.dyn .dt.bundle .di{isolation:isolate}
   #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
   #shoprow.dyn .dt.jam .di{inset:10px 10px auto 10px;aspect-ratio:1;border-radius:6px;box-shadow:0 6px 14px rgba(0,0,0,.4);background-size:cover;filter:none}
   #shoprow.dyn .dt .sh{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(transparent,rgba(5,15,50,.6))}

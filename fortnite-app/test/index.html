@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Fortnite app – prueba</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1433;color:#e8eeff;font:14px/1.4 system-ui,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#0b1433ee;backdrop-filter:blur(8px);padding:10px 14px;border-bottom:1px solid #26366b}
+h1{font-size:17px;margin:0 0 6px}.sum{display:flex;flex-wrap:wrap;gap:6px}.sum b{background:#1c2a55;border-radius:8px;padding:4px 9px;font-weight:600}
+.ok{color:#7dffa6}.no{color:#ff9a9a}
+details{margin:10px 14px;background:#121d45;border-radius:10px;padding:8px 12px}summary{cursor:pointer;font-weight:700}
+textarea{width:100%;height:90px;background:#0b1433;color:#e8eeff;border:1px solid #2f4290;border-radius:8px;padding:8px;font:12px monospace}
+button{background:#ffd23a;color:#241a00;border:0;border-radius:8px;padding:8px 12px;font-weight:700;margin:6px 6px 0 0;cursor:pointer}
+.sec{margin:14px;border-radius:14px;overflow:hidden;background:#16296b center/cover no-repeat;position:relative}
+.sec h2{margin:0;padding:12px 14px;font:italic 900 20px 'Arial Black',system-ui;text-transform:uppercase;display:flex;justify-content:space-between;gap:10px;background:linear-gradient(#0008,#0000)}
+.sec h2 small{font:600 11px system-ui;font-style:normal;opacity:.9}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px 14px 14px}
+.t{position:relative;height:200px;border-radius:12px;overflow:hidden;cursor:pointer;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px #fff3}
+.t.bundle{box-shadow:inset 0 0 0 3px #ffd23abf}
+.t .i{position:absolute;inset:0 0 26px;background:center 60%/contain no-repeat;isolation:isolate}
+.t.bundle .i{background-size:auto 100%;background-position:center 30%}
+.t.bundle .i::before{content:'';position:absolute;inset:-20px;background-image:inherit;background-size:cover;background-position:center;filter:blur(18px) brightness(.8);z-index:-1}
+.t .n{position:absolute;left:8px;right:8px;bottom:26px;font:italic 900 13px 'Arial Black',system-ui;text-transform:uppercase;text-shadow:0 1px 3px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t .p{position:absolute;left:8px;bottom:6px;font:italic 800 13px system-ui}.t .p s{opacity:.6;font-size:10px;margin-left:4px}
+.t .v{position:absolute;top:6px;right:6px;padding:2px 7px;border-radius:6px;font:700 11px system-ui}
+.v.y{background:#2fd067;color:#00240f}.v.x{background:#0008;color:#ffb0b0}
+.t .k{position:absolute;top:6px;left:6px;padding:2px 7px;border-radius:6px;font:800 10px system-ui;background:#ffd23a;color:#241a00}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+#pl{position:fixed;inset:0;background:#000d;display:none;align-items:center;justify-content:center;z-index:20;flex-direction:column;gap:10px;padding:14px}
+#pl video{max-width:100%;max-height:70vh;background:#000;border-radius:12px}#pl .st{font:13px monospace;max-width:100%;word-break:break-all;text-align:center}
+</style></head><body>
+<header><h1>Fortnite app – prueba de tienda, videos y fondos</h1><div class="sum" id="sum">Cargando…</div></header>
+<details open><summary>Pegar lo que copió el marcador (videos y fondos)</summary>
+<p>Si todavía no lo tienes: <a href="../video-tool/shop-links.html" style="color:#ffd23a">abre la herramienta del marcador</a>. Luego pega aquí el resultado y mira abajo si coinciden.</p>
+<textarea id="ta" placeholder="Pega aquí el resultado del marcador"></textarea>
+<button id="apply">Probar con esto</button><button id="clear">Borrar lo guardado</button><span id="msg"></span></details>
+<details><summary>Qué no coincide</summary><div id="miss">—</div></details>
+<div id="root"></div>
+<div id="pl"><video id="vd" controls playsinline autoplay muted loop></video><div class="st" id="vs"></div><button id="cl">Cerrar</button></div>
+<script>
+const $=(s)=>document.querySelector(s),norm=(x)=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+const J=(u)=>fetch(u+'?'+Date.now()).then(r=>r.ok?r.json():{}).catch(()=>({}));
+const LS=(k)=>{try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return {}}};
+const hex=(c)=>c?'#'+String(c).slice(0,6):'';
+let shop,vFile,bFile;
+async function init(){[shop,vFile,bFile]=await Promise.all([J('../data/shop.json'),J('../data/videos.json'),J('../data/backgrounds.json')]);draw()}
+function draw(){
+  const vids=Object.assign({},vFile,LS('fnVideos')),vN={};Object.keys(vids).forEach(k=>vN[norm(k)]=vids[k]);
+  const bgs=Object.assign({},shop.backgrounds||{},bFile,LS('fnBackgrounds')),bN={};Object.keys(bgs).forEach(k=>bN[norm(k)]=bgs[k]);
+  const vidFor=(e)=>vids[e.offerId]||vids[e.name]||vN[norm(e.name)]||(e.items&&e.items[0]&&vN[norm(e.items[0].name)])||'';
+  const E=(shop.entries||[]).filter(e=>e.image&&!/placeholder|^\[VIRTUAL\]|\bTBD\b/i.test(e.name||''));
+  const groups=new Map();for(const e of E){const k=e.sectionId||e.section||'-';if(!groups.has(k))groups.set(k,{name:(e.section||'DESTACADOS').trim(),idx:e.sectionIndex??999,items:[]});groups.get(k).items.push(e)}
+  const secs=[...groups.values()].sort((a,b)=>a.idx-b.idx);
+  const root=$('#root');root.innerHTML='';let withV=0,withB=0;const usedV=new Set(),missV=[],missB=[];
+  for(const s of secs){
+    s.items.sort((a,b)=>(b.sortPriority??0)-(a.sortPriority??0)||a.order-b.order);
+    const bg=bN[norm(s.name)]||'';if(bg)withB++;else missB.push(s.name);
+    const sec=document.createElement('div');sec.className='sec';if(bg)sec.style.backgroundImage='linear-gradient(#04123a59,#04123a99),url("'+bg+'")';
+    const h=document.createElement('h2');h.innerHTML='<span></span><small></small>';h.firstChild.textContent=s.name;h.lastChild.textContent=(bg?'fondo ✔':'sin fondo')+' · '+s.items.length+' artículos';sec.appendChild(h);
+    const g=document.createElement('div');g.className='grid';sec.appendChild(g);
+    for(const e of s.items){
+      const v=vidFor(e);if(v){withV++;usedV.add(v)}
+      const t=document.createElement('div');t.className='t '+(e.kind||'item');
+      const a=hex(e.colors&&e.colors.color1),b=hex(e.colors&&(e.colors.color3||e.colors.color2));if(a)t.style.setProperty('--a',a);if(b||a)t.style.setProperty('--b',b||a);
+      const w=(String(e.tileSize||'').match(/_(\d)_x/)||[])[1]||1;t.style.gridColumn='span '+Math.min(4,w);
+      t.innerHTML='<div class="i"></div><div class="n"></div><div class="p"></div><div class="v"></div>'+(e.kind==='bundle'?'<div class="k">BUNDLE</div>':e.kind==='jam'?'<div class="k">JAM</div>':'');
+      t.querySelector('.i').style.backgroundImage='url("'+e.image+'")';
+      t.querySelector('.n').textContent=e.name;t.querySelector('.p').textContent='💎 '+(e.finalPrice??0).toLocaleString('en-US');
+      if(e.regularPrice>e.finalPrice){const x=document.createElement('s');x.textContent=e.regularPrice.toLocaleString('en-US');t.querySelector('.p').appendChild(x)}
+      const vb=t.querySelector('.v');vb.className='v '+(v?'y':'x');vb.textContent=v?'▶ video':'sin video';if(!v)missV.push(e.name);
+      t.onclick=()=>{if(v)play(v,e.name);else alert('Este artículo no tiene video guardado.')};
+      g.appendChild(t);
+    }
+    root.appendChild(sec);
+  }
+  const tot=E.length,ex=(shop.updated||'');
+  $('#sum').innerHTML='<b>'+tot+' artículos</b><b>'+secs.length+' secciones</b><b class="'+(withV?'ok':'no')+'">'+withV+' con video</b><b class="'+(withB?'ok':'no')+'">'+withB+'/'+secs.length+' fondos</b>'+(ex?'<b>datos: '+ex+'</b>':'');
+  const unusedV=Object.keys(vids).filter(k=>![...E].some(e=>vidFor(e)===vids[k]));
+  $('#miss').innerHTML='<p><b>Videos guardados que no coinciden con ningún artículo ('+unusedV.length+'):</b></p><pre style="white-space:pre-wrap"></pre><p><b>Secciones sin fondo ('+missB.length+'):</b> '+missB.join(', ')+'</p><p><b>Artículos sin video:</b> '+missV.length+' de '+tot+'</p>';
+  $('#miss pre').textContent=unusedV.join('\n')||'ninguno';
+}
+function play(u,n){const v=$('#vd');$('#pl').style.display='flex';$('#vs').textContent=n+' — cargando…';v.onloadeddata=()=>$('#vs').textContent=n+' — ✔ el video carga ('+v.videoWidth+'×'+v.videoHeight+', '+Math.round(v.duration)+'s)';v.onerror=()=>$('#vs').textContent=n+' — ✖ NO carga ('+(v.error?v.error.message||v.error.code:'?')+'). Enlace: '+u;v.src=u;v.play().catch(()=>{})}
+$('#cl').onclick=()=>{const v=$('#vd');v.pause();v.removeAttribute('src');v.load();$('#pl').style.display='none'};
+$('#apply').onclick=()=>{try{const d=JSON.parse($('#ta').value);const nv=Object.assign({},LS('fnVideos'),d.named||d.videos||{});const nb=Object.assign({},LS('fnBackgrounds'),d.backgrounds||{});localStorage.setItem('fnVideos',JSON.stringify(nv));localStorage.setItem('fnBackgrounds',JSON.stringify(nb));$('#msg').textContent='Leído: '+Object.keys(d.named||d.videos||{}).length+' videos con nombre, '+((d.unnamed||[]).length)+' sin nombre, '+Object.keys(d.backgrounds||{}).length+' fondos.';draw()}catch(e){$('#msg').textContent='No pude leer eso: pega exactamente lo que copió el marcador.'}};
+$('#clear').onclick=()=>{localStorage.removeItem('fnVideos');localStorage.removeItem('fnBackgrounds');draw();$('#msg').textContent='Borrado.'};
+init();
+</script></body></html>
