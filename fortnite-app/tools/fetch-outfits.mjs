@@ -8,9 +8,9 @@ const list = [];
 for (const it of items) {
   if ((it.type && it.type.value) !== 'outfit') continue;
   const icon = it.images && (it.images.smallIcon || it.images.icon); if (!icon || !it.name) continue;
-  list.push({ id: it.id, name: it.name, icon, series: (it.series && it.series.value) || null, rarity: (it.rarity && it.rarity.value) || null, added: (it.introduction && it.introduction.chapter) || null });
+  list.push({ id: it.id, name: it.name, icon, full: (it.images && it.images.featured) || null, series: (it.series && it.series.value) || null, rarity: (it.rarity && it.rarity.value) || null, added: (it.introduction && it.introduction.chapter) || null });
 }
 list.sort((a, b) => a.name.localeCompare(b.name));
 mkdirSync(new URL('../data/', import.meta.url).pathname, { recursive: true });
 writeFileSync(OUT, JSON.stringify(list));
-console.log('outfits', list.length);
+console.log('outfits', list.length, 'con cuerpo completo', list.filter((x) => x.full).length);
