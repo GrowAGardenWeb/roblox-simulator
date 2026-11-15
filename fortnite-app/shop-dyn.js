@@ -15,6 +15,8 @@
     localStorage.setItem('fnLvl2', JSON.stringify(st));
     localStorage.setItem('fnBoot', String(Date.now()));
     setTimeout(() => { try { localStorage.removeItem('fnBoot'); } catch (e) {} }, 7000);
+    const clean = () => { try { localStorage.removeItem('fnBoot'); } catch (e) {} };
+    addEventListener('pagehide', clean); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') clean(); });
   } catch (e) {}
   const light = lvl >= 1;
   const step = (x) => { try { localStorage.setItem('fnStep', x + ' · ' + (document.body && document.body.dataset.screen || '-') + ' · ' + new Date().toISOString().slice(11, 19)); } catch (e) {} };
@@ -144,6 +146,8 @@
     };
     const secObs = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) pump(x.target); }), { root: sc, rootMargin: '1400px 0px' });
     const heads = [], secCols = [];
+    // aunque no bajes, el resto de la tienda se va armando solo, una sección a la vez
+    setInterval(() => { if (document.body.dataset.screen !== 'shop' || ![...pend.values()].length || [...pend.values()].some((x) => x.run)) return; const g = [...pend.keys()][0]; if (g) pump(g); }, 700);
     for (const s of secs) {
       s.items.sort((a, b) => (b.sortPriority ?? 0) - (a.sortPriority ?? 0) || a.order - b.order);
       const h = document.createElement('div'); h.className = 'dsec'; h.textContent = s.name.trim().toUpperCase(); row.appendChild(h); heads.push([h, h.textContent]); { const c = {}; s.items.forEach((i) => { const k = hex(i.colors?.color1); if (k) c[k] = (c[k] || 0) + 1; }); const top = Object.keys(c).sort((x, y) => c[y] - c[x])[0]; secCols.push(top || '#2a58c8'); }

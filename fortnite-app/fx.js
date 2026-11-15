@@ -156,8 +156,10 @@
   }
 
   // ---------- video: aparece de abajo hacia arriba con efecto holograma azul ----------
+  let lastHolo = 0;
   function holo(el) {
     try {
+      if (Date.now() - lastHolo < 700) return; lastHolo = Date.now(); // evita que se repita dos veces seguidas
       if (!['detail', 'gift'].includes(document.body.dataset.screen)) return; // en el lobby (home) el personaje carga normal
       const cv = document.getElementById('itemcv'), ref = el.style.left ? el : cv; if (!ref || !ref.parentNode) return;
       el.classList.remove('fxholo'); void el.offsetWidth; el.classList.add('fxholo');
@@ -173,7 +175,7 @@
     // al salir y volver a entrar (ficha o regalos) el efecto se repite
     new MutationObserver(() => {
       const sc = document.body.dataset.screen; if (sc !== 'detail' && sc !== 'gift') return;
-      [120, 500].forEach((ms) => setTimeout(() => {
+      [250].forEach((ms) => setTimeout(() => {
         if (document.body.dataset.screen !== sc) return;
         const el = v.classList.contains('nat') ? v : cv;
         if (el === v ? v.readyState >= 2 : cv.classList.contains('on')) holo(el);
