@@ -23,6 +23,7 @@ const uniq = (a) => [...new Set(a.filter(Boolean))];
 async function fromApi() {
   const j = await get('https://fortnite-api.com/v2/shop?language=en');
   const d = j.data;
+  mkdirSync(dirname(RAW), { recursive: true });
   writeFileSync(RAW, JSON.stringify({ keys: Object.keys(d), sample: d.entries?.slice(0, 3) }, null, 1));
   return (d.entries || []).map((e, i) => {
     const videos = [], images = [];
