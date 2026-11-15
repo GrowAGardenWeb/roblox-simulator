@@ -38,7 +38,7 @@
   #shoprow.dyn{position:relative;width:945px;height:auto;padding-bottom:60px}
   #shoprow.dyn .dsec{font:italic 400 34px 'Archivo Black';color:#fff;text-shadow:0 3px 4px rgba(0,0,40,.35);margin:22px 0 10px;white-space:nowrap}
   #shoprow.dyn .dgrid{display:grid;grid-template-columns:repeat(4,230px);grid-auto-flow:dense;gap:30px 8px}
-  #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:visible;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+  #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:visible;clip-path:inset(-56px 0 0 0);cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
   #shoprow.dyn .dt .di{position:absolute;inset:-26px -8px 14px -8px;background-position:center bottom;background-size:contain;background-repeat:no-repeat}
   #shoprow.dyn .dt.bundle .di{inset:-24px 0 10px 0;background-size:auto 100%;background-position:center bottom;background-repeat:no-repeat;filter:none}
   #shoprow.dyn .dt.map{background:url(assets/maptex.webp) center/cover,linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));background-blend-mode:overlay}
@@ -109,34 +109,38 @@
     const groups = new Map();
     for (const e of E) { const k = e.sectionId || e.section || '-'; if (!groups.has(k)) groups.set(k, { name: e.section || 'DESTACADOS', idx: e.sectionIndex ?? 999, items: [] }); groups.get(k).items.push(e); }
     const secs = [...groups.values()].sort((a, b) => a.idx - b.idx);
-    // arte de bundle: se mide el área visible de la imagen (sin márgenes transparentes) y se encaja en la casilla
-    const setBgUrl = (d) => { d.style.backgroundImage = 'url("' + d.dataset.img + '")'; };
-    const loadDi = (d) => {
-      const t = d.parentNode;
-      if (!t || !t.classList.contains('bundle') || t.classList.contains('comp') || !d.clientWidth) { setBgUrl(d); return; }
-      if (d.dataset.fit) { const f = JSON.parse(d.dataset.fit); d.style.backgroundSize = f.s; d.style.backgroundPosition = f.p; setBgUrl(d); return; }
-      const im = new Image(); im.crossOrigin = 'anonymous';
+    // Imágenes: bajan de a poco (máx. 4 a la vez), se reducen a un tamaño ligero y se quedan cargadas (no se borran ni se vuelven a crear).
+    // En bundles además se mide el área visible de la imagen (sin márgenes transparentes) para encajarla en la casilla.
+    const jobs = []; let active = 0;
+    const next = () => { while (active < 4 && jobs.length) { active++; jobs.shift()(() => { active--; next(); }); } };
+    const paint = (d, url) => { d.style.backgroundImage = 'url("' + url + '")'; };
+    const loadDi = (d) => { jobs.push((done) => {
+      const url = d.dataset.img, t = d.parentNode, fit = !!(t && t.classList.contains('bundle') && !t.classList.contains('comp') && d.clientWidth);
+      const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
       im.onload = () => {
         try {
-          const sw = 96, sh = Math.max(1, Math.round(96 * im.naturalHeight / im.naturalWidth)), c = document.createElement('canvas'); c.width = sw; c.height = sh;
-          const cx = c.getContext('2d', { willReadFrequently: true }); cx.drawImage(im, 0, 0, sw, sh);
-          const px = cx.getImageData(0, 0, sw, sh).data; let x0 = sw, y0 = sh, x1 = 0, y1 = 0;
-          for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) if (px[(y * sw + x) * 4 + 3] > 150) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
-          if (x1 > x0 && y1 > y0) {
-            const W = d.clientWidth, H = d.clientHeight, w = im.naturalWidth, h = im.naturalHeight;
-            const fx0 = x0 / sw, fx1 = (x1 + 1) / sw, fy0 = y0 / sh, fy1 = (y1 + 1) / sh;
-            const sc = Math.min((W * 0.98) / ((fx1 - fx0) * w), (H * 1.0) / ((fy1 - fy0) * h));
-            const dw = w * sc, dh = h * sc, px0 = W / 2 - ((fx0 + fx1) / 2) * dw, py0 = H - fy1 * dh;
-            const f = { s: dw.toFixed(1) + 'px ' + dh.toFixed(1) + 'px', p: px0.toFixed(1) + 'px ' + py0.toFixed(1) + 'px' };
-            d.dataset.fit = JSON.stringify(f); d.style.backgroundSize = f.s; d.style.backgroundPosition = f.p;
+          const w = im.naturalWidth, h = im.naturalHeight, r = Math.min(1, (fit ? 700 : 420) / Math.max(w, h)), cw = Math.max(1, Math.round(w * r)), ch = Math.max(1, Math.round(h * r));
+          const c = document.createElement('canvas'); c.width = cw; c.height = ch; c.getContext('2d').drawImage(im, 0, 0, cw, ch);
+          if (fit) {
+            const sw = 96, sh = Math.max(1, Math.round(96 * h / w)), sc2 = document.createElement('canvas'); sc2.width = sw; sc2.height = sh;
+            const cx = sc2.getContext('2d', { willReadFrequently: true }); cx.drawImage(c, 0, 0, sw, sh);
+            const px = cx.getImageData(0, 0, sw, sh).data; let x0 = sw, y0 = sh, x1 = 0, y1 = 0;
+            for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) if (px[(y * sw + x) * 4 + 3] > 150) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+            if (x1 > x0 && y1 > y0) {
+              const W = d.clientWidth, H = d.clientHeight, fx0 = x0 / sw, fx1 = (x1 + 1) / sw, fy0 = y0 / sh, fy1 = (y1 + 1) / sh;
+              const k = Math.min((W * 0.98) / ((fx1 - fx0) * w), (H * 1.0) / ((fy1 - fy0) * h)), dw = w * k, dh = h * k;
+              d.style.backgroundSize = dw.toFixed(1) + 'px ' + dh.toFixed(1) + 'px'; d.style.backgroundPosition = (W / 2 - ((fx0 + fx1) / 2) * dw).toFixed(1) + 'px ' + (H - fy1 * dh).toFixed(1) + 'px';
+            }
           }
-        } catch (e) { /* sin permiso de lectura de la imagen: se queda el ajuste normal */ }
-        setBgUrl(d);
+          c.toBlob((b) => { paint(d, b ? URL.createObjectURL(b) : url); c.width = c.height = 0; done(); }, 'image/webp', 0.85);
+          return;
+        } catch (e) { /* sin permiso para leer la imagen: se usa tal cual */ }
+        paint(d, url); done();
       };
-      im.onerror = () => setBgUrl(d);
-      im.src = d.dataset.img;
-    };
-    const lazy = new IntersectionObserver((es) => es.forEach((x) => { const d = x.target; if (x.isIntersecting) { if (!d.style.backgroundImage) loadDi(d); } else if (d.style.backgroundImage) d.style.backgroundImage = ''; }), { root: sc, rootMargin: (light ? '150px 0px' : '250px 0px') }); // descarga las imágenes lejanas para no llenar la memoria
+      im.onerror = () => { paint(d, url); done(); };
+      im.src = url;
+    }); next(); };
+    const lazy = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { lazy.unobserve(x.target); loadDi(x.target); } }), { root: sc, rootMargin: '300px 0px' });
     let firstG = null; const pend = new Map();
     const pump = (g) => {
       const st = pend.get(g); if (!st || st.run) return; st.run = true;
