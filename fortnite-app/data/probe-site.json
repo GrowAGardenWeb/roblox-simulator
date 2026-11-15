@@ -1,0 +1,52 @@
+[
+ {
+  "u": "https://www.fortnite.com/robots.txt",
+  "status": 403,
+  "type": "text/html; charset=UTF-8",
+  "server": "cloudflare",
+  "len": 24703,
+  "mp4": [],
+  "challenge": true,
+  "head": "<html> <head> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <style>.cf_challenge_text_small { font-size: 11px; } body { "
+ },
+ {
+  "u": "https://www.fortnite.com/sitemap.xml",
+  "status": 403,
+  "type": "text/html; charset=UTF-8",
+  "server": "cloudflare",
+  "len": 24706,
+  "mp4": [],
+  "challenge": true,
+  "head": "<html> <head> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <style>.cf_challenge_text_small { font-size: 11px; } body { "
+ },
+ {
+  "u": "https://www.fortnite.com/item-shop",
+  "status": 403,
+  "type": "text/html; charset=UTF-8",
+  "server": "cloudflare",
+  "len": 24700,
+  "mp4": [],
+  "challenge": true,
+  "head": "<html> <head> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <style>.cf_challenge_text_small { font-size: 11px; } body { "
+ },
+ {
+  "u": "https://www.fortnite.com/item-shop?lang=en-US",
+  "status": 403,
+  "type": "text/html; charset=UTF-8",
+  "server": "cloudflare",
+  "len": 24770,
+  "mp4": [],
+  "challenge": true,
+  "head": "<html> <head> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <style>.cf_challenge_text_small { font-size: 11px; } body { "
+ },
+ {
+  "u": "https://cosmo.fdeb.live.use1a.on.epicgames.com/v1/item/L2CBTj5GHBSFsZc6pSWMq29DqKBaTPDpmatcfnhPjEc/mp4-sm",
+  "status": 200,
+  "type": "video/mp4",
+  "server": "cloudflare",
+  "len": 1911086,
+  "mp4": [],
+  "challenge": false,
+  "head": "\u0000\u0000\u0000\u001cftypisom\u0000\u0000\u0002\u0000isomiso2mp41\u0000\u0000\u0000\bfree\u0000\u001e��mdat�\u0002\u0000Lavc62.11.100\u0000B4�Y��\u0000\u0003�\u0005����`Z��5\\k^�neki\u0015\u0015\u000f�R�+�,:�q\u0011\u0013�\"�\u0012 \"�\u001b�ѧ�{0��%��_-�P0�P� '�i�*39{�v}I\u0010{�@�F D�,\u0018\u0000U\u001e�%��3"
+ }
+]

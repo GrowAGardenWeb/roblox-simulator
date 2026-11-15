@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15T13:19:06.471Z",
+ "updated": "2026-11-15T14:00:38.026Z",
  "source": {
   "api": "fortnite-api.com/v2/shop",
   "site": "error: https://www.fortnite.com/item-shop?lang=en-US -> HTTP 403"
@@ -37,6 +37,12 @@
   "BUGATTI CENTODIECI": "https://cdn2.unrealengine.com/sk-Billboard_GoalsandGlory_BG-af32dde9.png",
   "A$AP ROCKY": "https://cdn2.unrealengine.com/sk-Billboard_TonicMail_SectionBG-6a32f9b4.png",
   "JAM TRACKS": "https://cdn2.unrealengine.com/default-sparks-sectionbg-v1-1920x1080-9b27879ce008.jpg"
+ },
+ "textures": {
+  "PirateCactus1": "https://cdn2.unrealengine.com/sk-Billboard_CactusBait_BG-51b2afe6.png",
+  "IShowPirate1": "https://cdn2.unrealengine.com/sk-Billboard_LocketSnug_BG-2bd18d1c.png",
+  "LilRook": "https://cdn2.unrealengine.com/sk-Billboard_RookGecko_BG-e67da5f6.png",
+  "ConclusionC111426": "https://cdn2.unrealengine.com/sk-Billboard_FlipperBalm_BG-9f591538.png"
  },
  "sections": [
   {
@@ -930,7 +936,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_celerystitch/icon.png",
      "featured": null,
-     "nameEs": "R\u00e1faga de pu\u00f1etazos"
+     "nameEs": "Ráfaga de puñetazos"
     }
    ],
    "videos": [],
@@ -1208,7 +1214,7 @@
      "series": "DARK SERIES",
      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_383_darkdinofemale/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_383_darkdinofemale/featured.png",
-     "nameEs": "Eclosi\u00f3n oscura"
+     "nameEs": "Eclosión oscura"
     }
    ],
    "videos": [],
@@ -1911,7 +1917,7 @@
      "series": "Gaming Legends Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_dunebriefshift/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_dunebriefshift/featured.png",
-     "nameEs": "Tanque de energ\u00eda port\u00e1til"
+     "nameEs": "Tanque de energía portátil"
     }
    ],
    "videos": [],
@@ -2167,7 +2173,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_celerystitch/icon.png",
      "featured": null,
-     "nameEs": "R\u00e1faga de pu\u00f1etazos"
+     "nameEs": "Ráfaga de puñetazos"
     }
    ],
    "videos": [],
@@ -2176,7 +2182,7 @@
     "https://fortnite-api.com/images/cosmetics/br/eid_celerystitch/smallicon.png",
     "https://fortnite-api.com/images/cosmetics/br/eid_celerystitch/icon.png"
    ],
-   "nameEs": "R\u00e1faga de pu\u00f1etazos"
+   "nameEs": "Ráfaga de puñetazos"
   },
   {
    "order": 27,
@@ -2715,7 +2721,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/character_neonglow/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/character_neonglow/featured.png",
-     "nameEs": "Reina H\u00e9spero"
+     "nameEs": "Reina Héspero"
     }
    ],
    "videos": [],
@@ -2731,7 +2737,7 @@
     "https://fortnite-api.com/images/cosmetics/beans/bean_neonglow/small.png",
     "https://fortnite-api.com/images/cosmetics/beans/bean_neonglow/large.png"
    ],
-   "nameEs": "Reina H\u00e9spero"
+   "nameEs": "Reina Héspero"
   },
   {
    "order": 38,
@@ -2781,7 +2787,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_538_streetracercobragold/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_538_streetracercobragold/featured.png",
-     "nameEs": "Alas apa\u00f1adas"
+     "nameEs": "Alas apañadas"
     }
    ],
    "videos": [],
@@ -2862,7 +2868,7 @@
    "offerId": "v2:/013e3aac9a3cf6ac47f99680e8bbdef8185b96d1efee1924255442204516f35b",
    "devName": "[VIRTUAL]1 x TBD (SID_Placeholder_489) for 500 MtxCurrency",
    "name": "Godzilla",
-   "info": "Blue \u00d6yster Cult",
+   "info": "Blue Öyster Cult",
    "kind": "jam",
    "banner": null,
    "isBundle": false,
@@ -2888,7 +2894,7 @@
     {
      "id": "sid_placeholder_489",
      "title": "Godzilla",
-     "artist": "Blue \u00d6yster Cult",
+     "artist": "Blue Öyster Cult",
      "year": 1977,
      "bpm": 92,
      "duration": 227,
@@ -2940,7 +2946,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_538_streetracercobragold/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_538_streetracercobragold/featured.png",
-     "nameEs": "Alas apa\u00f1adas"
+     "nameEs": "Alas apañadas"
     }
    ],
    "videos": [],
@@ -2949,7 +2955,7 @@
     "https://fortnite-api.com/images/cosmetics/br/bid_538_streetracercobragold/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/bid_538_streetracercobragold/featured.png"
    ],
-   "nameEs": "Alas apa\u00f1adas"
+   "nameEs": "Alas apañadas"
   },
   {
    "order": 42,
@@ -2989,7 +2995,7 @@
      "series": "MARVEL SERIES",
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_820_spectaclewebmale/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_820_spectaclewebmale/featured.png",
-     "nameEs": "Hacha de telara\u00f1as"
+     "nameEs": "Hacha de telarañas"
     }
    ],
    "videos": [],
@@ -2999,7 +3005,7 @@
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_820_spectaclewebmale/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_820_spectaclewebmale/featured.png"
    ],
-   "nameEs": "Hacha de telara\u00f1as"
+   "nameEs": "Hacha de telarañas"
   },
   {
    "order": 43,
@@ -4064,7 +4070,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_celerystitch/icon.png",
      "featured": null,
-     "nameEs": "R\u00e1faga de pu\u00f1etazos"
+     "nameEs": "Ráfaga de puñetazos"
     },
     {
      "id": "Character_BoastJoint",
@@ -4094,7 +4100,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_boastjoint/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_boastjoint/featured.png",
-     "nameEs": "Bast\u00f3n del clima"
+     "nameEs": "Bastón del clima"
     },
     {
      "id": "Character_LoomRise",
@@ -4843,7 +4849,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/trails_id_081_missinglink/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/trails_id_081_missinglink/featured.png",
-     "nameEs": "Eslab\u00f3n perdido"
+     "nameEs": "Eslabón perdido"
     }
    ],
    "videos": [],
@@ -4852,7 +4858,7 @@
     "https://fortnite-api.com/images/cosmetics/br/trails_id_081_missinglink/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/trails_id_081_missinglink/featured.png"
    ],
-   "nameEs": "Eslab\u00f3n perdido"
+   "nameEs": "Eslabón perdido"
   },
   {
    "order": 77,
@@ -5031,7 +5037,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/character_neonglow/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/character_neonglow/featured.png",
-     "nameEs": "Reina H\u00e9spero"
+     "nameEs": "Reina Héspero"
     },
     {
      "id": "Pickaxe_NeonGlow",
@@ -5060,7 +5066,7 @@
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_neonglow/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_neonglow/featured.png"
    ],
-   "nameEs": "Lote de Reina H\u00e9spero"
+   "nameEs": "Lote de Reina Héspero"
   },
   {
    "order": 81,
@@ -5606,7 +5612,7 @@
     },
     {
      "id": "sid_placeholder_948",
-     "title": "RIOT (Rowdy Pipe\u2019n)",
+     "title": "RIOT (Rowdy Pipe’n)",
      "artist": "A$AP Rocky",
      "year": 2023,
      "bpm": 120,
@@ -5631,7 +5637,7 @@
     "https://cdn.fortnite-api.com/tracks/cca24060815e192d.jpg",
     "https://cdn.fortnite-api.com/tracks/1c14826faaa820e1.jpg"
    ],
-   "nameEs": "Lote de improvisaci\u00f3n de A$AP Rocky"
+   "nameEs": "Lote de improvisación de A$AP Rocky"
   },
   {
    "order": 90,
@@ -5671,7 +5677,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_tonicmailweb_mic/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_tonicmailweb_mic/featured.png",
-     "nameEs": "Melod\u00eda de Rocky"
+     "nameEs": "Melodía de Rocky"
     },
     {
      "id": "Pickaxe_TonicMailWeb_Mic",
@@ -5681,7 +5687,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_tonicmailweb_mic/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_tonicmailweb_mic/featured.png",
-     "nameEs": "Melod\u00eda de Rocky"
+     "nameEs": "Melodía de Rocky"
     }
    ],
    "videos": [],
@@ -5697,7 +5703,7 @@
     "https://fortnite-api.com/images/cosmetics/instruments/sparks_tonicmailweb_mic/small.png",
     "https://fortnite-api.com/images/cosmetics/instruments/sparks_tonicmailweb_mic/large.png"
    ],
-   "nameEs": "Melod\u00eda de Rocky"
+   "nameEs": "Melodía de Rocky"
   },
   {
    "order": 91,
@@ -5764,8 +5770,8 @@
   {
    "order": 92,
    "offerId": "v2:/894ccfcfa0230aa70a86210b480a1a9079fc56099bf27c8092e44c3d1cf463c6",
-   "devName": "[VIRTUAL]1 x A$AP ROCKY X PUMA Suede 94 \u2018Black/White\u2019 for 1000 MtxCurrency",
-   "name": "A$AP ROCKY X PUMA Suede 94 \u2018Black/White\u2019",
+   "devName": "[VIRTUAL]1 x A$AP ROCKY X PUMA Suede 94 ‘Black/White’ for 1000 MtxCurrency",
+   "name": "A$AP ROCKY X PUMA Suede 94 ‘Black/White’",
    "info": null,
    "kind": "item",
    "banner": null,
@@ -5793,7 +5799,7 @@
    "items": [
     {
      "id": "Shoes_TonicMailNote",
-     "name": "A$AP ROCKY X PUMA Suede 94 \u2018Black/White\u2019",
+     "name": "A$AP ROCKY X PUMA Suede 94 ‘Black/White’",
      "type": "shoe",
      "rarity": "uncommon",
      "series": null,
@@ -5993,7 +5999,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_voyagercuboid/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_voyagercuboid/featured.png",
-     "nameEs": "C\u00famulo de caos"
+     "nameEs": "Cúmulo de caos"
     }
    ],
    "videos": [],
@@ -6599,7 +6605,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/character_headhunterstar/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/character_headhunterstar/featured.png",
-     "nameEs": "Renegada rob\u00f3tica"
+     "nameEs": "Renegada robótica"
     },
     {
      "id": "Backpack_HeadHunterStar",
@@ -6628,7 +6634,7 @@
     "https://fortnite-api.com/images/cosmetics/br/backpack_headhunterstar/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/backpack_headhunterstar/featured.png"
    ],
-   "nameEs": "Renegada rob\u00f3tica"
+   "nameEs": "Renegada robótica"
   },
   {
    "order": 108,
@@ -6758,7 +6764,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/glider_tonicmailweb/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/glider_tonicmailweb/featured.png",
-     "nameEs": "Helic\u00f3ptero de Flacko"
+     "nameEs": "Helicóptero de Flacko"
     }
    ],
    "videos": [],
@@ -6769,7 +6775,7 @@
     "https://fortnite-api.com/images/cosmetics/br/glider_tonicmailweb/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/glider_tonicmailweb/featured.png"
    ],
-   "nameEs": "Helic\u00f3ptero de Flacko"
+   "nameEs": "Helicóptero de Flacko"
   },
   {
    "order": 111,
@@ -6918,8 +6924,8 @@
   {
    "order": 113,
    "offerId": "v2:/bb075fec94b2c6fb20e50d134796402f88695a9365a03c9fe4a125849ed297d8",
-   "devName": "[VIRTUAL]1 x A$AP ROCKY X PUMA Straycat V6 \u2018Red Flash/Black\u2019 for 1000 MtxCurrency",
-   "name": "A$AP ROCKY X PUMA Straycat V6 \u2018Red Flash/Black\u2019",
+   "devName": "[VIRTUAL]1 x A$AP ROCKY X PUMA Straycat V6 ‘Red Flash/Black’ for 1000 MtxCurrency",
+   "name": "A$AP ROCKY X PUMA Straycat V6 ‘Red Flash/Black’",
    "info": null,
    "kind": "item",
    "banner": null,
@@ -6947,7 +6953,7 @@
    "items": [
     {
      "id": "Shoes_TonicMailLetter",
-     "name": "A$AP ROCKY X PUMA Straycat V6 \u2018Red Flash/Black\u2019",
+     "name": "A$AP ROCKY X PUMA Straycat V6 ‘Red Flash/Black’",
      "type": "shoe",
      "rarity": "uncommon",
      "series": null,
@@ -7002,7 +7008,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/wrap_violetfare/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/wrap_violetfare/featured.png",
-     "nameEs": "Brillo oce\u00e1nico"
+     "nameEs": "Brillo oceánico"
     }
    ],
    "videos": [],
@@ -7012,7 +7018,7 @@
     "https://fortnite-api.com/images/cosmetics/br/wrap_violetfare/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/wrap_violetfare/featured.png"
    ],
-   "nameEs": "Brillo oce\u00e1nico"
+   "nameEs": "Brillo oceánico"
   },
   {
    "order": 115,
@@ -7072,7 +7078,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_boastjoint/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_boastjoint/featured.png",
-     "nameEs": "Bast\u00f3n del clima"
+     "nameEs": "Bastón del clima"
     }
    ],
    "videos": [],
@@ -7143,7 +7149,7 @@
    "order": 117,
    "offerId": "v2:/abd0e92ef102ec29c524f4aa366b089e0bdaa663e3266a752e5673ec8b3d7bff",
    "devName": "[VIRTUAL]1 x TBD (SID_Placeholder_948) for 500 MtxCurrency",
-   "name": "RIOT (Rowdy Pipe\u2019n)",
+   "name": "RIOT (Rowdy Pipe’n)",
    "info": "A$AP Rocky",
    "kind": "jam",
    "banner": null,
@@ -7170,7 +7176,7 @@
    "tracks": [
     {
      "id": "sid_placeholder_948",
-     "title": "RIOT (Rowdy Pipe\u2019n)",
+     "title": "RIOT (Rowdy Pipe’n)",
      "artist": "A$AP Rocky",
      "year": 2023,
      "bpm": 120,
@@ -7183,7 +7189,7 @@
    "images": [
     "https://cdn.fortnite-api.com/tracks/cca24060815e192d.jpg"
    ],
-   "nameEs": "RIOT (Rowdy Pipe\u2019n)"
+   "nameEs": "RIOT (Rowdy Pipe’n)"
   },
   {
    "order": 118,
@@ -8997,7 +9003,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/character_tacticmushroom_d/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/character_tacticmushroom_d/featured.png",
-     "nameEs": "P\u00f3lvora"
+     "nameEs": "Pólvora"
     }
    ],
    "videos": [],
@@ -9028,7 +9034,7 @@
     "https://fortnite-api.com/images/cosmetics/br/character_tacticmushroom_d/variants/jerseycolor/mat12.png",
     "https://fortnite-api.com/images/cosmetics/br/character_tacticmushroom_d/variants/jerseycolor/mat13.png"
    ],
-   "nameEs": "P\u00f3lvora"
+   "nameEs": "Pólvora"
   },
   {
    "order": 153,
@@ -9326,7 +9332,7 @@
    "offerId": "v2:/465c5f816908ee726245731d693572264af488b4d69788b2706cf68ea135ae21",
    "devName": "[VIRTUAL]1 x PROVENZA (REMIX) for 500 MtxCurrency",
    "name": "PROVENZA (REMIX)",
-   "info": "Karol G ft. Ti\u00ebsto",
+   "info": "Karol G ft. Tiësto",
    "kind": "jam",
    "banner": null,
    "isBundle": false,
@@ -9352,7 +9358,7 @@
     {
      "id": "sid_placeholder_276",
      "title": "PROVENZA (REMIX)",
-     "artist": "Karol G ft. Ti\u00ebsto",
+     "artist": "Karol G ft. Tiësto",
      "year": 2023,
      "bpm": 128,
      "duration": 187,
@@ -9404,7 +9410,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_thrash/icon.png",
      "featured": null,
-     "nameEs": "Pasos din\u00e1micos"
+     "nameEs": "Pasos dinámicos"
     }
    ],
    "videos": [],
@@ -9414,12 +9420,12 @@
     "https://fortnite-api.com/images/cosmetics/br/eid_thrash/smallicon.png",
     "https://fortnite-api.com/images/cosmetics/br/eid_thrash/icon.png"
    ],
-   "nameEs": "Pasos din\u00e1micos"
+   "nameEs": "Pasos dinámicos"
   },
   {
    "order": 161,
    "offerId": "v2:/8f114946b8d166af6a3f7ae3ed7b1ae75c6a1e9c1d9508c258080c01d88a2365",
-   "devName": "[VIRTUAL]1 x Cap'n Hatsune Miku, 1 x Miku's Treasure, 1 x Miku's Anchor Floatie, 1 x Miku Miku ni Shite Ageru\u266a, 1 x Miku's Mic, 1 x Miku's Mic, 1 x Miku's Mic, 1 x TBD (SID_Placeholder_991) for -1 MtxCurrency",
+   "devName": "[VIRTUAL]1 x Cap'n Hatsune Miku, 1 x Miku's Treasure, 1 x Miku's Anchor Floatie, 1 x Miku Miku ni Shite Ageru♪, 1 x Miku's Mic, 1 x Miku's Mic, 1 x Miku's Mic, 1 x TBD (SID_Placeholder_991) for -1 MtxCurrency",
    "name": "Cap'n Hatsune Miku",
    "info": "FLAVOR FOLEY ft. Hatsune Miku",
    "kind": "jam",
@@ -9488,13 +9494,13 @@
     },
     {
      "id": "EID_PeonyPizza",
-     "name": "Miku Miku ni Shite Ageru\u266a",
+     "name": "Miku Miku ni Shite Ageru♪",
      "type": "emote",
      "rarity": "icon",
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_peonypizza/icon.png",
      "featured": null,
-     "nameEs": "Miku Miku ni Shite Ageru\u266a"
+     "nameEs": "Miku Miku ni Shite Ageru♪"
     },
     {
      "id": "Backpack_PeonyPizza_Mic",
@@ -9894,8 +9900,8 @@
   {
    "order": 169,
    "offerId": "v2:/b9fa0b00c7fbd87e97181ebf54246ee72e90c41565baf04b33940dabcde6d216",
-   "devName": "[VIRTUAL]1 x Nike Air Force 1 \u2018Orange/Blue\u2019 for 1000 MtxCurrency",
-   "name": "Nike Air Force 1 \u2018Orange/Blue\u2019",
+   "devName": "[VIRTUAL]1 x Nike Air Force 1 ‘Orange/Blue’ for 1000 MtxCurrency",
+   "name": "Nike Air Force 1 ‘Orange/Blue’",
    "info": null,
    "kind": "item",
    "banner": null,
@@ -9922,7 +9928,7 @@
    "items": [
     {
      "id": "Shoes_PurityJadeAloe",
-     "name": "Nike Air Force 1 \u2018Orange/Blue\u2019",
+     "name": "Nike Air Force 1 ‘Orange/Blue’",
      "type": "shoe",
      "rarity": "uncommon",
      "series": null,
@@ -10514,7 +10520,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_boastjoint/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_boastjoint/featured.png",
-     "nameEs": "Bast\u00f3n del clima"
+     "nameEs": "Bastón del clima"
     }
    ],
    "videos": [],
@@ -10524,7 +10530,7 @@
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_boastjoint/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_boastjoint/featured.png"
    ],
-   "nameEs": "Bast\u00f3n del clima"
+   "nameEs": "Bastón del clima"
   },
   {
    "order": 181,
@@ -10872,7 +10878,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/cid_073_athena_commando_f_scuba/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/cid_073_athena_commando_f_scuba/featured.png",
-     "nameEs": "Operaciones especiales esn\u00f3rquel"
+     "nameEs": "Operaciones especiales esnórquel"
     }
    ],
    "videos": [],
@@ -10888,7 +10894,7 @@
     "https://fortnite-api.com/images/cosmetics/beans/bean_sharkshanker/small.png",
     "https://fortnite-api.com/images/cosmetics/beans/bean_sharkshanker/large.png"
    ],
-   "nameEs": "Operaciones especiales esn\u00f3rquel"
+   "nameEs": "Operaciones especiales esnórquel"
   },
   {
    "order": 188,
@@ -11017,7 +11023,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/cid_336_athena_commando_m_dragonmask/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/cid_336_athena_commando_m_dragonmask/featured.png",
-     "nameEs": "Caminante \u00edgneo"
+     "nameEs": "Caminante ígneo"
     }
    ],
    "videos": [],
@@ -11033,7 +11039,7 @@
     "https://fortnite-api.com/images/cosmetics/beans/bean_dragonmask/small.png",
     "https://fortnite-api.com/images/cosmetics/beans/bean_dragonmask/large.png"
    ],
-   "nameEs": "Caminante \u00edgneo"
+   "nameEs": "Caminante ígneo"
   },
   {
    "order": 191,
@@ -11529,7 +11535,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_voyagercuboid/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_voyagercuboid/featured.png",
-     "nameEs": "C\u00famulo de caos"
+     "nameEs": "Cúmulo de caos"
     }
    ],
    "videos": [],
@@ -11539,7 +11545,7 @@
     "https://fortnite-api.com/images/cosmetics/br/backpack_voyagercuboid/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/backpack_voyagercuboid/featured.png"
    ],
-   "nameEs": "C\u00famulo de caos"
+   "nameEs": "Cúmulo de caos"
   },
   {
    "order": 200,
@@ -11716,7 +11722,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/glider_galaxylevel/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/glider_galaxylevel/featured.png",
-     "nameEs": "Flow a\u00e9reo"
+     "nameEs": "Flow aéreo"
     }
    ],
    "videos": [],
@@ -11727,12 +11733,12 @@
     "https://fortnite-api.com/images/cosmetics/br/glider_galaxylevel/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/glider_galaxylevel/featured.png"
    ],
-   "nameEs": "Flow a\u00e9reo"
+   "nameEs": "Flow aéreo"
   },
   {
    "order": 204,
    "offerId": "v2:/ec90ad43e5988096783782d40bdb9acbcc89434bc8b19dc96f88623195ad1fd6",
-   "devName": "[VIRTUAL]1 x Shirthead Flacko, 1 x Hi-Fi Jets, 1 x Rocky Rugahand, 1 x A$AP ROCKY X PUMA Suede 94 \u2018Black/White\u2019, 1 x Flacko's Chopper, 1 x A$AP's Gauntlets, 1 x A$AP Rockets, 1 x Helicopter, 1 x RIOT (Rowdy Pipe'n), 1 x A$AP ROCKY X PUMA Straycat V6 \u2018Red Flash/Black\u2019, 1 x Message From Flacko, 1 x Rocky's BOOM Mic, 1 x Rocky's BOOM Mic, 1 x Rocky's BOOM Mic for -1 MtxCurrency",
+   "devName": "[VIRTUAL]1 x Shirthead Flacko, 1 x Hi-Fi Jets, 1 x Rocky Rugahand, 1 x A$AP ROCKY X PUMA Suede 94 ‘Black/White’, 1 x Flacko's Chopper, 1 x A$AP's Gauntlets, 1 x A$AP Rockets, 1 x Helicopter, 1 x RIOT (Rowdy Pipe'n), 1 x A$AP ROCKY X PUMA Straycat V6 ‘Red Flash/Black’, 1 x Message From Flacko, 1 x Rocky's BOOM Mic, 1 x Rocky's BOOM Mic, 1 x Rocky's BOOM Mic for -1 MtxCurrency",
    "name": "A$AP Rocky Bundle",
    "info": "Bundle",
    "kind": "bundle",
@@ -11791,7 +11797,7 @@
     },
     {
      "id": "Shoes_TonicMailNote",
-     "name": "A$AP ROCKY X PUMA Suede 94 \u2018Black/White\u2019",
+     "name": "A$AP ROCKY X PUMA Suede 94 ‘Black/White’",
      "type": "shoe",
      "rarity": "uncommon",
      "series": null,
@@ -11807,7 +11813,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/glider_tonicmailweb/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/glider_tonicmailweb/featured.png",
-     "nameEs": "Helic\u00f3ptero de Flacko"
+     "nameEs": "Helicóptero de Flacko"
     },
     {
      "id": "Pickaxe_TonicMailYam",
@@ -11851,7 +11857,7 @@
     },
     {
      "id": "Shoes_TonicMailLetter",
-     "name": "A$AP ROCKY X PUMA Straycat V6 \u2018Red Flash/Black\u2019",
+     "name": "A$AP ROCKY X PUMA Straycat V6 ‘Red Flash/Black’",
      "type": "shoe",
      "rarity": "uncommon",
      "series": null,
@@ -11877,7 +11883,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_tonicmailweb_mic/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_tonicmailweb_mic/featured.png",
-     "nameEs": "Melod\u00eda de Rocky"
+     "nameEs": "Melodía de Rocky"
     },
     {
      "id": "Backpack_TonicMailWeb_Mic",
@@ -11887,7 +11893,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_tonicmailweb_mic/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_tonicmailweb_mic/featured.png",
-     "nameEs": "Melod\u00eda de Rocky"
+     "nameEs": "Melodía de Rocky"
     }
    ],
    "videos": [],
@@ -12282,7 +12288,7 @@
      "series": "Gaming Legends Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_dunebriefmerry/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_dunebriefmerry/featured.png",
-     "nameEs": "Hoja \u00edgnea de Mega Buster"
+     "nameEs": "Hoja ígnea de Mega Buster"
     },
     {
      "id": "Character_DuneBriefShift",
@@ -12312,7 +12318,7 @@
      "series": "Gaming Legends Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_dunebriefshift/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_dunebriefshift/featured.png",
-     "nameEs": "Tanque de energ\u00eda port\u00e1til"
+     "nameEs": "Tanque de energía portátil"
     },
     {
      "id": "Character_TackleShow",
@@ -12362,7 +12368,7 @@
      "series": "Gaming Legends Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_dunebrief/icon.png",
      "featured": null,
-     "nameEs": "Ca\u00f1onazo de Mega Buster"
+     "nameEs": "Cañonazo de Mega Buster"
     }
    ],
    "videos": [],
@@ -13774,7 +13780,7 @@
   {
    "order": 238,
    "offerId": "v2:/c75218ac40c50bfd30eafaef6e94df890f8234dd42c709a1120401e2bbad2655",
-   "devName": "[VIRTUAL]1 x Shirthead Flacko, 1 x Hi-Fi Jets, 1 x A$AP ROCKY X PUMA Suede 94 \u2018Black/White\u2019 for -1 MtxCurrency",
+   "devName": "[VIRTUAL]1 x Shirthead Flacko, 1 x Hi-Fi Jets, 1 x A$AP ROCKY X PUMA Suede 94 ‘Black/White’ for -1 MtxCurrency",
    "name": "Helicopter Flacko",
    "info": null,
    "kind": "item",
@@ -13823,7 +13829,7 @@
     },
     {
      "id": "Shoes_TonicMailNote",
-     "name": "A$AP ROCKY X PUMA Suede 94 \u2018Black/White\u2019",
+     "name": "A$AP ROCKY X PUMA Suede 94 ‘Black/White’",
      "type": "shoe",
      "rarity": "uncommon",
      "series": null,
@@ -13889,7 +13895,7 @@
      "series": "DARK SERIES",
      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_383_darkdinofemale/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_383_darkdinofemale/featured.png",
-     "nameEs": "Eclosi\u00f3n oscura"
+     "nameEs": "Eclosión oscura"
     }
    ],
    "videos": [],
@@ -13901,7 +13907,7 @@
     "https://fortnite-api.com/images/cosmetics/br/bid_383_darkdinofemale/variants/material/mat1.png",
     "https://fortnite-api.com/images/cosmetics/br/bid_383_darkdinofemale/variants/material/mat2.png"
    ],
-   "nameEs": "Eclosi\u00f3n oscura"
+   "nameEs": "Eclosión oscura"
   },
   {
    "order": 240,
@@ -14096,7 +14102,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/cid_073_athena_commando_f_scuba/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/cid_073_athena_commando_f_scuba/featured.png",
-     "nameEs": "Operaciones especiales esn\u00f3rquel"
+     "nameEs": "Operaciones especiales esnórquel"
     },
     {
      "id": "Shoes_SaltFin",
@@ -14210,7 +14216,7 @@
      "series": "Gaming Legends Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_dunebrief/icon.png",
      "featured": null,
-     "nameEs": "Ca\u00f1onazo de Mega Buster"
+     "nameEs": "Cañonazo de Mega Buster"
     }
    ],
    "videos": [],
@@ -14219,7 +14225,7 @@
     "https://fortnite-api.com/images/cosmetics/br/eid_dunebrief/smallicon.png",
     "https://fortnite-api.com/images/cosmetics/br/eid_dunebrief/icon.png"
    ],
-   "nameEs": "Ca\u00f1onazo de Mega Buster"
+   "nameEs": "Cañonazo de Mega Buster"
   },
   {
    "order": 246,
@@ -14391,7 +14397,7 @@
      "series": "Gaming Legends Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_dunebriefshift/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_dunebriefshift/featured.png",
-     "nameEs": "Tanque de energ\u00eda port\u00e1til"
+     "nameEs": "Tanque de energía portátil"
     }
    ],
    "videos": [],
@@ -14404,7 +14410,7 @@
     "https://fortnite-api.com/images/cosmetics/br/backpack_dunebriefshift/variants/particle/particle1.png",
     "https://fortnite-api.com/images/cosmetics/br/backpack_dunebriefshift/variants/particle/particle2.png"
    ],
-   "nameEs": "Tanque de energ\u00eda port\u00e1til"
+   "nameEs": "Tanque de energía portátil"
   },
   {
    "order": 250,
@@ -14649,7 +14655,7 @@
      "series": "MARVEL SERIES",
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_820_spectaclewebmale/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_820_spectaclewebmale/featured.png",
-     "nameEs": "Hacha de telara\u00f1as"
+     "nameEs": "Hacha de telarañas"
     },
     {
      "id": "EID_SpectacleWeb",
@@ -14958,7 +14964,7 @@
     "https://cdn.fortnite-api.com/tracks/f7516c1efd0903bd.jpg",
     "https://cdn.fortnite-api.com/tracks/2061f2e652683f42.jpg"
    ],
-   "nameEs": "Lote de improvisaci\u00f3n de Lil Uzi Vert"
+   "nameEs": "Lote de improvisación de Lil Uzi Vert"
   },
   {
    "order": 260,
@@ -15067,7 +15073,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_galaxylevel/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_galaxylevel/featured.png",
-     "nameEs": "Rayos r\u00edtmicos"
+     "nameEs": "Rayos rítmicos"
     },
     {
      "id": "Glider_GalaxyLevel",
@@ -15077,7 +15083,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/glider_galaxylevel/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/glider_galaxylevel/featured.png",
-     "nameEs": "Flow a\u00e9reo"
+     "nameEs": "Flow aéreo"
     },
     {
      "id": "EID_GalaxyLevel",
@@ -15097,7 +15103,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/emoji_s26_galaxylevel/smallicon.png",
      "featured": null,
-     "nameEs": "Sonrisa el\u00e9ctrica"
+     "nameEs": "Sonrisa eléctrica"
     },
     {
      "id": "Spray_GalaxyLevel",
@@ -15107,7 +15113,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/spray_galaxylevel/icon.png",
      "featured": null,
-     "nameEs": "Furia prehist\u00f3rica"
+     "nameEs": "Furia prehistórica"
     }
    ],
    "videos": [],
@@ -15140,7 +15146,7 @@
     "https://fortnite-api.com/images/cosmetics/br/spray_galaxylevel/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/spray_galaxylevel/decal.png"
    ],
-   "nameEs": "Lote de J Jur\u00e1sico"
+   "nameEs": "Lote de J Jurásico"
   },
   {
    "order": 262,
@@ -15274,7 +15280,7 @@
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_galaxylevel/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_galaxylevel/featured.png",
-     "nameEs": "Rayos r\u00edtmicos"
+     "nameEs": "Rayos rítmicos"
     }
    ],
    "videos": [],
@@ -15285,7 +15291,7 @@
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_galaxylevel/icon.png",
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_galaxylevel/featured.png"
    ],
-   "nameEs": "Rayos r\u00edtmicos"
+   "nameEs": "Rayos rítmicos"
   },
   {
    "order": 265,
@@ -15615,7 +15621,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/wrap_violetfare/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/wrap_violetfare/featured.png",
-     "nameEs": "Brillo oce\u00e1nico"
+     "nameEs": "Brillo oceánico"
     }
    ],
    "videos": [],
@@ -15817,7 +15823,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/cid_a_168_athena_commando_f_stands/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/cid_a_168_athena_commando_f_stands/featured.png",
-     "nameEs": "Maestra mel\u00f3dica"
+     "nameEs": "Maestra melódica"
     }
    ],
    "videos": [],
@@ -15838,13 +15844,13 @@
     "https://fortnite-api.com/images/cosmetics/br/cid_a_168_athena_commando_f_stands/variants/emissive/emissive2.png",
     "https://fortnite-api.com/images/cosmetics/br/cid_a_168_athena_commando_f_stands/variants/emissive/emissive1.png"
    ],
-   "nameEs": "Maestra mel\u00f3dica"
+   "nameEs": "Maestra melódica"
   },
   {
    "order": 274,
    "offerId": "v2:/03aab0ccd182f118567d67e012526758667fb368e11be6508f974f60cb3097ee",
-   "devName": "[VIRTUAL]1 x Miku Miku ni Shite Ageru\u266a for 500 MtxCurrency",
-   "name": "Miku Miku ni Shite Ageru\u266a",
+   "devName": "[VIRTUAL]1 x Miku Miku ni Shite Ageru♪ for 500 MtxCurrency",
+   "name": "Miku Miku ni Shite Ageru♪",
    "info": null,
    "kind": "item",
    "banner": "New",
@@ -15872,13 +15878,13 @@
    "items": [
     {
      "id": "EID_PeonyPizza",
-     "name": "Miku Miku ni Shite Ageru\u266a",
+     "name": "Miku Miku ni Shite Ageru♪",
      "type": "emote",
      "rarity": "icon",
      "series": "Icon Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_peonypizza/icon.png",
      "featured": null,
-     "nameEs": "Miku Miku ni Shite Ageru\u266a"
+     "nameEs": "Miku Miku ni Shite Ageru♪"
     }
    ],
    "videos": [],
@@ -15887,7 +15893,7 @@
     "https://fortnite-api.com/images/cosmetics/br/eid_peonypizza/smallicon.png",
     "https://fortnite-api.com/images/cosmetics/br/eid_peonypizza/icon.png"
    ],
-   "nameEs": "Miku Miku ni Shite Ageru\u266a"
+   "nameEs": "Miku Miku ni Shite Ageru♪"
   },
   {
    "order": 275,
@@ -16031,7 +16037,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/trails_id_081_missinglink/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/trails_id_081_missinglink/featured.png",
-     "nameEs": "Eslab\u00f3n perdido"
+     "nameEs": "Eslabón perdido"
     }
    ],
    "videos": [],
@@ -16106,7 +16112,7 @@
      "series": "Gaming Legends Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_dunebriefmerry/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_dunebriefmerry/featured.png",
-     "nameEs": "Hoja \u00edgnea de Mega Buster"
+     "nameEs": "Hoja ígnea de Mega Buster"
     }
    ],
    "videos": [],
@@ -16223,7 +16229,7 @@
      "series": "Gaming Legends Series",
      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_dunebriefmerry/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_dunebriefmerry/featured.png",
-     "nameEs": "Hoja \u00edgnea de Mega Buster"
+     "nameEs": "Hoja ígnea de Mega Buster"
     }
    ],
    "videos": [],
@@ -16236,7 +16242,7 @@
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_dunebriefmerry/variants/material/mat1.png",
     "https://fortnite-api.com/images/cosmetics/br/pickaxe_dunebriefmerry/variants/material/mat0.png"
    ],
-   "nameEs": "Hoja \u00edgnea de Mega Buster"
+   "nameEs": "Hoja ígnea de Mega Buster"
   },
   {
    "order": 281,
@@ -16781,7 +16787,7 @@
      "series": null,
      "icon": "https://fortnite-api.com/images/cosmetics/br/character_raggedrebel/icon.png",
      "featured": "https://fortnite-api.com/images/cosmetics/br/character_raggedrebel/featured.png",
-     "nameEs": "L\u00edder de escuadrilla"
+     "nameEs": "Líder de escuadrilla"
     }
    ],
    "videos": [],
@@ -16797,7 +16803,7 @@
     "https://fortnite-api.com/images/cosmetics/beans/bean_raggedrebel/small.png",
     "https://fortnite-api.com/images/cosmetics/beans/bean_raggedrebel/large.png"
    ],
-   "nameEs": "L\u00edder de escuadrilla"
+   "nameEs": "Líder de escuadrilla"
   },
   {
    "order": 292,
@@ -17861,11 +17867,5 @@
   "videos": [],
   "offers": [],
   "nextDataKeys": null
- },
- "textures": {
-  "PirateCactus1": "https://cdn2.unrealengine.com/sk-Billboard_CactusBait_BG-51b2afe6.png",
-  "IShowPirate1": "https://cdn2.unrealengine.com/sk-Billboard_LocketSnug_BG-2bd18d1c.png",
-  "LilRook": "https://cdn2.unrealengine.com/sk-Billboard_RookGecko_BG-e67da5f6.png",
-  "ConclusionC111426": "https://cdn2.unrealengine.com/sk-Billboard_FlipperBalm_BG-9f591538.png"
  }
 }
