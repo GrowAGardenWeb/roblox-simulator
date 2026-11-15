@@ -12,6 +12,14 @@
     localStorage.setItem('fnBoot', String(Date.now()));
     setTimeout(() => { try { localStorage.removeItem('fnBoot'); } catch (e) {} }, 7000);
   } catch (e) {}
+  const step = (x) => { try { localStorage.setItem('fnStep', x + ' · ' + (document.body && document.body.dataset.screen || '-') + ' · ' + new Date().toISOString().slice(11, 19)); } catch (e) {} };
+  window.__fnStep = step;
+  try {
+    if (/[?&]nodyn=1/.test(location.search)) return;
+    const prev = localStorage.getItem('fnStep'), crashed = localStorage.getItem('fnBoot');
+    if (crashed && prev) { const bn = document.createElement('div'); bn.textContent = 'Se cerró la vez pasada. Último paso: ' + prev + ' (toca para ocultar)'; bn.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:#400;color:#fff;font:12px/1.3 system-ui;padding:8px 10px;border-radius:8px'; bn.onclick = () => bn.remove(); addEventListener('DOMContentLoaded', () => document.body.appendChild(bn)); if (document.body) document.body.appendChild(bn); }
+  } catch (e) {}
+  step('inicio');
   window.__shopLight = light; if (light) document.documentElement.classList.add('shoplite');
 
   const BAD = (e) => !e.image || /placeholder|^\[VIRTUAL\]|\bTBD\b/i.test((e.name || '') + ' ' + (e.devName || ''));
@@ -62,7 +70,7 @@
     fetch('data/shop.json?' + Date.now()).then((r) => { if (!r.ok) throw 0; return r.json(); }),
     fetch('data/videos.json?' + Date.now()).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
     fetch('data/backgrounds.json?' + Date.now()).then((r) => (r.ok ? r.json() : {})).catch(() => ({})).then((b) => { window.__bgFile = b; }),
-  ]).then(([shop, vids]) => build(shop, vids)).catch(() => {});
+  ]).then(([shop, vids]) => { step('datos'); return build(shop, vids); }).catch(() => {});
 
   function build(shop, vids) {
     const old = document.getElementById('shopscroll');
@@ -124,6 +132,7 @@
         g.appendChild(t);
       }
     }
+    step('casillas');
     // riel izquierdo: un punto por sección y barra de posición reales
     const oldRail = document.querySelector('.screen[data-screen="shop"] > img.px[style*="height:639.47px"]');
     if (oldRail) oldRail.style.display = 'none';
@@ -142,7 +151,7 @@
       thumb.style.height = th + 'px'; thumb.style.top = (pr * (trkH - th)) + 'px';
     };
     sc.addEventListener('scroll', railUpd, { passive: true }); setTimeout(railUpd, 80); setTimeout(railUpd, 600);
-    new MutationObserver(() => { if (document.body.dataset.screen === 'shop') { [30, 250, 900].forEach((ms) => setTimeout(() => { railUpd(); upd(); }, ms)); } }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
+    new MutationObserver(() => { if (document.body.dataset.screen === 'shop') { step('tienda'); [30, 250, 900].forEach((ms) => setTimeout(() => { railUpd(); upd(); }, ms)); } }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     // fondo de la sección actual (color de sus artículos)
     const shopScr = document.querySelector('.screen[data-screen="shop"]');
     const bgW = document.createElement('div'); bgW.id = 'shopbg'; bgW.innerHTML = '<i></i><i></i>'; shopScr.insertBefore(bgW, shopScr.firstChild);
@@ -181,6 +190,7 @@
       });
     };
     new MutationObserver(() => { setTimeout(apply, 40); setTimeout(apply, 250); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
+    step('listo'); setTimeout(() => step('estable'), 3000);
     window.__shopDyn = { count: E.length, sections: secs.length };
   }
 })();

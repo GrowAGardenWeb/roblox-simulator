@@ -1,6 +1,7 @@
 /* Animaciones y sonidos del simulador.
    Sonidos: archivos en assets/sfx/<nombre>.(mp3|wav|ogg|m4a). Sin archivo = silencio. Ver assets/sfx/README.txt */
 (function () {
+  if (/[?&]nofx=1/.test(location.search)) return;
   const css = document.createElement('style');
   css.textContent = `
   @keyframes fxScreen{from{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}
