@@ -8,6 +8,7 @@ back         botón BACK / volver
 tick         moverse a otra sección en la tienda (puntitos de la izquierda)
 buy-hold     mantener presionado "PURCHASE GIFT!" (empieza)
 gift-open    entrar a la pantalla de regalos (Gifting)
+gift-pick    elegir un usuario (se abre Confirm Purchase)
 gift-sending aparece "SENDING GIFT..."
 gift-sent    aparece "GIFT SENT!"
 error        "NOT ENOUGH V-BUCKS" u otro error
