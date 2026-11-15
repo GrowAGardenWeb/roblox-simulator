@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fortnite shop preview</title>
+<style>
+@font-face{font-family:Montserrat;font-weight:600;src:url(assets/fonts/montserrat-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:Montserrat;font-weight:800;src:url(assets/fonts/montserrat-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Passion One";font-weight:900;src:url(assets/fonts/passion-one-latin-900-normal.woff2) format("woff2")}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0b1020;color:#fff;font-family:Montserrat,system-ui,sans-serif}
+header{position:sticky;top:0;z-index:5;display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:12px 18px;background:rgba(8,12,26,.92);backdrop-filter:blur(8px);border-bottom:1px solid #1f2a4a}
+header h1{font:900 26px "Passion One";letter-spacing:.5px;text-transform:uppercase}
+header span{font-size:12px;color:#9fb0d8}
+header label{font-size:12px;display:flex;gap:6px;align-items:center;cursor:pointer}
+.sec{padding:18px 18px 8px;margin-top:14px}
+.sec h2{font:900 30px "Passion One";text-transform:uppercase;letter-spacing:.6px;display:inline-block;padding:2px 14px;transform:skewX(-8deg);background:var(--c,#2a3a6a)}
+.sec h2 i{display:inline-block;transform:skewX(8deg);font-style:normal}
+.sec small{margin-left:10px;color:#9fb0d8;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(var(--cols,8),minmax(0,1fr));gap:10px;padding:4px 18px 8px}
+.t{position:relative;height:250px;border-radius:6px;overflow:hidden;background:linear-gradient(160deg,var(--a,#2d3f73),var(--b,#16203f));box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);transition:transform .15s}
+.t:hover{transform:translateY(-3px) scale(1.01);z-index:2}
+.t img.art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.t.jam img.art{inset:12px 12px auto 12px;width:calc(100% - 24px);height:auto;aspect-ratio:1;border-radius:4px;box-shadow:0 6px 16px rgba(0,0,0,.45)}
+.t .shade{position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(transparent,rgba(0,0,0,.72))}
+.t .nm{position:absolute;left:10px;right:10px;bottom:34px;font:800 13px/1.15 Montserrat;text-shadow:0 2px 3px rgba(0,0,0,.6);text-transform:uppercase}
+.t .sub{position:absolute;left:10px;right:10px;bottom:21px;font:600 10px Montserrat;color:#d7defa;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t .pr{position:absolute;left:10px;bottom:7px;display:flex;align-items:center;gap:5px;font:800 13px Montserrat}
+.t .pr img{width:16px;height:16px}.t .pr s{font-weight:600;font-size:10px;color:#aeb8d8}
+.b{position:absolute;top:8px;left:8px;padding:2px 7px;border-radius:3px;font:800 9px Montserrat;letter-spacing:.5px;background:#ffd23a;color:#241a00}
+.b.jam{background:#ff4fa3;color:#fff}.g{position:absolute;top:8px;right:8px;font-size:12px;opacity:.9}
+.out{position:absolute;top:8px;right:28px;font:600 9px Montserrat;color:#ffd0d0;text-shadow:0 1px 2px #000}
+.t.bundle{box-shadow:inset 0 0 0 2px rgba(255,210,58,.7)}
+.err{padding:30px;color:#ffb4b4}
+</style></head><body>
+<header><h1>Fortnite shop</h1><span id="meta">cargando…</span>
+<label><input type="checkbox" id="jam" checked> Jam Tracks</label>
+<label><input type="checkbox" id="bun" checked> Bundles</label></header>
+<main id="main"></main>
+<script>
+const hex=c=>c?'#'+String(c).slice(0,6):null;
+const mix=(h,k)=>{const n=parseInt(h.slice(1),16),f=x=>Math.max(0,Math.min(255,Math.round(x*k)));return '#'+[(n>>16)&255,(n>>8)&255,n&255].map(f).map(v=>v.toString(16).padStart(2,'0')).join('')};
+const span=s=>{const m=/Size_(\d+)_x_/.exec(s||'');return m?+m[1]:1};
+const left=o=>{if(!o)return '';const ms=new Date(o)-Date.now();if(ms<=0)return '';const h=Math.floor(ms/36e5);return h>=48?Math.floor(h/24)+'d':h+'h'};
+async function main(){
+  const r=await fetch('data/shop.json?'+Date.now()).then(r=>r.json());
+  const bad=e=>!e.image||/placeholder|^\[VIRTUAL\]|\bTBD\b/i.test(`${e.name} ${e.devName}`);
+  const E=r.entries.filter(e=>!bad(e));
+  const root=document.getElementById('main');
+  const draw=()=>{
+    const showJam=jam.checked,showBun=bun.checked;
+    const groups=new Map();
+    for(const e of E){if(e.kind==='jam'&&!showJam)continue;if(e.kind==='bundle'&&!showBun)continue;
+      const k=e.sectionId||e.section||'—';if(!groups.has(k))groups.set(k,{name:e.section||'Destacados',idx:e.sectionIndex??999,items:[]});groups.get(k).items.push(e)}
+    const secs=[...groups.values()].sort((a,b)=>a.idx-b.idx);
+    root.innerHTML='';
+    for(const s of secs){
+      s.items.sort((a,b)=>(b.sortPriority??0)-(a.sortPriority??0)||a.order-b.order);
+      const c=hex(s.items.find(i=>i.colors?.color1)?.colors.color1)||'#2a3a6a';
+      const sec=document.createElement('section');sec.className='sec';sec.style.setProperty('--c',mix(c,.85));
+      sec.innerHTML=`<h2><i>${s.name}</i></h2><small>${s.items.length} artículos</small>`;
+      const g=document.createElement('div');g.className='grid';
+      for(const e of s.items){
+        const t=document.createElement('div');t.className='t '+e.kind;
+        const a=hex(e.colors?.color1),b=hex(e.colors?.color3)||hex(e.colors?.color2);
+        if(a)t.style.setProperty('--a',mix(a,1.05));if(b)t.style.setProperty('--b',mix(b,.45));
+        t.style.gridColumn='span '+Math.min(span(e.tileSize),8);
+        const lt=left(e.outDate);
+        t.innerHTML=`<img class="art" loading="lazy" alt="" src="${e.image}" onerror="this.remove()"><div class="shade"></div>`+
+          `<div class="nm">${e.name}</div><div class="sub">${e.kind==='jam'?(e.info||''):(e.kind==='bundle'?(e.items.length+' artículos'):(e.items[0]?.type||''))}</div>`+
+          `<div class="pr"><img src="assets/ic_vbucks.webp" alt="">${(e.finalPrice??0).toLocaleString()}${e.regularPrice>e.finalPrice?`<s>${e.regularPrice.toLocaleString()}</s>`:''}</div>`+
+          (e.kind==='bundle'?'<div class="b">BUNDLE</div>':e.kind==='jam'?'<div class="b jam">JAM TRACK</div>':'')+(e.giftable?'<div class="g">🎁</div>':'')+(lt?`<div class="out">${lt}</div>`:'');
+        g.appendChild(t);
+      }
+      sec.appendChild(g);root.appendChild(sec);
+    }
+    document.getElementById('meta').textContent=`${E.length} artículos · ${secs.length} secciones · actualizado ${new Date(r.updated).toLocaleString()}`;
+  };
+  jam.onchange=bun.onchange=draw;draw();
+}
+const jam=document.getElementById('jam'),bun=document.getElementById('bun');
+const setCols=()=>document.documentElement.style.setProperty('--cols',Math.max(3,Math.min(8,Math.floor(innerWidth/170))));
+setCols();addEventListener('resize',setCols);
+main().catch(e=>{document.getElementById('main').innerHTML='<div class="err">No se pudo cargar data/shop.json: '+e.message+'</div>'});
+</script></body></html>
