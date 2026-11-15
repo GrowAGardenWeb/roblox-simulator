@@ -47,6 +47,7 @@
   Promise.all([
     fetch('data/shop.json?' + Date.now()).then((r) => { if (!r.ok) throw 0; return r.json(); }),
     fetch('data/videos.json?' + Date.now()).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
+    fetch('data/backgrounds.json?' + Date.now()).then((r) => (r.ok ? r.json() : {})).catch(() => ({})).then((b) => { window.__bgFile = b; }),
   ]).then(([shop, vids]) => build(shop, vids)).catch(() => {});
 
   function build(shop, vids) {
@@ -55,6 +56,9 @@
     const norm = (x) => String(x || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     let local = {}; try { local = JSON.parse(localStorage.getItem('fnVideos') || '{}'); } catch (e) {}
     const all = Object.assign({}, vids, local), byNorm = {}; Object.keys(all).forEach((k) => { byNorm[norm(k)] = all[k]; });
+    let bgLocal = {}; try { bgLocal = JSON.parse(localStorage.getItem('fnBackgrounds') || '{}'); } catch (e) {}
+    const bgAll = Object.assign({}, shop.backgrounds || {}, window.__bgFile || {}, bgLocal), bgNorm = {}; Object.keys(bgAll).forEach((k) => { bgNorm[norm(k)] = bgAll[k]; });
+    const bgFor = (name) => bgNorm[norm(name)] || '';
     const vidFor = (e) => all[e.offerId] || all[e.name] || byNorm[norm(e.name)] || (e.items[0] && byNorm[norm(e.items[0].name)]) || '';
     const E = (shop.entries || []).filter((e) => !BAD(e));
     if (!old || !ITEMS || !E.length) return;
@@ -127,10 +131,10 @@
     const shopScr = document.querySelector('.screen[data-screen="shop"]');
     const bgW = document.createElement('div'); bgW.id = 'shopbg'; bgW.innerHTML = '<i></i><i></i>'; shopScr.insertBefore(bgW, shopScr.firstChild);
     let bgI = 0, bgCur = '';
-    const setBg = (c) => { if (!c || c === bgCur) return; bgCur = c; const el = bgW.children[bgI = 1 - bgI]; el.style.background = 'radial-gradient(ellipse at 62% 42%,' + mix(c, .95) + '80 0,' + mix(c, .5) + '48 48%,transparent 82%)'; bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
+    const setBg = (c, url) => { const key = (url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key; const el = bgW.children[bgI = 1 - bgI]; el.style.background = url ? 'linear-gradient(rgba(4,14,52,.35),rgba(4,14,52,.6)),url("' + url + '") center/cover no-repeat' : 'radial-gradient(ellipse at 62% 42%,' + mix(c, .95) + '80 0,' + mix(c, .5) + '48 48%,transparent 82%)'; bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
     // título de la sección actual
     const ttl = document.querySelector('[data-t="shop.title"]'); let last = '';
-    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)]); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
+    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)], bgFor(cur[1])); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
     sc.addEventListener('scroll', upd, { passive: true }); setTimeout(upd, 50);
     window.shopPT && window.shopPT(false);
 
