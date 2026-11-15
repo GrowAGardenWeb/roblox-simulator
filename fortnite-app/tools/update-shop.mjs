@@ -23,37 +23,39 @@ const uniq = (a) => [...new Set(a.filter(Boolean))];
 async function fromApi() {
   const j = await get('https://fortnite-api.com/v2/shop?language=en');
   const d = j.data;
+  const raws = [];
+  const take = (pred) => { const e = (d.entries || []).find((x) => pred(x) && !raws.includes(x)); if (e) raws.push(e); };
+  take((e) => e.bundle); take((e) => e.tracks?.length); take((e) => e.newDisplayAsset?.materialInstances?.length);
+  take((e) => e.brItems?.length && !e.bundle); take((e) => e.layout?.background); take((e) => e.tileSize && e.tileSize !== 'Size_1_x_1');
   mkdirSync(dirname(RAW), { recursive: true });
-  writeFileSync(RAW, JSON.stringify({ keys: Object.keys(d), sample: d.entries?.slice(0, 3) }, null, 1));
+  writeFileSync(RAW, JSON.stringify({ keys: Object.keys(d), sample: raws }, null, 1));
+  const pick = (...c) => c.find(Boolean) || null;
   return (d.entries || []).map((e, i) => {
     const videos = [], images = [];
-    walk(e, (s, p) => { if (VIDEO_RE.test(s)) videos.push(s); else if (IMG_RE.test(s)) images.push(s); });
+    walk(e, (s) => { if (VIDEO_RE.test(s)) videos.push(s); else if (IMG_RE.test(s)) images.push(s); });
     const items = (e.brItems || []).map((b) => ({
-      id: b.id, name: b.name, type: b.type?.value, rarity: b.rarity?.value,
+      id: b.id, name: b.name, type: b.type?.value, rarity: b.rarity?.value, series: b.series?.value || null,
       icon: b.images?.icon || b.images?.smallIcon || null, featured: b.images?.featured || null,
     }));
-    const mi = e.newDisplayAsset?.materialInstances?.[0];
-    const pick = (...c) => c.find(Boolean) || null;
+    const tracks = (e.tracks || []).map((t) => ({ id: t.id, title: t.title, artist: t.artist, album: t.album, year: t.releaseYear, bpm: t.bpm, duration: t.duration, art: t.albumArt || null }));
+    const disp = (e.newDisplayAsset?.materialInstances || []).map((m) => ({ id: m.id, images: m.images || {}, colors: m.colors || {}, scalings: m.scalings || {}, flags: m.flags || {} }));
+    const mi = disp[0];
+    const l = e.layout || {};
+    const jam = tracks.length > 0;
     return {
-      order: i,
-      offerId: e.offerId,
-      name: e.bundle?.name || items[0]?.name || e.devName || '',
-      info: e.bundle?.info || null,
+      order: i, offerId: e.offerId, devName: e.devName,
+      name: pick(e.bundle?.name, items[0]?.name, tracks[0] && `${tracks[0].title}`, e.devName) || '',
+      info: e.bundle?.info || (jam ? tracks[0].artist : null),
+      kind: e.bundle ? 'bundle' : jam ? 'jam' : 'item',
       isBundle: !!e.bundle,
-      section: e.layout?.name || null,
-      sectionId: e.layout?.id || null,
-      sectionIndex: e.layout?.index ?? null,
-      tileSize: e.tileSize || null,
-      regularPrice: e.regularPrice ?? null,
-      finalPrice: e.finalPrice ?? null,
-      giftable: e.giftable ?? null,
-      inDate: e.inDate || null,
-      outDate: e.outDate || null,
+      section: l.name || null, sectionId: l.id || null, sectionIndex: l.index ?? null, sectionRank: l.rank ?? null,
+      tileSize: e.tileSize || null, sortPriority: e.sortPriority ?? null,
+      regularPrice: e.regularPrice ?? null, finalPrice: e.finalPrice ?? null,
+      giftable: e.giftable ?? null, inDate: e.inDate || null, outDate: e.outDate || null,
       colors: e.colors || null,
-      image: pick(e.bundle?.image, mi?.images?.OfferImage, mi?.images?.Background, e.newDisplayAsset?.renderImages?.[0]?.image, items[0]?.featured, items[0]?.icon),
-      items,
-      videos: uniq(videos),
-      images: uniq(images),
+      image: pick(e.bundle?.image, mi?.images?.OfferImage, mi?.images?.Background, e.newDisplayAsset?.renderImages?.[0]?.image, tracks[0]?.art, items[0]?.featured, items[0]?.icon),
+      display: disp, tracks, items, videos: uniq(videos), images: uniq(images),
+      _layout: l,
     };
   });
 }
@@ -91,10 +93,17 @@ let entries = [], apiError = null;
 try { entries = await fromApi(); } catch (e) { apiError = String(e.message || e); }
 const site = await fromSite();
 
+const bad = (e) => !e.image || /placeholder|^\[VIRTUAL\]|\bTBD\b/i.test(`${e.name} ${e.devName}`);
+const shown = entries.filter((e) => !bad(e));
+const secMap = new Map();
+for (const e of shown) { const k = e.sectionId || e.section || 'none'; if (!secMap.has(k)) secMap.set(k, { id: e.sectionId, name: e.section, index: e.sectionIndex, rank: e.sectionRank, layout: e._layout, count: 0 }); secMap.get(k).count++; }
+for (const e of entries) delete e._layout;
+const sections = [...secMap.values()].sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
 const snapshot = {
   updated: new Date().toISOString(),
   source: { api: apiError ? `error: ${apiError}` : 'fortnite-api.com/v2/shop', site: site.ok ? 'fortnite.com/item-shop' : `error: ${site.error}` },
-  counts: { entries: entries.length, withVideo: entries.filter((e) => e.videos.length).length, siteVideos: site.videos.length, siteOffers: site.offers.length },
+  counts: { entries: entries.length, shown: shown.length, sections: sections.length, jam: shown.filter((e) => e.kind === 'jam').length, bundles: shown.filter((e) => e.kind === 'bundle').length, withVideo: entries.filter((e) => e.videos.length).length, siteVideos: site.videos.length, siteOffers: site.offers.length },
+  sections,
   entries,
   site: { videos: site.videos, offers: site.offers, nextDataKeys: site.nextDataKeys || null },
 };
