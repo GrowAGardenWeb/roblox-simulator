@@ -42,13 +42,12 @@
   #cfm.on .buy{animation:fxRise .45s .7s both}
   #cfm.on .back,#cfm.on .wopt,#cfm.on .refund{animation:fxFade .4s .85s both}
   /* enviando */
-  #cfm .send::before{content:'';position:absolute;left:640px;right:640px;top:520px;height:6px;border-radius:3px;background:linear-gradient(90deg,transparent,#5cc8ff,transparent);box-shadow:0 0 22px 4px #3aa8ff;animation:fxScan 1.1s ease-in-out infinite}
-  #cfm .send span{animation:fxPulse 1s ease-in-out infinite,fxGlow 1.4s ease-in-out infinite}
+  #cfm .send span{animation:fxRise .5s cubic-bezier(.2,.9,.3,1) both}
   /* regalo enviado */
   #cfm .done::before{content:'';position:absolute;left:0;right:0;top:250px;height:430px;background:linear-gradient(transparent,rgba(60,150,255,.28),transparent);transform-origin:center;animation:fxGrow .6s cubic-bezier(.2,.9,.3,1) both;pointer-events:none}
   #cfm .done p{animation:fxRise .45s .3s both}
   #cfm .done .ok{animation:fxRise .45s .55s both}
-  #cfm .done h3{animation:fxPop .6s .12s cubic-bezier(.2,1.3,.4,1) both,fxGlow 1.6s .8s ease-in-out 2}
+  #cfm .done h3{animation:fxPop .6s .12s cubic-bezier(.2,1.3,.4,1) both}
   #cfth .th:nth-child(1){--k:0}
   #cfth .th:nth-child(2){--k:1}
   #cfth .th:nth-child(3){--k:2}
@@ -74,7 +73,6 @@
   #cfdone h3{animation:fxPop .6s .12s cubic-bezier(.2,1.3,.4,1) both}
   #cfdone p{animation:fxFade .4s .3s both}
   #cfsend{animation:fxFade .25s both}
-  #cfsend span{animation:fxPulse 1s ease-in-out infinite}
   #cferr{animation:fxShake .45s both}
   #wrp{animation:fxFade .25s both}
   #shoprow.dyn .dt{animation:fxTile .45s cubic-bezier(.2,.9,.3,1) backwards;animation-delay:calc(var(--i,0)*22ms);transition:translate .15s,scale .15s,filter .15s}
@@ -176,7 +174,7 @@
   const init = () => {
     initHolo(); setTimeout(initRows, 300);
     watch('cfsend', () => SFX.play('gift-sending'));
-    watch('cfdone', () => { SFX.play('gift-sent'); confetti(document.getElementById('cfm') || document.getElementById('stage')); });
+    watch('cfdone', () => { SFX.play('gift-sent'); });
     watch('cferr', () => SFX.play('error'));
   };
   if (document.readyState === 'complete') setTimeout(init, 0); else addEventListener('load', () => setTimeout(init, 0));
