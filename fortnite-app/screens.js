@@ -88,6 +88,55 @@
     const z = document.createElement('div'); z.className = 'hit'; z.dataset.go = id;
     z.style.cssText = 'position:absolute;left:' + (cx - 48) + 'px;top:0;width:96px;height:130px;z-index:30;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent'; nav.appendChild(z);
   });
+
+  // ===== Treasure (Adventure): mapa actualizado y tarjetas que se abren al tocar cada semana =====
+  const tr = document.querySelector('.screen[data-screen="treasure"]');
+  if (tr) {
+    const st2 = document.createElement('style');
+    st2.textContent = `
+    .screen[data-screen="treasure"] .t,.screen[data-screen="treasure"] .ul{display:none!important}
+    #trmap{position:absolute;left:0;top:140px;width:2000px;height:781px;pointer-events:none;-webkit-mask-image:linear-gradient(transparent,#000 10px);mask-image:linear-gradient(transparent,#000 10px)}
+    .trc{position:absolute;display:none;pointer-events:none;transform-origin:var(--ox,50%) var(--oy,50%)}
+    .trc.on{display:block;animation:trpop .32s cubic-bezier(.2,1.25,.4,1) both}
+    @keyframes trpop{from{opacity:0;scale:.55}to{opacity:1;scale:1}}
+    .trh{position:absolute;z-index:6;cursor:pointer}
+    `;
+    document.head.appendChild(st2);
+    const map = document.createElement('img'); map.id = 'trmap'; map.src = 'assets/tr_map.webp'; map.alt = ''; map.draggable = false; tr.appendChild(map);
+    // [imagen, x, y, w, h] de cada tarjeta abierta · zona táctil de la tarjeta cerrada
+    const C = [[320, 360, 340, 385, 435, 580, 108, 116], [605, 115, 330, 385, 715, 337, 108, 116], [825, 330, 315, 375, 912, 548, 110, 130], [1020, 120, 330, 380, 1127, 340, 110, 116], [1225, 420, 315, 370, 1327, 630, 110, 114], [1445, 100, 325, 395, 1508, 235, 200, 220]];
+    const cards = [];
+    C.forEach(([x, y, w, h, hx, hy, hw, hh], i) => {
+      const im = document.createElement('img'); im.className = 'trc'; im.src = 'assets/tr_c' + (i + 1) + '.webp'; im.alt = ''; im.draggable = false;
+      im.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + w + 'px;height:' + h + 'px;--ox:' + ((hx + hw / 2 - x) / w * 100).toFixed(0) + '%;--oy:' + ((hy + hh / 2 - y) / h * 100).toFixed(0) + '%;z-index:5';
+      tr.appendChild(im); cards.push(im);
+      const z = document.createElement('div'); z.className = 'trh'; z.style.cssText = 'left:' + hx + 'px;top:' + hy + 'px;width:' + hw + 'px;height:' + hh + 'px';
+      z.onclick = () => { const was = im.classList.contains('on'); cards.forEach((c) => c.classList.remove('on')); if (!was) { void im.offsetWidth; im.classList.add('on'); } };
+      tr.appendChild(z);
+    });
+    // tocar fuera cierra la tarjeta abierta
+    tr.addEventListener('click', (e) => { if (!e.target.closest('.trh')) cards.forEach((c) => c.classList.remove('on')); });
+    new MutationObserver(() => { if (tr.hidden) cards.forEach((c) => c.classList.remove('on')); }).observe(tr, { attributes: true, attributeFilter: ['hidden'] });
+  }
+
+  // ===== Compete (trofeo) =====
+  const cmp = document.createElement('section'); cmp.className = 'screen'; cmp.dataset.screen = 'compete'; cmp.hidden = true;
+  cmp.innerHTML = '<img src="assets/cp_main.webp" alt="" draggable="false" style="position:absolute;left:0;top:130px;width:2000px;height:791px;-webkit-mask-image:linear-gradient(transparent,#000 10px);mask-image:linear-gradient(transparent,#000 10px)">';
+  stage.appendChild(cmp);
+  const st3 = document.createElement('style');
+  st3.textContent = `
+  body[data-screen="compete"] #vwrap{display:none}
+  body[data-screen="compete"] #bgfx{background:linear-gradient(#0a1655,#070f3d 60%,#050a2c);filter:none}
+  body[data-screen="compete"] #bgfill{background:#070f3d}
+  body[data-screen="compete"] img[src*="ic_trophy"]{filter:brightness(0) opacity(.85)}
+  body[data-screen="compete"] .on-compete{display:block}`;
+  document.head.appendChild(st3);
+  { const id = 'compete', tl = 898, cx = 949, label = 'COMPETE';
+    const t = document.createElement('div'); t.className = 'ntile2 on-' + id; t.style.left = tl + 'px'; nav.insertBefore(t, nav.firstChild);
+    const l = document.createElement('div'); l.className = 'nlab2 on-' + id; l.style.left = cx + 'px'; l.textContent = label; nav.appendChild(l);
+    const z = document.createElement('div'); z.className = 'hit'; z.dataset.go = id;
+    z.style.cssText = 'position:absolute;left:' + (cx - 48) + 'px;top:0;width:96px;height:130px;z-index:30;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent'; nav.appendChild(z); }
+
   // los botones BACK de estas pantallas
   stage.addEventListener('click', (e) => { const b = e.target.closest && e.target.closest('.bbar [data-go]'); if (b) window.go(b.dataset.go); });
   // al volver al lobby desde otra pantalla el icono de tienda etc. se maneja con go(); aquí solo hay que ocultar los iconos .tab seleccionados
