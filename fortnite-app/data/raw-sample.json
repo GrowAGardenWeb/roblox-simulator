@@ -7,6 +7,331 @@
  ],
  "sample": [
   {
+   "regularPrice": 3300,
+   "finalPrice": 2400,
+   "devName": "[VIRTUAL]1 x J Balvin, 1 x Real, 1 x Real, 1 x Balvin Cruiser, 1 x In Da Party for -1 MtxCurrency",
+   "offerId": "v2:/4615bc7d8857ca614220c892b3d20bc6b9c97c4150126ab87f259dc43c690b20",
+   "inDate": "2026-11-11T00:00:00Z",
+   "outDate": "2026-11-15T23:59:59.999Z",
+   "bundle": {
+    "name": "J Balvin Bundle",
+    "info": "Bundle",
+    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_0.png"
+   },
+   "banner": {
+    "value": "900 V-Bucks Off",
+    "intensity": "Low",
+    "backendValue": "AmountOff"
+   },
+   "offerTag": {
+    "id": "promodesc6",
+    "text": "Unsheathe the included Pickaxe from the Real Back Bling when both are equipped!"
+   },
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -1,
+   "layoutId": "LatinGram.99",
+   "layout": {
+    "id": "LatinGram",
+    "name": "Main Stage Moment",
+    "index": 14,
+    "rank": 181,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "tileGrid"
+   },
+   "colors": {
+    "color1": "86661cff",
+    "color2": "7f6326ff",
+    "color3": "ddae43ff",
+    "textBackgroundColor": "ddae43ff"
+   },
+   "tileSize": "Size_1_x_1",
+   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_VividBundle",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/DAv2_Featured_VividBundle",
+   "newDisplayAsset": {
+    "id": "DAv2_Featured_VividBundle",
+    "materialInstances": [],
+    "renderImages": [
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__01b00ee12e5deb4f_4859753cc4c80ffe.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_0.png"
+     },
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__01b00ee12e5deb4f_ee40182a6fe6a429.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_1.png"
+     },
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__01b00ee12e5deb4f_4ae8419617e7fe33.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_2.png"
+     },
+     {
+      "productTag": "Product.Juno",
+      "fileName": "cosmo__01b00ee12e5deb4f_8b1b6b97559f1dd3.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_3.png"
+     }
+    ]
+   },
+   "brItems": [
+    {
+     "id": "CID_A_182_Athena_Commando_M_Vivid_LZGQ3",
+     "name": "J Balvin",
+     "description": "Reggaetón Global Ambassador.",
+     "type": {
+      "value": "outfit",
+      "displayValue": "Outfit",
+      "backendValue": "AthenaCharacter"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Epic"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "J Balvin",
+      "text": "Part of the J Balvin set.",
+      "backendValue": "FlockInsure"
+     },
+     "introduction": {
+      "chapter": "2",
+      "season": "7",
+      "text": "Introduced in Chapter 2, Season 7.",
+      "backendValue": 17
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/featured.png",
+      "lego": {
+       "small": "https://fortnite-api.com/images/cosmetics/lego/cid_a_182_athena_commando_m_vivid_lzgq3/small.png",
+       "large": "https://fortnite-api.com/images/cosmetics/lego/cid_a_182_athena_commando_m_vivid_lzgq3/large.png",
+       "wide": "https://fortnite-api.com/images/cosmetics/lego/cid_a_182_athena_commando_m_vivid_lzgq3/wide.png"
+      }
+     },
+     "variants": [
+      {
+       "channel": "Parts",
+       "type": "style",
+       "options": [
+        {
+         "tag": "Stage1",
+         "name": "J Balvin",
+         "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/variants/parts/stage1.png"
+        },
+        {
+         "tag": "Stage2",
+         "name": "Energia Balvin",
+         "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/variants/parts/stage2.png"
+        },
+        {
+         "tag": "Stage3",
+         "name": "Skeleton Balvin",
+         "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/variants/parts/stage3.png"
+        }
+       ]
+      }
+     ],
+     "showcaseVideo": "FljhEi7BRrM",
+     "added": "2021-08-24T02:00:47Z"
+    },
+    {
+     "id": "BID_825_VividMale_7L9T0",
+     "name": "Real",
+     "description": "Dabiznes.",
+     "type": {
+      "value": "backpack",
+      "displayValue": "Back Bling",
+      "backendValue": "AthenaBackpack"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Epic"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "J Balvin",
+      "text": "Part of the J Balvin set.",
+      "backendValue": "FlockInsure"
+     },
+     "introduction": {
+      "chapter": "2",
+      "season": "7",
+      "text": "Introduced in Chapter 2, Season 7.",
+      "backendValue": 17
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/bid_825_vividmale_7l9t0/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_825_vividmale_7l9t0/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_825_vividmale_7l9t0/featured.png"
+     },
+     "added": "2021-08-24T02:00:47Z"
+    },
+    {
+     "id": "Pickaxe_ID_661_VividMale1H_ZN6Q0",
+     "name": "Real",
+     "description": "Dabiznes.",
+     "type": {
+      "value": "pickaxe",
+      "displayValue": "Pickaxe",
+      "backendValue": "AthenaPickaxe"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Epic"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "J Balvin",
+      "text": "Part of the J Balvin set.",
+      "backendValue": "FlockInsure"
+     },
+     "introduction": {
+      "chapter": "2",
+      "season": "7",
+      "text": "Introduced in Chapter 2, Season 7.",
+      "backendValue": 17
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_661_vividmale1h_zn6q0/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_661_vividmale1h_zn6q0/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_661_vividmale1h_zn6q0/featured.png"
+     },
+     "metaTags": [
+      "Cosmetics.MetaTags.Vivid"
+     ],
+     "added": "2021-08-24T02:00:47Z"
+    },
+    {
+     "id": "Glider_ID_308_VividMale_H8JAS",
+     "name": "Balvin Cruiser",
+     "description": "Surf on colores.",
+     "type": {
+      "value": "glider",
+      "displayValue": "Glider",
+      "backendValue": "AthenaGlider"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Epic"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "J Balvin",
+      "text": "Part of the J Balvin set.",
+      "backendValue": "FlockInsure"
+     },
+     "introduction": {
+      "chapter": "2",
+      "season": "7",
+      "text": "Introduced in Chapter 2, Season 7.",
+      "backendValue": 17
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/glider_id_308_vividmale_h8jas/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/glider_id_308_vividmale_h8jas/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/glider_id_308_vividmale_h8jas/featured.png"
+     },
+     "showcaseVideo": "g_eOZESGsd4",
+     "added": "2021-08-24T02:00:47Z"
+    },
+    {
+     "id": "EID_Vivid_I434X",
+     "name": "In Da Party",
+     "description": "En el ghetto hay party, todo el mundo, everybody.",
+     "type": {
+      "value": "emote",
+      "displayValue": "Emote",
+      "backendValue": "AthenaDance"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Epic"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "J Balvin",
+      "text": "Part of the J Balvin set.",
+      "backendValue": "FlockInsure"
+     },
+     "introduction": {
+      "chapter": "2",
+      "season": "7",
+      "text": "Introduced in Chapter 2, Season 7.",
+      "backendValue": 17
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/eid_vivid_i434x/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_vivid_i434x/icon.png"
+     },
+     "showcaseVideo": "tyWXVqm1olY",
+     "added": "2021-08-24T02:00:47Z"
+    }
+   ]
+  },
+  {
    "regularPrice": 500,
    "finalPrice": 500,
    "devName": "[VIRTUAL]1 x Therefore I Am for 500 MtxCurrency",
@@ -110,51 +435,159 @@
    ]
   },
   {
-   "regularPrice": 500,
-   "finalPrice": 500,
-   "devName": "[VIRTUAL]1 x TBD (SID_Placeholder_500) for 500 MtxCurrency",
-   "offerId": "v2:/e7ee90fe1e617b25afeb3011b08c3e779b16fc3f34d6fb87bd8191e5d8fddb37",
-   "inDate": "2026-11-01T00:00:00Z",
-   "outDate": "2026-11-30T23:59:59.999Z",
+   "regularPrice": 1500,
+   "finalPrice": 1500,
+   "devName": "[VIRTUAL]1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Motor Monster, 1 x Radium, 1 x Slimed, 1 x Stripes, 1 x AWD for -1 MtxCurrency",
+   "offerId": "v2:/a3f92ebb35765f7986528a9b44989b42828a50034a9408f459565dab97954600",
+   "inDate": "2026-11-11T00:00:00Z",
+   "outDate": "2026-11-17T23:59:59.999Z",
+   "bundle": {
+    "name": "Twinzer",
+    "info": "Bundle",
+    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/1816cc89c9558517/renderimage_0.png"
+   },
+   "offerTag": {
+    "id": "twinzer",
+    "text": "Decals in this bundle are restricted to the Twinzer car body."
+   },
    "giftable": true,
    "refundable": false,
-   "sortPriority": -46,
-   "layoutId": "JT111326.96",
+   "sortPriority": -1,
+   "layoutId": "Twinzer.99",
    "layout": {
-    "id": "JT111326",
-    "name": "Jam Tracks",
-    "index": 60,
-    "rank": 180,
+    "id": "Twinzer",
+    "name": "Twinzer",
+    "category": "Start Your Engines",
+    "index": 33,
+    "rank": 177,
     "showIneligibleOffers": "always",
-    "useWidePreview": false,
-    "displayType": "expandableList"
+    "useWidePreview": true,
+    "displayType": "tileGrid"
    },
    "colors": {
-    "color1": "3a306cff",
-    "color3": "5e40ceff",
-    "textBackgroundColor": "694fc3ff"
+    "color1": "6c56bcff",
+    "color3": "352477ff",
+    "textBackgroundColor": "2f234bff"
    },
-   "tileSize": "Size_1_x_1",
-   "newDisplayAssetPath": "sid_placeholder_500",
-   "tracks": [
+   "tileSize": "Size_3_x_1",
+   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_Twinzer_Bundle",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S37/DAv2_Bundle_Featured_Twinzer",
+   "newDisplayAsset": {
+    "id": "DAv2_Bundle_Featured_Twinzer",
+    "materialInstances": [],
+    "renderImages": [
+     {
+      "productTag": "Product.DelMar",
+      "fileName": "cosmo__1816cc89c9558517_b919b68980f558ee.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/1816cc89c9558517/renderimage_0.png"
+     }
+    ]
+   },
+   "cars": [
     {
-     "id": "sid_placeholder_500",
-     "devName": "theemptinessmachine",
-     "title": "The Emptiness Machine",
-     "artist": "Linkin Park",
-     "releaseYear": 2024,
-     "bpm": 92,
-     "duration": 195,
-     "difficulty": {
-      "vocals": 2,
-      "guitar": 1,
-      "bass": 1,
-      "plasticBass": 1,
-      "drums": 2,
-      "plasticDrums": 2
+     "id": "CarSkin_TwinzerMonster",
+     "vehicleId": "VCID_Skin_TwinzerMonster",
+     "name": "Motor Monster",
+     "description": "Twinzer custom decal.",
+     "type": {
+      "value": "skin",
+      "displayValue": "Skin",
+      "backendValue": "VehicleCosmetics_Skin"
      },
-     "albumArt": "https://cdn.fortnite-api.com/tracks/9a95b07e32db4fc7.jpg",
-     "added": "2025-03-25T17:23:58Z"
+     "rarity": {
+      "value": "common",
+      "displayValue": "Common",
+      "backendValue": "EFortRarity::Common"
+     },
+     "images": {
+      "small": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzermonster/small.png",
+      "large": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzermonster/large.png"
+     },
+     "added": "2025-08-07T08:15:39Z"
+    },
+    {
+     "id": "CarSkin_TwinzerRockat",
+     "vehicleId": "VCID_Skin_TwinzerRockat",
+     "name": "Radium",
+     "description": "Twinzer custom decal.",
+     "type": {
+      "value": "skin",
+      "displayValue": "Skin",
+      "backendValue": "VehicleCosmetics_Skin"
+     },
+     "rarity": {
+      "value": "common",
+      "displayValue": "Common",
+      "backendValue": "EFortRarity::Common"
+     },
+     "images": {
+      "small": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzerrockat/small.png",
+      "large": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzerrockat/large.png"
+     },
+     "added": "2025-08-07T08:15:39Z"
+    },
+    {
+     "id": "CarSkin_TwinzerSlime",
+     "vehicleId": "VCID_Skin_TwinzerSlime",
+     "name": "Slimed",
+     "description": "Twinzer custom decal.",
+     "type": {
+      "value": "skin",
+      "displayValue": "Skin",
+      "backendValue": "VehicleCosmetics_Skin"
+     },
+     "rarity": {
+      "value": "common",
+      "displayValue": "Common",
+      "backendValue": "EFortRarity::Common"
+     },
+     "images": {
+      "small": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzerslime/small.png",
+      "large": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzerslime/large.png"
+     },
+     "added": "2025-08-07T08:15:39Z"
+    },
+    {
+     "id": "CarSkin_TwinzerStripes",
+     "vehicleId": "VCID_Skin_TwinzerStripes",
+     "name": "Stripes",
+     "description": "Twinzer custom decal.",
+     "type": {
+      "value": "skin",
+      "displayValue": "Skin",
+      "backendValue": "VehicleCosmetics_Skin"
+     },
+     "rarity": {
+      "value": "common",
+      "displayValue": "Common",
+      "backendValue": "EFortRarity::Common"
+     },
+     "images": {
+      "small": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzerstripes/small.png",
+      "large": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzerstripes/large.png"
+     },
+     "added": "2025-08-07T08:15:39Z"
+    },
+    {
+     "id": "CarSkin_TwinzerTek",
+     "vehicleId": "VCID_Skin_TwinzerTek",
+     "name": "AWD",
+     "description": "Twinzer custom decal.",
+     "type": {
+      "value": "skin",
+      "displayValue": "Skin",
+      "backendValue": "VehicleCosmetics_Skin"
+     },
+     "rarity": {
+      "value": "uncommon",
+      "displayValue": "Uncommon",
+      "backendValue": "EFortRarity::Uncommon"
+     },
+     "images": {
+      "small": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzertek/small.png",
+      "large": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzertek/large.png"
+     },
+     "added": "2025-08-07T08:15:39Z"
     }
    ]
   }
