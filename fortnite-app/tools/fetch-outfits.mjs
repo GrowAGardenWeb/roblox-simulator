@@ -11,7 +11,7 @@ const list = [];
 for (const it of items) {
   if ((it.type && it.type.value) !== 'outfit') continue;
   const icon = it.images && (it.images.smallIcon || it.images.icon); if (!icon || !it.name) continue;
-  list.push({ id: it.id, name: it.name, nameEs: es.get(it.id) || null, icon, full: (it.images && it.images.featured) || null, series: (it.series && it.series.value) || null, rarity: (it.rarity && it.rarity.value) || null, added: (it.introduction && it.introduction.chapter) || null });
+  list.push({ id: it.id, name: it.name, nameEs: es.get(it.id) || null, desc: it.description || null, intro: (it.introduction && it.introduction.text) || null, icon, full: (it.images && it.images.featured) || null, series: (it.series && it.series.value) || null, rarity: (it.rarity && it.rarity.value) || null, added: (it.introduction && it.introduction.chapter) || null });
 }
 list.sort((a, b) => a.name.localeCompare(b.name));
 mkdirSync(new URL('../data/', import.meta.url).pathname, { recursive: true });
