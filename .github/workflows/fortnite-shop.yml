@@ -19,6 +19,9 @@ jobs:
           node-version: 20
       - name: Fetch shop
         run: node fortnite-app/tools/update-shop.mjs
+      - name: Fetch section textures (best effort)
+        continue-on-error: true
+        run: node fortnite-app/tools/fetch-tex.mjs
       - name: Fetch site videos (best effort)
         continue-on-error: true
         run: |
