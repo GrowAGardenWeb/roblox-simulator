@@ -47,6 +47,7 @@ async function fromApi() {
       name: pick(e.bundle?.name, items[0]?.name, tracks[0] && `${tracks[0].title}`, e.devName) || '',
       info: e.bundle?.info || (jam ? tracks[0].artist : null),
       kind: e.bundle ? 'bundle' : jam ? 'jam' : 'item',
+      banner: e.banner?.value || null,
       isBundle: !!e.bundle,
       section: l.name || null, sectionId: l.id || null, sectionIndex: l.index ?? null, sectionRank: l.rank ?? null,
       tileSize: e.tileSize || null, sortPriority: e.sortPriority ?? null,

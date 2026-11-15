@@ -43,11 +43,11 @@
   #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
   #shoprow.dyn .dt.jam .di{inset:10px 10px auto 10px;aspect-ratio:1;border-radius:6px;box-shadow:0 6px 14px rgba(0,0,0,.4);background-size:cover;filter:none}
   #shoprow.dyn .dt .sh{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(transparent,rgba(5,15,50,.6))}
-  #shoprow.dyn .dt .nm{position:absolute;left:12px;right:10px;bottom:34px;font:italic 400 19px 'Archivo Black';color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
-  #shoprow.dyn .dt .pr{position:absolute;left:12px;bottom:8px;display:flex;align-items:center;gap:6px;font:italic 400 18px 'Archivo Black';color:#fff}
+  #shoprow.dyn .dt .nm{position:absolute;left:12px;right:10px;bottom:34px;font:700 22px Montserrat,system-ui;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 4px rgba(0,0,30,.45)}
+  #shoprow.dyn .dt .pr{position:absolute;left:12px;bottom:8px;display:flex;align-items:center;gap:6px;font:700 19px Montserrat,system-ui;color:#fff}
   #shoprow.dyn .dt .pr i.coin{position:static;width:20px;height:20px;display:inline-block}
   #shoprow.dyn .dt .pr s{font-size:12px;opacity:.7}
-  #shoprow.dyn .dt .bd{position:absolute;top:8px;left:8px;padding:2px 8px;border-radius:4px;font:800 11px Montserrat;background:#ffd23a;color:#241a00}
+  #shoprow.dyn .dt .bd{position:absolute;bottom:62px;left:10px;z-index:2;padding:2px 9px;border-radius:12px;font:800 12px Montserrat;background:#ffd23a;color:#241a00}
   #shoprow.dyn .dt .bd.jam{background:#ff4fa3;color:#fff}
   #shoprow.dyn .dt.bundle{box-shadow:inset 0 0 0 3px rgba(255,210,58,.75)}
 
@@ -60,6 +60,7 @@
   #shoprow.dyn .dt .pl{position:absolute;right:10px;bottom:9px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 2px 6px rgba(0,0,40,.35)}
   #shoprow.dyn .dt .pl::before,#shoprow.dyn .dt .pl::after{content:'';position:absolute;left:50%;top:50%;background:#2a58c8;border-radius:2px;translate:-50% -50%}
   #shoprow.dyn .dt .pl::before{width:14px;height:4px}#shoprow.dyn .dt .pl::after{width:4px;height:14px}
+  #shoprow.dyn .dt .bd.bn{background:#fff;color:#16203f;font:italic 800 12px Montserrat;text-transform:uppercase;box-shadow:0 2px 6px rgba(0,0,0,.25)}
   #shoprow.dyn .dt .bd.nw{background:#fbff2a;color:#1a1a00;box-shadow:0 2px 6px rgba(0,0,0,.3)}
   #shoprow.dyn .dt.outfit .di{inset:-4px 0 14px 0;background-size:auto 116%;background-position:center 18%}
   #shoprow.dyn .dt.comp .di{display:none}
@@ -164,11 +165,12 @@
         const lead = e.items.find((i) => i.type === 'outfit') || e.items[0];
         if (comp) t.classList.add('comp');
         if (!comp && e.kind === 'item' && e.items[0]?.type === 'outfit') t.classList.add('outfit');
-        t.innerHTML = (comp ? '<div class="cmp"></div>' : '') + '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (isNew ? '<div class="bd nw">NEW!</div>' : e.kind === 'bundle' && !comp ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '') + '<i class="pl"></i>';
+        t.innerHTML = (comp ? '<div class="cmp"></div>' : '') + '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (e.banner ? '<div class="bd bn"></div>' : isNew ? '<div class="bd nw">NEW</div>' : e.kind === 'bundle' && !comp ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '') + '<i class="pl"></i>';
         t.style.setProperty('--i', Math.min(g.children.length, 24)); if (g !== firstG || g.children.length > 11) t.style.animation = 'none';
-        t.querySelector('.nm').textContent = title;
-        t.querySelector('.pr span').textContent = (e.finalPrice ?? 0).toLocaleString('en-US');
-        if (e.regularPrice > e.finalPrice) { const s2 = document.createElement('s'); s2.textContent = e.regularPrice.toLocaleString('en-US'); t.querySelector('.pr').appendChild(s2); }
+        t.querySelector('.nm').textContent = e.name;
+        if (e.banner) t.querySelector('.bd.bn').textContent = e.banner;
+        t.querySelector('.pr span').textContent = String(e.finalPrice ?? 0);
+        if (e.regularPrice > e.finalPrice) { const s2 = document.createElement('s'); s2.textContent = String(e.regularPrice); t.querySelector('.pr').appendChild(s2); }
         const di = t.querySelector('.di'); di.dataset.img = e.image; lazy.observe(di);
         if (comp) {
           const cm = t.querySelector('.cmp'), hr = document.createElement('div'); hr.className = 'hero'; hr.dataset.img = lead.featured || lead.icon || e.image; cm.appendChild(hr); lazy.observe(hr);
@@ -207,8 +209,36 @@
     const setBg = (c, url) => { const key = (url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key; const el = bgW.children[bgI = 1 - bgI]; el.style.background = url ? 'linear-gradient(rgba(4,14,52,.35),rgba(4,14,52,.6)),url("' + url + '") center/cover no-repeat' : 'radial-gradient(ellipse at 62% 42%,' + mix(c, .95) + '80 0,' + mix(c, .5) + '48 48%,transparent 82%)'; bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
     // título de la sección actual
     const ttl = document.querySelector('[data-t="shop.title"]'); let last = '';
-    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)], bgFor(cur[1])); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
+    let fHi = null;
+    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)], bgFor(cur[1])); if (fHi) fHi(heads.indexOf(cur)); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
     sc.addEventListener('scroll', upd, { passive: true }); setTimeout(upd, 50);
+    // panel FILTERS: lista de secciones; al tocar una salta a ella y la actual queda marcada
+    {
+      const st = document.createElement('style');
+      st.textContent = `#fbtn{position:absolute;left:217px;top:147px;width:82px;height:80px;z-index:8;cursor:pointer}
+      #fpan{position:absolute;left:217px;top:147px;width:407px;z-index:9;display:none}
+      #fpan .fh{height:80px;border-radius:14px;background:#a9b9f6;color:#0a1a55;font:italic 400 32px 'Archivo Black';display:flex;align-items:center;gap:16px;padding-left:24px;cursor:pointer}
+      #fpan .fh i{width:36px;height:28px;background:linear-gradient(#0a1a55 0 5px,transparent 5px 11px,#0a1a55 11px 16px,transparent 16px 22px,#0a1a55 22px 27px);border-radius:2px}
+      #fpan .fl{margin-top:22px;height:520px;overflow-y:auto;overscroll-behavior:contain;background:rgba(8,22,86,.9);border-radius:14px;padding:8px;-webkit-overflow-scrolling:touch}
+      #fpan .fl div{padding:15px 18px;font:600 28px/1.15 Montserrat,system-ui;color:#8da3e6;border-radius:10px;cursor:pointer}
+      #fpan .fl div.on{background:#9fb4f2;color:#0a1a55}
+      .screen[data-screen="shop"].fopen #fpan{display:block;animation:fxSlideL .25s ease-out both}
+      .screen[data-screen="shop"].fopen #fbtn,.screen[data-screen="shop"].fopen #shoprail,.screen[data-screen="shop"].fopen img.px[src*="shop_filter"],.screen[data-screen="shop"].fopen img.px[src*="shop_rail"]{display:none}
+      .screen[data-screen="shop"] #shopscroll,.screen[data-screen="shop"] [data-t="shop.title"]{transition:translate .28s cubic-bezier(.2,.9,.3,1)}
+      .screen[data-screen="shop"].fopen #shopscroll,.screen[data-screen="shop"].fopen [data-t="shop.title"]{translate:330px 0}`;
+      document.head.appendChild(st);
+      const fbtn = document.createElement('div'); fbtn.id = 'fbtn';
+      const fpan = document.createElement('div'); fpan.id = 'fpan'; fpan.innerHTML = '<div class="fh"><i></i>FILTERS</div><div class="fl"></div>';
+      shopScr.appendChild(fbtn); shopScr.appendChild(fpan);
+      const fl = fpan.querySelector('.fl'), items = [];
+      heads.forEach((h, i) => { const d = document.createElement('div'); d.textContent = (secs[i] && secs[i].name || h[1]).trim(); d.onclick = () => { sc.scrollTo({ top: Math.max(0, h[0].offsetTop - 8), behavior: 'smooth' }); window.SFX && SFX.play('click'); }; fl.appendChild(d); items.push(d); });
+      const toggle = (on) => { shopScr.classList.toggle('fopen', on); window.SFX && SFX.play(on ? 'open' : 'back'); };
+      fbtn.onclick = () => toggle(true); fpan.querySelector('.fh').onclick = () => toggle(false);
+      let lastI = -1;
+      fHi = (i) => { if (i === lastI) return; lastI = i; items.forEach((d, k) => d.classList.toggle('on', k === i)); if (shopScr.classList.contains('fopen') && items[i]) items[i].scrollIntoView({ block: 'nearest' }); };
+      new MutationObserver(() => { if (document.body.dataset.screen !== 'shop') shopScr.classList.remove('fopen'); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
+    }
+
     window.shopPT && window.shopPT(false);
 
     // ficha de objeto: miniaturas y arte propios
