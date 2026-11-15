@@ -106,6 +106,15 @@
     list.sort((a, b) => a.name.localeCompare(b.name));
     return list;
   };
+  // Cambio de video seguro: se suelta por completo el anterior y se espera un momento antes de cargar el nuevo
+  // (cambiar el video muchas veces seguidas hace que Safari cierre la página).
+  let swapT = 0;
+  const swap = (delay) => {
+    if (!window.itemVid) return; clearTimeout(swapT);
+    window.itemVid(false);
+    try { const v = document.getElementById('itemvid'); if (v) { v.pause(); v.removeAttribute('src'); v.load(); delete v.dataset.want; } } catch (e) {}
+    swapT = setTimeout(() => { if (document.body.dataset.screen === 'locker') window.itemVid(true); }, delay || 220);
+  };
   let preview = null;
   const SHIRT = '<svg viewBox="0 0 24 24"><path d="M4 7l5-3c.6 1.4 1.7 2 3 2s2.4-.6 3-2l5 3-2 4-2-1v10H8V10l-2 1z"/></svg>';
   const SHUF = '<svg viewBox="0 0 24 24"><path d="M3 7h4c2 0 3 1 4 3l2 4c1 2 2 3 4 3h3v-2l4 3.5-4 3.5v-2h-3c-3 0-4.5-1.5-5.5-3.7L9 10c-.6-1.3-1.2-1.8-2-1.8H3zM3 16h4c1 0 1.7-.4 2.3-1.4l.9-1.6.9 1.9c-.9 1.7-2 2.9-4.1 2.9H3zM17 4.5V3l4 3.5-4 3.5V8.5h-3c-1 0-1.800.5-2.400 1.400l-.9-2C11.400 6.300 12.600 5.500 14 5.500z"/></svg>';
@@ -121,7 +130,7 @@
     preview = it; if (it.url) { register({ key: it.key, name: it.name, icon: it.icon, full: it.full, url: it.url }); const I = items(); if (I[it.key]) I[it.key].url = it.url; }
     window.__previewKey = it.key; info(it);
     grid.querySelectorAll('.tl.sel').forEach((x) => x.classList.remove('sel')); const t = grid.querySelector('[data-k="' + it.key + '"]'); if (t) t.classList.add('sel');
-    if (window.itemVid) { window.itemVid(false); window.itemVid(true); }
+    swap(260);
   };
   const mkTile = (it) => {
     const d = document.createElement('div'); d.className = 'tl' + (cur() === it.key ? ' sel' : ''); d.dataset.k = it.key;
@@ -148,15 +157,14 @@
     window.__equipKey = it.key; preview = it; window.__previewKey = null;
     try { localStorage.setItem(KEY, JSON.stringify({ key: it.key, name: it.name, icon: it.icon, full: it.full || null, url: it.url || null })); } catch (e) {}
     window.SFX && SFX.play('click'); render(); info(it);
-    if (window.itemVid) { window.itemVid(false); window.itemVid(true); }
+    swap(120);
   }
   eqb.onclick = () => { if (preview && !eqb.classList.contains('off')) equip(preview); };
-  const closeOut = () => { document.body.classList.remove('lkopen'); preview = null; window.__previewKey = null; if (window.itemVid) { window.itemVid(false); window.itemVid(true); } if (window.lockThumb) window.lockThumb(); };
+  const closeOut = () => { const changed = window.__previewKey && window.__previewKey !== real(); document.body.classList.remove('lkopen'); preview = null; window.__previewKey = null; if (changed) swap(240); if (window.lockThumb) window.lockThumb(); };
   out.querySelector('#lkbk').onclick = closeOut;
   const open = async () => {
     await build(); document.body.classList.add('lkopen'); q.value = '';
     const k = real(); preview = (list || []).find((x) => x.key === k) || null; render(); info(preview);
-    if (window.itemVid) { window.itemVid(false); window.itemVid(true); }
   };
   const hit = document.createElement('div'); hit.style.cssText = 'position:absolute;left:520px;top:288px;width:122px;height:122px;z-index:6;cursor:pointer'; hit.onclick = open; L.appendChild(hit);
 
