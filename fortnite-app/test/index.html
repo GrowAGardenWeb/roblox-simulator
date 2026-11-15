@@ -46,7 +46,7 @@ async function init(){[shop,vFile,bFile]=await Promise.all([J('../data/shop.json
 function draw(){
   const vids=Object.assign({},vFile,LS('fnVideos')),vN={};Object.keys(vids).forEach(k=>vN[norm(k)]=vids[k]);
   const bgs=Object.assign({},shop.backgrounds||{},bFile,LS('fnBackgrounds')),bN={};Object.keys(bgs).forEach(k=>bN[norm(k)]=bgs[k]);
-  const vidFor=(e)=>vids[e.offerId]||vids[e.name]||vN[norm(e.name)]||(e.items&&e.items[0]&&vN[norm(e.items[0].name)])||'';
+  const A=(v)=>v?[].concat(v):[];const vidsFor=(e)=>{const o=[...A(vids[e.offerId]),...A(vids[e.name]),...A(vN[norm(e.name)])];(e.items||[]).forEach(i=>o.push(...A(vN[norm(i.name)])));return [...new Set(o)]};const vidFor=(e)=>vidsFor(e)[0]||'';
   const E=(shop.entries||[]).filter(e=>e.image&&!/placeholder|^\[VIRTUAL\]|\bTBD\b/i.test(e.name||''));
   const groups=new Map();for(const e of E){const k=e.sectionId||e.section||'-';if(!groups.has(k))groups.set(k,{name:(e.section||'DESTACADOS').trim(),idx:e.sectionIndex??999,items:[]});groups.get(k).items.push(e)}
   const secs=[...groups.values()].sort((a,b)=>a.idx-b.idx);
@@ -66,7 +66,7 @@ function draw(){
       t.querySelector('.i').style.backgroundImage='url("'+e.image+'")';
       t.querySelector('.n').textContent=e.name;t.querySelector('.p').textContent='💎 '+(e.finalPrice??0).toLocaleString('en-US');
       if(e.regularPrice>e.finalPrice){const x=document.createElement('s');x.textContent=e.regularPrice.toLocaleString('en-US');t.querySelector('.p').appendChild(x)}
-      const vb=t.querySelector('.v');vb.className='v '+(v?'y':'x');vb.textContent=v?'▶ video':'sin video';if(!v)missV.push(e.name);
+      const vb=t.querySelector('.v');vb.className='v '+(v?'y':'x');vb.textContent=v?'▶ '+vidsFor(e).length+' video'+(vidsFor(e).length>1?'s':''):'sin video';if(!v)missV.push(e.name);
       t.onclick=()=>{if(v)play(v,e.name);else alert('Este artículo no tiene video guardado.')};
       g.appendChild(t);
     }
@@ -74,13 +74,13 @@ function draw(){
   }
   const tot=E.length,ex=(shop.updated||'');
   $('#sum').innerHTML='<b>'+tot+' artículos</b><b>'+secs.length+' secciones</b><b class="'+(withV?'ok':'no')+'">'+withV+' con video</b><b class="'+(withB?'ok':'no')+'">'+withB+'/'+secs.length+' fondos</b>'+(ex?'<b>datos: '+ex+'</b>':'');
-  const unusedV=Object.keys(vids).filter(k=>![...E].some(e=>vidFor(e)===vids[k]));
+  const used=new Set();E.forEach(e=>vidsFor(e).forEach(u=>used.add(u)));const unusedV=Object.keys(vids).filter(k=>!A(vids[k]).some(u=>used.has(u)));
   $('#miss').innerHTML='<p><b>Videos guardados que no coinciden con ningún artículo ('+unusedV.length+'):</b></p><pre style="white-space:pre-wrap"></pre><p><b>Secciones sin fondo ('+missB.length+'):</b> '+missB.join(', ')+'</p><p><b>Artículos sin video:</b> '+missV.length+' de '+tot+'</p>';
   $('#miss pre').textContent=unusedV.join('\n')||'ninguno';
 }
 function play(u,n){const v=$('#vd');$('#pl').style.display='flex';$('#vs').textContent=n+' — cargando…';v.onloadeddata=()=>$('#vs').textContent=n+' — ✔ el video carga ('+v.videoWidth+'×'+v.videoHeight+', '+Math.round(v.duration)+'s)';v.onerror=()=>$('#vs').textContent=n+' — ✖ NO carga ('+(v.error?v.error.message||v.error.code:'?')+'). Enlace: '+u;v.src=u;v.play().catch(()=>{})}
 $('#cl').onclick=()=>{const v=$('#vd');v.pause();v.removeAttribute('src');v.load();$('#pl').style.display='none'};
-$('#apply').onclick=()=>{try{const d=JSON.parse($('#ta').value);const nv=Object.assign({},LS('fnVideos'),d.named||d.videos||{});const nb=Object.assign({},LS('fnBackgrounds'),d.backgrounds||{});localStorage.setItem('fnVideos',JSON.stringify(nv));localStorage.setItem('fnBackgrounds',JSON.stringify(nb));$('#msg').textContent='Leído: '+Object.keys(d.named||d.videos||{}).length+' videos con nombre, '+((d.unnamed||[]).length)+' sin nombre, '+Object.keys(d.backgrounds||{}).length+' fondos.';draw()}catch(e){$('#msg').textContent='No pude leer eso: pega exactamente lo que copió el marcador.'}};
+$('#apply').onclick=()=>{try{const d=JSON.parse($('#ta').value);const nv=LS('fnVideos');Object.entries(d.named||d.videos||{}).forEach(([k,v])=>{nv[k]=[...new Set([].concat(nv[k]||[],v))]});const nb=Object.assign({},LS('fnBackgrounds'),d.backgrounds||{});localStorage.setItem('fnVideos',JSON.stringify(nv));localStorage.setItem('fnBackgrounds',JSON.stringify(nb));$('#msg').textContent='Leído: '+Object.keys(d.named||d.videos||{}).length+' videos con nombre, '+((d.unnamed||[]).length)+' sin nombre, '+Object.keys(d.backgrounds||{}).length+' fondos.';draw()}catch(e){$('#msg').textContent='No pude leer eso: pega exactamente lo que copió el marcador.'}};
 $('#clear').onclick=()=>{localStorage.removeItem('fnVideos');localStorage.removeItem('fnBackgrounds');draw();$('#msg').textContent='Borrado.'};
 init();
 </script></body></html>

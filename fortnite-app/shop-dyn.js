@@ -61,7 +61,9 @@
     let bgLocal = {}; try { bgLocal = JSON.parse(localStorage.getItem('fnBackgrounds') || '{}'); } catch (e) {}
     const bgAll = Object.assign({}, shop.backgrounds || {}, window.__bgFile || {}, bgLocal), bgNorm = {}; Object.keys(bgAll).forEach((k) => { bgNorm[norm(k)] = bgAll[k]; });
     const bgFor = (name) => bgNorm[norm(name)] || '';
-    const vidFor = (e) => all[e.offerId] || all[e.name] || byNorm[norm(e.name)] || (e.items[0] && byNorm[norm(e.items[0].name)]) || '';
+    const arr = (v) => (v ? [].concat(v) : []);
+    const vidsFor = (e) => { const o = [...arr(all[e.offerId]), ...arr(all[e.name]), ...arr(byNorm[norm(e.name)])]; e.items.forEach((i) => o.push(...arr(byNorm[norm(i.name)]))); return [...new Set(o)]; };
+    const vidFor = (e) => vidsFor(e)[0] || '';
     const E = (shop.entries || []).filter((e) => !BAD(e));
     if (!old || !ITEMS || !E.length) return;
 
@@ -85,7 +87,7 @@
         const title = String(e.name).toUpperCase();
         const thumbs = (e.kind === 'jam' ? [e.image] : e.items.map((i) => i.icon || i.featured).filter(Boolean));
         const n = Math.max(1, e.items.length || e.tracks.length || 1);
-        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), tag: '',
+        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), urls: vidsFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), tag: '',
           sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : String(e.items[0]?.type || 'ITEM').toUpperCase(), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], jam: e.kind === 'jam' } };
         const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail';
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
