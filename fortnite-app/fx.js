@@ -14,6 +14,62 @@
   @keyframes fxPulse{0%,100%{opacity:1}50%{opacity:.55}}
   @keyframes fxConf{0%{opacity:1;translate:0 0;rotate:0deg}100%{opacity:0;translate:var(--x) var(--y);rotate:var(--r)}}
   .screen:not([hidden]){animation:fxScreen .3s ease-out both}
+  @keyframes fxSlideL{from{opacity:0;translate:-140px 0}to{opacity:1;translate:0 0}}
+  @keyframes fxRise{from{opacity:0;translate:0 56px}to{opacity:1;translate:0 0}}
+  @keyframes fxSweep{from{translate:-130% 0}to{translate:130% 0}}
+  @keyframes fxScan{0%{translate:0 -70px;opacity:0}15%{opacity:1}85%{opacity:1}100%{translate:0 70px;opacity:0}}
+  @keyframes fxGrow{from{scale:1 0;opacity:0}to{scale:1 1;opacity:1}}
+  @keyframes fxGlow{0%,100%{text-shadow:0 0 0 #4db8ff}50%{text-shadow:0 0 26px #4db8ff}}
+  @keyframes fxHolo{0%{-webkit-mask-size:100% 0%;mask-size:100% 0%;filter:brightness(2.4) saturate(0) sepia(1) hue-rotate(170deg) drop-shadow(0 0 16px #35a7ff)}65%{filter:brightness(1.6) sepia(.7) hue-rotate(165deg) drop-shadow(0 0 12px #35a7ff)}100%{-webkit-mask-size:100% 100%;mask-size:100% 100%;filter:none}}
+  @keyframes fxBand{from{translate:0 0;opacity:1}to{translate:0 calc(var(--h,900px)*-1 - 40px);opacity:.9}}
+  .fxholo{-webkit-mask:linear-gradient(#000 0 0) bottom/100% 100% no-repeat;mask:linear-gradient(#000 0 0) bottom/100% 100% no-repeat;animation:fxHolo .75s cubic-bezier(.3,.7,.3,1) both}
+  .fxband{position:absolute;height:44px;z-index:6;pointer-events:none;background:linear-gradient(to top,rgba(110,210,255,.95),rgba(110,210,255,0));box-shadow:0 0 28px 6px rgba(70,180,255,.7);animation:fxBand .75s cubic-bezier(.3,.7,.3,1) forwards}
+  /* lista de regalos */
+  .grow{overflow:hidden}
+  .grow::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 35%,rgba(120,205,255,.5) 50%,transparent 65%);translate:-130% 0}
+  .screen[data-screen="gift"]:not([hidden]) .grow::after{animation:fxSweep .7s calc(.25s + var(--i,0)*70ms) ease-out both}
+  .screen[data-screen="gift"]:not([hidden]) [data-t^="gif.gif"]{animation:fxSlideL .5s .1s cubic-bezier(.2,.9,.3,1) both}
+  /* confirmar compra */
+  #cfm.on .h1{animation:fxSlideL .5s cubic-bezier(.2,.9,.3,1) both}
+  #cfm.on .h2{animation:fxSlideL .5s .08s cubic-bezier(.2,.9,.3,1) both}
+  #cfm.on .av{animation:fxPop .55s .12s cubic-bezier(.2,1.2,.4,1) both}
+  #cfm.on .who{animation:fxSlideL .45s .2s cubic-bezier(.2,.9,.3,1) both}
+  #cfm.on .cnt{animation:fxPop .6s .28s cubic-bezier(.2,1.3,.4,1) both}
+  #cfm.on .iname{animation:fxRise .45s .38s both}
+  #cfm.on .th{animation:fxPop .5s calc(.45s + var(--k,0)*90ms) cubic-bezier(.2,1.3,.4,1) both;position:relative}
+  #cfm.on .th::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 35%,rgba(140,215,255,.55) 50%,transparent 65%);translate:-130% 0;animation:fxSweep .6s calc(.7s + var(--k,0)*90ms) ease-out both}
+  #cfm.on .pbox{animation:fxRise .45s .6s both}
+  #cfm.on .buy{animation:fxRise .45s .7s both}
+  #cfm.on .back,#cfm.on .wopt,#cfm.on .refund{animation:fxFade .4s .85s both}
+  /* enviando */
+  #cfm .send::before{content:'';position:absolute;left:640px;right:640px;top:520px;height:6px;border-radius:3px;background:linear-gradient(90deg,transparent,#5cc8ff,transparent);box-shadow:0 0 22px 4px #3aa8ff;animation:fxScan 1.1s ease-in-out infinite}
+  #cfm .send span{animation:fxPulse 1s ease-in-out infinite,fxGlow 1.4s ease-in-out infinite}
+  /* regalo enviado */
+  #cfm .done::before{content:'';position:absolute;left:0;right:0;top:250px;height:430px;background:linear-gradient(transparent,rgba(60,150,255,.28),transparent);transform-origin:center;animation:fxGrow .6s cubic-bezier(.2,.9,.3,1) both;pointer-events:none}
+  #cfm .done p{animation:fxRise .45s .3s both}
+  #cfm .done .ok{animation:fxRise .45s .55s both}
+  #cfm .done h3{animation:fxPop .6s .12s cubic-bezier(.2,1.3,.4,1) both,fxGlow 1.6s .8s ease-in-out 2}
+  #cfth .th:nth-child(1){--k:0}
+  #cfth .th:nth-child(2){--k:1}
+  #cfth .th:nth-child(3){--k:2}
+  #cfth .th:nth-child(4){--k:3}
+  #cfth .th:nth-child(5){--k:4}
+  #cfth .th:nth-child(6){--k:5}
+  #cfth .th:nth-child(7){--k:6}
+  #cfth .th:nth-child(8){--k:7}
+  #cfth .th:nth-child(9){--k:8}
+  #cfth .th:nth-child(10){--k:9}
+  #cfth .th:nth-child(11){--k:10}
+  #cfth .th:nth-child(12){--k:11}
+  #cfth .th:nth-child(13){--k:12}
+  #cfth .th:nth-child(14){--k:13}
+  .screen[data-screen="gift"]:not([hidden]) [data-t="gif.r0n"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r0p"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r0o"]{animation:fxSlideL .5s 150ms cubic-bezier(.2,.9,.3,1) both}
+  .screen[data-screen="gift"]:not([hidden]) [data-t="gif.r1n"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r1p"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r1o"]{animation:fxSlideL .5s 220ms cubic-bezier(.2,.9,.3,1) both}
+  .screen[data-screen="gift"]:not([hidden]) [data-t="gif.r2n"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r2p"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r2o"]{animation:fxSlideL .5s 290ms cubic-bezier(.2,.9,.3,1) both}
+  .screen[data-screen="gift"]:not([hidden]) [data-t="gif.r3n"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r3p"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r3o"]{animation:fxSlideL .5s 360ms cubic-bezier(.2,.9,.3,1) both}
+  .screen[data-screen="gift"]:not([hidden]) [data-t="gif.r4n"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r4p"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r4o"]{animation:fxSlideL .5s 430ms cubic-bezier(.2,.9,.3,1) both}
+  .screen[data-screen="gift"]:not([hidden]) [data-t="gif.r5n"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r5p"],.screen[data-screen="gift"]:not([hidden]) [data-t="gif.r5o"]{animation:fxSlideL .5s 500ms cubic-bezier(.2,.9,.3,1) both}
+
   #cfdone{animation:fxPop .55s cubic-bezier(.2,1.2,.4,1) both}
   #cfdone h3{animation:fxPop .6s .12s cubic-bezier(.2,1.3,.4,1) both}
   #cfdone p{animation:fxFade .4s .3s both}
@@ -98,7 +154,27 @@
       host.appendChild(p); setTimeout(() => p.remove(), 1700);
     }
   }
+
+  // ---------- video: aparece de abajo hacia arriba con efecto holograma azul ----------
+  function holo(el) {
+    try {
+      const cv = document.getElementById('itemcv'), ref = el.style.left ? el : cv; if (!ref || !ref.parentNode) return;
+      el.classList.remove('fxholo'); void el.offsetWidth; el.classList.add('fxholo');
+      el.addEventListener('animationend', function f(e) { if (e.animationName === 'fxHolo') { el.classList.remove('fxholo'); el.removeEventListener('animationend', f); } });
+      const H = parseFloat(ref.style.height) || 900, band = document.createElement('div'); band.className = 'fxband';
+      band.style.cssText = 'left:' + ref.style.left + ';top:calc(' + ref.style.top + ' + ' + H + 'px);width:' + ref.style.width + ';--h:' + H + 'px';
+      ref.parentNode.appendChild(band); setTimeout(() => band.remove(), 900);
+    } catch (e) {}
+  }
+  const initHolo = () => {
+    const cv = document.getElementById('itemcv'), v = document.getElementById('itemvid'); if (!cv || !v) return;
+    let on = cv.classList.contains('on');
+    new MutationObserver(() => { const now = cv.classList.contains('on'); if (now && !on) holo(cv); on = now; }).observe(cv, { attributes: true, attributeFilter: ['class'] });
+    v.addEventListener('loadeddata', () => { if (v.classList.contains('nat')) holo(v); });
+  };
+  const initRows = () => { document.querySelectorAll('.grow').forEach((el, i) => el.style.setProperty('--i', i)); };
   const init = () => {
+    initHolo(); setTimeout(initRows, 300);
     watch('cfsend', () => SFX.play('gift-sending'));
     watch('cfdone', () => { SFX.play('gift-sent'); confetti(document.getElementById('cfm') || document.getElementById('stage')); });
     watch('cferr', () => SFX.play('error'));
