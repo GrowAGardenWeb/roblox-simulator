@@ -160,9 +160,7 @@
       const cv = document.getElementById('itemcv'), ref = el.style.left ? el : cv; if (!ref || !ref.parentNode) return;
       el.classList.remove('fxholo'); void el.offsetWidth; el.classList.add('fxholo');
       el.addEventListener('animationend', function f(e) { if (e.animationName === 'fxHolo') { el.classList.remove('fxholo'); el.removeEventListener('animationend', f); } });
-      const H = parseFloat(ref.style.height) || 900, band = document.createElement('div'); band.className = 'fxband';
-      band.style.cssText = 'left:' + ref.style.left + ';top:calc(' + ref.style.top + ' + ' + H + 'px);width:' + ref.style.width + ';--h:' + H + 'px';
-      ref.parentNode.appendChild(band); setTimeout(() => band.remove(), 900);
+
     } catch (e) {}
   }
   const initHolo = () => {
@@ -170,6 +168,15 @@
     let on = cv.classList.contains('on');
     new MutationObserver(() => { const now = cv.classList.contains('on'); if (now && !on) holo(cv); on = now; }).observe(cv, { attributes: true, attributeFilter: ['class'] });
     v.addEventListener('loadeddata', () => { if (v.classList.contains('nat')) holo(v); });
+    // al salir y volver a entrar (ficha o regalos) el efecto se repite
+    new MutationObserver(() => {
+      const sc = document.body.dataset.screen; if (sc !== 'detail' && sc !== 'gift') return;
+      [120, 500].forEach((ms) => setTimeout(() => {
+        if (document.body.dataset.screen !== sc) return;
+        const el = v.classList.contains('nat') ? v : cv;
+        if (el === v ? v.readyState >= 2 : cv.classList.contains('on')) holo(el);
+      }, ms));
+    }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
   };
   const initRows = () => { document.querySelectorAll('.grow').forEach((el, i) => el.style.setProperty('--i', i)); };
   const init = () => {
