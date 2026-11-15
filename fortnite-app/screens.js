@@ -22,7 +22,7 @@
   .dc.s{height:190px}
   .dc .t{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:italic 400 54px/.95 'Archivo Black';text-shadow:0 4px 10px rgba(0,0,0,.45);padding:10px;color:var(--c,#fff)}
   .dc .t small{font:400 22px 'Archivo Black';display:block;margin-top:8px;font-style:normal}
-  .dc .pl{position:absolute;left:8px;bottom:8px;background:rgba(10,10,40,.7);border-radius:12px;padding:3px 10px;font:600 19px Montserrat;color:#fff}
+  .dc .pl{position:absolute;left:6px;bottom:5px;min-width:96px;box-sizing:border-box;background:#0c0c30;border-radius:12px;padding:3px 12px;font:600 19px Montserrat;color:#fff}
   .dc .ep{position:absolute;left:10px;top:10px;width:26px;height:30px;background:rgba(255,255,255,.88);border-radius:5px;color:#222;font:900 15px/30px Montserrat;text-align:center;font-style:normal}
   .search-in{position:absolute;left:155px;top:165px;width:1763px;height:75px;border:3px solid #aeb6ec;border-radius:14px;background:#3b2f86;box-sizing:border-box;display:flex;align-items:center;padding:0 24px}
   .search-in input{flex:1;background:none;border:0;outline:0;color:#fff;font:600 26px Montserrat;caret-color:#fff}
@@ -50,7 +50,7 @@
   `;
   document.head.appendChild(st);
 
-  const mk = (g, c, k, o) => `<div class="dc ${o.s ? 's' : ''}" style="--g:${g};--c:${c};--k:${k};background-image:url(assets/discover/${o.img}.webp),${g}"><div class="t">${o.t}</div>${o.ep ? '<i class="ep">EG</i>' : ''}${o.p ? '<span class="pl">' + o.p + '</span>' : ''}</div>`;
+  const mk = (g, c, k, o) => `<div class="dc ${o.s ? 's' : ''}" style="--g:${g};--c:${c};--k:${k};background-image:url(assets/discover/${o.img}.webp),${g}">${o.p ? '<span class="pl">' + o.p + '</span>' : ''}</div>`;
   const picks = [
     ['linear-gradient(135deg,#c9b894,#8a7656)', '#e7b52a', 0, { img: 'br', t: 'BATTLE<br>ROYALE<small style="color:#2a2418">TREASURE HOURS</small>', ep: 1, p: '3.7M' }],
     ['linear-gradient(135deg,#1c67c9,#0f3f8a)', '#f2c230', 1, { img: 'reload', t: 'RELOAD', ep: 1, p: '45.1K' }],
@@ -71,12 +71,12 @@
   <h2 style="padding-left:152px;margin-top:44px">Game Collections</h2><div class="sub" style="padding-left:152px">Games created through popular collaborations</div><div class="row" style="margin-top:14px">${cols}</div></div>
   <div class="bbar"><div class="m"></div><div>CHAT</div></div>`;
 
-  const lc = (g, k, o) => `<div class="lc ${o.sel ? 'cur' : ''}" style="--g:${g};--k:${k};width:${o.w}px;height:${o.h}px;background-image:url(assets/discover/${o.img}.webp),${g}">${o.n ? '<span class="nm">' + o.n + '</span>' : ''}<span class="lk">&#128077; ${o.l}</span>${o.d ? '<span class="mo">•••</span>' : ''}</div>`;
+  const lc = (g, k, o) => `<div class="lc ${o.sel ? 'cur' : ''}" style="--g:${g};--k:${k};width:${o.w}px;height:${o.h}px;background-image:url(assets/discover/${o.img}.webp),${g}"></div>`;
   const lib = document.createElement('section');
   lib.className = 'screen'; lib.dataset.screen = 'library'; lib.hidden = true;
   lib.innerHTML = `<div class="lib-t">LIBRARY</div>
   <div class="dsc" style="top:250px"><h2 style="padding-left:152px">Continue Playing</h2>
-  <div class="row" style="margin-top:14px;align-items:center;padding-left:148px;gap:18px">${lc('linear-gradient(135deg,#c2209a,#3b2a8f)', 0, { img: 'p1', w: 284, h: 160, sel: 1, n: 'Piece Control 1v1', l: '94%', d: 1 })}${lc('linear-gradient(135deg,#6b2fa3,#1b2a6b)', 1, { img: 'p2', w: 270, h: 152, l: '94%' })}${lc('linear-gradient(135deg,#c9b894,#8a7656)', 2, { img: 'br', w: 274, h: 154, l: '80%' })}</div>
+  <div class="row" style="margin-top:14px;align-items:center;padding-left:148px;gap:18px">${lc('linear-gradient(135deg,#c2209a,#3b2a8f)', 0, { img: 'p1', w: 284, h: 160, sel: 1, n: 'Piece Control 1v1', l: '94%', d: 1 })}${lc('linear-gradient(135deg,#6b2fa3,#1b2a6b)', 1, { img: 'p2', w: 270, h: 152, l: '94%' })}${lc('linear-gradient(135deg,#c9b894,#8a7656)', 2, { img: 'p3', w: 274, h: 154, l: '80%' })}</div>
   <div class="empty" style="margin-top:78px"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><div class="emsg"><h3>NO FOLLOWED CREATORS</h3><p>This category is empty at the moment</p></div></div></div>
   <div class="bbar"><div class="m"></div><div>CHAT</div><div>OPTIONS</div><div data-go="lobby">BACK</div></div>`;
   stage.appendChild(search); stage.appendChild(lib);
