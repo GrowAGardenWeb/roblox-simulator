@@ -13,7 +13,8 @@ button{background:#3b86f7;color:#fff;border:0;border-radius:8px;padding:9px 14px
 <h1>Enlaces de video de la tienda</h1>
 <p>Esto junta los enlaces directos de los videos que ves en <b>fortnite.com/item-shop</b> y los deja listos para el simulador.</p>
 <p><b>1.</b> Arrastra este botón a tu barra de marcadores (o cópialo como marcador):</p>
-<a class="bm" id="bm" href="#">Sacar videos de la tienda</a>
+<a class="bm" id="bm" href="#">Sacar videos de la tienda</a><button id="cpbm" style="margin-left:10px">Copiar marcador</button><span id="cpmsg"></span>
+<p><small><b>En iPhone:</b> guarda cualquier página en marcadores (Compartir → Añadir marcador) → mantén presionado el marcador → Editar → borra la dirección → pega lo que copiaste con "Copiar marcador" → Guardar. Luego en fortnite.com/item-shop abre Marcadores y tócalo.</small></p>
 <ol>
 <li>Abre <code>fortnite.com/item-shop</code> y toca el marcador <b>primero</b>: sale un cuadro abajo a la derecha. Luego abre cada artículo o bundle y toca el personaje, la mochila, el pico, etc. Cada video que cargue se captura solo con el nombre del artículo (si no lo adivina, escríbelo en el cuadro).</li>
 <li>Para no abrir 500 a mano, toca <b>Recorrer todo solo</b>: el marcador abre cada artículo por ti, toca sus miniaturas y va capturando (se puede parar). Cuando termine, toca <b>Copiar resultado</b> en ese cuadro. Los fondos de las secciones ya no hacen falta: el bot los saca solo.</li>
@@ -57,7 +58,7 @@ closeDlg();await sl(600)}
 running=false;btn.textContent='Recorrer todo solo';fc.textContent='Listo: '+k+' artículos recorridos, '+n+' videos. Toca Copiar resultado.'}
 p.querySelector('#fa').onclick=crawl;p.id='fnpanel';
 window.__fnc={p:p}})();`;
-document.getElementById('bm').href='javascript:'+encodeURIComponent(bmSrc);
+document.getElementById('bm').href='javascript:'+encodeURIComponent(bmSrc);document.getElementById('cpbm').onclick=()=>{const t='javascript:'+bmSrc.replace(/\n/g,'');const ok=()=>document.getElementById('cpmsg').textContent=' Copiado';(navigator.clipboard&&navigator.clipboard.writeText(t).then(ok,()=>prompt('Copia esto:',t)))||prompt('Copia esto:',t)};
 const ta=document.getElementById('ta'),un=document.getElementById('unnamed'),msg=document.getElementById('msg');
 let named={},unnamed=[],bgs={};
 const load=()=>{try{named=JSON.parse(localStorage.getItem('fnVideos')||'{}')}catch(e){named={}};try{bgs=JSON.parse(localStorage.getItem('fnBackgrounds')||'{}')}catch(e){bgs={}}};load();
