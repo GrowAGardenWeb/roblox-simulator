@@ -23,6 +23,13 @@
   #shoprow.dyn .dt .bd{position:absolute;top:8px;left:8px;padding:2px 8px;border-radius:4px;font:800 11px Montserrat;background:#ffd23a;color:#241a00}
   #shoprow.dyn .dt .bd.jam{background:#ff4fa3;color:#fff}
   #shoprow.dyn .dt.bundle{box-shadow:inset 0 0 0 3px rgba(255,210,58,.75)}
+
+  #shoprail{position:absolute;left:214.78px;top:248.26px;width:85.08px;height:639.47px;border-radius:16px;background:rgba(5,22,84,.92);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);z-index:3;pointer-events:auto}
+  #shoprail .dots{position:absolute;left:0;top:14px;width:56px;bottom:14px}
+  #shoprail .dots i{position:absolute;left:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:rgba(150,170,215,.65);transition:all .22s cubic-bezier(.2,1.4,.4,1);cursor:pointer}
+  #shoprail .dots i.on{width:21px;height:21px;margin:-10.5px 0 0 -10.5px;background:#e3ebff;box-shadow:0 0 10px rgba(200,220,255,.8)}
+  #shoprail .trk{position:absolute;right:16px;top:14px;bottom:14px;width:6px;border-radius:3px;background:rgba(255,255,255,.14)}
+  #shoprail .trk b{position:absolute;left:0;right:0;border-radius:3px;background:#c9d6f5;min-height:26px;transition:top .08s linear}
   #dynart{position:absolute;left:1020px;top:120px;width:820px;height:690px;object-fit:contain;display:none;z-index:1;pointer-events:none;filter:drop-shadow(0 18px 24px rgba(0,0,40,.35))}`;
   document.head.appendChild(css);
 
@@ -64,6 +71,7 @@
         if (a) t.style.setProperty('--a', mix(a, 1.12)); if (b || a) t.style.setProperty('--b', mix(b || a, .8));
         const w = span(e.tileSize); t.style.gridColumn = 'span ' + w;
         t.innerHTML = '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (e.kind === 'bundle' ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '');
+        t.style.setProperty('--i', Math.min(g.children.length + (heads.length === 1 ? 0 : 0), 24));
         t.querySelector('.nm').textContent = title;
         t.querySelector('.pr span').textContent = (e.finalPrice ?? 0).toLocaleString('en-US');
         if (e.regularPrice > e.finalPrice) { const s2 = document.createElement('s'); s2.textContent = e.regularPrice.toLocaleString('en-US'); t.querySelector('.pr').appendChild(s2); }
@@ -72,6 +80,25 @@
         g.appendChild(t);
       }
     }
+    // riel izquierdo: un punto por sección y barra de posición reales
+    const oldRail = document.querySelector('.screen[data-screen="shop"] > img.px[style*="height:639.47px"]');
+    if (oldRail) oldRail.style.display = 'none';
+    const rail = document.createElement('div'); rail.id = 'shoprail'; rail.innerHTML = '<div class="dots"></div><div class="trk"><b></b></div>';
+    (oldRail ? oldRail.parentNode : document.querySelector('.screen[data-screen="shop"]')).appendChild(rail);
+    const dotsEl = rail.querySelector('.dots'), thumb = rail.querySelector('.trk b'), N = heads.length, dotEls = [];
+    heads.forEach((h, i) => { const d = document.createElement('i'); d.style.top = (N > 1 ? (i / (N - 1)) * 100 : 0) + '%'; d.title = h[1]; d.addEventListener('click', () => sc.scrollTo({ top: Math.max(0, h[0].offsetTop - 8), behavior: 'smooth' })); dotsEl.appendChild(d); dotEls.push(d); });
+    let curDot = -1;
+    const railUpd = () => {
+      const max = Math.max(1, sc.scrollHeight - sc.clientHeight), pr = Math.min(1, Math.max(0, sc.scrollTop / max));
+      let idx = 0; heads.forEach((h, i) => { if (h[0].offsetTop <= sc.scrollTop + 70) idx = i; });
+      if (sc.scrollTop <= 4) idx = 0;
+      if (sc.scrollTop >= max - 4) idx = N - 1;
+      if (idx !== curDot) { curDot = idx; dotEls.forEach((d, i) => d.classList.toggle('on', i === idx)); window.SFX && SFX.play('tick'); }
+      const trkH = thumb.parentNode.clientHeight || 600, th = Math.max(26, trkH * sc.clientHeight / Math.max(sc.scrollHeight, 1));
+      thumb.style.height = th + 'px'; thumb.style.top = (pr * (trkH - th)) + 'px';
+    };
+    sc.addEventListener('scroll', railUpd, { passive: true }); setTimeout(railUpd, 80); setTimeout(railUpd, 600);
+    new MutationObserver(() => { if (document.body.dataset.screen === 'shop') { [30, 250, 900].forEach((ms) => setTimeout(() => { railUpd(); upd(); }, ms)); } }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     // título de la sección actual
     const ttl = document.querySelector('[data-t="shop.title"]'); let last = '';
     const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
