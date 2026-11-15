@@ -87,7 +87,7 @@
         const title = String(e.name).toUpperCase();
         const thumbs = (e.kind === 'jam' ? [e.image] : e.items.map((i) => i.icon || i.featured).filter(Boolean));
         const n = Math.max(1, e.items.length || e.tracks.length || 1);
-        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), urls: vidsFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), tag: '',
+        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), vdef: vidFor(e), iv: e.items.map((i) => [...arr(byNorm[norm(i.nameEs)]), ...arr(byNorm[norm(i.name)])][0] || ''), urls: vidsFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), tag: '',
           sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : String(e.items[0]?.type || 'ITEM').toUpperCase(), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], jam: e.kind === 'jam' } };
         const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail';
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
@@ -146,8 +146,16 @@
     const APPLE = !!window.__APPLE;
     const art = document.createElement('img'); art.id = 'dynart'; art.alt = ''; art.draggable = false;
     const detail = document.querySelector('.screen[data-screen="detail"]'); if (detail) { const f = detail.querySelector('.full'); f ? f.after(art) : detail.appendChild(art); }
+    // al tocar una miniatura del bundle, se reproduce el video de esa pieza (personaje, mochila, pico…)
+    document.addEventListener('click', (ev) => {
+      const th = ev.target.closest && ev.target.closest('#thumbs .tsl'); if (!th) return;
+      const it = ITEMS[window.curItem]; if (!it || !it.iv) return;
+      const i = [...th.parentNode.children].indexOf(th), u = it.iv[i] || it.vdef;
+      if (u && u !== it.url) { it.url = u; window.itemVid && window.itemVid(true); }
+    }, true);
     const apply = () => {
       const scr = document.body.dataset.screen, it = ITEMS[window.curItem];
+      if (it && it.vdef !== undefined && scr === 'detail' && it.url !== it.vdef && !it.__touched) { it.url = it.vdef; }
       const dyn = it && it.dyn && scr === 'detail';
       art.style.display = dyn && !(APPLE && it.url) ? 'block' : 'none';
       if (!dyn) return;
