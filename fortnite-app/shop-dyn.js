@@ -30,6 +30,17 @@
   #shoprail .dots i.on{width:21px;height:21px;margin:-10.5px 0 0 -10.5px;background:#e3ebff;box-shadow:0 0 10px rgba(200,220,255,.8)}
   #shoprail .trk{position:absolute;right:16px;top:14px;bottom:14px;width:6px;border-radius:3px;background:rgba(255,255,255,.14)}
   #shoprail .trk b{position:absolute;left:0;right:0;border-radius:3px;background:#c9d6f5;min-height:26px;transition:top .08s linear}
+  #shoprow.dyn .dt .pl{position:absolute;right:10px;bottom:9px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 2px 6px rgba(0,0,40,.35)}
+  #shoprow.dyn .dt .pl::before,#shoprow.dyn .dt .pl::after{content:'';position:absolute;left:50%;top:50%;background:#2a58c8;border-radius:2px;translate:-50% -50%}
+  #shoprow.dyn .dt .pl::before{width:14px;height:4px}#shoprow.dyn .dt .pl::after{width:4px;height:14px}
+  #shoprow.dyn .dt .bd.nw{background:#fbff2a;color:#1a1a00;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+  #shoprow.dyn .dt.outfit .di{inset:-4px 0 14px 0;background-size:auto 116%;background-position:center 18%}
+  #shoprow.dyn .dt.comp .di{display:none}
+  #shoprow.dyn .dt .cmp{position:absolute;inset:0 0 30px 0}
+  #shoprow.dyn .dt .cmp .ic{position:absolute;width:56px;height:56px;border-radius:8px;background-size:cover;background-position:center;box-shadow:0 4px 8px rgba(0,0,30,.4)}
+  #shoprow.dyn .dt .cmp .hero{position:absolute;right:-6px;top:-6px;bottom:0;width:62%;background-size:auto 112%;background-position:right 30%;background-repeat:no-repeat;filter:drop-shadow(0 6px 10px rgba(0,0,30,.4))}
+  #shopbg{position:absolute;inset:-70px -300px;pointer-events:none;z-index:0}
+  #shopbg i{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}#shopbg i.on{opacity:1}
   #dynart{position:absolute;left:1020px;top:120px;width:820px;height:690px;object-fit:contain;display:none;z-index:1;pointer-events:none;filter:drop-shadow(0 18px 24px rgba(0,0,40,.35))}`;
   document.head.appendChild(css);
 
@@ -58,10 +69,10 @@
     for (const e of E) { const k = e.sectionId || e.section || '-'; if (!groups.has(k)) groups.set(k, { name: e.section || 'DESTACADOS', idx: e.sectionIndex ?? 999, items: [] }); groups.get(k).items.push(e); }
     const secs = [...groups.values()].sort((a, b) => a.idx - b.idx);
     const lazy = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { const d = x.target; d.style.backgroundImage = 'url("' + d.dataset.img + '")'; lazy.unobserve(d); } }), { root: sc, rootMargin: '400px' });
-    const heads = [];
+    const heads = [], secCols = [];
     for (const s of secs) {
       s.items.sort((a, b) => (b.sortPriority ?? 0) - (a.sortPriority ?? 0) || a.order - b.order);
-      const h = document.createElement('div'); h.className = 'dsec'; h.textContent = s.name.trim().toUpperCase(); row.appendChild(h); heads.push([h, h.textContent]);
+      const h = document.createElement('div'); h.className = 'dsec'; h.textContent = s.name.trim().toUpperCase(); row.appendChild(h); heads.push([h, h.textContent]); { const c = {}; s.items.forEach((i) => { const k = hex(i.colors?.color1); if (k) c[k] = (c[k] || 0) + 1; }); const top = Object.keys(c).sort((x, y) => c[y] - c[x])[0]; secCols.push(top || '#2a58c8'); }
       const g = document.createElement('div'); g.className = 'dgrid'; row.appendChild(g);
       for (const e of s.items) {
         const key = 'd_' + (e.offerId || e.order);
@@ -74,12 +85,21 @@
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
         if (a) t.style.setProperty('--a', mix(a, 1.12)); if (b || a) t.style.setProperty('--b', mix(b || a, .8));
         const w = span(e.tileSize); t.style.gridColumn = 'span ' + w;
-        t.innerHTML = '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (e.kind === 'bundle' ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '');
+        const comp = e.kind === 'bundle' && e.items.length > 1 && (e.image === e.items[0].featured || e.image === e.items[0].icon);
+        const isNew = e.inDate && (Date.now() - new Date(e.inDate)) < 36 * 3600e3;
+        const lead = e.items.find((i) => i.type === 'outfit') || e.items[0];
+        if (comp) t.classList.add('comp');
+        if (!comp && e.kind === 'item' && e.items[0]?.type === 'outfit') t.classList.add('outfit');
+        t.innerHTML = (comp ? '<div class="cmp"></div>' : '') + '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (isNew ? '<div class="bd nw">NEW!</div>' : e.kind === 'bundle' && !comp ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '') + '<i class="pl"></i>';
         t.style.setProperty('--i', Math.min(g.children.length + (heads.length === 1 ? 0 : 0), 24));
         t.querySelector('.nm').textContent = title;
         t.querySelector('.pr span').textContent = (e.finalPrice ?? 0).toLocaleString('en-US');
         if (e.regularPrice > e.finalPrice) { const s2 = document.createElement('s'); s2.textContent = e.regularPrice.toLocaleString('en-US'); t.querySelector('.pr').appendChild(s2); }
         const di = t.querySelector('.di'); di.dataset.img = e.image; lazy.observe(di);
+        if (comp) {
+          const cm = t.querySelector('.cmp'), hr = document.createElement('div'); hr.className = 'hero'; hr.dataset.img = lead.featured || lead.icon || e.image; cm.appendChild(hr); lazy.observe(hr);
+          e.items.filter((i) => i !== lead && i.icon).slice(0, 6).forEach((i, k) => { const ic = document.createElement('div'); ic.className = 'ic'; ic.dataset.img = i.icon; ic.style.left = (10 + (k % 3) * 50 + (k > 2 ? 14 : 0)) + 'px'; ic.style.top = (16 + Math.floor(k / 3) * 62 + (k % 2) * 8) + 'px'; ic.style.rotate = (k % 2 ? 5 : -4) + 'deg'; cm.appendChild(ic); lazy.observe(ic); });
+        }
         t.addEventListener('click', () => { window.curItem = key; });
         g.appendChild(t);
       }
@@ -103,9 +123,14 @@
     };
     sc.addEventListener('scroll', railUpd, { passive: true }); setTimeout(railUpd, 80); setTimeout(railUpd, 600);
     new MutationObserver(() => { if (document.body.dataset.screen === 'shop') { [30, 250, 900].forEach((ms) => setTimeout(() => { railUpd(); upd(); }, ms)); } }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
+    // fondo de la sección actual (color de sus artículos)
+    const shopScr = document.querySelector('.screen[data-screen="shop"]');
+    const bgW = document.createElement('div'); bgW.id = 'shopbg'; bgW.innerHTML = '<i></i><i></i>'; shopScr.insertBefore(bgW, shopScr.firstChild);
+    let bgI = 0, bgCur = '';
+    const setBg = (c) => { if (!c || c === bgCur) return; bgCur = c; const el = bgW.children[bgI = 1 - bgI]; el.style.background = 'radial-gradient(ellipse at 62% 42%,' + mix(c, .95) + '80 0,' + mix(c, .5) + '48 48%,transparent 82%)'; bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
     // título de la sección actual
     const ttl = document.querySelector('[data-t="shop.title"]'); let last = '';
-    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
+    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)]); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
     sc.addEventListener('scroll', upd, { passive: true }); setTimeout(upd, 50);
     window.shopPT && window.shopPT(false);
 
