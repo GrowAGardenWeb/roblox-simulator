@@ -2,16 +2,21 @@
    y las conecta a la ficha de objeto y al flujo de regalo existentes (ITEMS_ALL). Si algo falla, queda la tienda anterior. */
 (function () {
   // protección contra cierres repetidos: si la carga anterior no terminó (Safari cerró la página), se carga una tienda ligera
-  let light = false;
+  // niveles: 0 completa · 1 sin fondos grandes ni animaciones · 2 solo 80 artículos. Sube un nivel si la carga anterior no terminó.
+  let lvl = 0;
   try {
-    const q = location.search;
-    if (/[?&]full=1/.test(q)) localStorage.removeItem('fnLight');
-    if (/[?&]light=1/.test(q)) localStorage.setItem('fnLight', String(Date.now()));
-    if (localStorage.getItem('fnBoot') && !/[?&]full=1/.test(q)) localStorage.setItem('fnLight', String(Date.now()));
-    light = Date.now() - Number(localStorage.getItem('fnLight') || 0) < 12 * 3600e3;
+    const q = location.search, m = q.match(/[?&]lvl=(\d)/);
+    let st = {}; try { st = JSON.parse(localStorage.getItem('fnLvl2') || '{}'); } catch (e) {}
+    if (/[?&]full=1/.test(q)) st = {};
+    if (m) st = { l: +m[1], t: Date.now() };
+    else if (localStorage.getItem('fnBoot') && !/[?&]full=1/.test(q)) st = { l: Math.min(2, (st.l || 0) + 1), t: Date.now() };
+    if (st.t && Date.now() - st.t > 12 * 3600e3) st = {};
+    lvl = st.l || 0;
+    localStorage.setItem('fnLvl2', JSON.stringify(st));
     localStorage.setItem('fnBoot', String(Date.now()));
     setTimeout(() => { try { localStorage.removeItem('fnBoot'); } catch (e) {} }, 7000);
   } catch (e) {}
+  const light = lvl >= 1;
   const step = (x) => { try { localStorage.setItem('fnStep', x + ' · ' + (document.body && document.body.dataset.screen || '-') + ' · ' + new Date().toISOString().slice(11, 19)); } catch (e) {} };
   window.__fnStep = step;
   try {
@@ -20,7 +25,7 @@
     if (crashed && prev) { const bn = document.createElement('div'); bn.textContent = 'Se cerró la vez pasada. Último paso: ' + prev + ' (toca para ocultar)'; bn.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:#400;color:#fff;font:12px/1.3 system-ui;padding:8px 10px;border-radius:8px'; bn.onclick = () => bn.remove(); addEventListener('DOMContentLoaded', () => document.body.appendChild(bn)); if (document.body) document.body.appendChild(bn); }
   } catch (e) {}
   step('inicio');
-  window.__shopLight = light; if (light) document.documentElement.classList.add('shoplite');
+  window.__shopLight = lvl; if (light) document.documentElement.classList.add('shoplite');
 
   const BAD = (e) => !e.image || /placeholder|^\[VIRTUAL\]|\bTBD\b/i.test((e.name || '') + ' ' + (e.devName || ''));
   const hex = (c) => (c ? '#' + String(c).slice(0, 6) : null);
@@ -84,7 +89,7 @@
     const arr = (v) => (v ? [].concat(v) : []);
     const vidsFor = (e) => { const o = [...arr(all[e.offerId]), ...arr(all[e.name]), ...arr(byNorm[norm(e.name)]), ...arr(byNorm[norm(e.nameEs)])]; e.items.forEach((i) => o.push(...arr(byNorm[norm(i.name)]), ...arr(byNorm[norm(i.nameEs)]))); return [...new Set(o)]; };
     const vidFor = (e) => vidsFor(e)[0] || '';
-    const E = (shop.entries || []).filter((e) => !BAD(e)).slice(0, light ? 80 : 1e9);
+    const E = (shop.entries || []).filter((e) => !BAD(e)).slice(0, lvl >= 2 ? 80 : 1e9);
     if (!old || !ITEMS || !E.length) return;
 
     const sc = old.cloneNode(false);                 // sin los oyentes de la tienda anterior (ajuste por filas)
@@ -96,7 +101,7 @@
     const groups = new Map();
     for (const e of E) { const k = e.sectionId || e.section || '-'; if (!groups.has(k)) groups.set(k, { name: e.section || 'DESTACADOS', idx: e.sectionIndex ?? 999, items: [] }); groups.get(k).items.push(e); }
     const secs = [...groups.values()].sort((a, b) => a.idx - b.idx);
-    const lazy = new IntersectionObserver((es) => es.forEach((x) => { const d = x.target; if (x.isIntersecting) { if (!d.style.backgroundImage) d.style.backgroundImage = 'url("' + d.dataset.img + '")'; } else if (d.style.backgroundImage) d.style.backgroundImage = ''; }), { root: sc, rootMargin: '350px 0px' }); // descarga las imágenes lejanas para no llenar la memoria
+    const lazy = new IntersectionObserver((es) => es.forEach((x) => { const d = x.target; if (x.isIntersecting) { if (!d.style.backgroundImage) d.style.backgroundImage = 'url("' + d.dataset.img + '")'; } else if (d.style.backgroundImage) d.style.backgroundImage = ''; }), { root: sc, rootMargin: (light ? '150px 0px' : '250px 0px') }); // descarga las imágenes lejanas para no llenar la memoria
     const heads = [], secCols = [];
     for (const s of secs) {
       s.items.sort((a, b) => (b.sortPriority ?? 0) - (a.sortPriority ?? 0) || a.order - b.order);
@@ -119,7 +124,7 @@
         if (comp) t.classList.add('comp');
         if (!comp && e.kind === 'item' && e.items[0]?.type === 'outfit') t.classList.add('outfit');
         t.innerHTML = (comp ? '<div class="cmp"></div>' : '') + '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (isNew ? '<div class="bd nw">NEW!</div>' : e.kind === 'bundle' && !comp ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '') + '<i class="pl"></i>';
-        t.style.setProperty('--i', Math.min(g.children.length + (heads.length === 1 ? 0 : 0), 24));
+        t.style.setProperty('--i', Math.min(g.children.length, 24)); if (heads.length > 1 || g.children.length > 11) t.style.animation = 'none';
         t.querySelector('.nm').textContent = title;
         t.querySelector('.pr span').textContent = (e.finalPrice ?? 0).toLocaleString('en-US');
         if (e.regularPrice > e.finalPrice) { const s2 = document.createElement('s'); s2.textContent = e.regularPrice.toLocaleString('en-US'); t.querySelector('.pr').appendChild(s2); }
