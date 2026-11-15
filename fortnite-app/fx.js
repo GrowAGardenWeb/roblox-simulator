@@ -119,7 +119,7 @@
       } catch (e) {}
     },
     stop(name) { try { SFX.active[name] && SFX.active[name].stop(); } catch (e) {} },
-    names: ['click', 'tab', 'open', 'back', 'tick', 'buy-hold', 'gift-sending', 'gift-sent', 'error', 'wrap', 'chat'],
+    names: ['click', 'tab', 'open', 'back', 'tick', 'buy-hold', 'gift-sending', 'gift-sent', 'gift-open', 'error', 'wrap', 'chat'],
   });
   const unlock = () => { if (unlocked) return; unlocked = true; try { const c = ac(); if (c.state === 'suspended') c.resume(); } catch (e) {} SFX.names.forEach((n) => load(n)); };
   ['pointerdown', 'touchstart', 'keydown'].forEach((ev) => addEventListener(ev, unlock, { once: false, passive: true }));
@@ -180,9 +180,14 @@
       }, ms));
     }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
   };
+  // al entrar a la pantalla de regalos (Gifting) suena gift-open
+  const initGiftSound = () => {
+    let last = document.body.dataset.screen;
+    new MutationObserver(() => { const now = document.body.dataset.screen; if (now === 'gift' && last !== 'gift') SFX.play('gift-open'); last = now; }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
+  };
   const initRows = () => { document.querySelectorAll('.grow').forEach((el, i) => el.style.setProperty('--i', i)); };
   const init = () => {
-    initHolo(); setTimeout(initRows, 300);
+    initHolo(); initGiftSound(); setTimeout(initRows, 300);
     watch('cfsend', () => SFX.play('gift-sending'));
     watch('cfdone', () => { SFX.play('gift-sent'); });
     watch('cferr', () => SFX.play('error'));
