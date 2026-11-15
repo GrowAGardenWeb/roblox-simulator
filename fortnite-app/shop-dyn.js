@@ -2,14 +2,14 @@
    y las conecta a la ficha de objeto y al flujo de regalo existentes (ITEMS_ALL). Si algo falla, queda la tienda anterior. */
 (function () {
   // protección contra cierres repetidos: si la carga anterior no terminó (Safari cerró la página), se carga una tienda ligera
-  // niveles: 0 completa · 1 sin fondos grandes ni animaciones · 2 solo 80 artículos. Sube un nivel si la carga anterior no terminó.
+  // nivel 0 = tienda completa (siempre). Los modos ahorro (1 y 2) solo se activan a mano con ?lvl=1 o ?lvl=2.
   let lvl = 0;
   try {
     const q = location.search, m = q.match(/[?&]lvl=(\d)/);
     let st = {}; try { st = JSON.parse(localStorage.getItem('fnLvl2') || '{}'); } catch (e) {}
     if (/[?&]full=1/.test(q)) st = {};
     if (m) st = { l: +m[1], t: Date.now() };
-    else if (localStorage.getItem('fnBoot') && !/[?&]full=1/.test(q)) st = { l: Math.min(2, (st.l || 0) + 1), t: Date.now() };
+    else st = {}; // siempre la tienda completa (la carga progresiva ya cuida la memoria); el modo ahorro solo se activa con ?lvl=1 o ?lvl=2
     if (st.t && Date.now() - st.t > 12 * 3600e3) st = {};
     lvl = st.l || 0;
     localStorage.setItem('fnLvl2', JSON.stringify(st));
