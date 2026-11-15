@@ -1,6 +1,19 @@
 /* Tienda dinámica: reemplaza las imágenes fijas de la tienda por tarjetas generadas desde data/shop.json
    y las conecta a la ficha de objeto y al flujo de regalo existentes (ITEMS_ALL). Si algo falla, queda la tienda anterior. */
 (function () {
+  // protección contra cierres repetidos: si la carga anterior no terminó (Safari cerró la página), se carga una tienda ligera
+  let light = false;
+  try {
+    const q = location.search;
+    if (/[?&]full=1/.test(q)) localStorage.removeItem('fnLight');
+    if (/[?&]light=1/.test(q)) localStorage.setItem('fnLight', String(Date.now()));
+    if (localStorage.getItem('fnBoot') && !/[?&]full=1/.test(q)) localStorage.setItem('fnLight', String(Date.now()));
+    light = Date.now() - Number(localStorage.getItem('fnLight') || 0) < 12 * 3600e3;
+    localStorage.setItem('fnBoot', String(Date.now()));
+    setTimeout(() => { try { localStorage.removeItem('fnBoot'); } catch (e) {} }, 7000);
+  } catch (e) {}
+  window.__shopLight = light; if (light) document.documentElement.classList.add('shoplite');
+
   const BAD = (e) => !e.image || /placeholder|^\[VIRTUAL\]|\bTBD\b/i.test((e.name || '') + ' ' + (e.devName || ''));
   const hex = (c) => (c ? '#' + String(c).slice(0, 6) : null);
   const mix = (h, k) => { const n = parseInt(h.slice(1), 16), f = (x) => Math.max(0, Math.min(255, Math.round(x * k))); return '#' + [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => f(v).toString(16).padStart(2, '0')).join(''); };
@@ -10,9 +23,10 @@
   #shoprow.dyn{position:relative;width:945px;height:auto;padding-bottom:60px}
   #shoprow.dyn .dsec{font:italic 400 34px 'Archivo Black';color:#fff;text-shadow:0 3px 4px rgba(0,0,40,.35);margin:22px 0 10px;white-space:nowrap}
   #shoprow.dyn .dgrid{display:grid;grid-template-columns:repeat(4,230px);grid-auto-flow:dense;gap:10px 8px}
-  #shoprow.dyn .dt{content-visibility:auto;contain-intrinsic-size:auto 237px;position:relative;height:237px;border-radius:14px;overflow:hidden;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+  #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:hidden;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
   #shoprow.dyn .dt .di{position:absolute;inset:0 0 30px 0;background-position:center 60%;background-size:contain;background-repeat:no-repeat}
   #shoprow.dyn .dt.bundle .di{inset:0 0 28px 0;background-size:auto 100%;background-position:center 30%;background-repeat:no-repeat;filter:none}
+  html.shoplite #shoprow.dyn .dt{animation:none!important}
   #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
   #shoprow.dyn .dt.jam .di{inset:10px 10px auto 10px;aspect-ratio:1;border-radius:6px;box-shadow:0 6px 14px rgba(0,0,0,.4);background-size:cover;filter:none}
   #shoprow.dyn .dt .sh{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(transparent,rgba(5,15,50,.6))}
@@ -58,11 +72,11 @@
     const all = Object.assign({}, vids, local), byNorm = {}; Object.keys(all).forEach((k) => { byNorm[norm(k)] = all[k]; });
     let bgLocal = {}; try { bgLocal = JSON.parse(localStorage.getItem('fnBackgrounds') || '{}'); } catch (e) {}
     const bgAll = Object.assign({}, shop.backgrounds || {}, window.__bgFile || {}, bgLocal), bgNorm = {}; Object.keys(bgAll).forEach((k) => { bgNorm[norm(k)] = bgAll[k]; });
-    const bgFor = (name) => bgNorm[norm(name)] || '';
+    const bgFor = (name) => (light ? '' : bgNorm[norm(name)] || '');
     const arr = (v) => (v ? [].concat(v) : []);
     const vidsFor = (e) => { const o = [...arr(all[e.offerId]), ...arr(all[e.name]), ...arr(byNorm[norm(e.name)]), ...arr(byNorm[norm(e.nameEs)])]; e.items.forEach((i) => o.push(...arr(byNorm[norm(i.name)]), ...arr(byNorm[norm(i.nameEs)]))); return [...new Set(o)]; };
     const vidFor = (e) => vidsFor(e)[0] || '';
-    const E = (shop.entries || []).filter((e) => !BAD(e));
+    const E = (shop.entries || []).filter((e) => !BAD(e)).slice(0, light ? 80 : 1e9);
     if (!old || !ITEMS || !E.length) return;
 
     const sc = old.cloneNode(false);                 // sin los oyentes de la tienda anterior (ajuste por filas)
@@ -74,7 +88,7 @@
     const groups = new Map();
     for (const e of E) { const k = e.sectionId || e.section || '-'; if (!groups.has(k)) groups.set(k, { name: e.section || 'DESTACADOS', idx: e.sectionIndex ?? 999, items: [] }); groups.get(k).items.push(e); }
     const secs = [...groups.values()].sort((a, b) => a.idx - b.idx);
-    const lazy = new IntersectionObserver((es) => es.forEach((x) => { const d = x.target; if (x.isIntersecting) { if (!d.style.backgroundImage) d.style.backgroundImage = 'url("' + d.dataset.img + '")'; } else if (d.style.backgroundImage) d.style.backgroundImage = ''; }), { root: sc, rootMargin: '700px 0px' }); // descarga las imágenes lejanas para no llenar la memoria
+    const lazy = new IntersectionObserver((es) => es.forEach((x) => { const d = x.target; if (x.isIntersecting) { if (!d.style.backgroundImage) d.style.backgroundImage = 'url("' + d.dataset.img + '")'; } else if (d.style.backgroundImage) d.style.backgroundImage = ''; }), { root: sc, rootMargin: '350px 0px' }); // descarga las imágenes lejanas para no llenar la memoria
     const heads = [], secCols = [];
     for (const s of secs) {
       s.items.sort((a, b) => (b.sortPriority ?? 0) - (a.sortPriority ?? 0) || a.order - b.order);
