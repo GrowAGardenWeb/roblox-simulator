@@ -33,7 +33,7 @@ p.innerHTML='<b>Capturando videos</b> <a id=fx style="float:right;color:#9bb;cur
 document.body.appendChild(p);var inp=p.querySelector('#fn'),fc=p.querySelector('#fc');
 inp.addEventListener('input',function(e){if(e.isTrusted)typed=true});
 p.querySelector('#fx').onclick=function(){p.style.display='none'};
-function ok(u){return u&&u.indexOf('blob:')!==0&&u.indexOf('/cdn-cgi/image/')<0&&!/\/png(\?|$)|\.(png|jpe?g|webp)(\?|$)/i.test(u)&&/\/mp4|\.webm|\.mp4/i.test(u)}function badge(x){return /^[¡!]?(NUEV[OA]|NEW|DESTACADO|OFERTA|LOTE|BUNDLE|PACK)[!]?$/i.test((x||'').trim())}
+function ok(u){return u&&u.indexOf('blob:')!==0&&u.indexOf('/cdn-cgi/image/')<0&&!/\/png(\?|$)|\.(png|jpe?g|webp)(\?|$)/i.test(u)&&/\/mp4|\.webm|\.mp4/i.test(u)}function badge(x){x=(x||'').trim();return !x||/^[¡!]|!$|DESCUENTO|V-?BUCKS|MONEDAS|DESAPAREC|DISAPPEAR|LEAVING|\bHOY\b|TODAY|ANIMAD|REACTIV|PERSONALIZ|CUSTOMI|ESTILO|STYLE|NUEV[OA]|^NEW|DESTACAD|OFERTA|^(LOTE|BUNDLE|PACK)$/i.test(x)}
 function add(u){if(seen[u])return;seen[u]=1;if(!typed){var g=guess();if(g)inp.value=g}var k=inp.value.trim();if(k){(D[k]=D[k]||[]).push(u)}else U.push(u);n++;fc.textContent=n+' videos ('+Object.keys(D).length+' artículos, '+U.length+' sin nombre). Último: '+(k||'sin nombre')}
 function scan(){document.querySelectorAll('video').forEach(function(v){var s=[v.currentSrc,v.src];v.querySelectorAll('source').forEach(function(x){s.push(x.src)});s.forEach(function(u){if(ok(u))add(u)})});performance.getEntriesByType('resource').forEach(function(r){if(ok(r.name))add(r.name)})}
 performance.getEntriesByType('resource').forEach(function(r){if(ok(r.name))seen[r.name]=1});
