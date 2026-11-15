@@ -41,6 +41,10 @@
   function build(shop, vids) {
     const old = document.getElementById('shopscroll');
     const ITEMS = window.ITEMS_ALL && window.ITEMS_ALL();
+    const norm = (x) => String(x || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    let local = {}; try { local = JSON.parse(localStorage.getItem('fnVideos') || '{}'); } catch (e) {}
+    const all = Object.assign({}, vids, local), byNorm = {}; Object.keys(all).forEach((k) => { byNorm[norm(k)] = all[k]; });
+    const vidFor = (e) => all[e.offerId] || all[e.name] || byNorm[norm(e.name)] || (e.items[0] && byNorm[norm(e.items[0].name)]) || '';
     const E = (shop.entries || []).filter((e) => !BAD(e));
     if (!old || !ITEMS || !E.length) return;
 
@@ -64,7 +68,7 @@
         const title = String(e.name).toUpperCase();
         const thumbs = (e.kind === 'jam' ? [e.image] : e.items.map((i) => i.icon || i.featured).filter(Boolean));
         const n = Math.max(1, e.items.length || e.tracks.length || 1);
-        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vids[e.offerId] || vids[e.name] || '', src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), tag: '',
+        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), tag: '',
           sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : String(e.items[0]?.type || 'ITEM').toUpperCase(), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], jam: e.kind === 'jam' } };
         const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail';
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
