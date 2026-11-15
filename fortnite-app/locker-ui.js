@@ -30,7 +30,7 @@
   #lkbg{position:absolute;inset:0;display:none;background:radial-gradient(ellipse at 30% 40%,#0b6ad6,#0a4cb8 55%,#083a9c)}
   body.lkopen #lkbg{display:block}
   body.lkopen #itemcv,body.lkopen #itemvid.nat{left:40px!important}
-  #lkout{position:absolute;inset:0;display:none;color:#fff;font-family:Montserrat,system-ui}
+  #lkout{position:absolute;inset:0;display:none;color:#fff;font-family:Montserrat,system-ui;z-index:6}
   body.lkopen #lkout{display:block;animation:fxFade .25s both}
   #lkout .tt{position:absolute;left:1115px;top:34px;font:italic 400 40px 'Archivo Black'}
   #lkout .tb{position:absolute;top:123px;height:62px;border-radius:8px;display:flex;align-items:center;justify-content:center;font:800 24px Montserrat;cursor:pointer}
@@ -88,17 +88,20 @@
     owned = (outfits || []).length;
     let local = {}; try { local = JSON.parse(localStorage.getItem('fnVideos') || '{}'); } catch (e) {}
     const all = Object.assign({}, vids || {}, local), byN = {}; Object.keys(all).forEach((k) => { byN[norm(k)] = [].concat(all[k])[0]; });
+    const oMap = {}; (outfits || []).forEach((o) => { oMap[norm(o.name)] = o; });
     list = [];
     // 1) personajes con video que ya estaban en la app (los de siempre)
     const I = items(), seen = new Set();
     ['luffy', 'ball', 'usopp', 'nami', 'sanji', 'zoro', 'flacko', 'rocky', 'tung', 'pumpkin', 'sally', 'jack', 'kawaii'].forEach((k) => {
       const it = I[k]; if (!it) return; const kk = it.th + (it.th === 't' ? 2 : 0);
-      list.push({ key: k, name: it.title.replace(/\b(\w)(\w*)/g, (m, a, b) => a + b.toLowerCase()), icon: 'assets/items/t_' + kk + '.webp', legacy: true }); seen.add(norm(it.title));
+      // foto real del personaje (lista de Fortnite) en lugar de la miniatura vieja
+      const ALIAS = { flacko: 'Helicopter Flacko' }, real = oMap[norm(ALIAS[k] || it.title)];
+      list.push({ key: k, name: it.title.replace(/\b(\w)(\w*)/g, (m, a, b) => a + b.toLowerCase()), icon: real ? real.icon : 'assets/items/t_' + kk + '.webp', full: real && real.full, desc: real && real.desc, intro: real && real.intro, legacy: true }); seen.add(norm(it.title)); if (real) seen.add(norm(real.name));
     });
     // 2) el resto de personajes de Fortnite que tengan video 3D guardado
     (outfits || []).forEach((o) => {
       const u = byN[norm(o.name)] || byN[norm(o.nameEs)]; if (!u || seen.has(norm(o.name))) return; seen.add(norm(o.name));
-      list.push({ key: 'lk_' + o.id, name: o.name, icon: o.icon, full: o.full, url: u });
+      list.push({ key: 'lk_' + o.id, name: o.name, icon: o.icon, full: o.full, desc: o.desc, intro: o.intro, url: u });
     });
     list.sort((a, b) => a.name.localeCompare(b.name));
     return list;
