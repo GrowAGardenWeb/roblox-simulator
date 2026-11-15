@@ -37,18 +37,19 @@
   css.textContent = `
   #shoprow.dyn{position:relative;width:945px;height:auto;padding-bottom:60px}
   #shoprow.dyn .dsec{font:italic 400 34px 'Archivo Black';color:#fff;text-shadow:0 3px 4px rgba(0,0,40,.35);margin:22px 0 10px;white-space:nowrap}
-  #shoprow.dyn .dgrid{display:grid;grid-template-columns:repeat(4,230px);grid-auto-flow:dense;gap:10px 8px}
-  #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:hidden;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-  #shoprow.dyn .dt .di{position:absolute;inset:0 0 30px 0;background-position:center 60%;background-size:contain;background-repeat:no-repeat}
-  #shoprow.dyn .dt.bundle .di{inset:0 0 28px 0;background-size:auto 100%;background-position:center 30%;background-repeat:no-repeat;filter:none}
+  #shoprow.dyn .dgrid{display:grid;grid-template-columns:repeat(4,230px);grid-auto-flow:dense;gap:30px 8px}
+  #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:visible;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+  #shoprow.dyn .dt .di{position:absolute;inset:-26px -8px 14px -8px;background-position:center bottom;background-size:contain;background-repeat:no-repeat}
+  #shoprow.dyn .dt.bundle .di{inset:-24px 0 10px 0;background-size:auto 100%;background-position:center bottom;background-repeat:no-repeat;filter:none}
+  #shoprow.dyn .dt.bundle.wide{height:262px;margin-bottom:34px}
   html.shoplite #shoprow.dyn .dt{animation:none!important}
-  #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
+  #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;border-radius:14px;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
   #shoprow.dyn .dt.jam .di{inset:10px 10px auto 10px;aspect-ratio:1;border-radius:6px;box-shadow:0 6px 14px rgba(0,0,0,.4);background-size:cover;filter:none}
-  #shoprow.dyn .dt .sh{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(transparent,rgba(5,15,50,.6))}
-  #shoprow.dyn .dt .nm{position:absolute;left:12px;right:10px;bottom:34px;font:700 22px Montserrat,system-ui;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 4px rgba(0,0,30,.45)}
-  #shoprow.dyn .dt .pr{position:absolute;left:12px;bottom:8px;display:flex;align-items:center;gap:6px;font:700 19px Montserrat,system-ui;color:#fff}
+  #shoprow.dyn .dt .sh{position:absolute;left:0;right:0;bottom:0;height:78px;border-radius:0 0 14px 14px;background:linear-gradient(transparent,rgba(5,15,50,.6))}
+  #shoprow.dyn .dt .nm{position:absolute;left:12px;right:10px;bottom:34px;font:700 24px Montserrat,system-ui;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 4px rgba(0,0,30,.45)}
+  #shoprow.dyn .dt .pr{position:absolute;left:12px;bottom:8px;display:flex;align-items:center;gap:6px;font:700 21px Montserrat,system-ui;color:#fff}
   #shoprow.dyn .dt .pr i.coin{position:static;width:20px;height:20px;display:inline-block}
-  #shoprow.dyn .dt .pr s{font-size:12px;opacity:.7}
+  #shoprow.dyn .dt .pr s{font-size:16px;opacity:.7}
   #shoprow.dyn .dt .bd{position:absolute;bottom:62px;left:10px;z-index:2;padding:2px 9px;border-radius:12px;font:800 12px Montserrat;background:#ffd23a;color:#241a00}
   #shoprow.dyn .dt .bd.jam{background:#ff4fa3;color:#fff}
   #shoprow.dyn .dt.bundle{box-shadow:inset 0 0 0 3px rgba(255,210,58,.75)}
@@ -59,12 +60,12 @@
   #shoprail .dots i.on{width:21px;height:21px;margin:-10.5px 0 0 -10.5px;background:#e3ebff;box-shadow:0 0 10px rgba(200,220,255,.8)}
   #shoprail .trk{position:absolute;right:16px;top:14px;bottom:14px;width:6px;border-radius:3px;background:rgba(255,255,255,.14)}
   #shoprail .trk b{position:absolute;left:0;right:0;border-radius:3px;background:#c9d6f5;min-height:26px;transition:top .08s linear}
-  #shoprow.dyn .dt .pl{position:absolute;right:10px;bottom:9px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 2px 6px rgba(0,0,40,.35)}
-  #shoprow.dyn .dt .pl::before,#shoprow.dyn .dt .pl::after{content:'';position:absolute;left:50%;top:50%;background:#2a58c8;border-radius:2px;translate:-50% -50%}
-  #shoprow.dyn .dt .pl::before{width:14px;height:4px}#shoprow.dyn .dt .pl::after{width:4px;height:14px}
+  #shoprow.dyn .dt .pl{position:absolute;right:12px;bottom:12px;width:22px;height:22px;filter:drop-shadow(0 1px 3px rgba(0,0,40,.6))}
+  #shoprow.dyn .dt .pl::before,#shoprow.dyn .dt .pl::after{content:'';position:absolute;left:50%;top:50%;background:#fff;border-radius:2px;translate:-50% -50%}
+  #shoprow.dyn .dt .pl::before{width:16px;height:4px}#shoprow.dyn .dt .pl::after{width:4px;height:16px}
   #shoprow.dyn .dt .bd.bn{background:#fff;color:#16203f;font:italic 800 12px Montserrat;text-transform:uppercase;box-shadow:0 2px 6px rgba(0,0,0,.25)}
   #shoprow.dyn .dt .bd.nw{background:#fbff2a;color:#1a1a00;box-shadow:0 2px 6px rgba(0,0,0,.3)}
-  #shoprow.dyn .dt.outfit .di{inset:-4px 0 14px 0;background-size:auto 116%;background-position:center 18%}
+  #shoprow.dyn .dt.outfit .di{inset:-30px -10px 8px -10px;background-size:auto 100%;background-position:center bottom}
   #shoprow.dyn .dt.comp .di{display:none}
   #shoprow.dyn .dt .cmp{position:absolute;inset:0 0 30px 0}
   #shoprow.dyn .dt .cmp .ic{position:absolute;width:56px;height:56px;border-radius:8px;background-size:cover;background-position:center;box-shadow:0 4px 8px rgba(0,0,30,.4)}
@@ -116,12 +117,12 @@
           const sw = 96, sh = Math.max(1, Math.round(96 * im.naturalHeight / im.naturalWidth)), c = document.createElement('canvas'); c.width = sw; c.height = sh;
           const cx = c.getContext('2d', { willReadFrequently: true }); cx.drawImage(im, 0, 0, sw, sh);
           const px = cx.getImageData(0, 0, sw, sh).data; let x0 = sw, y0 = sh, x1 = 0, y1 = 0;
-          for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) if (px[(y * sw + x) * 4 + 3] > 24) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+          for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) if (px[(y * sw + x) * 4 + 3] > 150) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
           if (x1 > x0 && y1 > y0) {
             const W = d.clientWidth, H = d.clientHeight, w = im.naturalWidth, h = im.naturalHeight;
             const fx0 = x0 / sw, fx1 = (x1 + 1) / sw, fy0 = y0 / sh, fy1 = (y1 + 1) / sh;
-            const sc = Math.min((W * 0.94) / ((fx1 - fx0) * w), (H * 0.96) / ((fy1 - fy0) * h));
-            const dw = w * sc, dh = h * sc, px0 = W / 2 - ((fx0 + fx1) / 2) * dw, py0 = H / 2 - ((fy0 + fy1) / 2) * dh;
+            const sc = Math.min((W * 0.98) / ((fx1 - fx0) * w), (H * 1.0) / ((fy1 - fy0) * h));
+            const dw = w * sc, dh = h * sc, px0 = W / 2 - ((fx0 + fx1) / 2) * dw, py0 = H - fy1 * dh;
             const f = { s: dw.toFixed(1) + 'px ' + dh.toFixed(1) + 'px', p: px0.toFixed(1) + 'px ' + py0.toFixed(1) + 'px' };
             d.dataset.fit = JSON.stringify(f); d.style.backgroundSize = f.s; d.style.backgroundPosition = f.p;
           }
@@ -167,7 +168,7 @@
         const comp = e.kind === 'bundle' && e.items.length > 1 && (e.image === e.items[0].featured || e.image === e.items[0].icon);
         const isNew = e.inDate && (Date.now() - new Date(e.inDate)) < 36 * 3600e3;
         const lead = e.items.find((i) => i.type === 'outfit') || e.items[0];
-        if (comp) t.classList.add('comp');
+        if (comp) t.classList.add('comp'); if (e.kind === 'bundle' && w >= 3) t.classList.add('wide');
         if (!comp && e.kind === 'item' && e.items[0]?.type === 'outfit') t.classList.add('outfit');
         t.innerHTML = (comp ? '<div class="cmp"></div>' : '') + '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (e.banner ? '<div class="bd bn"></div>' : isNew ? '<div class="bd nw">NEW</div>' : e.kind === 'bundle' && !comp ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '') + '<i class="pl"></i>';
         t.style.setProperty('--i', Math.min(g.children.length, 24)); if (g !== firstG || g.children.length > 11) t.style.animation = 'none';
@@ -210,11 +211,11 @@
     const shopScr = document.querySelector('.screen[data-screen="shop"]');
     const bgW = document.createElement('div'); bgW.id = 'shopbg'; bgW.innerHTML = '<i></i><i></i>'; shopScr.insertBefore(bgW, shopScr.firstChild);
     let bgI = 0, bgCur = '';
-    const setBg = (c, url) => { const key = (url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key; const el = bgW.children[bgI = 1 - bgI]; el.style.background = url ? 'linear-gradient(rgba(4,14,52,.35),rgba(4,14,52,.6)),url("' + url + '") center/cover no-repeat' : 'radial-gradient(ellipse at 62% 42%,' + mix(c, .95) + '80 0,' + mix(c, .5) + '48 48%,transparent 82%)'; bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
+    const setBg = (c, url) => { const key = (url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key; const el = bgW.children[bgI = 1 - bgI]; el.style.background = url ? 'linear-gradient(rgba(4,14,52,.35),rgba(4,14,52,.6)),url("' + url + '") center/cover no-repeat' : 'none'; bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
     // título de la sección actual
     const ttl = document.querySelector('[data-t="shop.title"]'); let last = '';
     let fHi = null;
-    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)], bgFor(cur[1])); if (fHi) fHi(heads.indexOf(cur)); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
+    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)], bgFor(cur[1])); heads.forEach((h) => { if (h) h[0].style.opacity = h === cur ? 0 : 1; }); if (fHi) fHi(heads.indexOf(cur)); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
     sc.addEventListener('scroll', upd, { passive: true }); setTimeout(upd, 50);
     // panel FILTERS: lista de secciones; al tocar una salta a ella y la actual queda marcada
     {
