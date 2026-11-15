@@ -55,7 +55,7 @@
   function build(shop, vids) {
     const old = document.getElementById('shopscroll');
     const ITEMS = window.ITEMS_ALL && window.ITEMS_ALL();
-    const norm = (x) => String(x || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const norm = (x) => String(x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '').replace(/^lote(del|de)?(?=.{4})/, '').replace(/bundle$/, '');
     let local = {}; try { local = JSON.parse(localStorage.getItem('fnVideos') || '{}'); } catch (e) {}
     const all = Object.assign({}, vids, local), byNorm = {}; Object.keys(all).forEach((k) => { byNorm[norm(k)] = all[k]; });
     let bgLocal = {}; try { bgLocal = JSON.parse(localStorage.getItem('fnBackgrounds') || '{}'); } catch (e) {}

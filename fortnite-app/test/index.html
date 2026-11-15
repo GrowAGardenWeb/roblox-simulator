@@ -37,7 +37,7 @@ button{background:#ffd23a;color:#241a00;border:0;border-radius:8px;padding:8px 1
 <div id="root"></div>
 <div id="pl"><video id="vd" controls playsinline autoplay muted loop></video><div class="st" id="vs"></div><button id="cl">Cerrar</button></div>
 <script>
-const $=(s)=>document.querySelector(s),norm=(x)=>String(x||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+const $=(s)=>document.querySelector(s),norm=(x)=>String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').replace(/^lote(del|de)?(?=.{4})/,'').replace(/bundle$/,'');
 const J=(u)=>fetch(u+'?'+Date.now()).then(r=>r.ok?r.json():{}).catch(()=>({}));
 const LS=(k)=>{try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return {}}};
 const hex=(c)=>c?'#'+String(c).slice(0,6):'';
