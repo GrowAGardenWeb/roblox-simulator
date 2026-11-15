@@ -11,9 +11,11 @@
   #shoprow.dyn .dsec{font:italic 400 34px 'Archivo Black';color:#fff;text-shadow:0 3px 4px rgba(0,0,40,.35);margin:22px 0 10px;white-space:nowrap}
   #shoprow.dyn .dgrid{display:grid;grid-template-columns:repeat(4,230px);grid-auto-flow:dense;gap:10px 8px}
   #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:hidden;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-  #shoprow.dyn .dt .di{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat}
-  #shoprow.dyn .dt.jam .di{inset:10px 10px auto 10px;aspect-ratio:1;border-radius:6px;box-shadow:0 6px 14px rgba(0,0,0,.4)}
-  #shoprow.dyn .dt .sh{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(transparent,rgba(5,15,50,.85))}
+  #shoprow.dyn .dt .di{position:absolute;inset:0 0 30px 0;background-position:center 60%;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 6px 8px rgba(0,0,30,.35))}
+  #shoprow.dyn .dt.bundle .di{inset:0 0 28px 0;background-size:cover;background-position:center;filter:none}
+  #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
+  #shoprow.dyn .dt.jam .di{inset:10px 10px auto 10px;aspect-ratio:1;border-radius:6px;box-shadow:0 6px 14px rgba(0,0,0,.4);background-size:cover;filter:none}
+  #shoprow.dyn .dt .sh{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(transparent,rgba(5,15,50,.6))}
   #shoprow.dyn .dt .nm{position:absolute;left:12px;right:10px;bottom:34px;font:italic 400 19px 'Archivo Black';color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
   #shoprow.dyn .dt .pr{position:absolute;left:12px;bottom:8px;display:flex;align-items:center;gap:6px;font:italic 400 18px 'Archivo Black';color:#fff}
   #shoprow.dyn .dt .pr i.coin{position:static;width:20px;height:20px;display:inline-block}
@@ -59,7 +61,7 @@
           sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : String(e.items[0]?.type || 'ITEM').toUpperCase(), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], jam: e.kind === 'jam' } };
         const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail';
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
-        if (a) t.style.setProperty('--a', mix(a, 1.05)); if (b) t.style.setProperty('--b', mix(b, .45));
+        if (a) t.style.setProperty('--a', mix(a, 1.12)); if (b || a) t.style.setProperty('--b', mix(b || a, .8));
         const w = span(e.tileSize); t.style.gridColumn = 'span ' + w;
         t.innerHTML = '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (e.kind === 'bundle' ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '');
         t.querySelector('.nm').textContent = title;
@@ -86,6 +88,8 @@
       art.style.display = dyn && !(APPLE && it.url) ? 'block' : 'none';
       if (!dyn) return;
       if (art.dataset.src !== it.dyn.image) { art.dataset.src = it.dyn.image; art.src = it.dyn.image; }
+      const lab = { det5: it.sub === 'BUNDLE' ? 'The price for included items is:' : 'The price is:', det9: it.sub === 'BUNDLE' ? 'VIEW BUNDLE' : it.dyn.jam ? 'PREVIEW TRACK' : 'VIEW ITEM' };
+      for (const k in lab) { const el = document.querySelector('[data-t="det.' + k + '"]'); if (el && el.textContent !== lab[k]) { el.removeAttribute('data-w'); el.textContent = lab[k]; } }
       document.querySelectorAll('#thumbs .tsl').forEach((el, i) => {
         const u = it.dyn.thumbs[i]; if (!u || i >= it.n) return;
         el.classList.toggle('cov', !!it.dyn.jam); el.dataset.k = 'dyn' + i;
