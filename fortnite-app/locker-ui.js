@@ -16,14 +16,24 @@
     const t = String(o.name).toUpperCase();
     I[o.key] = { pl: [320, 600, 1.28], th: 'dyn', n: 1, url: o.url, src: '', title: t, title2: t, desc: '', price: '0', tag: '', sub: 'OUTFIT', dyn: { image: o.full || o.icon, thumbs: [o.icon], feat: [o.full || o.icon], jam: false } };
   };
+  // Protección: si la página se cerró mientras arrancaba con un personaje equipado, se descarta ese personaje (su video pudo ser la causa).
+  let dropped = false;
+  try {
+    if (localStorage.getItem('fn_eqboot') && localStorage.getItem(KEY)) { localStorage.removeItem(KEY); dropped = true; }
+    localStorage.setItem('fn_eqboot', '1');
+    const clr = () => { try { localStorage.removeItem('fn_eqboot'); } catch (e) {} };
+    setTimeout(clr, 9000); addEventListener('pagehide', clr); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') clr(); });
+  } catch (e) {}
+  if (dropped) addEventListener('DOMContentLoaded', () => { const t = document.createElement('div'); t.textContent = 'La página se cerró: se quitó el personaje equipado del casillero.'; t.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:99998;background:#400;color:#fff;font:12px/1.3 system-ui;padding:8px 10px;border-radius:8px'; document.body.appendChild(t); setTimeout(() => t.remove(), 7000); });
   let eq = null; try { eq = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
   const boot = () => { if (!eq) return; if (eq.url) register(eq); if (items()[eq.key]) window.__equipKey = eq.key; };
-  boot(); setTimeout(boot, 500);
+  setTimeout(boot, 1500); setTimeout(boot, 2500);
 
   // la miniatura de "lockThumb" sabe de las imágenes de los personajes nuevos
   const wrapThumb = () => { const o = window.lockThumb; if (!o || o.__w) return; const f = function () { o(); const it = items()[window.fnChar]; if (it && it.dyn) { const box = document.getElementById('lkth'); if (box && box.firstChild) { box.firstChild.src = it.dyn.thumbs[0]; box.style.display = 'block'; } } }; f.__w = 1; window.lockThumb = f; };
   wrapThumb(); setTimeout(wrapThumb, 800);
 
+  new MutationObserver(() => { const bgv = document.getElementById('bg'); if (!bgv) return; try { if (document.body.dataset.screen === 'lobby') { const p = bgv.play(); p && p.catch && p.catch(() => {}); } else bgv.pause(); } catch (e) {} }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
   const st = document.createElement('style');
   st.textContent = `
   body.lkopen #nav,body.lkopen #lkt1,body.lkopen #lkt2,body.lkopen #lkth,body.lkopen #lkcnt{display:none!important}
