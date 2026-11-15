@@ -19,9 +19,6 @@ jobs:
           node-version: 20
       - name: Fetch shop
         run: node fortnite-app/tools/update-shop.mjs
-      - name: Probe site (best effort)
-        continue-on-error: true
-        run: node fortnite-app/tools/probe-site.mjs
       - name: Fetch site videos (best effort)
         continue-on-error: true
         run: |
