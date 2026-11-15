@@ -101,7 +101,34 @@
     const groups = new Map();
     for (const e of E) { const k = e.sectionId || e.section || '-'; if (!groups.has(k)) groups.set(k, { name: e.section || 'DESTACADOS', idx: e.sectionIndex ?? 999, items: [] }); groups.get(k).items.push(e); }
     const secs = [...groups.values()].sort((a, b) => a.idx - b.idx);
-    const lazy = new IntersectionObserver((es) => es.forEach((x) => { const d = x.target; if (x.isIntersecting) { if (!d.style.backgroundImage) d.style.backgroundImage = 'url("' + d.dataset.img + '")'; } else if (d.style.backgroundImage) d.style.backgroundImage = ''; }), { root: sc, rootMargin: (light ? '150px 0px' : '250px 0px') }); // descarga las imágenes lejanas para no llenar la memoria
+    // arte de bundle: se mide el área visible de la imagen (sin márgenes transparentes) y se encaja en la casilla
+    const setBgUrl = (d) => { d.style.backgroundImage = 'url("' + d.dataset.img + '")'; };
+    const loadDi = (d) => {
+      const t = d.parentNode;
+      if (!t || !t.classList.contains('bundle') || t.classList.contains('comp') || !d.clientWidth) { setBgUrl(d); return; }
+      if (d.dataset.fit) { const f = JSON.parse(d.dataset.fit); d.style.backgroundSize = f.s; d.style.backgroundPosition = f.p; setBgUrl(d); return; }
+      const im = new Image(); im.crossOrigin = 'anonymous';
+      im.onload = () => {
+        try {
+          const sw = 96, sh = Math.max(1, Math.round(96 * im.naturalHeight / im.naturalWidth)), c = document.createElement('canvas'); c.width = sw; c.height = sh;
+          const cx = c.getContext('2d', { willReadFrequently: true }); cx.drawImage(im, 0, 0, sw, sh);
+          const px = cx.getImageData(0, 0, sw, sh).data; let x0 = sw, y0 = sh, x1 = 0, y1 = 0;
+          for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) if (px[(y * sw + x) * 4 + 3] > 24) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+          if (x1 > x0 && y1 > y0) {
+            const W = d.clientWidth, H = d.clientHeight, w = im.naturalWidth, h = im.naturalHeight;
+            const fx0 = x0 / sw, fx1 = (x1 + 1) / sw, fy0 = y0 / sh, fy1 = (y1 + 1) / sh;
+            const sc = Math.min((W * 0.94) / ((fx1 - fx0) * w), (H * 0.96) / ((fy1 - fy0) * h));
+            const dw = w * sc, dh = h * sc, px0 = W / 2 - ((fx0 + fx1) / 2) * dw, py0 = H / 2 - ((fy0 + fy1) / 2) * dh;
+            const f = { s: dw.toFixed(1) + 'px ' + dh.toFixed(1) + 'px', p: px0.toFixed(1) + 'px ' + py0.toFixed(1) + 'px' };
+            d.dataset.fit = JSON.stringify(f); d.style.backgroundSize = f.s; d.style.backgroundPosition = f.p;
+          }
+        } catch (e) { /* sin permiso de lectura de la imagen: se queda el ajuste normal */ }
+        setBgUrl(d);
+      };
+      im.onerror = () => setBgUrl(d);
+      im.src = d.dataset.img;
+    };
+    const lazy = new IntersectionObserver((es) => es.forEach((x) => { const d = x.target; if (x.isIntersecting) { if (!d.style.backgroundImage) loadDi(d); } else if (d.style.backgroundImage) d.style.backgroundImage = ''; }), { root: sc, rootMargin: (light ? '150px 0px' : '250px 0px') }); // descarga las imágenes lejanas para no llenar la memoria
     let firstG = null; const pend = new Map();
     const pump = (g) => {
       const st = pend.get(g); if (!st || st.run) return; st.run = true;
