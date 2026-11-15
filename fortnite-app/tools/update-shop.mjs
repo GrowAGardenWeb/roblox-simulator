@@ -99,10 +99,25 @@ const secMap = new Map();
 for (const e of shown) { const k = e.sectionId || e.section || 'none'; if (!secMap.has(k)) secMap.set(k, { id: e.sectionId, name: e.section, index: e.sectionIndex, rank: e.sectionRank, layout: e._layout, count: 0 }); secMap.get(k).count++; }
 for (const e of entries) delete e._layout;
 const sections = [...secMap.values()].sort((a, b) => (a.index ?? 999) - (b.index ?? 999));
+// Fondos reales de cada sección: página pública de Epic (mp-item-shop)
+const backgrounds = {}; let bgError = null;
+try {
+  const r = await fetch('https://fortnitecontent-website-prod07.ol.epicgames.com/content/api/pages/fortnite-game/mp-item-shop', { headers: { 'user-agent': 'Mozilla/5.0' } });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const secs = (await r.json())?.shopData?.sections || [];
+  const byId = new Map(secs.map((x) => [x.sectionID, x])), byName = new Map();
+  for (const x of secs) { const k = String(x.displayName || '').trim().toLowerCase(); if (!byName.has(k)) byName.set(k, x); }
+  for (const sec of sections) {
+    const x = byId.get(sec.id) || byName.get(String(sec.name || '').trim().toLowerCase());
+    const tex = x?.metadata?.background?.customTexture;
+    if (tex && sec.name) { backgrounds[sec.name.trim().toUpperCase()] = tex; sec.background = tex; }
+  }
+} catch (e) { bgError = String(e.message || e); }
 const snapshot = {
   updated: new Date().toISOString(),
   source: { api: apiError ? `error: ${apiError}` : 'fortnite-api.com/v2/shop', site: site.ok ? 'fortnite.com/item-shop' : `error: ${site.error}` },
-  counts: { entries: entries.length, shown: shown.length, sections: sections.length, jam: shown.filter((e) => e.kind === 'jam').length, bundles: shown.filter((e) => e.kind === 'bundle').length, withVideo: entries.filter((e) => e.videos.length).length, siteVideos: site.videos.length, siteOffers: site.offers.length },
+  counts: { entries: entries.length, shown: shown.length, sections: sections.length, jam: shown.filter((e) => e.kind === 'jam').length, bundles: shown.filter((e) => e.kind === 'bundle').length, backgrounds: Object.keys(backgrounds).length, bgError, withVideo: entries.filter((e) => e.videos.length).length, siteVideos: site.videos.length, siteOffers: site.offers.length },
+  backgrounds,
   sections,
   entries,
   site: { videos: site.videos, offers: site.offers, nextDataKeys: site.nextDataKeys || null },
