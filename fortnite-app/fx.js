@@ -105,11 +105,13 @@
     })();
     return loading[name];
   }
+  const FALL = { tab: 'click', open: 'click', back: 'click' };
   const SFX = (window.SFX = {
     vol: 0.9, active: {},
     async play(name, opts) {
       try {
-        const b = await load(name); if (!b) return;
+        let b = await load(name); if (!b && FALL[name]) b = await load(FALL[name]); // sin archivo propio, suena el click
+        if (!b) return;
         const c = ac(); if (c.state === 'suspended') c.resume();
         const src = c.createBufferSource(), g = c.createGain();
         src.buffer = b; g.gain.value = (opts && opts.vol != null ? opts.vol : 1) * SFX.vol; src.connect(g).connect(c.destination);
