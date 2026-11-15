@@ -20,10 +20,10 @@
   #avpick .h{display:flex;gap:10px;padding:14px;align-items:center}
   #avpick input[type=search]{flex:1;padding:12px 14px;border-radius:10px;border:0;font:700 16px Montserrat;background:#16225a;color:#fff;outline:0}
   #avpick .x{padding:12px 16px;border-radius:10px;background:#ffe45c;color:#241a00;font:800 14px Montserrat;cursor:pointer}
-  #avpick .g{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px;padding:0 14px 20px;align-content:start}
-  #avpick .i{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--bg,#1d6fe0);cursor:pointer}
-  #avpick .i img{width:100%;height:100%;object-fit:cover;display:block}
-  #avpick .i span{position:absolute;left:0;right:0;bottom:0;padding:10px 4px 3px;font:700 10px Montserrat;text-align:center;background:linear-gradient(transparent,#000a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #avpick .avg{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));grid-auto-rows:96px;gap:8px;padding:0 14px 20px;align-content:start}
+  #avpick .avc{position:relative;width:100%;height:96px;border-radius:10px;overflow:hidden;background:var(--bg,#1d6fe0);cursor:pointer}
+  #avpick .avc img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+  #avpick .avc span{position:absolute;left:0;right:0;bottom:0;padding:10px 4px 3px;font:700 10px Montserrat;text-align:center;background:linear-gradient(transparent,#000a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   #avpick .m{padding:0 14px 8px;font:600 12px Montserrat;color:#9fb0e8}
   `;
   document.head.appendChild(st);
@@ -46,7 +46,7 @@
 
   // selector de personajes (con buscador)
   const pk = document.createElement('div'); pk.id = 'avpick';
-  pk.innerHTML = '<div class="h"><input type="search" id="avq" placeholder="Search character…" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="x" id="avx">CLOSE</div></div><div class="m" id="avm"></div><div class="g" id="avg"></div>';
+  pk.innerHTML = '<div class="h"><input type="search" id="avq" placeholder="Search character…" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="x" id="avx">CLOSE</div></div><div class="m" id="avm"></div><div class="avg" id="avg"></div>';
   document.body.appendChild(pk);
   let all = null, shown = 0, list = [];
   const loadList = async () => {
@@ -61,7 +61,7 @@
   const more = () => {
     const end = Math.min(list.length, shown + 90), frag = document.createDocumentFragment();
     for (; shown < end; shown++) {
-      const it = list[shown], d = document.createElement('div'); d.className = 'i'; d.style.setProperty('--bg', A.color || '#1d6fe0');
+      const it = list[shown], d = document.createElement('div'); d.className = 'avc'; d.style.setProperty('--bg', A.color || '#1d6fe0');
       d.innerHTML = '<img loading="lazy" decoding="async" alt=""><span></span>'; d.firstChild.src = it.icon; d.lastChild.textContent = it.name;
       d.onclick = () => { A.icon = it.icon; A.name = it.name; A.id = it.id; save(); apply(); pk.classList.remove('on'); };
       frag.appendChild(d);
@@ -76,7 +76,7 @@
   q.addEventListener('input', render);
   document.getElementById('avbtn').onclick = async () => { pk.classList.add('on'); msg.textContent = 'Loading…'; await loadList(); render(); q.focus(); };
   document.getElementById('avx').onclick = () => pk.classList.remove('on');
-  document.getElementById('avcol').addEventListener('input', (e) => { A.color = e.target.value; save(); apply(); grid.querySelectorAll('.i').forEach((d) => d.style.setProperty('--bg', A.color)); });
+  document.getElementById('avcol').addEventListener('input', (e) => { A.color = e.target.value; save(); apply(); grid.querySelectorAll('.avc').forEach((d) => d.style.setProperty('--bg', A.color)); });
   document.getElementById('avrst').onclick = () => { A = {}; save(); apply(); };
   apply(); setTimeout(apply, 600);
 })();
