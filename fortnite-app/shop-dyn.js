@@ -10,11 +10,9 @@
   #shoprow.dyn{position:relative;width:945px;height:auto;padding-bottom:60px}
   #shoprow.dyn .dsec{font:italic 400 34px 'Archivo Black';color:#fff;text-shadow:0 3px 4px rgba(0,0,40,.35);margin:22px 0 10px;white-space:nowrap}
   #shoprow.dyn .dgrid{display:grid;grid-template-columns:repeat(4,230px);grid-auto-flow:dense;gap:10px 8px}
-  #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:hidden;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-  #shoprow.dyn .dt .di{position:absolute;inset:0 0 30px 0;background-position:center 60%;background-size:contain;background-repeat:no-repeat;filter:drop-shadow(0 6px 8px rgba(0,0,30,.35))}
+  #shoprow.dyn .dt{content-visibility:auto;contain-intrinsic-size:auto 237px;position:relative;height:237px;border-radius:14px;overflow:hidden;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+  #shoprow.dyn .dt .di{position:absolute;inset:0 0 30px 0;background-position:center 60%;background-size:contain;background-repeat:no-repeat}
   #shoprow.dyn .dt.bundle .di{inset:0 0 28px 0;background-size:auto 100%;background-position:center 30%;background-repeat:no-repeat;filter:none}
-  #shoprow.dyn .dt.bundle .di::before{content:'';position:absolute;inset:-20px;background-image:inherit;background-size:cover;background-position:center;filter:blur(18px) brightness(.8) saturate(1.2);z-index:-1}
-  #shoprow.dyn .dt.bundle .di{isolation:isolate}
   #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
   #shoprow.dyn .dt.jam .di{inset:10px 10px auto 10px;aspect-ratio:1;border-radius:6px;box-shadow:0 6px 14px rgba(0,0,0,.4);background-size:cover;filter:none}
   #shoprow.dyn .dt .sh{position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(transparent,rgba(5,15,50,.6))}
@@ -40,7 +38,7 @@
   #shoprow.dyn .dt.comp .di{display:none}
   #shoprow.dyn .dt .cmp{position:absolute;inset:0 0 30px 0}
   #shoprow.dyn .dt .cmp .ic{position:absolute;width:56px;height:56px;border-radius:8px;background-size:cover;background-position:center;box-shadow:0 4px 8px rgba(0,0,30,.4)}
-  #shoprow.dyn .dt .cmp .hero{position:absolute;right:-6px;top:-6px;bottom:0;width:62%;background-size:auto 112%;background-position:right 30%;background-repeat:no-repeat;filter:drop-shadow(0 6px 10px rgba(0,0,30,.4))}
+  #shoprow.dyn .dt .cmp .hero{position:absolute;right:-6px;top:-6px;bottom:0;width:62%;background-size:auto 112%;background-position:right 30%;background-repeat:no-repeat}
   #shopbg{position:absolute;inset:-70px -300px;pointer-events:none;z-index:0}
   #shopbg i{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}#shopbg i.on{opacity:1}
   #dynart{position:absolute;left:1020px;top:120px;width:820px;height:690px;object-fit:contain;display:none;z-index:1;pointer-events:none;filter:drop-shadow(0 18px 24px rgba(0,0,40,.35))}`;
@@ -76,7 +74,7 @@
     const groups = new Map();
     for (const e of E) { const k = e.sectionId || e.section || '-'; if (!groups.has(k)) groups.set(k, { name: e.section || 'DESTACADOS', idx: e.sectionIndex ?? 999, items: [] }); groups.get(k).items.push(e); }
     const secs = [...groups.values()].sort((a, b) => a.idx - b.idx);
-    const lazy = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { const d = x.target; d.style.backgroundImage = 'url("' + d.dataset.img + '")'; lazy.unobserve(d); } }), { root: sc, rootMargin: '400px' });
+    const lazy = new IntersectionObserver((es) => es.forEach((x) => { const d = x.target; if (x.isIntersecting) { if (!d.style.backgroundImage) d.style.backgroundImage = 'url("' + d.dataset.img + '")'; } else if (d.style.backgroundImage) d.style.backgroundImage = ''; }), { root: sc, rootMargin: '700px 0px' }); // descarga las imágenes lejanas para no llenar la memoria
     const heads = [], secCols = [];
     for (const s of secs) {
       s.items.sort((a, b) => (b.sortPriority ?? 0) - (a.sortPriority ?? 0) || a.order - b.order);

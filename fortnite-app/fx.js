@@ -20,7 +20,7 @@
   #cfsend span{animation:fxPulse 1s ease-in-out infinite}
   #cferr{animation:fxShake .45s both}
   #wrp{animation:fxFade .25s both}
-  #shoprow.dyn .dt{animation:fxTile .45s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(var(--i,0)*22ms);transition:translate .15s,scale .15s,filter .15s}
+  #shoprow.dyn .dt{animation:fxTile .45s cubic-bezier(.2,.9,.3,1) backwards;animation-delay:calc(var(--i,0)*22ms);transition:translate .15s,scale .15s,filter .15s}
   #shoprow.dyn .dt:hover{scale:1.025;filter:brightness(1.08)}
   #shoprow.dyn .dt:active{scale:.97}
   #dynart{animation:fxArt .6s cubic-bezier(.2,1.2,.4,1) both}
