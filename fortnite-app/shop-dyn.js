@@ -42,6 +42,7 @@
   #shoprow.dyn .dt .di{position:absolute;inset:-26px -8px 14px -8px;background-position:center bottom;background-size:contain;background-repeat:no-repeat}
   #shoprow.dyn .dt.bundle .di{inset:-24px 0 10px 0;background-size:auto 100%;background-position:center bottom;background-repeat:no-repeat;filter:none}
   #shoprow.dyn .dt.map{background:url(assets/maptex.webp) center/cover,linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));background-blend-mode:overlay}
+  #shoprow.dyn .dt.solid{clip-path:inset(0 round 14px)}
   #shoprow.dyn .dt.bundle.wide{height:262px;margin-bottom:34px}
   html.shoplite #shoprow.dyn .dt{animation:none!important}
   #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;border-radius:14px;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
@@ -115,18 +116,20 @@
     const next = () => { while (active < 4 && jobs.length) { active++; jobs.shift()(() => { active--; next(); }); } };
     const paint = (d, url) => { d.style.backgroundImage = 'url("' + url + '")'; };
     const loadDi = (d) => { jobs.push((done) => {
-      const url = d.dataset.img, t = d.parentNode, fit = !!(t && t.classList.contains('bundle') && !t.classList.contains('comp') && d.clientWidth);
+      const url = d.dataset.img, t = d.parentNode, isJam = !!(t && t.classList.contains('jam')), fit = !!(t && t.classList.contains('bundle') && !t.classList.contains('comp') && d.clientWidth), probe = !isJam && !(t && t.classList.contains('comp'));
       const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
       im.onload = () => {
         try {
           const w = im.naturalWidth, h = im.naturalHeight, r = Math.min(1, (fit ? 700 : 420) / Math.max(w, h)), cw = Math.max(1, Math.round(w * r)), ch = Math.max(1, Math.round(h * r));
           const c = document.createElement('canvas'); c.width = cw; c.height = ch; c.getContext('2d').drawImage(im, 0, 0, cw, ch);
-          if (fit) {
+          if (probe) {
             const sw = 96, sh = Math.max(1, Math.round(96 * h / w)), sc2 = document.createElement('canvas'); sc2.width = sw; sc2.height = sh;
             const cx = sc2.getContext('2d', { willReadFrequently: true }); cx.drawImage(c, 0, 0, sw, sh);
-            const px = cx.getImageData(0, 0, sw, sh).data; let x0 = sw, y0 = sh, x1 = 0, y1 = 0;
-            for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) if (px[(y * sw + x) * 4 + 3] > 150) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
-            if (x1 > x0 && y1 > y0) {
+            const px = cx.getImageData(0, 0, sw, sh).data; let x0 = sw, y0 = sh, x1 = 0, y1 = 0, solid = 0;
+            for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) { const al = px[(y * sw + x) * 4 + 3]; if (al > 235) solid++; if (al > 150) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } }
+            if (solid / (sw * sh) > 0.9) { // imagen opaca (tarjeta completa, ej. autos): llena toda la casilla
+              d.style.inset = '0'; d.style.backgroundSize = 'cover'; d.style.backgroundPosition = 'center'; t.classList.add('solid');
+            } else if (fit && x1 > x0 && y1 > y0) {
               const W = d.clientWidth, H = d.clientHeight, fx0 = x0 / sw, fx1 = (x1 + 1) / sw, fy0 = y0 / sh, fy1 = (y1 + 1) / sh;
               const k = Math.min((W * 0.98) / ((fx1 - fx0) * w), (H * 1.0) / ((fy1 - fy0) * h)), dw = w * k, dh = h * k;
               d.style.backgroundSize = dw.toFixed(1) + 'px ' + dh.toFixed(1) + 'px'; d.style.backgroundPosition = (W / 2 - ((fx0 + fx1) / 2) * dw).toFixed(1) + 'px ' + (H - fy1 * dh).toFixed(1) + 'px';
