@@ -91,6 +91,17 @@ async function fromSite() {
 const log = (...a) => console.log('[shop]', ...a);
 let entries = [], apiError = null;
 try { entries = await fromApi(); } catch (e) { apiError = String(e.message || e); }
+// Nombres en español (la tienda real del usuario está en español): sirven para ligar videos por nombre
+try {
+  const es = (await get('https://fortnite-api.com/v2/shop?language=es')).data?.entries || [];
+  const m = new Map(es.map((x) => [x.offerId, x]));
+  for (const e of entries) {
+    const x = m.get(e.offerId); if (!x) continue;
+    e.nameEs = x.bundle?.name || x.brItems?.[0]?.name || (x.tracks?.[0] && x.tracks[0].title) || null;
+    const byId = new Map((x.brItems || []).map((b) => [b.id, b.name]));
+    for (const it of e.items) it.nameEs = byId.get(it.id) || null;
+  }
+} catch (e) { /* opcional */ }
 const site = await fromSite();
 
 const bad = (e) => !e.image || /placeholder|^\[VIRTUAL\]|\bTBD\b/i.test(`${e.name} ${e.devName}`);

@@ -26,13 +26,13 @@ button{background:#3b86f7;color:#fff;border:0;border-radius:8px;padding:9px 14px
 <script>
 const bmSrc=String.raw`(function(){if(window.__fnc){window.__fnc.p.style.display='block';return}
 var D={},U=[],seen={},typed=false,n=0;
-function guess(){var e=document.querySelector('[role=dialog] h1,[role=dialog] h2,[aria-modal=true] h1,[aria-modal=true] h2')||document.querySelector('h1');var t=e&&(e.innerText||'').trim();return t&&t.length<60?t:''}
+function guess(){var e=document.querySelector('[role=dialog] h1,[role=dialog] h2,[aria-modal=true] h1,[aria-modal=true] h2')||document.querySelector('h1');var t=e&&(e.innerText||'').trim();return t&&t.length<60&&!badge(t)?t:''}
 var p=document.createElement('div');p.style.cssText='position:fixed;right:10px;bottom:10px;z-index:2147483647;width:270px;background:#0d1530;color:#fff;font:13px/1.4 system-ui;padding:10px;border-radius:12px;box-shadow:0 6px 24px #000a;border:1px solid #3a5bd0';
 p.innerHTML='<b>Capturando videos</b> <a id=fx style="float:right;color:#9bb;cursor:pointer">ocultar</a><div id=fc style="margin:6px 0">0 videos. Abre un artículo o bundle y toca cada personaje, mochila, pico…</div><input id=fn placeholder="Nombre del artículo" style="width:100%;padding:6px;border-radius:6px;border:0;margin-bottom:6px"><button id=fa style="background:#2fd067;border:0;border-radius:6px;padding:7px 12px;font-weight:700;margin-right:6px">Recorrer todo solo</button><button id=fb style="background:#ffd23a;border:0;border-radius:6px;padding:7px 12px;font-weight:700">Copiar resultado</button>';
 document.body.appendChild(p);var inp=p.querySelector('#fn'),fc=p.querySelector('#fc');
 inp.addEventListener('input',function(e){if(e.isTrusted)typed=true});
 p.querySelector('#fx').onclick=function(){p.style.display='none'};
-function ok(u){return u&&u.indexOf('blob:')!==0&&/cosmo\.|\.webm|\.mp4/i.test(u)}
+function ok(u){return u&&u.indexOf('blob:')!==0&&u.indexOf('/cdn-cgi/image/')<0&&!/\/png(\?|$)|\.(png|jpe?g|webp)(\?|$)/i.test(u)&&/\/mp4|\.webm|\.mp4/i.test(u)}function badge(x){return /^[¡!]?(NUEV[OA]|NEW|DESTACADO|OFERTA|LOTE|BUNDLE|PACK)[!]?$/i.test((x||'').trim())}
 function add(u){if(seen[u])return;seen[u]=1;if(!typed){var g=guess();if(g)inp.value=g}var k=inp.value.trim();if(k){(D[k]=D[k]||[]).push(u)}else U.push(u);n++;fc.textContent=n+' videos ('+Object.keys(D).length+' artículos, '+U.length+' sin nombre). Último: '+(k||'sin nombre')}
 function scan(){document.querySelectorAll('video').forEach(function(v){var s=[v.currentSrc,v.src];v.querySelectorAll('source').forEach(function(x){s.push(x.src)});s.forEach(function(u){if(ok(u))add(u)})});performance.getEntriesByType('resource').forEach(function(r){if(ok(r.name))add(r.name)})}
 performance.getEntriesByType('resource').forEach(function(r){if(ok(r.name))seen[r.name]=1});
@@ -43,7 +43,7 @@ var stop=false,running=false;
 function sl(ms){return new Promise(function(r){setTimeout(r,ms)})}
 function txt(e){return(e.innerText||'').trim()}
 function find(){return[].slice.call(document.querySelectorAll('a,button,[role=button],[tabindex]')).filter(function(e){var r=e.getBoundingClientRect();return r.width>120&&r.height>120&&r.width<900&&e.querySelector('img')&&/\d/.test(txt(e))&&!e.closest('[role=dialog],[aria-modal=true]')&&!e.closest('#fnpanel')})}
-function tname(e){var l=txt(e).split('\n').map(function(x){return x.trim()}).filter(function(x){return x.length>1&&!/^[\d.,]+$/.test(x)&&!/V-?Bucks|NEW|BUNDLE|Gift/i.test(x)});return l[0]||''}
+function tname(e){var l=txt(e).split('\n').map(function(x){return x.trim()}).filter(function(x){return x.length>1&&!/^[\d.,]+$/.test(x)&&!/V-?Bucks|Gift|Regal/i.test(x)&&!badge(x)});return l[0]||''}
 function closeDlg(){var d=document.querySelector('[role=dialog],[aria-modal=true]');var b=d&&d.querySelector('[aria-label*=lose i],[aria-label*=ack i],[class*=lose]');if(b)b.click();document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',keyCode:27,bubbles:true}));document.body.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',keyCode:27,bubbles:true}))}
 async function crawl(){if(running){stop=true;return}running=true;stop=false;var done={},miss=0,k=0;var btn=p.querySelector('#fa');btn.textContent='Parar';
 while(!stop&&miss<4){var t=find().filter(function(e){return!done[txt(e)]})[0];

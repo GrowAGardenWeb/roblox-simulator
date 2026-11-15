@@ -46,7 +46,7 @@ async function init(){[shop,vFile,bFile]=await Promise.all([J('../data/shop.json
 function draw(){
   const vids=Object.assign({},vFile,LS('fnVideos')),vN={};Object.keys(vids).forEach(k=>vN[norm(k)]=vids[k]);
   const bgs=Object.assign({},shop.backgrounds||{},bFile,LS('fnBackgrounds')),bN={};Object.keys(bgs).forEach(k=>bN[norm(k)]=bgs[k]);
-  const A=(v)=>v?[].concat(v):[];const vidsFor=(e)=>{const o=[...A(vids[e.offerId]),...A(vids[e.name]),...A(vN[norm(e.name)])];(e.items||[]).forEach(i=>o.push(...A(vN[norm(i.name)])));return [...new Set(o)]};const vidFor=(e)=>vidsFor(e)[0]||'';
+  const A=(v)=>v?[].concat(v):[];const vidsFor=(e)=>{const o=[...A(vids[e.offerId]),...A(vids[e.name]),...A(vN[norm(e.name)]),...A(vN[norm(e.nameEs)])];(e.items||[]).forEach(i=>o.push(...A(vN[norm(i.name)]),...A(vN[norm(i.nameEs)])));return [...new Set(o)]};const vidFor=(e)=>vidsFor(e)[0]||'';
   const E=(shop.entries||[]).filter(e=>e.image&&!/placeholder|^\[VIRTUAL\]|\bTBD\b/i.test(e.name||''));
   const groups=new Map();for(const e of E){const k=e.sectionId||e.section||'-';if(!groups.has(k))groups.set(k,{name:(e.section||'DESTACADOS').trim(),idx:e.sectionIndex??999,items:[]});groups.get(k).items.push(e)}
   const secs=[...groups.values()].sort((a,b)=>a.idx-b.idx);

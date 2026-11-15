@@ -62,7 +62,7 @@
     const bgAll = Object.assign({}, shop.backgrounds || {}, window.__bgFile || {}, bgLocal), bgNorm = {}; Object.keys(bgAll).forEach((k) => { bgNorm[norm(k)] = bgAll[k]; });
     const bgFor = (name) => bgNorm[norm(name)] || '';
     const arr = (v) => (v ? [].concat(v) : []);
-    const vidsFor = (e) => { const o = [...arr(all[e.offerId]), ...arr(all[e.name]), ...arr(byNorm[norm(e.name)])]; e.items.forEach((i) => o.push(...arr(byNorm[norm(i.name)]))); return [...new Set(o)]; };
+    const vidsFor = (e) => { const o = [...arr(all[e.offerId]), ...arr(all[e.name]), ...arr(byNorm[norm(e.name)]), ...arr(byNorm[norm(e.nameEs)])]; e.items.forEach((i) => o.push(...arr(byNorm[norm(i.name)]), ...arr(byNorm[norm(i.nameEs)]))); return [...new Set(o)]; };
     const vidFor = (e) => vidsFor(e)[0] || '';
     const E = (shop.entries || []).filter((e) => !BAD(e));
     if (!old || !ITEMS || !E.length) return;
