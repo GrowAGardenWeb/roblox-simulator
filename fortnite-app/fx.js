@@ -36,7 +36,7 @@
   #cfm.on .who{animation:fxSlideL .45s .2s cubic-bezier(.2,.9,.3,1) both}
   #cfm.on .cnt{animation:fxPop .6s .28s cubic-bezier(.2,1.3,.4,1) both}
   #cfm.on .iname{animation:fxRise .45s .38s both}
-  #cfm.on .th{animation:fxPop .5s calc(.45s + var(--k,0)*90ms) cubic-bezier(.2,1.3,.4,1) both;position:relative}
+  #cfm.on .th{animation:fxPop .5s calc(.45s + var(--k,0)*90ms) cubic-bezier(.2,1.3,.4,1) both}
   #cfm.on .th::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 35%,rgba(140,215,255,.55) 50%,transparent 65%);translate:-130% 0;animation:fxSweep .6s calc(.7s + var(--k,0)*90ms) ease-out both}
   #cfm.on .pbox{animation:fxRise .45s .6s both}
   #cfm.on .buy{animation:fxRise .45s .7s both}
