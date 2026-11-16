@@ -309,6 +309,21 @@
     // ficha de objeto: miniaturas y arte propios
     const APPLE = !!window.__APPLE;
     const art = document.createElement('img'); art.id = 'dynart'; art.alt = ''; art.draggable = false;
+    // imágenes grandes de la ficha: se reducen a 900 px antes de mostrarse (el original puede medir 2000+ px = decenas de MB en memoria). Se guardan máx. 5.
+    const shrinkCache = new Map();
+    const shrink = (url, max) => new Promise((res) => {
+      if (shrinkCache.has(url)) { res(shrinkCache.get(url)); return; }
+      if (!/^https?:/.test(url)) { res(url); return; }
+      const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
+      im.onload = () => {
+        try {
+          const r = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.naturalWidth * r)); c.height = Math.max(1, Math.round(im.naturalHeight * r));
+          c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+          c.toBlob((bl) => { c.width = c.height = 0; const u = bl ? URL.createObjectURL(bl) : url; shrinkCache.set(url, u); while (shrinkCache.size > 5) { const k = shrinkCache.keys().next().value, old = shrinkCache.get(k); shrinkCache.delete(k); if (old.startsWith('blob:') && art.src !== old) URL.revokeObjectURL(old); } res(u); }, 'image/webp', 0.88);
+        } catch (e) { res(url); }
+      };
+      im.onerror = () => res(url); im.src = url;
+    });
     const detail = document.querySelector('.screen[data-screen="detail"]'); if (detail) { const f = detail.querySelector('.full'); f ? f.after(art) : detail.appendChild(art); }
     // al tocar una miniatura del bundle, se reproduce el video de esa pieza (personaje, mochila, pico…)
     document.addEventListener('click', (ev) => {
@@ -322,7 +337,7 @@
       const dyn = it && it.dyn && scr === 'detail';
       art.style.display = dyn && !(APPLE && it.url) ? 'block' : 'none';
       if (!dyn) return;
-      const shownImg = (it.dyn.cur != null && it.dyn.feat && it.dyn.feat[it.dyn.cur]) || it.dyn.image; if (art.dataset.src !== shownImg) { art.dataset.src = shownImg; art.src = shownImg; }
+      const shownImg = (it.dyn.cur != null && it.dyn.feat && it.dyn.feat[it.dyn.cur]) || it.dyn.image; if (art.dataset.src !== shownImg) { art.dataset.src = shownImg; art.removeAttribute('src'); shrink(shownImg, 900).then((u) => { if (art.dataset.src === shownImg) art.src = u; }); }
       const lab = { det5: it.sub === 'BUNDLE' ? 'The price for included items is:' : 'The price is:', det9: it.sub === 'BUNDLE' ? 'VIEW BUNDLE' : it.dyn.jam ? 'PREVIEW TRACK' : 'VIEW ITEM' };
       for (const k in lab) { const el = document.querySelector('[data-t="det.' + k + '"]'); if (el && el.textContent !== lab[k]) { el.removeAttribute('data-w'); el.textContent = lab[k]; } }
       document.querySelectorAll('#thumbs .tsl').forEach((el, i) => {
