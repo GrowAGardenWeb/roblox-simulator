@@ -28,9 +28,9 @@
   // artículos que siempre son tuyos (sección DEVELOPER): la ficha dice OWNED aunque el modo sea normal
   setInterval(() => { const it = window.ITEMS_ALL && window.ITEMS_ALL()[window.curItem]; document.body.classList.toggle('owneditem', document.body.dataset.screen === 'detail' && !!(it && it.owned)); }, 250);
   // interruptor de la sección DEVELOPER (aplica al recargar)
-  { const r2 = document.createElement('div'); r2.innerHTML = '<label>DEVELOPER SECTION (TOP OF SHOP)</label><select id="devsel"><option value="1">ON</option><option value="0">OFF</option></select>';
+  { const r2 = document.createElement('div'); r2.innerHTML = '<label>DEVELOPER MODE (SOLID GOLD SKINS)</label><select id="devsel"><option value="0">OFF</option><option value="1">ON</option></select>';
     const b2 = P.querySelector('.b'); (b2 ? b2.parentNode : P.firstChild).insertBefore(r2, b2 || null);
-    const dsel = r2.querySelector('#devsel'); try { dsel.value = localStorage.getItem('fn_dev') === '0' ? '0' : '1'; } catch (e) {}
+    const dsel = r2.querySelector('#devsel'); try { dsel.value = localStorage.getItem('fn_dev') === '1' ? '1' : '0'; } catch (e) {}
     dsel.onchange = () => { try { localStorage.setItem('fn_dev', dsel.value); } catch (e) {} setTimeout(() => location.reload(), 250); }; }
   apply();
 })();

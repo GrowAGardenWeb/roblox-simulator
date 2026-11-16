@@ -113,7 +113,7 @@
     const groups = new Map();
     for (const e of E) { const k = e.sectionId || e.section || '-'; if (!groups.has(k)) groups.set(k, { name: e.section || 'DESTACADOS', idx: e.sectionIndex ?? 999, items: [] }); groups.get(k).items.push(e); }
     // sección DEVELOPER: Pirate Token (si está activo en el panel) + los 3 Solid Gold; siempre "OWNED"
-    let devTok = null; const devOn = (() => { try { return localStorage.getItem('fn_dev') !== '0'; } catch (e) { return true; } })();
+    let devTok = null; const devOn = (() => { try { return localStorage.getItem('fn_dev') === '1'; } catch (e) { return false; } })();
     const ptOn = (() => { try { return JSON.parse(localStorage.getItem('fn_mod') || '{}').pt === '1'; } catch (e) { return false; } })();
     if (devOn) {
       const gold = { color1: 'f2c230ff', color2: 'e0a31cff', color3: 'f8d24cff' }, mkE = (o) => Object.assign({ order: -1, kind: 'item', info: '', tileSize: 'Size_2_x_1', sortPriority: 0, regularPrice: 0, finalPrice: 0, giftable: true, inDate: null, banner: null, tracks: [], images: [], display: [], colors: gold, sectionId: '__dev', section: 'DEVELOPER', sectionIndex: -1, dev: true }, o);
