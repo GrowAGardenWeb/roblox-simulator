@@ -101,13 +101,21 @@
   p.querySelectorAll('.tb').forEach((t) => { t.onclick = () => { show(t.dataset.p); }; });
   const open = () => { syncMe(); show('soc'); p.classList.add('on'); dim.classList.add('on'); window.SFX && SFX.play('social-open'); };
   const close = () => { if (!p.classList.contains('on')) return; p.classList.remove('on'); dim.classList.remove('on'); window.SFX && SFX.play('social-close'); };
-  dim.onclick = close;
-  // zona táctil sobre la foto de perfil
-  p.addEventListener('click', (e) => { if (e.target.closest('.back,.pg > .back')) { window.SFX && SFX.play('back'); return; } if (e.target.closest('.tb,.card,.ic4 div,.pl,.req,.setrow,.pbtn,.add,.padd,.inv,.x,.me')) window.SFX && SFX.play('click'); });
-  me.onclick = () => close();
-  const nav = document.getElementById('nav');
-  const hit = document.createElement('div'); hit.style.cssText = 'position:absolute;left:1766px;top:16px;width:116px;height:116px;z-index:30;cursor:pointer;pointer-events:auto'; hit.onclick = () => (p.classList.contains('on') ? close() : open()); if (nav) nav.appendChild(hit);
-  new MutationObserver(() => { if (document.body.dataset.screen) close(); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
+  // Un solo manejador por toque (pointerup + respaldo de click con antirrebote) para que no se abra y cierre a la vez
+  let lastT = 0;
+  const once = (fn) => (e) => { const t = Date.now(); if (t - lastT < 350) return; lastT = t; if (e && e.preventDefault && e.cancelable) e.preventDefault(); fn(e); };
+  const tap = (el, fn) => { const h = once(fn); el.addEventListener('pointerup', h); el.addEventListener('click', h); };
+  tap(dim, () => close());
+  tap(me, () => close());
+  // zona táctil de la foto: encima de todo (z-index 58, justo debajo del fondo oscuro) y más grande que la foto
+  const hit = document.createElement('div'); hit.id = 'sochit'; hit.style.cssText = 'position:absolute;left:1750px;top:0;width:200px;height:150px;z-index:58;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;touch-action:manipulation';
+  tap(hit, () => (p.classList.contains('on') ? close() : open())); stage.appendChild(hit);
+  // solo se cierra cuando la pantalla CAMBIA de verdad (antes se cerraba con cualquier reescritura del atributo)
+  let lastScr = document.body.dataset.screen;
+  new MutationObserver(() => { const cur = document.body.dataset.screen; if (cur !== lastScr) { lastScr = cur; close(); } }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
+  // la foto solo se puede tocar donde la barra de arriba es visible (no en ficha ni regalos)
+  const sync = () => { const sc = document.body.dataset.screen; hit.style.display = (sc === 'detail' || sc === 'gift' || sc === 'locker' && document.body.classList.contains('lkopen')) ? 'none' : 'block'; };
+  new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['data-screen', 'class'] }); sync();
 
   p.querySelector('#socadd').onclick = () => { show('soc'); p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-add').classList.add('on'); q0 && q0(); };
   p.querySelector('#socreq').onclick = () =>
