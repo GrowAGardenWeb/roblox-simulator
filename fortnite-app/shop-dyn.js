@@ -109,9 +109,11 @@
     const arr = (v) => (v ? [].concat(v) : []);
     const vidsFor = (e) => { const o = [...arr(all[e.offerId]), ...arr(all[e.name]), ...arr(byNorm[norm(e.name)]), ...arr(byNorm[norm(e.nameEs)])]; e.items.forEach((i) => o.push(...arr(byNorm[norm(i.name)]), ...arr(byNorm[norm(i.nameEs)]))); return [...new Set(o)]; };
     const lead = (e) => e.items.find((i) => i.type === 'outfit') || e.items[0];
-    const ownOf = (i) => (i ? [...arr(byNorm[norm(i.nameEs)]), ...arr(byNorm[norm(i.name)])][0] || '' : '');
+    const ownOf = (i) => (NOVID ? '' : i ? [...arr(byNorm[norm(i.nameEs)]), ...arr(byNorm[norm(i.name)])][0] || '' : '');
     // video por defecto: el del artículo o el de su pieza principal. Nunca el de una pieza acompañante (mochila, pico...)
-    const vidFor = (e) => arr(all[e.offerId])[0] || arr(all[e.name])[0] || arr(byNorm[norm(e.name)])[0] || arr(byNorm[norm(e.nameEs)])[0] || ownOf(lead(e)) || '';
+    const NOVID = /[?&]novid=1/.test(location.search);
+    const vidFor0 = (e) => arr(all[e.offerId])[0] || arr(all[e.name])[0] || arr(byNorm[norm(e.name)])[0] || arr(byNorm[norm(e.nameEs)])[0] || ownOf(lead(e)) || '';
+    const vidFor = (e) => (NOVID ? '' : vidFor0(e));
     const E = (shop.entries || []).filter((e) => !BAD(e)).slice(0, lvl >= 2 ? 80 : 1e9);
     if (!old || !ITEMS || !E.length) return false;
 
@@ -352,6 +354,8 @@
     new MutationObserver(() => { const k = ITEMS[window.curItem]; if (k && k.dyn && document.body.dataset.screen === 'detail') { k.dyn.cur = undefined; k.url = k.vdef; } setTimeout(apply, 40); setTimeout(apply, 250); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     step('listo'); setTimeout(() => step('estable'), 3000);
     window.__isCharVid = (it) => { if (!it) return false; if (!it.dyn) return it.sub === undefined || /OUTFIT/.test(it.sub); const i = it.iv ? it.iv.indexOf(it.url) : -1, t = i >= 0 ? it.ty[i] : (it.ty && it.ty.includes('outfit') ? 'outfit' : it.ty && it.ty[0]); return t === 'outfit'; };
+    // migas de pan del video del artículo
+    { const v = document.getElementById('itemvid'); if (v) ['loadstart', 'loadedmetadata', 'loadeddata', 'playing', 'emptied', 'error', 'stalled', 'abort'].forEach((ev) => v.addEventListener(ev, () => step('video ' + ev + (v.videoWidth ? ' ' + v.videoWidth + 'x' + v.videoHeight : '') + ' ' + String(v.getAttribute('src') || '').split('/').slice(-2, -1)[0]?.slice(0, 6)))); }
     window.__shopDyn = { count: E.length, sections: secs.length };
   }
 })();

@@ -163,11 +163,12 @@
   let lastHolo = 0;
   function holo(el) {
     try {
+      if (/[?&]noholo=1/.test(location.search)) return;
       if (Date.now() - lastHolo < 700) return; lastHolo = Date.now(); // evita que se repita dos veces seguidas
       const scr = document.body.dataset.screen;
       if (!['detail', 'gift'].includes(scr)) return; // en el lobby (home) y el casillero el personaje carga normal
       const cv = document.getElementById('itemcv'), ref = el.style.left ? el : cv; if (!ref || !ref.parentNode) return;
-      el.classList.remove('fxholo'); void el.offsetWidth; el.classList.add('fxholo');
+      window.__fnStep && window.__fnStep('holograma'); el.classList.remove('fxholo'); void el.offsetWidth; el.classList.add('fxholo');
       el.addEventListener('animationend', function f(e) { if (e.animationName === 'fxHolo') { el.classList.remove('fxholo'); el.removeEventListener('animationend', f); } });
       // disco brillante en el piso + cubitos flotando, como en el juego
       const cx = scr === 'gift' ? 1420 : 1365, fy = scr === 'gift' ? 690 : 765, host = ref.parentNode, els = [];
