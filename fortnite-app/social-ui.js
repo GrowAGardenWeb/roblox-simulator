@@ -3,16 +3,16 @@
   const stage = document.getElementById('stage'); if (!stage) return;
   const st = document.createElement('style');
   st.textContent = `
-  #socp{position:absolute;left:1312px;top:16px;width:652px;height:888px;z-index:60;display:none;border-radius:26px;background:linear-gradient(#0a2a78,#07164f 40%,#061245);box-shadow:0 12px 50px rgba(0,0,20,.6);color:#fff;font-family:Montserrat,system-ui;overflow:hidden}
-  #socp.on{display:block;animation:fxSlideL .22s ease-out both}
-  #socdim{position:absolute;inset:0;z-index:59;display:none;background:rgba(2,8,40,.45)}#socdim.on{display:block}
+  #socp{position:absolute;left:1312px;top:16px;width:652px;height:888px;z-index:60;visibility:hidden;opacity:0;translate:70px 0;transition:opacity .28s ease,translate .3s cubic-bezier(.2,.9,.3,1),visibility 0s .3s;pointer-events:none;border-radius:26px;background:linear-gradient(#0a2a78,#07164f 40%,#061245);box-shadow:0 12px 50px rgba(0,0,20,.6);color:#fff;font-family:Montserrat,system-ui;overflow:hidden}
+  #socp.on{visibility:visible;opacity:1;translate:0 0;transition:opacity .28s ease,translate .3s cubic-bezier(.2,.9,.3,1),visibility 0s;pointer-events:auto}
+  #socdim{position:absolute;inset:0;z-index:59;opacity:0;pointer-events:none;background:rgba(2,8,40,.45);transition:opacity .3s}#socdim.on{opacity:1;pointer-events:auto}
   #socp .tabs{position:absolute;left:12px;top:12px;width:468px;height:88px;border-radius:22px;background:rgba(10,20,70,.8);display:flex;padding:8px;gap:6px;box-sizing:border-box}
   #socp .tb{flex:1;border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:pointer}
   #socp .tb.on{background:#bcd8ff}#socp .tb svg{width:40px;height:40px;fill:#dbe8ff}#socp .tb.on svg{fill:#0a1a55}
   #socp .me{position:absolute;right:20px;top:14px;width:80px;height:80px;border-radius:50%;background:#1d6fe0 center/cover no-repeat;border:4px solid #0a2461;box-sizing:border-box}
   #socp .me::after{content:'';position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:#33d65a;border:4px solid #0a2461;box-sizing:border-box}
   #socp .pg{position:absolute;left:0;right:0;top:112px;bottom:0;display:none;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 22px 24px}
-  #socp .pg.on{display:block}#socp .pg::-webkit-scrollbar{display:none}
+  #socp .pg.on{display:block;animation:fxFade .25s both}#socp .pg::-webkit-scrollbar{display:none}
   #socp h2{margin:6px 0 14px;font:700 38px Montserrat}
   #socp .row2{display:flex;gap:12px}#socp .card{flex:1;height:76px;border-radius:14px;background:rgba(40,70,160,.45);display:flex;align-items:center;gap:14px;padding:0 16px;box-sizing:border-box}
   #socp .card b{display:block;font:700 22px Montserrat}#socp .card span{font:500 20px Montserrat;color:#a9bde8}

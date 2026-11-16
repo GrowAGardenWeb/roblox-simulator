@@ -254,7 +254,7 @@
       #fpan{position:absolute;left:217px;top:147px;width:407px;z-index:9;display:none}
       #fpan .fh{height:80px;border-radius:14px;background:#a9b9f6;color:#0a1a55;font:italic 400 32px 'Archivo Black';display:flex;align-items:center;gap:16px;padding-left:24px;cursor:pointer}
       #fpan .fh i{width:36px;height:28px;background:linear-gradient(#0a1a55 0 5px,transparent 5px 11px,#0a1a55 11px 16px,transparent 16px 22px,#0a1a55 22px 27px);border-radius:2px}
-      #fpan .fl{margin-top:22px;height:520px;overflow-y:auto;overscroll-behavior:contain;background:rgba(8,22,86,.9);border-radius:14px;padding:8px;-webkit-overflow-scrolling:touch}
+      #fpan .fl{margin-top:22px;height:520px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain;background:rgba(8,22,86,.9);border-radius:14px;padding:8px;-webkit-overflow-scrolling:touch}
       #fpan .fl div{padding:15px 18px;font:600 28px/1.15 Montserrat,system-ui;color:#8da3e6;border-radius:10px;cursor:pointer}
       #fpan .fl div.on{background:#9fb4f2;color:#0a1a55}
       .screen[data-screen="shop"].fopen #fpan{display:block;animation:fxSlideL .25s ease-out both}
@@ -270,7 +270,7 @@
       const toggle = (on) => { shopScr.classList.toggle('fopen', on); window.SFX && SFX.play(on ? 'open' : 'back'); };
       fbtn.onclick = () => toggle(true); fpan.querySelector('.fh').onclick = () => toggle(false);
       let lastI = -1;
-      fHi = (i) => { if (i === lastI) return; lastI = i; items.forEach((d, k) => d.classList.toggle('on', k === i)); if (shopScr.classList.contains('fopen') && items[i]) items[i].scrollIntoView({ block: 'nearest' }); };
+      fHi = (i) => { if (i === lastI) return; lastI = i; items.forEach((d, k) => d.classList.toggle('on', k === i)); if (shopScr.classList.contains('fopen') && items[i]) items[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); };
       new MutationObserver(() => { if (document.body.dataset.screen !== 'shop') shopScr.classList.remove('fopen'); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     }
 
