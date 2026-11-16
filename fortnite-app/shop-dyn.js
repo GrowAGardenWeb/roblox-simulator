@@ -21,6 +21,8 @@
   const light = lvl >= 1;
   const step = (x) => { try { localStorage.setItem('fnStep', x + ' · ' + (document.body && document.body.dataset.screen || '-') + ' · ' + new Date().toISOString().slice(11, 19)); } catch (e) {} };
   window.__fnStep = step;
+  // el "último paso" ahora anota cada cambio de pantalla y el artículo abierto, para ver exactamente dónde se cierra
+  try { new MutationObserver(() => step('pantalla ' + (document.body.dataset.screen || '-') + (window.curItem ? ' · ' + String(window.curItem).slice(0, 22) : ''))).observe(document.documentElement.querySelector('body') || document.documentElement, { attributes: true, attributeFilter: ['data-screen'] }); } catch (e) {}
   try {
     if (/[?&]nodyn=1/.test(location.search)) return;
     const prev = localStorage.getItem('fnStep'), crashed = localStorage.getItem('fnBoot');

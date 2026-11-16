@@ -138,7 +138,7 @@
   };
   const show = (it) => {
     preview = it; if (it.url) { register({ key: it.key, name: it.name, icon: it.icon, full: it.full, url: it.url }); const I = items(); if (I[it.key]) I[it.key].url = it.url; }
-    window.__previewKey = it.key; info(it);
+    window.__previewKey = it.key; info(it); window.__fnStep && window.__fnStep('vista previa ' + it.key);
     grid.querySelectorAll('.tl.sel').forEach((x) => x.classList.remove('sel')); const t = grid.querySelector('[data-k="' + it.key + '"]'); if (t) t.classList.add('sel');
     swap(260);
   };
@@ -164,7 +164,7 @@
 
   function equip(it) {
     if (it.url) { register({ key: it.key, name: it.name, icon: it.icon, full: it.full, url: it.url }); const I = items(); if (I[it.key]) I[it.key].url = it.url; }
-    window.__equipKey = it.key; preview = it; window.__previewKey = null;
+    window.__equipKey = it.key; preview = it; window.__previewKey = null; window.__fnStep && window.__fnStep('equipar ' + it.key);
     try { localStorage.setItem(KEY, JSON.stringify({ key: it.key, name: it.name, icon: it.icon, full: it.full || null, url: it.url || null })); } catch (e) {}
     window.SFX && SFX.play('click'); render(); info(it);
     swap(120);
