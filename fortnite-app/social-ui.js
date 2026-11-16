@@ -6,9 +6,10 @@
   #socp{position:absolute;left:1312px;top:16px;width:652px;height:888px;z-index:60;visibility:hidden;opacity:0;translate:70px 0;transition:opacity .28s ease,translate .3s cubic-bezier(.2,.9,.3,1),visibility 0s .3s;pointer-events:none;border-radius:26px;background:linear-gradient(#0a2a78,#07164f 40%,#061245);box-shadow:0 12px 50px rgba(0,0,20,.6);color:#fff;font-family:Montserrat,system-ui;overflow:hidden}
   #socp.on{visibility:visible;opacity:1;translate:0 0;transition:opacity .28s ease,translate .3s cubic-bezier(.2,.9,.3,1),visibility 0s;pointer-events:auto}
   #socdim{position:absolute;inset:0;z-index:59;opacity:0;pointer-events:none;background:rgba(2,8,40,.45);transition:opacity .3s}#socdim.on{opacity:1;pointer-events:auto}
+  .si{display:inline-block;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;flex:none}
   #socp .tabs{position:absolute;left:12px;top:12px;width:468px;height:88px;border-radius:22px;background:rgba(10,20,70,.8);display:flex;padding:8px;gap:6px;box-sizing:border-box}
   #socp .tb{flex:1;border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:pointer}
-  #socp .tb.on{background:#bcd8ff}#socp .tb svg{width:40px;height:40px;fill:#dbe8ff}#socp .tb.on svg{fill:#0a1a55}
+  #socp .tb.on{background:#bcd8ff}#socp .tb{color:#dbe8ff}#socp .tb.on{color:#0a1a55}
   #socp .me{position:absolute;right:20px;top:14px;width:80px;height:80px;border-radius:50%;background:#1d6fe0 center/cover no-repeat;border:4px solid #0a2461;box-sizing:border-box}
   #socp .me::after{content:'';position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:#33d65a;border:4px solid #0a2461;box-sizing:border-box}
   #socp .pg{position:absolute;left:0;right:0;top:112px;bottom:0;display:none;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 22px 24px}
@@ -31,6 +32,8 @@
   #socp .back u{width:62px;height:62px;border-radius:12px;background:rgba(40,70,160,.55);text-decoration:none;display:flex;align-items:center;justify-content:center;font:700 34px Montserrat}
   #socp .sbox{display:flex;align-items:center;gap:12px;height:76px;border-radius:16px;border:3px solid #cfe9d0;background:#0a1d62;padding:0 14px;box-sizing:border-box}
   #socp .sbox input{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font:600 26px Montserrat}
+  .xx{position:relative;width:20px;height:20px;display:block}.xx::before,.xx::after{content:'';position:absolute;left:-2px;right:-2px;top:8px;height:5px;border-radius:2px;background:#0a1a55;transform:rotate(45deg)}.xx::after{transform:rotate(-45deg)}
+  #socp .me{cursor:pointer}
   #socp .sbox .x{width:46px;height:46px;border-radius:9px;background:#bcd8ff;color:#0a1a55;display:flex;align-items:center;justify-content:center;font:900 24px Montserrat;cursor:pointer}
   #socp .inv{margin-top:12px;height:66px;border-radius:12px;background:linear-gradient(90deg,#8fc6ff,#a8d8ff);color:#0a1a55;display:flex;align-items:center;justify-content:center;font:600 25px Montserrat;cursor:pointer}
   #socp .sr{display:flex;margin:38px 0 10px;font:600 22px Montserrat}#socp .sr span{margin-left:auto;color:#cfe0ff}
@@ -62,24 +65,21 @@
   `;
   document.head.appendChild(st);
 
-  const ico = {
-    people: '<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.4"/><path d="M2.5 19c0-3.6 2.9-5.8 6.500-5.800S15.500 15.400 15.500 19z"/><circle cx="17" cy="9" r="2.6"/><path d="M16.500 13.500c3 .2 5 1.900 5 4.500h-4.400c0-1.700-.2-3.200-.6-4.500z"/></svg>',
-    chat: '<svg viewBox="0 0 24 24"><path d="M3 5h12a2 2 0 012 2v6a2 2 0 01-2 2H9l-4 3v-3H3a2 2 0 01-2-2V7a2 2 0 012-2zm15 4h3a2 2 0 012 2v6a2 2 0 01-2 2h-1v3l-3.500-3H12v-1.500h6z"/></svg>',
-    gear: '<svg viewBox="0 0 24 24"><path d="M19.400 13a7.800 7.800 0 000-2l2.100-1.600-2-3.400-2.500 1a7.600 7.600 0 00-1.700-1L15 3.400h-4l-.4 2.600a7.600 7.600 0 00-1.700 1l-2.500-1-2 3.400L6.600 11a7.800 7.800 0 000 2l-2.100 1.600 2 3.400 2.500-1a7.600 7.600 0 001.700 1l.4 2.600h4l.4-2.600a7.600 7.600 0 001.700-1l2.500 1 2-3.400zM13 15.500a3.500 3.500 0 110-7 3.500 3.500 0 010 7z"/></svg>',
-    menu: '<svg viewBox="0 0 24 24"><path d="M3 5h18v3H3zm0 5.500h18v3H3zM3 16h18v3H3z"/></svg>',
-  };
+  const mi = (n, w, h) => '<i class="si" style="--m:url(assets/soc/' + n + '.webp);width:' + w + 'px;height:' + (h || w) + 'px"></i>';
+  const ico = { people: mi('people', 42, 38), chat: mi('chat', 44, 40), gear: mi('gear', 40), menu: mi('menu', 42, 36) };
+
   const p = document.createElement('div'); p.id = 'socp';
   const friends = [['Skyler_R', 'Battle Royale - Solo', 1], ['mia.plays', 'Away', 0], ['ghostN3ko', 'Away', 0], ['TheRealJay', 'In Lobby', 1]];
   const rows = friends.map((f) => '<div class="pl"><div class="av"><i class="' + (f[2] ? '' : 'aw') + '"></i></div><div><b>' + f[0] + '</b><span>' + f[1] + '</span></div></div>').join('');
   p.innerHTML = '<div class="tabs"><div class="tb on" data-p="soc">' + ico.people + '</div><div class="tb" data-p="chat">' + ico.chat + '</div><div class="tb" data-p="set">' + ico.gear + '</div><div class="tb" data-p="menu">' + ico.menu + '</div></div><div class="me"></div>'
-    + '<div class="pg on" id="pg-soc"><h2>Social</h2><div class="row2"><div class="card"><div class="av" style="width:46px;height:46px;background:#33509a"></div><div><b>Party</b><span>Just you</span></div></div><div class="card"><div class="av" style="width:46px;height:46px;border-radius:8px;background:#7a6a4a"></div><div><b>Game</b><span>Not in a game yet</span></div></div></div>'
-    + '<div class="ic4"><div>&#128274;</div><div>&#127908;</div><div>&#127911;</div><div>&bull;&bull;&bull;</div></div><div class="note">Invite only &middot; Voice reporting off</div>'
+    + '<div class="pg on" id="pg-soc"><h2>Social</h2><div class="row2"><div class="card"><div class="av" style="width:46px;height:46px;background:#33509a;display:flex;align-items:center;justify-content:center;border-radius:12px">' + mi('people', 30, 27) + '</div><div><b>Party</b><span>Just you</span></div></div><div class="card"><div class="av" style="width:46px;height:46px;border-radius:8px;background:#7a6a4a"></div><div><b>Game</b><span>Not in a game yet</span></div></div></div>'
+    + '<div class="ic4"><div>' + mi('lock', 34, 40) + '</div><div>' + mi('mic', 30, 40) + '</div><div>' + mi('head', 40, 40) + '</div><div>' + mi('dots', 38, 11) + '</div></div><div class="note">Invite only &middot; Voice reporting off</div>'
     + '<div class="pl"><div class="av me2"><i></i></div><div><b class="nm"></b><span>Battle Royale</span></div></div>'
-    + '<div class="fh">Friends<span class="sp"></span><div class="add" id="socadd">+&#9786;</div></div><div class="req" id="socreq"><div class="av" style="background:#3a3f55"></div><div><b style="font:700 24px Montserrat">Friend requests</b><span style="display:block;font:500 20px Montserrat;color:#9fb4e8">3 requests</span></div><div class="badge">3</div><span style="margin-left:10px;font:700 22px Montserrat">&#8250;</span></div>' + rows + '</div>'
-    + '<div class="pg" id="pg-add"><div class="back" id="socback"><u>&#8249;</u>Add friends</div><div class="sbox"><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.500" fill="none" stroke="#fff" stroke-width="3"/><path d="M15 15l6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><input id="socq" placeholder="Search by display name" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="x" id="socx">&#10005;</div></div><div class="inv">Invite a friend</div><div class="sr"><b id="socttl" style="font-weight:600">Recent players</b><span id="socn">0</span></div><div id="socres"></div></div>'
-    + '<div class="pg" id="pg-prof"><div class="back" id="profback" style="margin-bottom:0"><u>&#8249;</u></div><div class="pbig"></div><div class="pnm" id="pnm"></div><div class="ptag" id="ptag"></div><div class="psent" id="psent">Friend request sent!</div><div class="pbtn" id="padd">Add friend</div><div class="pbtn">Block</div><div class="pbtn">Report</div></div>'
+    + '<div class="fh">Friends<span class="sp"></span><div class="add" id="socadd">' + mi('addf', 34, 32) + '</div></div><div class="req" id="socreq"><div class="av" style="background:#3a3f55"></div><div><b style="font:700 24px Montserrat">Friend requests</b><span style="display:block;font:500 20px Montserrat;color:#9fb4e8">3 requests</span></div><div class="badge">3</div><span style="margin-left:12px;display:inline-flex">' + mi('chev', 12, 19) + '</span></div>' + rows + '</div>'
+    + '<div class="pg" id="pg-add"><div class="back" id="socback"><u>' + mi('back', 22, 30) + '</u>Add friends</div><div class="sbox"><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.500" fill="none" stroke="#fff" stroke-width="3"/><path d="M15 15l6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><input id="socq" placeholder="Search by display name" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="x" id="socx"><span class="xx"></span></div></div><div class="inv">Invite a friend</div><div class="sr"><b id="socttl" style="font-weight:600">Recent players</b><span id="socn">0</span></div><div id="socres"></div></div>'
+    + '<div class="pg" id="pg-prof"><div class="back" id="profback" style="margin-bottom:0"><u>' + mi('back', 22, 30) + '</u></div><div class="pbig"></div><div class="pnm" id="pnm"></div><div class="ptag" id="ptag"></div><div class="psent" id="psent">Friend request sent!</div><div class="pbtn" id="padd">Add friend</div><div class="pbtn">Block</div><div class="pbtn">Report</div></div>'
     + '<div class="pg" id="pg-chat"><h2>Chats</h2><div class="inv" style="background:rgba(40,70,160,.5);color:#fff;height:58px;font-size:22px">New chat</div><div class="empty">No chats yet<small>Your chats will appear here.</small></div></div>'
-    + '<div class="pg" id="pg-set"><h2>Settings</h2><div class="setrow" data-s="video">&#128250; Video</div><div class="setrow">&#128266; Audio</div><div class="setrow">&#127918; Controller</div><div class="setrow">&#128100; Account</div></div>'
+    + '<div class="pg" id="pg-set"><h2>Settings</h2><div class="setrow" data-s="video">Video</div><div class="setrow">Audio</div><div class="setrow">Controller</div><div class="setrow">Account</div></div>'
     + '<div class="pg" id="pg-menu"><h2>Menu</h2><div class="setrow">Switch account</div><div class="setrow">Parental controls</div><div class="setrow">Help</div></div>';
   const dim = document.createElement('div'); dim.id = 'socdim';
   stage.appendChild(dim); stage.appendChild(p);
@@ -92,31 +92,33 @@
     const n = document.querySelector('[data-t="player.name"]'); nm.textContent = n ? n.textContent : 'Player';
   };
   const show = (k) => { p.querySelectorAll('.tb').forEach((t) => t.classList.toggle('on', t.dataset.p === k)); p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-' + k).classList.add('on'); };
-  p.querySelectorAll('.tb').forEach((t) => { t.onclick = () => { show(t.dataset.p); window.SFX && SFX.play('click'); }; });
+  p.querySelectorAll('.tb').forEach((t) => { t.onclick = () => { show(t.dataset.p); }; });
   const open = () => { syncMe(); show('soc'); p.classList.add('on'); dim.classList.add('on'); window.SFX && SFX.play('social-open'); };
   const close = () => { if (!p.classList.contains('on')) return; p.classList.remove('on'); dim.classList.remove('on'); window.SFX && SFX.play('social-close'); };
   dim.onclick = close;
   // zona táctil sobre la foto de perfil
+  p.addEventListener('click', (e) => { if (e.target.closest('.back,.pg > .back')) { window.SFX && SFX.play('back'); return; } if (e.target.closest('.tb,.card,.ic4 div,.pl,.req,.setrow,.pbtn,.add,.padd,.inv,.x,.me')) window.SFX && SFX.play('click'); });
+  me.onclick = () => close();
   const nav = document.getElementById('nav');
   const hit = document.createElement('div'); hit.style.cssText = 'position:absolute;left:1766px;top:16px;width:116px;height:116px;z-index:30;cursor:pointer;pointer-events:auto'; hit.onclick = () => (p.classList.contains('on') ? close() : open()); if (nav) nav.appendChild(hit);
   new MutationObserver(() => { if (document.body.dataset.screen) close(); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
 
-  p.querySelector('#socadd').onclick = () => { show('soc'); p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-add').classList.add('on'); q0 && q0(); window.SFX && SFX.play('click'); };
-  p.querySelector('#socreq').onclick = () => window.SFX && SFX.play('click');
+  p.querySelector('#socadd').onclick = () => { show('soc'); p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-add').classList.add('on'); q0 && q0(); };
+  p.querySelector('#socreq').onclick = () =>
   p.querySelector('#socback').onclick = () => { show('soc'); window.SFX && SFX.play('back'); };
   const POOL = ['Nova_Kid', 'xX_Blaze_Xx', 'moonlight9', 'PixelPaul', 'sir_loin', 'KaiTheFox', 'ZeroCool77', 'mariah.b', 'LuckyStrike', 'OnlyAlex', 'SoupDragon', 'gamer_gale', 'TacoTuesday', 'RexOnFire'];
   const RECENT = ['Drojas_03', 'char_345der', 'DefiantSquid', 'colmillo_30', 'pzbnlx_27', 'RiftRunner', 'LunaPlays'];
   const sent = new Set();
   const res = p.querySelector('#socres'), cntEl = p.querySelector('#socn'), ttl = p.querySelector('#socttl'), q = p.querySelector('#socq');
   const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck"><svg viewBox="0 0 60 50" width="64" height="54"><path d="M6 27 L22 43 L54 6" fill="none" stroke="#1a9a3c" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 27 L22 43 L54 6" fill="none" stroke="#3fd860" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'; stage.appendChild(toast);
-  let tt = 0; const showToast = (n) => { toast.querySelector('#sctn').textContent = n; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); window.SFX && SFX.play('gift-sent'); };
+  let tt = 0; const showToast = (n) => { toast.querySelector('#sctn').textContent = n; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); };
   const openProf = (n) => {
     p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-prof').classList.add('on');
     p.querySelector('#pnm').textContent = n; p.querySelector('#ptag').textContent = n.replace(/[^A-Za-z]/g, '').slice(0, 12) + Math.floor(100 + (n.length * 37) % 900);
     const was = sent.has(n); p.querySelector('#psent').style.display = was ? 'block' : 'none'; p.querySelector('#padd').style.display = was ? 'none' : 'flex'; p.querySelector('#padd').dataset.n = n;
   };
-  const mkRow = (n, sub, addBtn) => { const d = document.createElement('div'); d.className = 'pl'; d.style.cursor = 'pointer'; d.innerHTML = '<div class="av" style="background:#4a4a55"></div><div><b></b>' + (sub ? '<span></span>' : '') + '</div>' + (addBtn && !sent.has(n) ? '<div class="padd">+&#9786; Add</div>' : ''); d.querySelector('b').textContent = n; if (sub) d.querySelector('span').textContent = sub;
-    d.onclick = (e) => { window.SFX && SFX.play('click'); if (e.target.closest('.padd')) { sent.add(n); e.target.closest('.padd').remove(); showToast(n); } else openProf(n); }; return d; };
+  const mkRow = (n, sub, addBtn) => { const d = document.createElement('div'); d.className = 'pl'; d.style.cursor = 'pointer'; d.innerHTML = '<div class="av" style="background:#4a4a55"></div><div><b></b>' + (sub ? '<span></span>' : '') + '</div>' + (addBtn && !sent.has(n) ? '<div class="padd"><i class="si" style="--m:url(assets/soc/addf.webp);width:28px;height:26px"></i>Add</div>' : ''); d.querySelector('b').textContent = n; if (sub) d.querySelector('span').textContent = sub;
+    d.onclick = (e) => { if (e.target.closest('.padd')) { sent.add(n); e.target.closest('.padd').remove(); showToast(n); } else openProf(n); }; return d; };
   const render = () => {
     const t = q.value.trim().toLowerCase(); res.innerHTML = '';
     if (!t) { ttl.textContent = 'Recent players'; cntEl.textContent = RECENT.length; RECENT.forEach((n, i) => res.appendChild(mkRow(n, 'Played together ' + (1 + i % 3) + 'w ago', i % 3 !== 2))); return; }

@@ -36,6 +36,7 @@
   new MutationObserver(() => { const bgv = document.getElementById('bg'); if (!bgv) return; try { if (document.body.dataset.screen === 'lobby') { const p = bgv.play(); p && p.catch && p.catch(() => {}); } else bgv.pause(); } catch (e) {} }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
   const st = document.createElement('style');
   st.textContent = `
+  .si{display:inline-block;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;flex:none}
   body.lkopen #nav,body.lkopen #lkt1,body.lkopen #lkt2,body.lkopen #lkth,body.lkopen #lkcnt{display:none!important}
   #lkbg{position:absolute;inset:0;display:none;background:radial-gradient(ellipse at 38% 62%,#1b86e8 0,#0b6fd4 38%,#0a52bc 68%,#0a2f94 100%)}
   body.lkopen #lkbg{display:block}
@@ -63,7 +64,7 @@
   #lkout .tl.sel::after{content:'';position:absolute;right:8px;bottom:9px;width:28px;height:8px;background:radial-gradient(circle,#fff 3px,transparent 4px) 0 0/10px 8px repeat-x;filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
   #lkout .tl .eq{position:absolute;right:6px;bottom:5px;width:20px;height:20px;border-radius:50%;background:#33d65a;color:#06361a;font:900 14px/20px Montserrat;text-align:center}
   #lkout .tl.ic{display:flex;align-items:center;justify-content:center;font:900 50px Montserrat;color:#fff}
-  #lkout .tl.ic svg{width:64px;height:64px;fill:#fff}
+  #lkout .tl.ic .si{color:#fff}
   #lkout .tl .pl{position:absolute;right:7px;bottom:5px;font:900 20px/20px Montserrat;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4)}
   #lkout .nm1{position:absolute;left:95px;top:678px;font:italic 400 21px 'Archivo Black';color:#d7e6ff}
   #lkout .nm2{position:absolute;left:90px;top:704px;font:italic 400 38px 'Archivo Black';white-space:nowrap;max-width:700px}
@@ -81,9 +82,9 @@
   const fullImg = L.querySelector('.full'); if (fullImg) fullImg.after(bg); else L.insertBefore(bg, L.firstChild);
   const out = document.createElement('div'); out.id = 'lkout';
   out.innerHTML = '<div class="tt">CHARACTER</div>'
-    + '<div class="tb ar" style="left:1107px">&#8249;</div><div class="tb tab on" style="left:1185px;width:126px">OUTFIT</div><div class="tb tab" style="left:1338px;width:170px">BACK BLING<i></i></div><div class="tb tab" style="left:1543px;width:120px">PICKAXE<i></i></div><div class="tb ar" style="left:1730px">&#8250;</div>'
-    + '<div class="sr"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="#fff" stroke-width="3"/><path d="M15 15l6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><input type="search" id="lkq" placeholder="Search" autocomplete="off" autocapitalize="off" spellcheck="false"></div>'
-    + '<div class="sq" style="left:1400px">&#9825;</div><div class="sort">Sort By:<br>Latest Acquired</div><div class="sq" style="left:1652px">&#8645;</div><div class="sq" style="left:1722px;width:73px">&#8801; <span style="margin-left:6px;background:#ffe92e;color:#1a1a00;border-radius:50%;width:24px;height:24px;font:900 16px/24px Montserrat;text-align:center">1</span></div>'
+    + '<div class="tb ar" style="left:1107px"><i class="si" style="--m:url(assets/soc/back.webp);width:15px;height:22px"></i></div><div class="tb tab on" style="left:1185px;width:126px">OUTFIT</div><div class="tb tab" style="left:1338px;width:170px">BACK BLING<i></i></div><div class="tb tab" style="left:1543px;width:120px">PICKAXE<i></i></div><div class="tb ar" style="left:1730px"><i class="si" style="--m:url(assets/soc/back.webp);width:15px;height:22px;transform:scaleX(-1)"></i></div>'
+    + '<div class="sr"><i class="si" style="--m:url(assets/soc/search.webp);width:22px;height:22px"></i><input type="search" id="lkq" placeholder="Search" autocomplete="off" autocapitalize="off" spellcheck="false"></div>'
+    + '<div class="sq" style="left:1400px"><i class="si" style="--m:url(assets/soc/heart.webp);width:26px;height:23px;color:#0a1a55"></i></div><div class="sort">Sort By:<br>Latest Acquired</div><div class="sq" style="left:1652px"><i class="si" style="--m:url(assets/soc/sort.webp);width:26px;height:26px;color:#0a1a55"></i></div><div class="sq" style="left:1722px;width:73px"><i class="si" style="--m:url(assets/soc/filt.webp);width:24px;height:22px;color:#0a1a55"></i><span style="margin-left:6px;background:#ffe92e;color:#1a1a00;border-radius:50%;width:24px;height:24px;font:900 16px/24px Montserrat;text-align:center">1</span></div>'
     + '<div class="al" id="lkal">All (0)</div><div class="gridw" id="lkg"></div>'
     + '<div class="nm1">OUTFIT - FORTNITE STYLE</div><div class="nm2" id="lkn2"></div><div class="ds" id="lkds"></div>'
     + '<div class="bb off" id="lkeq" style="left:1143px;width:134px">EQUIP</div><div class="bb off" style="left:1297px;width:112px">EDIT</div><div class="bb" style="left:1431px;width:168px">OPTIONS</div><div class="mic"></div><div class="bb" id="lkbk" style="left:1710px;width:128px">BACK</div>';
@@ -128,8 +129,8 @@
     swapT = setTimeout(() => { if (document.body.dataset.screen === 'locker') window.itemVid(true); }, delay || 220);
   };
   let preview = null;
-  const SHIRT = '<svg viewBox="0 0 24 24"><path d="M4 7l5-3c.6 1.4 1.7 2 3 2s2.4-.6 3-2l5 3-2 4-2-1v10H8V10l-2 1z"/></svg>';
-  const SHUF = '<svg viewBox="0 0 24 24"><path d="M3 7h4c2 0 3 1 4 3l2 4c1 2 2 3 4 3h3v-2l4 3.5-4 3.5v-2h-3c-3 0-4.5-1.5-5.5-3.7L9 10c-.6-1.3-1.2-1.8-2-1.8H3zM3 16h4c1 0 1.7-.4 2.3-1.4l.9-1.6.9 1.9c-.9 1.7-2 2.9-4.1 2.9H3zM17 4.5V3l4 3.5-4 3.5V8.5h-3c-1 0-1.800.5-2.400 1.400l-.9-2C11.400 6.300 12.600 5.500 14 5.500z"/></svg>';
+  const SHIRT = '<i class="si" style="--m:url(assets/soc/shirt.webp);width:64px;height:64px"></i>';
+  const SHUF = '<i class="si" style="--m:url(assets/soc/shuf.webp);width:64px;height:56px"></i>';
   const real = () => (window.__realChar ? window.__realChar() : window.__equipKey);
   const cur = () => (preview ? preview.key : real());
   const info = (it) => {
