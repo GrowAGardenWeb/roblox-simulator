@@ -9,11 +9,11 @@
     const cur = document.body.dataset.screen;
     if (prev === 'shop' && cur === 'detail') under = true;
     if (under && (cur === 'detail' || cur === 'gift')) {
-      shop.hidden = false; shop.style.pointerEvents = 'none'; shop.dataset.under = '1';
+      shop.hidden = false; shop.style.pointerEvents = 'none'; shop.dataset.under = '1'; shop.style.visibility = 'hidden'; // sigue en su lugar (conserva el scroll) pero ya no se pinta: menos memoria de video
       if (sc && Math.abs(sc.scrollTop - lastTop) > 2) sc.scrollTop = lastTop;
     } else if (under) {
       const back = cur === 'shop';
-      under = false; delete shop.dataset.under; shop.style.pointerEvents = '';
+      under = false; delete shop.dataset.under; shop.style.pointerEvents = ''; shop.style.visibility = '';
       if (back) { const l = document.getElementById('ldr'); if (l) l.classList.remove('on'); if (sc && Math.abs(sc.scrollTop - lastTop) > 2) sc.scrollTop = lastTop; }
     }
     prev = cur;
