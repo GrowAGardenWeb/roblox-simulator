@@ -37,8 +37,9 @@
   const st = document.createElement('style');
   st.textContent = `
   body.lkopen #nav,body.lkopen #lkt1,body.lkopen #lkt2,body.lkopen #lkth,body.lkopen #lkcnt{display:none!important}
-  #lkbg{position:absolute;inset:0;display:none;background:radial-gradient(ellipse at 30% 40%,#0b6ad6,#0a4cb8 55%,#083a9c)}
+  #lkbg{position:absolute;inset:0;display:none;background:radial-gradient(ellipse at 38% 62%,#1b86e8 0,#0b6fd4 38%,#0a52bc 68%,#0a2f94 100%)}
   body.lkopen #lkbg{display:block}
+  #lkout .gridw{scrollbar-width:none}
   body.lkopen #itemcv,body.lkopen #itemvid.nat{left:40px!important}
   #lkout{position:absolute;inset:0;display:none;color:#fff;font-family:Montserrat,system-ui;z-index:6}
   body.lkopen #lkout{display:block;animation:fxFade .25s both}
@@ -56,9 +57,10 @@
   #lkout .al::after{content:'';position:absolute;left:62px;right:-640px;top:12px;height:1px;background:rgba(255,255,255,.35)}
   #lkout .gridw{position:absolute;left:1100px;top:296px;width:720px;height:520px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;display:grid;grid-template-columns:repeat(6,100px);grid-auto-rows:124px;gap:21px 13px;padding:6px 8px 20px;align-content:start}
   #lkout .gridw::-webkit-scrollbar{display:none}
-  #lkout .tl{position:relative;width:100px;height:124px;border-radius:9px;overflow:hidden;background:#4aa6f2;cursor:pointer;box-sizing:border-box}
+  #lkout .tl{position:relative;width:100px;height:124px;border-radius:13px;overflow:hidden;background:#4aa6f2;cursor:pointer;box-sizing:border-box}
   #lkout .tl img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
-  #lkout .tl.sel{box-shadow:0 0 0 4px #ffe92e,0 0 0 7px rgba(255,255,255,.55);z-index:2}
+  #lkout .tl.sel{box-shadow:0 0 0 4px #f2ff2e,0 0 0 6px rgba(255,255,255,.6);z-index:2}
+  #lkout .tl.sel::after{content:'';position:absolute;right:8px;bottom:9px;width:28px;height:8px;background:radial-gradient(circle,#fff 3px,transparent 4px) 0 0/10px 8px repeat-x;filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
   #lkout .tl .eq{position:absolute;right:6px;bottom:5px;width:20px;height:20px;border-radius:50%;background:#33d65a;color:#06361a;font:900 14px/20px Montserrat;text-align:center}
   #lkout .tl.ic{display:flex;align-items:center;justify-content:center;font:900 50px Montserrat;color:#fff}
   #lkout .tl.ic svg{width:64px;height:64px;fill:#fff}

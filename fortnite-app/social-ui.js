@@ -34,8 +34,17 @@
   #socp .sbox .x{width:46px;height:46px;border-radius:9px;background:#bcd8ff;color:#0a1a55;display:flex;align-items:center;justify-content:center;font:900 24px Montserrat;cursor:pointer}
   #socp .inv{margin-top:12px;height:66px;border-radius:12px;background:linear-gradient(90deg,#8fc6ff,#a8d8ff);color:#0a1a55;display:flex;align-items:center;justify-content:center;font:600 25px Montserrat;cursor:pointer}
   #socp .sr{display:flex;margin:38px 0 10px;font:600 22px Montserrat}#socp .sr span{margin-left:auto;color:#cfe0ff}
+  #socp .pbig{width:80px;height:80px;border-radius:50%;background:#4a4a55;margin:-34px auto 0}
+  #socp .pnm{text-align:center;font:700 32px Montserrat;margin-top:22px}#socp .ptag{margin:16px auto 20px;width:max-content;padding:6px 18px;border-radius:20px;background:rgba(40,70,160,.5);font:600 22px Montserrat}
+  #socp .psent{display:none;text-align:center;color:#f4ff2a;font:800 27px Montserrat;margin:6px 0 18px}
+  #socp .pbtn{height:70px;border-radius:10px;background:rgba(60,95,170,.5);display:flex;align-items:center;justify-content:center;margin-top:10px;font:500 25px Montserrat;cursor:pointer}
+  #socp .padd{margin-left:auto;display:flex;align-items:center;gap:8px;padding:0 20px;height:68px;border-radius:10px;background:rgba(60,95,170,.5);font:500 22px Montserrat;cursor:pointer}
   #socp .empty{text-align:center;margin-top:230px;font:600 24px Montserrat;color:#bcd0f5}#socp .empty small{display:block;margin-top:10px;font:500 19px Montserrat;color:#9fb4e8}
   #socp .setrow{display:flex;align-items:center;gap:18px;padding:18px 6px;border-bottom:1px solid rgba(255,255,255,.08);font:600 25px Montserrat;cursor:pointer}
+  #soctoast{position:absolute;left:-40px;top:170px;width:810px;height:90px;z-index:80;background:linear-gradient(100deg,#fff 0,#fff 55%,#d8f8d8 75%,#8ff08f 100%);clip-path:polygon(0 0,100% 0,96% 100%,0 100%);transform:translateX(-110%);transition:transform .38s cubic-bezier(.2,.9,.3,1);display:flex;align-items:center;padding-left:215px;box-sizing:border-box;color:#111;font-family:Montserrat,system-ui;pointer-events:none}
+  #soctoast.on{transform:none}#soctoast .ic{position:absolute;left:215px;top:17px;width:56px;height:56px;border-radius:50%;background:#2f8de0;display:none}
+  #soctoast b{display:block;font:italic 900 24px 'Archivo Black',Montserrat;letter-spacing:-.5px}#soctoast span{font:600 22px Montserrat}#soctoast u{color:#1a8cff;text-decoration:none}
+  #soctoast .ck{position:absolute;right:90px;top:22px;font:900 46px Montserrat;color:#1fc84a}
   #socset{position:absolute;inset:0;z-index:70;display:none;background:#050a24;color:#fff;font-family:Montserrat,system-ui}#socset.on{display:block}
   #socset .cat{position:absolute;left:150px;top:40px;display:flex;gap:26px;font:700 22px Montserrat;color:#6f86c8}
   #socset .cat .on{color:#fff;border-bottom:4px solid #fff;padding-bottom:6px}
@@ -61,13 +70,15 @@
     + '<div class="pg on" id="pg-soc"><h2>Social</h2><div class="row2"><div class="card"><div class="av" style="width:46px;height:46px;background:#33509a"></div><div><b>Party</b><span>Just you</span></div></div><div class="card"><div class="av" style="width:46px;height:46px;border-radius:8px;background:#7a6a4a"></div><div><b>Game</b><span>Not in a game yet</span></div></div></div>'
     + '<div class="ic4"><div>&#128274;</div><div>&#127908;</div><div>&#127911;</div><div>&bull;&bull;&bull;</div></div><div class="note">Invite only &middot; Voice reporting off</div>'
     + '<div class="pl"><div class="av me2"><i></i></div><div><b class="nm"></b><span>Battle Royale</span></div></div>'
-    + '<div class="fh">Friends<span class="sp"></span><div class="add" id="socadd">+&#9786;</div></div><div class="req" id="socreq"><div class="av" style="background:#3a3f55"></div><div><b style="font:700 24px Montserrat">Friend requests</b><span style="display:block;font:500 20px Montserrat;color:#9fb4e8">3 requests</span></div><div class="badge">3</div></div>' + rows + '</div>'
-    + '<div class="pg" id="pg-add"><div class="back" id="socback"><u>&#8249;</u>Add friends</div><div class="sbox"><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.500" fill="none" stroke="#fff" stroke-width="3"/><path d="M15 15l6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><input id="socq" placeholder="Search" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="x" id="socx">&#10005;</div></div><div class="inv">Invite a friend</div><div class="sr">Search results<span id="socn">0</span></div><div id="socres"></div></div>'
+    + '<div class="fh">Friends<span class="sp"></span><div class="add" id="socadd">+&#9786;</div></div><div class="req" id="socreq"><div class="av" style="background:#3a3f55"></div><div><b style="font:700 24px Montserrat">Friend requests</b><span style="display:block;font:500 20px Montserrat;color:#9fb4e8">3 requests</span></div><div class="badge">3</div><span style="margin-left:10px;font:700 22px Montserrat">&#8250;</span></div>' + rows + '</div>'
+    + '<div class="pg" id="pg-add"><div class="back" id="socback"><u>&#8249;</u>Add friends</div><div class="sbox"><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.500" fill="none" stroke="#fff" stroke-width="3"/><path d="M15 15l6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><input id="socq" placeholder="Search by display name" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="x" id="socx">&#10005;</div></div><div class="inv">Invite a friend</div><div class="sr"><b id="socttl" style="font-weight:600">Recent players</b><span id="socn">0</span></div><div id="socres"></div></div>'
+    + '<div class="pg" id="pg-prof"><div class="back" id="profback" style="margin-bottom:0"><u>&#8249;</u></div><div class="pbig"></div><div class="pnm" id="pnm"></div><div class="ptag" id="ptag"></div><div class="psent" id="psent">Friend request sent!</div><div class="pbtn" id="padd">Add friend</div><div class="pbtn">Block</div><div class="pbtn">Report</div></div>'
     + '<div class="pg" id="pg-chat"><h2>Chats</h2><div class="inv" style="background:rgba(40,70,160,.5);color:#fff;height:58px;font-size:22px">New chat</div><div class="empty">No chats yet<small>Your chats will appear here.</small></div></div>'
     + '<div class="pg" id="pg-set"><h2>Settings</h2><div class="setrow" data-s="video">&#128250; Video</div><div class="setrow">&#128266; Audio</div><div class="setrow">&#127918; Controller</div><div class="setrow">&#128100; Account</div></div>'
     + '<div class="pg" id="pg-menu"><h2>Menu</h2><div class="setrow">Switch account</div><div class="setrow">Parental controls</div><div class="setrow">Help</div></div>';
   const dim = document.createElement('div'); dim.id = 'socdim';
   stage.appendChild(dim); stage.appendChild(p);
+  let q0 = null;
   const me = p.querySelector('.me'), me2 = p.querySelector('.me2'), nm = p.querySelector('.nm');
   const syncMe = () => {
     let A = {}; try { A = JSON.parse(localStorage.getItem('fn_avatar') || '{}'); } catch (e) {}
@@ -85,19 +96,33 @@
   const hit = document.createElement('div'); hit.style.cssText = 'position:absolute;left:1766px;top:16px;width:116px;height:116px;z-index:30;cursor:pointer;pointer-events:auto'; hit.onclick = () => (p.classList.contains('on') ? close() : open()); if (nav) nav.appendChild(hit);
   new MutationObserver(() => { if (document.body.dataset.screen) close(); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
 
-  p.querySelector('#socadd').onclick = () => { show('soc'); p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-add').classList.add('on'); p.querySelector('#socq').focus(); window.SFX && SFX.play('click'); };
+  p.querySelector('#socadd').onclick = () => { show('soc'); p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-add').classList.add('on'); q0 && q0(); window.SFX && SFX.play('click'); };
   p.querySelector('#socreq').onclick = () => window.SFX && SFX.play('click');
   p.querySelector('#socback').onclick = () => { show('soc'); window.SFX && SFX.play('back'); };
   const POOL = ['Nova_Kid', 'xX_Blaze_Xx', 'moonlight9', 'PixelPaul', 'sir_loin', 'KaiTheFox', 'ZeroCool77', 'mariah.b', 'LuckyStrike', 'OnlyAlex', 'SoupDragon', 'gamer_gale', 'TacoTuesday', 'RexOnFire'];
-  const res = p.querySelector('#socres'), cntEl = p.querySelector('#socn'), q = p.querySelector('#socq');
+  const RECENT = ['Drojas_03', 'char_345der', 'DefiantSquid', 'colmillo_30', 'pzbnlx_27', 'RiftRunner', 'LunaPlays'];
+  const sent = new Set();
+  const res = p.querySelector('#socres'), cntEl = p.querySelector('#socn'), ttl = p.querySelector('#socttl'), q = p.querySelector('#socq');
+  const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck">&#10003;</div>'; stage.appendChild(toast);
+  let tt = 0; const showToast = (n) => { toast.querySelector('#sctn').textContent = n; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); window.SFX && SFX.play('gift-sent'); };
+  const openProf = (n) => {
+    p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-prof').classList.add('on');
+    p.querySelector('#pnm').textContent = n; p.querySelector('#ptag').textContent = n.replace(/[^A-Za-z]/g, '').slice(0, 12) + Math.floor(100 + (n.length * 37) % 900);
+    const was = sent.has(n); p.querySelector('#psent').style.display = was ? 'block' : 'none'; p.querySelector('#padd').style.display = was ? 'none' : 'flex'; p.querySelector('#padd').dataset.n = n;
+  };
+  const mkRow = (n, sub, addBtn) => { const d = document.createElement('div'); d.className = 'pl'; d.style.cursor = 'pointer'; d.innerHTML = '<div class="av" style="background:#4a4a55"></div><div><b></b>' + (sub ? '<span></span>' : '') + '</div>' + (addBtn && !sent.has(n) ? '<div class="padd">+&#9786; Add</div>' : ''); d.querySelector('b').textContent = n; if (sub) d.querySelector('span').textContent = sub;
+    d.onclick = (e) => { window.SFX && SFX.play('click'); if (e.target.closest('.padd')) { sent.add(n); e.target.closest('.padd').remove(); showToast(n); } else openProf(n); }; return d; };
   const render = () => {
     const t = q.value.trim().toLowerCase(); res.innerHTML = '';
-    const list = t ? POOL.filter((x) => x.toLowerCase().includes(t[0]) || x.toLowerCase().includes(t)).slice(0, 8) : [];
-    if (t && !list.length) list.push(q.value.trim());
-    cntEl.textContent = t ? list.length : 0;
-    list.forEach((n) => { const d = document.createElement('div'); d.className = 'pl'; d.innerHTML = '<div class="av" style="background:#3a3f55"></div><div><b></b></div>'; d.querySelector('b').textContent = n; res.appendChild(d); });
+    if (!t) { ttl.textContent = 'Recent players'; cntEl.textContent = RECENT.length; RECENT.forEach((n, i) => res.appendChild(mkRow(n, 'Played together ' + (1 + i % 3) + 'w ago', i % 3 !== 2))); return; }
+    ttl.textContent = 'Search results';
+    const list = POOL.filter((x) => x.toLowerCase().includes(t[0]) || x.toLowerCase().includes(t)).slice(0, 12); if (!list.length) list.push(q.value.trim());
+    cntEl.textContent = list.length; list.forEach((n) => res.appendChild(mkRow(n, '', false)));
   };
   q.addEventListener('input', render); p.querySelector('#socx').onclick = () => { q.value = ''; render(); q.focus(); };
+  p.querySelector('#padd').onclick = () => { const n = p.querySelector('#padd').dataset.n; sent.add(n); p.querySelector('#padd').style.display = 'none'; p.querySelector('#psent').style.display = 'block'; showToast(n); };
+  p.querySelector('#profback').onclick = () => { p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-add').classList.add('on'); render(); window.SFX && SFX.play('back'); };
+  render(); q0 = () => { render(); };
 
   // Settings > Video
   const set = document.createElement('div'); set.id = 'socset';
