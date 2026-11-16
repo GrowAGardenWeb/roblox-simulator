@@ -117,6 +117,19 @@
       const u = byN[norm(o.name)] || byN[norm(o.nameEs)]; if (!u || seen.has(norm(o.name))) return; seen.add(norm(o.name));
       list.push({ key: 'lk_' + o.id, name: o.name, icon: o.icon, full: o.full, desc: o.desc, intro: o.intro, url: u });
     });
+    // 3) personajes que salen en la tienda de hoy (incluye bundles: su primer video es el del personaje principal)
+    try {
+      const shop = await fetchJ('data/shop.json'), n2 = (x) => norm(x).replace(/^lote(del|de)?(?=.{4})/, '').replace(/bundle$/, ''), by2 = {};
+      Object.keys(all).forEach((k) => { by2[n2(k)] = [].concat(all[k])[0]; });
+      const oById = {}; (outfits || []).forEach((o) => { oById[o.id] = o; });
+      for (const e of (shop && shop.entries) || []) {
+        const lead = (e.items || []).find((i) => i.type === 'outfit'); if (!lead) continue;
+        const o = oById[lead.id] || { id: lead.id, name: lead.name, nameEs: lead.nameEs, icon: lead.icon, full: lead.featured };
+        if (seen.has(norm(o.name))) continue;
+        const u = by2[n2(lead.name)] || by2[n2(lead.nameEs)] || by2[n2(e.name)] || by2[n2(e.nameEs)]; if (!u) continue;
+        seen.add(norm(o.name)); list.push({ key: 'lk_' + o.id, name: o.name, icon: o.icon, full: o.full, desc: o.desc, intro: o.intro, url: u });
+      }
+    } catch (e) { /* sin datos de la tienda: queda la lista de arriba */ }
     list.sort((a, b) => a.name.localeCompare(b.name));
     return list;
   };
