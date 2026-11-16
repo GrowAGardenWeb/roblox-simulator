@@ -42,6 +42,9 @@
   #socp .psent{display:none;text-align:center;color:#f4ff2a;font:800 27px Montserrat;margin:6px 0 18px}
   #socp .pbtn{height:70px;border-radius:10px;background:rgba(60,95,170,.5);display:flex;align-items:center;justify-content:center;margin-top:10px;font:500 25px Montserrat;cursor:pointer}
   #socp .padd{margin-left:auto;display:flex;align-items:center;gap:8px;padding:0 20px;height:68px;border-radius:10px;background:rgba(60,95,170,.5);font:500 22px Montserrat;cursor:pointer}
+  #socp .srch{display:flex;align-items:center;gap:16px;padding:26px 6px;font:600 23px Montserrat;color:#bcd0f5}
+  #socp .srch i{width:28px;height:28px;border-radius:50%;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;animation:socspin .8s linear infinite}
+  @keyframes socspin{to{transform:rotate(360deg)}}
   #socp .empty{text-align:center;margin-top:230px;font:600 24px Montserrat;color:#bcd0f5}#socp .empty small{display:block;margin-top:10px;font:500 19px Montserrat;color:#9fb4e8}
   #socp .setrow{display:flex;align-items:center;gap:18px;padding:18px 6px;border-bottom:1px solid rgba(255,255,255,.08);font:600 25px Montserrat;cursor:pointer}
   #soctoast{position:absolute;left:0;top:178px;width:740px;height:86px;z-index:80;background:linear-gradient(118deg,transparent 0 50%,rgba(150,225,160,.16) 50% 63%,transparent 63% 100%),linear-gradient(62deg,transparent 0 58%,rgba(255,255,255,.55) 58% 74%,transparent 74% 100%),linear-gradient(100deg,#fff 0,#fff 44%,#e8fbe9 66%,#d3f6d8 86%,#c4f2cb 100%);clip-path:polygon(0 0,100% 0,97% 100%,0 100%);transform:translateX(-112%);transition:transform .4s cubic-bezier(.16,.9,.3,1);display:flex;align-items:center;padding-left:230px;box-sizing:border-box;color:#111;font-family:Montserrat,system-ui;pointer-events:none}
@@ -113,7 +116,7 @@
   const RECENT = ['Drojas_03', 'char_345der', 'DefiantSquid', 'colmillo_30', 'pzbnlx_27', 'RiftRunner', 'LunaPlays'];
   const hs = (t) => { let h = 0; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
   const pic = (n) => 'url(assets/pa' + (hs(n) % 14) + '.webp)';
-  const sent = new Set();
+  const sent = new Set(); let qt = 0, qn = 0;
   const res = p.querySelector('#socres'), cntEl = p.querySelector('#socn'), ttl = p.querySelector('#socttl'), q = p.querySelector('#socq');
   const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck"><i class="si" style="--m:url(assets/soc/check.webp);width:52px;height:50px;color:#6fe08a"></i></div>'; stage.appendChild(toast);
   let tt = 0; const showToast = (n) => { toast.querySelector('#sctn').textContent = n; toast.querySelector('.ic').style.backgroundImage = pic(n); toast.classList.add('on'); window.SFX && SFX.play('friend-sent'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); };
@@ -128,8 +131,17 @@
     const t = q.value.trim().toLowerCase(); res.innerHTML = '';
     if (!t) { ttl.textContent = 'Recent players'; cntEl.textContent = RECENT.length; RECENT.forEach((n, i) => res.appendChild(mkRow(n, 'Played together ' + (1 + i % 3) + 'w ago', i % 3 !== 2))); return; }
     ttl.textContent = 'Search results';
-    const list = POOL.filter((x) => x.toLowerCase().includes(t[0]) || x.toLowerCase().includes(t)).slice(0, 12); if (!list.length) list.push(q.value.trim());
-    cntEl.textContent = list.length; list.forEach((n) => res.appendChild(mkRow(n, '', false)));
+    // búsqueda "con red": tarda ~1 s; luego salen el usuario exacto y 0-2 con nombre parecido
+    cntEl.textContent = ''; res.innerHTML = '<div class="srch"><i></i>Searching…</div>';
+    clearTimeout(qt); const mine = ++qn;
+    qt = setTimeout(() => {
+      if (mine !== qn || q.value.trim().toLowerCase() !== t) return;
+      const raw = q.value.trim(), h = hs(t), base = raw.replace(/\s+/g, '_'), tails = ['_', '07', 'xd', '_YT', '99', 'TTV', '_off', 'x'], heads = ['xX', 'The', 'Its', 'iam', 'Mr'];
+      const sim = [base + tails[h % tails.length], (heads[(h >>> 3) % heads.length]) + base.charAt(0).toUpperCase() + base.slice(1), base + (10 + h % 89), base.toLowerCase() + tails[(h >>> 5) % tails.length]];
+      const n = 1 + (h % 3); // 1 a 3 resultados
+      const list = [base]; for (const x of sim) { if (list.length >= n) break; if (!list.some((y) => y.toLowerCase() === x.toLowerCase())) list.push(x); }
+      res.innerHTML = ''; cntEl.textContent = list.length; list.forEach((nm, i) => { const row = mkRow(nm, '', false); row.style.animation = 'fxSlideL .3s ' + (i * 90) + 'ms both'; res.appendChild(row); });
+    }, 1000);
   };
   q.addEventListener('input', render); p.querySelector('#socx').onclick = () => { q.value = ''; render(); q.focus(); };
   p.querySelector('#padd').onclick = () => { const n = p.querySelector('#padd').dataset.n; sent.add(n); p.querySelector('#padd').style.display = 'none'; p.querySelector('#psent').style.display = 'block'; showToast(n); };
