@@ -11,7 +11,8 @@
   .gl-h1{position:absolute;left:290px;top:106px;font:italic 400 46px 'Archivo Black';transform:scaleX(.9);transform-origin:left;white-space:nowrap}
   .gl-h2{position:absolute;left:285px;top:154px;font:italic 400 21px 'Archivo Black';color:#33d9fe}
   .gl-bal{position:absolute;left:1830px;top:30px;width:128px;height:90px;box-sizing:border-box;background:#0b4fe0;border:3px solid #2a6bff;display:flex;align-items:center;justify-content:center;gap:8px;font:700 34px Montserrat;color:#fff;pointer-events:none}
-  .gl-bal i{width:26px;height:26px;border-radius:50%;background:radial-gradient(#dfe8ff,#8fa8e8);box-shadow:inset 0 0 0 3px #6f8be0;flex:none}
+  .gl-bal i{width:28px;height:28px;background:url(assets/vbuck.webp) center/contain no-repeat;flex:none}
+  #cfm .pbox .coin{background:url(assets/vbuck.webp) center/contain no-repeat!important;border-radius:0;width:38px;height:38px}
   .gl-user{position:absolute;right:46px;top:124px;font:italic 800 23px Montserrat;color:#fff;white-space:nowrap;pointer-events:none}
   #cfm .av{left:710px;top:224px;width:98px;height:98px}
   #cfm .who{left:836px;top:218px;font-size:32px;transform:scaleX(.9)}
@@ -58,7 +59,7 @@
   const refreshC = () => {
     sync(C);
     const it = window.__itm || {};
-    const cnt = document.getElementById('cfcnt'); if (cnt) cnt.textContent = 'THE FOLLOWING:';
+    const cnt = document.getElementById('cfcnt'); if (cnt) { const nn = it.n || 3; cnt.textContent = nn + '/' + nn + ' ITEMS'; }
     const nm = document.getElementById('cfname'); if (nm) nm.textContent = it.nameRaw || pretty(it.title);
     const ths = [...document.querySelectorAll('#cfth .th')], w = 108, gap = 14, tot = ths.length * w + (ths.length - 1) * gap;
     ths.forEach((d, i) => { d.style.left = (1000 - tot / 2 + i * (w + gap)) + 'px'; });
