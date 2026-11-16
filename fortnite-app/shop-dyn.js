@@ -216,7 +216,7 @@
         const thumbs = (e.kind === 'jam' ? [e.image] : e.items.map((i) => i.icon || i.featured).filter(Boolean));
         const n = Math.max(1, e.items.length || e.tracks.length || 1);
         ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), vdef: vidFor(e), iv: e.items.map((i) => ownOf(i)), ty: e.items.map((i) => i.type), urls: vidsFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), owned: !!e.dev, nameRaw: e.name, reg: e.regularPrice > e.finalPrice ? e.regularPrice : null, tag: '',
-          sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : String(e.items[0]?.type || 'ITEM').toUpperCase(), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], feat: e.items.map((i) => i.featured || i.icon || e.image), jam: e.kind === 'jam' } };
+          sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : (/^vehicle:/.test(e.items[0]?.type || '') ? 'VEHICLE' : String(e.items[0]?.type || 'ITEM').toUpperCase()), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], feat: e.items.map((i) => i.featured || i.icon || e.image), jam: e.kind === 'jam' } };
         const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail'; t.dataset.key = key;
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
         if (a) t.style.setProperty('--a', mix(a, 1.12)); if (b || a) t.style.setProperty('--b', mix(b || a, .8));

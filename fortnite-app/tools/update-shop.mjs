@@ -37,6 +37,8 @@ async function fromApi() {
       id: b.id, name: b.name, type: b.type?.value, rarity: b.rarity?.value, series: b.series?.value || null,
       icon: b.images?.icon || b.images?.smallIcon || null, featured: b.images?.featured || null,
     }));
+    // piezas de vehículo (carros, ruedas, decales): también cuentan como objetos del artículo
+    for (const c of e.cars || []) items.push({ id: c.id, name: c.name, type: 'vehicle:' + (c.type?.value || 'part'), rarity: c.rarity?.value, series: null, icon: c.images?.small || c.images?.large || null, featured: c.images?.large || null });
     const tracks = (e.tracks || []).map((t) => ({ id: t.id, title: t.title, artist: t.artist, album: t.album, year: t.releaseYear, bpm: t.bpm, duration: t.duration, art: t.albumArt || null }));
     const disp = (e.newDisplayAsset?.materialInstances || []).map((m) => ({ id: m.id, images: m.images || {}, colors: m.colors || {}, scalings: m.scalings || {}, flags: m.flags || {} }));
     const mi = disp[0];
