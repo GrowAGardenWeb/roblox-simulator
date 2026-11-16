@@ -41,7 +41,7 @@
   #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:visible;clip-path:inset(-56px 0 0 0);cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
   #shoprow.dyn .dt .di{position:absolute;inset:-26px -8px 14px -8px;background-position:center bottom;background-size:contain;background-repeat:no-repeat}
   #shoprow.dyn .dt.bundle .di{inset:-24px 0 10px 0;background-size:auto 100%;background-position:center bottom;background-repeat:no-repeat;filter:none}
-  #shoprow.dyn .dt.map{background:url(assets/maptex.webp) center/cover,linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));background-blend-mode:overlay}
+  #shoprow.dyn .dt.map{background:url(assets/maptex_soft.webp) center/cover,linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));background-blend-mode:overlay}
   #shoprow.dyn .dt.solid{clip-path:inset(0 round 14px)}
   #shoprow.dyn .dt.dev{height:262px}
   #shoprow.dyn .dt .ownlbl{position:absolute;left:12px;bottom:10px;font:800 14px Montserrat;color:#5cff7a;letter-spacing:.03em;text-shadow:0 1px 3px rgba(0,0,0,.5)}
@@ -116,7 +116,7 @@
     let devTok = null; const devOn = (() => { try { return localStorage.getItem('fn_dev') !== '0'; } catch (e) { return true; } })();
     const ptOn = (() => { try { return JSON.parse(localStorage.getItem('fn_mod') || '{}').pt === '1'; } catch (e) { return false; } })();
     if (devOn) {
-      const gold = { color1: '7f5d25ff', color2: 'ba9600ff', color3: 'e5b76aff' }, mkE = (o) => Object.assign({ order: -1, kind: 'item', info: '', tileSize: 'Size_2_x_1', sortPriority: 0, regularPrice: 0, finalPrice: 0, giftable: true, inDate: null, banner: null, tracks: [], images: [], display: [], colors: gold, sectionId: '__dev', section: 'DEVELOPER', sectionIndex: -1, dev: true }, o);
+      const gold = { color1: 'f2c230ff', color2: 'e0a31cff', color3: 'f8d24cff' }, mkE = (o) => Object.assign({ order: -1, kind: 'item', info: '', tileSize: 'Size_2_x_1', sortPriority: 0, regularPrice: 0, finalPrice: 0, giftable: true, inDate: null, banner: null, tracks: [], images: [], display: [], colors: gold, sectionId: '__dev', section: 'DEVELOPER', sectionIndex: -1, dev: true }, o);
       const dev = [mkE({ offerId: 'dev_pirate', devKey: 'pirate', name: 'Pirate Token', nameEs: null, image: 'assets/pirate_token.webp', items: [{ id: 'pirate', name: 'Pirate Token', type: 'currency', icon: 'assets/pirate_token.webp', featured: null }], sortPriority: 100 })];
       [['Solid Gold Rugahand', 'Solid Gold A$AP Rocky'], ['Solid Gold Lil Uzi Vert', 'Solid Gold Lil Uzi Vert'], ['Solid Gold Miku', 'Solid Gold Miku']].forEach(([src, label], i) => {
         const o = (outfits || []).find((x) => x.name === src); if (!o) return;
