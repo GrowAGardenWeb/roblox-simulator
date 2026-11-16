@@ -46,7 +46,7 @@
   #shoprow.dyn{position:relative;width:945px;height:auto;padding-bottom:60px}
   #shoprow.dyn .dsec{font:italic 400 34px 'Archivo Black';color:#fff;text-shadow:0 3px 4px rgba(0,0,40,.35);margin:22px 0 10px;white-space:nowrap}
   #shoprow.dyn .dgrid{display:grid;grid-template-columns:repeat(4,230px);grid-auto-flow:dense;gap:30px 8px}
-  #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:visible;clip-path:inset(-56px 0 0 0);cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+  #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:visible;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
   #shoprow.dyn .dt .di{position:absolute;inset:-26px -8px 14px -8px;background-position:center bottom;background-size:contain;background-repeat:no-repeat}
   #shoprow.dyn .dt.bundle .di{inset:-24px 0 10px 0;background-size:auto 100%;background-position:center bottom;background-repeat:no-repeat;filter:none}
   #shoprow.dyn .dt.map{background:url(assets/maptex_soft.webp) center/cover,linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));background-blend-mode:overlay}
@@ -84,7 +84,7 @@
   #shoprow.dyn .dt .cmp .hero{position:absolute;right:-6px;top:-6px;bottom:0;width:62%;background-size:auto 112%;background-position:right 30%;background-repeat:no-repeat}
   #shopbg{position:absolute;inset:-70px -300px;pointer-events:none;z-index:0}
   #shopbg i{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}#shopbg i.on{opacity:1}
-  #dynart{position:absolute;left:1020px;top:120px;width:820px;height:690px;object-fit:contain;display:none;z-index:1;pointer-events:none;filter:drop-shadow(0 18px 24px rgba(0,0,40,.35))}`;
+  #dynart{position:absolute;left:1020px;top:120px;width:820px;height:690px;object-fit:contain;display:none;z-index:1;pointer-events:none}`;
   document.head.appendChild(css);
 
 
@@ -346,6 +346,12 @@
         if (el.dataset.u !== u) { el.dataset.u = u; el.innerHTML = '<img src="' + u + '" alt="" draggable="false">'; }
       });
     };
+    // al salir de la ficha y de los regalos se liberan el arte grande, las miniaturas y el video (antes se quedaban en memoria y se acumulaban)
+    new MutationObserver(() => {
+      const sc = document.body.dataset.screen; if (sc === 'detail' || sc === 'gift') return;
+      art.removeAttribute('src'); art.dataset.src = ''; document.querySelectorAll('#thumbs .tsl').forEach((el) => { if (el.dataset.u) { el.innerHTML = ''; el.dataset.u = ''; } });
+      if (sc !== 'lobby' && sc !== 'locker') { try { const v = document.getElementById('itemvid'); if (v && (v.getAttribute('src') || v.dataset.want)) { v.pause(); v.removeAttribute('src'); v.load(); delete v.dataset.want; } } catch (e) {} }
+    }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     new MutationObserver(() => { const k = ITEMS[window.curItem]; if (k && k.dyn && document.body.dataset.screen === 'detail') { k.dyn.cur = undefined; k.url = k.vdef; } setTimeout(apply, 40); setTimeout(apply, 250); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     step('listo'); setTimeout(() => step('estable'), 3000);
     window.__isCharVid = (it) => { if (!it) return false; if (!it.dyn) return it.sub === undefined || /OUTFIT/.test(it.sub); const i = it.iv ? it.iv.indexOf(it.url) : -1, t = i >= 0 ? it.ty[i] : (it.ty && it.ty.includes('outfit') ? 'outfit' : it.ty && it.ty[0]); return t === 'outfit'; };
