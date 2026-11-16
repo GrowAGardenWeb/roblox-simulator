@@ -251,15 +251,20 @@
     {
       const st = document.createElement('style');
       st.textContent = `#fbtn{position:absolute;left:217px;top:147px;width:82px;height:80px;z-index:8;cursor:pointer}
-      #fpan{position:absolute;left:217px;top:147px;width:407px;z-index:9;display:none}
+      #fpan{position:absolute;left:217px;top:147px;width:407px;z-index:9;visibility:hidden;opacity:0;pointer-events:none;transform-origin:41px 40px;transform:scale(.2,.12);transition:transform .42s cubic-bezier(.2,1.15,.3,1),opacity .22s ease,visibility 0s .42s}
       #fpan .fh{height:80px;border-radius:14px;background:#a9b9f6;color:#0a1a55;font:italic 400 32px 'Archivo Black';display:flex;align-items:center;gap:16px;padding-left:24px;cursor:pointer}
       #fpan .fh i{width:36px;height:28px;background:linear-gradient(#0a1a55 0 5px,transparent 5px 11px,#0a1a55 11px 16px,transparent 16px 22px,#0a1a55 22px 27px);border-radius:2px}
       #fpan .fl{margin-top:22px;height:520px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain;background:rgba(8,22,86,.9);border-radius:14px;padding:8px;-webkit-overflow-scrolling:touch}
       #fpan .fl div{padding:15px 18px;font:600 28px/1.15 Montserrat,system-ui;color:#8da3e6;border-radius:10px;cursor:pointer}
       #fpan .fl div.on{background:#9fb4f2;color:#0a1a55}
-      .screen[data-screen="shop"].fopen #fpan{display:block;animation:fxSlideL .25s ease-out both}
-      .screen[data-screen="shop"].fopen #fbtn,.screen[data-screen="shop"].fopen #shoprail,.screen[data-screen="shop"].fopen img.px[src*="shop_filter"],.screen[data-screen="shop"].fopen img.px[src*="shop_rail"]{display:none}
-      .screen[data-screen="shop"] #shopscroll,.screen[data-screen="shop"] [data-t="shop.title"]{transition:translate .28s cubic-bezier(.2,.9,.3,1)}
+      .screen[data-screen="shop"].fopen #fpan{visibility:visible;opacity:1;pointer-events:auto;transform:scale(1,1);transition:transform .42s cubic-bezier(.2,1.15,.3,1),opacity .18s ease,visibility 0s}
+      #fpan .fl{opacity:0;translate:0 -18px;transition:opacity .25s .12s,translate .38s .1s cubic-bezier(.2,.9,.3,1)}
+      .screen[data-screen="shop"].fopen #fpan .fl{opacity:1;translate:0 0}
+      #fpan .fl div{transition:background .2s,color .2s}
+      .screen[data-screen="shop"] #shoprail,.screen[data-screen="shop"] img.px[src*="shop_filter"],.screen[data-screen="shop"] img.px[src*="shop_rail"]{transition:opacity .2s}
+      .screen[data-screen="shop"].fopen #fbtn{pointer-events:none}
+      .screen[data-screen="shop"].fopen #shoprail,.screen[data-screen="shop"].fopen img.px[src*="shop_rail"]{opacity:0;pointer-events:none}
+      .screen[data-screen="shop"] #shopscroll,.screen[data-screen="shop"] [data-t="shop.title"]{transition:translate .42s cubic-bezier(.2,1.05,.3,1)}
       .screen[data-screen="shop"].fopen #shopscroll,.screen[data-screen="shop"].fopen [data-t="shop.title"]{translate:330px 0}`;
       document.head.appendChild(st);
       const fbtn = document.createElement('div'); fbtn.id = 'fbtn';
