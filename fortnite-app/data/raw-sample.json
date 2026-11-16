@@ -30,7 +30,7 @@
     "id": "Twinzer",
     "name": "Twinzer",
     "category": "Start Your Engines",
-    "index": 2,
+    "index": 6,
     "rank": 178,
     "showIneligibleOffers": "always",
     "useWidePreview": true,
@@ -177,7 +177,7 @@
    "layout": {
     "id": "JT111326",
     "name": "Jam Tracks",
-    "index": 11,
+    "index": 21,
     "rank": 183,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
@@ -282,7 +282,7 @@
    "layout": {
     "id": "SummerBatmanGCS",
     "name": "Gotham City Summer",
-    "index": 1,
+    "index": 8,
     "rank": 193,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
