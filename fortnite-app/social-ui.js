@@ -44,7 +44,12 @@
   #soctoast{position:absolute;left:-40px;top:170px;width:810px;height:90px;z-index:80;background:linear-gradient(100deg,#fff 0,#fff 55%,#d8f8d8 75%,#8ff08f 100%);clip-path:polygon(0 0,100% 0,96% 100%,0 100%);transform:translateX(-110%);transition:transform .38s cubic-bezier(.2,.9,.3,1);display:flex;align-items:center;padding-left:215px;box-sizing:border-box;color:#111;font-family:Montserrat,system-ui;pointer-events:none}
   #soctoast.on{transform:none}#soctoast .ic{position:absolute;left:215px;top:17px;width:56px;height:56px;border-radius:50%;background:#2f8de0;display:none}
   #soctoast b{display:block;font:italic 900 24px 'Archivo Black',Montserrat;letter-spacing:-.5px}#soctoast span{font:600 22px Montserrat}#soctoast u{color:#1a8cff;text-decoration:none}
-  #soctoast .ck{position:absolute;right:90px;top:22px;font:900 46px Montserrat;color:#1fc84a}
+  #soctoast .ck{position:absolute;right:46px;top:18px;width:64px;height:54px;scale:.2;opacity:0}
+  #soctoast.on .ck{animation:sckpop .45s .25s cubic-bezier(.2,1.5,.4,1) both}
+  #soctoast::after{content:'';position:absolute;right:0;top:0;bottom:0;width:0;background:#22d655;transform:skewX(-12deg);transform-origin:right}
+  #soctoast.on::after{animation:scwipe .5s .05s ease-out both}
+  @keyframes sckpop{to{scale:1;opacity:1}}
+  @keyframes scwipe{0%{width:0;opacity:1}60%{width:120px;opacity:1}100%{width:120px;opacity:0}}
   #socset{position:absolute;inset:0;z-index:70;display:none;background:#050a24;color:#fff;font-family:Montserrat,system-ui}#socset.on{display:block}
   #socset .cat{position:absolute;left:150px;top:40px;display:flex;gap:26px;font:700 22px Montserrat;color:#6f86c8}
   #socset .cat .on{color:#fff;border-bottom:4px solid #fff;padding-bottom:6px}
@@ -103,7 +108,7 @@
   const RECENT = ['Drojas_03', 'char_345der', 'DefiantSquid', 'colmillo_30', 'pzbnlx_27', 'RiftRunner', 'LunaPlays'];
   const sent = new Set();
   const res = p.querySelector('#socres'), cntEl = p.querySelector('#socn'), ttl = p.querySelector('#socttl'), q = p.querySelector('#socq');
-  const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck">&#10003;</div>'; stage.appendChild(toast);
+  const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck"><svg viewBox="0 0 60 50" width="64" height="54"><path d="M6 27 L22 43 L54 6" fill="none" stroke="#1a9a3c" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 27 L22 43 L54 6" fill="none" stroke="#3fd860" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'; stage.appendChild(toast);
   let tt = 0; const showToast = (n) => { toast.querySelector('#sctn').textContent = n; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); window.SFX && SFX.play('gift-sent'); };
   const openProf = (n) => {
     p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-prof').classList.add('on');
