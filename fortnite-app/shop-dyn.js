@@ -19,14 +19,20 @@
     addEventListener('pagehide', clean); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') clean(); });
   } catch (e) {}
   const light = lvl >= 1;
-  const step = (x) => { try { localStorage.setItem('fnStep', x + ' · ' + (document.body && document.body.dataset.screen || '-') + ' · ' + new Date().toISOString().slice(11, 19)); } catch (e) {} };
+  const stat = () => { try { const q = (x) => document.querySelectorAll(x).length, m = performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1048576) + 'MB' : ''; return 't' + q('#shoprow .dt') + ' i' + q('#shoprow .di[style*=\"background-image\"]') + (m ? ' ' + m : ''); } catch (e) { return ''; } };
+  const step = (x) => { try { let h = []; try { h = JSON.parse(localStorage.getItem('fnHist') || '[]'); } catch (e) {} h.push(x + ' · ' + (document.body && document.body.dataset.screen || '-') + ' · ' + new Date().toISOString().slice(11, 19) + ' · ' + stat()); localStorage.setItem('fnHist', JSON.stringify(h.slice(-9))); localStorage.setItem('fnStep', h[h.length - 1]); } catch (e) {} };
   window.__fnStep = step;
   // el "último paso" ahora anota cada cambio de pantalla y el artículo abierto, para ver exactamente dónde se cierra
   try { new MutationObserver(() => step('pantalla ' + (document.body.dataset.screen || '-') + (window.curItem ? ' · ' + String(window.curItem).slice(0, 22) : ''))).observe(document.documentElement.querySelector('body') || document.documentElement, { attributes: true, attributeFilter: ['data-screen'] }); } catch (e) {}
   try {
     if (/[?&]nodyn=1/.test(location.search)) return;
-    const prev = localStorage.getItem('fnStep'), crashed = localStorage.getItem('fnBoot');
-    if (crashed && prev) { const bn = document.createElement('div'); bn.textContent = 'Se cerró la vez pasada. Último paso: ' + prev + ' (toca para ocultar)'; bn.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:#400;color:#fff;font:12px/1.3 system-ui;padding:8px 10px;border-radius:8px'; bn.onclick = () => bn.remove(); addEventListener('DOMContentLoaded', () => document.body.appendChild(bn)); if (document.body) document.body.appendChild(bn); }
+    // aviso de cierre: se marca "viva" la página y se desmarca solo al salir o pasar a segundo plano; si al abrir sigue marcada, se cerró sola
+    const was = localStorage.getItem('fnAlive'); let hist = []; try { hist = JSON.parse(localStorage.getItem('fnHist') || '[]'); } catch (e) {}
+    localStorage.setItem('fnAlive', '1'); localStorage.setItem('fnHist', '[]');
+    const bye = () => { try { localStorage.removeItem('fnAlive'); } catch (e) {} };
+    addEventListener('pagehide', bye); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') bye(); else try { localStorage.setItem('fnAlive', '1'); } catch (e) {} });
+    if (was && hist.length) { const bn = document.createElement('div'); bn.innerHTML = '<b>Se cerró la vez pasada.</b> Últimos pasos:<br>' + hist.slice(-7).map((x) => x.replace(/</g, '')).join('<br>') + '<br><i>(toca para ocultar)</i>'; bn.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:#400;color:#fff;font:11px/1.35 system-ui;padding:8px 10px;border-radius:8px;max-height:45vh;overflow:auto'; bn.onclick = () => bn.remove(); addEventListener('DOMContentLoaded', () => document.body.appendChild(bn)); if (document.body) document.body.appendChild(bn); }
+
   } catch (e) {}
   step('inicio');
   window.__shopLight = lvl; if (light) document.documentElement.classList.add('shoplite');
