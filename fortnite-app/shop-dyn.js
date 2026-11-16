@@ -81,12 +81,15 @@
   #dynart{position:absolute;left:1020px;top:120px;width:820px;height:690px;object-fit:contain;display:none;z-index:1;pointer-events:none;filter:drop-shadow(0 18px 24px rgba(0,0,40,.35))}`;
   document.head.appendChild(css);
 
+
+  // si la tienda dinámica no pudo armarse, se cargan las imágenes de la tienda vieja
+  const restoreOld = () => document.querySelectorAll('#shopscroll img[data-lz]').forEach((im) => { im.src = im.dataset.lz; im.removeAttribute('data-lz'); });
   Promise.all([
     fetch('data/shop.json?' + Date.now()).then((r) => { if (!r.ok) throw 0; return r.json(); }),
     fetch('data/videos.json?' + Date.now()).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
     fetch('data/backgrounds.json?' + Date.now()).then((r) => (r.ok ? r.json() : {})).catch(() => ({})).then((b) => { window.__bgFile = b; }),
     fetch('data/outfits.json?' + Date.now()).then((r) => (r.ok ? r.json() : [])).catch(() => []),
-  ]).then(([shop, vids, , outfits]) => { step('datos'); return build(shop, vids, outfits); }).catch(() => {});
+  ]).then(([shop, vids, , outfits]) => { step('datos'); return build(shop, vids, outfits); }).then((ok) => { if (ok === false) restoreOld(); }).catch(() => { restoreOld(); });
 
   function build(shop, vids, outfits) {
     const old = document.getElementById('shopscroll');
@@ -104,7 +107,7 @@
     // video por defecto: el del artículo o el de su pieza principal. Nunca el de una pieza acompañante (mochila, pico...)
     const vidFor = (e) => arr(all[e.offerId])[0] || arr(all[e.name])[0] || arr(byNorm[norm(e.name)])[0] || arr(byNorm[norm(e.nameEs)])[0] || ownOf(lead(e)) || '';
     const E = (shop.entries || []).filter((e) => !BAD(e)).slice(0, lvl >= 2 ? 80 : 1e9);
-    if (!old || !ITEMS || !E.length) return;
+    if (!old || !ITEMS || !E.length) return false;
 
     const sc = old.cloneNode(false);                 // sin los oyentes de la tienda anterior (ajuste por filas)
     const shopin = document.createElement('div'); shopin.className = 'shopin'; shopin.style.height = 'auto';
@@ -137,7 +140,7 @@
       const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
       im.onload = () => {
         try {
-          const w = im.naturalWidth, h = im.naturalHeight, r = Math.min(1, (fit ? 700 : 420) / Math.max(w, h)), cw = Math.max(1, Math.round(w * r)), ch = Math.max(1, Math.round(h * r));
+          const w = im.naturalWidth, h = im.naturalHeight, r = Math.min(1, (fit ? 480 : 300) / Math.max(w, h)), cw = Math.max(1, Math.round(w * r)), ch = Math.max(1, Math.round(h * r));
           const c = document.createElement('canvas'); c.width = cw; c.height = ch; c.getContext('2d').drawImage(im, 0, 0, cw, ch);
           if (probe) {
             const sw = 96, sh = Math.max(1, Math.round(96 * h / w)), sc2 = document.createElement('canvas'); sc2.width = sw; sc2.height = sh;
@@ -241,7 +244,22 @@
     const shopScr = document.querySelector('.screen[data-screen="shop"]');
     const bgW = document.createElement('div'); bgW.id = 'shopbg'; bgW.innerHTML = '<i></i><i></i>'; shopScr.insertBefore(bgW, shopScr.firstChild);
     let bgI = 0, bgCur = '';
-    const setBg = (c, url) => { const key = (url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key; const el = bgW.children[bgI = 1 - bgI]; el.style.background = url ? 'linear-gradient(rgba(4,14,52,.35),rgba(4,14,52,.6)),url("' + url + '") center/cover no-repeat' : 'none'; bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
+    // fondos de sección: se bajan una vez, se reducen a 960 px y se conservan máx. 3 (se libera el resto)
+    const bgCache = new Map();
+    const getBg = (url) => new Promise((res) => {
+      if (bgCache.has(url)) { res(bgCache.get(url)); return; }
+      const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
+      im.onload = () => {
+        try {
+          const r = Math.min(1, 960 / im.naturalWidth), c = document.createElement('canvas'); c.width = Math.round(im.naturalWidth * r); c.height = Math.round(im.naturalHeight * r);
+          c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+          c.toBlob((bl) => { const u = bl ? URL.createObjectURL(bl) : url; c.width = c.height = 0; bgCache.set(url, u); while (bgCache.size > 3) { const k = bgCache.keys().next().value, old = bgCache.get(k); bgCache.delete(k); if (old.startsWith('blob:') && !Array.from(bgW.children).some((e) => e.style.background.includes(old))) URL.revokeObjectURL(old); } res(u); }, 'image/jpeg', 0.8);
+        } catch (e) { bgCache.set(url, url); res(url); }
+      };
+      im.onerror = () => res(url); im.src = url;
+    });
+    const setBg = (c, url) => { if (url) getBg(url).then((u) => rawSetBg(c, u, url)); else rawSetBg(c, '', ''); };
+    const rawSetBg = (c, url, orig) => { const key = (orig || url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key; const el = bgW.children[bgI = 1 - bgI]; el.style.background = url ? 'linear-gradient(rgba(4,14,52,.35),rgba(4,14,52,.6)),url("' + url + '") center/cover no-repeat' : 'none'; bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
     // título de la sección actual
     const ttl = document.querySelector('[data-t="shop.title"]'); let last = '';
     let fHi = null;
