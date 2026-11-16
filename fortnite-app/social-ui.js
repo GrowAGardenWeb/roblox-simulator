@@ -93,8 +93,8 @@
   };
   const show = (k) => { p.querySelectorAll('.tb').forEach((t) => t.classList.toggle('on', t.dataset.p === k)); p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-' + k).classList.add('on'); };
   p.querySelectorAll('.tb').forEach((t) => { t.onclick = () => { show(t.dataset.p); window.SFX && SFX.play('click'); }; });
-  const open = () => { syncMe(); show('soc'); p.classList.add('on'); dim.classList.add('on'); window.SFX && SFX.play('open'); };
-  const close = () => { p.classList.remove('on'); dim.classList.remove('on'); };
+  const open = () => { syncMe(); show('soc'); p.classList.add('on'); dim.classList.add('on'); window.SFX && SFX.play('social-open'); };
+  const close = () => { if (!p.classList.contains('on')) return; p.classList.remove('on'); dim.classList.remove('on'); window.SFX && SFX.play('social-close'); };
   dim.onclick = close;
   // zona táctil sobre la foto de perfil
   const nav = document.getElementById('nav');
