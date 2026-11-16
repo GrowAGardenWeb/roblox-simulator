@@ -118,8 +118,8 @@
     const groups = new Map();
     for (const e of E) { const k = e.sectionId || e.section || '-'; if (!groups.has(k)) groups.set(k, { name: e.section || 'DESTACADOS', idx: e.sectionIndex ?? 999, items: [] }); groups.get(k).items.push(e); }
     // sección DEVELOPER: Pirate Token (si está activo en el panel) + los 3 Solid Gold; siempre "OWNED"
-    let devTok = null; const devOn = (() => { try { return localStorage.getItem('fn_dev') === '1'; } catch (e) { return false; } })();
-    const ptOn = (() => { try { return JSON.parse(localStorage.getItem('fn_mod') || '{}').pt === '1'; } catch (e) { return false; } })();
+    // la sección DEVELOPER (Pirate Token + skins Solid Gold) va unida al interruptor PIRATE TOKEN del panel
+    let devTok = null; const ptOn = (() => { try { return JSON.parse(localStorage.getItem('fn_mod') || '{}').pt === '1'; } catch (e) { return false; } })(), devOn = ptOn;
     if (devOn) {
       const gold = { color1: 'f2c230ff', color2: 'e0a31cff', color3: 'f8d24cff' }, mkE = (o) => Object.assign({ order: -1, kind: 'item', info: '', tileSize: 'Size_2_x_1', sortPriority: 0, regularPrice: 0, finalPrice: 0, giftable: true, inDate: null, banner: null, tracks: [], images: [], display: [], colors: gold, sectionId: '__dev', section: 'DEVELOPER', sectionIndex: -1, dev: true }, o);
       const dev = [mkE({ offerId: 'dev_pirate', devKey: 'pirate', name: 'Pirate Token', nameEs: null, image: 'assets/pirate_token.webp', items: [{ id: 'pirate', name: 'Pirate Token', type: 'currency', icon: 'assets/pirate_token.webp', featured: null }], sortPriority: 100 })];
@@ -214,7 +214,7 @@
           e.items.filter((i) => i !== lead && i.icon).slice(0, 6).forEach((i, k) => { const ic = document.createElement('div'); ic.className = 'ic'; ic.dataset.img = i.icon; ic.style.left = (10 + (k % 3) * 50 + (k > 2 ? 14 : 0)) + 'px'; ic.style.top = (16 + Math.floor(k / 3) * 62 + (k % 2) * 8) + 'px'; ic.style.rotate = (k % 2 ? 5 : -4) + 'deg'; cm.appendChild(ic); lazy.observe(ic); });
         }
         t.addEventListener('click', () => { window.curItem = e.devKey || key; });
-        if (e.dev) { t.classList.add('dev', 'map'); const pr = t.querySelector('.pr'); pr.className = 'ownlbl'; pr.textContent = 'OWNED'; if (e.devKey === 'pirate') { devTok = t; if (!ptOn) t.style.display = 'none'; } }
+        if (e.dev) { t.classList.add('dev', 'map'); const pr = t.querySelector('.pr'); pr.className = 'ownlbl'; pr.textContent = 'OWNED'; if (e.devKey === 'pirate') devTok = t; }
         g.appendChild(t);
       };
       // carga progresiva: la sección reserva su alto y sus casillas se crean por tandas al acercarse
@@ -297,8 +297,8 @@
       new MutationObserver(() => { if (document.body.dataset.screen !== 'shop') shopScr.classList.remove('fopen'); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     }
 
-    if (devOn) { window.shopPT = (on) => { const pc = document.getElementById('ptcard'); if (pc) pc.style.display = 'none'; row.style.top = '0px'; if (devTok) devTok.style.display = on ? '' : 'none'; }; window.shopPT(ptOn); }
-    else window.shopPT && window.shopPT(false);
+    // al cambiar PIRATE TOKEN en el panel, la tienda se vuelve a armar para mostrar u ocultar DEVELOPER
+    { let built = ptOn; const orig = window.shopPT; window.shopPT = (on) => { const pc = document.getElementById('ptcard'); if (pc) pc.style.display = 'none'; if (devOn) row.style.top = '0px'; if (!!on !== built) { built = !!on; setTimeout(() => location.reload(), 250); } }; window.shopPT(ptOn); }
 
     // ficha de objeto: miniaturas y arte propios
     const APPLE = !!window.__APPLE;
