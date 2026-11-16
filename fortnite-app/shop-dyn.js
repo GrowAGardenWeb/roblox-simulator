@@ -290,6 +290,7 @@
     const ttl = document.querySelector('[data-t="shop.title"]'); let last = '';
     let fHi = null;
     const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)], bgFor(cur[1])); heads.forEach((h) => { if (h) h[0].style.opacity = h === cur ? 0 : 1; }); if (fHi) fHi(heads.indexOf(cur)); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
+    sc.addEventListener('scroll', () => { window.__lastScroll = Date.now(); }, { passive: true });
     sc.addEventListener('scroll', upd, { passive: true }); setTimeout(upd, 50);
     // panel FILTERS: lista de secciones; al tocar una salta a ella y la actual queda marcada
     {
@@ -382,15 +383,16 @@
     // pre-descarga: tras entrar, se van bajando y reduciendo las imágenes grandes de los artículos, de una en una y con pausa
     // (se guardan ya reducidas en el disco; así al abrir una ficha ya están). Se detiene en fichas/regalos y si el teléfono pide ahorrar datos.
     setTimeout(() => {
+      if (/[?&]nopre=1/.test(location.search)) return; // interruptor de prueba: sin pre-descarga
       const nc = navigator.connection; if (nc && (nc.saveData || /(^|-)2g$/.test(nc.effectiveType || ''))) return;
       const keys = Object.keys(ITEMS).filter((k) => k.startsWith('d_') && ITEMS[k].dyn && /^https?:/.test(ITEMS[k].dyn.image || ''));
       let i = 0, done = 0;
       const next = () => {
         if (i >= keys.length) { step('pre-descarga lista ' + done); return; }
         const sc = document.body.dataset.screen;
-        if (document.hidden || sc === 'detail' || sc === 'gift' || sc === 'locker') { setTimeout(next, 1500); return; }
+        if (document.hidden || sc !== 'shop' || Date.now() - (window.__lastScroll || 0) < 1500) { setTimeout(next, 1500); return; }
         const it = ITEMS[keys[i++]], url = it.dyn.image, tm = it.dyn.tm || { jam: !!it.dyn.jam, bundle: it.sub === 'BUNDLE', comp: false };
-        tileGet(url).then((have) => { if (have) { setTimeout(next, 30); return; } makeTile(url, tm).then(() => { done++; if (done % 25 === 0) step('pre-descarga ' + done + '/' + keys.length); setTimeout(next, 700); }); });
+        tileGet(url).then((have) => { if (have) { setTimeout(next, 30); return; } makeTile(url, tm).then(() => { done++; if (done % 10 === 0) step('pre-descarga ' + done + '/' + keys.length); setTimeout(next, 1800); }); });
       };
       next();
     }, 4000);
