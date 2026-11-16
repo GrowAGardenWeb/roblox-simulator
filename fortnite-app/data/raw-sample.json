@@ -7,434 +7,6 @@
  ],
  "sample": [
   {
-   "regularPrice": 3300,
-   "finalPrice": 2400,
-   "devName": "[VIRTUAL]1 x J Balvin, 1 x Real, 1 x Real, 1 x Balvin Cruiser, 1 x In Da Party for -1 MtxCurrency",
-   "offerId": "v2:/4615bc7d8857ca614220c892b3d20bc6b9c97c4150126ab87f259dc43c690b20",
-   "inDate": "2026-11-11T00:00:00Z",
-   "outDate": "2026-11-15T23:59:59.999Z",
-   "bundle": {
-    "name": "J Balvin Bundle",
-    "info": "Bundle",
-    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_0.png"
-   },
-   "banner": {
-    "value": "900 V-Bucks Off",
-    "intensity": "Low",
-    "backendValue": "AmountOff"
-   },
-   "offerTag": {
-    "id": "promodesc6",
-    "text": "Unsheathe the included Pickaxe from the Real Back Bling when both are equipped!"
-   },
-   "giftable": true,
-   "refundable": false,
-   "sortPriority": -1,
-   "layoutId": "LatinGram.99",
-   "layout": {
-    "id": "LatinGram",
-    "name": "Main Stage Moment",
-    "index": 14,
-    "rank": 181,
-    "showIneligibleOffers": "always",
-    "useWidePreview": false,
-    "displayType": "tileGrid"
-   },
-   "colors": {
-    "color1": "86661cff",
-    "color2": "7f6326ff",
-    "color3": "ddae43ff",
-    "textBackgroundColor": "ddae43ff"
-   },
-   "tileSize": "Size_1_x_1",
-   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_VividBundle",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/DAv2_Featured_VividBundle",
-   "newDisplayAsset": {
-    "id": "DAv2_Featured_VividBundle",
-    "materialInstances": [],
-    "renderImages": [
-     {
-      "productTag": "Product.BR",
-      "fileName": "cosmo__01b00ee12e5deb4f_4859753cc4c80ffe.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_0.png"
-     },
-     {
-      "productTag": "Product.BR",
-      "fileName": "cosmo__01b00ee12e5deb4f_ee40182a6fe6a429.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_1.png"
-     },
-     {
-      "productTag": "Product.BR",
-      "fileName": "cosmo__01b00ee12e5deb4f_4ae8419617e7fe33.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_2.png"
-     },
-     {
-      "productTag": "Product.Juno",
-      "fileName": "cosmo__01b00ee12e5deb4f_8b1b6b97559f1dd3.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/01b00ee12e5deb4f/renderimage_3.png"
-     }
-    ]
-   },
-   "brItems": [
-    {
-     "id": "CID_A_182_Athena_Commando_M_Vivid_LZGQ3",
-     "name": "J Balvin",
-     "description": "Reggaetón Global Ambassador.",
-     "type": {
-      "value": "outfit",
-      "displayValue": "Outfit",
-      "backendValue": "AthenaCharacter"
-     },
-     "rarity": {
-      "value": "icon",
-      "displayValue": "Icon Series",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "series": {
-      "value": "Icon Series",
-      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
-      "colors": [
-       "5cf2f3ff",
-       "2bc9caff",
-       "004c71ff",
-       "025253ff",
-       "000f2bff"
-      ],
-      "backendValue": "CreatorCollabSeries"
-     },
-     "set": {
-      "value": "J Balvin",
-      "text": "Part of the J Balvin set.",
-      "backendValue": "FlockInsure"
-     },
-     "introduction": {
-      "chapter": "2",
-      "season": "7",
-      "text": "Introduced in Chapter 2, Season 7.",
-      "backendValue": 17
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/featured.png",
-      "lego": {
-       "small": "https://fortnite-api.com/images/cosmetics/lego/cid_a_182_athena_commando_m_vivid_lzgq3/small.png",
-       "large": "https://fortnite-api.com/images/cosmetics/lego/cid_a_182_athena_commando_m_vivid_lzgq3/large.png",
-       "wide": "https://fortnite-api.com/images/cosmetics/lego/cid_a_182_athena_commando_m_vivid_lzgq3/wide.png"
-      }
-     },
-     "variants": [
-      {
-       "channel": "Parts",
-       "type": "style",
-       "options": [
-        {
-         "tag": "Stage1",
-         "name": "J Balvin",
-         "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/variants/parts/stage1.png"
-        },
-        {
-         "tag": "Stage2",
-         "name": "Energia Balvin",
-         "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/variants/parts/stage2.png"
-        },
-        {
-         "tag": "Stage3",
-         "name": "Skeleton Balvin",
-         "image": "https://fortnite-api.com/images/cosmetics/br/cid_a_182_athena_commando_m_vivid_lzgq3/variants/parts/stage3.png"
-        }
-       ]
-      }
-     ],
-     "showcaseVideo": "FljhEi7BRrM",
-     "added": "2021-08-24T02:00:47Z"
-    },
-    {
-     "id": "BID_825_VividMale_7L9T0",
-     "name": "Real",
-     "description": "Dabiznes.",
-     "type": {
-      "value": "backpack",
-      "displayValue": "Back Bling",
-      "backendValue": "AthenaBackpack"
-     },
-     "rarity": {
-      "value": "icon",
-      "displayValue": "Icon Series",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "series": {
-      "value": "Icon Series",
-      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
-      "colors": [
-       "5cf2f3ff",
-       "2bc9caff",
-       "004c71ff",
-       "025253ff",
-       "000f2bff"
-      ],
-      "backendValue": "CreatorCollabSeries"
-     },
-     "set": {
-      "value": "J Balvin",
-      "text": "Part of the J Balvin set.",
-      "backendValue": "FlockInsure"
-     },
-     "introduction": {
-      "chapter": "2",
-      "season": "7",
-      "text": "Introduced in Chapter 2, Season 7.",
-      "backendValue": 17
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/bid_825_vividmale_7l9t0/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_825_vividmale_7l9t0/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_825_vividmale_7l9t0/featured.png"
-     },
-     "added": "2021-08-24T02:00:47Z"
-    },
-    {
-     "id": "Pickaxe_ID_661_VividMale1H_ZN6Q0",
-     "name": "Real",
-     "description": "Dabiznes.",
-     "type": {
-      "value": "pickaxe",
-      "displayValue": "Pickaxe",
-      "backendValue": "AthenaPickaxe"
-     },
-     "rarity": {
-      "value": "icon",
-      "displayValue": "Icon Series",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "series": {
-      "value": "Icon Series",
-      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
-      "colors": [
-       "5cf2f3ff",
-       "2bc9caff",
-       "004c71ff",
-       "025253ff",
-       "000f2bff"
-      ],
-      "backendValue": "CreatorCollabSeries"
-     },
-     "set": {
-      "value": "J Balvin",
-      "text": "Part of the J Balvin set.",
-      "backendValue": "FlockInsure"
-     },
-     "introduction": {
-      "chapter": "2",
-      "season": "7",
-      "text": "Introduced in Chapter 2, Season 7.",
-      "backendValue": 17
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_661_vividmale1h_zn6q0/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_661_vividmale1h_zn6q0/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_661_vividmale1h_zn6q0/featured.png"
-     },
-     "metaTags": [
-      "Cosmetics.MetaTags.Vivid"
-     ],
-     "added": "2021-08-24T02:00:47Z"
-    },
-    {
-     "id": "Glider_ID_308_VividMale_H8JAS",
-     "name": "Balvin Cruiser",
-     "description": "Surf on colores.",
-     "type": {
-      "value": "glider",
-      "displayValue": "Glider",
-      "backendValue": "AthenaGlider"
-     },
-     "rarity": {
-      "value": "icon",
-      "displayValue": "Icon Series",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "series": {
-      "value": "Icon Series",
-      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
-      "colors": [
-       "5cf2f3ff",
-       "2bc9caff",
-       "004c71ff",
-       "025253ff",
-       "000f2bff"
-      ],
-      "backendValue": "CreatorCollabSeries"
-     },
-     "set": {
-      "value": "J Balvin",
-      "text": "Part of the J Balvin set.",
-      "backendValue": "FlockInsure"
-     },
-     "introduction": {
-      "chapter": "2",
-      "season": "7",
-      "text": "Introduced in Chapter 2, Season 7.",
-      "backendValue": 17
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/glider_id_308_vividmale_h8jas/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/glider_id_308_vividmale_h8jas/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/glider_id_308_vividmale_h8jas/featured.png"
-     },
-     "showcaseVideo": "g_eOZESGsd4",
-     "added": "2021-08-24T02:00:47Z"
-    },
-    {
-     "id": "EID_Vivid_I434X",
-     "name": "In Da Party",
-     "description": "En el ghetto hay party, todo el mundo, everybody.",
-     "type": {
-      "value": "emote",
-      "displayValue": "Emote",
-      "backendValue": "AthenaDance"
-     },
-     "rarity": {
-      "value": "icon",
-      "displayValue": "Icon Series",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "series": {
-      "value": "Icon Series",
-      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
-      "colors": [
-       "5cf2f3ff",
-       "2bc9caff",
-       "004c71ff",
-       "025253ff",
-       "000f2bff"
-      ],
-      "backendValue": "CreatorCollabSeries"
-     },
-     "set": {
-      "value": "J Balvin",
-      "text": "Part of the J Balvin set.",
-      "backendValue": "FlockInsure"
-     },
-     "introduction": {
-      "chapter": "2",
-      "season": "7",
-      "text": "Introduced in Chapter 2, Season 7.",
-      "backendValue": 17
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/eid_vivid_i434x/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_vivid_i434x/icon.png"
-     },
-     "showcaseVideo": "tyWXVqm1olY",
-     "added": "2021-08-24T02:00:47Z"
-    }
-   ]
-  },
-  {
-   "regularPrice": 500,
-   "finalPrice": 500,
-   "devName": "[VIRTUAL]1 x Therefore I Am for 500 MtxCurrency",
-   "offerId": "v2:/041922819b2f194fdbde94619f459449b2c8a4cbed8f0b401cae3da38c8c5bc2",
-   "inDate": "2026-11-01T00:00:00Z",
-   "outDate": "2026-11-30T23:59:59.999Z",
-   "giftable": true,
-   "refundable": false,
-   "sortPriority": -27,
-   "layoutId": "JT111326.96",
-   "layout": {
-    "id": "JT111326",
-    "name": "Jam Tracks",
-    "index": 60,
-    "rank": 180,
-    "showIneligibleOffers": "always",
-    "useWidePreview": false,
-    "displayType": "expandableList"
-   },
-   "colors": {
-    "color1": "3a306cff",
-    "color3": "5e40ceff",
-    "textBackgroundColor": "694fc3ff"
-   },
-   "tileSize": "Size_1_x_1",
-   "newDisplayAssetPath": "SparksCMSVisualTest135",
-   "tracks": [
-    {
-     "id": "sid_placeholder_135",
-     "devName": "thereforeiam",
-     "title": "Therefore I Am",
-     "artist": "Billie Eilish",
-     "releaseYear": 2020,
-     "bpm": 94,
-     "duration": 176,
-     "difficulty": {
-      "vocals": 3,
-      "guitar": 1,
-      "bass": 2,
-      "plasticBass": 1,
-      "drums": 1,
-      "plasticDrums": 1
-     },
-     "albumArt": "https://cdn.fortnite-api.com/tracks/5490d3a354f6f6c9.jpg",
-     "added": "2024-04-23T00:00:00Z"
-    }
-   ]
-  },
-  {
-   "regularPrice": 800,
-   "finalPrice": 800,
-   "devName": "[VIRTUAL]1 x Long Legs for 800 MtxCurrency",
-   "offerId": "v2:/59654075fb83290269cecc0ee4cd9f4429a8fd469551be331e31282433c66fa3",
-   "inDate": "2026-11-13T00:00:00Z",
-   "outDate": "2026-11-15T23:59:59.999Z",
-   "giftable": true,
-   "refundable": false,
-   "sortPriority": -6,
-   "layoutId": "alc.0",
-   "colors": {
-    "color1": "290f07ff",
-    "color3": "824100ff",
-    "textBackgroundColor": "824100ff"
-   },
-   "tileSize": "Size_1_x_1",
-   "displayAssetPath": "/Game/Catalog/DisplayAssets/DA_Featured_Backpack_Bid131Blackwidowfemale",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S6/DAv2_Backpack_BlackWidowFemale",
-   "brItems": [
-    {
-     "id": "BID_131_BlackWidowfemale",
-     "name": "Long Legs",
-     "description": "Stretch your legs.",
-     "type": {
-      "value": "backpack",
-      "displayValue": "Back Bling",
-      "backendValue": "AthenaBackpack"
-     },
-     "rarity": {
-      "value": "legendary",
-      "displayValue": "Legendary",
-      "backendValue": "EFortRarity::Legendary"
-     },
-     "set": {
-      "value": "Arachnid",
-      "text": "Part of the Arachnid set.",
-      "backendValue": "BlackWidow"
-     },
-     "introduction": {
-      "chapter": "1",
-      "season": "6",
-      "text": "Introduced in Chapter 1, Season 6.",
-      "backendValue": 6
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/bid_131_blackwidowfemale/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_131_blackwidowfemale/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_131_blackwidowfemale/featured.png"
-     },
-     "added": "2019-11-20T12:50:39Z"
-    }
-   ]
-  },
-  {
    "regularPrice": 1500,
    "finalPrice": 1500,
    "devName": "[VIRTUAL]1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Twinzer, 1 x Motor Monster, 1 x Radium, 1 x Slimed, 1 x Stripes, 1 x AWD for -1 MtxCurrency",
@@ -458,8 +30,8 @@
     "id": "Twinzer",
     "name": "Twinzer",
     "category": "Start Your Engines",
-    "index": 33,
-    "rank": 177,
+    "index": 2,
+    "rank": 178,
     "showIneligibleOffers": "always",
     "useWidePreview": true,
     "displayType": "tileGrid"
@@ -588,6 +160,242 @@
       "large": "https://fortnite-api.com/images/cosmetics/cars/carskin_twinzertek/large.png"
      },
      "added": "2025-08-07T08:15:39Z"
+    }
+   ]
+  },
+  {
+   "regularPrice": 500,
+   "finalPrice": 500,
+   "devName": "[VIRTUAL]1 x Therefore I Am for 500 MtxCurrency",
+   "offerId": "v2:/041922819b2f194fdbde94619f459449b2c8a4cbed8f0b401cae3da38c8c5bc2",
+   "inDate": "2026-11-01T00:00:00Z",
+   "outDate": "2026-11-30T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -27,
+   "layoutId": "JT111326.96",
+   "layout": {
+    "id": "JT111326",
+    "name": "Jam Tracks",
+    "index": 11,
+    "rank": 183,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "expandableList"
+   },
+   "colors": {
+    "color1": "3a306cff",
+    "color3": "5e40ceff",
+    "textBackgroundColor": "694fc3ff"
+   },
+   "tileSize": "Size_1_x_1",
+   "newDisplayAssetPath": "SparksCMSVisualTest135",
+   "tracks": [
+    {
+     "id": "sid_placeholder_135",
+     "devName": "thereforeiam",
+     "title": "Therefore I Am",
+     "artist": "Billie Eilish",
+     "releaseYear": 2020,
+     "bpm": 94,
+     "duration": 176,
+     "difficulty": {
+      "vocals": 3,
+      "guitar": 1,
+      "bass": 2,
+      "plasticBass": 1,
+      "drums": 1,
+      "plasticDrums": 1
+     },
+     "albumArt": "https://cdn.fortnite-api.com/tracks/5490d3a354f6f6c9.jpg",
+     "added": "2024-04-23T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "regularPrice": 400,
+   "finalPrice": 400,
+   "devName": "[VIRTUAL]1 x Rebreather for 400 MtxCurrency",
+   "offerId": "v2:/bc690ee27f502c689fc8e0dc3cf23e5b780fc7f5bab083c29636efaf00262a3b",
+   "inDate": "2026-11-16T00:00:00Z",
+   "outDate": "2026-11-20T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -1,
+   "layoutId": "alc.0",
+   "colors": {
+    "color1": "6e03d8ff",
+    "color2": "fee1faff",
+    "color3": "faadffff",
+    "textBackgroundColor": "8235dcff"
+   },
+   "tileBackgroundMaterial": "ShopTile_SketchedBorder",
+   "tileSize": "Size_1_x_1",
+   "displayAssetPath": "/Game/Catalog/DisplayAssets/DA_Featured_bid_176_nautilusmale",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S7/DAv2_bid_176_nautilusmale",
+   "brItems": [
+    {
+     "id": "BID_176_NautilusMale",
+     "name": "Rebreather",
+     "description": "Shelling out air on demand.",
+     "type": {
+      "value": "backpack",
+      "displayValue": "Back Bling",
+      "backendValue": "AthenaBackpack"
+     },
+     "rarity": {
+      "value": "epic",
+      "displayValue": "Epic",
+      "backendValue": "EFortRarity::Epic"
+     },
+     "set": {
+      "value": "Deep Sea",
+      "text": "Part of the Deep Sea set.",
+      "backendValue": "Nautilus"
+     },
+     "introduction": {
+      "chapter": "1",
+      "season": "7",
+      "text": "Introduced in Chapter 1, Season 7.",
+      "backendValue": 7
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/bid_176_nautilusmale/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_176_nautilusmale/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_176_nautilusmale/featured.png"
+     },
+     "added": "2019-11-20T12:48:04Z"
+    }
+   ]
+  },
+  {
+   "regularPrice": 800,
+   "finalPrice": 800,
+   "devName": "[VIRTUAL]1 x Summer Snapper, 1 x Carnation of Carnage for 800 MtxCurrency",
+   "offerId": "v2:/d93fbede6864926e4770d7e781a68cfc787f0677a5f32ec5f71fc5d81c77049e",
+   "inDate": "2026-11-16T00:00:00Z",
+   "outDate": "2026-11-20T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -1,
+   "layoutId": "SummerBatmanGCS.97",
+   "layout": {
+    "id": "SummerBatmanGCS",
+    "name": "Gotham City Summer",
+    "index": 1,
+    "rank": 193,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "tileGrid"
+   },
+   "colors": {
+    "color1": "5fc9f1ff",
+    "color3": "ffe4a5ff",
+    "textBackgroundColor": "577a7bff"
+   },
+   "tileBackgroundMaterial": "ShopTile_ShopComic",
+   "tileSize": "Size_2_x_1",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S41/DAv2_backpack_crimpperfume",
+   "newDisplayAsset": {
+    "id": "DAv2_Backpack_CrimpPerfume",
+    "cosmeticId": "Backpack_CrimpPerfume",
+    "materialInstances": [],
+    "renderImages": [
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__6353c889cdabcac7_29c0c4191e61fb71.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6353c889cdabcac7/renderimage_0.png"
+     }
+    ]
+   },
+   "brItems": [
+    {
+     "id": "Backpack_CrimpPerfume",
+     "name": "Summer Snapper",
+     "description": "Some extremely fly traps.",
+     "type": {
+      "value": "backpack",
+      "displayValue": "Back Bling",
+      "backendValue": "AthenaBackpack"
+     },
+     "rarity": {
+      "value": "dc",
+      "displayValue": "DC SERIES",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "series": {
+      "value": "DC SERIES",
+      "image": "https://fortnite-api.com/images/cosmetics/series/dcuseries.png",
+      "colors": [
+       "007af1ff",
+       "0053a9ff",
+       "003f82ff",
+       "003169ff",
+       "001f47ff"
+      ],
+      "backendValue": "DCUSeries"
+     },
+     "set": {
+      "value": "Gotham City Summer",
+      "text": "Part of the Gotham City Summer set.",
+      "backendValue": "RiverFall"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "3",
+      "text": "Introduced in Chapter 7, Season 3.",
+      "backendValue": 41
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/featured.png"
+     },
+     "added": "2026-07-16T08:00:00Z"
+    },
+    {
+     "id": "Pickaxe_CrimpPerfume",
+     "name": "Carnation of Carnage",
+     "description": "Just as deadly, by any other name.",
+     "type": {
+      "value": "pickaxe",
+      "displayValue": "Pickaxe",
+      "backendValue": "AthenaPickaxe"
+     },
+     "rarity": {
+      "value": "dc",
+      "displayValue": "DC SERIES",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "series": {
+      "value": "DC SERIES",
+      "image": "https://fortnite-api.com/images/cosmetics/series/dcuseries.png",
+      "colors": [
+       "007af1ff",
+       "0053a9ff",
+       "003f82ff",
+       "003169ff",
+       "001f47ff"
+      ],
+      "backendValue": "DCUSeries"
+     },
+     "set": {
+      "value": "Gotham City Summer",
+      "text": "Part of the Gotham City Summer set.",
+      "backendValue": "RiverFall"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "3",
+      "text": "Introduced in Chapter 7, Season 3.",
+      "backendValue": 41
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_crimpperfume/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_crimpperfume/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_crimpperfume/featured.png"
+     },
+     "added": "2026-07-16T08:00:00Z"
     }
    ]
   }
