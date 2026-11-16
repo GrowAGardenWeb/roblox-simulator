@@ -44,13 +44,12 @@
   #socp .padd{margin-left:auto;display:flex;align-items:center;gap:8px;padding:0 20px;height:68px;border-radius:10px;background:rgba(60,95,170,.5);font:500 22px Montserrat;cursor:pointer}
   #socp .empty{text-align:center;margin-top:230px;font:600 24px Montserrat;color:#bcd0f5}#socp .empty small{display:block;margin-top:10px;font:500 19px Montserrat;color:#9fb4e8}
   #socp .setrow{display:flex;align-items:center;gap:18px;padding:18px 6px;border-bottom:1px solid rgba(255,255,255,.08);font:600 25px Montserrat;cursor:pointer}
-  #soctoast{position:absolute;left:0;top:178px;width:740px;height:86px;z-index:80;background:linear-gradient(100deg,#fff 0,#fff 56%,#dff7e1 80%,#bff0c6 100%);clip-path:polygon(0 0,100% 0,97% 100%,0 100%);transform:translateX(-112%);transition:transform .4s cubic-bezier(.16,.9,.3,1);display:flex;align-items:center;padding-left:230px;box-sizing:border-box;color:#111;font-family:Montserrat,system-ui;pointer-events:none}
+  #soctoast{position:absolute;left:0;top:178px;width:740px;height:86px;z-index:80;background:linear-gradient(118deg,transparent 0 50%,rgba(150,225,160,.16) 50% 63%,transparent 63% 100%),linear-gradient(62deg,transparent 0 58%,rgba(255,255,255,.55) 58% 74%,transparent 74% 100%),linear-gradient(100deg,#fff 0,#fff 44%,#e8fbe9 66%,#d3f6d8 86%,#c4f2cb 100%);clip-path:polygon(0 0,100% 0,97% 100%,0 100%);transform:translateX(-112%);transition:transform .4s cubic-bezier(.16,.9,.3,1);display:flex;align-items:center;padding-left:230px;box-sizing:border-box;color:#111;font-family:Montserrat,system-ui;pointer-events:none}
   #soctoast.on{transform:none}
-  #soctoast .ic{position:absolute;left:112px;top:12px;width:62px;height:62px;border-radius:50%;background:#2c78c4;overflow:hidden}
-  #soctoast .ic::before{content:'';position:absolute;left:19px;top:11px;width:24px;height:26px;border-radius:50%;background:#143f78}#soctoast .ic::after{content:'';position:absolute;left:8px;top:40px;width:46px;height:40px;border-radius:50% 50% 0 0;background:#143f78}
-  #soctoast b{display:block;font:900 24px/1 Montserrat,system-ui;letter-spacing:-.4px;transform:scaleX(.86);transform-origin:left;text-transform:uppercase}
+  #soctoast .ic{position:absolute;left:112px;top:12px;width:62px;height:62px;border-radius:50%;background:#2c78c4 center/cover no-repeat;overflow:hidden}
+    #soctoast b{display:block;font:900 24px/1 Montserrat,system-ui;letter-spacing:-.4px;transform:scaleX(.86);transform-origin:left;text-transform:uppercase}
   #soctoast span{display:block;margin-top:3px;font:700 22px/1.1 Montserrat,system-ui;color:#2f3a35;transform:scaleX(.9);transform-origin:left}#soctoast u{color:#1a8cff;text-decoration:none;text-transform:uppercase;font-weight:800}
-  #soctoast .ck{position:absolute;right:62px;top:17px;width:56px;height:50px;scale:.2;opacity:0}
+  #soctoast .ck{position:absolute;right:34px;top:18px;width:52px;height:50px;scale:.2;opacity:0}
   #soctoast.on .ck{animation:sckpop .4s .55s cubic-bezier(.2,1.5,.4,1) both}
   #soctoast::after{content:'';position:absolute;right:0;top:0;bottom:0;width:26px;background:#2ad45c;transform:skewX(-8deg);transform-origin:right}
   #soctoast.on::after{animation:scbar .9s ease-out both}
@@ -73,7 +72,8 @@
 
   const p = document.createElement('div'); p.id = 'socp';
   const friends = [['Skyler_R', 'Battle Royale - Solo', 1], ['mia.plays', 'Away', 0], ['ghostN3ko', 'Away', 0], ['TheRealJay', 'In Lobby', 1]];
-  const rows = friends.map((f) => '<div class="pl"><div class="av"><i class="' + (f[2] ? '' : 'aw') + '"></i></div><div><b>' + f[0] + '</b><span>' + f[1] + '</span></div></div>').join('');
+  const hs0 = (t) => { let h = 0; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+  const rows = friends.map((f) => '<div class="pl"><div class="av" style="background:url(assets/pa' + (hs0(f[0]) % 14) + '.webp) center/cover"><i class="' + (f[2] ? '' : 'aw') + '"></i></div><div><b>' + f[0] + '</b><span>' + f[1] + '</span></div></div>').join('');
   p.innerHTML = '<div class="tabs"><div class="tb on" data-p="soc">' + ico.people + '</div><div class="tb" data-p="chat">' + ico.chat + '</div><div class="tb" data-p="set">' + ico.gear + '</div><div class="tb" data-p="menu">' + ico.menu + '</div></div><div class="me"></div>'
     + '<div class="pg on" id="pg-soc"><h2>Social</h2><div class="row2"><div class="card"><div class="av" style="width:46px;height:46px;background:#33509a;display:flex;align-items:center;justify-content:center;border-radius:12px">' + mi('people', 30, 27) + '</div><div><b>Party</b><span>Just you</span></div></div><div class="card"><div class="av" style="width:46px;height:46px;border-radius:8px;background:#7a6a4a"></div><div><b>Game</b><span>Not in a game yet</span></div></div></div>'
     + '<div class="ic4"><div>' + mi('lock', 34, 40) + '</div><div>' + mi('mic', 30, 40) + '</div><div>' + mi('head', 40, 40) + '</div><div>' + mi('dots', 38, 11) + '</div></div><div class="note">Invite only &middot; Voice reporting off</div>'
@@ -111,16 +111,18 @@
   p.querySelector('#socback').onclick = () => { show('soc'); window.SFX && SFX.play('back'); };
   const POOL = ['Nova_Kid', 'xX_Blaze_Xx', 'moonlight9', 'PixelPaul', 'sir_loin', 'KaiTheFox', 'ZeroCool77', 'mariah.b', 'LuckyStrike', 'OnlyAlex', 'SoupDragon', 'gamer_gale', 'TacoTuesday', 'RexOnFire'];
   const RECENT = ['Drojas_03', 'char_345der', 'DefiantSquid', 'colmillo_30', 'pzbnlx_27', 'RiftRunner', 'LunaPlays'];
+  const hs = (t) => { let h = 0; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+  const pic = (n) => 'url(assets/pa' + (hs(n) % 14) + '.webp)';
   const sent = new Set();
   const res = p.querySelector('#socres'), cntEl = p.querySelector('#socn'), ttl = p.querySelector('#socttl'), q = p.querySelector('#socq');
-  const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck"><svg viewBox="0 0 60 50" width="56" height="50"><path d="M7 28 L22 42 L53 6" fill="none" stroke="#5fd77c" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'; stage.appendChild(toast);
-  let tt = 0; const showToast = (n) => { toast.querySelector('#sctn').textContent = n; toast.classList.add('on'); window.SFX && SFX.play('friend-sent'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); };
+  const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck"><i class="si" style="--m:url(assets/soc/check.webp);width:52px;height:50px;color:#6fe08a"></i></div>'; stage.appendChild(toast);
+  let tt = 0; const showToast = (n) => { toast.querySelector('#sctn').textContent = n; toast.querySelector('.ic').style.backgroundImage = pic(n); toast.classList.add('on'); window.SFX && SFX.play('friend-sent'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); };
   const openProf = (n) => {
     p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-prof').classList.add('on');
-    p.querySelector('#pnm').textContent = n; p.querySelector('#ptag').textContent = n.replace(/[^A-Za-z]/g, '').slice(0, 12) + Math.floor(100 + (n.length * 37) % 900);
+    p.querySelector('#pnm').textContent = n; p.querySelector('.pbig').style.cssText = 'background:#4a4a55 ' + pic(n) + ' center/cover no-repeat'; p.querySelector('#ptag').textContent = n.replace(/[^A-Za-z]/g, '').slice(0, 12) + Math.floor(100 + (n.length * 37) % 900);
     const was = sent.has(n); p.querySelector('#psent').style.display = was ? 'block' : 'none'; p.querySelector('#padd').style.display = was ? 'none' : 'flex'; p.querySelector('#padd').dataset.n = n;
   };
-  const mkRow = (n, sub, addBtn) => { const d = document.createElement('div'); d.className = 'pl'; d.style.cursor = 'pointer'; d.innerHTML = '<div class="av" style="background:#4a4a55"></div><div><b></b>' + (sub ? '<span></span>' : '') + '</div>' + (addBtn && !sent.has(n) ? '<div class="padd"><i class="si" style="--m:url(assets/soc/addf.webp);width:28px;height:26px"></i>Add</div>' : ''); d.querySelector('b').textContent = n; if (sub) d.querySelector('span').textContent = sub;
+  const mkRow = (n, sub, addBtn) => { const d = document.createElement('div'); d.className = 'pl'; d.style.cursor = 'pointer'; d.innerHTML = '<div class="av"></div><div><b></b>' + (sub ? '<span></span>' : '') + '</div>' + (addBtn && !sent.has(n) ? '<div class="padd"><i class="si" style="--m:url(assets/soc/addf.webp);width:28px;height:26px"></i>Add</div>' : ''); d.querySelector('b').textContent = n; d.querySelector('.av').style.backgroundImage = pic(n); d.querySelector('.av').style.backgroundSize = 'cover'; if (sub) d.querySelector('span').textContent = sub;
     d.onclick = (e) => { if (e.target.closest('.padd')) { sent.add(n); e.target.closest('.padd').remove(); showToast(n); } else openProf(n); }; return d; };
   const render = () => {
     const t = q.value.trim().toLowerCase(); res.innerHTML = '';
