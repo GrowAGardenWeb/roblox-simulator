@@ -11,6 +11,7 @@ gift-open    entrar a la pantalla de regalos (Gifting)
 gift-pick    elegir un usuario (se abre Confirm Purchase)
 social-open  abrir el panel Social (foto de perfil)
 social-close cerrar el panel Social
+friend-sent  enviar solicitud de amistad
 gift-sending aparece "SENDING GIFT..."
 gift-sent    aparece "GIFT SENT!"
 error        "NOT ENOUGH V-BUCKS" u otro error

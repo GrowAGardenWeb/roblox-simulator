@@ -123,7 +123,7 @@
       } catch (e) {}
     },
     stop(name) { try { SFX.active[name] && SFX.active[name].stop(); } catch (e) {} },
-    names: ['click', 'tab', 'open', 'back', 'tick', 'buy-hold', 'gift-sending', 'gift-sent', 'gift-open', 'gift-pick', 'social-open', 'social-close', 'error', 'wrap', 'chat'],
+    names: ['click', 'tab', 'open', 'back', 'tick', 'buy-hold', 'gift-sending', 'gift-sent', 'gift-open', 'gift-pick', 'social-open', 'social-close', 'friend-sent', 'error', 'wrap', 'chat'],
   });
   const unlock = () => { if (unlocked) return; unlocked = true; try { const c = ac(); if (c.state === 'suspended') c.resume(); } catch (e) {} SFX.names.forEach((n) => load(n)); };
   ['pointerdown', 'touchstart', 'keydown'].forEach((ev) => addEventListener(ev, unlock, { once: false, passive: true }));

@@ -44,15 +44,18 @@
   #socp .padd{margin-left:auto;display:flex;align-items:center;gap:8px;padding:0 20px;height:68px;border-radius:10px;background:rgba(60,95,170,.5);font:500 22px Montserrat;cursor:pointer}
   #socp .empty{text-align:center;margin-top:230px;font:600 24px Montserrat;color:#bcd0f5}#socp .empty small{display:block;margin-top:10px;font:500 19px Montserrat;color:#9fb4e8}
   #socp .setrow{display:flex;align-items:center;gap:18px;padding:18px 6px;border-bottom:1px solid rgba(255,255,255,.08);font:600 25px Montserrat;cursor:pointer}
-  #soctoast{position:absolute;left:-40px;top:170px;width:810px;height:90px;z-index:80;background:linear-gradient(100deg,#fff 0,#fff 55%,#d8f8d8 75%,#8ff08f 100%);clip-path:polygon(0 0,100% 0,96% 100%,0 100%);transform:translateX(-110%);transition:transform .38s cubic-bezier(.2,.9,.3,1);display:flex;align-items:center;padding-left:215px;box-sizing:border-box;color:#111;font-family:Montserrat,system-ui;pointer-events:none}
-  #soctoast.on{transform:none}#soctoast .ic{position:absolute;left:215px;top:17px;width:56px;height:56px;border-radius:50%;background:#2f8de0;display:none}
-  #soctoast b{display:block;font:italic 900 24px 'Archivo Black',Montserrat;letter-spacing:-.5px}#soctoast span{font:600 22px Montserrat}#soctoast u{color:#1a8cff;text-decoration:none}
-  #soctoast .ck{position:absolute;right:46px;top:18px;width:64px;height:54px;scale:.2;opacity:0}
-  #soctoast.on .ck{animation:sckpop .45s .25s cubic-bezier(.2,1.5,.4,1) both}
-  #soctoast::after{content:'';position:absolute;right:0;top:0;bottom:0;width:0;background:#22d655;transform:skewX(-12deg);transform-origin:right}
-  #soctoast.on::after{animation:scwipe .5s .05s ease-out both}
+  #soctoast{position:absolute;left:0;top:178px;width:740px;height:86px;z-index:80;background:linear-gradient(100deg,#fff 0,#fff 56%,#dff7e1 80%,#bff0c6 100%);clip-path:polygon(0 0,100% 0,97% 100%,0 100%);transform:translateX(-112%);transition:transform .4s cubic-bezier(.16,.9,.3,1);display:flex;align-items:center;padding-left:230px;box-sizing:border-box;color:#111;font-family:Montserrat,system-ui;pointer-events:none}
+  #soctoast.on{transform:none}
+  #soctoast .ic{position:absolute;left:112px;top:12px;width:62px;height:62px;border-radius:50%;background:#2c78c4;overflow:hidden}
+  #soctoast .ic::before{content:'';position:absolute;left:19px;top:11px;width:24px;height:26px;border-radius:50%;background:#143f78}#soctoast .ic::after{content:'';position:absolute;left:8px;top:40px;width:46px;height:40px;border-radius:50% 50% 0 0;background:#143f78}
+  #soctoast b{display:block;font:900 24px/1 Montserrat,system-ui;letter-spacing:-.4px;transform:scaleX(.86);transform-origin:left;text-transform:uppercase}
+  #soctoast span{display:block;margin-top:3px;font:700 22px/1.1 Montserrat,system-ui;color:#2f3a35;transform:scaleX(.9);transform-origin:left}#soctoast u{color:#1a8cff;text-decoration:none;text-transform:uppercase;font-weight:800}
+  #soctoast .ck{position:absolute;right:62px;top:17px;width:56px;height:50px;scale:.2;opacity:0}
+  #soctoast.on .ck{animation:sckpop .4s .55s cubic-bezier(.2,1.5,.4,1) both}
+  #soctoast::after{content:'';position:absolute;right:0;top:0;bottom:0;width:26px;background:#2ad45c;transform:skewX(-8deg);transform-origin:right}
+  #soctoast.on::after{animation:scbar .9s ease-out both}
   @keyframes sckpop{to{scale:1;opacity:1}}
-  @keyframes scwipe{0%{width:0;opacity:1}60%{width:120px;opacity:1}100%{width:120px;opacity:0}}
+  @keyframes scbar{0%{width:130px;opacity:1}45%{width:130px;opacity:1}100%{width:26px;opacity:1}}
   #socset{position:absolute;inset:0;z-index:70;display:none;background:#050a24;color:#fff;font-family:Montserrat,system-ui}#socset.on{display:block}
   #socset .cat{position:absolute;left:150px;top:40px;display:flex;gap:26px;font:700 22px Montserrat;color:#6f86c8}
   #socset .cat .on{color:#fff;border-bottom:4px solid #fff;padding-bottom:6px}
@@ -110,8 +113,8 @@
   const RECENT = ['Drojas_03', 'char_345der', 'DefiantSquid', 'colmillo_30', 'pzbnlx_27', 'RiftRunner', 'LunaPlays'];
   const sent = new Set();
   const res = p.querySelector('#socres'), cntEl = p.querySelector('#socn'), ttl = p.querySelector('#socttl'), q = p.querySelector('#socq');
-  const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck"><svg viewBox="0 0 60 50" width="64" height="54"><path d="M6 27 L22 43 L54 6" fill="none" stroke="#1a9a3c" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 27 L22 43 L54 6" fill="none" stroke="#3fd860" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'; stage.appendChild(toast);
-  let tt = 0; const showToast = (n) => { toast.querySelector('#sctn').textContent = n; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); };
+  const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck"><svg viewBox="0 0 60 50" width="56" height="50"><path d="M7 28 L22 42 L53 6" fill="none" stroke="#5fd77c" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'; stage.appendChild(toast);
+  let tt = 0; const showToast = (n) => { toast.querySelector('#sctn').textContent = n; toast.classList.add('on'); window.SFX && SFX.play('friend-sent'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 2600); };
   const openProf = (n) => {
     p.querySelectorAll('.pg').forEach((g) => g.classList.remove('on')); p.querySelector('#pg-prof').classList.add('on');
     p.querySelector('#pnm').textContent = n; p.querySelector('#ptag').textContent = n.replace(/[^A-Za-z]/g, '').slice(0, 12) + Math.floor(100 + (n.length * 37) % 900);
