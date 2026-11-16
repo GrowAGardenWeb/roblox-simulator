@@ -47,7 +47,7 @@
   #shoprow.dyn .dsec{font:italic 400 34px 'Archivo Black';color:#fff;text-shadow:0 3px 4px rgba(0,0,40,.35);margin:22px 0 10px;white-space:nowrap}
   #shoprow.dyn .dgrid{display:grid;grid-template-columns:repeat(4,230px);grid-auto-flow:dense;gap:30px 8px}
   #shoprow.dyn .dt{position:relative;height:237px;border-radius:14px;overflow:visible;cursor:pointer;pointer-events:auto;background:linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-  #shoprow.dyn .dt .di{position:absolute;inset:-26px -8px 14px -8px;background-position:center bottom;background-size:contain;background-repeat:no-repeat}
+  #shoprow.dyn .dt .di{opacity:0;transition:opacity .28s ease;position:absolute;inset:-26px -8px 14px -8px;background-position:center bottom;background-size:contain;background-repeat:no-repeat}
   #shoprow.dyn .dt.bundle .di{inset:-24px 0 10px 0;background-size:auto 100%;background-position:center bottom;background-repeat:no-repeat;filter:none}
   #shoprow.dyn .dt.map{background:url(assets/maptex_soft.webp) center/cover,linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));background-blend-mode:overlay}
   #shoprow.dyn .dt.solid{clip-path:inset(0 round 14px)}
@@ -143,35 +143,51 @@
     const jobs = []; let active = 0;
     const next = () => { while (active < 4 && jobs.length) { active++; jobs.shift()(() => { active--; next(); }); } };
     const paint = (d, url) => { d.style.backgroundImage = 'url("' + url + '")'; if (d.parentNode && d.parentNode.dataset && d.parentNode.dataset.key) (window.__tileImg = window.__tileImg || {})[d.parentNode.dataset.key] = url; };
-    const loadDi = (d) => { jobs.push((done) => {
-      const url = d.dataset.img, t = d.parentNode, isJam = !!(t && t.classList.contains('jam')), fit = !!(t && t.classList.contains('bundle') && !t.classList.contains('comp') && d.clientWidth), probe = !isJam && !(t && t.classList.contains('comp'));
-      const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
-      im.onload = () => {
-        try {
-          const w = im.naturalWidth, h = im.naturalHeight, r = Math.min(1, (fit ? 480 : 300) / Math.max(w, h)), cw = Math.max(1, Math.round(w * r)), ch = Math.max(1, Math.round(h * r));
-          const c = document.createElement('canvas'); c.width = cw; c.height = ch; c.getContext('2d').drawImage(im, 0, 0, cw, ch);
-          if (probe) {
-            const sw = 96, sh = Math.max(1, Math.round(96 * h / w)), sc2 = document.createElement('canvas'); sc2.width = sw; sc2.height = sh;
-            const cx = sc2.getContext('2d', { willReadFrequently: true }); cx.drawImage(c, 0, 0, sw, sh);
-            const px = cx.getImageData(0, 0, sw, sh).data; let x0 = sw, y0 = sh, x1 = 0, y1 = 0, solid = 0;
-            for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) { const al = px[(y * sw + x) * 4 + 3]; if (al > 235) solid++; if (al > 150) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } }
-            if (solid / (sw * sh) > 0.9) { // imagen opaca (tarjeta completa, ej. autos): llena toda la casilla
-              d.style.inset = '0'; d.style.backgroundSize = 'cover'; d.style.backgroundPosition = 'center'; t.classList.add('solid');
-            } else if (fit && x1 > x0 && y1 > y0) {
-              const W = d.clientWidth, H = d.clientHeight, fx0 = x0 / sw, fx1 = (x1 + 1) / sw, fy0 = y0 / sh, fy1 = (y1 + 1) / sh;
-              const k = Math.min((W * 0.98) / ((fx1 - fx0) * w), (H * 1.0) / ((fy1 - fy0) * h)), dw = w * k, dh = h * k;
-              d.style.backgroundSize = dw.toFixed(1) + 'px ' + dh.toFixed(1) + 'px'; d.style.backgroundPosition = (W / 2 - ((fx0 + fx1) / 2) * dw).toFixed(1) + 'px ' + (H - fy1 * dh).toFixed(1) + 'px';
+    // ---- imágenes de las casillas: caché en disco (miniatura 300/480 px + medidas), así al volver a entrar o bajar salen al instante ----
+    const TK = (u) => 'https://fn-tile.local/' + encodeURIComponent(u).slice(-170);
+    const tileGet = (u) => (window.caches ? caches.open('fn-tile-v1').then(async (c) => { const [r, m] = await Promise.all([c.match(TK(u)), c.match(TK(u) + '.json')]); return r && m ? { blob: await r.blob(), meta: await m.json() } : null; }).catch(() => null) : Promise.resolve(null));
+    const tilePut = (u, bl, meta) => { try { if (window.caches) caches.open('fn-tile-v1').then((c) => { c.put(TK(u), new Response(bl, { headers: { 'content-type': 'image/webp' } })); c.put(TK(u) + '.json', new Response(JSON.stringify(meta), { headers: { 'content-type': 'application/json' } })); }).catch(() => {}); } catch (e) {} };
+    // genera la miniatura y mide el arte (sin márgenes transparentes) a partir de la versión reducida (900 px); no pinta nada
+    const makeTile = (url, tm) => new Promise((res) => {
+      shrink(url, 900).then((u) => {
+        const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
+        im.onerror = () => res(null);
+        im.onload = () => {
+          try {
+            const w = im.naturalWidth, h = im.naturalHeight, fit = tm.bundle && !tm.comp, r = Math.min(1, (fit ? 480 : 300) / Math.max(w, h)), cw = Math.max(1, Math.round(w * r)), ch = Math.max(1, Math.round(h * r));
+            const c = document.createElement('canvas'); c.width = cw; c.height = ch; c.getContext('2d').drawImage(im, 0, 0, cw, ch);
+            const meta = { ar: w / h, solid: false, bb: null };
+            if (!tm.jam && !tm.comp) {
+              const sw = 96, sh = Math.max(1, Math.round(96 * h / w)), sc2 = document.createElement('canvas'); sc2.width = sw; sc2.height = sh;
+              const cx = sc2.getContext('2d', { willReadFrequently: true }); cx.drawImage(c, 0, 0, sw, sh);
+              const px = cx.getImageData(0, 0, sw, sh).data; let x0 = sw, y0 = sh, x1 = 0, y1 = 0, solid = 0;
+              for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) { const al = px[(y * sw + x) * 4 + 3]; if (al > 235) solid++; if (al > 150) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } }
+              meta.solid = solid / (sw * sh) > 0.9; if (x1 > x0 && y1 > y0) meta.bb = [x0 / sw, (x1 + 1) / sw, y0 / sh, (y1 + 1) / sh]; sc2.width = sc2.height = 0;
             }
-          }
-          c.toBlob((b) => { paint(d, b ? URL.createObjectURL(b) : url); c.width = c.height = 0; done(); }, 'image/webp', 0.85);
-          return;
-        } catch (e) { /* sin permiso para leer la imagen: se usa tal cual */ }
-        paint(d, url); done();
-      };
-      im.onerror = () => { paint(d, url); done(); };
-      im.src = url;
+            c.toBlob((bl) => { c.width = c.height = 0; if (bl) tilePut(url, bl, meta); res(bl ? { blob: bl, meta } : null); }, 'image/webp', 0.85);
+          } catch (e) { res(null); }
+        };
+        im.src = u;
+      });
+    });
+    const paintTile = (d, tile, tm, url) => {
+      const t = d.parentNode, m = tile.meta;
+      if (m.solid && !tm.jam) { d.style.inset = '0'; d.style.backgroundSize = 'cover'; d.style.backgroundPosition = 'center'; if (t) t.classList.add('solid'); }
+      else if (tm.bundle && !tm.comp && m.bb && d.clientWidth) {
+        const W = d.clientWidth, H = d.clientHeight, [fx0, fx1, fy0, fy1] = m.bb, w = 1000 * m.ar, h = 1000;
+        const k = Math.min((W * 0.98) / ((fx1 - fx0) * w), (H * 1.0) / ((fy1 - fy0) * h)), dw = w * k, dh = h * k;
+        d.style.backgroundSize = dw.toFixed(1) + 'px ' + dh.toFixed(1) + 'px'; d.style.backgroundPosition = (W / 2 - ((fx0 + fx1) / 2) * dw).toFixed(1) + 'px ' + (H - fy1 * dh).toFixed(1) + 'px';
+      }
+      paint(d, URL.createObjectURL(tile.blob)); d.style.opacity = 1;
+    };
+    const loadDi = (d) => { jobs.push((done) => {
+      const url = d.dataset.img, t = d.parentNode;
+      // elementos sueltos (collage de bundles): imagen chica, sin medir
+      if (!d.classList.contains('di')) { const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async'; im.onload = () => { try { const r = Math.min(1, 240 / Math.max(im.naturalWidth, im.naturalHeight)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.naturalWidth * r)); c.height = Math.max(1, Math.round(im.naturalHeight * r)); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); c.toBlob((b) => { paint(d, b ? URL.createObjectURL(b) : url); c.width = c.height = 0; done(); }, 'image/webp', 0.85); } catch (e) { paint(d, url); done(); } }; im.onerror = () => { paint(d, url); done(); }; im.src = url; return; }
+      const tm = { jam: !!(t && t.classList.contains('jam')), bundle: !!(t && t.classList.contains('bundle')), comp: !!(t && t.classList.contains('comp')) };
+      tileGet(url).then((hit) => { if (hit) { paintTile(d, hit, tm, url); done(); return; } makeTile(url, tm).then((tile) => { if (tile) paintTile(d, tile, tm, url); else { paint(d, url); d.style.opacity = 1; } done(); }); });
     }); next(); };
-    const lazy = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { lazy.unobserve(x.target); loadDi(x.target); } }), { root: sc, rootMargin: '300px 0px' });
+    const lazy = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { lazy.unobserve(x.target); loadDi(x.target); } }), { root: sc, rootMargin: '1100px 0px' });
     let firstG = null; const pend = new Map();
     const pump = (g) => {
       const st = pend.get(g); if (!st || st.run) return; st.run = true;
@@ -185,7 +201,7 @@
       };
       tick();
     };
-    const secObs = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) pump(x.target); }), { root: sc, rootMargin: '1400px 0px' });
+    const secObs = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) pump(x.target); }), { root: sc, rootMargin: '3000px 0px' });
     const heads = [], secCols = [];
     // aunque no bajes, el resto de la tienda se va armando solo, una sección a la vez
     setInterval(() => { if (document.body.dataset.screen !== 'shop' || ![...pend.values()].length || [...pend.values()].some((x) => x.run)) return; const g = [...pend.keys()][0]; if (g) pump(g); }, 700);
@@ -209,6 +225,7 @@
         const isNew = e.inDate && (Date.now() - new Date(e.inDate)) < 36 * 3600e3;
         const lead = e.items.find((i) => i.type === 'outfit') || e.items[0];
         if (shop.textures && shop.textures[e.sectionId]) t.classList.add('map');
+        ITEMS[key].dyn.tm = { jam: e.kind === 'jam', bundle: e.kind === 'bundle', comp };
         if (comp) t.classList.add('comp'); if (e.kind === 'bundle' && w >= 3) t.classList.add('wide');
         if (!comp && e.kind === 'item' && e.items[0]?.type === 'outfit') t.classList.add('outfit');
         t.innerHTML = (comp ? '<div class="cmp"></div>' : '') + '<div class="di"></div><div class="sh"></div><div class="nm"></div><div class="pr"><i class="coin"></i><span></span></div>' + (e.banner ? '<div class="bd bn"></div>' : isNew ? '<div class="bd nw">NEW</div>' : e.kind === 'bundle' && !comp ? '<div class="bd">BUNDLE</div>' : e.kind === 'jam' ? '<div class="bd jam">JAM TRACK</div>' : '') + '<i class="pl"></i>';
@@ -372,8 +389,8 @@
         if (i >= keys.length) { step('pre-descarga lista ' + done); return; }
         const sc = document.body.dataset.screen;
         if (document.hidden || sc === 'detail' || sc === 'gift' || sc === 'locker') { setTimeout(next, 1500); return; }
-        const url = ITEMS[keys[i++]].dyn.image;
-        diskGet(url).then((have) => { if (have) { setTimeout(next, 30); return; } shrink(url, 900).then(() => { done++; if (done % 25 === 0) step('pre-descarga ' + done + '/' + keys.length); setTimeout(next, 700); }); });
+        const it = ITEMS[keys[i++]], url = it.dyn.image, tm = it.dyn.tm || { jam: !!it.dyn.jam, bundle: it.sub === 'BUNDLE', comp: false };
+        tileGet(url).then((have) => { if (have) { setTimeout(next, 30); return; } makeTile(url, tm).then(() => { done++; if (done % 25 === 0) step('pre-descarga ' + done + '/' + keys.length); setTimeout(next, 700); }); });
       };
       next();
     }, 4000);
