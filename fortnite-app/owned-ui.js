@@ -7,9 +7,9 @@
   body.owned #shoprow.dyn .dt .pr > *{display:none}
   body.owned #shoprow.dyn .dt .pr::after{content:'\\2713  OWNED';font:800 18px Montserrat;color:#fff;letter-spacing:.02em}
   body.owned #shoprow.dyn .dt .bd.bn{display:none}
-  body.owned .screen[data-screen="detail"] [data-t="det.det5"],body.owned .screen[data-screen="detail"] [data-t="det.det6"],body.owned .screen[data-screen="detail"] [data-t="det.det12"]{visibility:hidden}
+  body.owned .screen[data-screen="detail"] [data-t="det.det5"],body.owned .screen[data-screen="detail"] [data-t="det.det6"],body.owned .screen[data-screen="detail"] [data-t="det.det12"],body.owneditem .screen[data-screen="detail"] [data-t="det.det5"],body.owneditem .screen[data-screen="detail"] [data-t="det.det6"],body.owneditem .screen[data-screen="detail"] [data-t="det.det12"]{visibility:hidden}
   #ownbtn{position:absolute;left:131px;top:798px;width:458px;height:74px;border-radius:12px;background:#4a64a8;display:none;align-items:center;justify-content:center;gap:10px;color:#d4e2ff;font:italic 400 30px 'Archivo Black';z-index:5;pointer-events:auto}
-  body.owned .screen[data-screen="detail"] #ownbtn{display:flex}
+  body.owned .screen[data-screen="detail"] #ownbtn,body.owneditem .screen[data-screen="detail"] #ownbtn{display:flex}
   #ownrow label{display:block}
   `;
   document.head.appendChild(st);
@@ -25,5 +25,12 @@
   const coin = () => { document.querySelectorAll('.screen[data-screen="detail"] .coin').forEach((c) => { const t = parseFloat(c.style.top), l = parseFloat(c.style.left); if (t > 540 && t < 600 && l < 260) c.style.visibility = on ? 'hidden' : ''; }); };
   new MutationObserver(() => { [60, 300, 900].forEach((ms) => setTimeout(coin, ms)); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
   const _apply = apply; sel.addEventListener('change', coin);
+  // artículos que siempre son tuyos (sección DEVELOPER): la ficha dice OWNED aunque el modo sea normal
+  setInterval(() => { const it = window.ITEMS_ALL && window.ITEMS_ALL()[window.curItem]; document.body.classList.toggle('owneditem', document.body.dataset.screen === 'detail' && !!(it && it.owned)); }, 250);
+  // interruptor de la sección DEVELOPER (aplica al recargar)
+  { const r2 = document.createElement('div'); r2.innerHTML = '<label>DEVELOPER SECTION (TOP OF SHOP)</label><select id="devsel"><option value="1">ON</option><option value="0">OFF</option></select>';
+    const b2 = P.querySelector('.b'); (b2 ? b2.parentNode : P.firstChild).insertBefore(r2, b2 || null);
+    const dsel = r2.querySelector('#devsel'); try { dsel.value = localStorage.getItem('fn_dev') === '0' ? '0' : '1'; } catch (e) {}
+    dsel.onchange = () => { try { localStorage.setItem('fn_dev', dsel.value); } catch (e) {} setTimeout(() => location.reload(), 250); }; }
   apply();
 })();

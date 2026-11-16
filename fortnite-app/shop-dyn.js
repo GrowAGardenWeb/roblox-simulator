@@ -43,6 +43,8 @@
   #shoprow.dyn .dt.bundle .di{inset:-24px 0 10px 0;background-size:auto 100%;background-position:center bottom;background-repeat:no-repeat;filter:none}
   #shoprow.dyn .dt.map{background:url(assets/maptex.webp) center/cover,linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));background-blend-mode:overlay}
   #shoprow.dyn .dt.solid{clip-path:inset(0 round 14px)}
+  #shoprow.dyn .dt.dev{height:262px}
+  #shoprow.dyn .dt .ownlbl{position:absolute;left:12px;bottom:10px;font:800 14px Montserrat;color:#5cff7a;letter-spacing:.03em;text-shadow:0 1px 3px rgba(0,0,0,.5)}
   #shoprow.dyn .dt.bundle.wide{height:262px;margin-bottom:34px}
   html.shoplite #shoprow.dyn .dt{animation:none!important}
   #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;border-radius:14px;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
@@ -81,9 +83,10 @@
     fetch('data/shop.json?' + Date.now()).then((r) => { if (!r.ok) throw 0; return r.json(); }),
     fetch('data/videos.json?' + Date.now()).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
     fetch('data/backgrounds.json?' + Date.now()).then((r) => (r.ok ? r.json() : {})).catch(() => ({})).then((b) => { window.__bgFile = b; }),
-  ]).then(([shop, vids]) => { step('datos'); return build(shop, vids); }).catch(() => {});
+    fetch('data/outfits.json?' + Date.now()).then((r) => (r.ok ? r.json() : [])).catch(() => []),
+  ]).then(([shop, vids, , outfits]) => { step('datos'); return build(shop, vids, outfits); }).catch(() => {});
 
-  function build(shop, vids) {
+  function build(shop, vids, outfits) {
     const old = document.getElementById('shopscroll');
     const ITEMS = window.ITEMS_ALL && window.ITEMS_ALL();
     const norm = (x) => String(x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '').replace(/^lote(del|de)?(?=.{4})/, '').replace(/bundle$/, '');
@@ -109,6 +112,18 @@
 
     const groups = new Map();
     for (const e of E) { const k = e.sectionId || e.section || '-'; if (!groups.has(k)) groups.set(k, { name: e.section || 'DESTACADOS', idx: e.sectionIndex ?? 999, items: [] }); groups.get(k).items.push(e); }
+    // sección DEVELOPER: Pirate Token (si está activo en el panel) + los 3 Solid Gold; siempre "OWNED"
+    let devTok = null; const devOn = (() => { try { return localStorage.getItem('fn_dev') !== '0'; } catch (e) { return true; } })();
+    const ptOn = (() => { try { return JSON.parse(localStorage.getItem('fn_mod') || '{}').pt === '1'; } catch (e) { return false; } })();
+    if (devOn) {
+      const gold = { color1: '7f5d25ff', color2: 'ba9600ff', color3: 'e5b76aff' }, mkE = (o) => Object.assign({ order: -1, kind: 'item', info: '', tileSize: 'Size_2_x_1', sortPriority: 0, regularPrice: 0, finalPrice: 0, giftable: true, inDate: null, banner: null, tracks: [], images: [], display: [], colors: gold, sectionId: '__dev', section: 'DEVELOPER', sectionIndex: -1, dev: true }, o);
+      const dev = [mkE({ offerId: 'dev_pirate', devKey: 'pirate', name: 'Pirate Token', nameEs: null, image: 'assets/pirate_token.webp', items: [{ id: 'pirate', name: 'Pirate Token', type: 'currency', icon: 'assets/pirate_token.webp', featured: null }], sortPriority: 100 })];
+      [['Solid Gold Rugahand', 'Solid Gold A$AP Rocky'], ['Solid Gold Lil Uzi Vert', 'Solid Gold Lil Uzi Vert'], ['Solid Gold Miku', 'Solid Gold Miku']].forEach(([src, label], i) => {
+        const o = (outfits || []).find((x) => x.name === src); if (!o) return;
+        dev.push(mkE({ offerId: 'dev_' + o.id, name: label, nameEs: o.nameEs || null, info: o.desc || '', image: o.full || o.icon, items: [{ id: o.id, name: label, nameEs: o.nameEs || null, type: 'outfit', icon: o.icon, featured: o.full || null }], sortPriority: 99 - i }));
+      });
+      groups.set('__dev', { name: 'DEVELOPER', idx: -1, items: dev });
+    }
     const secs = [...groups.values()].sort((a, b) => a.idx - b.idx);
     // Imágenes: bajan de a poco (máx. 4 a la vez), se reducen a un tamaño ligero y se quedan cargadas (no se borran ni se vuelven a crear).
     // En bundles además se mide el área visible de la imagen (sin márgenes transparentes) para encajarla en la casilla.
@@ -170,7 +185,7 @@
         const title = String(e.name).toUpperCase();
         const thumbs = (e.kind === 'jam' ? [e.image] : e.items.map((i) => i.icon || i.featured).filter(Boolean));
         const n = Math.max(1, e.items.length || e.tracks.length || 1);
-        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), vdef: vidFor(e), iv: e.items.map((i) => ownOf(i)), ty: e.items.map((i) => i.type), urls: vidsFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), nameRaw: e.name, reg: e.regularPrice > e.finalPrice ? e.regularPrice : null, tag: '',
+        ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), vdef: vidFor(e), iv: e.items.map((i) => ownOf(i)), ty: e.items.map((i) => i.type), urls: vidsFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), owned: !!e.dev, nameRaw: e.name, reg: e.regularPrice > e.finalPrice ? e.regularPrice : null, tag: '',
           sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : String(e.items[0]?.type || 'ITEM').toUpperCase(), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], feat: e.items.map((i) => i.featured || i.icon || e.image), jam: e.kind === 'jam' } };
         const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail';
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
@@ -193,7 +208,8 @@
           const cm = t.querySelector('.cmp'), hr = document.createElement('div'); hr.className = 'hero'; hr.dataset.img = lead.featured || lead.icon || e.image; cm.appendChild(hr); lazy.observe(hr);
           e.items.filter((i) => i !== lead && i.icon).slice(0, 6).forEach((i, k) => { const ic = document.createElement('div'); ic.className = 'ic'; ic.dataset.img = i.icon; ic.style.left = (10 + (k % 3) * 50 + (k > 2 ? 14 : 0)) + 'px'; ic.style.top = (16 + Math.floor(k / 3) * 62 + (k % 2) * 8) + 'px'; ic.style.rotate = (k % 2 ? 5 : -4) + 'deg'; cm.appendChild(ic); lazy.observe(ic); });
         }
-        t.addEventListener('click', () => { window.curItem = key; });
+        t.addEventListener('click', () => { window.curItem = e.devKey || key; });
+        if (e.dev) { t.classList.add('dev', 'map'); const pr = t.querySelector('.pr'); pr.className = 'ownlbl'; pr.textContent = 'OWNED'; if (e.devKey === 'pirate') { devTok = t; if (!ptOn) t.style.display = 'none'; } }
         g.appendChild(t);
       };
       // carga progresiva: la sección reserva su alto y sus casillas se crean por tandas al acercarse
@@ -256,7 +272,8 @@
       new MutationObserver(() => { if (document.body.dataset.screen !== 'shop') shopScr.classList.remove('fopen'); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     }
 
-    window.shopPT && window.shopPT(false);
+    if (devOn) { window.shopPT = (on) => { const pc = document.getElementById('ptcard'); if (pc) pc.style.display = 'none'; row.style.top = '0px'; if (devTok) devTok.style.display = on ? '' : 'none'; }; window.shopPT(ptOn); }
+    else window.shopPT && window.shopPT(false);
 
     // ficha de objeto: miniaturas y arte propios
     const APPLE = !!window.__APPLE;
