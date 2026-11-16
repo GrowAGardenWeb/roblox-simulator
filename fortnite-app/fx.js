@@ -84,6 +84,9 @@
   #shoprow.dyn .dt:active{scale:.97}
   #dynart{animation:fxArt .6s cubic-bezier(.2,1.2,.4,1) both}
   #thumbs .tsl{animation:fxThumb .4s both}
+  #thumbs .tsl,#thcar .it{overflow:hidden}
+  #thumbs .tsl::after,#thcar .it::after{content:'';position:absolute;inset:-10% 0;pointer-events:none;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.75) 50%,transparent 70%);translate:-130% 0}
+  body[data-screen="detail"] #thumbs .tsl::after,body[data-screen="detail"] #thcar .it::after{animation:fxSweep .55s calc(.2s + var(--k,0)*70ms) ease-out both}
   #thumbs .tsl:nth-child(2){animation-delay:.05s}#thumbs .tsl:nth-child(3){animation-delay:.1s}#thumbs .tsl:nth-child(4){animation-delay:.15s}#thumbs .tsl:nth-child(n+5){animation-delay:.2s}
   .fxconf{position:absolute;left:50%;top:44%;width:14px;height:22px;border-radius:3px;pointer-events:none;z-index:30;animation:fxConf 1.4s cubic-bezier(.1,.7,.3,1) forwards}`;
   document.head.appendChild(css);
@@ -207,9 +210,10 @@
     let last = document.body.dataset.screen;
     new MutationObserver(() => { const now = document.body.dataset.screen; if (now === 'gift' && last !== 'gift') SFX.play('gift-open'); last = now; }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
   };
+  const initThumbs = () => { const f = () => document.querySelectorAll('#thumbs .tsl,#thcar .it').forEach((el, i) => el.style.setProperty('--k', i)); new MutationObserver(() => [60, 400].forEach((ms) => setTimeout(f, ms))).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] }); f(); };
   const initRows = () => { document.querySelectorAll('.grow').forEach((el, i) => el.style.setProperty('--i', i)); };
   const init = () => {
-    initHolo(); initGiftSound(); initPickSound(); setTimeout(initRows, 300);
+    initHolo(); initThumbs(); initGiftSound(); initPickSound(); setTimeout(initRows, 300);
     watch('cfsend', () => SFX.play('gift-sending'));
     watch('cfdone', () => { SFX.play('gift-sent'); });
     watch('cferr', () => SFX.play('error'));
