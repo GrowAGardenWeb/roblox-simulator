@@ -140,7 +140,7 @@
     // En bundles además se mide el área visible de la imagen (sin márgenes transparentes) para encajarla en la casilla.
     const jobs = []; let active = 0;
     const next = () => { while (active < 4 && jobs.length) { active++; jobs.shift()(() => { active--; next(); }); } };
-    const paint = (d, url) => { d.style.backgroundImage = 'url("' + url + '")'; };
+    const paint = (d, url) => { d.style.backgroundImage = 'url("' + url + '")'; if (d.parentNode && d.parentNode.dataset && d.parentNode.dataset.key) (window.__tileImg = window.__tileImg || {})[d.parentNode.dataset.key] = url; };
     const loadDi = (d) => { jobs.push((done) => {
       const url = d.dataset.img, t = d.parentNode, isJam = !!(t && t.classList.contains('jam')), fit = !!(t && t.classList.contains('bundle') && !t.classList.contains('comp') && d.clientWidth), probe = !isJam && !(t && t.classList.contains('comp'));
       const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
@@ -174,6 +174,7 @@
     const pump = (g) => {
       const st = pend.get(g); if (!st || st.run) return; st.run = true;
       const tick = () => {
+        if (document.body.dataset.screen !== 'shop') { setTimeout(tick, 400); return; }
         if (st.i >= st.items.length) { g.style.minHeight = ''; secObs.unobserve(g); pend.delete(g); return; }
         const end = Math.min(st.i + (light ? 10 : 18), st.items.length);
         for (; st.i < end; st.i++) st.mk(st.items[st.i]);
@@ -198,7 +199,7 @@
         const n = Math.max(1, e.items.length || e.tracks.length || 1);
         ITEMS[key] = { pl: [320, 600, 1.28], th: 'dyn', n, url: vidFor(e), vdef: vidFor(e), iv: e.items.map((i) => ownOf(i)), ty: e.items.map((i) => i.type), urls: vidsFor(e), src: '', title, title2: title, desc: e.info || '', price: String(e.finalPrice ?? 0), owned: !!e.dev, nameRaw: e.name, reg: e.regularPrice > e.finalPrice ? e.regularPrice : null, tag: '',
           sub: e.kind === 'bundle' ? 'BUNDLE' : e.kind === 'jam' ? 'JAM TRACK' : String(e.items[0]?.type || 'ITEM').toUpperCase(), dyn: { image: e.image, thumbs: thumbs.length ? thumbs : [e.image], feat: e.items.map((i) => i.featured || i.icon || e.image), jam: e.kind === 'jam' } };
-        const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail';
+        const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail'; t.dataset.key = key;
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
         if (a) t.style.setProperty('--a', mix(a, 1.12)); if (b || a) t.style.setProperty('--b', mix(b || a, .8));
         const w = span(e.tileSize); t.style.gridColumn = 'span ' + w;
@@ -314,15 +315,11 @@
     const shrink = (url, max) => new Promise((res) => {
       if (shrinkCache.has(url)) { res(shrinkCache.get(url)); return; }
       if (!/^https?:/.test(url)) { res(url); return; }
-      const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
-      im.onload = () => {
-        try {
-          const r = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.naturalWidth * r)); c.height = Math.max(1, Math.round(im.naturalHeight * r));
-          c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
-          c.toBlob((bl) => { c.width = c.height = 0; const u = bl ? URL.createObjectURL(bl) : url; shrinkCache.set(url, u); while (shrinkCache.size > 5) { const k = shrinkCache.keys().next().value, old = shrinkCache.get(k); shrinkCache.delete(k); if (old.startsWith('blob:') && art.src !== old) URL.revokeObjectURL(old); } res(u); }, 'image/webp', 0.88);
-        } catch (e) { res(url); }
-      };
-      im.onerror = () => res(url); im.src = url;
+      const done = (src, w, h) => { try { const r = Math.min(1, max / Math.max(w, h)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w * r)); c.height = Math.max(1, Math.round(h * r)); c.getContext('2d').drawImage(src, 0, 0, c.width, c.height); if (src.close) src.close(); c.toBlob((bl) => { c.width = c.height = 0; const u = bl ? URL.createObjectURL(bl) : url; shrinkCache.set(url, u); while (shrinkCache.size > 5) { const k = shrinkCache.keys().next().value, old = shrinkCache.get(k); shrinkCache.delete(k); if (old.startsWith('blob:') && art.src !== old) URL.revokeObjectURL(old); } res(u); }, 'image/webp', 0.88); } catch (e) { res(url); } };
+      const viaImg = () => { const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async'; im.onload = () => done(im, im.naturalWidth, im.naturalHeight); im.onerror = () => res(url); im.src = url; };
+      // primero se intenta decodificar directamente a tamaño reducido (no ocupa la memoria del original completo)
+      if (window.createImageBitmap && window.fetch) fetch(url, { mode: 'cors' }).then((r) => r.blob()).then((bl) => createImageBitmap(bl, { resizeWidth: max, resizeQuality: 'medium' })).then((bm) => done(bm, bm.width, bm.height)).catch(viaImg);
+      else viaImg();
     });
     const detail = document.querySelector('.screen[data-screen="detail"]'); if (detail) { const f = detail.querySelector('.full'); f ? f.after(art) : detail.appendChild(art); }
     // al tocar una miniatura del bundle, se reproduce el video de esa pieza (personaje, mochila, pico…)
@@ -337,7 +334,7 @@
       const dyn = it && it.dyn && scr === 'detail';
       art.style.display = dyn && !(APPLE && it.url) ? 'block' : 'none';
       if (!dyn) return;
-      const shownImg = (it.dyn.cur != null && it.dyn.feat && it.dyn.feat[it.dyn.cur]) || it.dyn.image; if (art.dataset.src !== shownImg) { art.dataset.src = shownImg; art.removeAttribute('src'); shrink(shownImg, 900).then((u) => { if (art.dataset.src === shownImg) art.src = u; }); }
+      const shownImg = (it.dyn.cur != null && it.dyn.feat && it.dyn.feat[it.dyn.cur]) || it.dyn.image; if (art.dataset.src !== shownImg) { art.dataset.src = shownImg; const pv = window.__tileImg && window.__tileImg[window.curItem]; if (pv) art.src = pv; else art.removeAttribute('src'); shrink(shownImg, 900).then((u) => { if (art.dataset.src === shownImg) art.src = u; }); }
       const lab = { det5: it.sub === 'BUNDLE' ? 'The price for included items is:' : 'The price is:', det9: it.sub === 'BUNDLE' ? 'VIEW BUNDLE' : it.dyn.jam ? 'PREVIEW TRACK' : 'VIEW ITEM' };
       for (const k in lab) { const el = document.querySelector('[data-t="det.' + k + '"]'); if (el && el.textContent !== lab[k]) { el.removeAttribute('data-w'); el.textContent = lab[k]; } }
       document.querySelectorAll('#thumbs .tsl').forEach((el, i) => {
