@@ -314,14 +314,20 @@
     const art = document.createElement('img'); art.id = 'dynart'; art.alt = ''; art.draggable = false;
     // imágenes grandes de la ficha: se reducen a 900 px antes de mostrarse (el original puede medir 2000+ px = decenas de MB en memoria). Se guardan máx. 5.
     const shrinkCache = new Map();
+    const CK = (u) => 'https://fn-art.local/' + encodeURIComponent(u).slice(-180);
+    const diskGet = (u) => (window.caches ? caches.open('fn-art-v1').then((c) => c.match(CK(u))).then((r) => (r ? r.blob() : null)).catch(() => null) : Promise.resolve(null));
+    const diskPut = (u, bl) => { try { if (window.caches && bl) caches.open('fn-art-v1').then((c) => c.put(CK(u), new Response(bl, { headers: { 'content-type': bl.type || 'image/webp' } }))).catch(() => {}); } catch (e) {} };
     const shrink = (url, max) => new Promise((res) => {
       if (shrinkCache.has(url)) { res(shrinkCache.get(url)); return; }
       if (!/^https?:/.test(url)) { res(url); return; }
-      const done = (src, w, h) => { try { const r = Math.min(1, max / Math.max(w, h)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w * r)); c.height = Math.max(1, Math.round(h * r)); c.getContext('2d').drawImage(src, 0, 0, c.width, c.height); if (src.close) src.close(); c.toBlob((bl) => { c.width = c.height = 0; const u = bl ? URL.createObjectURL(bl) : url; shrinkCache.set(url, u); while (shrinkCache.size > 5) { const k = shrinkCache.keys().next().value, old = shrinkCache.get(k); shrinkCache.delete(k); if (old.startsWith('blob:') && art.src !== old) URL.revokeObjectURL(old); } res(u); }, 'image/webp', 0.88); } catch (e) { res(url); } };
+      diskGet(url).then((cb) => { if (cb) { const u = URL.createObjectURL(cb); shrinkCache.set(url, u); res(u); return; } fresh(); });
+      const fresh = () => {
+      const done = (src, w, h) => { try { const r = Math.min(1, max / Math.max(w, h)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w * r)); c.height = Math.max(1, Math.round(h * r)); c.getContext('2d').drawImage(src, 0, 0, c.width, c.height); if (src.close) src.close(); c.toBlob((bl) => { c.width = c.height = 0; diskPut(url, bl); const u = bl ? URL.createObjectURL(bl) : url; shrinkCache.set(url, u); while (shrinkCache.size > 5) { const k = shrinkCache.keys().next().value, old = shrinkCache.get(k); shrinkCache.delete(k); if (old.startsWith('blob:') && art.src !== old) URL.revokeObjectURL(old); } res(u); }, 'image/webp', 0.88); } catch (e) { res(url); } };
       const viaImg = () => { const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async'; im.onload = () => done(im, im.naturalWidth, im.naturalHeight); im.onerror = () => res(url); im.src = url; };
       // primero se intenta decodificar directamente a tamaño reducido (no ocupa la memoria del original completo)
       if (window.createImageBitmap && window.fetch) fetch(url, { mode: 'cors' }).then((r) => r.blob()).then((bl) => createImageBitmap(bl, { resizeWidth: max, resizeQuality: 'medium' })).then((bm) => done(bm, bm.width, bm.height)).catch(viaImg);
       else viaImg();
+      };
     });
     const detail = document.querySelector('.screen[data-screen="detail"]'); if (detail) { const f = detail.querySelector('.full'); f ? f.after(art) : detail.appendChild(art); }
     // al tocar una miniatura del bundle, se reproduce el video de esa pieza (personaje, mochila, pico…)
@@ -356,6 +362,21 @@
     window.__isCharVid = (it) => { if (!it) return false; if (!it.dyn) return it.sub === undefined || /OUTFIT/.test(it.sub); const i = it.iv ? it.iv.indexOf(it.url) : -1, t = i >= 0 ? it.ty[i] : (it.ty && it.ty.includes('outfit') ? 'outfit' : it.ty && it.ty[0]); return t === 'outfit'; };
     // migas de pan del video del artículo
     { const v = document.getElementById('itemvid'); if (v) ['loadstart', 'loadedmetadata', 'loadeddata', 'playing', 'emptied', 'error', 'stalled', 'abort'].forEach((ev) => v.addEventListener(ev, () => step('video ' + ev + (v.videoWidth ? ' ' + v.videoWidth + 'x' + v.videoHeight : '') + ' ' + String(v.getAttribute('src') || '').split('/').slice(-2, -1)[0]?.slice(0, 6)))); }
+    // pre-descarga: tras entrar, se van bajando y reduciendo las imágenes grandes de los artículos, de una en una y con pausa
+    // (se guardan ya reducidas en el disco; así al abrir una ficha ya están). Se detiene en fichas/regalos y si el teléfono pide ahorrar datos.
+    setTimeout(() => {
+      const nc = navigator.connection; if (nc && (nc.saveData || /(^|-)2g$/.test(nc.effectiveType || ''))) return;
+      const keys = Object.keys(ITEMS).filter((k) => k.startsWith('d_') && ITEMS[k].dyn && /^https?:/.test(ITEMS[k].dyn.image || ''));
+      let i = 0, done = 0;
+      const next = () => {
+        if (i >= keys.length) { step('pre-descarga lista ' + done); return; }
+        const sc = document.body.dataset.screen;
+        if (document.hidden || sc === 'detail' || sc === 'gift' || sc === 'locker') { setTimeout(next, 1500); return; }
+        const url = ITEMS[keys[i++]].dyn.image;
+        diskGet(url).then((have) => { if (have) { setTimeout(next, 30); return; } shrink(url, 900).then(() => { done++; if (done % 25 === 0) step('pre-descarga ' + done + '/' + keys.length); setTimeout(next, 700); }); });
+      };
+      next();
+    }, 4000);
     window.__shopDyn = { count: E.length, sections: secs.length };
   }
 })();
