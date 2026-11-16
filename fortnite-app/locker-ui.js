@@ -72,8 +72,9 @@
   #lkout .bb{position:absolute;top:826px;height:66px;border-radius:9px;background:#3f86e6;display:flex;align-items:center;justify-content:center;font:italic 400 28px 'Archivo Black';color:#0a1a55;cursor:pointer}
   #lkout .bb.off{background:#2f6fd0;color:#5c86cf;pointer-events:none;opacity:.8}
   #lkout .mic{position:absolute;left:1622px;top:826px;width:66px;height:66px;border-radius:9px;background:#3f86e6}
-  #lkout .mic::before{content:'';position:absolute;left:25px;top:14px;width:16px;height:26px;border:3px solid #0a1a55;border-radius:9px}
-  #lkout .mic::after{content:'';position:absolute;left:32px;top:46px;width:3px;height:8px;background:#0a1a55}
+  #lkout .mic{display:flex;align-items:center;justify-content:center}
+  #lkout .mic::before{display:none;content:'';position:absolute;left:25px;top:14px;width:16px;height:26px;border:3px solid #0a1a55;border-radius:9px}
+  #lkout .mic::after{display:none;content:'';position:absolute;left:32px;top:46px;width:3px;height:8px;background:#0a1a55}
   #lkcnt{position:absolute;left:527px;top:254px;font:800 17px Montserrat;color:#bfe0ff;z-index:3;display:none}
   `;
   document.head.appendChild(st);
@@ -82,12 +83,12 @@
   const fullImg = L.querySelector('.full'); if (fullImg) fullImg.after(bg); else L.insertBefore(bg, L.firstChild);
   const out = document.createElement('div'); out.id = 'lkout';
   out.innerHTML = '<div class="tt">CHARACTER</div>'
-    + '<div class="tb ar" style="left:1107px"><i class="si" style="--m:url(assets/soc/back.webp);width:15px;height:22px"></i></div><div class="tb tab on" style="left:1185px;width:126px">OUTFIT</div><div class="tb tab" style="left:1338px;width:170px">BACK BLING<i></i></div><div class="tb tab" style="left:1543px;width:120px">PICKAXE<i></i></div><div class="tb ar" style="left:1730px"><i class="si" style="--m:url(assets/soc/back.webp);width:15px;height:22px;transform:scaleX(-1)"></i></div>'
+    + '<div class="tb ar" style="left:1107px"><i class="si" style="--m:url(assets/soc/back.webp);width:15px;height:22px"></i></div><div class="tb tab on" style="left:1185px;width:126px">OUTFIT</div><div class="tb tab" style="left:1338px;width:170px">BACK BLING<i></i></div><div class="tb tab" style="left:1543px;width:120px">PICKAXE<i></i></div><div class="tb ar" style="left:1730px"><i class="si" style="--m:url(assets/soc/next.webp);width:15px;height:22px"></i></div>'
     + '<div class="sr"><i class="si" style="--m:url(assets/soc/search.webp);width:22px;height:22px"></i><input type="search" id="lkq" placeholder="Search" autocomplete="off" autocapitalize="off" spellcheck="false"></div>'
     + '<div class="sq" style="left:1400px"><i class="si" style="--m:url(assets/soc/heart.webp);width:26px;height:23px;color:#0a1a55"></i></div><div class="sort">Sort By:<br>Latest Acquired</div><div class="sq" style="left:1652px"><i class="si" style="--m:url(assets/soc/sort.webp);width:26px;height:26px;color:#0a1a55"></i></div><div class="sq" style="left:1722px;width:73px"><i class="si" style="--m:url(assets/soc/filt.webp);width:24px;height:22px;color:#0a1a55"></i><span style="margin-left:6px;background:#ffe92e;color:#1a1a00;border-radius:50%;width:24px;height:24px;font:900 16px/24px Montserrat;text-align:center">1</span></div>'
     + '<div class="al" id="lkal">All (0)</div><div class="gridw" id="lkg"></div>'
     + '<div class="nm1">OUTFIT - FORTNITE STYLE</div><div class="nm2" id="lkn2"></div><div class="ds" id="lkds"></div>'
-    + '<div class="bb off" id="lkeq" style="left:1143px;width:134px">EQUIP</div><div class="bb off" style="left:1297px;width:112px">EDIT</div><div class="bb" style="left:1431px;width:168px">OPTIONS</div><div class="mic"></div><div class="bb" id="lkbk" style="left:1710px;width:128px">BACK</div>';
+    + '<div class="bb off" id="lkeq" style="left:1143px;width:134px">EQUIP</div><div class="bb off" style="left:1297px;width:112px">EDIT</div><div class="bb" style="left:1431px;width:168px">OPTIONS</div><div class="mic"><i class="si" style="--m:url(assets/soc/micb.webp);width:34px;height:36px;color:#0a1a55"></i></div><div class="bb" id="lkbk" style="left:1710px;width:128px">BACK</div>';
   L.appendChild(out);
   const cnt = document.createElement('div'); cnt.id = 'lkcnt'; L.appendChild(cnt);
   const grid = out.querySelector('#lkg'), q = out.querySelector('#lkq'), alEl = out.querySelector('#lkal');
@@ -129,8 +130,8 @@
     swapT = setTimeout(() => { if (document.body.dataset.screen === 'locker') window.itemVid(true); }, delay || 220);
   };
   let preview = null;
-  const SHIRT = '<i class="si" style="--m:url(assets/soc/shirt.webp);width:64px;height:64px"></i>';
-  const SHUF = '<i class="si" style="--m:url(assets/soc/shuf.webp);width:64px;height:56px"></i>';
+  const SHIRT = '<i class="si" style="--m:url(assets/soc/shirt.webp);width:54px;height:74px"></i>';
+  const SHUF = '<i class="si" style="--m:url(assets/soc/shuf.webp);width:62px;height:57px"></i>';
   const real = () => (window.__realChar ? window.__realChar() : window.__equipKey);
   const cur = () => (preview ? preview.key : real());
   const info = (it) => {
