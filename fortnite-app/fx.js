@@ -20,7 +20,11 @@
   @keyframes fxScan{0%{translate:0 -70px;opacity:0}15%{opacity:1}85%{opacity:1}100%{translate:0 70px;opacity:0}}
   @keyframes fxGrow{from{scale:1 0;opacity:0}to{scale:1 1;opacity:1}}
   @keyframes fxGlow{0%,100%{text-shadow:0 0 0 #4db8ff}50%{text-shadow:0 0 26px #4db8ff}}
-  @keyframes fxHolo{0%{-webkit-mask-size:100% 0%;mask-size:100% 0%;filter:brightness(2.4) saturate(0) sepia(1) hue-rotate(170deg) drop-shadow(0 0 16px #35a7ff)}65%{filter:brightness(1.6) sepia(.7) hue-rotate(165deg) drop-shadow(0 0 12px #35a7ff)}100%{-webkit-mask-size:100% 100%;mask-size:100% 100%;filter:none}}
+  @keyframes fxHolo{0%{-webkit-mask-size:100% 0%;mask-size:100% 0%;filter:sepia(1) hue-rotate(148deg) saturate(2.6) brightness(1.9) opacity(.72) drop-shadow(0 0 14px #3ff)}34%{-webkit-mask-size:100% 100%;mask-size:100% 100%;filter:sepia(1) hue-rotate(148deg) saturate(2.6) brightness(1.7) opacity(.78) drop-shadow(0 0 12px #3ff)}62%{-webkit-mask-size:100% 100%;mask-size:100% 100%;filter:sepia(.3) hue-rotate(60deg) saturate(.25) brightness(1.6) opacity(.9) drop-shadow(0 0 6px #3ff)}100%{-webkit-mask-size:100% 100%;mask-size:100% 100%;filter:sepia(0) hue-rotate(0deg) saturate(1) brightness(1) opacity(1) drop-shadow(0 0 0 #3ff)}}
+  @keyframes fxFloor{0%{opacity:0;scale:.25 .6}30%{opacity:1;scale:.8 1}100%{opacity:0;scale:1.25 1}}
+  @keyframes fxCube{0%{opacity:0;translate:0 0}25%{opacity:.95}100%{opacity:0;translate:var(--dx) var(--dy)}}
+  .fxfloor{position:absolute;width:420px;height:84px;z-index:5;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,rgba(130,255,240,.95) 0,rgba(70,205,255,.45) 42%,transparent 70%),repeating-linear-gradient(0deg,rgba(255,255,255,.18) 0 1px,transparent 1px 9px);animation:fxFloor .55s ease-out both}
+  .fxcube{position:absolute;z-index:6;pointer-events:none;background:rgba(130,250,255,.8);box-shadow:0 0 8px #5ff;animation:fxCube .6s ease-out both}
   @keyframes fxBand{from{translate:0 0;opacity:1}to{translate:0 calc(var(--h,900px)*-1 - 40px);opacity:.9}}
   .fxholo{-webkit-mask:linear-gradient(#000 0 0) bottom/100% 100% no-repeat;mask:linear-gradient(#000 0 0) bottom/100% 100% no-repeat;animation:fxHolo .75s cubic-bezier(.3,.7,.3,1) both}
   .fxband{position:absolute;height:44px;z-index:6;pointer-events:none;background:linear-gradient(to top,rgba(110,210,255,.95),rgba(110,210,255,0));box-shadow:0 0 28px 6px rgba(70,180,255,.7);animation:fxBand .75s cubic-bezier(.3,.7,.3,1) forwards}
@@ -160,14 +164,23 @@
   function holo(el) {
     try {
       if (Date.now() - lastHolo < 700) return; lastHolo = Date.now(); // evita que se repita dos veces seguidas
-      if (!['detail', 'gift'].includes(document.body.dataset.screen)) return; // en el lobby (home) el personaje carga normal
-      try { if (window.__isCharVid && window.__isCharVid((window.ITEMS_ALL() || {})[window.curItem])) return; } catch (e) {} // a los personajes no se les aplica el holograma
+      const scr = document.body.dataset.screen;
+      if (!['detail', 'gift'].includes(scr)) return; // en el lobby (home) y el casillero el personaje carga normal
       const cv = document.getElementById('itemcv'), ref = el.style.left ? el : cv; if (!ref || !ref.parentNode) return;
       el.classList.remove('fxholo'); void el.offsetWidth; el.classList.add('fxholo');
       el.addEventListener('animationend', function f(e) { if (e.animationName === 'fxHolo') { el.classList.remove('fxholo'); el.removeEventListener('animationend', f); } });
-
+      // disco brillante en el piso + cubitos flotando, como en el juego
+      const cx = scr === 'gift' ? 1420 : 1365, fy = scr === 'gift' ? 690 : 765, host = ref.parentNode, els = [];
+      const fl = document.createElement('div'); fl.className = 'fxfloor'; fl.style.left = (cx - 210) + 'px'; fl.style.top = (fy - 42) + 'px'; host.appendChild(fl); els.push(fl);
+      for (let k = 0; k < 7; k++) {
+        const c = document.createElement('i'), sz = 7 + Math.round(Math.random() * 7);
+        c.className = 'fxcube'; c.style.cssText = 'width:' + sz + 'px;height:' + sz + 'px;left:' + (cx - 170 + Math.random() * 340) + 'px;top:' + (fy - 520 + Math.random() * 480) + 'px;animation-delay:' + (60 + Math.random() * 260).toFixed(0) + 'ms;--dx:' + (Math.random() * 40 - 20).toFixed(0) + 'px;--dy:' + (-30 - Math.random() * 50).toFixed(0) + 'px';
+        host.appendChild(c); els.push(c);
+      }
+      setTimeout(() => els.forEach((x) => x.remove()), 1100);
     } catch (e) {}
   }
+
   const initHolo = () => {
     const cv = document.getElementById('itemcv'), v = document.getElementById('itemvid'); if (!cv || !v) return;
     let on = cv.classList.contains('on');
