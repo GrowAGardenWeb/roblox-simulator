@@ -122,8 +122,11 @@
   p.querySelector('#socback').onclick = () => { show('soc'); window.SFX && SFX.play('back'); };
   const POOL = ['Nova_Kid', 'xX_Blaze_Xx', 'moonlight9', 'PixelPaul', 'sir_loin', 'KaiTheFox', 'ZeroCool77', 'mariah.b', 'LuckyStrike', 'OnlyAlex', 'SoupDragon', 'gamer_gale', 'TacoTuesday', 'RexOnFire'];
   const RECENT = ['Drojas_03', 'char_345der', 'DefiantSquid', 'colmillo_30', 'pzbnlx_27', 'RiftRunner', 'LunaPlays'];
+  // fotos de perfil: los iconos de todos los personajes (outfits.json); mientras carga o si falla, las 14 de siempre
+  let faces = null; fetch('data/outfits.json?' + Date.now()).then((r) => (r.ok ? r.json() : [])).then((l) => { faces = (l || []).map((x) => x.icon).filter(Boolean); }).catch(() => {});
+  window.fnPic = (name) => { let h = 0; for (const c of String(name)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return faces && faces.length ? faces[h % faces.length] : 'assets/pa' + (h % 14) + '.webp'; };
   const hs = (t) => { let h = 0; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
-  const pic = (n) => 'url(assets/pa' + (hs(n) % 14) + '.webp)';
+  const pic = (n) => 'url(' + window.fnPic(n) + ')';
   const sent = new Set(); let qt = 0, qn = 0;
   const res = p.querySelector('#socres'), cntEl = p.querySelector('#socn'), ttl = p.querySelector('#socttl'), q = p.querySelector('#socq');
   const toast = document.createElement('div'); toast.id = 'soctoast'; toast.innerHTML = '<div class="ic"></div><div><b>FRIEND REQUEST SENT</b><span>Sent friend request to <u id="sctn"></u></span></div><div class="ck"><i class="si" style="--m:url(assets/soc/check.webp);width:52px;height:50px;color:#6fe08a"></i></div>'; stage.appendChild(toast);

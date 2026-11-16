@@ -356,7 +356,7 @@ function hash(t){let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))>>>0;return h}
 function render(){const q=inp.value.trim(),ql=q.toLowerCase();x.style.display=q?"block":"none";const p=ph();if(p)p.style.visibility=(q||document.activeElement===inp)?"hidden":"";
  if(!q){sr.style.display="none";return}
  const it=ITEMS_CUR(),n=it.n||3,price=window.fmtN(it.price);let res=names().map((nm,i)=>[nm,AV[i]]).filter(r=>r[0].toLowerCase().includes(ql));
- if(!res.some(r=>r[0].toLowerCase()===ql))res.unshift([q,PA[hash(ql)%14]]);res=res.slice(0,6);
+ if(!res.some(r=>r[0].toLowerCase()===ql))res.unshift([q,(window.fnPic?window.fnPic(ql):PA[hash(ql)%14])]);res=res.slice(0,6);
  sr.querySelectorAll(".sr").forEach(e=>e.remove());
  res.forEach((r,i)=>{const d=document.createElement("div");d.className="sr";d.style.top=(323+89*i)+"px";d.innerHTML='<img class="av" src="'+r[1]+'" alt=""><i class="a"></i><i class="b"></i><span class="n"></span><span class="o">0/'+n+' ITEMS OWNED</span><span class="p">'+price+'</span><i class="gc c"></i>';d.querySelector(".n").textContent=r[0];d.onclick=()=>{inp.blur();openC(r[0],r[1])};sr.appendChild(d)});
  sr.style.display="block"}
