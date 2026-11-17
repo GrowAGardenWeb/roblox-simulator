@@ -30,8 +30,8 @@
     "id": "Twinzer",
     "name": "Twinzer",
     "category": "Start Your Engines",
-    "index": 6,
-    "rank": 178,
+    "index": 23,
+    "rank": 176,
     "showIneligibleOffers": "always",
     "useWidePreview": true,
     "displayType": "tileGrid"
@@ -177,7 +177,7 @@
    "layout": {
     "id": "JT111326",
     "name": "Jam Tracks",
-    "index": 21,
+    "index": 16,
     "rank": 183,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
@@ -269,133 +269,70 @@
    ]
   },
   {
-   "regularPrice": 800,
-   "finalPrice": 800,
-   "devName": "[VIRTUAL]1 x Summer Snapper, 1 x Carnation of Carnage for 800 MtxCurrency",
-   "offerId": "v2:/d93fbede6864926e4770d7e781a68cfc787f0677a5f32ec5f71fc5d81c77049e",
+   "regularPrice": 300,
+   "finalPrice": 300,
+   "devName": "[VIRTUAL]1 x Pack-sune Miku for 300 MtxCurrency",
+   "offerId": "v2:/542033dd88cccf16392cd9ca21af9ce969a0277fcd86f118aa203c0e4253571d",
    "inDate": "2026-11-16T00:00:00Z",
    "outDate": "2026-11-20T23:59:59.999Z",
    "giftable": true,
    "refundable": false,
    "sortPriority": -1,
-   "layoutId": "SummerBatmanGCS.97",
-   "layout": {
-    "id": "SummerBatmanGCS",
-    "name": "Gotham City Summer",
-    "index": 8,
-    "rank": 193,
-    "showIneligibleOffers": "always",
-    "useWidePreview": false,
-    "displayType": "tileGrid"
-   },
+   "layoutId": "alc.0",
    "colors": {
-    "color1": "5fc9f1ff",
-    "color3": "ffe4a5ff",
-    "textBackgroundColor": "577a7bff"
+    "color1": "10d8e0ff",
+    "color2": "93f9ffff",
+    "color3": "0ab8d0ff",
+    "textBackgroundColor": "35c0b9ff"
    },
-   "tileBackgroundMaterial": "ShopTile_ShopComic",
+   "tileBackgroundMaterial": "ShopTile_SketchedBorder",
    "tileSize": "Size_2_x_1",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S41/DAv2_backpack_crimpperfume",
-   "newDisplayAsset": {
-    "id": "DAv2_Backpack_CrimpPerfume",
-    "cosmeticId": "Backpack_CrimpPerfume",
-    "materialInstances": [],
-    "renderImages": [
-     {
-      "productTag": "Product.BR",
-      "fileName": "cosmo__6353c889cdabcac7_29c0c4191e61fb71.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6353c889cdabcac7/renderimage_0.png"
-     }
-    ]
-   },
+   "displayAssetPath": "/Game/Catalog/DisplayAssets/DA_Featured_Backpack_Backpackjadetowelgloss",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S33/DAv2_Backpack_jadetowelgloss",
    "brItems": [
     {
-     "id": "Backpack_CrimpPerfume",
-     "name": "Summer Snapper",
-     "description": "Some extremely fly traps.",
+     "id": "Backpack_JadeTowelGloss",
+     "name": "Pack-sune Miku",
+     "description": "Packed with Miku's tour essentials.",
      "type": {
       "value": "backpack",
       "displayValue": "Back Bling",
       "backendValue": "AthenaBackpack"
      },
      "rarity": {
-      "value": "dc",
-      "displayValue": "DC SERIES",
+      "value": "icon",
+      "displayValue": "Icon Series",
       "backendValue": "EFortRarity::Rare"
      },
      "series": {
-      "value": "DC SERIES",
-      "image": "https://fortnite-api.com/images/cosmetics/series/dcuseries.png",
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
       "colors": [
-       "007af1ff",
-       "0053a9ff",
-       "003f82ff",
-       "003169ff",
-       "001f47ff"
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
       ],
-      "backendValue": "DCUSeries"
+      "backendValue": "CreatorCollabSeries"
      },
      "set": {
-      "value": "Gotham City Summer",
-      "text": "Part of the Gotham City Summer set.",
-      "backendValue": "RiverFall"
+      "value": "Hatsune Miku",
+      "text": "Part of the Hatsune Miku set.",
+      "backendValue": "LifeForce"
      },
      "introduction": {
-      "chapter": "7",
-      "season": "3",
-      "text": "Introduced in Chapter 7, Season 3.",
-      "backendValue": 41
+      "chapter": "6",
+      "season": "1",
+      "text": "Introduced in Chapter 6, Season 1.",
+      "backendValue": 33
      },
      "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/featured.png"
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_jadetowelgloss/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_jadetowelgloss/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_jadetowelgloss/featured.png"
      },
-     "added": "2026-07-16T08:00:00Z"
-    },
-    {
-     "id": "Pickaxe_CrimpPerfume",
-     "name": "Carnation of Carnage",
-     "description": "Just as deadly, by any other name.",
-     "type": {
-      "value": "pickaxe",
-      "displayValue": "Pickaxe",
-      "backendValue": "AthenaPickaxe"
-     },
-     "rarity": {
-      "value": "dc",
-      "displayValue": "DC SERIES",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "series": {
-      "value": "DC SERIES",
-      "image": "https://fortnite-api.com/images/cosmetics/series/dcuseries.png",
-      "colors": [
-       "007af1ff",
-       "0053a9ff",
-       "003f82ff",
-       "003169ff",
-       "001f47ff"
-      ],
-      "backendValue": "DCUSeries"
-     },
-     "set": {
-      "value": "Gotham City Summer",
-      "text": "Part of the Gotham City Summer set.",
-      "backendValue": "RiverFall"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "3",
-      "text": "Introduced in Chapter 7, Season 3.",
-      "backendValue": 41
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_crimpperfume/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_crimpperfume/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_crimpperfume/featured.png"
-     },
-     "added": "2026-07-16T08:00:00Z"
+     "added": "2025-01-14T09:00:00Z"
     }
    ]
   }
