@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<title>NeoBank Simulator</title>
+<title>NeoBank</title>
 <style>
   :root{--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;--g:#8d8d94}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -40,10 +40,9 @@
   .inv i{position:absolute;right:23px;top:26px;font-style:normal;font-size:21px;line-height:14px;color:#e6f5ec}
   .tabs{position:fixed;left:50%;bottom:0;width:100%;max-width:520px;transform:translateX(-50%);height:calc(64px + var(--safe-bottom));background:#08080a;border-top:1px solid #1c1c20;display:flex;padding-top:9px;z-index:5}
   .tab{flex:1;text-align:center;font-size:12px;color:#7a7a82}.tab svg{display:block;margin:0 auto 6px;width:28px;height:28px;fill:currentColor}.tab.on{color:#fff}
-  /* mandatory SIMULATOR watermark across the whole screen */
-  .wm{position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden}
-  .wm::before{content:"";position:absolute;inset:-30%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='120'%3E%3Ctext x='150' y='72' text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-weight='800' font-size='34' letter-spacing='4' fill='%23ff9f0a' fill-opacity='.42' stroke='%23000' stroke-opacity='.25' stroke-width='.8'%3ESIMULATOR%3C/text%3E%3C/svg%3E");transform:rotate(-24deg)}
-  .wb{position:absolute;left:0;right:0;top:0;height:calc(var(--safe-top) + 24px);padding-top:var(--safe-top);background:#ff9f0a;color:#111;font-size:12px;font-weight:800;letter-spacing:.7px;text-align:center;line-height:24px}
+  /* etiqueta pequeña de prototipo (sin franjas) */
+  .wm{position:fixed;left:0;right:0;bottom:calc(64px + var(--safe-bottom) + 6px);z-index:9999;pointer-events:none;text-align:center}
+  .wb{display:inline-block;padding:3px 10px;border-radius:10px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:10px;font-weight:600;letter-spacing:.4px}
 </style>
 </head>
 <body>
@@ -78,6 +77,6 @@
   <div class="tab"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="6"/><circle cx="16" cy="16" r="5.500" stroke="#08080a" stroke-width="1.500"/></svg>Crypto</div>
   <div class="tab"><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/></svg>Points</div>
 </nav>
-<div class="wm"><div class="wb">SIMULATOR &mdash; fake app, not a real bank</div></div>
+<div class="wm"><div class="wb">Concept prototype &middot; not a real bank</div></div>
 </body>
 </html>
