@@ -27,5 +27,19 @@
   const _apply = apply; sel.addEventListener('change', coin);
   // artículos que siempre son tuyos (sección DEVELOPER): la ficha dice OWNED aunque el modo sea normal
   setInterval(() => { const it = window.ITEMS_ALL && window.ITEMS_ALL()[window.curItem]; document.body.classList.toggle('owneditem', document.body.dataset.screen === 'detail' && !!(it && it.owned)); }, 250);
+  // PRE-DOWNLOAD: baja y guarda las imágenes de la tienda con una barra de progreso
+  { const r3 = document.createElement('div'); r3.id = 'prerow';
+    r3.innerHTML = '<style>#prerow .bar{height:14px;border-radius:7px;background:#0a1d62;overflow:hidden;margin-top:8px;display:none}#prerow .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#33d9fe,#7dff9a);transition:width .15s}#prerow .st{font:700 12px Montserrat;color:#cfe3ff;margin-top:6px;min-height:14px}</style><label>PRE-DOWNLOAD (SHOP IMAGES)</label><button type="button" id="prebtn" style="width:100%;background:#7dff9a;color:#04210f">PRE-DOWNLOAD NOW</button><div class="bar"><i></i></div><div class="st" id="prest"></div>';
+    const b3 = P.querySelector('.b'); (b3 ? b3.parentNode : P.firstChild).insertBefore(r3, b3 || null);
+    const btn = r3.querySelector('#prebtn'), bar = r3.querySelector('.bar'), fill = bar.firstChild, st = r3.querySelector('#prest'); let busy = false;
+    btn.onclick = () => {
+      const pl = window.__preload; if (!pl) { st.textContent = 'Open the shop first.'; return; }
+      if (busy) { pl.stop(); return; }
+      busy = true; btn.textContent = 'CANCEL'; bar.style.display = 'block'; fill.style.width = '0'; const t0 = Date.now();
+      pl.start((d, n) => { const p = Math.round(d / n * 100), el = (Date.now() - t0) / 1000, eta = d ? Math.max(0, Math.round(el / d * (n - d))) : 0; fill.style.width = p + '%'; st.textContent = d + ' / ' + n + ' (' + p + '%) · ~' + eta + 's left'; }, 4).then((r) => {
+        busy = false; btn.textContent = 'PRE-DOWNLOAD NOW'; st.textContent = r.stopped ? 'Cancelled at ' + r.done + ' / ' + r.total : 'Done: ' + r.total + ' items in ' + Math.round(r.ms / 1000) + 's'; if (!r.stopped) fill.style.width = '100%';
+      });
+    };
+  }
   apply();
 })();

@@ -380,22 +380,28 @@
     window.__isCharVid = (it) => { if (!it) return false; if (!it.dyn) return it.sub === undefined || /OUTFIT/.test(it.sub); const i = it.iv ? it.iv.indexOf(it.url) : -1, t = i >= 0 ? it.ty[i] : (it.ty && it.ty.includes('outfit') ? 'outfit' : it.ty && it.ty[0]); return t === 'outfit'; };
     // migas de pan del video del artículo
     { const v = document.getElementById('itemvid'); if (v) ['loadstart', 'loadedmetadata', 'loadeddata', 'playing', 'emptied', 'error', 'stalled', 'abort'].forEach((ev) => v.addEventListener(ev, () => step('video ' + ev + (v.videoWidth ? ' ' + v.videoWidth + 'x' + v.videoHeight : '') + ' ' + String(v.getAttribute('src') || '').split('/').slice(-2, -1)[0]?.slice(0, 6)))); }
-    // pre-descarga: tras entrar, se van bajando y reduciendo las imágenes grandes de los artículos, de una en una y con pausa
-    // (se guardan ya reducidas en el disco; así al abrir una ficha ya están). Se detiene en fichas/regalos y si el teléfono pide ahorrar datos.
-    setTimeout(() => {
-      if (/[?&]nopre=1/.test(location.search)) return; // interruptor de prueba: sin pre-descarga
-      const nc = navigator.connection; if (nc && (nc.saveData || /(^|-)2g$/.test(nc.effectiveType || ''))) return;
-      const keys = Object.keys(ITEMS).filter((k) => k.startsWith('d_') && ITEMS[k].dyn && /^https?:/.test(ITEMS[k].dyn.image || ''));
-      let i = 0, done = 0;
-      const next = () => {
-        if (i >= keys.length) { step('pre-descarga lista ' + done); return; }
-        const sc = document.body.dataset.screen;
-        if (document.hidden || sc !== 'shop' || Date.now() - (window.__lastScroll || 0) < 1500) { setTimeout(next, 1500); return; }
-        const it = ITEMS[keys[i++]], url = it.dyn.image, tm = it.dyn.tm || { jam: !!it.dyn.jam, bundle: it.sub === 'BUNDLE', comp: false };
-        tileGet(url).then((have) => { if (have) { setTimeout(next, 30); return; } makeTile(url, tm).then(() => { done++; if (done % 10 === 0) step('pre-descarga ' + done + '/' + keys.length); setTimeout(next, 1800); }); });
+    // pre-descarga manual (botón PRE-DOWNLOAD del panel): baja varias imágenes a la vez y reporta el avance; no corre sola
+    window.__preload = (() => {
+      let run = 0;
+      const list = () => E.filter((e) => /^https?:/.test(e.image || '')).map((e) => ({ url: e.image, tm: { jam: e.kind === 'jam', bundle: e.kind === 'bundle', comp: e.kind === 'bundle' && e.items.length > 1 && (e.image === e.items[0].featured || e.image === e.items[0].icon) } }));
+      return {
+        total: () => list().length,
+        stop: () => { run++; },
+        start: (onProg, conc) => new Promise((res) => {
+          const my = ++run, ks = list(), N = ks.length; let i = 0, done = 0, active = 0, t0 = Date.now();
+          if (!N) { res({ done: 0, total: 0, ms: 0 }); return; }
+          const pump = () => {
+            if (my !== run) { res({ done, total: N, ms: Date.now() - t0, stopped: true }); return; }
+            while (active < (conc || 4) && i < N) {
+              const it = ks[i++], url = it.url, tm = it.tm;
+              active++;
+              tileGet(url).then((have) => (have ? 1 : makeTile(url, tm))).catch(() => 0).then(() => { active--; done++; onProg && onProg(done, N); if (done >= N) { step('pre-descarga lista ' + N + ' en ' + Math.round((Date.now() - t0) / 1000) + 's'); res({ done, total: N, ms: Date.now() - t0 }); } else pump(); });
+            }
+          };
+          pump();
+        }),
       };
-      next();
-    }, 4000);
+    })();
     window.__shopDyn = { count: E.length, sections: secs.length };
   }
 })();
