@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>NeoBank Simulator</title>
+<style>
+  :root{--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;--g:#8d8d94}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;background:#000;color:#fff;font-family:var(--font);-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  #app{position:fixed;inset:0;max-width:520px;margin:0 auto;overflow-y:auto;overflow-x:hidden;background:#000;-webkit-overflow-scrolling:touch;padding-bottom:calc(120px + var(--safe-bottom))}
+  .hero{position:relative;height:calc(var(--safe-top) + 397px);background:
+    radial-gradient(130% 70% at 0% 62%,#0a3ccf 0%,#06257f 34%,rgba(3,12,50,0) 70%),
+    radial-gradient(90% 40% at 100% 8%,#0b2a8c 0%,rgba(0,0,0,0) 70%),#020512}
+  .hero::before{content:"";position:absolute;left:-10%;top:calc(var(--safe-top) + 32px);width:120%;height:150px;border-radius:50%;border-top:3px solid rgba(120,160,255,.35);transform:rotate(7deg);filter:blur(1px)}
+  .row1{position:absolute;left:17px;right:17px;top:calc(var(--safe-top) + 64px);height:42px;display:flex;gap:8px;align-items:center}
+  .av{width:38px;height:38px;border-radius:50%;background:#2d3d78;font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;flex:none}
+  .search{flex:1;height:42px;border-radius:21px;background:rgba(20,20,26,.92);display:flex;align-items:center;gap:10px;padding:0 14px;color:#9a9aa3;font-size:16px}
+  .cb{width:38px;height:38px;border-radius:50%;background:rgba(20,20,26,.92);display:flex;align-items:center;justify-content:center;flex:none}
+  .pa{position:absolute;left:0;right:0;top:calc(var(--safe-top) + 129px);text-align:center;color:#c9d3ee;font-size:14.5px;line-height:20px}
+  .bal{position:absolute;left:0;right:0;top:calc(var(--safe-top) + 149px);text-align:center;font-size:25px;font-weight:700;line-height:30px;letter-spacing:-.2px}
+  .sc{position:absolute;left:0;right:0;top:calc(var(--safe-top) + 182px);text-align:center;color:#92a8e6;font-size:12.6px;line-height:18px}
+  .acc{position:absolute;left:50%;top:calc(var(--safe-top) + 221px);transform:translateX(-50%);height:38px;padding:0 21px;border-radius:19px;background:rgba(255,255,255,.14);font-size:16px;font-weight:500}
+  .acts{position:absolute;left:0;right:0;top:calc(var(--safe-top) + 286px);display:flex;justify-content:space-around;padding:0 5px}
+  .act{width:84px;text-align:center;font-size:13.6px;font-weight:500}
+  .act i{display:flex;width:55px;height:55px;border-radius:50%;background:rgba(80,92,150,.45);margin:0 auto 10px;align-items:center;justify-content:center}
+  .dots{position:absolute;left:0;right:0;top:calc(var(--safe-top) + 380px);display:flex;justify-content:center;gap:6px}
+  .dots b{width:6px;height:6px;border-radius:50%;background:#7b7f95}.dots b:first-child{background:#fff}
+  .card{margin:13px 17px 0;background:#141417;border-radius:24px;padding:4px 0 6px}
+  .tx{display:flex;align-items:center;height:69.4px;padding:0 15px 0 14px;gap:15px}
+  .ava{position:relative;width:43px;height:43px;border-radius:50%;border:1px solid #2c2c31;display:flex;align-items:center;justify-content:center;font-size:15px;flex:none}
+  .ava u{position:absolute;right:-2px;bottom:-2px;width:17px;height:17px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;text-decoration:none}
+  .tt{flex:1;min-width:0}.tt b{display:block;font-weight:500;font-size:17px;line-height:21px}.tt span{display:block;color:var(--g);font-size:14px;line-height:19px}
+  .am{font-size:17px;font-weight:400}.pos{color:#3fd3a6}
+  .all{text-align:center;font-size:17px;line-height:50px;font-weight:500;height:50px}
+  .inv{position:relative;margin:12px 17px 0;height:91px;border-radius:24px;background:linear-gradient(100deg,#0f5230,#187544);padding:19px 20px}
+  .inv b{display:block;font-size:26px;line-height:32px;font-weight:800;letter-spacing:-.3px}.inv span{display:block;margin-top:5px;font-size:15.6px;color:#d7efe0}
+  .inv i{position:absolute;right:23px;top:26px;font-style:normal;font-size:21px;line-height:14px;color:#e6f5ec}
+  .tabs{position:fixed;left:50%;bottom:0;width:100%;max-width:520px;transform:translateX(-50%);height:calc(64px + var(--safe-bottom));background:#08080a;border-top:1px solid #1c1c20;display:flex;padding-top:9px;z-index:5}
+  .tab{flex:1;text-align:center;font-size:12px;color:#7a7a82}.tab svg{display:block;margin:0 auto 6px;width:28px;height:28px;fill:currentColor}.tab.on{color:#fff}
+  /* mandatory SIMULATOR watermark across the whole screen */
+  .wm{position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden}
+  .wm::before{content:"";position:absolute;inset:-30%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='120'%3E%3Ctext x='150' y='72' text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-weight='800' font-size='34' letter-spacing='4' fill='%23ff9f0a' fill-opacity='.42' stroke='%23000' stroke-opacity='.25' stroke-width='.8'%3ESIMULATOR%3C/text%3E%3C/svg%3E");transform:rotate(-24deg)}
+  .wb{position:absolute;left:0;right:0;top:0;height:calc(var(--safe-top) + 24px);padding-top:var(--safe-top);background:#ff9f0a;color:#111;font-size:12px;font-weight:800;letter-spacing:.7px;text-align:center;line-height:24px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hero">
+    <div class="row1"><div class="av">AB</div><div class="search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a9aa3" stroke-width="2.2" stroke-linecap="round"><circle cx="10.500" cy="10.500" r="7"/><path d="M16 16l5 5"/></svg>Search</div><div class="cb"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#fff"/><path d="M12 12V2a10 10 0 0 1 10 10z" fill="#2b2b30"/></svg></div><div class="cb"><svg width="22" height="18" viewBox="0 0 24 20"><rect x="1" y="2" width="22" height="16" rx="3" fill="#fff"/><rect x="1" y="6" width="22" height="3.500" fill="#2b2b30"/></svg></div></div>
+    <div class="pa">Personal &middot; All accounts</div>
+    <div class="bal">&pound;22,680.32</div>
+    <div class="sc">&#127974; Sort code 00-00-00 &middot; Acc 00000000</div>
+    <button class="acc">Accounts</button>
+    <div class="acts">
+      <div class="act"><i><svg width="28" height="28" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></i>Add money</div>
+      <div class="act"><i><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h15M15 4l4 4-4 4M20 16H5M9 12l-4 4 4 4"/></svg></i>Move</div>
+      <div class="act"><i><svg width="26" height="28" viewBox="0 0 22 26" fill="#fff"><path d="M3 1h11l6 6v16a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/><path d="M5 12h12M5 16h12M5 20h8" stroke="#243580" stroke-width="2"/></svg></i>Details</div>
+      <div class="act"><i><svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><circle cx="5" cy="12" r="2.300"/><circle cx="12" cy="12" r="2.300"/><circle cx="19" cy="12" r="2.300"/></svg></i>More</div>
+    </div>
+    <div class="dots"><b></b><b></b><b></b></div>
+  </div>
+  <div class="card">
+    <div class="tx"><div class="ava">TU<u><svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><path d="M12 2L2 8v2h20V8zM4 12v7H2v2h20v-2h-2v-7h-3v7h-2v-7h-4v7H9v-7z"/></svg></u></div><div class="tt"><b>Top up</b><span>From Bank &middot;&middot;00</span></div><div class="am pos">+&pound;20,000.00</div></div>
+    <div class="tx"><div class="ava">TU<u><svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><path d="M12 2L2 8v2h20V8zM4 12v7H2v2h20v-2h-2v-7h-3v7h-2v-7h-4v7H9v-7z"/></svg></u></div><div class="tt"><b>Top up</b><span>From Bank &middot;&middot;00</span></div><div class="am pos">+&pound;200.00</div></div>
+    <div class="tx"><div class="ava">SM<u><svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><path d="M4 11h12l-5-5 1.500-1.500L20 12l-7.500 7.500L11 18l5-5H4z"/></svg></u></div><div class="tt"><b>Sam Demo</b><span>Sent to @samdemo</span></div><div class="am">&minus;&pound;45.00</div></div>
+    <div class="tx"><div class="ava">JD<u><svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><path d="M4 11h12l-5-5 1.500-1.500L20 12l-7.500 7.500L11 18l5-5H4z"/></svg></u></div><div class="tt"><b>Jo Demo</b><span>Sent to @jodemo</span></div><div class="am">&minus;&pound;20.00</div></div>
+    <div class="all">See all</div>
+  </div>
+  <div class="inv"><b>Invest from &pound;1</b><span>Capital at risk. Fees may apply</span><i>&times;</i></div>
+</div>
+<nav class="tabs">
+  <div class="tab on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</div>
+  <div class="tab"><svg viewBox="0 0 24 24"><path d="M4 20V12h3v8zM10 20V6h3v14zM16 20V10h3v10z"/></svg>Invest</div>
+  <div class="tab"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><rect x="2" y="9" width="20" height="3" fill="#08080a"/></svg>Payments</div>
+  <div class="tab"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="6"/><circle cx="16" cy="16" r="5.500" stroke="#08080a" stroke-width="1.500"/></svg>Crypto</div>
+  <div class="tab"><svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/></svg>Points</div>
+</nav>
+<div class="wm"><div class="wb">SIMULATOR &mdash; fake app, not a real bank</div></div>
+</body>
+</html>
