@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Fortnite Shop Video Grabber",
+  "version": "1.0.0",
+  "description": "Recorre la tienda de Fortnite, captura los links de los videos de cada artículo y copia solo los nuevos.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://moneyscripts.shop/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.fortnite.com/*", "https://fortnite.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": { "48": "icon48.png", "128": "icon128.png" }
+}
