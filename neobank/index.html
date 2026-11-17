@@ -52,7 +52,7 @@
     <div class="row1"><div class="av">AB</div><div class="search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a9aa3" stroke-width="2.2" stroke-linecap="round"><circle cx="10.500" cy="10.500" r="7"/><path d="M16 16l5 5"/></svg>Search</div><div class="cb"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#fff"/><path d="M12 12V2a10 10 0 0 1 10 10z" fill="#2b2b30"/></svg></div><div class="cb"><svg width="22" height="18" viewBox="0 0 24 20"><rect x="1" y="2" width="22" height="16" rx="3" fill="#fff"/><rect x="1" y="6" width="22" height="3.500" fill="#2b2b30"/></svg></div></div>
     <div class="pa">Personal &middot; All accounts</div>
     <div class="bal">&pound;22,680.32</div>
-    <div class="sc">&#127974; Sort code 00-00-00 &middot; Acc 00000000</div>
+    <div class="sc" id="sc"></div>
     <button class="acc">Accounts</button>
     <div class="acts">
       <div class="act"><i><svg width="28" height="28" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></i>Add money</div>
@@ -79,5 +79,11 @@
   <div class="tab"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 1.800l8.500 4.900v10.600L12 22.200l-8.500-4.900V6.700zM12 7l1.200 3.800L17 12l-3.800 1.200L12 17l-1.200-3.800L7 12l3.800-1.200z"/></svg>Points</div>
 </nav>
 <div class="wm"><div class="wb">SIMULATOR &mdash; fake app, not a real bank</div></div>
+<script>
+(function(){var r=function(n){var o='';for(var i=0;i<n;i++)o+=Math.floor(Math.random()*10);return o};
+var k='nb_sc',v;try{v=localStorage.getItem(k)}catch(e){}
+if(!v){v='99-'+r(2)+'-'+r(2)+' \u00B7 Acc '+r(8);try{localStorage.setItem(k,v)}catch(e){}}
+document.getElementById('sc').textContent='\uD83C\uDFE6 Sort code '+v})();
+</script>
 </body>
 </html>
