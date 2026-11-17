@@ -1,4 +1,4 @@
-FORTNITE SHOP VIDEO GRABBER (Chrome / Edge / Brave)
+FORTNITE SHOP VIDEO GRABBER (Chrome / Edge / Brave) - modo manual
 
 INSTALAR (una sola vez)
 1. Descomprime esta carpeta.
@@ -6,10 +6,11 @@ INSTALAR (una sola vez)
 3. Activa "Modo de desarrollador" (arriba a la derecha).
 4. Toca "Cargar descomprimida" y elige la carpeta "video-extension".
 
-USAR (cuando se actualice la tienda)
-1. Abre https://www.fortnite.com/item-shop (inicia sesion si te lo pide).
-2. Sale un cuadro abajo a la derecha. Toca "Recorrer todo solo" y dejalo correr (unos minutos).
-3. Cuando diga "Listo", toca "Copiar nuevos" y pega el resultado en el chat.
-   Solo copia los videos que todavia NO estan en la app. Si no hay nuevos, copia todo.
-- "Descargar .json" baja un archivo con lo capturado. "Borrar" limpia lo guardado.
-- Lo capturado se queda guardado aunque recargues la pagina.
+USAR
+1. Abre https://www.fortnite.com/item-shop (sale un cuadro abajo a la derecha).
+2. Entra a un articulo y espera a que cargue su video.
+3. Toca "Copiar link del video". Copia una linea con el nombre y el link.
+   El cuadro dice si el video es NUEVO o si ya estaba en la app.
+4. Pega la(s) linea(s) en el chat. Puedes copiar varios y pegarlos juntos.
+- Si el nombre sale mal, escribelo tu en la casilla antes de copiar.
+- "Copiar todos los vistos" junta todo lo que has copiado (solo los nuevos).
