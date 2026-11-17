@@ -1,15 +1,15 @@
 {
- "updated": "2026-11-17T07:26:10.443Z",
+ "updated": "2026-11-17T20:46:24.551Z",
  "source": {
   "api": "fortnite-api.com/v2/shop",
   "site": "error: https://www.fortnite.com/item-shop?lang=en-US -> HTTP 403"
  },
  "counts": {
   "entries": 374,
-  "shown": 316,
+  "shown": 374,
   "sections": 22,
-  "jam": 77,
-  "bundles": 23,
+  "jam": 131,
+  "bundles": 27,
   "backgrounds": 21,
   "bgError": null,
   "withVideo": 0,
@@ -110,7 +110,7 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 11,
+   "count": 16,
    "background": "https://cdn2.unrealengine.com/sk-MistTycoon_SectionBG-cbd22aec.png"
   },
   {
@@ -162,7 +162,7 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 13,
+   "count": 17,
    "background": "https://cdn2.unrealengine.com/sk-Billboard_TonicMail_SectionBG-6a32f9b4.png"
   },
   {
@@ -232,7 +232,7 @@
     "useWidePreview": false,
     "displayType": "expandableList"
    },
-   "count": 75,
+   "count": 116,
    "background": "https://cdn2.unrealengine.com/default-sparks-sectionbg-v1-1920x1080-9b27879ce008.jpg"
   },
   {
@@ -302,7 +302,7 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 13,
+   "count": 17,
    "background": "https://cdn2.unrealengine.com/sk-Billboard_CactusBait_SectionBG-d3e98b55.png"
   },
   {
@@ -337,7 +337,7 @@
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
-   "count": 14,
+   "count": 18,
    "background": "https://cdn2.unrealengine.com/sk-Billboard_RookGecko_BG-e67da5f6.png"
   },
   {
