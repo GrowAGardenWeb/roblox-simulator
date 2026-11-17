@@ -358,7 +358,7 @@
     const apply = () => {
       const scr = document.body.dataset.screen, it = ITEMS[window.curItem];
       const dyn = it && it.dyn && scr === 'detail';
-      art.style.display = dyn && !(APPLE && it.url) ? 'block' : 'none';
+      art.style.display = dyn && !it.url ? 'block' : 'none';
       if (!dyn) return;
       const shownImg = (it.dyn.cur != null && it.dyn.feat && it.dyn.feat[it.dyn.cur]) || it.dyn.image; if (art.dataset.src !== shownImg) { art.dataset.src = shownImg; const pv = window.__tileImg && window.__tileImg[window.curItem]; if (pv) art.src = pv; else art.removeAttribute('src'); shrink(shownImg, 900).then((u) => { if (art.dataset.src === shownImg) art.src = u; }); }
       const lab = { det5: it.sub === 'BUNDLE' ? 'The price for included items is:' : 'The price is:', det9: it.sub === 'BUNDLE' ? 'VIEW BUNDLE' : it.dyn.jam ? 'PREVIEW TRACK' : 'VIEW ITEM' };
@@ -402,6 +402,8 @@
         }),
       };
     })();
+    // si el video no carga o no se puede reproducir, se muestra la imagen del artículo (nunca queda vacío)
+    { const v = document.getElementById('itemvid'); if (v) v.addEventListener('error', () => { const it = ITEMS[window.curItem]; if (it && it.dyn && document.body.dataset.screen === 'detail') art.style.display = 'block'; }); }
     window.__shopDyn = { count: E.length, sections: secs.length };
   }
 })();
