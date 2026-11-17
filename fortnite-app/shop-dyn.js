@@ -37,7 +37,7 @@
   step('inicio');
   window.__shopLight = lvl; if (light) document.documentElement.classList.add('shoplite');
 
-  const BAD = (e) => !e.image || /placeholder|^\[VIRTUAL\]|\bTBD\b/i.test((e.name || '') + ' ' + (e.devName || ''));
+  const BAD = (e) => !e.image || !String(e.name || '').trim() || /placeholder|^\[VIRTUAL\]|\bTBD\b/i.test(e.name || ''); // se juzga por el NOMBRE visible; el campo interno devName puede traer "TBD" en artículos reales
   const hex = (c) => (c ? '#' + String(c).slice(0, 6) : null);
   const mix = (h, k) => { const n = parseInt(h.slice(1), 16), f = (x) => Math.max(0, Math.min(255, Math.round(x * k))); return '#' + [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => f(v).toString(16).padStart(2, '0')).join(''); };
   const span = (s) => { const m = /Size_(\d+)_x_/.exec(s || ''); return Math.min(4, m ? +m[1] : 1); };

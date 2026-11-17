@@ -107,7 +107,7 @@ try {
 } catch (e) { /* opcional */ }
 const site = await fromSite();
 
-const bad = (e) => !e.image || /placeholder|^\[VIRTUAL\]|\bTBD\b/i.test(`${e.name} ${e.devName}`);
+const bad = (e) => !e.image || !String(e.name || '').trim() || /placeholder|^\[VIRTUAL\]|\bTBD\b/i.test(e.name || '');
 const shown = entries.filter((e) => !bad(e));
 const secMap = new Map();
 for (const e of shown) { const k = e.sectionId || e.section || 'none'; if (!secMap.has(k)) secMap.set(k, { id: e.sectionId, name: e.section, index: e.sectionIndex, rank: e.sectionRank, layout: e._layout, count: 0 }); secMap.get(k).count++; }
