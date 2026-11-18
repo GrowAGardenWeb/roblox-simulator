@@ -1,8 +1,8 @@
 name: Update Fortnite shop
 on:
   schedule:
-    - cron: '7 0 * * *'
-    - cron: '7 12 * * *'
+    # hourly: GitHub often delays scheduled runs by hours, so check often and only rebuild when the shop changed
+    - cron: '5 * * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -17,12 +17,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Check if the live shop changed
+        id: chk
+        run: |
+          live=$(curl -fsS -m 20 'https://fortnite-api.com/v2/shop?language=en' | node -e "let s='';process.stdin.on('data',c=>s+=c).on('end',()=>{try{console.log(JSON.parse(s).data.hash||'')}catch(e){console.log('')}})")
+          have=$(node -e "try{console.log(require('./fortnite-app/data/shop.json').apiHash||'')}catch(e){console.log('')}")
+          echo "live=$live have=$have"
+          if [ -n "$live" ] && [ "$live" = "$have" ] && [ "${{ github.event_name }}" = "schedule" ]; then echo "skip=1" >> "$GITHUB_OUTPUT"; else echo "skip=0" >> "$GITHUB_OUTPUT"; fi
       - name: Fetch shop
+        if: steps.chk.outputs.skip != '1'
         run: node fortnite-app/tools/update-shop.mjs
       - name: Fetch outfit icons (best effort)
+        if: steps.chk.outputs.skip != '1'
         continue-on-error: true
         run: node fortnite-app/tools/fetch-outfits.mjs
       - name: Fetch site videos (best effort)
+        if: steps.chk.outputs.skip != '1'
         continue-on-error: true
         run: |
           mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm i playwright@1.49.1 >/dev/null
@@ -32,6 +42,7 @@ jobs:
           sed -i "s#new URL('../data/site.json', import.meta.url).pathname#'$GITHUB_WORKSPACE/fortnite-app/data/site.json'#" /tmp/pw/site-media.mjs
           cd /tmp/pw && node site-media.mjs
       - name: Commit if changed
+        if: steps.chk.outputs.skip != '1'
         run: |
           git config user.name "shop-bot"
           git config user.email "shop-bot@users.noreply.github.com"

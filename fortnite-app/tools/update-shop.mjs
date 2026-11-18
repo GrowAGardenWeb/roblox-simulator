@@ -23,6 +23,7 @@ const uniq = (a) => [...new Set(a.filter(Boolean))];
 async function fromApi() {
   const j = await get('https://fortnite-api.com/v2/shop?language=en');
   const d = j.data;
+  globalThis.__apiHash = d.hash || null;
   const raws = [];
   const take = (pred) => { const e = (d.entries || []).find((x) => pred(x) && !raws.includes(x)); if (e) raws.push(e); };
   take((e) => e.bundle); take((e) => e.tracks?.length); take((e) => e.newDisplayAsset?.materialInstances?.length);
@@ -135,6 +136,7 @@ for (const sec of sections) {
 }
 const snapshot = {
   updated: new Date().toISOString(),
+  apiHash: globalThis.__apiHash || null,
   source: { api: apiError ? `error: ${apiError}` : 'fortnite-api.com/v2/shop', site: site.ok ? 'fortnite.com/item-shop' : `error: ${site.error}` },
   counts: { entries: entries.length, shown: shown.length, sections: sections.length, jam: shown.filter((e) => e.kind === 'jam').length, bundles: shown.filter((e) => e.kind === 'bundle').length, backgrounds: Object.keys(backgrounds).length, bgError, withVideo: entries.filter((e) => e.videos.length).length, siteVideos: site.videos.length, siteOffers: site.offers.length },
   backgrounds,
