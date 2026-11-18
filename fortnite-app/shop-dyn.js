@@ -137,6 +137,9 @@
       });
       groups.set('__dev', { name: 'DEVELOPER', idx: -1, items: dev });
     }
+    // secciones fijadas arriba (debajo de DEVELOPER), en este orden
+    const PIN = [/naruto/i];
+    for (const g of groups.values()) { const p = PIN.findIndex((r) => r.test(g.name || '')); if (p >= 0) g.idx = -0.9 + p * 0.01; }
     const secs = [...groups.values()].sort((a, b) => a.idx - b.idx);
     // Imágenes: bajan de a poco (máx. 4 a la vez), se reducen a un tamaño ligero y se quedan cargadas (no se borran ni se vuelven a crear).
     // En bundles además se mide el área visible de la imagen (sin márgenes transparentes) para encajarla en la casilla.
