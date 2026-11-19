@@ -76,6 +76,9 @@
   .cd{width:362px;height:440px;border-radius:14px;background:linear-gradient(#202533,#12141d);padding:24px;font-size:22px;color:#c8d0de;display:flex;flex-direction:column;justify-content:flex-end}
   .cd b{display:block;font-size:30px;color:#fff;font-weight:600;margin-top:4px}
   .cd.sel{box-shadow:0 0 0 3px #fff}.cd.sm{width:292px;height:330px;margin-top:110px}
+  .launch{position:absolute;inset:0;background:#000;overflow:hidden;display:none;z-index:6}
+  .launch.on{display:block}
+  .launch video{position:absolute;left:-172px;top:0;width:1919px;height:885px;background:#000}
   .fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}.fade.on{opacity:1}
 </style>
 </head>
@@ -91,6 +94,7 @@
   <div class="card" id="card"><div class="t" id="cT"></div><div class="tag">Full Game</div><div class="fr">Free</div></div>
   <div class="set" id="st1"></div><div class="set" id="st2"></div>
   <div class="cc" id="cc"></div>
+  <div class="launch" id="launch"><video id="gv" src="assets/gta_launch.mp4" playsinline preload="none"></video></div>
   <div class="fade" id="fade"></div>
 </div></div>
 <script>
@@ -153,6 +157,11 @@
   draw();
   document.addEventListener('keydown',function(e){if(cur!=='scr')return;if(e.key==='ArrowRight'&&sel<G.length-1){sel++;SFX.game();draw()}if(e.key==='ArrowLeft'&&sel>0){sel--;SFX.game();draw()}});
   var sx=null;$('scr').addEventListener('pointerdown',function(e){sx=e.clientX});$('scr').addEventListener('pointerup',function(e){if(sx===null||cur!=='scr')return;var d=e.clientX-sx;sx=null;if(Math.abs(d)>70){var n=Math.max(0,Math.min(G.length-1,sel+(d<0?1:-1)));if(n!==sel){sel=n;SFX.game();draw()}}});
+  /* Play Game on GTA VI starts the launch sequence recorded from the console */
+  var gv=$('gv'),lch=$('launch'),launching=false;
+  function endLaunch(){if(!launching)return;launching=false;var f=$('fade');f.classList.add('on');setTimeout(function(){gv.pause();lch.classList.remove('on');cur='scr';music(G[sel].k==='spider'?'spider':null);setTimeout(function(){f.classList.remove('on')},60)},350)}
+  $('play').onclick=function(){if(G[sel].k!=='gta'||launching){SFX.ok();return}launching=true;music(null);cur='launch';var f=$('fade');f.classList.add('on');setTimeout(function(){lch.classList.add('on');gv.currentTime=0;gv.muted=false;var pr=gv.play();if(pr&&pr.catch)pr.catch(function(){gv.muted=true;gv.play()});setTimeout(function(){f.classList.remove('on')},150)},350)};
+  gv.addEventListener('ended',endLaunch);lch.addEventListener('click',endLaunch);
   /* clock */
   function clk(){var d=new Date();$('clock').textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}clk();setInterval(clk,15000);
   /* settings */
