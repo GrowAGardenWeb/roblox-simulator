@@ -145,17 +145,17 @@
     </div>
     <div class="sv" id="sv3"><img class="s3top" src="assets/sa3.jpg" alt="">
       <div class="a pan"></div>
-      <div class="a tg3" style="left:156px;top:314px"><span>PS5</span><span>Mejorado para PS5 Pro</span><span>Standard Edition</span></div>
+      <div class="a tg3" style="left:156px;top:314px"><span>PS5</span><span>Mejorado para PS5 Pro</span><span id="edTag">Standard Edition</span></div>
       <img class="a" src="assets/gta_logo.png" alt="" style="left:164px;top:368px;width:150px;height:46px;object-fit:cover;object-position:top">
       <div class="a rk" style="left:1126px;top:340px;width:290px;height:72px"><b>Rockstar Games</b><span>Lanzamiento: 19/11/2026</span></div>
-      <img class="a" src="assets/ic_gta_l.png" alt="" style="left:176px;top:476px;width:192px;height:198px;object-fit:cover">
-      <div class="a" style="left:384px;top:476px;font-size:26px">Grand Theft Auto VI</div>
+      <img class="a" id="pCov" src="assets/ic_gta_l3.png" alt="" style="left:176px;top:476px;width:192px;height:198px;object-fit:cover">
+      <div class="a" id="pTitle" style="left:384px;top:476px;font-size:26px">Grand Theft Auto VI</div>
       <div class="a tg3" style="left:384px;top:516px"><span>PS5</span><span>Reservar</span></div>
       <div class="a" style="left:384px;top:548px;font-size:15px">Fecha prevista de disponibilidad para jugar: 2026/11/19 a las 0:00</div>
-      <div class="a" style="left:384px;top:586px;font-size:16px;font-weight:700">US$79.99</div>
+      <div class="a" id="pPrice" style="left:384px;top:586px;font-size:16px;font-weight:700">US$79.99</div>
       <div class="a mrat">M</div>
       <div class="a" style="left:432px;top:632px;font-size:13.5px;line-height:19px">Consumo de drogas y alcohol,<br>Contenido sexual de nivel alto,<br>Derramamiento de sangre, Desnudos,<br>Humor para adultos, Lenguaje fuerte,<br>Violencia intensa<br>Compras dentro del juego</div>
-      <div class="a" style="left:940px;top:466px;width:456px;display:flex;justify-content:space-between;font-size:20px;font-weight:600;padding-bottom:10px;border-bottom:1px solid #8883a8"><span>Total</span><span>US$79.99</span></div>
+      <div class="a" style="left:940px;top:466px;width:456px;display:flex;justify-content:space-between;font-size:20px;font-weight:600;padding-bottom:10px;border-bottom:1px solid #8883a8"><span>Total</span><span id="pTot">US$79.99</span></div>
       <div class="a" style="left:940px;top:520px;width:456px;display:flex;justify-content:space-between;font-size:17px"><span>Cargado a</span><span style="color:#cfc4f4">Método de pago de ejemplo</span></div>
       <div class="a" style="left:940px;top:572px;width:456px;font-size:10.5px;line-height:15px;color:#b9b3d0;white-space:normal">Al seleccionar [Confirmar compra], solicitas acceso inmediato a tu compra desde el lanzamiento del contenido, siempre teniendo en cuenta que puedes cancelar tu reserva en cualquier momento antes de la fecha de lanzamiento. Después de esa fecha, aún puedes cancelar y solicitar un reembolso a tu monedero hasta 14 días después de realizar el pago de la reserva, pero si comienzas a descargar o transmitir el contenido por streaming, perderás tu derecho de cancelación.<br><br><b style="color:#ff9f0a">SIMULATOR: esta pantalla es una simulación. No se realiza ningún cobro ni reserva.</b></div>
       <div class="a pbtn" id="pConf" style="left:930px;top:756px;width:376px;height:58px">Confirmar compra</div><div class="a pmore" style="left:1328px;top:760px">···</div>
@@ -236,9 +236,11 @@
     var f=$('fade');f.classList.add('on');setTimeout(function(){lch.classList.add('on');setTimeout(function(){f.classList.remove('on')},120)},350)};
   gv.addEventListener('ended',endLaunch);lch.addEventListener('click',endLaunch);
   /* PlayStation Store */
+  function setEd(k){var u=k==='u';$('edTag').textContent=u?'Ultimate Edition':'Standard Edition';$('pTitle').textContent=u?'Grand Theft Auto VI Ultimate Edition':'Grand Theft Auto VI';$('pPrice').textContent=u?'US$99.99':'US$79.99';$('pTot').textContent=u?'US$99.99':'US$79.99';$('pCov').src=u?'assets/ed_ult.jpg':'assets/ic_gta_l3.png';$('edU').classList.toggle('sel',u);$('edS').classList.toggle('sel',!u)}
+  var edChosen='s';
   var stEl=$('store'),svs=['sv1','sv2','sv3'],stCur=-1;
   function stShow(i){var f=$('fade');f.classList.add('on');setTimeout(function(){svs.forEach(function(v,k){$(v).classList.toggle('on',k===i)});if(i<0){stEl.classList.remove('on');cur='scr'}else{stEl.classList.add('on');cur='store'}stCur=i;setTimeout(function(){f.classList.remove('on')},60)},330);(i<0?SFX.back:SFX.open)()}
-  $('stGta').onclick=function(){stShow(1)};$('edS').onclick=function(){stShow(2)};$('edU').onclick=function(){SFX.ok()};$('pConf').onclick=function(){SFX.ok()};
+  $('stGta').onclick=function(){stShow(1)};$('edS').onclick=function(){setEd('s');stShow(2)};$('edU').onclick=function(){setEd('u');stShow(2)};$('pConf').onclick=function(){SFX.ok()};
   $('sBack').onclick=function(){stShow(stCur-1)};
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&cur==='store')stShow(stCur-1)});
   /* clock */
