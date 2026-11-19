@@ -19,8 +19,9 @@
   .tr svg{width:30px;height:30px;fill:#fff}
   /* rail */
   .rail{position:absolute;left:44px;top:100px;height:150px;display:flex;align-items:flex-start;gap:6px}
-  .tile{position:relative;flex:none;width:88px;height:88px;border-radius:12px;margin-top:6px;overflow:hidden;background:#1c2130;transition:all .25s;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.05;letter-spacing:.3px;padding:4px}
-  .tile.sel{width:146px;height:146px;margin-top:0;border-radius:18px;box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(255,255,255,.25);font-size:22px}
+  .tile{position:relative;flex:none;width:88px;height:88px;border-radius:10px;margin-top:6px;overflow:hidden;background:#1c2130;transition:all .25s;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.05;letter-spacing:.3px;padding:4px}
+  .tile.sel{width:146px;height:146px;margin-top:0;border-radius:18px;box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(255,255,255,.22)}
+  .tile.sel:not(.lg){}
   .tile.sm{width:94px}
   .gname{position:absolute;left:0;top:152px;font-size:22px;white-space:nowrap;display:none}
   .tile.sel .gname{display:block;left:158px}
@@ -56,7 +57,6 @@
   .cd b{display:block;font-size:30px;color:#fff;font-weight:600;margin-top:4px}
   .cd.sel{box-shadow:0 0 0 3px #fff}.cd.sm{width:292px;height:330px;margin-top:110px}
   .fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}.fade.on{opacity:1}
-  .sim{position:absolute;left:0;right:0;bottom:0;height:22px;background:#ff9f0a;color:#111;font-size:13px;font-weight:700;text-align:center;line-height:22px;letter-spacing:.8px;z-index:9;pointer-events:none}
 </style>
 </head>
 <body>
@@ -72,7 +72,6 @@
   <div class="set" id="st1"></div><div class="set" id="st2"></div>
   <div class="cc" id="cc"></div>
   <div class="fade" id="fade"></div>
-  <div class="sim">SIMULATOR &mdash; fake console menu</div>
 </div></div>
 <script>
 (function(){
@@ -83,24 +82,23 @@
   addEventListener('resize',fit);fit();
   var $=function(i){return document.getElementById(i)};
   var G=[
-    {k:'store',n:'PlayStation Store',t:'',bg:null,col:'#13213d',ic:'\u{1F6CD}'},
-    {k:'astro',n:"ASTRO's PLAYROOM",t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
-    {k:'destiny',n:'Destiny 2 | PS4',t:'DESTINY Ⅴ 2',d:'',bg:'bg_destiny.jpg',col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
-    {k:'spider',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'bg_spider.jpg',col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
-    {k:'rl',n:'Rocket League',col:'linear-gradient(135deg,#f2f2f2,#2d63d8)',lab:'ROCKET\nLEAGUE',bg:'bg_destiny.jpg',t:'ROCKET\nLEAGUE',d:'',tr:['34%','12/38']},
-    {k:'wf',n:'Warframe',col:'linear-gradient(135deg,#8e9aa3,#3a444c)',lab:'WARFRAME',bg:'bg_destiny.jpg',t:'WARFRAME',d:'',tr:null},
-    {k:'cod',n:'Call of Duty: Modern Warfare',col:'linear-gradient(135deg,#5a5a52,#1b1b18)',lab:'MODERN\nWARFARE',bg:'bg_spider.jpg',t:'MODERN\nWARFARE',d:'',tr:null},
-    {k:'apex',n:'Apex Legends',col:'linear-gradient(135deg,#59b8c8,#e59f8c)',lab:'APEX',bg:'bg_spider.jpg',t:'APEX\nLEGENDS',d:'',tr:null},
-    {k:'plus',n:'PlayStation Plus',col:'#171c28',lab:'✚',gold:true},
-    {k:'psnow',n:'PlayStation Now',col:'#171c28',lab:'▶',blue:true},
-    {k:'lib',n:'Game Library',col:'#1c2130',lab:'☷'}
+    {k:'store',ic:'ic_store.png',n:'PlayStation Store',t:'',bg:null,col:'#13213d',ic:'\u{1F6CD}'},
+    {k:'astro',ic:'ic_astro.png',large:'ic_astro_l.png',n:"ASTRO's PLAYROOM",t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
+    {k:'destiny',ic:'ic_destiny.png',large:'ic_destiny_l.png',n:'Destiny 2 | PS4',t:'DESTINY Ⅴ 2',d:'',bg:'bg_destiny.jpg',col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
+    {k:'spider',ic:'ic_spider.png',large:'ic_spider_l.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'bg_spider.jpg',col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
+    {k:'rl',ic:'ic_rl.png',n:'Rocket League',col:'linear-gradient(135deg,#f2f2f2,#2d63d8)',lab:'ROCKET\nLEAGUE',bg:'bg_destiny.jpg',t:'ROCKET\nLEAGUE',d:'',tr:['34%','12/38']},
+    {k:'wf',ic:'ic_wf.png',n:'Warframe',col:'linear-gradient(135deg,#8e9aa3,#3a444c)',lab:'WARFRAME',bg:'bg_destiny.jpg',t:'WARFRAME',d:'',tr:null},
+    {k:'cod',ic:'ic_cod.png',n:'Call of Duty: Modern Warfare',col:'linear-gradient(135deg,#5a5a52,#1b1b18)',lab:'MODERN\nWARFARE',bg:'bg_spider.jpg',t:'MODERN\nWARFARE',d:'',tr:null},
+    {k:'apex',ic:'ic_apex.png',n:'Apex Legends',col:'linear-gradient(135deg,#59b8c8,#e59f8c)',lab:'APEX',bg:'bg_spider.jpg',t:'APEX\nLEGENDS',d:'',tr:null},
+    {k:'plus',ic:'ic_plus.png',n:'PlayStation Plus',col:'#171c28',lab:'✚',gold:true},
+    {k:'psnow',ic:'ic_psnow.png',n:'PlayStation Now',col:'#171c28',lab:'▶',blue:true},
+    {k:'lib',ic:'ic_lib.png',n:'Game Library',col:'#1c2130',lab:'☷'}
   ];
   var sel=1,bgEl={};
   G.forEach(function(g){if(g.bg&&!bgEl[g.bg]){var d=document.createElement('div');d.className='bg';d.style.backgroundImage='url(assets/'+g.bg+')';$('bgs').appendChild(d);bgEl[g.bg]=d}});
   function draw(){
     var r=$('rail');r.innerHTML='';
-    G.forEach(function(g,i){var t=document.createElement('div');t.className='tile'+(i===sel?' sel':'');t.style.background=g.col;if(g.gold)t.style.color='#f6c22a',t.style.fontSize='46px';if(g.blue)t.style.color='#2f8ff5',t.style.fontSize='40px';
-      t.style.whiteSpace='pre-line';t.textContent=g.lab||'';
+    G.forEach(function(g,i){var t=document.createElement('div');t.className='tile'+(i===sel?' sel':'');var im=(i===sel&&g.large)?g.large:g.ic;t.style.background='#12151d url(assets/'+im+') center/cover no-repeat';
       if(i===sel&&g.n){var n=document.createElement('div');n.className='gname';n.textContent=g.n;t.appendChild(n)}
       t.onclick=function(){sel=i;draw()};r.appendChild(t)});
     var g=G[sel];Object.keys(bgEl).forEach(function(k){bgEl[k].classList.toggle('on',g.bg===k)});
