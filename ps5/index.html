@@ -108,7 +108,7 @@
   var G=[
     {k:'store',ic:'ic_store2.png',n:'PlayStation Store',t:'',bg:null,col:'#13213d',ic:'\u{1F6CD}'},
     {k:'gta',plat:'PS5',ic:'ic_gta.png',large:'ic_gta_l.png',n:'Grand Theft Auto VI',logo:'gta_logo.png',t:'GTA',d:'Experience the biggest, most immersive evolution of the Grand Theft Auto series.',bg:'bg_gta.jpg',play:'Play Game',tr:null},
-    {k:'astro',ic:'ic_astro2.png',large:'ic_astro_l2.png',n:"ASTRO's PLAYROOM",t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro_hd.jpg',cardimg:'card_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
+    {k:'astro',ic:'ic_astro2.png',large:'ic_astro_l2.png',n:"ASTRO's PLAYROOM",logo:'astro_logo.png',logow:470,t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro_hd.jpg',cardimg:'card_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
     {k:'destiny',ic:'ic_destiny.png',large:'ic_destiny_l.png',n:'Destiny 2 | PS4',t:'DESTINY Ⅴ 2',d:'',bg:'full_destiny.jpg',baked:true,col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
     {k:'spider',ic:'ic_spider.png',large:'ic_spider_l.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'full_spider.jpg',baked:true,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
     {k:'rl',ic:'ic_rl.png',n:'Rocket League',col:'linear-gradient(135deg,#f2f2f2,#2d63d8)',lab:'ROCKET\nLEAGUE',bg:'clean_destiny.jpg',t:'ROCKET\nLEAGUE',d:'',tr:['34%','12/38']},
@@ -148,8 +148,8 @@
     Object.keys(bgEl).forEach(function(k){bgEl[k].classList.toggle('on',g.bg===k)});
     if(cur==='scr')music(g.k==='spider'?'spider':null);
     var isGame=!!g.t&&!g.baked,h=document.querySelector('.hero'),bt=document.querySelector('.btns'),tr=$('troph'),c=$('card');
-    h.classList.toggle('gta',!!g.logo);bt.classList.toggle('gta',!!g.logo);[h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
-    $('hT').innerHTML=isGame?(g.logo?'<img src="assets/'+g.logo+'" alt="">':''):'';if(isGame&&!g.logo)$('hT').textContent=g.t||'';$('play').textContent=g.play||'Play';$('hD').textContent=isGame?(g.d||''):'';
+    h.classList.toggle('gta',g.k==='gta');bt.classList.toggle('gta',!!g.logo);[h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
+    $('hT').innerHTML=isGame?(g.logo?'<img src="assets/'+g.logo+'" alt="">':''):'';if(isGame&&!g.logo)$('hT').textContent=g.t||'';$('play').textContent=g.play||'Play';var li=$('hT').querySelector('img');if(li)li.style.width=(g.logow||200)+'px';$('hD').textContent=isGame?(g.d||''):'';
     bt.style.display=isGame?'flex':'none';
     tr.style.display=g.tr&&!g.baked?'flex':'none';if(g.tr)tr.innerHTML='<span>\u{1F3C6}</span><span><small>Progress</small>'+g.tr[0]+'</span><span><small>Earned</small>'+g.tr[1]+'</span>';
     c.style.display=g.card&&!g.baked?'block':'none';if(g.cardimg)c.style.backgroundImage='url(assets/'+g.cardimg+')';$('cT').textContent=g.cardimg?'':(g.t||'');$('cT').style.whiteSpace='pre-line';
