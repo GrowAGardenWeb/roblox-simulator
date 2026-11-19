@@ -29,15 +29,17 @@
   .set.on .row,.set.on h2{animation:fi .45s ease both}
   .set.on .row:nth-child(n){animation-delay:calc(var(--n,0)*18ms)}
   .cc.on img{animation:fi .5s ease both}
-  .tile{position:relative;flex:none;width:88px;height:88px;border-radius:10px;margin-top:6px;overflow:hidden;background:#1c2130;transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .3s,box-shadow .3s;background-size:cover;background-position:center;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.05;letter-spacing:.3px;padding:4px}
+  .tile{position:relative;flex:none;width:88px;height:88px;border-radius:10px;margin-top:6px;overflow:visible;background:#1c2130;transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .3s,box-shadow .3s;background-size:cover;background-position:center;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.05;letter-spacing:.3px;padding:4px}
   .tile.sel{width:146px;height:146px;margin-top:0;border-radius:18px;box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(255,255,255,.22)}
   .tile.sel:not(.lg){}
   .tile.sm{width:94px}
-  .gname{position:absolute;left:0;top:152px;font-size:22px;white-space:nowrap;display:none}
-  .tile.sel .gname{display:block;left:158px}
+  .gname{position:absolute;left:0;top:152px;font-size:22px;white-space:nowrap;display:none;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+  .tile.sel .gname{display:block;left:0;top:156px}
   .tile.sel .gname{position:absolute}
   /* hero */
   .hero{position:absolute;left:140px;top:430px;width:900px}
+  .hero h1 img{display:block;width:200px;height:auto;filter:drop-shadow(0 4px 16px rgba(40,10,70,.5))}
+  .hero.gta{top:378px}
   .hero h1{font-size:64px;line-height:62px;font-weight:800;letter-spacing:1px;text-transform:uppercase;white-space:pre-line}
   .hero p{margin-top:20px;font-size:25px;line-height:35px;color:#dfe6f0;max-width:700px;min-height:70px}
   .btns{position:absolute;left:140px;top:685px;display:flex;gap:14px}
@@ -93,6 +95,7 @@
   var $=function(i){return document.getElementById(i)};
   var G=[
     {k:'store',ic:'ic_store.png',n:'PlayStation Store',t:'',bg:null,col:'#13213d',ic:'\u{1F6CD}'},
+    {k:'gta',ic:'ic_gta.png',large:'ic_gta_l.png',n:'Grand Theft Auto VI',logo:'gta_logo.png',t:'GTA',d:'Experience the biggest, most immersive evolution of the Grand Theft Auto series.',bg:'bg_gta.jpg',play:'Play Game',tr:null},
     {k:'astro',ic:'ic_astro.png',large:'ic_astro_l.png',n:"ASTRO's PLAYROOM",t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'full_astro.jpg',baked:true,col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
     {k:'destiny',ic:'ic_destiny.png',large:'ic_destiny_l.png',n:'Destiny 2 | PS4',t:'DESTINY Ⅴ 2',d:'',bg:'full_destiny.jpg',baked:true,col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
     {k:'spider',ic:'ic_spider.png',large:'ic_spider_l.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'full_spider.jpg',baked:true,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
@@ -133,8 +136,8 @@
     Object.keys(bgEl).forEach(function(k){bgEl[k].classList.toggle('on',g.bg===k)});
     if(cur==='scr')music(g.k==='spider'?'spider':null);
     var isGame=!!g.t&&!g.baked,h=document.querySelector('.hero'),bt=document.querySelector('.btns'),tr=$('troph'),c=$('card');
-    [h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
-    $('hT').textContent=isGame?(g.t||''):'';$('hD').textContent=isGame?(g.d||''):'';
+    h.classList.toggle('gta',!!g.logo);[h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
+    $('hT').innerHTML=isGame?(g.logo?'<img src="assets/'+g.logo+'" alt="">':''):'';if(isGame&&!g.logo)$('hT').textContent=g.t||'';$('play').textContent=g.play||'Play';$('hD').textContent=isGame?(g.d||''):'';
     bt.style.display=isGame?'flex':'none';
     tr.style.display=g.tr&&!g.baked?'flex':'none';if(g.tr)tr.innerHTML='<span>\u{1F3C6}</span><span><small>Progress</small>'+g.tr[0]+'</span><span><small>Earned</small>'+g.tr[1]+'</span>';
     c.style.display=g.card&&!g.baked?'block':'none';$('cT').textContent=g.t||'';$('cT').style.whiteSpace='pre-line';
