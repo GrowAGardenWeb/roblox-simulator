@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>PS5 Home Simulator</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
+  html,body{height:100%;background:#000;overflow:hidden;font-family:"SST","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+  #wrap{position:fixed;left:50%;top:50%;width:1574px;height:886px;transform-origin:0 0}
+  .scr{position:absolute;inset:0;overflow:hidden;background:#05070d}
+  .bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .6s}.bg.on{opacity:1}
+  .scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,0) 55%)}
+  /* top bar */
+  .tabs{position:absolute;left:76px;top:32px;font-size:28px;display:flex;gap:66px;color:#9aa}
+  .tabs b{color:#fff;font-weight:500}
+  .tr{position:absolute;right:70px;top:34px;display:flex;align-items:center;gap:56px;font-size:28px}
+  .tr svg{width:30px;height:30px;fill:#fff}
+  /* rail */
+  .rail{position:absolute;left:44px;top:100px;height:150px;display:flex;align-items:flex-start;gap:6px}
+  .tile{position:relative;flex:none;width:88px;height:88px;border-radius:12px;margin-top:6px;overflow:hidden;background:#1c2130;transition:all .25s;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.05;letter-spacing:.3px;padding:4px}
+  .tile.sel{width:146px;height:146px;margin-top:0;border-radius:18px;box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(255,255,255,.25);font-size:22px}
+  .tile.sm{width:94px}
+  .gname{position:absolute;left:0;top:152px;font-size:22px;white-space:nowrap;display:none}
+  .tile.sel .gname{display:block;left:158px}
+  .tile.sel .gname{position:absolute}
+  /* hero */
+  .hero{position:absolute;left:140px;top:430px;width:900px}
+  .hero h1{font-size:64px;line-height:62px;font-weight:800;letter-spacing:1px;text-transform:uppercase;white-space:pre-line}
+  .hero p{margin-top:20px;font-size:25px;line-height:35px;color:#dfe6f0;max-width:700px;min-height:70px}
+  .btns{position:absolute;left:140px;top:685px;display:flex;gap:14px}
+  .play{width:272px;height:58px;border-radius:30px;background:rgba(40,52,78,.85);font-size:23px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .dots{width:58px;height:58px;border-radius:50%;background:rgba(40,52,78,.85);font-size:34px;display:flex;align-items:center;justify-content:center;letter-spacing:2px;cursor:pointer}
+  .trophy{position:absolute;right:140px;top:728px;display:flex;gap:70px;font-size:23px;color:#cfd8e6;align-items:center}
+  .trophy small{display:block;font-size:19px;color:#9eabc0}
+  .card{position:absolute;left:1130px;top:330px;width:305px;height:305px;background:linear-gradient(#0b2b8f,#071a5a);box-shadow:0 8px 40px rgba(0,0,0,.5);display:none;padding:14px;font-weight:800}
+  .card .t{font-size:44px;line-height:40px;letter-spacing:.5px}
+  .card .tag{position:absolute;left:20px;bottom:28px;border:1px solid #fff;font-size:12px;padding:2px 10px;font-weight:500}
+  .card .fr{position:absolute;left:20px;bottom:0;font-size:14px;font-weight:600}
+  /* settings screens */
+  .set{position:absolute;inset:0;background:radial-gradient(70% 70% at 25% 0,#5a4a3f 0,#201d26 35%,#0c0b12 75%);display:none}
+  .set.on{display:block}
+  .set h2{position:absolute;left:80px;top:62px;font-size:38px;font-weight:300}
+  .row{position:absolute;left:0;right:0;height:80px;display:flex;align-items:center;font-size:28px;font-weight:300;cursor:pointer}
+  .row svg{width:34px;height:34px;fill:#fff;margin-right:24px;flex:none}
+  .row.sel{outline:2px solid #cfd6e4;outline-offset:-1px;background:rgba(255,255,255,.07)}
+  .hr{position:absolute;height:1px;background:rgba(255,255,255,.12)}
+  /* control center */
+  .cc{position:absolute;left:0;right:0;bottom:0;top:0;background:rgba(0,0,0,.72);display:none}
+  .cc.on{display:block}
+  .ccb{position:absolute;left:0;right:0;bottom:36px;display:flex;justify-content:center;gap:68px}
+  .ccb svg{width:42px;height:42px;fill:#fff;opacity:.9}
+  .cards{position:absolute;left:76px;top:340px;display:flex;gap:6px}
+  .cd{width:362px;height:440px;border-radius:14px;background:linear-gradient(#202533,#12141d);padding:24px;font-size:22px;color:#c8d0de;display:flex;flex-direction:column;justify-content:flex-end}
+  .cd b{display:block;font-size:30px;color:#fff;font-weight:600;margin-top:4px}
+  .cd.sel{box-shadow:0 0 0 3px #fff}.cd.sm{width:292px;height:330px;margin-top:110px}
+  .fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}.fade.on{opacity:1}
+  .sim{position:absolute;left:0;right:0;bottom:0;height:22px;background:#ff9f0a;color:#111;font-size:13px;font-weight:700;text-align:center;line-height:22px;letter-spacing:.8px;z-index:9;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="wrap"><div class="scr" id="scr">
+  <div id="bgs"></div><div class="scrim"></div>
+  <div class="tabs"><b>Games</b><span>Media</span></div>
+  <div class="tr"><svg id="bSearch" viewBox="0 0 24 24" style="cursor:pointer"><path d="M10 3a7 7 0 1 0 4.2 12.6l5.100 5.100 1.400-1.400-5.100-5.100A7 7 0 0 0 10 3zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></svg><svg id="bGear" viewBox="0 0 24 24" style="cursor:pointer"><path d="M19.400 13a7.500 7.500 0 0 0 0-2l2-1.600-2-3.400-2.400 1a7.500 7.500 0 0 0-1.700-1L15 3.500h-4l-.3 2.500a7.500 7.500 0 0 0-1.700 1l-2.400-1-2 3.400 2 1.600a7.500 7.500 0 0 0 0 2l-2 1.600 2 3.400 2.400-1a7.500 7.500 0 0 0 1.700 1l.3 2.500h4l.3-2.500a7.500 7.500 0 0 0 1.700-1l2.400 1 2-3.400zM13 15.500a3.500 3.500 0 1 1 0-7 3.500 3.500 0 0 1 0 7z"/></svg><svg id="bProf" viewBox="0 0 24 24" style="cursor:pointer"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="9" cy="10" r="1.700" fill="#05070d"/><circle cx="15" cy="10" r="1.700" fill="#05070d"/><path d="M7.500 14.500q4.500 4 9 0" stroke="#05070d" stroke-width="1.800" fill="none" stroke-linecap="round"/></svg><span id="clock">17:14</span></div>
+  <div class="rail" id="rail"></div>
+  <div class="hero"><h1 id="hT"></h1><p id="hD"></p></div>
+  <div class="btns"><div class="play" id="play">Play</div><div class="dots">&middot;&middot;&middot;</div></div>
+  <div class="trophy" id="troph"></div>
+  <div class="card" id="card"><div class="t" id="cT"></div><div class="tag">Full Game</div><div class="fr">Free</div></div>
+  <div class="set" id="st1"></div><div class="set" id="st2"></div>
+  <div class="cc" id="cc"></div>
+  <div class="fade" id="fade"></div>
+  <div class="sim">SIMULATOR &mdash; fake console menu</div>
+</div></div>
+<script>
+(function(){
+  var W=1574,H=886,wrap=document.getElementById('wrap');
+  function fit(){var vw=innerWidth,vh=innerHeight,port=vh>vw,aw=port?vh:vw,ah=port?vw:vh,s=Math.min(aw/W,ah/H);
+    wrap.style.transform=port?'rotate(90deg) scale('+s+') translate('+(-W/2)+'px,'+(-H/2)+'px)':'scale('+s+') translate('+(-W/2)+'px,'+(-H/2)+'px)';
+    wrap.style.left='50%';wrap.style.top='50%';wrap.style.transformOrigin='0 0'}
+  addEventListener('resize',fit);fit();
+  var $=function(i){return document.getElementById(i)};
+  var G=[
+    {k:'store',n:'PlayStation Store',t:'',bg:null,col:'#13213d',ic:'\u{1F6CD}'},
+    {k:'astro',n:"ASTRO's PLAYROOM",t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
+    {k:'destiny',n:'Destiny 2 | PS4',t:'DESTINY Ⅴ 2',d:'',bg:'bg_destiny.jpg',col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
+    {k:'spider',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'bg_spider.jpg',col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
+    {k:'rl',n:'Rocket League',col:'linear-gradient(135deg,#f2f2f2,#2d63d8)',lab:'ROCKET\nLEAGUE',bg:'bg_destiny.jpg',t:'ROCKET\nLEAGUE',d:'',tr:['34%','12/38']},
+    {k:'wf',n:'Warframe',col:'linear-gradient(135deg,#8e9aa3,#3a444c)',lab:'WARFRAME',bg:'bg_destiny.jpg',t:'WARFRAME',d:'',tr:null},
+    {k:'cod',n:'Call of Duty: Modern Warfare',col:'linear-gradient(135deg,#5a5a52,#1b1b18)',lab:'MODERN\nWARFARE',bg:'bg_spider.jpg',t:'MODERN\nWARFARE',d:'',tr:null},
+    {k:'apex',n:'Apex Legends',col:'linear-gradient(135deg,#59b8c8,#e59f8c)',lab:'APEX',bg:'bg_spider.jpg',t:'APEX\nLEGENDS',d:'',tr:null},
+    {k:'plus',n:'PlayStation Plus',col:'#171c28',lab:'✚',gold:true},
+    {k:'psnow',n:'PlayStation Now',col:'#171c28',lab:'▶',blue:true},
+    {k:'lib',n:'Game Library',col:'#1c2130',lab:'☷'}
+  ];
+  var sel=1,bgEl={};
+  G.forEach(function(g){if(g.bg&&!bgEl[g.bg]){var d=document.createElement('div');d.className='bg';d.style.backgroundImage='url(assets/'+g.bg+')';$('bgs').appendChild(d);bgEl[g.bg]=d}});
+  function draw(){
+    var r=$('rail');r.innerHTML='';
+    G.forEach(function(g,i){var t=document.createElement('div');t.className='tile'+(i===sel?' sel':'');t.style.background=g.col;if(g.gold)t.style.color='#f6c22a',t.style.fontSize='46px';if(g.blue)t.style.color='#2f8ff5',t.style.fontSize='40px';
+      t.style.whiteSpace='pre-line';t.textContent=g.lab||'';
+      if(i===sel&&g.n){var n=document.createElement('div');n.className='gname';n.textContent=g.n;t.appendChild(n)}
+      t.onclick=function(){sel=i;draw()};r.appendChild(t)});
+    var g=G[sel];Object.keys(bgEl).forEach(function(k){bgEl[k].classList.toggle('on',g.bg===k)});
+    var isGame=!!g.t;$('hT').textContent=g.t||'';$('hD').textContent=g.d||'';
+    document.querySelector('.btns').style.display=isGame?'flex':'none';
+    var tr=$('troph');tr.style.display=g.tr?'flex':'none';if(g.tr)tr.innerHTML='<span>\u{1F3C6}</span><span><small>Progress</small>'+g.tr[0]+'</span><span><small>Earned</small>'+g.tr[1]+'</span>';
+    var c=$('card');c.style.display=g.card?'block':'none';$('cT').textContent=(g.t||'').replace('\n','\n');
+    $('cT').style.whiteSpace='pre-line'}
+  draw();
+  /* clock */
+  function clk(){var d=new Date();$('clock').textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}clk();setInterval(clk,15000);
+  /* settings */
+  var IC={sys:'M12 2l9 5v10l-9 5-9-5V7z',sto:'M4 6c0-2 16-2 16 0v12c0 2-16 2-16 0z',snd:'M3 9h4l5-4v14l-5-4H3zM15 8a5 5 0 0 1 0 8',scr:'M3 6h18v12H3z',acc:'M4 7h16v8H4zM8 18h8',sav:'M5 5h6v6H5zM13 5h6v6h-6zM5 13h6v6H5z',not:'M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zm-2 15a2 2 0 0 0 4 0',cap:'M7 4H4v3M17 4h3v3M7 20H4v-3M17 20h3v-3M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',net:'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2q6 10 0 20M12 2q-6 10 0 20',usr:'M5 4h14v16H5zM9 9a3 3 0 1 0 6 0 3 3 0 0 0-6 0zM8 16h8',acs:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8v2M8 11h8M10 18l2-5 2 5',fam:'M5 4h6v6H5zM13 4h6v6h-6zM5 14h6v6H5z',gui:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v6M12 7v1'};
+  function ico(k){return '<svg viewBox="0 0 24 24" style="stroke:#fff;fill:none;stroke-width:1.8"><path d="'+IC[k]+'"/></svg>'}
+  var SET=[['gui',"User's Guide, Health and Safety, and Other Information"],['acs','Accessibility'],['net','Network'],['usr','Users and Accounts'],['fam','Family and Parental Controls'],['sys','System'],['sto','Storage'],['snd','Sound'],['scr','Screen and Video'],['acc','Accessories'],['sav','Saved Data and Game/App Settings'],['not','Notifications'],['cap','Captures and Broadcasts']];
+  var si=2,sTop=0;
+  function drawSet(){var h='<h2>Settings</h2>';var vis=SET.slice(sTop,sTop+9);
+    vis.forEach(function(r,i){var y=170+i*80,on=sTop+i===si;h+='<div class="row'+(on?' sel':'')+'" data-i="'+(sTop+i)+'" style="top:'+y+'px;left:420px;right:80px;padding-left:20px">'+ico(r[0])+r[1]+'</div>'+(i?'<div class="hr" style="top:'+y+'px;left:500px;right:90px"></div>':'')});
+    $('st1').innerHTML=h;$('st1').querySelectorAll('.row').forEach(function(e){e.onclick=function(){si=+e.dataset.i;if(SET[si][1]==='Screen and Video'){go('st2')}else drawSet()}})}
+  var VID=[['Video Output',[['Video Output Information',''],['Resolution','Automatic'],['4K Video Transfer Rate','Automatic'],['HDR','Off'],['Adjust HDR',''],['Deep Colour Output','Automatic'],['RGB Range','Automatic (Recommended)']]],['Screen',[['Adjust Display Area',''],['Dim Screen While Inactive',"Don't Dim"]]],['BD/DVD',[['BD/DVD Region Code','']]]],vi=0;
+  function drawVid(){var h='<h2>Screen and Video</h2>';VID.forEach(function(v,i){var y=170+i*85;h+='<div class="row'+(i===vi?' sel':'')+'" data-v="'+i+'" style="top:'+y+'px;left:310px;width:326px;padding-left:24px;font-size:26px;height:84px">'+v[0]+'</div>'});
+    VID[vi][1].forEach(function(r,i){var y=150+i*81;h+='<div class="row" style="top:'+y+'px;left:724px;right:80px;font-size:26px;height:80px">'+r[0]+'<span style="margin-left:auto;font-size:20px;color:#9aa">'+r[1]+'</span></div><div class="hr" style="top:'+(y+80)+'px;left:724px;right:80px"></div>'});
+    $('st2').innerHTML=h;$('st2').querySelectorAll('[data-v]').forEach(function(e){e.onclick=function(){vi=+e.dataset.v;drawVid()}})}
+  var cur='scr';
+  function go(to){var f=$('fade');f.classList.add('on');setTimeout(function(){['st1','st2','cc'].forEach(function(i){$(i).classList.remove('on')});if(to==='st1'){drawSet();$('st1').classList.add('on')}if(to==='st2'){drawVid();$('st2').classList.add('on')}if(to==='cc')$('cc').classList.add('on');cur=to;setTimeout(function(){f.classList.remove('on')},60)},330)}
+  $('bGear').onclick=function(){go('st1')};
+  /* control center */
+  var CI=['M3 11l9-8 9 8v9h-6v-6H9v6H3z','M4 6h16v13H4zM7 3h10','M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zm-2 15a2 2 0 0 0 4 0','M6 18a6 6 0 1 1 12 0M9 18a3 3 0 1 1 6 0','M9 18V5l10-2v13M9 18a3 3 0 1 1-3-3','M3 9h4l5-4v14l-5-4H3zM15 8a5 5 0 0 1 0 8','M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM6 11a6 6 0 0 0 12 0M12 17v4','M3 9h14a4 4 0 0 1 0 8h-6l-3 3v-3H3z','M4 4h16v16H4z','M12 3v9M7 7a7 7 0 1 0 10 0'];
+  $('cc').innerHTML='<div class="cards"><div class="cd sel"><span>3 stories from your games</span><b>Official news</b></div><div class="cd sm"><span>Recently created</span><b>New video clip</b></div></div><div class="ccb">'+CI.map(function(p){return '<svg viewBox="0 0 24 24" style="stroke:#fff;fill:none;stroke-width:1.8"><path d="'+p+'"/></svg>'}).join('')+'</div>';
+  $('bProf').onclick=function(){go('cc')};
+  $('cc').onclick=function(){go('scr0')};
+  $('st1').addEventListener('contextmenu',function(e){e.preventDefault();go('scr0')});
+  /* back: tap the title */
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(cur==='st2')go('st1');else go('scr0')}});
+  $('st1').onpointerdown=function(e){if(e.target===$('st1')||e.target.tagName==='H2')go('scr0')};
+  $('st2').onpointerdown=function(e){if(e.target===$('st2')||e.target.tagName==='H2')go('st1')};
+  var _go=go;go=function(t){_go(t==='scr0'?'scr':t)};
+})();
+</script>
+</body>
+</html>
