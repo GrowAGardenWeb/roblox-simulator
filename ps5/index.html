@@ -77,6 +77,8 @@
   .cd{width:362px;height:440px;border-radius:14px;background:linear-gradient(#202533,#12141d);padding:24px;font-size:22px;color:#c8d0de;display:flex;flex-direction:column;justify-content:flex-end}
   .cd b{display:block;font-size:30px;color:#fff;font-weight:600;margin-top:4px}
   .cd.sel{box-shadow:0 0 0 3px #fff}.cd.sm{width:292px;height:330px;margin-top:110px}
+  .sfull{position:absolute;inset:0;width:100%;height:100%;display:block}.hot{position:absolute;cursor:pointer;z-index:2}.hot.sel{box-shadow:0 0 0 3px #fff;background:rgba(255,255,255,.04)}
+  .s3top{position:absolute;left:0;top:0;width:100%;height:414px;display:block}
   .store{position:absolute;inset:0;background:#120a24;display:none;z-index:5}.store.on{display:block}
   .sv{position:absolute;inset:0;display:none}.sv.on{display:block;animation:fi .45s ease both}
   .sbg,.sbg2,.sbg3{position:absolute;inset:0;background-size:cover;background-position:center}
@@ -101,7 +103,7 @@
   .ed em{position:absolute;left:12px;top:106px;font-style:normal;background:rgba(255,255,255,.85);color:#555;font-size:13px;padding:2px 10px;z-index:1}.ed em.b{left:84px;background:rgba(40,30,80,.85);color:#fff}
   .ed p{position:absolute;left:12px;top:158px;font-size:19px}
   .p-tags{position:absolute;left:460px;top:330px;display:flex;gap:10px;font-size:15px}.p-tags span{border:1px solid #cfc4f4;padding:4px 12px;font-weight:600}
-  .p-panel{position:absolute;left:0;right:0;top:410px;bottom:0;background:#0d0d24}
+  .p-panel{position:absolute;left:0;right:0;top:412px;bottom:0;background:#0b0b1f}
   .p-cov{position:absolute;left:480px;top:30px;width:200px;height:190px;object-fit:cover}
   .p-panel h3{position:absolute;left:696px;top:26px;font-size:30px;font-weight:400}
   .p-tg{position:absolute;left:696px;top:76px;display:flex;gap:8px;font-size:15px;font-weight:700}.p-tg span{border:1px solid #cfc4f4;padding:2px 12px}
@@ -133,22 +135,9 @@
   <div class="set" id="st1"></div><div class="set" id="st2"></div>
   <div class="cc" id="cc"></div>
   <div class="store" id="store">
-    <div class="sv on" id="sv1"><div class="sbg"></div>
-      <div class="s-ic"><img src="assets/ic_store2.png" alt=""></div><div class="s-t">PlayStation Store</div>
-      <div class="s-tabs"><span class="on">Más reciente</span><span>Colecciones</span><span>Suscripciones</span><span>Explorar</span></div>
-      <img class="s-logo" src="assets/gta_logo.png" alt=""><div class="s-pre">Preordena y precarga</div>
-      <div class="s-h">De vista obligada</div>
-      <div class="s-row"><div class="st sel" id="stGta"><img src="assets/ic_gta_l.png" alt=""></div><div class="st" style="background:linear-gradient(135deg,#1dd6a0,#2aa7e0)"><b>FC27</b></div><div class="st" style="background:#0a0a0a"><b>CALL OF DUTY</b></div><div class="st" style="background:linear-gradient(135deg,#2c5fd8,#7a45d6)"><b>BLACK FRIDAY</b></div><div class="st" style="background:#1d6fe0"><b>20 JUEGOS PARA TI</b></div><div class="st" style="background:linear-gradient(135deg,#f0b24a,#4b86e8)"><b>ASTRO BOT</b></div></div>
-    </div>
-    <div class="sv" id="sv2"><div class="sbg2"></div>
-      <img class="s-logo2" src="assets/gta_logo.png" alt="">
-      <div class="s-qr"><div class="qr"></div><div><small>PRECARGA DISPONIBLE</small><b>VI</b><small>ESCANEA AHORA PARA MÁS INFORMACIÓN</small></div></div>
-      <div class="s-sort">Ordenar por: <span>Predeterminados</span></div>
-      <div class="ed" id="edU"><img src="assets/ic_gta_l.png" alt=""><i>ULTIMATE EDITION</i><span>US$99.99</span></div>
-      <div class="ed sel" id="edS"><img src="assets/ic_gta_l.png" alt=""><em>PS5</em><em class="b">Paquete de juego</em><p>Grand Theft Auto VI</p><span>US$79.99</span></div>
-    </div>
-    <div class="sv" id="sv3"><div class="sbg3"></div>
-      <div class="p-tags"><span>PS5</span><span>Mejorado para PS5 Pro</span><span>Standard Edition</span></div>
+    <div class="sv on" id="sv1"><img class="sfull" src="assets/store1.jpg" alt=""><div class="hot sel" id="stGta" style="left:162px;top:666px;width:204px;height:118px"></div></div>
+    <div class="sv" id="sv2"><img class="sfull" src="assets/store2.jpg" alt=""><div class="hot" id="edU" style="left:158px;top:956px;width:0;height:0"></div><div class="hot" id="edS" style="left:420px;top:480px;width:240px;height:246px"></div></div>
+    <div class="sv" id="sv3"><img class="s3top" src="assets/store3top.jpg" alt="">
       <div class="p-panel"><img class="p-cov" src="assets/ic_gta_l.png" alt="">
         <h3>Grand Theft Auto VI</h3><div class="p-tg"><span>PS5</span><span>Reservar</span></div>
         <div class="p-d">Fecha prevista de disponibilidad para jugar: 2026/11/19 a las 0:00</div><div class="p-pr">US$79.99</div>
