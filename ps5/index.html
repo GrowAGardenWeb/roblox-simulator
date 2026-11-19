@@ -30,11 +30,12 @@
   .set.on .row:nth-child(n){animation-delay:calc(var(--n,0)*18ms)}
   .cc.on img{animation:fi .5s ease both}
   .tile{position:relative;flex:none;width:88px;height:88px;border-radius:10px;margin-top:6px;overflow:visible;background:#1c2130;transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .3s,box-shadow .3s;background-size:cover;background-position:center;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.05;letter-spacing:.3px;padding:4px}
-  .tile.sel{width:146px;height:146px;margin-top:0;border-radius:18px;box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(255,255,255,.22)}
+  .tile.sel{width:146px;height:146px;margin-top:0;border-radius:18px;box-shadow:0 0 0 4px #fff,0 0 0 8px rgba(255,255,255,.18)}
   .tile.sel:not(.lg){}
   .tile.sm{width:94px}
   .gname{position:absolute;left:0;top:152px;font-size:22px;white-space:nowrap;display:none;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-  .tile.sel .gname{display:block;left:0;top:156px}
+  .tile.sel .gname{display:flex;align-items:center;gap:12px;left:164px;top:112px}
+  .gname i{font-style:normal;font-size:13px;font-weight:700;line-height:22px;padding:0 10px;border-radius:4px;background:rgba(235,238,244,.88);color:#6b7280;letter-spacing:.5px}
   .tile.sel .gname{position:absolute}
   /* hero */
   .hero{position:absolute;left:140px;top:430px;width:900px}
@@ -96,7 +97,7 @@
   var $=function(i){return document.getElementById(i)};
   var G=[
     {k:'store',ic:'ic_store.png',n:'PlayStation Store',t:'',bg:null,col:'#13213d',ic:'\u{1F6CD}'},
-    {k:'gta',ic:'ic_gta.png',large:'ic_gta_l.png',n:'Grand Theft Auto VI',logo:'gta_logo.png',t:'GTA',d:'Experience the biggest, most immersive evolution of the Grand Theft Auto series.',bg:'bg_gta.jpg',play:'Play Game',tr:null},
+    {k:'gta',plat:'PS5',ic:'ic_gta.png',large:'ic_gta_l.png',n:'Grand Theft Auto VI',logo:'gta_logo.png',t:'GTA',d:'Experience the biggest, most immersive evolution of the Grand Theft Auto series.',bg:'bg_gta.jpg',play:'Play Game',tr:null},
     {k:'astro',ic:'ic_astro.png',large:'ic_astro_l.png',n:"ASTRO's PLAYROOM",t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'full_astro.jpg',baked:true,col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
     {k:'destiny',ic:'ic_destiny.png',large:'ic_destiny_l.png',n:'Destiny 2 | PS4',t:'DESTINY Ⅴ 2',d:'',bg:'full_destiny.jpg',baked:true,col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
     {k:'spider',ic:'ic_spider.png',large:'ic_spider_l.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'full_spider.jpg',baked:true,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
@@ -128,7 +129,7 @@
   document.addEventListener('pointerdown',function(){ctx()},{once:true});
   /* ---- rail: tiles are built once so size changes animate smoothly ---- */
   var tiles=[];
-  (function(){var r=$('rail');G.forEach(function(g,i){var t=document.createElement('div');t.className='tile';t.style.backgroundImage='url(assets/'+g.ic+')';if(g.large){var l=new Image();l.src='assets/'+g.large}var n=document.createElement('div');n.className='gname';n.textContent=g.n||'';t.appendChild(n);t.onclick=function(){if(i!==sel){sel=i;SFX.game();draw()}else SFX.ok()};r.appendChild(t);tiles.push(t)})})();
+  (function(){var r=$('rail');G.forEach(function(g,i){var t=document.createElement('div');t.className='tile';t.style.backgroundImage='url(assets/'+g.ic+')';if(g.large){var l=new Image();l.src='assets/'+g.large}var n=document.createElement('div');n.className='gname';n.innerHTML=(G[i].plat?'<i>'+G[i].plat+'</i>':'')+'<span></span>';n.querySelector('span').textContent=g.n||'';t.appendChild(n);t.onclick=function(){if(i!==sel){sel=i;SFX.game();draw()}else SFX.ok()};r.appendChild(t);tiles.push(t)})})();
   function draw(){
     var g=G[sel];
     tiles.forEach(function(t,i){var on=i===sel;t.classList.toggle('sel',on);t.style.backgroundImage='url(assets/'+(on&&G[i].large?G[i].large:G[i].ic)+')'});
