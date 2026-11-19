@@ -199,10 +199,7 @@
   var AC=null,mus={},curM=null;
   function ctx(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
   function tone(f1,f2,dur,vol,type){var c=ctx();if(!c)return;var o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type||'sine';o.frequency.setValueAtTime(f1,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.02)}
-  /* background music taken from the recording (Spider-Man home screen and the control center); the clip loops while that screen is up */
-  function music(name){if(curM===name)return;var old=curM;curM=name;
-    if(old&&mus[old]){var o=mus[old];var iv=setInterval(function(){o.volume=Math.max(0,o.volume-.08);if(o.volume<=.01){clearInterval(iv);o.pause()}},40)}
-    if(name){var a=mus[name];if(!a){a=mus[name]=new Audio('assets/m_'+name+'.mp3');a.loop=true}a.volume=0;var p=a.play();if(p&&p.catch)p.catch(function(){});var v=0,iv2=setInterval(function(){v=Math.min(.6,v+.05);a.volume=v;if(v>=.6||curM!==name)clearInterval(iv2)},50)}}
+  function music(){}
   var SFX={
     move:function(){tone(1250,900,.07,.05)},
     game:function(){var c=ctx();if(!c)return;tone(210,130,.22,.2,'sine');tone(420,260,.16,.09,'triangle');tone(105,70,.26,.14,'sine');setTimeout(function(){tone(640,420,.1,.04,'triangle')},18)},
