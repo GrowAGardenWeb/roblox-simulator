@@ -16,7 +16,7 @@
   .tabs{position:absolute;left:76px;top:32px;font-size:28px;display:flex;gap:66px;color:#9aa}
   .tabs b{color:#fff;font-weight:500}
   .tr{position:absolute;right:70px;top:34px;display:flex;align-items:center;gap:56px;font-size:28px}
-  .tr svg{width:30px;height:30px;fill:#fff}
+  .tr img{width:44px;height:44px;display:block;cursor:pointer;margin:0 -6px}
   /* rail */
   .rail{position:absolute;left:44px;top:100px;height:150px;display:flex;align-items:flex-start;gap:6px}
   .rail{transition:transform .45s cubic-bezier(.22,.9,.3,1)}
@@ -28,7 +28,7 @@
   @keyframes pop{from{opacity:0;transform:scale(.9) translateY(14px)}to{opacity:1;transform:none}}
   .set.on .row,.set.on h2{animation:fi .45s ease both}
   .set.on .row:nth-child(n){animation-delay:calc(var(--n,0)*18ms)}
-  .cc.on .cd,.cc.on .ccb{animation:up .5s cubic-bezier(.2,.8,.2,1) both}
+  .cc.on img{animation:fi .5s ease both}
   .tile{position:relative;flex:none;width:88px;height:88px;border-radius:10px;margin-top:6px;overflow:hidden;background:#1c2130;transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .3s,box-shadow .3s;background-size:cover;background-position:center;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.05;letter-spacing:.3px;padding:4px}
   .tile.sel{width:146px;height:146px;margin-top:0;border-radius:18px;box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(255,255,255,.22)}
   .tile.sel:not(.lg){}
@@ -54,11 +54,11 @@
   .set.on{display:block}
   .set h2{position:absolute;left:80px;top:62px;font-size:38px;font-weight:300}
   .row{position:absolute;left:0;right:0;height:80px;display:flex;align-items:center;font-size:28px;font-weight:300;cursor:pointer}
-  .row svg{width:34px;height:34px;fill:#fff;margin-right:24px;flex:none}
+  .row img{width:46px;height:46px;margin:0 22px 0 -6px;flex:none}
   .row.sel{outline:2px solid #cfd6e4;outline-offset:-1px;background:rgba(255,255,255,.07)}
   .hr{position:absolute;height:1px;background:rgba(255,255,255,.12)}
   /* control center */
-  .cc{position:absolute;left:0;right:0;bottom:0;top:0;background:rgba(0,0,0,.72);display:none}
+  .cc{position:absolute;left:0;right:0;bottom:0;top:0;background:#000;display:none}
   .cc.on{display:block}
   .ccb{position:absolute;left:0;right:0;bottom:36px;display:flex;justify-content:center;gap:68px}
   .ccb svg{width:42px;height:42px;fill:#fff;opacity:.9}
@@ -73,7 +73,7 @@
 <div id="wrap"><div class="scr" id="scr">
   <div id="bgs"></div><div class="scrim"></div>
   <div class="tabs"><b>Games</b><span>Media</span></div>
-  <div class="tr"><svg id="bSearch" viewBox="0 0 24 24" style="cursor:pointer"><path d="M10 3a7 7 0 1 0 4.2 12.6l5.100 5.100 1.400-1.400-5.100-5.100A7 7 0 0 0 10 3zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></svg><svg id="bGear" viewBox="0 0 24 24" style="cursor:pointer"><path d="M19.400 13a7.500 7.500 0 0 0 0-2l2-1.600-2-3.400-2.400 1a7.500 7.500 0 0 0-1.700-1L15 3.500h-4l-.3 2.500a7.500 7.500 0 0 0-1.700 1l-2.400-1-2 3.400 2 1.600a7.500 7.500 0 0 0 0 2l-2 1.600 2 3.400 2.400-1a7.500 7.500 0 0 0 1.700 1l.3 2.500h4l.3-2.500a7.500 7.500 0 0 0 1.700-1l2.400 1 2-3.400zM13 15.500a3.500 3.500 0 1 1 0-7 3.500 3.500 0 0 1 0 7z"/></svg><svg id="bProf" viewBox="0 0 24 24" style="cursor:pointer"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="9" cy="10" r="1.700" fill="#05070d"/><circle cx="15" cy="10" r="1.700" fill="#05070d"/><path d="M7.500 14.500q4.500 4 9 0" stroke="#05070d" stroke-width="1.800" fill="none" stroke-linecap="round"/></svg><span id="clock">17:14</span></div>
+  <div class="tr"><img id="bSearch" src="assets/tb_search.png" alt=""><img id="bGear" src="assets/tb_gear.png" alt=""><img id="bProf" src="assets/tb_face.png" alt=""><span id="clock">17:14</span></div>
   <div class="rail" id="rail"></div>
   <div class="hero"><h1 id="hT"></h1><p id="hD"></p></div>
   <div class="btns"><div class="play" id="play">Play</div><div class="dots">&middot;&middot;&middot;</div></div>
@@ -93,13 +93,13 @@
   var $=function(i){return document.getElementById(i)};
   var G=[
     {k:'store',ic:'ic_store.png',n:'PlayStation Store',t:'',bg:null,col:'#13213d',ic:'\u{1F6CD}'},
-    {k:'astro',ic:'ic_astro.png',large:'ic_astro_l.png',n:"ASTRO's PLAYROOM",t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
-    {k:'destiny',ic:'ic_destiny.png',large:'ic_destiny_l.png',n:'Destiny 2 | PS4',t:'DESTINY Ⅴ 2',d:'',bg:'bg_destiny.jpg',col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
-    {k:'spider',ic:'ic_spider.png',large:'ic_spider_l.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'bg_spider.jpg',col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
-    {k:'rl',ic:'ic_rl.png',n:'Rocket League',col:'linear-gradient(135deg,#f2f2f2,#2d63d8)',lab:'ROCKET\nLEAGUE',bg:'bg_destiny.jpg',t:'ROCKET\nLEAGUE',d:'',tr:['34%','12/38']},
-    {k:'wf',ic:'ic_wf.png',n:'Warframe',col:'linear-gradient(135deg,#8e9aa3,#3a444c)',lab:'WARFRAME',bg:'bg_destiny.jpg',t:'WARFRAME',d:'',tr:null},
-    {k:'cod',ic:'ic_cod.png',n:'Call of Duty: Modern Warfare',col:'linear-gradient(135deg,#5a5a52,#1b1b18)',lab:'MODERN\nWARFARE',bg:'bg_spider.jpg',t:'MODERN\nWARFARE',d:'',tr:null},
-    {k:'apex',ic:'ic_apex.png',n:'Apex Legends',col:'linear-gradient(135deg,#59b8c8,#e59f8c)',lab:'APEX',bg:'bg_spider.jpg',t:'APEX\nLEGENDS',d:'',tr:null},
+    {k:'astro',ic:'ic_astro.png',large:'ic_astro_l.png',n:"ASTRO's PLAYROOM",t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'full_astro.jpg',baked:true,col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
+    {k:'destiny',ic:'ic_destiny.png',large:'ic_destiny_l.png',n:'Destiny 2 | PS4',t:'DESTINY Ⅴ 2',d:'',bg:'full_destiny.jpg',baked:true,col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
+    {k:'spider',ic:'ic_spider.png',large:'ic_spider_l.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'full_spider.jpg',baked:true,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
+    {k:'rl',ic:'ic_rl.png',n:'Rocket League',col:'linear-gradient(135deg,#f2f2f2,#2d63d8)',lab:'ROCKET\nLEAGUE',bg:'clean_destiny.jpg',t:'ROCKET\nLEAGUE',d:'',tr:['34%','12/38']},
+    {k:'wf',ic:'ic_wf.png',n:'Warframe',col:'linear-gradient(135deg,#8e9aa3,#3a444c)',lab:'WARFRAME',bg:'clean_destiny.jpg',t:'WARFRAME',d:'',tr:null},
+    {k:'cod',ic:'ic_cod.png',n:'Call of Duty: Modern Warfare',col:'linear-gradient(135deg,#5a5a52,#1b1b18)',lab:'MODERN\nWARFARE',bg:'clean_spider.jpg',t:'MODERN\nWARFARE',d:'',tr:null},
+    {k:'apex',ic:'ic_apex.png',n:'Apex Legends',col:'linear-gradient(135deg,#59b8c8,#e59f8c)',lab:'APEX',bg:'clean_spider.jpg',t:'APEX\nLEGENDS',d:'',tr:null},
     {k:'plus',ic:'ic_plus.png',n:'PlayStation Plus',col:'#171c28',lab:'✚',gold:true},
     {k:'psnow',ic:'ic_psnow.png',n:'PlayStation Now',col:'#171c28',lab:'▶',blue:true},
     {k:'lib',ic:'ic_lib.png',n:'Game Library',col:'#1c2130',lab:'☷'}
@@ -107,13 +107,16 @@
   var cur='scr';var sel=1,bgEl={},first=true;
   G.forEach(function(g){if(g.bg&&!bgEl[g.bg]){var d=document.createElement('div');d.className='bg';d.style.backgroundImage='url(assets/'+g.bg+')';$('bgs').appendChild(d);bgEl[g.bg]=d}});
   /* ---- sounds: real clips from the recording for game changes, synthesized ticks for the rest ---- */
-  var AC=null,navN=0,bufs={};
+  var AC=null,mus={},curM=null;
   function ctx(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
-  ['s_nav1','s_nav2','s_nav3'].forEach(function(n){fetch('assets/'+n+'.mp3').then(function(r){return r.arrayBuffer()}).then(function(b){var c=ctx();if(!c)return;c.decodeAudioData(b,function(d){bufs[n]=d})}).catch(function(){})});
   function tone(f1,f2,dur,vol,type){var c=ctx();if(!c)return;var o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type||'sine';o.frequency.setValueAtTime(f1,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.02)}
+  /* background music taken from the recording (Spider-Man home screen and the control center); the clip loops while that screen is up */
+  function music(name){if(curM===name)return;var old=curM;curM=name;
+    if(old&&mus[old]){var o=mus[old];var iv=setInterval(function(){o.volume=Math.max(0,o.volume-.08);if(o.volume<=.01){clearInterval(iv);o.pause()}},40)}
+    if(name){var a=mus[name];if(!a){a=mus[name]=new Audio('assets/m_'+name+'.mp3');a.loop=true}a.volume=0;var p=a.play();if(p&&p.catch)p.catch(function(){});var v=0,iv2=setInterval(function(){v=Math.min(.6,v+.05);a.volume=v;if(v>=.6||curM!==name)clearInterval(iv2)},50)}}
   var SFX={
     move:function(){tone(1250,900,.07,.05)},
-    game:function(){var c=ctx();if(!c)return;var k='s_nav'+(1+(navN++%3)),b=bufs[k];if(!b){tone(700,1100,.16,.06);return}var s=c.createBufferSource(),g=c.createGain();s.buffer=b;g.gain.value=.9;s.connect(g);g.connect(c.destination);s.start()},
+    game:function(){tone(760,1180,.14,.05,'triangle')},
     open:function(){tone(520,780,.18,.06,'triangle');setTimeout(function(){tone(780,1040,.2,.05,'triangle')},70)},
     back:function(){tone(820,460,.16,.05,'triangle')},
     ok:function(){tone(900,1350,.09,.06)}
@@ -128,12 +131,13 @@
     /* keep the selected tile in view (the rail scrolls like the real one) */
     var r=$('rail'),x=0;for(var i=0;i<sel;i++)x+=(i===sel?146:88)+6;r.style.transform='translateX('+(-Math.max(0,x-330))+'px)';
     Object.keys(bgEl).forEach(function(k){bgEl[k].classList.toggle('on',g.bg===k)});
-    var isGame=!!g.t,h=document.querySelector('.hero'),bt=document.querySelector('.btns'),tr=$('troph'),c=$('card');
+    if(cur==='scr')music(g.k==='spider'?'spider':null);
+    var isGame=!!g.t&&!g.baked,h=document.querySelector('.hero'),bt=document.querySelector('.btns'),tr=$('troph'),c=$('card');
     [h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
-    $('hT').textContent=g.t||'';$('hD').textContent=g.d||'';
+    $('hT').textContent=isGame?(g.t||''):'';$('hD').textContent=isGame?(g.d||''):'';
     bt.style.display=isGame?'flex':'none';
-    tr.style.display=g.tr?'flex':'none';if(g.tr)tr.innerHTML='<span>\u{1F3C6}</span><span><small>Progress</small>'+g.tr[0]+'</span><span><small>Earned</small>'+g.tr[1]+'</span>';
-    c.style.display=g.card?'block':'none';$('cT').textContent=g.t||'';$('cT').style.whiteSpace='pre-line';
+    tr.style.display=g.tr&&!g.baked?'flex':'none';if(g.tr)tr.innerHTML='<span>\u{1F3C6}</span><span><small>Progress</small>'+g.tr[0]+'</span><span><small>Earned</small>'+g.tr[1]+'</span>';
+    c.style.display=g.card&&!g.baked?'block':'none';$('cT').textContent=g.t||'';$('cT').style.whiteSpace='pre-line';
     [h,bt,tr,c].forEach(function(e){e.classList.add('in')})}
   draw();
   document.addEventListener('keydown',function(e){if(cur!=='scr')return;if(e.key==='ArrowRight'&&sel<G.length-1){sel++;SFX.game();draw()}if(e.key==='ArrowLeft'&&sel>0){sel--;SFX.game();draw()}});
@@ -142,7 +146,8 @@
   function clk(){var d=new Date();$('clock').textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}clk();setInterval(clk,15000);
   /* settings */
   var IC={sys:'M12 2l9 5v10l-9 5-9-5V7z',sto:'M4 6c0-2 16-2 16 0v12c0 2-16 2-16 0z',snd:'M3 9h4l5-4v14l-5-4H3zM15 8a5 5 0 0 1 0 8',scr:'M3 6h18v12H3z',acc:'M4 7h16v8H4zM8 18h8',sav:'M5 5h6v6H5zM13 5h6v6h-6zM5 13h6v6H5z',not:'M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zm-2 15a2 2 0 0 0 4 0',cap:'M7 4H4v3M17 4h3v3M7 20H4v-3M17 20h3v-3M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',net:'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2q6 10 0 20M12 2q-6 10 0 20',usr:'M5 4h14v16H5zM9 9a3 3 0 1 0 6 0 3 3 0 0 0-6 0zM8 16h8',acs:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8v2M8 11h8M10 18l2-5 2 5',fam:'M5 4h6v6H5zM13 4h6v6h-6zM5 14h6v6H5z',gui:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v6M12 7v1'};
-  function ico(k){return '<svg viewBox="0 0 24 24" style="stroke:#fff;fill:none;stroke-width:1.8"><path d="'+IC[k]+'"/></svg>'}
+  var SIM={gui:'guide',acs:'access',net:'network',usr:'users',fam:'family',sys:'system',sto:'storage',snd:'sound',scr:'screen',acc:'accessories',sav:'saved',not:'notifications',cap:'captures'};
+  function ico(k){return '<img src="assets/si_'+SIM[k]+'.png" alt="">'}
   var SET=[['gui',"User's Guide, Health and Safety, and Other Information"],['acs','Accessibility'],['net','Network'],['usr','Users and Accounts'],['fam','Family and Parental Controls'],['sys','System'],['sto','Storage'],['snd','Sound'],['scr','Screen and Video'],['acc','Accessories'],['sav','Saved Data and Game/App Settings'],['not','Notifications'],['cap','Captures and Broadcasts']];
   var si=2,sTop=0;
   function drawSet(){var h='<h2>Settings</h2>';var vis=SET.slice(sTop,sTop+9);
@@ -152,11 +157,10 @@
   function drawVid(){var h='<h2>Screen and Video</h2>';VID.forEach(function(v,i){var y=170+i*85;h+='<div class="row'+(i===vi?' sel':'')+'" data-v="'+i+'" style="top:'+y+'px;left:310px;width:326px;padding-left:24px;font-size:26px;height:84px">'+v[0]+'</div>'});
     VID[vi][1].forEach(function(r,i){var y=150+i*81;h+='<div class="row" style="top:'+y+'px;left:724px;right:80px;font-size:26px;height:80px">'+r[0]+'<span style="margin-left:auto;font-size:20px;color:#9aa">'+r[1]+'</span></div><div class="hr" style="top:'+(y+80)+'px;left:724px;right:80px"></div>'});
     $('st2').innerHTML=h;$('st2').querySelectorAll('[data-v]').forEach(function(e){e.onclick=function(){vi=+e.dataset.v;SFX.move();drawVid()}})}
-  function go(to){(to==='scr'?SFX.back:SFX.open)();var f=$('fade');f.classList.add('on');setTimeout(function(){['st1','st2','cc'].forEach(function(i){$(i).classList.remove('on')});if(to==='st1'){drawSet();$('st1').classList.add('on')}if(to==='st2'){drawVid();$('st2').classList.add('on')}if(to==='cc')$('cc').classList.add('on');cur=to;setTimeout(function(){f.classList.remove('on')},60)},330)}
+  function go(to){(to==='scr'?SFX.back:SFX.open)();var f=$('fade');f.classList.add('on');setTimeout(function(){['st1','st2','cc'].forEach(function(i){$(i).classList.remove('on')});if(to==='st1'){drawSet();$('st1').classList.add('on')}if(to==='st2'){drawVid();$('st2').classList.add('on')}if(to==='cc')$('cc').classList.add('on');cur=to;music(to==='cc'?'cc':(to==='scr'&&G[sel].k==='spider'?'spider':null));setTimeout(function(){f.classList.remove('on')},60)},330)}
   $('bGear').onclick=function(){go('st1')};
   /* control center */
-  var CI=['M3 11l9-8 9 8v9h-6v-6H9v6H3z','M4 6h16v13H4zM7 3h10','M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zm-2 15a2 2 0 0 0 4 0','M6 18a6 6 0 1 1 12 0M9 18a3 3 0 1 1 6 0','M9 18V5l10-2v13M9 18a3 3 0 1 1-3-3','M3 9h4l5-4v14l-5-4H3zM15 8a5 5 0 0 1 0 8','M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM6 11a6 6 0 0 0 12 0M12 17v4','M3 9h14a4 4 0 0 1 0 8h-6l-3 3v-3H3z','M4 4h16v16H4z','M12 3v9M7 7a7 7 0 1 0 10 0'];
-  $('cc').innerHTML='<div class="cards"><div class="cd sel"><span>3 stories from your games</span><b>Official news</b></div><div class="cd sm"><span>Recently created</span><b>New video clip</b></div></div><div class="ccb">'+CI.map(function(p){return '<svg viewBox="0 0 24 24" style="stroke:#fff;fill:none;stroke-width:1.8"><path d="'+p+'"/></svg>'}).join('')+'</div>';
+  $('cc').innerHTML='<img src="assets/cc_frame.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%">';
   $('bProf').onclick=function(){go('cc')};
   $('cc').onclick=function(){go('scr0')};
   $('st1').addEventListener('contextmenu',function(e){e.preventDefault();go('scr0')});
