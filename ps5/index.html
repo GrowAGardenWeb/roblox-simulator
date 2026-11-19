@@ -21,7 +21,9 @@
   .rail{position:absolute;left:44px;top:100px;height:150px;display:flex;align-items:flex-start;gap:6px}
   .rail{transition:transform .45s cubic-bezier(.22,.9,.3,1)}
   .hero.in h1,.hero.in p{animation:up .55s cubic-bezier(.2,.8,.2,1) both}.hero.in p{animation-delay:.07s}
-  .btns.in,.trophy.in{animation:fi .5s .12s ease both}
+  .trophy.in{animation:fi .5s .12s ease both}
+  .btns.in{animation:slideb .5s .12s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes slideb{from{transform:translateY(10px)}to{transform:none}}
   .card.in{animation:pop .55s cubic-bezier(.2,.9,.3,1) both}
   @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   @keyframes fi{from{opacity:0}to{opacity:1}}
@@ -45,8 +47,8 @@
   .hero p{margin-top:20px;font-size:25px;line-height:35px;color:#dfe6f0;max-width:700px;min-height:70px}
   .btns.gta .play,.btns.gta .dots{background:rgba(255,255,255,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
   .btns{position:absolute;left:140px;top:685px;display:flex;gap:14px}
-  .play{width:272px;height:58px;border-radius:30px;background:rgba(40,52,78,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:23px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
-  .dots{width:58px;height:58px;border-radius:50%;background:rgba(40,52,78,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:34px;display:flex;align-items:center;justify-content:center;letter-spacing:2px;cursor:pointer}
+  .play{width:272px;height:58px;border-radius:30px;background:rgba(40,52,78,.6);font-size:23px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .dots{width:58px;height:58px;border-radius:50%;background:rgba(40,52,78,.55);font-size:34px;display:flex;align-items:center;justify-content:center;letter-spacing:2px;cursor:pointer}
   .trophy{position:absolute;right:140px;top:728px;display:flex;gap:70px;font-size:23px;color:#cfd8e6;align-items:center}
   .trophy small{display:block;font-size:19px;color:#9eabc0}
   .card{position:absolute;left:1130px;top:330px;width:305px;height:305px;background:linear-gradient(#0b2b8f,#071a5a);box-shadow:0 8px 40px rgba(0,0,0,.5);display:none;padding:14px;font-weight:800}
