@@ -83,12 +83,12 @@
   .store .a{position:absolute;white-space:nowrap;text-shadow:0 1px 6px rgba(20,8,40,.45)}
   .store .ico{left:50px;top:42px;width:72px;height:72px;border-radius:12px;background:#0f1218;overflow:hidden}.ico img{width:100%;height:100%}
   .tabf{border:2px solid #fff;box-sizing:border-box}.tb{font-size:29px}
-  .tl{object-fit:cover}.vil{filter:drop-shadow(0 4px 14px rgba(60,20,90,.45))}
+  .tl2{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;color:#fff;cursor:pointer;gap:3px;text-shadow:none}.tl2 b{font-weight:800}.tl2 i{font-style:normal;font-size:9.5px;letter-spacing:1px;opacity:.9}.tl2.sel2{box-shadow:0 0 0 3px #fff;transform:scale(1.06);z-index:3}.vil{filter:drop-shadow(0 4px 14px rgba(60,20,90,.45))}
   .gt{display:flex;align-items:center;justify-content:center;overflow:hidden}
   .hot{cursor:pointer;z-index:2}.hot.sel{box-shadow:0 0 0 3px #fff}
   .kb{display:inline-block;border:1px solid #fff;border-radius:4px;padding:0 6px;font-size:14px;line-height:20px}
   .qrb{background:rgba(26,16,60,.88);border:2px solid #d7cff2;display:flex;gap:26px;padding:24px;box-sizing:border-box;font-size:10px;text-shadow:none}
-  .qr{width:170px;height:170px;flex:none;background:#eee;background-image:repeating-conic-gradient(#222 0 25%,transparent 0 50%);background-size:18px 18px;border:10px solid #eee;box-sizing:content-box}
+  .qr{width:170px;height:170px;flex:none;border:10px solid #fff;box-sizing:content-box;background:#fff;image-rendering:pixelated}
   .qt{text-align:center;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;color:#d7cff2;padding:6px 0}.qt img{width:110px;height:110px;object-fit:cover}
   .fil{left:62px;top:492px;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center}
   .pr{position:absolute;left:10px;bottom:6px;font-weight:600;font-size:16px;text-shadow:0 1px 4px #000}
@@ -131,13 +131,17 @@
       <div class="a" style="left:162px;top:520px;font-size:28px;line-height:36px">Pre-order and pre-load</div>
       <div class="a" style="left:162px;top:612px;font-size:22px">Must-see</div>
       <div class="a gt hot sel" id="stGta" style="left:162px;top:666px;width:204px;height:118px;background:#1a1744"><img src="assets/ic_gta_l3.png" alt="" style="width:100%;height:100%;object-fit:cover"></div>
-      <img class="a tl" src="assets/t_fc.jpg" style="left:392px;top:660px;width:186px;height:110px" alt=""><img class="a tl" src="assets/t_cod.jpg" style="left:606px;top:655px;width:170px;height:120px" alt=""><img class="a tl" src="assets/t_bf.jpg" style="left:812px;top:655px;width:178px;height:120px" alt=""><img class="a tl" src="assets/t_j20.jpg" style="left:1012px;top:655px;width:180px;height:120px" alt=""><img class="a tl" src="assets/t_astro.jpg" style="left:1212px;top:655px;width:170px;height:120px" alt="">
+      <div class="a tl2" data-t="1" style="left:392px;top:660px;width:186px;height:110px;background:linear-gradient(135deg,#17d6a2,#2c9fe0)"><i>EA SPORTS</i><b style="font-style:italic;font-size:34px">FC27</b></div>
+      <div class="a tl2" data-t="2" style="left:606px;top:655px;width:170px;height:120px;background:#080808"><i>SEASON 1</i><b style="font-size:21px;line-height:22px">CALL OF DUTY</b><i>MODERN WARFARE</i></div>
+      <div class="a tl2" data-t="3" style="left:812px;top:655px;width:178px;height:120px;background:linear-gradient(135deg,#2748c8,#6a3fd0)"><i>20 YEARS OF PLAYSTATION STORE</i><b style="font-size:23px;color:#ff58b0">BLACK FRIDAY</b></div>
+      <div class="a tl2" data-t="4" style="left:1012px;top:655px;width:180px;height:120px;background:#1f6fe3"><b style="font-size:17px;line-height:20px">20 GAMES<br>FOR YOU</b><i>20 YEARS OF PLAYSTATION STORE</i></div>
+      <div class="a tl2" data-t="5" style="left:1212px;top:655px;width:170px;height:120px;background:linear-gradient(135deg,#1a52c8,#3aa6ee)"><b style="font-size:26px;font-style:italic">ASTRO BOT</b></div>
       <div class="a" style="left:166px;top:822px;font-size:20px">Most popular games in your country</div>
       <div class="a" style="left:1160px;top:822px;font-size:19px;white-space:nowrap">&#9651; Tools &nbsp;&nbsp;<span class="kb">L1</span> / <span class="kb">R1</span> Switch tabs</div>
     </div>
     <div class="sv" id="sv2"><img class="sfull" src="assets/sa2.jpg" alt="">
       <img class="a" src="assets/gta_logo.png" alt="" style="left:160px;top:86px;width:316px">
-      <div class="a qrb" style="left:1026px;top:98px;width:404px;height:236px"><div class="qr"></div><div class="qt"><small>PRE-LOAD AVAILABLE</small><img src="assets/vi_qr.jpg" alt=""><small>SCAN NOW FOR MORE INFORMATION</small></div></div>
+      <div class="a qrb" style="left:1026px;top:98px;width:404px;height:236px"><img class="qr" src="assets/qr.svg" alt=""><div class="qt"><small>PRE-LOAD AVAILABLE</small><img src="assets/vi_qr.jpg" alt=""><small>SCAN NOW FOR MORE INFORMATION</small></div></div>
       <div class="a" style="left:1150px;top:424px;font-size:20px;color:#d8d0ee">Sort by: <span style="color:#bfb6e4">Default</span></div>
       <div class="a fil"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M6 3v14M3 14l3 4 3-4M12 6h9M12 11h7M12 16h5"/></svg></div>
       <div class="a hot" id="edU" style="left:160px;top:490px;width:240px;height:230px;overflow:hidden"><img src="assets/ed_ult.jpg" alt="" style="width:100%;height:100%"><span class="pr">US$99.99</span></div>
@@ -201,7 +205,7 @@
     if(name){var a=mus[name];if(!a){a=mus[name]=new Audio('assets/m_'+name+'.mp3');a.loop=true}a.volume=0;var p=a.play();if(p&&p.catch)p.catch(function(){});var v=0,iv2=setInterval(function(){v=Math.min(.6,v+.05);a.volume=v;if(v>=.6||curM!==name)clearInterval(iv2)},50)}}
   var SFX={
     move:function(){tone(1250,900,.07,.05)},
-    game:function(){tone(760,1180,.14,.05,'triangle')},
+    game:function(){var c=ctx();if(!c)return;tone(210,130,.22,.2,'sine');tone(420,260,.16,.09,'triangle');tone(105,70,.26,.14,'sine');setTimeout(function(){tone(640,420,.1,.04,'triangle')},18)},
     open:function(){tone(520,780,.18,.06,'triangle');setTimeout(function(){tone(780,1040,.2,.05,'triangle')},70)},
     back:function(){tone(820,460,.16,.05,'triangle')},
     ok:function(){tone(900,1350,.09,.06)}
@@ -240,7 +244,10 @@
   var edChosen='s';
   var stEl=$('store'),svs=['sv1','sv2','sv3'],stCur=-1;
   function stShow(i){var f=$('fade');f.classList.add('on');setTimeout(function(){svs.forEach(function(v,k){$(v).classList.toggle('on',k===i)});if(i<0){stEl.classList.remove('on');cur='scr'}else{stEl.classList.add('on');cur='store'}stCur=i;setTimeout(function(){f.classList.remove('on')},60)},330);(i<0?SFX.back:SFX.open)()}
-  $('stGta').onclick=function(){stShow(1)};$('edS').onclick=function(){setEd('s');stShow(2)};$('edU').onclick=function(){setEd('u');stShow(2)};$('pConf').onclick=function(){SFX.ok()};
+  var mt=[$('stGta')].concat([].slice.call(document.querySelectorAll('.tl2')));
+  function focusT(i){mt.forEach(function(e,k){e.classList.toggle('sel',k===0&&i===0);e.classList.toggle('sel2',k===i&&i>0)})}
+  mt.forEach(function(e,i){e.addEventListener('click',function(ev){if(i===0)return;ev.stopPropagation();focusT(i);SFX.move()})});
+  $('stGta').onclick=function(){focusT(0);stShow(1)};$('edS').onclick=function(){setEd('s');stShow(2)};$('edU').onclick=function(){setEd('u');stShow(2)};$('pConf').onclick=function(){SFX.ok()};
   $('sBack').onclick=function(){stShow(stCur-1)};
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&cur==='store')stShow(stCur-1)});
   /* clock */
