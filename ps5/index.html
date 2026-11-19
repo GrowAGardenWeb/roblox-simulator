@@ -42,9 +42,10 @@
   .hero.gta{top:378px}
   .hero h1{font-size:64px;line-height:62px;font-weight:800;letter-spacing:1px;text-transform:uppercase;white-space:pre-line}
   .hero p{margin-top:20px;font-size:25px;line-height:35px;color:#dfe6f0;max-width:700px;min-height:70px}
+  .btns.gta .play,.btns.gta .dots{background:rgba(255,255,255,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
   .btns{position:absolute;left:140px;top:685px;display:flex;gap:14px}
-  .play{width:272px;height:58px;border-radius:30px;background:rgba(40,52,78,.85);font-size:23px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
-  .dots{width:58px;height:58px;border-radius:50%;background:rgba(40,52,78,.85);font-size:34px;display:flex;align-items:center;justify-content:center;letter-spacing:2px;cursor:pointer}
+  .play{width:272px;height:58px;border-radius:30px;background:rgba(40,52,78,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:23px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .dots{width:58px;height:58px;border-radius:50%;background:rgba(40,52,78,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:34px;display:flex;align-items:center;justify-content:center;letter-spacing:2px;cursor:pointer}
   .trophy{position:absolute;right:140px;top:728px;display:flex;gap:70px;font-size:23px;color:#cfd8e6;align-items:center}
   .trophy small{display:block;font-size:19px;color:#9eabc0}
   .card{position:absolute;left:1130px;top:330px;width:305px;height:305px;background:linear-gradient(#0b2b8f,#071a5a);box-shadow:0 8px 40px rgba(0,0,0,.5);display:none;padding:14px;font-weight:800}
@@ -136,7 +137,7 @@
     Object.keys(bgEl).forEach(function(k){bgEl[k].classList.toggle('on',g.bg===k)});
     if(cur==='scr')music(g.k==='spider'?'spider':null);
     var isGame=!!g.t&&!g.baked,h=document.querySelector('.hero'),bt=document.querySelector('.btns'),tr=$('troph'),c=$('card');
-    h.classList.toggle('gta',!!g.logo);[h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
+    h.classList.toggle('gta',!!g.logo);bt.classList.toggle('gta',!!g.logo);[h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
     $('hT').innerHTML=isGame?(g.logo?'<img src="assets/'+g.logo+'" alt="">':''):'';if(isGame&&!g.logo)$('hT').textContent=g.t||'';$('play').textContent=g.play||'Play';$('hD').textContent=isGame?(g.d||''):'';
     bt.style.display=isGame?'flex':'none';
     tr.style.display=g.tr&&!g.baked?'flex':'none';if(g.tr)tr.innerHTML='<span>\u{1F3C6}</span><span><small>Progress</small>'+g.tr[0]+'</span><span><small>Earned</small>'+g.tr[1]+'</span>';
