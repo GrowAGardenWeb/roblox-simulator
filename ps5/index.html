@@ -33,7 +33,7 @@
   .tile.sel{width:146px;height:146px;margin-top:0;border-radius:18px;box-shadow:0 0 0 4px #fff,0 0 0 8px rgba(255,255,255,.18)}
   .tile.sel:not(.lg){}
   .tile.sm{width:94px}
-  .gname{position:absolute;left:0;top:152px;font-size:22px;white-space:nowrap;display:none;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+  .gname{position:absolute;left:0;top:152px;font-size:22px;font-weight:400;white-space:nowrap;display:none;text-shadow:0 1px 8px rgba(0,0,0,.6)}
   .tile.sel .gname{display:flex;align-items:center;gap:12px;left:164px;top:112px}
   .gname i{font-style:normal;font-size:13px;font-weight:700;line-height:22px;padding:0 10px;border-radius:4px;background:rgba(235,238,244,.88);color:#6b7280;letter-spacing:.5px}
   .tile.sel .gname{position:absolute}
@@ -134,7 +134,7 @@
     var g=G[sel];
     tiles.forEach(function(t,i){var on=i===sel;t.classList.toggle('sel',on);t.style.backgroundImage='url(assets/'+(on&&G[i].large?G[i].large:G[i].ic)+')'});
     /* keep the selected tile in view (the rail scrolls like the real one) */
-    var r=$('rail'),x=0;for(var i=0;i<sel;i++)x+=(i===sel?146:88)+6;r.style.transform='translateX('+(-Math.max(0,x-330))+'px)';
+    var r=$('rail'),x=44;for(var i=0;i<sel;i++)x+=88+6;r.style.transform='translateX('+Math.min(0,138-x)+'px)';
     Object.keys(bgEl).forEach(function(k){bgEl[k].classList.toggle('on',g.bg===k)});
     if(cur==='scr')music(g.k==='spider'?'spider':null);
     var isGame=!!g.t&&!g.baked,h=document.querySelector('.hero'),bt=document.querySelector('.btns'),tr=$('troph'),c=$('card');
