@@ -73,7 +73,7 @@
 <div id="wrap"><div class="scr" id="scr">
   <div id="bgs"></div><div class="scrim"></div>
   <div class="tabs"><b>Games</b><span>Media</span></div>
-  <div class="tr"><img id="bSearch" src="assets/tb_search.png" alt=""><img id="bGear" src="assets/tb_gear.png" alt=""><img id="bProf" src="assets/tb_face.png" alt=""><span id="clock">17:14</span></div>
+  <div class="tr"><img id="bSearch" src="assets/svg/tb_search.svg" alt=""><img id="bGear" src="assets/svg/tb_gear.svg" alt=""><img id="bProf" src="assets/svg/tb_face.svg" alt=""><span id="clock">17:14</span></div>
   <div class="rail" id="rail"></div>
   <div class="hero"><h1 id="hT"></h1><p id="hD"></p></div>
   <div class="btns"><div class="play" id="play">Play</div><div class="dots">&middot;&middot;&middot;</div></div>
@@ -147,7 +147,7 @@
   /* settings */
   var IC={sys:'M12 2l9 5v10l-9 5-9-5V7z',sto:'M4 6c0-2 16-2 16 0v12c0 2-16 2-16 0z',snd:'M3 9h4l5-4v14l-5-4H3zM15 8a5 5 0 0 1 0 8',scr:'M3 6h18v12H3z',acc:'M4 7h16v8H4zM8 18h8',sav:'M5 5h6v6H5zM13 5h6v6h-6zM5 13h6v6H5z',not:'M12 3a6 6 0 0 0-6 6v4l-2 3h16l-2-3V9a6 6 0 0 0-6-6zm-2 15a2 2 0 0 0 4 0',cap:'M7 4H4v3M17 4h3v3M7 20H4v-3M17 20h3v-3M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',net:'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2q6 10 0 20M12 2q-6 10 0 20',usr:'M5 4h14v16H5zM9 9a3 3 0 1 0 6 0 3 3 0 0 0-6 0zM8 16h8',acs:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8v2M8 11h8M10 18l2-5 2 5',fam:'M5 4h6v6H5zM13 4h6v6h-6zM5 14h6v6H5z',gui:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v6M12 7v1'};
   var SIM={gui:'guide',acs:'access',net:'network',usr:'users',fam:'family',sys:'system',sto:'storage',snd:'sound',scr:'screen',acc:'accessories',sav:'saved',not:'notifications',cap:'captures'};
-  function ico(k){return '<img src="assets/si_'+SIM[k]+'.png" alt="">'}
+  function ico(k){return '<img src="assets/svg/si_'+SIM[k]+'.svg" alt="">'}
   var SET=[['gui',"User's Guide, Health and Safety, and Other Information"],['acs','Accessibility'],['net','Network'],['usr','Users and Accounts'],['fam','Family and Parental Controls'],['sys','System'],['sto','Storage'],['snd','Sound'],['scr','Screen and Video'],['acc','Accessories'],['sav','Saved Data and Game/App Settings'],['not','Notifications'],['cap','Captures and Broadcasts']];
   var si=2,sTop=0;
   function drawSet(){var h='<h2>Settings</h2>';var vis=SET.slice(sTop,sTop+9);
