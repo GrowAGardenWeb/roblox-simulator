@@ -28,8 +28,7 @@
   @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   @keyframes fi{from{opacity:0}to{opacity:1}}
   @keyframes pop{from{opacity:0;transform:scale(.9) translateY(14px)}to{opacity:1;transform:none}}
-  .set.on .row,.set.on h2{animation:fi .45s ease both}
-  .set.on .row:nth-child(n){animation-delay:calc(var(--n,0)*18ms)}
+  .set.on:not(.stay) .row,.set.on:not(.stay) h2{animation:fi .45s ease both}
   .cc.on img{animation:fi .5s ease both}
   .tile{position:relative;flex:none;width:88px;height:88px;border-radius:10px;margin-top:6px;overflow:visible;background:#1c2130;transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .3s,box-shadow .3s;background-size:cover;background-position:center;cursor:pointer;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.05;letter-spacing:.3px;padding:4px}
   .tile.sel{width:146px;height:146px;margin-top:0;border-radius:18px;box-shadow:0 0 0 4px #fff,0 0 0 8px rgba(255,255,255,.18)}
@@ -61,7 +60,12 @@
   .set h2{position:absolute;left:80px;top:62px;font-size:38px;font-weight:300}
   .row{position:absolute;left:0;right:0;height:80px;display:flex;align-items:center;font-size:28px;font-weight:300;cursor:pointer}
   .row img{width:46px;height:46px;margin:0 22px 0 -6px;flex:none}
-  .row.sel{outline:2px solid #cfd6e4;outline-offset:-1px;background:rgba(255,255,255,.07)}
+  .hl{position:absolute;box-shadow:inset 0 0 0 2px #cfd6e4;background:rgba(255,255,255,.07);pointer-events:none}
+  .hs{position:absolute;height:3px;border-radius:2px;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(255,255,255,.85),rgba(255,255,255,.35) 60%,rgba(255,255,255,0));filter:blur(.6px);transform-origin:0 50%}
+  .hl.mv{animation:hlin .42s linear both}
+  .hs.mv{animation:sweep .42s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes hlin{0%,55%{opacity:0}100%{opacity:1}}
+  @keyframes sweep{0%{opacity:0;transform:scaleX(.15)}25%{opacity:1;transform:scaleX(1)}75%{opacity:.6}100%{opacity:0;transform:scaleX(1)}}
   .hr{position:absolute;height:1px;background:rgba(255,255,255,.12)}
   /* control center */
   .cc{position:absolute;left:0;right:0;bottom:0;top:0;background:#000;display:none}
@@ -157,13 +161,15 @@
   function ico(k){return '<img src="assets/svg/si_'+SIM[k]+'.svg" alt="">'}
   var SET=[['gui',"User's Guide, Health and Safety, and Other Information"],['acs','Accessibility'],['net','Network'],['usr','Users and Accounts'],['fam','Family and Parental Controls'],['sys','System'],['sto','Storage'],['snd','Sound'],['scr','Screen and Video'],['acc','Accessories'],['sav','Saved Data and Game/App Settings'],['not','Notifications'],['cap','Captures and Broadcasts']];
   var si=2,sTop=0;
-  function drawSet(){var h='<h2>Settings</h2>';var vis=SET.slice(sTop,sTop+9);
-    vis.forEach(function(r,i){var y=170+i*80,on=sTop+i===si;h+='<div class="row'+(on?' sel':'')+'" data-i="'+(sTop+i)+'" style="top:'+y+'px;left:420px;right:80px;padding-left:20px">'+ico(r[0])+r[1]+'</div>'+(i?'<div class="hr" style="top:'+y+'px;left:500px;right:90px"></div>':'')});
-    $('st1').innerHTML=h;$('st1').querySelectorAll('.row').forEach(function(e){e.onclick=function(){si=+e.dataset.i;if(SET[si][1]==='Screen and Video'){go('st2')}else{SFX.move();drawSet()}}})}
+  function drawSet(anim){var h='<h2>Settings</h2>';var vis=SET.slice(sTop,sTop+9),hy=170+(si-sTop)*80;
+    vis.forEach(function(r,i){var y=170+i*80;h+='<div class="row" data-i="'+(sTop+i)+'" style="top:'+y+'px;left:420px;right:80px;padding-left:20px">'+ico(r[0])+r[1]+'</div>'+(i?'<div class="hr" style="top:'+y+'px;left:500px;right:90px"></div>':'')});
+    h+='<div class="hl'+(anim?' mv':'')+'" style="top:'+hy+'px;left:420px;right:80px;height:80px"></div><div class="hs'+(anim?' mv':'')+'" style="top:'+(hy+50)+'px;left:420px;right:150px"></div>';
+    $('st1').classList.toggle('stay',!!anim);$('st1').innerHTML=h;$('st1').querySelectorAll('.row').forEach(function(e){e.onclick=function(){si=+e.dataset.i;if(SET[si][1]==='Screen and Video'){go('st2')}else{SFX.move();drawSet(true)}}})}
   var VID=[['Video Output',[['Video Output Information',''],['Resolution','Automatic'],['4K Video Transfer Rate','Automatic'],['HDR','Off'],['Adjust HDR',''],['Deep Colour Output','Automatic'],['RGB Range','Automatic (Recommended)']]],['Screen',[['Adjust Display Area',''],['Dim Screen While Inactive',"Don't Dim"]]],['BD/DVD',[['BD/DVD Region Code','']]]],vi=0;
-  function drawVid(){var h='<h2>Screen and Video</h2>';VID.forEach(function(v,i){var y=170+i*85;h+='<div class="row'+(i===vi?' sel':'')+'" data-v="'+i+'" style="top:'+y+'px;left:310px;width:326px;padding-left:24px;font-size:26px;height:84px">'+v[0]+'</div>'});
+  function drawVid(anim){var h='<h2>Screen and Video</h2>';VID.forEach(function(v,i){var y=170+i*85;h+='<div class="row" data-v="'+i+'" style="top:'+y+'px;left:310px;width:326px;padding-left:24px;font-size:26px;height:84px">'+v[0]+'</div>'});
     VID[vi][1].forEach(function(r,i){var y=150+i*81;h+='<div class="row" style="top:'+y+'px;left:724px;right:80px;font-size:26px;height:80px">'+r[0]+'<span style="margin-left:auto;font-size:20px;color:#9aa">'+r[1]+'</span></div><div class="hr" style="top:'+(y+80)+'px;left:724px;right:80px"></div>'});
-    $('st2').innerHTML=h;$('st2').querySelectorAll('[data-v]').forEach(function(e){e.onclick=function(){vi=+e.dataset.v;SFX.move();drawVid()}})}
+    h+='<div class="hl'+(anim?' mv':'')+'" style="top:'+(170+vi*85)+'px;left:310px;width:326px;height:84px"></div><div class="hs'+(anim?' mv':'')+'" style="top:'+(170+vi*85+42)+'px;left:310px;width:300px"></div>';
+    $('st2').classList.toggle('stay',!!anim);$('st2').innerHTML=h;$('st2').querySelectorAll('[data-v]').forEach(function(e){e.onclick=function(){vi=+e.dataset.v;SFX.move();drawVid(true)}})}
   function go(to){(to==='scr'?SFX.back:SFX.open)();var f=$('fade');f.classList.add('on');setTimeout(function(){['st1','st2','cc'].forEach(function(i){$(i).classList.remove('on')});if(to==='st1'){drawSet();$('st1').classList.add('on')}if(to==='st2'){drawVid();$('st2').classList.add('on')}if(to==='cc')$('cc').classList.add('on');cur=to;music(to==='cc'?'cc':(to==='scr'&&G[sel].k==='spider'?'spider':null));setTimeout(function(){f.classList.remove('on')},60)},330)}
   $('bGear').onclick=function(){go('st1')};
   /* control center */
