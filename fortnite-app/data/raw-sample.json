@@ -30,8 +30,8 @@
    "layout": {
     "id": "ConclusionC111426",
     "name": "One Piece ",
-    "index": 15,
-    "rank": 191,
+    "index": 35,
+    "rank": 187,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
     "displayType": "tileGrid"
@@ -421,8 +421,8 @@
    "layout": {
     "id": "JT111326",
     "name": "Jam Tracks",
-    "index": 29,
-    "rank": 182,
+    "index": 28,
+    "rank": 180,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
     "displayType": "tileGrid"
@@ -526,8 +526,8 @@
    "layout": {
     "id": "SummerBatmanGCS",
     "name": "Gotham City Summer",
-    "index": 22,
-    "rank": 189,
+    "index": 31,
+    "rank": 188,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
     "displayType": "tileGrid"
