@@ -103,9 +103,17 @@
   .pmore{width:46px;height:46px;border-radius:50%;background:#2c2a48;text-align:center;line-height:46px;font-size:26px}
   .p-sim{position:absolute;left:0;right:0;top:0;height:30px;background:#ff9f0a;color:#111;font-size:15px;font-weight:700;text-align:center;line-height:30px;letter-spacing:.8px;z-index:3}
   .s-back{position:absolute;left:44px;bottom:26px;font-size:22px;color:#e8e0f4;cursor:pointer;z-index:4;text-shadow:0 1px 6px #000}
-  .boot{position:absolute;inset:0;background:#000;z-index:20;cursor:pointer}.boot.gone{display:none}.boot video{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;transition:opacity .3s}.boot.run video{opacity:1}
+  .boot{position:absolute;inset:0;background:#000;z-index:20;cursor:pointer}.boot.gone{display:none}.boot video{position:absolute;left:0;top:0;width:100%;height:100%;opacity:1}
   .bt{position:absolute;left:0;right:0;top:50%;text-align:center;font-size:26px;letter-spacing:.5px;color:#cfd6e4;animation:bl 1.6s ease-in-out infinite}.boot.run .bt{display:none}
   @keyframes bl{0%,100%{opacity:.35}50%{opacity:1}}
+  /* entrance animation of the home screen after the boot clip */
+  .scr.pre .tabs,.scr.pre .tr,.scr.pre .rail,.scr.pre .hero,.scr.pre .btns,.scr.pre .trophy,.scr.pre .card{opacity:0}
+  .scr.intro .tabs,.scr.intro .tr{animation:dn .7s cubic-bezier(.2,.8,.2,1) both}
+  .scr.intro .tile{animation:tin .6s cubic-bezier(.2,.9,.3,1) both}
+  .scr.intro .tile:nth-child(1){animation-delay:.05s}.scr.intro .tile:nth-child(2){animation-delay:.11s}.scr.intro .tile:nth-child(3){animation-delay:.17s}.scr.intro .tile:nth-child(4){animation-delay:.23s}.scr.intro .tile:nth-child(5){animation-delay:.29s}.scr.intro .tile:nth-child(6){animation-delay:.35s}.scr.intro .tile:nth-child(7){animation-delay:.41s}.scr.intro .tile:nth-child(8){animation-delay:.47s}.scr.intro .tile:nth-child(9){animation-delay:.53s}.scr.intro .tile:nth-child(10){animation-delay:.59s}.scr.intro .tile:nth-child(11){animation-delay:.65s}
+  .scr.intro .hero,.scr.intro .btns,.scr.intro .trophy{animation:up .8s .5s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes dn{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
+  @keyframes tin{from{opacity:0;transform:translateX(70px) scale(.85)}to{opacity:1;transform:none}}
   .launch{position:absolute;inset:0;background:#000;overflow:hidden;display:none;z-index:6}
   .launch.on{display:block}
   .launch video{position:absolute;left:-172px;top:0;width:1919px;height:885px;background:#000}
@@ -171,7 +179,7 @@
     </div>
     <div class="s-back" id="sBack">&#9711; Back</div>
   </div>
-  <div class="boot" id="boot"><video id="bv" src="assets/boot.mp4" playsinline webkit-playsinline preload="auto"></video><div class="bt" id="bt">Tap to start</div></div>
+  <div class="boot" id="boot"><video id="bv" src="assets/boot.mp4" playsinline webkit-playsinline preload="auto"></video></div>
   <div class="launch" id="launch"><video id="gv" src="assets/gta_launch.mp4" playsinline webkit-playsinline preload="auto"></video></div>
   <div class="fade" id="fade"></div>
 </div></div>
@@ -188,7 +196,7 @@
     {k:'gta',plat:'PS5',ic:'ic_gta.png',large:'ic_gta_l.png',n:'Grand Theft Auto VI',logo:'gta_logo.png',t:'GTA',d:'Experience the biggest, most immersive evolution of the Grand Theft Auto series.',bg:'bg_gta.jpg',play:'Play Game',tr:null},
     {k:'astro',plat:'PS5',ic:'ic_astro2.png',large:'ic_astro_l2.png',n:"ASTRO's PLAYROOM",logo:'astro_logo.png',logow:470,t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro_hd.jpg',cardimg:'card_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
     {k:'destiny',ic:'ic_destiny2.png',large:'ic_destiny_l2.png',n:'Destiny 2 | PS4',t:'DESTINY 2',d:'',bg:'bg_destiny_hd.jpg',spaced:true,col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
-    {k:'spider',plat:'PS5',ic:'ic_spider.png',large:'ic_spider_l.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'full_spider.jpg',baked:true,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
+    {k:'spider',plat:'PS5',ic:'ic_spider2.png',large:'ic_spider_l2.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'bg_spider_hd.jpg',logo:'spider_logo.png',logow:430,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
     {k:'rl',ic:'ic_rl.png',n:'Rocket League',col:'linear-gradient(135deg,#f2f2f2,#2d63d8)',lab:'ROCKET\nLEAGUE',bg:'clean_destiny.jpg',t:'ROCKET\nLEAGUE',d:'',tr:['34%','12/38']},
     {k:'wf',ic:'ic_wf.png',n:'Warframe',col:'linear-gradient(135deg,#8e9aa3,#3a444c)',lab:'WARFRAME',bg:'clean_destiny.jpg',t:'WARFRAME',d:'',tr:null},
     {k:'cod',ic:'ic_cod.png',n:'Call of Duty: Modern Warfare',col:'linear-gradient(135deg,#5a5a52,#1b1b18)',lab:'MODERN\nWARFARE',bg:'clean_spider.jpg',t:'MODERN\nWARFARE',d:'',tr:null},
@@ -255,12 +263,18 @@
   $('stGta').onclick=function(){focusT(0);stShow(1)};$('edS').onclick=function(){setEd('s');stShow(2)};$('edU').onclick=function(){setEd('u');stShow(2)};$('pConf').onclick=function(){SFX.ok()};
   $('sBack').onclick=function(){stShow(stCur-1)};
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&cur==='store')stShow(stCur-1)});
-  /* startup: tap to power on, plays the console boot clip with its sound, then fades into the home screen */
-  (function(){var bo=$('boot'),bv=$('bv'),done=false;
+  /* startup: the boot clip starts by itself (with sound if the browser allows it), then the home screen animates in */
+  (function(){var bo=$('boot'),bv=$('bv'),done=false,scr=$('scr');
     try{if(sessionStorage.getItem('ps5boot')){bo.classList.add('gone');return}}catch(e){}
-    function fin(){if(done)return;done=true;try{sessionStorage.setItem('ps5boot','1')}catch(e){}bo.style.transition='opacity .5s';bo.style.opacity='0';setTimeout(function(){bo.classList.add('gone')},520)}
-    bo.addEventListener('click',function(){if(bo.classList.contains('run')){fin();return}bo.classList.add('run');bv.currentTime=0;bv.muted=false;var p=bv.play();if(p&&p.catch)p.catch(function(){bv.muted=true;bv.play()})});
-    bv.addEventListener('ended',fin);bv.addEventListener('error',fin);
+    scr.classList.add('pre');
+    function fin(){if(done)return;done=true;try{sessionStorage.setItem('ps5boot','1')}catch(e){}
+      scr.classList.remove('pre');scr.classList.add('intro');bo.style.transition='opacity .7s';bo.style.opacity='0';
+      setTimeout(function(){bo.classList.add('gone');scr.classList.remove('intro')},2200)}
+    bv.muted=false;bv.volume=1;
+    var p=bv.play();if(p&&p.catch)p.catch(function(){bv.muted=true;var p2=bv.play();if(p2&&p2.catch)p2.catch(fin)});
+    /* if sound was blocked, the first touch turns it on */
+    document.addEventListener('pointerdown',function(){if(!done&&bv.muted){bv.muted=false}},{once:true});
+    bv.addEventListener('ended',fin);bv.addEventListener('error',fin);setTimeout(fin,6000);
   })();
   /* clock */
   function clk(){var d=new Date();$('clock').textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}clk();setInterval(clk,15000);
