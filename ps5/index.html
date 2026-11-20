@@ -204,14 +204,7 @@
     {k:'gta',plat:'PS5',ic:'ic_gta.png',large:'ic_gta_l.png',n:'Grand Theft Auto VI',logo:'gta_logo.png',t:'GTA',d:'Experience the biggest, most immersive evolution of the Grand Theft Auto series.',bg:'bg_gta.jpg',play:'Play Game',tr:null},
     {k:'astro',plat:'PS5',ic:'ic_astro2.png',large:'ic_astro_l2.png',n:"ASTRO's PLAYROOM",logo:'astro_logo.png',logow:470,t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro_hd.jpg',cardimg:'card_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
     {k:'destiny',ic:'ic_destiny2.png',large:'ic_destiny_l2.png',n:'Destiny 2 | PS4',t:'DESTINY 2',d:'',bg:'bg_destiny_hd.jpg',spaced:true,col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
-    {k:'spider',plat:'PS5',ic:'ic_spider2.png',large:'ic_spider_l2.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'bg_spider_hd.jpg',logo:'spider_logo.png',logow:430,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
-    {k:'rl',ic:'ic_rl.png',n:'Rocket League',col:'linear-gradient(135deg,#f2f2f2,#2d63d8)',lab:'ROCKET\nLEAGUE',bg:'clean_destiny.jpg',t:'ROCKET\nLEAGUE',d:'',tr:['34%','12/38']},
-    {k:'wf',ic:'ic_wf.png',n:'Warframe',col:'linear-gradient(135deg,#8e9aa3,#3a444c)',lab:'WARFRAME',bg:'clean_destiny.jpg',t:'WARFRAME',d:'',tr:null},
-    {k:'cod',ic:'ic_cod.png',n:'Call of Duty: Modern Warfare',col:'linear-gradient(135deg,#5a5a52,#1b1b18)',lab:'MODERN\nWARFARE',bg:'clean_spider.jpg',t:'MODERN\nWARFARE',d:'',tr:null},
-    {k:'apex',ic:'ic_apex.png',n:'Apex Legends',col:'linear-gradient(135deg,#59b8c8,#e59f8c)',lab:'APEX',bg:'clean_spider.jpg',t:'APEX\nLEGENDS',d:'',tr:null},
-    {k:'plus',ic:'ic_plus.png',n:'PlayStation Plus',col:'#171c28',lab:'✚',gold:true},
-    {k:'psnow',ic:'ic_psnow.png',n:'PlayStation Now',col:'#171c28',lab:'▶',blue:true},
-    {k:'lib',ic:'ic_lib.png',n:'Game Library',col:'#1c2130',lab:'☷'}
+    {k:'spider',plat:'PS5',ic:'ic_spider2.png',large:'ic_spider_l2.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'bg_spider_hd.jpg',logo:'spider_logo.png',logow:430,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null}
   ];
   var cur='scr';var sel=1,bgEl={},first=true;
   G.forEach(function(g){if(g.bg&&!bgEl[g.bg]){var d=document.createElement('div');d.className='bg';d.style.backgroundImage='url(assets/'+g.bg+')';$('bgs').appendChild(d);bgEl[g.bg]=d}});
@@ -227,12 +220,12 @@
     game:function(){var c=ctx();if(!c)return;tone(210,130,.22,.2,'sine');tone(420,260,.16,.09,'triangle');tone(105,70,.26,.14,'sine');setTimeout(function(){tone(640,420,.1,.04,'triangle')},18)},
     open:function(){tone(520,780,.18,.06,'triangle');setTimeout(function(){tone(780,1040,.2,.05,'triangle')},70)},
     back:function(){tone(820,460,.16,.05,'triangle')},
-    ok:function(){tone(900,1350,.09,.06)}
+    ok:function(){}
   };
   document.addEventListener('pointerdown',function(){ctx()},{once:true});
   /* ---- rail: tiles are built once so size changes animate smoothly ---- */
   var tiles=[];
-  (function(){var r=$('rail');G.forEach(function(g,i){var t=document.createElement('div');t.className='tile';t.style.backgroundImage='url(assets/'+g.ic+')';if(g.large){var l=new Image();l.src='assets/'+g.large}var n=document.createElement('div');n.className='gname';n.innerHTML=(G[i].plat?'<i>'+G[i].plat+'</i>':'')+'<span></span>';n.querySelector('span').textContent=g.n||'';t.appendChild(n);t.onclick=function(){if(i!==sel){sel=i;SFX.game();draw()}else if(g.k==='store')enterStore();else SFX.ok()};r.appendChild(t);tiles.push(t)})})();
+  (function(){var r=$('rail');G.forEach(function(g,i){var t=document.createElement('div');t.className='tile';t.style.backgroundImage='url(assets/'+g.ic+')';if(g.large){var l=new Image();l.src='assets/'+g.large}var n=document.createElement('div');n.className='gname';n.innerHTML=(G[i].plat?'<i>'+G[i].plat+'</i>':'')+'<span></span>';n.querySelector('span').textContent=g.n||'';t.appendChild(n);t.onclick=function(){if(i!==sel){sel=i;SFX.game();draw()}else SFX.ok()};r.appendChild(t);tiles.push(t)})})();
   function draw(){
     var g=G[sel];
     tiles.forEach(function(t,i){var on=i===sel;t.classList.toggle('sel',on);t.style.backgroundImage='url(assets/'+(on&&G[i].large?G[i].large:G[i].ic)+')'});
@@ -252,7 +245,7 @@
   function stepG(d){var n=Math.max(0,Math.min(G.length-1,sel+d));if(n!==sel){sel=n;SFX.game();draw()}}
   window.addEventListener('keydown',function(e){var k=e.key,c=e.keyCode;if(cur==='scr'){if(k==='ArrowRight'||c===39){stepG(1);e.preventDefault()}if(k==='ArrowLeft'||c===37){stepG(-1);e.preventDefault()}if((e.key==='Enter'||e.key==='ArrowDown'||c===40)&&G[sel].k==='store')enterStore()}});
 
-  var sx=null,sy=0;$('scr').addEventListener('pointerdown',function(e){sx=e.clientX;sy=e.clientY});$('scr').addEventListener('pointerup',function(e){if(sx===null||cur!=='scr')return;var dy=e.clientY-sy;var d=e.clientX-sx;sx=null;if(dy<-80&&Math.abs(d)<60&&G[sel].k==='store'){enterStore();return}if(Math.abs(d)>70){var n=Math.max(0,Math.min(G.length-1,sel+(d<0?1:-1)));if(n!==sel){sel=n;SFX.game();draw()}}});
+  var sx=null,sy=0;$('scr').addEventListener('pointerdown',function(e){sx=e.clientX;sy=e.clientY});$('scr').addEventListener('pointerup',function(e){if(sx===null)return;if(cur==='store'&&stCur===0&&e.clientY-sy>80&&Math.abs(e.clientX-sx)<60){sx=null;exitToPeek();return}if(cur!=='scr')return;var dy=e.clientY-sy;var d=e.clientX-sx;sx=null;if(dy<-80&&Math.abs(d)<60&&G[sel].k==='store'){enterStore();return}if(Math.abs(d)>70){var n=Math.max(0,Math.min(G.length-1,sel+(d<0?1:-1)));if(n!==sel){sel=n;SFX.game();draw()}}});
   /* Play Game on GTA VI starts the launch sequence recorded from the console */
   var gv=$('gv'),lch=$('launch'),launching=false;
   function endLaunch(){if(!launching)return;launching=false;var f=$('fade');f.classList.add('on');setTimeout(function(){gv.pause();lch.classList.remove('on');cur='scr';music(G[sel].k==='spider'?'spider':null);setTimeout(function(){f.classList.remove('on')},60)},350)}
@@ -267,18 +260,22 @@
   var stEl=$('store'),svs=['sv1','sv2','sv3'],stCur=-1;
   var scrEl=$('scr');
   function peekStore(on){if(on){svs.forEach(function(v,k){$(v).classList.toggle('on',k===0)});stEl.classList.add('on','peek');stEl.classList.remove('full');scrEl.classList.remove('storefull')}else if(stEl.classList.contains('peek')){stEl.classList.remove('on','peek')}}
-  function enterStore(){if(!stEl.classList.contains('peek'))return;stEl.classList.remove('peek');stEl.classList.add('full');scrEl.classList.add('storefull');cur='store';stCur=0;SFX.open()}
+  function enterStore(){if(!stEl.classList.contains('peek'))return;stEl.classList.remove('peek');stEl.classList.add('full');scrEl.classList.add('storefull');cur='store';stCur=0}
+  function exitToPeek(){if(!(cur==='store'&&stCur===0&&stEl.classList.contains('full')))return;stEl.classList.remove('full');stEl.classList.add('peek');scrEl.classList.remove('storefull');cur='scr'}
+  var wlock=0;
+  window.addEventListener('wheel',function(e){var n=Date.now();if(n<wlock)return;if(Math.abs(e.deltaY)<8||Math.abs(e.deltaY)<Math.abs(e.deltaX))return;
+    if(e.deltaY>0&&cur==='scr'&&G[sel].k==='store'){wlock=n+500;enterStore()}else if(e.deltaY<0&&cur==='store'&&stCur===0){wlock=n+500;exitToPeek()}},{passive:true});
   function stShow(i){var f=$('fade');f.classList.add('on');setTimeout(function(){svs.forEach(function(v,k){$(v).classList.toggle('on',k===Math.max(i,0)&&(i>=0||G[sel].k==='store'))});
     if(i<0){cur='scr';if(G[sel].k==='store')peekStore(true);else{stEl.classList.remove('on','full','peek');scrEl.classList.remove('storefull')}}
     else{stEl.classList.add('on');stEl.classList.remove('peek');stEl.classList.add('full');scrEl.classList.add('storefull');cur='store'}
     stCur=i;setTimeout(function(){f.classList.remove('on')},60)},330);(i<0?SFX.back:SFX.open)()}
-  stEl.addEventListener('click',function(e){if(stEl.classList.contains('peek')){e.stopPropagation();enterStore()}},true);
+  stEl.addEventListener('click',function(e){if(stEl.classList.contains('peek')){e.stopPropagation();e.preventDefault()}},true);
   var mt=[$('stGta')].concat([].slice.call(document.querySelectorAll('.tl2')));
   function focusT(i){mt.forEach(function(e,k){e.classList.toggle('sel',k===0&&i===0);e.classList.toggle('sel2',k===i&&i>0)})}
   mt.forEach(function(e,i){e.addEventListener('click',function(ev){if(i===0)return;ev.stopPropagation();focusT(i);SFX.move()})});
-  $('stGta').onclick=function(){if(stEl.classList.contains('peek')){enterStore();return}focusT(0);stShow(1)};$('edS').onclick=function(){setEd('s');stShow(2)};$('edU').onclick=function(){setEd('u');stShow(2)};$('pConf').onclick=function(){SFX.ok()};
+  $('stGta').onclick=function(){if(stEl.classList.contains('peek'))return;focusT(0);stShow(1)};$('edS').onclick=function(){setEd('s');stShow(2)};$('edU').onclick=function(){setEd('u');stShow(2)};$('pConf').onclick=function(){SFX.ok()};
   $('sBack').onclick=function(){stShow(stCur-1)};
-  document.addEventListener('keydown',function(e){if(cur!=='store')return;if(e.key==='Escape'||((e.key==='ArrowUp')&&stCur===0))stShow(stCur-1)});
+  document.addEventListener('keydown',function(e){if(cur!=='store')return;if(e.key==='ArrowUp'&&stCur===0){exitToPeek();return}if(e.key==='Escape')stShow(stCur-1)});
   /* startup: the boot clip starts by itself (with sound if the browser allows it), then the home screen animates in */
   (function(){var bo=$('boot'),bv=$('bv'),done=false,scr=$('scr');
     scr.classList.add('pre');
