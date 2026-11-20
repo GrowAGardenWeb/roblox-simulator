@@ -11,7 +11,8 @@
   #wrap{position:fixed;left:50%;top:50%;width:1574px;height:886px;transform-origin:0 0}
   .scr{position:absolute;inset:0;overflow:hidden;background:#05070d}
   .bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .5s}.bg.on{opacity:1}
-  .scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,0) 55%)}
+  .scrim{position:absolute;inset:0;background:radial-gradient(ellipse 100% 95% at 0% 100%,rgba(0,0,0,1) 0%,rgba(0,0,0,.92) 30%,rgba(0,0,0,.55) 58%,rgba(0,0,0,0) 85%),linear-gradient(0deg,rgba(0,0,0,.75),rgba(0,0,0,0) 45%),linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,0) 55%)}
+  .bfade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 100% 90% at 0% 100%,rgba(0,0,0,1) 0%,rgba(0,0,0,.9) 30%,rgba(0,0,0,.5) 58%,rgba(0,0,0,0) 85%),linear-gradient(0deg,rgba(0,0,0,.7),rgba(0,0,0,0) 40%)}
   /* top bar */
   .tabs{position:absolute;left:76px;top:32px;font-size:28px;display:flex;gap:66px;color:#9aa}
   .tabs b{color:#fff;font-weight:500}
@@ -227,7 +228,7 @@
   <div class="set" id="st1"></div><div class="set" id="st2"></div>
   <div class="cc" id="cc"></div>
   <div class="store" id="store">
-    <div class="sv on" id="sv1"><img class="sfull" src="assets/sa1_hq.jpg" alt=""><div class="hdr">
+    <div class="sv on" id="sv1"><img class="sfull" src="assets/sa1_hq.jpg" alt=""><div class="bfade"></div><div class="hdr">
       <div class="a ico"><img src="assets/ic_store2.png" alt=""></div><div class="a" style="left:154px;top:62px;font-size:29px">PlayStation Store</div>
       <div class="a tabf" style="left:130px;top:116px;width:200px;height:68px"></div>
       <div class="a tb" style="left:158px;top:134px;font-size:26px">Latest</div><div class="a tb" style="left:358px;top:136px;font-size:26px">Collections</div><div class="a tb" style="left:546px;top:138px;font-size:26px">Subscriptions</div><div class="a tb" style="left:760px;top:140px;font-size:26px;opacity:.8">Explore</div>
