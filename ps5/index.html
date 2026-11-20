@@ -222,13 +222,13 @@
   function music(){}
   /* menu sounds: scroll (moving through games / rows) and selection (choosing / confirming / opening) */
   var bufs={};
-  ['sfx_scroll','sfx_select'].forEach(function(n){try{fetch('assets/'+n+'.mp3').then(function(r){return r.arrayBuffer()}).then(function(b){var a=ctx();if(a)a.decodeAudioData(b,function(d){bufs[n]=d})}).catch(function(){})}catch(e){}});
+  ['sfx_scroll','sfx_select','sfx_back'].forEach(function(n){try{fetch('assets/'+n+'.mp3').then(function(r){return r.arrayBuffer()}).then(function(b){var a=ctx();if(a)a.decodeAudioData(b,function(d){bufs[n]=d})}).catch(function(){})}catch(e){}});
   function play(n,vol){var c=ctx();if(!c||!bufs[n])return;var src=c.createBufferSource(),g=c.createGain();src.buffer=bufs[n];g.gain.value=vol||1;src.connect(g);g.connect(c.destination);src.start()}
   var SFX={
     move:function(){play('sfx_scroll',1)},
     game:function(){play('sfx_scroll',1)},
     open:function(){play('sfx_select',1)},
-    back:function(){play('sfx_scroll',1)},
+    back:function(){play('sfx_back',1)},
     ok:function(){}
   };
   document.addEventListener('pointerdown',function(){ctx()},{once:true});
