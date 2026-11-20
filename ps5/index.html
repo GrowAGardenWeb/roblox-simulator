@@ -104,7 +104,8 @@
   .scr.storefull .rail .tile:not(:first-child){opacity:0}
   .scr.storefull .rail .tile:first-child{transform:translate(6px,-58px) scale(.4932);border-radius:14px;box-shadow:0 0 0 0 rgba(255,255,255,0),0 0 0 0 rgba(255,255,255,0)}
   .scr.storefull .rail .tile:first-child .gname{opacity:0}  .store.full .hdr>.a{animation:fi .45s .5s both}.store.full .hdr>.ico{animation:fi .01s .55s both}
-  .sv{position:absolute;inset:0;display:none}.sv.on{display:block;animation:fi .45s ease both}
+  .sv{position:absolute;inset:0;display:none}.sv.on{display:block}
+  .xin{animation:fi .45s ease both}.xout{animation:fo .45s ease both;pointer-events:none}@keyframes fo{from{opacity:1}to{opacity:0}}
   .store .a{position:absolute;white-space:nowrap;text-shadow:0 1px 6px rgba(20,8,40,.45)}
   .store .ico{left:50px;top:42px;width:72px;height:72px;border-radius:12px;background:#0f1218;overflow:hidden}.ico img{width:100%;height:100%}
   .tabf{border:2px solid #fff;box-sizing:border-box}.tb{font-size:29px}
@@ -128,7 +129,7 @@
   .pbtn{border-radius:29px;background:#fff;color:#222;text-align:center;line-height:58px;font-size:22px;text-shadow:none;box-shadow:0 0 0 3px rgba(255,255,255,.3)}
   .pmore{width:46px;height:46px;border-radius:50%;background:#2c2a48;text-align:center;line-height:46px;font-size:26px}
   .p-sim{position:absolute;left:0;right:0;top:0;height:30px;background:#ff9f0a;color:#111;font-size:15px;font-weight:700;text-align:center;line-height:30px;letter-spacing:.8px;z-index:3}
-  .s-back{position:absolute;left:44px;bottom:26px;font-size:22px;color:#e8e0f4;cursor:pointer;z-index:4;text-shadow:0 1px 6px #000}
+  .s-back{position:absolute;left:44px;bottom:26px;font-size:22px;color:#e8e0f4;cursor:pointer;z-index:9999;text-shadow:0 1px 6px #000}
   .boot{position:absolute;inset:0;background:#000;z-index:20;cursor:pointer}.boot.gone{display:none}.boot video{position:absolute;left:0;top:0;width:100%;height:100%;opacity:1}
   .bt{position:absolute;left:0;right:0;top:50%;text-align:center;font-size:26px;letter-spacing:.5px;color:#cfd6e4;animation:bl 1.6s ease-in-out infinite}.boot.run .bt{display:none}
   @keyframes bl{0%,100%{opacity:.35}50%{opacity:1}}
@@ -286,10 +287,13 @@
   var wlock=0;
   window.addEventListener('wheel',function(e){var n=Date.now();if(n<wlock)return;if(Math.abs(e.deltaY)<8||Math.abs(e.deltaY)<Math.abs(e.deltaX))return;
     if(e.deltaY>0&&cur==='scr'&&G[sel].k==='store'){wlock=n+500;enterStore()}else if(e.deltaY<0&&cur==='store'&&stCur===0){wlock=n+500;exitToPeek()}},{passive:true});
-  function stShow(i){var f=$('fade');f.classList.add('on');setTimeout(function(){if(i===1){$('edU').classList.remove('sel');$('edS').classList.remove('sel')}svs.forEach(function(v,k){$(v).classList.toggle('on',k===Math.max(i,0)&&(i>=0||G[sel].k==='store'))});
-    if(i<0){cur='scr';if(G[sel].k==='store')peekStore(true);else{stEl.classList.remove('on','full','peek');scrEl.classList.remove('storefull')}}
-    else{stEl.classList.add('on');stEl.classList.remove('peek');stEl.classList.add('full');scrEl.classList.add('storefull');cur='store'}
-    stCur=i;setTimeout(function(){f.classList.remove('on')},60)},330);(i<0?SFX.back:SFX.open)()}
+  var zs=10;
+  function svXshow(e){clearTimeout(e._t);e.classList.remove('xout');e.style.zIndex=++zs;e.classList.add('on','xin');clearTimeout(e._u);e._u=setTimeout(function(){e.classList.remove('xin')},480)}
+  function stShow(i){
+    if(i<0){exitToPeek();SFX.back();return}
+    if(i===1){$('edU').classList.remove('sel');$('edS').classList.remove('sel')}
+    svs.forEach(function(v,k){var e=$(v);if(k===i)svXshow(e);else if(e.classList.contains('on')){e.classList.add('xout');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on','xout')},480)}});
+    stEl.classList.add('on');stEl.classList.remove('peek');stEl.classList.add('full');scrEl.classList.add('storefull');cur='store';stCur=i;SFX.open()}
   stEl.addEventListener('click',function(e){if(stEl.classList.contains('peek')){e.stopPropagation();e.preventDefault()}},true);
   var mt=[$('stGta')].concat([].slice.call(document.querySelectorAll('.tl2')));
   function focusT(i){mt.forEach(function(e,k){e.classList.toggle('sel',k===0&&i===0);e.classList.toggle('sel2',k===i&&i>0)})}
@@ -327,7 +331,13 @@
     VID[vi][1].forEach(function(r,i){var y=150+i*81;h+='<div class="row" style="top:'+y+'px;left:724px;right:80px;font-size:26px;height:80px">'+r[0]+'<span style="margin-left:auto;font-size:20px;color:#9aa">'+r[1]+'</span></div><div class="hr" style="top:'+(y+80)+'px;left:724px;right:80px"></div>'});
     h+='<div class="hl'+(anim?' mv':'')+'" style="top:'+(170+vi*85)+'px;left:310px;width:326px;height:84px"></div><div class="hs'+(anim?' mv':'')+'" style="top:'+(170+vi*85+42)+'px;left:310px;width:300px"></div>';
     $('st2').classList.toggle('stay',!!anim);$('st2').innerHTML=h;$('st2').querySelectorAll('[data-v]').forEach(function(e){e.onclick=function(){vi=+e.dataset.v;SFX.move();drawVid(true)}})}
-  function go(to){(to==='scr'?SFX.back:SFX.open)();var f=$('fade');f.classList.add('on');setTimeout(function(){['st1','st2','cc'].forEach(function(i){$(i).classList.remove('on')});if(to==='st1'){drawSet();$('st1').classList.add('on')}if(to==='st2'){drawVid();$('st2').classList.add('on')}if(to==='cc')$('cc').classList.add('on');cur=to;music(to==='cc'?'cc':(to==='scr'&&G[sel].k==='spider'?'spider':null));setTimeout(function(){f.classList.remove('on')},60)},330)}
+  var zc=30;
+  function xshow(e){clearTimeout(e._t);e.classList.remove('xout');e.style.zIndex=++zc;e.classList.add('on','xin');clearTimeout(e._u);e._u=setTimeout(function(){e.classList.remove('xin')},480)}
+  function xhide(e){if(!e.classList.contains('on'))return;e.classList.add('xout');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on','xout')},480)}
+  function go(to){(to==='scr'?SFX.back:SFX.open)();var newEl=to==='st1'?$('st1'):to==='st2'?$('st2'):to==='cc'?$('cc'):null;
+    ['st1','st2','cc'].forEach(function(i){var e=$(i);if(e!==newEl)xhide(e)});
+    if(newEl){if(to==='st1')drawSet();if(to==='st2')drawVid();xshow(newEl)}
+    cur=to;music(to==='cc'?'cc':(to==='scr'&&G[sel].k==='spider'?'spider':null))}
   $('bGear').onclick=function(){go('st1')};
   /* control center */
   $('cc').innerHTML='<img src="assets/cc_frame.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%">';
