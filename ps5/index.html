@@ -458,7 +458,8 @@
   function closeGift(){xhide(gEl);cur=gPrev}
   var gBusy=false;
   $('gConf').onclick=function(){if(gBusy)return;gBusy=true;SFX.open();$('gproc').classList.add('on');
-    setTimeout(function(){$('gproc').classList.remove('on');$('gpTxt').textContent=$('gTitle').textContent+' was gifted to '+gPlayer+'.';$('gpop').classList.add('on');SFX.open();gBusy=false},2200+Math.random()*1200)};
+    setTimeout(function(){$('gproc').classList.remove('on');$('gpTxt').textContent=$('gTitle').textContent+' was gifted to '+gPlayer+'.';$('gBackStore').classList.add('foc');$('gClose').classList.remove('foc');$('gpop').classList.add('on');SFX.open();gBusy=false},2200+Math.random()*1200)};
+  [$('gBackStore'),$('gClose')].forEach(function(b){function f(){[$('gBackStore'),$('gClose')].forEach(function(o){o.classList.toggle('foc',o===b)})}b.addEventListener('mouseenter',function(){if(!b.classList.contains('foc'))SFX.move();f()});b.addEventListener('touchstart',f,{passive:true})});
   $('gClose').onclick=function(){SFX.back();$('gpop').classList.remove('on')};
   $('gBackStore').onclick=function(){SFX.open();$('gpop').classList.remove('on');var from=gPrev;closeGift();
     if(from==='store'){stShow(0)}else{sel=0;draw();setTimeout(enterStore,50)}};
