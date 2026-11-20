@@ -99,7 +99,10 @@
   .scr.storefull .rail .tile:first-child::before{opacity:0}
   /* white hover / focus for buttons: turns solid white with the rotating ring */
   .play,.dots{position:relative}
-  .play,.dots,.pbtn,.pmore{transition:background .2s,color .2s}
+  .play,.dots,.pbtn,.pmore{transition:background .2s,color .2s,transform .22s cubic-bezier(.22,.9,.3,1)}
+  .play:hover,.play.foc,.dots:hover,.dots.foc,.pbtn:hover,.pbtn.foc,.pmore:hover,.pmore.foc{transform:scale(1.07)}
+  .play:active,.dots:active,.pbtn:active,.pmore:active{transform:scale(.95)}
+  .play,.dots{transform-origin:center}
   .play:hover,.play.foc,.dots:hover,.dots.foc,.pbtn:hover,.pbtn.foc,.pmore:hover,.pmore.foc{background:#fff!important;color:#25262e!important;text-shadow:none}
   .play:hover::before,.play.foc::before,.dots:hover::before,.dots.foc::before,.pbtn:hover::before,.pbtn.foc::before,.pmore:hover::before,.pmore.foc::before{content:"";position:absolute;inset:-5px;padding:3px;border-radius:999px;pointer-events:none;z-index:6;
     background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);
