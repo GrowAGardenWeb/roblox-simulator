@@ -100,11 +100,17 @@
   /* white hover / focus for buttons: turns solid white with the rotating ring */
   .play,.dots{position:relative}
   .play,.dots,.pbtn,.pmore{transition:background .2s,color .2s,transform .22s cubic-bezier(.22,.9,.3,1)}
-  .play:hover,.play.foc,.dots:hover,.dots.foc,.pbtn:hover,.pbtn.foc,.pmore:hover,.pmore.foc{transform:scale(1.07)}
+  .play.foc,.dots.foc,.pbtn.foc,.pmore.foc{transform:scale(1.07)}
   .play:active,.dots:active,.pbtn:active,.pmore:active{transform:scale(.95)}
+  @media (hover:hover) and (pointer:fine){
+    .play:hover,.dots:hover,.pbtn:hover,.pmore:hover{transform:scale(1.07);background:#fff!important;color:#25262e!important;text-shadow:none}
+    .play:hover::before,.dots:hover::before,.pbtn:hover::before,.pmore:hover::before{content:"";position:absolute;inset:-5px;padding:3px;border-radius:999px;pointer-events:none;z-index:6;background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}
+  }
   .play,.dots{transform-origin:center}
-  .play:hover,.play.foc,.dots:hover,.dots.foc,.pbtn:hover,.pbtn.foc,.pmore:hover,.pmore.foc{background:#fff!important;color:#25262e!important;text-shadow:none}
-  .play:hover::before,.play.foc::before,.dots:hover::before,.dots.foc::before,.pbtn:hover::before,.pbtn.foc::before,.pmore:hover::before,.pmore.foc::before{content:"";position:absolute;inset:-5px;padding:3px;border-radius:999px;pointer-events:none;z-index:6;
+  .btns:has(.foc) .play:not(.foc):hover,.btns:has(.foc) .dots:not(.foc):hover{transform:none;background:rgba(40,52,78,.6)!important;color:#fff!important}
+  .btns:has(.foc) .play:not(.foc):hover::before,.btns:has(.foc) .dots:not(.foc):hover::before{display:none}
+  .play.foc,.dots.foc,.pbtn.foc,.pmore.foc{background:#fff!important;color:#25262e!important;text-shadow:none}
+  .play.foc::before,.dots.foc::before,.pbtn.foc::before,.pmore.foc::before{content:"";position:absolute;inset:-5px;padding:3px;border-radius:999px;pointer-events:none;z-index:6;
     background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);
     -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}
   .pmenu{position:absolute;z-index:14;width:380px;display:none;background:rgba(28,32,46,.95);box-shadow:0 12px 36px rgba(0,0,0,.45);font-size:21px}
@@ -202,7 +208,7 @@
       <div class="a" style="left:1150px;top:424px;font-size:20px;color:#d8d0ee">Sort by: <span style="color:#bfb6e4">Default</span></div>
       <div class="a fil"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M6 3v14M3 14l3 4 3-4M12 6h9M12 11h7M12 16h5"/></svg></div>
       <div class="a hot ed" id="edU" style="left:160px;top:490px;width:240px;height:240px;overflow:hidden"><img src="assets/ed_ult.jpg" alt="" style="width:100%;height:100%"><span class="pr">US$99.99</span></div>
-      <div class="a hot ed" id="edS" style="left:420px;top:490px;width:240px;height:240px;background:#2a2058"><img src="assets/ic_gta_l3.png" alt="" style="width:100%;height:170px;object-fit:cover;display:block"><em>PS5</em><em class="b">Game bundle</em><p>Grand Theft Auto VI</p><span class="pr" style="bottom:8px">US$79.99</span></div>
+      <div class="a hot ed" id="edS" style="left:420px;top:490px;width:240px;height:240px;background:#2a2058"><img src="assets/ic_gta_l3.png" alt="" style="width:100%;height:170px;object-fit:cover;display:block"><p>Grand Theft Auto VI</p><span class="pr" style="bottom:8px">US$79.99</span></div>
     </div>
     <div class="sv" id="sv3"><img class="s3top" src="assets/sa3_hq.jpg" alt="">
       <div class="a pan"></div>
