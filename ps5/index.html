@@ -121,6 +121,42 @@
   .mi.sel::before{content:"";position:absolute;inset:0;padding:3px;pointer-events:none;
     background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);
     -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}
+  /* Gift: player search + simulated purchase */
+  .gift{position:absolute;inset:0;background:#0b0d14;display:none;z-index:13}.gift.on{display:block}
+  .gbg{position:absolute;inset:0;background:radial-gradient(60% 45% at 18% 0,#5a4a3f 0,rgba(40,34,38,.8) 35%,#0b0d14 80%)}
+  .gtabs{position:absolute;left:120px;top:34px;display:flex;gap:56px;font-size:30px;color:#6d7282}.gtabs .on{color:#fff}
+  .gv{position:absolute;inset:0;display:none}.gv.on{display:block}
+  .gsearch{position:absolute;left:120px;top:96px;width:1180px;height:66px;background:rgba(255,255,255,.07);border-bottom:2px solid rgba(255,255,255,.25);display:flex;align-items:center;gap:18px;padding:0 24px;font-size:30px}
+  #gq{white-space:pre}.gcur{width:2px;height:36px;background:#fff;animation:bl 1s steps(2) infinite;margin-left:-14px}#gph{position:absolute;left:84px;color:#8a8f9d;font-style:normal}
+  .gsearch.has #gph{display:none}.gsearch.has .gcur{margin-left:0}
+  .gkb{position:absolute;left:120px;top:186px;width:780px;background:rgba(8,10,18,.92)}
+  .gkr{display:flex;height:66px;align-items:center}
+  .gk{position:relative;width:70.9px;height:62px;text-align:center;line-height:62px;font-size:30px;font-weight:300;cursor:pointer;flex:none}
+  .gk.sel{background:#2d303d;border-radius:4px}
+  .gk.sel::before{content:"";position:absolute;inset:0;padding:3px;border-radius:4px;pointer-events:none;background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}
+  .gkc{display:flex;height:60px;background:rgba(255,255,255,.06);margin-top:6px}
+  .gkc .gk{font-size:25px;font-weight:500;width:auto;flex:1;line-height:60px}.gkc .gk.wide{flex:2}
+  .gsub{position:absolute;left:120px;top:690px;font-size:22px;color:#8a8f9d}
+  .gh{position:absolute;left:120px;top:110px;font-size:34px}
+  .glist{position:absolute;left:120px;top:180px;width:900px}
+  .gr{position:relative;height:96px;display:flex;align-items:center;gap:22px;padding:0 24px;font-size:28px;cursor:pointer;background:rgba(255,255,255,.04);margin-bottom:8px}
+  .gr .av{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#5f6fe0,#b95fd6);display:flex;align-items:center;justify-content:center;font-weight:600}
+  .gr small{display:block;font-size:17px;color:#8a8f9d;margin-top:3px}
+  .gr.sel{background:rgba(255,255,255,.1)}
+  .gr.sel::before{content:"";position:absolute;inset:0;padding:3px;pointer-events:none;background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}
+  .gpan{position:absolute;left:0;right:0;top:120px;bottom:0;background:#0d0d24}
+  .gcov{position:absolute;left:300px;top:50px;width:210px;height:210px;object-fit:cover}
+  .gpan h3{position:absolute;left:540px;top:46px;font-size:32px;font-weight:400}
+  .gsm{position:absolute;left:540px;width:340px;font-size:18px;line-height:24px;color:#c9c5de}.gsm:nth-of-type(1){top:100px}.gsm:nth-of-type(2){top:130px}.gsm b{font-weight:600;color:#fff}
+  .gpr{position:absolute;left:540px;top:200px;font-size:24px;font-weight:700}
+  .gtot{position:absolute;left:920px;top:60px;width:420px;display:flex;justify-content:space-between;font-size:24px;border-bottom:1px solid #8883a8;padding-bottom:10px}
+  .gchg{position:absolute;left:920px;top:122px;width:420px;display:flex;justify-content:space-between;font-size:19px}.gs2{color:#cfc4f4}
+  .gfn{position:absolute;left:920px;top:176px;width:420px;font-size:14px;line-height:20px;color:#ff9f0a;font-weight:700}
+  .gbtn{position:absolute;left:920px;top:300px;width:376px;height:60px;border-radius:30px;background:rgba(255,255,255,.2);text-align:center;line-height:60px;font-size:23px;cursor:pointer;transition:background .2s,color .2s,transform .22s}
+  .gbtn.foc{background:#fff;color:#25262e;transform:scale(1.05)}
+  .gtoast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:rgba(255,159,10,.95);color:#111;font-weight:700;padding:14px 28px;font-size:20px;display:none}.gtoast.on{display:block}
+  .gsim{position:absolute;left:0;right:0;top:0;height:28px;background:#ff9f0a;color:#111;font-size:14px;font-weight:700;text-align:center;line-height:28px;letter-spacing:.8px;z-index:3}
+  .gift .s-back{z-index:9999}
   .tile{transform-origin:0 0}
   .rail .tile:first-child{transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .55s cubic-bezier(.3,.8,.2,1),box-shadow .55s cubic-bezier(.3,.8,.2,1),transform .55s cubic-bezier(.3,.8,.2,1)}
   .rail .tile:not(:first-child){transition:opacity .3s,width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .3s,box-shadow .3s}
@@ -233,6 +269,29 @@
   </div>
   <div class="boot" id="boot"><video id="bv" src="assets/boot2.mp4" playsinline webkit-playsinline preload="auto"></video></div>
   <div class="launch" id="launch"><video id="gv" src="assets/gta_launch.mp4" playsinline webkit-playsinline preload="auto"></video></div>
+  <div class="gift" id="gift">
+    <div class="gbg"></div>
+    <div class="gtabs"><span class="on">Games</span><span>Media</span><span>Players</span></div>
+    <div class="gv" id="gv1">
+      <div class="gsearch"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="7"/><path d="M16 16l5 5"/></svg><span id="gq"></span><i class="gcur"></i><em id="gph">Search for a player</em></div>
+      <div class="gkb" id="gkb"></div>
+      <div class="gsub">Gift Grand Theft Auto VI &mdash; search by player ID</div>
+    </div>
+    <div class="gv" id="gv2"><div class="gh">Players</div><div class="glist" id="glist"></div></div>
+    <div class="gv" id="gv3">
+      <div class="gpan">
+        <img id="gCov" src="assets/ic_gta_l3.png" alt="" class="gcov">
+        <h3 id="gTitle">Grand Theft Auto VI</h3><div class="gsm">Gift for: <b id="gTo"></b></div>
+        <div class="gsm">Expected play availability date: 2026/11/19 at 12:00 AM</div><div class="gpr" id="gPrice">US$79.99</div>
+        <div class="gtot"><span>Total</span><b id="gTot">US$79.99</b></div><div class="gchg"><span>Charged to</span><span class="gs2">Sample payment method</span></div>
+        <p class="gfn">SIMULATOR: this screen is a simulation. No gift is sent and nothing is charged.</p>
+        <div class="gbtn foc" id="gConf">Confirm gift</div>
+      </div>
+      <div class="gtoast" id="gtoast">Simulation only &mdash; no gift was sent</div>
+    </div>
+    <div class="gsim">SIMULATOR &mdash; not a real gift or purchase</div>
+    <div class="s-back" id="gBack">&#9711; Back</div>
+  </div>
   <div class="pmenu" id="pmenu"><div class="mi sel" data-a="gift">Gift</div><div class="mi" data-a="ult">Ultimate Edition</div><div class="mi" data-a="pers">Personalization Settings</div><div class="mi" data-a="terms">Health / Ratings / Privacy / Terms</div></div>
   <div class="fade" id="fade"></div>
 </div></div>
@@ -347,11 +406,37 @@
   function menuClose(){pm.classList.remove('on')}
   function menuMove(d){var i=pmItems.findIndex(function(m){return m.classList.contains('sel')}),n=Math.max(0,Math.min(pmItems.length-1,i+d));if(n!==i){pmItems.forEach(function(m,k){m.classList.toggle('sel',k===n)});SFX.move()}}
   pmItems.forEach(function(m){m.addEventListener('click',function(e){e.stopPropagation();if(!m.classList.contains('sel')){pmItems.forEach(function(o){o.classList.toggle('sel',o===m)});SFX.move();return}
-    var a=m.dataset.a;menuClose();SFX.open();if(a==='ult'&&cur==='store'&&stCur===2){setEd('u')}})});
+    var a=m.dataset.a;menuClose();SFX.open();if(a==='ult'&&cur==='store'&&stCur===2){setEd('u')}if(a==='gift')openGift()})});
   $('pMore').addEventListener('click',function(e){e.stopPropagation();pm.classList.contains('on')?menuClose():menuOpen(1195,742)});
   document.querySelector('.dots').addEventListener('click',function(e){e.stopPropagation();pm.classList.contains('on')?menuClose():menuOpen(404,672)});
   document.addEventListener('pointerdown',function(e){if(pm.classList.contains('on')&&!pm.contains(e.target)&&e.target!==$('pMore')&&!e.target.classList.contains('dots'))menuClose()},true);
   window.addEventListener('keydown',function(e){if(!pm.classList.contains('on'))return;if(e.key==='Escape'){menuClose();e.stopImmediatePropagation()}else if(e.key==='ArrowDown'){menuMove(1);e.preventDefault();e.stopImmediatePropagation()}else if(e.key==='ArrowUp'){menuMove(-1);e.preventDefault();e.stopImmediatePropagation()}},true);
+  /* Gift flow: type a player name, pick it from the results, then a simulated purchase screen */
+  var gEl=$('gift'),gq='',gShift=true,gPlayer='',gStep=1,gPrev='scr';
+  var KR=['1234567890@','QWERTYUIOP#','ASDFGHJKL"/','ZXCVBNM-_?!'];
+  function gDraw(){var h='';KR.forEach(function(r,ri){h+='<div class="gkr">';r.split('').forEach(function(c){var ch=(ri>0&&!gShift&&/[A-Z]/.test(c))?c.toLowerCase():c;h+='<div class="gk" data-k="'+ch.replace(/"/g,'&quot;')+'">'+ch+'</div>'});h+='</div>'});
+    h+='<div class="gkc"><div class="gk wide" data-k="SHIFT">&#8679;</div><div class="gk wide" data-k=" ">&#9251;</div><div class="gk wide" data-k="BS">&#9003;</div><div class="gk wide" data-k="DONE">Done</div></div>';
+    $('gkb').innerHTML=h;var f=$('gkb').querySelector('[data-k="G"],[data-k="g"]');if(f)f.classList.add('sel');
+    $('gkb').querySelectorAll('.gk').forEach(function(k){k.onclick=function(){var d=k.dataset.k;
+      if(!k.classList.contains('sel')){$('gkb').querySelectorAll('.gk').forEach(function(o){o.classList.toggle('sel',o===k)});SFX.move()}
+      gKey(d)}})}
+  function gKey(d){if(d==='SHIFT'){gShift=!gShift;gDraw();return}if(d==='BS'){gq=gq.slice(0,-1)}else if(d==='DONE'){gSearch();return}else if(gq.length<16){gq+=d}
+    $('gq').textContent=gq;$('gq').parentNode.classList.toggle('has',gq.length>0)}
+  function gView(n){gStep=n;['gv1','gv2','gv3'].forEach(function(v,i){var e=$(v);if(i+1===n)xshow(e);else xhide(e)})}
+  function gSearch(){if(!gq.trim()){return}var base=gq.trim();var names=[base,base+'_01',base+'.psn'];
+    $('glist').innerHTML=names.map(function(n,i){return '<div class="gr" data-n="'+n+'"><div class="av">'+n[0].toUpperCase()+'</div><div>'+n+'<small>Online ID · '+(i===0?'Exact match':'Similar')+'</small></div></div>'}).join('');
+    $('glist').querySelectorAll('.gr').forEach(function(r){r.onclick=function(){if(!r.classList.contains('sel')){$('glist').querySelectorAll('.gr').forEach(function(o){o.classList.toggle('sel',o===r)});SFX.move();return}gPlayer=r.dataset.n;gBuy()}});
+    SFX.open();gView(2)}
+  function gBuy(){var ult=cur==='store'&&stCur===2&&$('pTitle').textContent.indexOf('Ultimate')>-1;
+    $('gTitle').textContent=ult?'Grand Theft Auto VI Ultimate Edition':'Grand Theft Auto VI';$('gPrice').textContent=$('gTot').textContent=ult?'US$99.99':'US$79.99';$('gCov').src=ult?'assets/ed_ult.jpg':'assets/ic_gta_l3.png';$('gTo').textContent=gPlayer;
+    $('gtoast').classList.remove('on');SFX.open();gView(3)}
+  function openGift(){gPrev=cur;gq='';gShift=true;gDraw();$('gq').textContent='';$('gq').parentNode.classList.remove('has');xshow(gEl);cur='gift';gView(1);SFX.open()}
+  function closeGift(){xhide(gEl);cur=gPrev}
+  $('gConf').onclick=function(){SFX.open();var t=$('gtoast');t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on')},3000)};
+  $('gBack').onclick=function(){SFX.back();if(gStep>1)gView(gStep-1);else closeGift()};
+  window.addEventListener('keydown',function(e){if(cur!=='gift')return;var k=e.key;
+    if(k==='Escape'){SFX.back();if(gStep>1)gView(gStep-1);else closeGift();e.stopImmediatePropagation();return}
+    if(gStep===1){if(k==='Enter'){gSearch()}else if(k==='Backspace'){gKey('BS')}else if(k.length===1&&!e.ctrlKey&&!e.metaKey){gKey(k)}}},true);
   /* clock */
   function clk(){var d=new Date();$('clock').textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}clk();setInterval(clk,15000);
   /* settings */
