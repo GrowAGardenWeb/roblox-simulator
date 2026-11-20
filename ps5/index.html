@@ -79,6 +79,13 @@
   .cd.sel{box-shadow:0 0 0 3px #fff}.cd.sm{width:292px;height:330px;margin-top:110px}
   .sfull{position:absolute;inset:0;width:100%;height:100%;display:block}
   .store{position:absolute;inset:0;background:#120a24;display:none;z-index:5}.store.on{display:block}
+  .hdr{position:absolute;inset:0;pointer-events:none}.hdr>*{pointer-events:auto}
+  .store.peek{z-index:3}.store.peek .hdr,.store.peek .s-back{display:none}
+  .tabs,.tr,.rail{z-index:7;transition:opacity .4s,transform .4s}.rail{transition:transform .25s ease-out,opacity .4s}
+  .scr.storefull .tabs,.scr.storefull .tr,.scr.storefull .rail{opacity:0;pointer-events:none}
+  .scr.storefull .tabs,.scr.storefull .tr{transform:translateY(-30px)}
+  .scr.storefull .rail{transform:translateY(-60px)!important}
+  .store .hdr{animation:none}.store.full .hdr{animation:fi .5s ease both}
   .sv{position:absolute;inset:0;display:none}.sv.on{display:block;animation:fi .45s ease both}
   .store .a{position:absolute;white-space:nowrap;text-shadow:0 1px 6px rgba(20,8,40,.45)}
   .store .ico{left:50px;top:42px;width:72px;height:72px;border-radius:12px;background:#0f1218;overflow:hidden}.ico img{width:100%;height:100%}
@@ -114,10 +121,10 @@
   .scr.intro .hero,.scr.intro .btns,.scr.intro .trophy{animation:up .8s .5s cubic-bezier(.2,.8,.2,1) both}
   @keyframes dn{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
   @keyframes tin{from{opacity:0;transform:translateX(70px) scale(.85)}to{opacity:1;transform:none}}
-  .launch{position:absolute;inset:0;background:#000;overflow:hidden;display:none;z-index:6}
+  .launch{position:absolute;inset:0;background:#000;overflow:hidden;display:none;z-index:12}
   .launch.on{display:block}
   .launch video{position:absolute;left:-172px;top:0;width:1919px;height:885px;background:#000}
-  .fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}.fade.on{opacity:1}
+  .fade{position:absolute;inset:0;z-index:15;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}.fade.on{opacity:1}
 </style>
 </head>
 <body>
@@ -133,11 +140,12 @@
   <div class="set" id="st1"></div><div class="set" id="st2"></div>
   <div class="cc" id="cc"></div>
   <div class="store" id="store">
-    <div class="sv on" id="sv1"><img class="sfull" src="assets/sa1.jpg" alt="">
+    <div class="sv on" id="sv1"><img class="sfull" src="assets/sa1.jpg" alt=""><div class="hdr">
       <div class="a ico"><img src="assets/ic_store2.png" alt=""></div><div class="a" style="left:154px;top:62px;font-size:29px">PlayStation Store</div>
       <div class="a tabf" style="left:130px;top:116px;width:200px;height:68px"></div>
       <div class="a tb" style="left:158px;top:134px;font-size:26px">Latest</div><div class="a tb" style="left:358px;top:136px;font-size:26px">Collections</div><div class="a tb" style="left:546px;top:138px;font-size:26px">Subscriptions</div><div class="a tb" style="left:760px;top:140px;font-size:26px;opacity:.8">Explore</div>
       <div class="a" style="left:1156px;top:128px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.500 15.500L21 21"/></svg></div><div class="a" style="left:1237px;top:128px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.500-7-10a4 4 0 0 1 7-2.500A4 4 0 0 1 19 10c0 5.500-7 10-7 10z" fill="#fff"/></svg></div><div class="a" style="left:1317px;top:128px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h3l2 11h11l2-8H6"/><circle cx="9" cy="19" r="1.500"/><circle cx="17" cy="19" r="1.500"/></svg></div><div class="a" style="left:1397px;top:132px;font-size:28px;letter-spacing:2px">&middot;&middot;&middot;</div>
+      </div>
       <img class="a vil" src="assets/gta_logo.png" alt="" style="left:150px;top:250px;width:310px">
       <div class="a" style="left:162px;top:520px;font-size:28px;line-height:36px">Pre-order and pre-load</div>
       <div class="a" style="left:162px;top:612px;font-size:22px">Must-see</div>
@@ -224,13 +232,14 @@
   document.addEventListener('pointerdown',function(){ctx()},{once:true});
   /* ---- rail: tiles are built once so size changes animate smoothly ---- */
   var tiles=[];
-  (function(){var r=$('rail');G.forEach(function(g,i){var t=document.createElement('div');t.className='tile';t.style.backgroundImage='url(assets/'+g.ic+')';if(g.large){var l=new Image();l.src='assets/'+g.large}var n=document.createElement('div');n.className='gname';n.innerHTML=(G[i].plat?'<i>'+G[i].plat+'</i>':'')+'<span></span>';n.querySelector('span').textContent=g.n||'';t.appendChild(n);t.onclick=function(){if(i!==sel){sel=i;SFX.game();draw()}else if(g.k==='store')stShow(0);else SFX.ok()};r.appendChild(t);tiles.push(t)})})();
+  (function(){var r=$('rail');G.forEach(function(g,i){var t=document.createElement('div');t.className='tile';t.style.backgroundImage='url(assets/'+g.ic+')';if(g.large){var l=new Image();l.src='assets/'+g.large}var n=document.createElement('div');n.className='gname';n.innerHTML=(G[i].plat?'<i>'+G[i].plat+'</i>':'')+'<span></span>';n.querySelector('span').textContent=g.n||'';t.appendChild(n);t.onclick=function(){if(i!==sel){sel=i;SFX.game();draw()}else if(g.k==='store')enterStore();else SFX.ok()};r.appendChild(t);tiles.push(t)})})();
   function draw(){
     var g=G[sel];
     tiles.forEach(function(t,i){var on=i===sel;t.classList.toggle('sel',on);t.style.backgroundImage='url(assets/'+(on&&G[i].large?G[i].large:G[i].ic)+')'});
     /* keep the selected tile in view (the rail scrolls like the real one) */
     var r=$('rail'),x=44;for(var i=0;i<sel;i++)x+=88+6;r.style.transform='translateX('+Math.min(0,138-x)+'px)';
     Object.keys(bgEl).forEach(function(k){bgEl[k].classList.toggle('on',g.bg===k)});
+    if(cur==='scr'&&typeof peekStore==='function'&&stEl){if(g.k==='store')peekStore(true);else peekStore(false)}
     if(cur==='scr')music(g.k==='spider'?'spider':null);
     var isGame=!!g.t&&!g.baked,h=document.querySelector('.hero'),bt=document.querySelector('.btns'),tr=$('troph'),c=$('card');
     h.classList.toggle('gta',g.k==='gta');$('hT').classList.toggle('spaced',!!g.spaced);bt.classList.toggle('gta',!!g.logo);[h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
@@ -241,9 +250,9 @@
     [h,bt,tr,c].forEach(function(e){e.classList.add('in')})}
   draw();
   function stepG(d){var n=Math.max(0,Math.min(G.length-1,sel+d));if(n!==sel){sel=n;SFX.game();draw()}}
-  window.addEventListener('keydown',function(e){var k=e.key,c=e.keyCode;if(cur==='scr'){if(k==='ArrowRight'||c===39){stepG(1);e.preventDefault()}if(k==='ArrowLeft'||c===37){stepG(-1);e.preventDefault()}if(e.key==='Enter'&&G[sel].k==='store')stShow(0)}});
+  window.addEventListener('keydown',function(e){var k=e.key,c=e.keyCode;if(cur==='scr'){if(k==='ArrowRight'||c===39){stepG(1);e.preventDefault()}if(k==='ArrowLeft'||c===37){stepG(-1);e.preventDefault()}if((e.key==='Enter'||e.key==='ArrowDown'||c===40)&&G[sel].k==='store')enterStore()}});
 
-  var sx=null;$('scr').addEventListener('pointerdown',function(e){sx=e.clientX});$('scr').addEventListener('pointerup',function(e){if(sx===null||cur!=='scr')return;var d=e.clientX-sx;sx=null;if(Math.abs(d)>70){var n=Math.max(0,Math.min(G.length-1,sel+(d<0?1:-1)));if(n!==sel){sel=n;SFX.game();draw()}}});
+  var sx=null,sy=0;$('scr').addEventListener('pointerdown',function(e){sx=e.clientX;sy=e.clientY});$('scr').addEventListener('pointerup',function(e){if(sx===null||cur!=='scr')return;var dy=e.clientY-sy;var d=e.clientX-sx;sx=null;if(dy<-80&&Math.abs(d)<60&&G[sel].k==='store'){enterStore();return}if(Math.abs(d)>70){var n=Math.max(0,Math.min(G.length-1,sel+(d<0?1:-1)));if(n!==sel){sel=n;SFX.game();draw()}}});
   /* Play Game on GTA VI starts the launch sequence recorded from the console */
   var gv=$('gv'),lch=$('launch'),launching=false;
   function endLaunch(){if(!launching)return;launching=false;var f=$('fade');f.classList.add('on');setTimeout(function(){gv.pause();lch.classList.remove('on');cur='scr';music(G[sel].k==='spider'?'spider':null);setTimeout(function(){f.classList.remove('on')},60)},350)}
@@ -256,13 +265,20 @@
   function setEd(k){var u=k==='u';$('edTag').textContent=u?'Ultimate Edition':'Standard Edition';$('pTitle').textContent=u?'Grand Theft Auto VI Ultimate Edition':'Grand Theft Auto VI';$('pPrice').textContent=u?'US$99.99':'US$79.99';$('pTot').textContent=u?'US$99.99':'US$79.99';$('pCov').src=u?'assets/ed_ult.jpg':'assets/ic_gta_l3.png';$('edU').classList.toggle('sel',u);$('edS').classList.toggle('sel',!u)}
   var edChosen='s';
   var stEl=$('store'),svs=['sv1','sv2','sv3'],stCur=-1;
-  function stShow(i){var f=$('fade');f.classList.add('on');setTimeout(function(){svs.forEach(function(v,k){$(v).classList.toggle('on',k===i)});if(i<0){stEl.classList.remove('on');cur='scr'}else{stEl.classList.add('on');cur='store'}stCur=i;setTimeout(function(){f.classList.remove('on')},60)},330);(i<0?SFX.back:SFX.open)()}
+  var scrEl=$('scr');
+  function peekStore(on){if(on){svs.forEach(function(v,k){$(v).classList.toggle('on',k===0)});stEl.classList.add('on','peek');stEl.classList.remove('full');scrEl.classList.remove('storefull')}else if(stEl.classList.contains('peek')){stEl.classList.remove('on','peek')}}
+  function enterStore(){if(!stEl.classList.contains('peek'))return;stEl.classList.remove('peek');stEl.classList.add('full');scrEl.classList.add('storefull');cur='store';stCur=0;SFX.open()}
+  function stShow(i){var f=$('fade');f.classList.add('on');setTimeout(function(){svs.forEach(function(v,k){$(v).classList.toggle('on',k===Math.max(i,0)&&(i>=0||G[sel].k==='store'))});
+    if(i<0){cur='scr';if(G[sel].k==='store')peekStore(true);else{stEl.classList.remove('on','full','peek');scrEl.classList.remove('storefull')}}
+    else{stEl.classList.add('on');stEl.classList.remove('peek');stEl.classList.add('full');scrEl.classList.add('storefull');cur='store'}
+    stCur=i;setTimeout(function(){f.classList.remove('on')},60)},330);(i<0?SFX.back:SFX.open)()}
+  stEl.addEventListener('click',function(e){if(stEl.classList.contains('peek')){e.stopPropagation();enterStore()}},true);
   var mt=[$('stGta')].concat([].slice.call(document.querySelectorAll('.tl2')));
   function focusT(i){mt.forEach(function(e,k){e.classList.toggle('sel',k===0&&i===0);e.classList.toggle('sel2',k===i&&i>0)})}
   mt.forEach(function(e,i){e.addEventListener('click',function(ev){if(i===0)return;ev.stopPropagation();focusT(i);SFX.move()})});
-  $('stGta').onclick=function(){focusT(0);stShow(1)};$('edS').onclick=function(){setEd('s');stShow(2)};$('edU').onclick=function(){setEd('u');stShow(2)};$('pConf').onclick=function(){SFX.ok()};
+  $('stGta').onclick=function(){if(stEl.classList.contains('peek')){enterStore();return}focusT(0);stShow(1)};$('edS').onclick=function(){setEd('s');stShow(2)};$('edU').onclick=function(){setEd('u');stShow(2)};$('pConf').onclick=function(){SFX.ok()};
   $('sBack').onclick=function(){stShow(stCur-1)};
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&cur==='store')stShow(stCur-1)});
+  document.addEventListener('keydown',function(e){if(cur!=='store')return;if(e.key==='Escape'||((e.key==='ArrowUp')&&stCur===0))stShow(stCur-1)});
   /* startup: the boot clip starts by itself (with sound if the browser allows it), then the home screen animates in */
   (function(){var bo=$('boot'),bv=$('bv'),done=false,scr=$('scr');
     try{if(sessionStorage.getItem('ps5boot')){bo.classList.add('gone');return}}catch(e){}
