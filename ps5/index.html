@@ -86,11 +86,11 @@
   .scr.storefull .tabs,.scr.storefull .tr{transform:translateY(-30px)}
   /* the Store tile itself travels to the store header; the other tiles fade away */
   .tile{transform-origin:0 0}
-  .rail .tile:first-child{transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .3s,box-shadow .3s,transform .55s cubic-bezier(.3,.8,.2,1)}
+  .rail .tile:first-child{transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .55s cubic-bezier(.3,.8,.2,1),box-shadow .55s cubic-bezier(.3,.8,.2,1),transform .55s cubic-bezier(.3,.8,.2,1)}
   .rail .tile:not(:first-child){transition:opacity .3s,width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .3s,box-shadow .3s}
   .scr.storefull .rail{pointer-events:none;opacity:0;transition:opacity .01s .6s}
   .scr.storefull .rail .tile:not(:first-child){opacity:0}
-  .scr.storefull .rail .tile:first-child{transform:translate(6px,-58px) scale(.4932);border-radius:14px;box-shadow:none}
+  .scr.storefull .rail .tile:first-child{transform:translate(6px,-58px) scale(.4932);border-radius:14px;box-shadow:0 0 0 0 rgba(255,255,255,0),0 0 0 0 rgba(255,255,255,0)}
   .scr.storefull .rail .tile:first-child .gname{opacity:0}  .store.full .hdr>.a{animation:fi .45s .5s both}.store.full .hdr>.ico{animation:fi .01s .55s both}
   .sv{position:absolute;inset:0;display:none}.sv.on{display:block;animation:fi .45s ease both}
   .store .a{position:absolute;white-space:nowrap;text-shadow:0 1px 6px rgba(20,8,40,.45)}
