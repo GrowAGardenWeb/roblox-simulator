@@ -99,6 +99,7 @@
   .tl2{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;color:#fff;cursor:pointer;gap:3px;text-shadow:none}.tl2 b{font-weight:800}.tl2 i{font-style:normal;font-size:9.5px;letter-spacing:1px;opacity:.9}.tl2.sel2{box-shadow:0 0 0 3px #fff;transform:scale(1.06);z-index:3}.vil{filter:drop-shadow(0 4px 14px rgba(60,20,90,.45))}
   .gt{display:flex;align-items:center;justify-content:center;overflow:hidden}
   .hot{cursor:pointer;z-index:2}.hot.sel{box-shadow:0 0 0 3px #fff}
+  .ed{transition:transform .25s cubic-bezier(.22,.9,.3,1),box-shadow .2s}.ed.sel{transform:scale(1.14);box-shadow:0 0 0 4px #fff,0 10px 30px rgba(0,0,0,.4);z-index:3}
   .kb{display:inline-block;border:1px solid #fff;border-radius:4px;padding:0 6px;font-size:14px;line-height:20px}
   .qrb{background:rgba(26,16,60,.88);border:2px solid #d7cff2;display:flex;gap:26px;padding:24px;box-sizing:border-box;font-size:10px;text-shadow:none}
   .qr{width:170px;height:170px;flex:none;border:10px solid #fff;box-sizing:content-box;background:#fff;image-rendering:pixelated}
@@ -169,8 +170,8 @@
       <div class="a qrb" style="left:1026px;top:98px;width:404px;height:236px"><img class="qr" src="assets/qr.svg" alt=""><div class="qt"><small>PRE-LOAD AVAILABLE</small><b class="viq">VI</b><small>SCAN NOW FOR MORE INFORMATION</small></div></div>
       <div class="a" style="left:1150px;top:424px;font-size:20px;color:#d8d0ee">Sort by: <span style="color:#bfb6e4">Default</span></div>
       <div class="a fil"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M6 3v14M3 14l3 4 3-4M12 6h9M12 11h7M12 16h5"/></svg></div>
-      <div class="a hot" id="edU" style="left:160px;top:490px;width:240px;height:230px;overflow:hidden"><img src="assets/ed_ult.jpg" alt="" style="width:100%;height:100%"><span class="pr">US$99.99</span></div>
-      <div class="a hot sel" id="edS" style="left:420px;top:480px;width:240px;height:246px;background:#2a2058"><img src="assets/ic_gta_l3.png" alt="" style="width:100%;height:170px;object-fit:cover;display:block"><em>PS5</em><em class="b">Game bundle</em><p>Grand Theft Auto VI</p><span class="pr" style="bottom:8px">US$79.99</span></div>
+      <div class="a hot ed" id="edU" style="left:160px;top:490px;width:240px;height:240px;overflow:hidden"><img src="assets/ed_ult.jpg" alt="" style="width:100%;height:100%"><span class="pr">US$99.99</span></div>
+      <div class="a hot ed" id="edS" style="left:420px;top:490px;width:240px;height:240px;background:#2a2058"><img src="assets/ic_gta_l3.png" alt="" style="width:100%;height:170px;object-fit:cover;display:block"><em>PS5</em><em class="b">Game bundle</em><p>Grand Theft Auto VI</p><span class="pr" style="bottom:8px">US$79.99</span></div>
     </div>
     <div class="sv" id="sv3"><img class="s3top" src="assets/sa3.jpg" alt="">
       <div class="a pan"></div>
@@ -210,7 +211,7 @@
     {k:'gta',plat:'PS5',ic:'ic_gta.png',large:'ic_gta_l.png',n:'Grand Theft Auto VI',logo:'gta_logo.png',t:'GTA',d:'Experience the biggest, most immersive evolution of the Grand Theft Auto series.',bg:'bg_gta.jpg',play:'Play Game',tr:null},
     {k:'astro',plat:'PS5',ic:'ic_astro2.png',large:'ic_astro_l2.png',n:"ASTRO's PLAYROOM",logo:'astro_logo.png',logow:470,t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro_hd.jpg',cardimg:'card_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
     {k:'destiny',ic:'ic_destiny2.png',large:'ic_destiny_l2.png',n:'Destiny 2 | PS4',t:'DESTINY 2',d:'',bg:'bg_destiny_hd.jpg',spaced:true,col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
-    {k:'spider',plat:'PS5',ic:'ic_spider2.png',large:'ic_spider_l2.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'bg_spider_hd.jpg',logo:'spider_logo.png',logow:430,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null}
+    {k:'spider',plat:'PS5',ic:'ic_spider2.png',large:'ic_spider_l2.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'bg_spider_hd.jpg',logo:'spider_logo.png',logow:350,herotop:405,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null}
   ];
   var cur='scr';var sel=1,bgEl={},first=true;
   G.forEach(function(g){if(g.bg&&!bgEl[g.bg]){var d=document.createElement('div');d.className='bg';d.style.backgroundImage='url(assets/'+g.bg+')';$('bgs').appendChild(d);bgEl[g.bg]=d}});
@@ -241,7 +242,7 @@
     if(cur==='scr'&&typeof peekStore==='function'&&stEl){if(g.k==='store')peekStore(true);else peekStore(false)}
     if(cur==='scr')music(g.k==='spider'?'spider':null);
     var isGame=!!g.t&&!g.baked,h=document.querySelector('.hero'),bt=document.querySelector('.btns'),tr=$('troph'),c=$('card');
-    h.classList.toggle('gta',g.k==='gta');$('hT').classList.toggle('spaced',!!g.spaced);bt.classList.toggle('gta',!!g.logo);[h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
+    h.classList.toggle('gta',g.k==='gta');h.style.top=g.herotop?g.herotop+'px':'';$('hT').classList.toggle('spaced',!!g.spaced);bt.classList.toggle('gta',!!g.logo);[h,bt,tr,c].forEach(function(e){e.classList.remove('in');void e.offsetWidth});
     $('hT').innerHTML=isGame?(g.logo?'<img src="assets/'+g.logo+'" alt="">':''):'';if(isGame&&!g.logo)$('hT').textContent=g.t||'';$('play').textContent=g.play||'Play';var li=$('hT').querySelector('img');if(li)li.style.width=(g.logow||200)+'px';$('hD').textContent=isGame?(g.d||''):'';
     bt.style.display=isGame?'flex':'none';
     tr.style.display=g.tr&&!g.baked?'flex':'none';if(g.tr)tr.innerHTML='<span>\u{1F3C6}</span><span><small>Progress</small>'+g.tr[0]+'</span><span><small>Earned</small>'+g.tr[1]+'</span>';
@@ -261,7 +262,7 @@
     var f=$('fade');f.classList.add('on');setTimeout(function(){lch.classList.add('on');setTimeout(function(){f.classList.remove('on')},120)},350)};
   gv.addEventListener('ended',endLaunch);lch.addEventListener('click',endLaunch);
   /* PlayStation Store */
-  function setEd(k){var u=k==='u';$('edTag').textContent=u?'Ultimate Edition':'Standard Edition';$('pTitle').textContent=u?'Grand Theft Auto VI Ultimate Edition':'Grand Theft Auto VI';$('pPrice').textContent=u?'US$99.99':'US$79.99';$('pTot').textContent=u?'US$99.99':'US$79.99';$('pCov').src=u?'assets/ed_ult.jpg':'assets/ic_gta_l3.png';$('edU').classList.toggle('sel',u);$('edS').classList.toggle('sel',!u)}
+  function setEd(k){var u=k==='u';$('edTag').textContent=u?'Ultimate Edition':'Standard Edition';$('pTitle').textContent=u?'Grand Theft Auto VI Ultimate Edition':'Grand Theft Auto VI';$('pPrice').textContent=u?'US$99.99':'US$79.99';$('pTot').textContent=u?'US$99.99':'US$79.99';$('pCov').src=u?'assets/ed_ult.jpg':'assets/ic_gta_l3.png';}
   var edChosen='s';
   var stEl=$('store'),svs=['sv1','sv2','sv3'],stCur=-1;
   var scrEl=$('scr');
@@ -271,7 +272,7 @@
   var wlock=0;
   window.addEventListener('wheel',function(e){var n=Date.now();if(n<wlock)return;if(Math.abs(e.deltaY)<8||Math.abs(e.deltaY)<Math.abs(e.deltaX))return;
     if(e.deltaY>0&&cur==='scr'&&G[sel].k==='store'){wlock=n+500;enterStore()}else if(e.deltaY<0&&cur==='store'&&stCur===0){wlock=n+500;exitToPeek()}},{passive:true});
-  function stShow(i){var f=$('fade');f.classList.add('on');setTimeout(function(){svs.forEach(function(v,k){$(v).classList.toggle('on',k===Math.max(i,0)&&(i>=0||G[sel].k==='store'))});
+  function stShow(i){var f=$('fade');f.classList.add('on');setTimeout(function(){if(i===1){$('edU').classList.remove('sel');$('edS').classList.remove('sel')}svs.forEach(function(v,k){$(v).classList.toggle('on',k===Math.max(i,0)&&(i>=0||G[sel].k==='store'))});
     if(i<0){cur='scr';if(G[sel].k==='store')peekStore(true);else{stEl.classList.remove('on','full','peek');scrEl.classList.remove('storefull')}}
     else{stEl.classList.add('on');stEl.classList.remove('peek');stEl.classList.add('full');scrEl.classList.add('storefull');cur='store'}
     stCur=i;setTimeout(function(){f.classList.remove('on')},60)},330);(i<0?SFX.back:SFX.open)()}
@@ -279,7 +280,8 @@
   var mt=[$('stGta')].concat([].slice.call(document.querySelectorAll('.tl2')));
   function focusT(i){mt.forEach(function(e,k){e.classList.toggle('sel',k===0&&i===0);e.classList.toggle('sel2',k===i&&i>0)})}
   mt.forEach(function(e,i){e.addEventListener('click',function(ev){if(i===0)return;ev.stopPropagation();focusT(i);SFX.move()})});
-  $('stGta').onclick=function(){if(stEl.classList.contains('peek'))return;focusT(0);stShow(1)};$('edS').onclick=function(){setEd('s');stShow(2)};$('edU').onclick=function(){setEd('u');stShow(2)};$('pConf').onclick=function(){SFX.ok()};
+  $('stGta').onclick=function(){if(stEl.classList.contains('peek'))return;focusT(0);stShow(1)};function pickEd(k){var el=$(k==='u'?'edU':'edS'),other=$(k==='u'?'edS':'edU');if(!el.classList.contains('sel')){el.classList.add('sel');other.classList.remove('sel');SFX.move();return}setEd(k);stShow(2)}
+  $('edS').onclick=function(){pickEd('s')};$('edU').onclick=function(){pickEd('u')};$('pConf').onclick=function(){SFX.ok()};
   $('sBack').onclick=function(){stShow(stCur-1)};
   document.addEventListener('keydown',function(e){if(cur!=='store')return;if(e.key==='ArrowUp'&&stCur===0){exitToPeek();return}if(e.key==='Escape')stShow(stCur-1)});
   /* startup: the boot clip starts by itself (with sound if the browser allows it), then the home screen animates in */
