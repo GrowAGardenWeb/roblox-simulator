@@ -200,8 +200,10 @@
   function ctx(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
   function tone(f1,f2,dur,vol,type){var c=ctx();if(!c)return;var o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type||'sine';o.frequency.setValueAtTime(f1,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.02)}
   function music(){}
+  var mvBuf=null;
+  (function(){var c=null;try{fetch('assets/s_move.mp3').then(function(r){return r.arrayBuffer()}).then(function(b){var a=ctx();if(a)a.decodeAudioData(b,function(d){mvBuf=d})}).catch(function(){})}catch(e){}})();
   var SFX={
-    move:function(){tone(1250,900,.07,.05)},
+    move:function(){var c=ctx();if(c&&mvBuf){var src=c.createBufferSource(),g=c.createGain();src.buffer=mvBuf;g.gain.value=.9;src.connect(g);g.connect(c.destination);src.start()}else tone(1250,900,.07,.05)},
     game:function(){var c=ctx();if(!c)return;tone(210,130,.22,.2,'sine');tone(420,260,.16,.09,'triangle');tone(105,70,.26,.14,'sine');setTimeout(function(){tone(640,420,.1,.04,'triangle')},18)},
     open:function(){tone(520,780,.18,.06,'triangle');setTimeout(function(){tone(780,1040,.2,.05,'triangle')},70)},
     back:function(){tone(820,460,.16,.05,'triangle')},
