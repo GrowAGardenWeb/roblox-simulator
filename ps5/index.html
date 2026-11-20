@@ -78,6 +78,7 @@
   .cd b{display:block;font-size:30px;color:#fff;font-weight:600;margin-top:4px}
   .cd.sel{box-shadow:0 0 0 3px #fff}.cd.sm{width:292px;height:330px;margin-top:110px}
   .sfull{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .navb{position:absolute;left:0;right:0;bottom:30px;display:flex;justify-content:center;gap:24px;z-index:4;pointer-events:none}.navb button{pointer-events:auto;width:72px;height:72px;border-radius:50%;background:rgba(20,26,40,.55);color:#fff;font-size:46px;line-height:60px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);-webkit-backdrop-filter:none}.navb.off{display:none}
   .store{position:absolute;inset:0;background:#120a24;display:none;z-index:5}.store.on{display:block}
   .sv{position:absolute;inset:0;display:none}.sv.on{display:block;animation:fi .45s ease both}
   .store .a{position:absolute;white-space:nowrap;text-shadow:0 1px 6px rgba(20,8,40,.45)}
@@ -121,6 +122,7 @@
   <div class="card" id="card"><div class="t" id="cT"></div><div class="tag">Full Game</div><div class="fr">Free</div></div>
   <div class="set" id="st1"></div><div class="set" id="st2"></div>
   <div class="cc" id="cc"></div>
+  <div class="navb" id="navb"><button id="aL" aria-label="Previous game">&#8249;</button><button id="aR" aria-label="Next game">&#8250;</button></div>
   <div class="store" id="store">
     <div class="sv on" id="sv1"><img class="sfull" src="assets/sa1.jpg" alt="">
       <div class="a ico"><img src="assets/ic_store2.png" alt=""></div><div class="a" style="left:154px;top:62px;font-size:29px">PlayStation Store</div>
@@ -226,7 +228,10 @@
     c.style.display=g.card&&!g.baked?'block':'none';if(g.cardimg)c.style.backgroundImage='url(assets/'+g.cardimg+')';$('cT').textContent=g.cardimg?'':(g.t||'');$('cT').style.whiteSpace='pre-line';
     [h,bt,tr,c].forEach(function(e){e.classList.add('in')})}
   draw();
-  document.addEventListener('keydown',function(e){if(cur!=='scr')return;if(e.key==='ArrowRight'&&sel<G.length-1){sel++;SFX.game();draw()}if(e.key==='ArrowLeft'&&sel>0){sel--;SFX.game();draw()}});
+  function stepG(d){var n=Math.max(0,Math.min(G.length-1,sel+d));if(n!==sel){sel=n;SFX.game();draw()}}
+  document.addEventListener('keydown',function(e){if(cur==='scr'){if(e.key==='ArrowRight'){stepG(1);e.preventDefault()}if(e.key==='ArrowLeft'){stepG(-1);e.preventDefault()}if(e.key==='Enter'&&G[sel].k==='store')stShow(0)}});
+  $('aL').onclick=function(){stepG(-1)};$('aR').onclick=function(){stepG(1)};
+  setInterval(function(){$('navb').classList.toggle('off',cur!=='scr')},200);
   var sx=null;$('scr').addEventListener('pointerdown',function(e){sx=e.clientX});$('scr').addEventListener('pointerup',function(e){if(sx===null||cur!=='scr')return;var d=e.clientX-sx;sx=null;if(Math.abs(d)>70){var n=Math.max(0,Math.min(G.length-1,sel+(d<0?1:-1)));if(n!==sel){sel=n;SFX.game();draw()}}});
   /* Play Game on GTA VI starts the launch sequence recorded from the console */
   var gv=$('gv'),lch=$('launch'),launching=false;
