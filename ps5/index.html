@@ -281,9 +281,8 @@
   document.addEventListener('keydown',function(e){if(cur!=='store')return;if(e.key==='Escape'||((e.key==='ArrowUp')&&stCur===0))stShow(stCur-1)});
   /* startup: the boot clip starts by itself (with sound if the browser allows it), then the home screen animates in */
   (function(){var bo=$('boot'),bv=$('bv'),done=false,scr=$('scr');
-    try{if(sessionStorage.getItem('ps5boot')){bo.classList.add('gone');return}}catch(e){}
     scr.classList.add('pre');
-    function fin(){if(done)return;done=true;try{sessionStorage.setItem('ps5boot','1')}catch(e){}
+    function fin(){if(done)return;done=true;
       scr.classList.remove('pre');scr.classList.add('intro');bo.style.transition='opacity .7s';bo.style.opacity='0';
       setTimeout(function(){bo.classList.add('gone');scr.classList.remove('intro')},2200)}
     bv.muted=false;bv.volume=1;
