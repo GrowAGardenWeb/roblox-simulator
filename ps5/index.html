@@ -423,7 +423,12 @@
   function gKey(d){if(d==='SHIFT'){gShift=!gShift;gDraw();return}if(d==='BS'){gq=gq.slice(0,-1)}else if(d==='DONE'){gSearch();return}else if(gq.length<16){gq+=d}
     $('gq').textContent=gq;$('gq').parentNode.classList.toggle('has',gq.length>0)}
   function gView(n){gStep=n;['gv1','gv2','gv3'].forEach(function(v,i){var e=$(v);if(i+1===n)xshow(e);else xhide(e)})}
-  function gSearch(){if(!gq.trim()){return}var base=gq.trim();var names=[base,base+'_01',base+'.psn'];
+  function gSearch(){if(!gq.trim()){return}var base=gq.trim(),names=[base],total=1+Math.floor(Math.random()*3);
+    function oneOff(t){for(var tries=0;tries<30;tries++){var i=Math.floor(Math.random()*t.length),c=t[i],r;
+      if(/[0-9]/.test(c))r=String((+c+1+Math.floor(Math.random()*9))%10);
+      else if(/[a-z]/i.test(c)){var up=c===c.toUpperCase(),base0=up?65:97;r=String.fromCharCode(base0+((c.charCodeAt(0)-base0+1+Math.floor(Math.random()*25))%26))}
+      else continue;var v=t.slice(0,i)+r+t.slice(i+1);if(names.indexOf(v)<0)return v}return null}
+    while(names.length<total){var v=oneOff(base);if(!v)break;names.push(v)}
     $('glist').innerHTML=names.map(function(n,i){return '<div class="gr" data-n="'+n+'"><div class="av">'+n[0].toUpperCase()+'</div><div>'+n+'<small>Online ID · '+(i===0?'Exact match':'Similar')+'</small></div></div>'}).join('');
     $('glist').querySelectorAll('.gr').forEach(function(r){r.onclick=function(){if(!r.classList.contains('sel')){$('glist').querySelectorAll('.gr').forEach(function(o){o.classList.toggle('sel',o===r)});SFX.move();return}gPlayer=r.dataset.n;gBuy()}});
     SFX.open();gView(2)}
