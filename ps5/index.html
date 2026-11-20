@@ -10,7 +10,7 @@
   html,body{height:100%;background:#000;overflow:hidden;font-family:"SST","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
   #wrap{position:fixed;left:50%;top:50%;width:1574px;height:886px;transform-origin:0 0}
   .scr{position:absolute;inset:0;overflow:hidden;background:#05070d}
-  .bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .6s}.bg.on{opacity:1}
+  .bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .5s}.bg.on{opacity:1}
   .scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,0) 55%)}
   /* top bar */
   .tabs{position:absolute;left:76px;top:32px;font-size:28px;display:flex;gap:66px;color:#9aa}
@@ -19,7 +19,7 @@
   .tr img{width:44px;height:44px;display:block;cursor:pointer;margin:0 -6px}
   /* rail */
   .rail{position:absolute;left:44px;top:100px;height:150px;display:flex;align-items:flex-start;gap:6px}
-  .rail{transition:transform .45s cubic-bezier(.22,.9,.3,1)}
+  .rail{transition:transform .25s ease-out}
   .hero.in h1,.hero.in p{animation:up .55s cubic-bezier(.2,.8,.2,1) both}.hero.in p{animation-delay:.07s}
   .trophy.in{animation:fi .5s .12s ease both}
   .btns.in{animation:slideb .5s .12s cubic-bezier(.2,.8,.2,1) both}
@@ -184,9 +184,9 @@
   var G=[
     {k:'store',ic:'ic_store2.png',n:'PlayStation Store',t:'',bg:null,col:'#13213d'},
     {k:'gta',plat:'PS5',ic:'ic_gta.png',large:'ic_gta_l.png',n:'Grand Theft Auto VI',logo:'gta_logo.png',t:'GTA',d:'Experience the biggest, most immersive evolution of the Grand Theft Auto series.',bg:'bg_gta.jpg',play:'Play Game',tr:null},
-    {k:'astro',ic:'ic_astro2.png',large:'ic_astro_l2.png',n:"ASTRO's PLAYROOM",logo:'astro_logo.png',logow:470,t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro_hd.jpg',cardimg:'card_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
+    {k:'astro',plat:'PS5',ic:'ic_astro2.png',large:'ic_astro_l2.png',n:"ASTRO's PLAYROOM",logo:'astro_logo.png',logow:470,t:"ASTRO's\nPLAYROOM",d:'Discover the future of play with intergalactic platforming hero – ASTRO!',bg:'bg_astro_hd.jpg',cardimg:'card_astro.jpg',col:'linear-gradient(#0b2b8f,#06174f)',lab:"ASTRO's\nPLAYROOM",card:true,tr:['15%','10/46'],ps:'PS5'},
     {k:'destiny',ic:'ic_destiny2.png',large:'ic_destiny_l2.png',n:'Destiny 2 | PS4',t:'DESTINY 2',d:'',bg:'bg_destiny_hd.jpg',spaced:true,col:'#232830',lab:'DESTINY 2',tr:['100%','24/24']},
-    {k:'spider',ic:'ic_spider.png',large:'ic_spider_l.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'full_spider.jpg',baked:true,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
+    {k:'spider',plat:'PS5',ic:'ic_spider.png',large:'ic_spider_l.png',n:"Marvel's Spider-Man: Miles Morales",t:'SPIDER-MAN\nMILES MORALES',d:'Be Greater. Be Yourself.',bg:'full_spider.jpg',baked:true,col:'linear-gradient(#1d1b25,#0d0c14)',lab:'SPIDER-MAN',tr:null},
     {k:'rl',ic:'ic_rl.png',n:'Rocket League',col:'linear-gradient(135deg,#f2f2f2,#2d63d8)',lab:'ROCKET\nLEAGUE',bg:'clean_destiny.jpg',t:'ROCKET\nLEAGUE',d:'',tr:['34%','12/38']},
     {k:'wf',ic:'ic_wf.png',n:'Warframe',col:'linear-gradient(135deg,#8e9aa3,#3a444c)',lab:'WARFRAME',bg:'clean_destiny.jpg',t:'WARFRAME',d:'',tr:null},
     {k:'cod',ic:'ic_cod.png',n:'Call of Duty: Modern Warfare',col:'linear-gradient(135deg,#5a5a52,#1b1b18)',lab:'MODERN\nWARFARE',bg:'clean_spider.jpg',t:'MODERN\nWARFARE',d:'',tr:null},
