@@ -158,9 +158,12 @@
   .gtoast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:rgba(255,159,10,.95);color:#111;font-weight:700;padding:14px 28px;font-size:20px;display:none}.gtoast.on{display:block}
   .gsim{position:absolute;left:0;right:0;top:0;height:28px;background:#ff9f0a;color:#111;font-size:14px;font-weight:700;text-align:center;line-height:28px;letter-spacing:.8px;z-index:3}
   .gpop{position:absolute;inset:0;background:rgba(5,6,12,.72);display:none;align-items:center;justify-content:center;z-index:8}.gpop.on{display:flex;animation:fi .25s ease both}
-  .gpb{position:relative;width:560px;padding:40px 40px 44px;background:#171a28;box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:center}
-  .gpb h2{font-size:36px;margin:14px 0 10px;font-weight:600}.gpb p{font-size:21px;color:#cfd4e4;line-height:28px}.gpb .gps{margin-top:16px;font-size:15px;line-height:21px;color:#ff9f0a;font-weight:700}
-  .gpb .gbtn{position:relative;left:auto;top:auto;margin:30px auto 0;width:340px}
+  .gpb{position:relative;width:600px;padding:44px 48px 40px;background:#2a2c34;box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:center;border-radius:6px}
+  .gpl{width:360px;padding:48px 40px}.gpl p{margin-top:22px;font-size:22px}
+  .spin{width:54px;height:54px;margin:0 auto;border-radius:50%;border:4px solid rgba(255,255,255,.18);border-top-color:#fff;animation:rot .9s linear infinite}@keyframes rot{to{transform:rotate(360deg)}}
+  .gpb h2{font-size:34px;margin:0 0 14px;font-weight:600}.gpb p{font-size:21px;color:#cfd4e4;line-height:28px}.gpb .gps{margin-top:16px;font-size:15px;line-height:21px;color:#ff9f0a;font-weight:700}
+  .gpb .gbtn{position:relative;left:auto;top:auto;margin:14px auto 0;width:340px;height:54px;line-height:54px;font-size:21px}
+  .gpb .gbtn:first-of-type{margin-top:30px}
   .gbtn.foc::before{content:"";position:absolute;inset:-5px;padding:3px;border-radius:999px;pointer-events:none;background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}
   @media (hover:hover) and (pointer:fine){.gbtn:hover{background:#fff;color:#25262e;transform:scale(1.05)}.gbtn:hover::before{content:"";position:absolute;inset:-5px;padding:3px;border-radius:999px;pointer-events:none;background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}}
   .gbtn:active{transform:scale(.95)}
@@ -294,9 +297,11 @@
         <p class="gfn">SIMULATOR: this screen is a simulation. No gift is sent and nothing is charged.</p>
         <div class="gbtn foc" id="gConf">Confirm gift</div>
       </div>
-      <div class="gpop" id="gpop"><div class="gpb"><svg viewBox="0 0 34 34" width="56" height="56" fill="none" stroke="#4ec26a" stroke-width="2.4"><circle cx="17" cy="17" r="15.5"/><path d="M10 17.5l5 5 9-10.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="gpop" id="gproc"><div class="gpb gpl"><div class="spin"></div><p>Processing&hellip;</p></div></div>
+      <div class="gpop" id="gpop"><div class="gpb">
         <h2>Gift Sent</h2><p id="gpTxt"></p><p class="gps">SIMULATOR: this is a simulation. No gift was really sent and nothing was charged.</p>
-        <div class="gbtn foc" id="gBackStore">Go back to Store</div></div></div>
+        <div class="gbtn foc" id="gBackStore">Go Back to Store</div><div class="gbtn" id="gClose">Close</div>
+      </div></div>
     </div>
     <div class="gsim">SIMULATOR &mdash; not a real gift or purchase</div>
     <div class="s-back" id="gBack">&#9711; Back</div>
@@ -408,7 +413,11 @@
     bv.addEventListener('ended',fin);bv.addEventListener('error',fin);setTimeout(fin,6000);
   })();
   /* tapping a button focuses it (white + ring), the other button of the pair loses it */
-  [[$('play'),document.querySelector('.dots')],[$('pConf'),$('pMore')]].forEach(function(g){g.forEach(function(b){b.addEventListener('click',function(){g.forEach(function(o){o.classList.toggle('foc',o===b)})})})});
+  var fine=window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches;
+  [[$('play'),document.querySelector('.dots'),null],[$('pConf'),$('pMore'),$('pConf')]].forEach(function(g){var def=g[2];g.slice(0,2).forEach(function(b){
+    function drop(){b.classList.remove('foc');if(def)def.classList.add('foc')}
+    b.addEventListener('click',function(){g.slice(0,2).forEach(function(o){o.classList.toggle('foc',o===b)});clearTimeout(b._f);if(!fine)b._f=setTimeout(drop,900)});
+    if(fine)b.addEventListener('mouseleave',drop)})});
   /* "..." menu: first tap selects an item (ring), second tap on the same item activates it */
   var pm=$('pmenu'),pmItems=[].slice.call(pm.querySelectorAll('.mi'));
   function menuOpen(x,y){pmItems.forEach(function(m,i){m.classList.toggle('sel',i===0)});pm.style.left=x+'px';pm.style.top=(y-pm.offsetHeight||y-230)+'px';pm.classList.add('on');pm.style.top=(y-pm.offsetHeight-12)+'px';SFX.open()}
@@ -447,7 +456,10 @@
     $('gpop').classList.remove('on');SFX.open();gView(3)}
   function openGift(){gPrev=cur;gq='';gShift=true;gDraw();$('gq').textContent='';$('gq').parentNode.classList.remove('has');xshow(gEl);cur='gift';gView(1);SFX.open()}
   function closeGift(){xhide(gEl);cur=gPrev}
-  $('gConf').onclick=function(){SFX.open();$('gpTxt').textContent=$('gTitle').textContent+' was gifted to '+gPlayer+'.';$('gpop').classList.add('on')};
+  var gBusy=false;
+  $('gConf').onclick=function(){if(gBusy)return;gBusy=true;SFX.open();$('gproc').classList.add('on');
+    setTimeout(function(){$('gproc').classList.remove('on');$('gpTxt').textContent=$('gTitle').textContent+' was gifted to '+gPlayer+'.';$('gpop').classList.add('on');SFX.open();gBusy=false},2200+Math.random()*1200)};
+  $('gClose').onclick=function(){SFX.back();$('gpop').classList.remove('on')};
   $('gBackStore').onclick=function(){SFX.open();$('gpop').classList.remove('on');var from=gPrev;closeGift();
     if(from==='store'){stShow(0)}else{sel=0;draw();setTimeout(enterStore,50)}};
   $('gBack').onclick=function(){SFX.back();if(gStep>1)gView(gStep-1);else closeGift()};
