@@ -272,7 +272,7 @@
       <div class="a" style="left:940px;top:466px;width:456px;display:flex;justify-content:space-between;font-size:20px;font-weight:600;padding-bottom:10px;border-bottom:1px solid #8883a8"><span>Total</span><span id="pTot">US$79.99</span></div>
       <div class="a" style="left:940px;top:520px;width:456px;display:flex;justify-content:space-between;font-size:17px"><span>Charged to</span><span class="cardm" style="color:#cfc4f4">Sample payment method</span></div>
       <div class="a" style="left:940px;top:572px;width:456px;font-size:10.5px;line-height:15px;color:#b9b3d0;white-space:normal">By selecting [Confirm purchase], you request immediate access to your purchase from the content's release, bearing in mind that you can cancel your pre-order at any time before the release date. After that date, you can still cancel and request a refund to your wallet up to 14 days after payment, but if you start to download or stream the content, you will lose your right to cancel.<br><br><b style="color:#ff9f0a">SIMULATOR: this screen is a simulation. No charge or pre-order is made.</b></div>
-      <div class="a pbtn foc" id="pConf" style="left:930px;top:756px;width:376px;height:58px">Confirm purchase</div><div class="a pmore" id="pMore" style="left:1328px;top:760px">···</div>
+      <div class="a pbtn" id="pConf" style="left:930px;top:756px;width:376px;height:58px">Confirm purchase</div><div class="a pmore" id="pMore" style="left:1328px;top:760px">···</div>
       <div class="a" style="left:984px;top:828px;font-size:17px">&#9651; Purchase details</div><div class="a" style="left:1190px;top:828px;font-size:15px"><span class="kb">R3</span> Health/Privacy/Terms</div>
       <div class="p-sim">SIMULATOR &mdash; not a real purchase</div>
     </div>
@@ -295,7 +295,7 @@
         <div class="gsm">Expected play availability date: 2026/11/19 at 12:00 AM</div><div class="gpr" id="gPrice">US$79.99</div>
         <div class="gtot"><span>Total</span><b id="gTot">US$79.99</b></div><div class="gchg"><span>Charged to</span><span class="gs2 cardm">Sample payment method</span></div>
         <p class="gfn">SIMULATOR: this screen is a simulation. No gift is sent and nothing is charged.</p>
-        <div class="gbtn foc" id="gConf">Confirm gift</div>
+        <div class="gbtn" id="gConf">Confirm gift</div>
       </div>
       <div class="gpop" id="gproc"><div class="gpb gpl"><div class="spin"></div><p>Processing&hellip;</p></div></div>
       <div class="gpop" id="gpop"><div class="gpb">
@@ -415,7 +415,7 @@
   /* tapping a button focuses it (white + ring), the other button of the pair loses it */
   var fine=window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches;
   [[$('play'),document.querySelector('.dots'),null],[$('pConf'),$('pMore'),$('pConf')]].forEach(function(g){var def=g[2];g.slice(0,2).forEach(function(b){
-    function drop(){b.classList.remove('foc');if(def)def.classList.add('foc')}
+    function drop(){b.classList.remove('foc')}
     b.addEventListener('click',function(){g.slice(0,2).forEach(function(o){o.classList.toggle('foc',o===b)});clearTimeout(b._f);if(!fine)b._f=setTimeout(drop,900)});
     if(fine)b.addEventListener('mouseleave',drop)})});
   /* "..." menu: first tap selects an item (ring), second tap on the same item activates it */
