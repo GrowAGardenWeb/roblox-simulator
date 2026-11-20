@@ -91,12 +91,19 @@
   @property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
   @keyframes spin{to{--ang:360deg}}
   .tile.sel::before,.hot.sel::before,.ed.sel::before,.tl2.sel2::before{content:"";position:absolute;pointer-events:none;z-index:6;border-radius:inherit;
-    background:conic-gradient(from var(--ang),#ffffff,#8d929e 22%,#ffffff 45%,#80858f 70%,#ffffff);
+    background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);
     -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
     animation:spin 2.6s linear infinite;transition:opacity .55s}
   .tile.sel::before{inset:-5px;padding:4px;border-radius:23px}
   .hot.sel::before,.ed.sel::before,.tl2.sel2::before{inset:0;padding:3px}
   .scr.storefull .rail .tile:first-child::before{opacity:0}
+  /* white hover / focus for buttons: turns solid white with the rotating ring */
+  .play,.dots{position:relative}
+  .play,.dots,.pbtn,.pmore{transition:background .2s,color .2s}
+  .play:hover,.play.foc,.dots:hover,.dots.foc,.pbtn:hover,.pbtn.foc,.pmore:hover,.pmore.foc{background:#fff!important;color:#25262e!important;text-shadow:none}
+  .play:hover::before,.play.foc::before,.dots:hover::before,.dots.foc::before,.pbtn:hover::before,.pbtn.foc::before,.pmore:hover::before,.pmore.foc::before{content:"";position:absolute;inset:-5px;padding:3px;border-radius:999px;pointer-events:none;z-index:6;
+    background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}
   .tile{transform-origin:0 0}
   .rail .tile:first-child{transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .55s cubic-bezier(.3,.8,.2,1),box-shadow .55s cubic-bezier(.3,.8,.2,1),transform .55s cubic-bezier(.3,.8,.2,1)}
   .rail .tile:not(:first-child){transition:opacity .3s,width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .3s,box-shadow .3s}
@@ -201,7 +208,7 @@
       <div class="a" style="left:940px;top:466px;width:456px;display:flex;justify-content:space-between;font-size:20px;font-weight:600;padding-bottom:10px;border-bottom:1px solid #8883a8"><span>Total</span><span id="pTot">US$79.99</span></div>
       <div class="a" style="left:940px;top:520px;width:456px;display:flex;justify-content:space-between;font-size:17px"><span>Charged to</span><span style="color:#cfc4f4">Sample payment method</span></div>
       <div class="a" style="left:940px;top:572px;width:456px;font-size:10.5px;line-height:15px;color:#b9b3d0;white-space:normal">By selecting [Confirm purchase], you request immediate access to your purchase from the content's release, bearing in mind that you can cancel your pre-order at any time before the release date. After that date, you can still cancel and request a refund to your wallet up to 14 days after payment, but if you start to download or stream the content, you will lose your right to cancel.<br><br><b style="color:#ff9f0a">SIMULATOR: this screen is a simulation. No charge or pre-order is made.</b></div>
-      <div class="a pbtn" id="pConf" style="left:930px;top:756px;width:376px;height:58px">Confirm purchase</div><div class="a pmore" style="left:1328px;top:760px">···</div>
+      <div class="a pbtn foc" id="pConf" style="left:930px;top:756px;width:376px;height:58px">Confirm purchase</div><div class="a pmore" id="pMore" style="left:1328px;top:760px">···</div>
       <div class="a" style="left:984px;top:828px;font-size:17px">&#9651; Purchase details</div><div class="a" style="left:1190px;top:828px;font-size:15px"><span class="kb">R3</span> Health/Privacy/Terms</div>
       <div class="p-sim">SIMULATOR &mdash; not a real purchase</div>
     </div>
@@ -314,6 +321,8 @@
     document.addEventListener('pointerdown',function(){if(!done&&bv.muted){bv.muted=false}},{once:true});
     bv.addEventListener('ended',fin);bv.addEventListener('error',fin);setTimeout(fin,6000);
   })();
+  /* tapping a button focuses it (white + ring), the other button of the pair loses it */
+  [[$('play'),document.querySelector('.dots')],[$('pConf'),$('pMore')]].forEach(function(g){g.forEach(function(b){b.addEventListener('click',function(){g.forEach(function(o){o.classList.toggle('foc',o===b)})})})});
   /* clock */
   function clk(){var d=new Date();$('clock').textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}clk();setInterval(clk,15000);
   /* settings */
