@@ -30,8 +30,8 @@
    "layout": {
     "id": "ConclusionC111426",
     "name": "One Piece ",
-    "index": 35,
-    "rank": 187,
+    "index": 11,
+    "rank": 185,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
     "displayType": "tileGrid"
@@ -410,22 +410,22 @@
   {
    "regularPrice": 500,
    "finalPrice": 500,
-   "devName": "[VIRTUAL]1 x Fighter for 500 MtxCurrency",
-   "offerId": "v2:/e961a5fb02334e101467092dca6fb656862f4e2124b37e89bb7ed191e8a83521",
-   "inDate": "2026-11-13T00:00:00Z",
-   "outDate": "2026-11-19T23:59:59.999Z",
+   "devName": "[VIRTUAL]1 x TBD (SID_Placeholder_671) for 500 MtxCurrency",
+   "offerId": "v2:/f7dc51160db6326a32387e06f13b086106c8a6a987707a0a3d63edf509077d38",
+   "inDate": "2026-11-20T00:00:00Z",
+   "outDate": "2026-11-26T23:59:59.999Z",
    "giftable": true,
    "refundable": false,
-   "sortPriority": -2,
-   "layoutId": "JT111326.97",
+   "sortPriority": -1,
+   "layoutId": "JT112026.96",
    "layout": {
-    "id": "JT111326",
+    "id": "JT112026",
     "name": "Jam Tracks",
-    "index": 28,
-    "rank": 180,
+    "index": 17,
+    "rank": 177,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
-    "displayType": "tileGrid"
+    "displayType": "expandableList"
    },
    "colors": {
     "color1": "3a306cff",
@@ -433,26 +433,26 @@
     "textBackgroundColor": "694fc3ff"
    },
    "tileSize": "Size_1_x_1",
-   "newDisplayAssetPath": "sid_placeholder_341",
+   "newDisplayAssetPath": "sid_placeholder_671",
    "tracks": [
     {
-     "id": "sid_placeholder_341",
-     "devName": "fighter",
-     "title": "Fighter",
-     "artist": "Christina Aguilera",
-     "releaseYear": 2002,
-     "bpm": 95,
-     "duration": 249,
+     "id": "sid_placeholder_671",
+     "devName": "asaliveasyouneed",
+     "title": "As Alive As You Need Me To Be",
+     "artist": "Nine Inch Nails",
+     "releaseYear": 2025,
+     "bpm": 107,
+     "duration": 239,
      "difficulty": {
-      "vocals": 4,
-      "guitar": 4,
-      "bass": 2,
-      "plasticBass": 2,
-      "drums": 2,
-      "plasticDrums": 2
+      "vocals": 2,
+      "guitar": 2,
+      "bass": 3,
+      "plasticBass": 3,
+      "drums": 3,
+      "plasticDrums": 4
      },
-     "albumArt": "https://cdn.fortnite-api.com/tracks/0a3c784754622ff6.jpg",
-     "added": "2024-09-27T00:00:00Z"
+     "albumArt": "https://cdn.fortnite-api.com/tracks/b3ffa70f132df6e6.jpg",
+     "added": "2025-09-20T00:00:00Z"
     }
    ]
   },
@@ -526,8 +526,8 @@
    "layout": {
     "id": "SummerBatmanGCS",
     "name": "Gotham City Summer",
-    "index": 31,
-    "rank": 188,
+    "index": 6,
+    "rank": 186,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
     "displayType": "tileGrid"
