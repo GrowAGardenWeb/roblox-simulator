@@ -156,6 +156,13 @@
   .gbtn.foc{background:#fff;color:#25262e;transform:scale(1.05)}
   .gtoast{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);background:rgba(255,159,10,.95);color:#111;font-weight:700;padding:14px 28px;font-size:20px;display:none}.gtoast.on{display:block}
   .gsim{position:absolute;left:0;right:0;top:0;height:28px;background:#ff9f0a;color:#111;font-size:14px;font-weight:700;text-align:center;line-height:28px;letter-spacing:.8px;z-index:3}
+  .gpop{position:absolute;inset:0;background:rgba(5,6,12,.72);display:none;align-items:center;justify-content:center;z-index:8}.gpop.on{display:flex;animation:fi .25s ease both}
+  .gpb{position:relative;width:560px;padding:40px 40px 44px;background:#171a28;box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:center}
+  .gpb h2{font-size:36px;margin:14px 0 10px;font-weight:600}.gpb p{font-size:21px;color:#cfd4e4;line-height:28px}.gpb .gps{margin-top:16px;font-size:15px;line-height:21px;color:#ff9f0a;font-weight:700}
+  .gpb .gbtn{position:relative;left:auto;top:auto;margin:30px auto 0;width:340px}
+  .gbtn.foc::before{content:"";position:absolute;inset:-5px;padding:3px;border-radius:999px;pointer-events:none;background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}
+  @media (hover:hover) and (pointer:fine){.gbtn:hover{background:#fff;color:#25262e;transform:scale(1.05)}.gbtn:hover::before{content:"";position:absolute;inset:-5px;padding:3px;border-radius:999px;pointer-events:none;background:conic-gradient(from var(--ang),#ffffff,#d9dce2 22%,#ffffff 45%,#d3d6dd 70%,#ffffff);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin 2.6s linear infinite}}
+  .gbtn:active{transform:scale(.95)}
   .gift .s-back{z-index:9999}
   .tile{transform-origin:0 0}
   .rail .tile:first-child{transition:width .3s cubic-bezier(.22,.9,.3,1),height .3s cubic-bezier(.22,.9,.3,1),margin .3s cubic-bezier(.22,.9,.3,1),border-radius .55s cubic-bezier(.3,.8,.2,1),box-shadow .55s cubic-bezier(.3,.8,.2,1),transform .55s cubic-bezier(.3,.8,.2,1)}
@@ -286,7 +293,9 @@
         <p class="gfn">SIMULATOR: this screen is a simulation. No gift is sent and nothing is charged.</p>
         <div class="gbtn foc" id="gConf">Confirm gift</div>
       </div>
-      <div class="gtoast" id="gtoast">Simulation only &mdash; no gift was sent</div>
+      <div class="gpop" id="gpop"><div class="gpb"><svg viewBox="0 0 34 34" width="56" height="56" fill="none" stroke="#4ec26a" stroke-width="2.4"><circle cx="17" cy="17" r="15.5"/><path d="M10 17.5l5 5 9-10.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h2>Gift Sent</h2><p id="gpTxt"></p><p class="gps">SIMULATOR: this is a simulation. No gift was really sent and nothing was charged.</p>
+        <div class="gbtn foc" id="gBackStore">Go back to Store</div></div></div>
     </div>
     <div class="gsim">SIMULATOR &mdash; not a real gift or purchase</div>
     <div class="s-back" id="gBack">&#9711; Back</div>
@@ -434,16 +443,19 @@
     SFX.open();gView(2)}
   function gBuy(){var ult=cur==='store'&&stCur===2&&$('pTitle').textContent.indexOf('Ultimate')>-1;
     $('gTitle').textContent=ult?'Grand Theft Auto VI Ultimate Edition':'Grand Theft Auto VI';$('gPrice').textContent=$('gTot').textContent=ult?'US$99.99':'US$79.99';$('gCov').src=ult?'assets/ed_ult.jpg':'assets/ic_gta_l3.png';$('gTo').textContent=gPlayer;
-    $('gtoast').classList.remove('on');SFX.open();gView(3)}
+    $('gpop').classList.remove('on');SFX.open();gView(3)}
   function openGift(){gPrev=cur;gq='';gShift=true;gDraw();$('gq').textContent='';$('gq').parentNode.classList.remove('has');xshow(gEl);cur='gift';gView(1);SFX.open()}
   function closeGift(){xhide(gEl);cur=gPrev}
-  $('gConf').onclick=function(){SFX.open();var t=$('gtoast');t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on')},3000)};
+  $('gConf').onclick=function(){SFX.open();$('gpTxt').textContent=$('gTitle').textContent+' was gifted to '+gPlayer+'.';$('gpop').classList.add('on')};
+  $('gBackStore').onclick=function(){SFX.open();$('gpop').classList.remove('on');var from=gPrev;closeGift();
+    if(from==='store'){stShow(0)}else{sel=0;draw();setTimeout(enterStore,50)}};
   $('gBack').onclick=function(){SFX.back();if(gStep>1)gView(gStep-1);else closeGift()};
   window.addEventListener('keydown',function(e){if(cur!=='gift')return;var k=e.key;
-    if(k==='Escape'){SFX.back();if(gStep>1)gView(gStep-1);else closeGift();e.stopImmediatePropagation();return}
+    if(k==='Escape'){SFX.back();if($('gpop').classList.contains('on')){$('gpop').classList.remove('on')}else if(gStep>1)gView(gStep-1);else closeGift();e.stopImmediatePropagation();return}
     if(gStep===1){if(k==='Enter'){gSel('DONE');gSearch()}else if(k==='Backspace'){gSel('BS');gKey('BS')}else if(k.length===1&&!e.ctrlKey&&!e.metaKey){gSel(k);gKey(k);e.preventDefault()}}},true);
   /* made-up masked card shown on the simulated purchase screens: only 4 random digits, never a real number */
   (function(){var d=String(Math.floor(1000+Math.random()*9000));document.querySelectorAll('.cardm').forEach(function(e){e.textContent='**** **** **** '+d})})();
+  if(window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches){document.querySelectorAll('.gbtn,.play,.dots,.pbtn,.pmore').forEach(function(b){b.addEventListener('mouseenter',function(){SFX.move()})})}
   /* clock */
   function clk(){var d=new Date();$('clock').textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}clk();setInterval(clk,15000);
   /* settings */
