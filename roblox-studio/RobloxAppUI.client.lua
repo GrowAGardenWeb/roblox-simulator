@@ -22,6 +22,7 @@ local ICONS = { search = "rbxthumb://type=Asset&id=86271731455715&w=150&h=150", 
 -- Imagen opcional del fondo del avatar: sube assets/avatar-scene.png y pega su id (ej. "rbxassetid://123")
 local ASSETS = { scene = "rbxthumb://type=Asset&id=114483366744522&w=420&h=420" }
 -- Iconos del panel lateral (assets/drawer_*.png). Deja "" para usar un cuadro de relleno
+local slotWorn, slotRefresh = {}, {} -- que item llevas en cada casilla de Customize (la casilla muestra su foto)
 local DICONS = { favorites = "rbxthumb://type=Asset&id=71964804162858&w=150&h=150", continue = "rbxthumb://type=Asset&id=119745976478474&w=150&h=150", friends = "rbxthumb://type=Asset&id=126269462748291&w=150&h=150", communities = "rbxthumb://type=Asset&id=106934809621366&w=150&h=150", inventory = "rbxthumb://type=Asset&id=106040069675827&w=150&h=150", trades = "rbxthumb://type=Asset&id=89295088018855&w=150&h=150", messages = "rbxthumb://type=Asset&id=109767095299004&w=150&h=150", plus = "rbxthumb://type=Asset&id=100364072192428&w=150&h=150", settings = "rbxthumb://type=Asset&id=129466567035785&w=150&h=150", help = "rbxthumb://type=Asset&id=81961541070933&w=150&h=150", moments = "rbxthumb://type=Asset&id=99057265244475&w=150&h=150", learn = "rbxthumb://type=Asset&id=132742961819214&w=150&h=150", create = "rbxthumb://type=Asset&id=111302726472300&w=150&h=150" }
 -- inventario de juguete (items reales del catalogo) por si el catalogo/inventario real no responde
 local FAKE_INV = {
@@ -1360,17 +1361,24 @@ makeItemCell = function(parent, it, kind, order, cz)
 	local btn = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 4 }, cell)
 	if cz then
 		-- Customize: tocar equipa / desequipa (sin barra de compra ni detalles); el borde marca lo que llevas puesto
-		stroke.Enabled = isWorn(it.Id, kind)
+		local function onNow()
+			if kind == "Bundle" then return slotWorn[cz] and slotWorn[cz].Id == it.Id end
+			return isWorn(it.Id, kind)
+		end
+		stroke.Enabled = onNow() and true or false
 		btn.Activated:Connect(function()
 			safe(function()
-				if isWorn(it.Id, kind) then
+				if onNow() then
 					equipped[it.Id] = nil
 					unwear(it.Id, kind)
+					slotWorn[cz] = nil
 				else
 					equipped[it.Id] = true
 					wear(it.Id, kind)
+					slotWorn[cz] = { Id = it.Id, IsBundle = it.IsBundle }
 				end
-				stroke.Enabled = isWorn(it.Id, kind)
+				stroke.Enabled = onNow() and true or false
+				if slotRefresh[cz] then slotRefresh[cz]() end
 			end)
 		end)
 	else
@@ -1531,7 +1539,7 @@ catalogInto = function(cat)
 			if #items == 0 then label(grid, "Not available yet", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20)) end
 			for i, it in ipairs(items) do
 				if i > 12 then break end
-				makeItemCell(grid, it, cat[4], i, true)
+				makeItemCell(grid, it, cat[4], i, cat[5] or cat[4])
 			end
 		end)
 		if not ok then
@@ -1562,6 +1570,7 @@ local czSub = { Body = "Full Body", Clothing = "Top", Accessories = "Head" }
 local czTab = "Avatars"
 local buildCz
 local function subTile(sub, selected, onTap)
+	local key = sub[5] or sub[4]
 	local f = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(78, 108) })
 	local t = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, Size = UDim2.fromOffset(72, 72) }, f)
 	corner(t, UDim.new(0, 12))
@@ -1581,6 +1590,19 @@ local function subTile(sub, selected, onTap)
 		label(plus, "+", 17, false, C.sub, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
 	end
 	label(f, sub[1], 14, false, C.text, UDim2.fromOffset(-3, 76), UDim2.fromOffset(84, 22), Enum.TextXAlignment.Center)
+	-- como en la app: si llevas un item de esta casilla, la casilla muestra su foto (y se quita el icono y el "+")
+	if key then
+		local photo = new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 233), ScaleType = Enum.ScaleType.Fit, Size = UDim2.fromScale(1, 1), Visible = false, ZIndex = 5 }, t)
+		corner(photo, UDim.new(0, 12))
+		local function refresh()
+			if not photo.Parent then return end
+			local w = slotWorn[key]
+			photo.Visible = w ~= nil
+			if w then photo.Image = "rbxthumb://type=" .. (w.IsBundle and "BundleThumbnail" or "Asset") .. "&id=" .. w.Id .. "&w=150&h=150" end
+		end
+		slotRefresh[key] = refresh
+		refresh()
+	end
 	t.Activated:Connect(onTap)
 	return f
 end
@@ -1593,13 +1615,17 @@ end
 local function subPanel(tab)
 	local cur = czSub[tab]
 	local subs = CZ_SUBS[tab]
-	local sc = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Size = UDim2.new(1, 0, 0, 112), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X })
+	local sc = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Size = UDim2.new(1, 0, 0, 118), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X })
 	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 8) }, sc)
+	new("UIPadding", { PaddingTop = UDim.new(0, 5), PaddingLeft = UDim.new(0, 4), PaddingRight = UDim.new(0, 4), PaddingBottom = UDim.new(0, 4) }, sc)
 	local chosen
 	for _, sub in ipairs(subs) do
 		if sub[1] == cur then chosen = sub end
 		subTile(sub, sub[1] == cur, function()
-			if sub[1] == "Clear" then loadMyDescription() else czSub[tab] = sub[1]; buildCz() end
+			if sub[1] == "Clear" then
+				for k in pairs(slotWorn) do slotWorn[k] = nil end
+				loadMyDescription()
+			else czSub[tab] = sub[1]; buildCz() end
 		end).Parent = sc
 	end
 	czAdd(sc)
