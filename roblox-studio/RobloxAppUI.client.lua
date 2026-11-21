@@ -114,6 +114,7 @@ end
 -- saldo de JUGUETE (solo simulacion, no es Robux real)
 local simBalance = 1000
 local profile = { name = player.DisplayName, plus = false, verified = false }
+local czMode = false -- true cuando esta abierta la pestana Customize (ahi no hay barra de compra)
 local nameLabels = {}
 local balanceLabels = {}
 -- ancho de un texto (TextService:GetTextSize ya no existe en Roblox: se usa GetTextBoundsAsync)
@@ -786,7 +787,7 @@ makeBar = function(parent, z0)
 	end
 	local bar = { frame = wrap, buy = buy, manage = manage }
 	function bar.refresh()
-		if not selected then wrap.Visible = false; return end
+		if not selected or czMode then wrap.Visible = false; return end
 		wrap.Visible = true
 		local it = selected.it
 		local own = owned[it.Id]
@@ -972,7 +973,7 @@ local function selectItem(it, kind)
 	paintSelection()
 	refreshBars()
 end
-makeItemCell = function(parent, it, kind, order)
+makeItemCell = function(parent, it, kind, order, cz)
 	local p = tonumber(it.Price) or 0
 	local cell = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1 / 3, -7, 0, 186), LayoutOrder = order }, parent)
 	local img = new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", ScaleType = Enum.ScaleType.Fit, Size = UDim2.new(1, 0, 0, 110) }, cell)
@@ -989,12 +990,31 @@ makeItemCell = function(parent, it, kind, order)
 		label(cell, "Free", 14.2, true, Color3.fromRGB(106, 111, 129), UDim2.fromOffset(0, 156), UDim2.new(1, 0, 0, 20))
 	end
 	local btn = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 4 }, cell)
-	btn.Activated:Connect(function() safe(selectItem, it, kind) end)
+	if cz then
+		-- Customize: tocar equipa / desequipa (sin barra de compra ni detalles); el borde marca lo que llevas puesto
+		stroke.Enabled = equipped[it.Id] and true or false
+		btn.Activated:Connect(function()
+			safe(function()
+				if equipped[it.Id] then
+					equipped[it.Id] = nil
+					unwear(it.Id, kind)
+				else
+					equipped[it.Id] = true
+					wear(it.Id, kind)
+				end
+				stroke.Enabled = equipped[it.Id] and true or false
+			end)
+		end)
+	else
+		btn.Activated:Connect(function() safe(selectItem, it, kind) end)
+	end
 	-- boton propio de la tira "Details" (solo existe mientras el ítem esta seleccionado)
 	local detBtn = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.new(0, 3, 0, 110 - 20), Size = UDim2.new(1, -6, 0, 17), ZIndex = 7, Visible = false }, cell)
 	detBtn.Activated:Connect(function() safe(openDetails, it, kind) end)
-	cellsById[it.Id] = { stroke = stroke, details = det, detBtn = detBtn }
-	if selected and selected.it.Id == it.Id then stroke.Enabled = true; det.Visible = true; detBtn.Visible = true end
+	if not cz then
+		cellsById[it.Id] = { stroke = stroke, details = det, detBtn = detBtn }
+		if selected and selected.it.Id == it.Id then stroke.Enabled = true; det.Visible = true; detBtn.Visible = true end
+	end
 	return cell
 end
 
@@ -1109,7 +1129,7 @@ catalogInto = function(cat)
 			st:Destroy()
 			for i, it in ipairs(items) do
 				if i > 12 then break end
-				makeItemCell(grid, it, cat[3], i)
+				makeItemCell(grid, it, cat[3], i, true)
 			end
 		end)
 		if not ok then warn(err); if st.Parent then st.Text = "Catalog unavailable." end end
@@ -1237,6 +1257,8 @@ end
 
 setMode = function(i)
 	local cz = (i == 2)
+	czMode = cz
+	refreshBars()
 	tabsRow.Visible = not cz; tabLine.Visible = not cz; body.Visible = not cz
 	czTabsRow.Visible = cz; czLine.Visible = cz; czBody.Visible = cz
 	if cz then selectCz(czTab) end
