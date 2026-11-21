@@ -76,6 +76,7 @@ end
 local simBalance = 1000
 local balanceLabels = {}
 local openSendSheet
+local openRobuxPage
 
 -- ======== ScreenGui ========
 local gui = new("ScreenGui", { Name = "RobloxAppUI", ResetOnSpawn = false, IgnoreGuiInset = true, ZIndexBehavior = Enum.ZIndexBehavior.Sibling }, player:WaitForChild("PlayerGui"))
@@ -314,7 +315,7 @@ hexIcon(chip, 22, UDim2.fromOffset(10, 10), C.text)
 local chipLbl = label(chip, tostring(simBalance), 17, false, C.text, UDim2.fromOffset(36, 8), UDim2.fromOffset(26, 26))
 balanceLabels[#balanceLabels + 1] = chipLbl
 local chipBtn = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 5 }, chip)
-chipBtn.Activated:Connect(function() if openSendSheet then openSendSheet() end end)
+chipBtn.Activated:Connect(function() if openRobuxPage then openRobuxPage() end end)
 -- deshacer / rehacer
 local urPill = new("Frame", { BackgroundColor3 = WHITE_PILL, BackgroundTransparency = 0.2, Position = UDim2.fromOffset(20, 282), Size = UDim2.fromOffset(80, 40), BorderSizePixel = 0 }, avScreen)
 corner(urPill)
@@ -640,20 +641,21 @@ end
 -- ======== Send Robux (saldo de juguete, solo simulacion) ========
 local sendGui = new("Frame", { Name = "SendRobux", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, ZIndex = 80 }, root)
 local sDim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 80 }, sendGui)
-local sSheet = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 249), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 0), Size = UDim2.new(1, 0, 0.83, 0), ZIndex = 81, ClipsDescendants = true }, sendGui)
+local sSheet = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 249), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 0), Size = UDim2.new(1, 0, 0.86, 0), ZIndex = 81, ClipsDescendants = true }, sendGui)
 corner(sSheet, UDim.new(0, 22))
 local function z(o, n) o.ZIndex = n or 82; return o end
 -- cabecera
-local sHex = hexIcon(sSheet, 24, UDim2.fromOffset(18, 18), Color3.fromRGB(74, 77, 90));
-local sTitle = z(label(sSheet, "Send Robux", 20, true, Color3.fromRGB(74, 77, 90), UDim2.fromOffset(52, 16), UDim2.fromOffset(200, 28)))
-local sBalHex = hexIcon(sSheet, 18, UDim2.new(1, -112, 0, 22), C.text)
-local sBal = z(label(sSheet, "", 17, true, C.text, UDim2.new(1, -90, 0, 18), UDim2.fromOffset(60, 26)))
+local sHex = hexIcon(sSheet, 22, UDim2.fromOffset(17, 20), Color3.fromRGB(73, 77, 90))
+local sTitle = z(label(sSheet, "Send Robux", 19, true, Color3.fromRGB(73, 77, 90), UDim2.fromOffset(45, 19), UDim2.fromOffset(200, 26)))
+local sBalHex = hexIcon(sSheet, 16, UDim2.new(1, -104, 0, 23), Color3.fromRGB(32, 34, 39))
+local sBal = z(label(sSheet, "", 15, false, Color3.fromRGB(32, 34, 39), UDim2.new(1, -84, 0, 19), UDim2.fromOffset(46, 22)))
 balanceLabels[#balanceLabels + 1] = sBal
 local sClose = z(new("TextButton", { Text = "\u{2715}", TextSize = 18, Font = FONT, TextColor3 = C.text, BackgroundTransparency = 1, Position = UDim2.new(1, -44, 0, 16), Size = UDim2.fromOffset(32, 32) }, sSheet))
 
 local sPages = {}
-local function sPage(name)
-	local f = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 64), Size = UDim2.new(1, 0, 1, -64), ZIndex = 82, Visible = false }, sSheet)
+local function sPage(name, y)
+	y = y or 64
+	local f = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 1, -y), ZIndex = 82, Visible = false }, sSheet)
 	sPages[name] = f
 	return f
 end
@@ -663,28 +665,28 @@ end
 local target, amount = nil, 0
 local function avatarOf(id) return "rbxthumb://type=AvatarHeadShot&id=" .. id .. "&w=150&h=150" end
 local function userRow(parent, u, y, onTap)
-	local r = z(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 60) }, parent))
-	local av = z(new("ImageLabel", { BackgroundColor3 = C.gray, Image = avatarOf(u.Id), Position = UDim2.fromOffset(18, 8), Size = UDim2.fromOffset(44, 44) }, r))
+	local r = z(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 56) }, parent))
+	local av = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), Image = avatarOf(u.Id), Position = UDim2.fromOffset(17, 8), Size = UDim2.fromOffset(39, 39) }, r))
 	corner(av)
-	z(label(r, u.DisplayName ~= "" and u.DisplayName or u.Username, 18, true, C.text, UDim2.fromOffset(74, 8), UDim2.new(1, -90, 0, 24)))
-	z(label(r, "@" .. u.Username, 15, false, C.sub, UDim2.fromOffset(74, 32), UDim2.new(1, -90, 0, 20)))
+	z(label(r, u.DisplayName ~= "" and u.DisplayName or u.Username, 14.5, true, C.text, UDim2.fromOffset(66, 8), UDim2.new(1, -80, 0, 20)))
+	z(label(r, "@" .. u.Username, 11.5, false, Color3.fromRGB(106, 111, 129), UDim2.fromOffset(66, 28), UDim2.new(1, -80, 0, 16)))
 	if onTap then r.Activated:Connect(function() onTap(u) end) end
 	return r
 end
 
 -- 1) buscar / amigos
-local pSearch = sPage("search")
-local sField = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, 6), Size = UDim2.new(1, -36, 0, 40) }, pSearch))
-corner(sField); new("UIStroke", { Color = Color3.fromRGB(205, 207, 214), Thickness = 1.6 }, sField)
-local sBox = z(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "Search", PlaceholderColor3 = C.sub, TextSize = 18, Font = FONT, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(46, 0), Size = UDim2.new(1, -56, 1, 0) }, sField))
-local sMag = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(14, 11), Size = UDim2.fromOffset(18, 18) }, sField))
+local pSearch = sPage("search", 0)
+local sField = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(17, 54), Size = UDim2.new(1, -35, 0, 32) }, pSearch))
+corner(sField); new("UIStroke", { Color = Color3.fromRGB(207, 209, 215), Thickness = 1 }, sField)
+local sBox = z(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "Search", PlaceholderColor3 = C.sub, TextSize = 15, Font = FONT, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(38, 0), Size = UDim2.new(1, -48, 1, 0) }, sField))
+local sMag = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(13, 8), Size = UDim2.fromOffset(16, 16) }, sField))
 do
 	local c = z(new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(14, 14) }, sMag)); corner(c); new("UIStroke", { Color = C.text, Thickness = 1.8 }, c)
 	z(new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(15, 15), Size = UDim2.fromOffset(6, 2), Rotation = 45 }, sMag))
 end
-local sHead = z(label(pSearch, "My friends (0)", 20, true, C.text, UDim2.fromOffset(18, 58), UDim2.new(1, -36, 0, 28)))
-local sList = z(new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 92), Size = UDim2.new(1, 0, 1, -92), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y }, pSearch))
-local sEmpty = z(label(sList, "No friends yet", 17, false, C.sub, UDim2.fromOffset(0, 30), UDim2.new(1, 0, 0, 24), Enum.TextXAlignment.Center))
+local sHead = z(label(pSearch, "My friends (0)", 15, true, C.text, UDim2.fromOffset(17, 98), UDim2.new(1, -35, 0, 22)))
+local sList = z(new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 124), Size = UDim2.new(1, 0, 1, -124), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y }, pSearch))
+local sEmpty = z(label(sList, "No friends yet", 13, false, Color3.fromRGB(107, 111, 120), UDim2.fromOffset(0, 20), UDim2.new(1, 0, 0, 20), Enum.TextXAlignment.Center))
 local friendsCache = nil
 local goAmount
 local function showUsers(users, header)
@@ -693,7 +695,7 @@ local function showUsers(users, header)
 	end
 	sHead.Text = header
 	sEmpty.Visible = (#users == 0)
-	for i, u in ipairs(users) do userRow(sList, u, (i - 1) * 60, function(x) goAmount(x) end) end
+	for i, u in ipairs(users) do userRow(sList, u, (i - 1) * 56, function(x) goAmount(x) end) end
 end
 local function loadFriends()
 	if friendsCache then showUsers(friendsCache, "My friends (" .. #friendsCache .. ")"); return end
@@ -716,9 +718,9 @@ sBox.FocusLost:Connect(function(enter)
 		local ok, id = pcall(function() return Players:GetUserIdFromNameAsync(q) end)
 		if ok and id then
 			local ok2, nm = pcall(function() return Players:GetNameFromUserIdAsync(id) end)
-			showUsers({ { Id = id, Username = ok2 and nm or q, DisplayName = "" } }, "Results")
+			showUsers({ { Id = id, Username = ok2 and nm or q, DisplayName = "" } }, "People (1)")
 		else
-			showUsers({}, "Results")
+			showUsers({}, "People (0)")
 			sEmpty.Text = "No users found"
 		end
 	end)
@@ -814,6 +816,37 @@ openSendSheet = function()
 	TweenService:Create(sSheet, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, 0) }):Play()
 end
 
+
+-- ======== Pantalla Robux (solo saldo de juguete y Send; sin paquetes ni compras) ========
+local rbxPage = new("Frame", { Name = "RobuxPage", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(247, 247, 248), BorderSizePixel = 0, Visible = false, ZIndex = 70 }, root)
+local rbxTop = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 74), ZIndex = 71 }, rbxPage)
+local rbxX = new("TextButton", { Text = "\u{2715}", TextSize = 18, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(231, 232, 236), AutoButtonColor = true, Position = UDim2.fromOffset(18, 34), Size = UDim2.fromOffset(34, 34), ZIndex = 72 }, rbxTop)
+corner(rbxX)
+hexIcon(rbxTop, 22, UDim2.fromOffset(70, 40), C.text).ZIndex = 72
+local rbxBal = label(rbxTop, tostring(simBalance), 26, true, C.text, UDim2.fromOffset(98, 36), UDim2.fromOffset(150, 32))
+rbxBal.ZIndex = 72
+balanceLabels[#balanceLabels + 1] = rbxBal
+local rbxSend = new("TextButton", { Text = "Send", TextSize = 15, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(221, 222, 227), AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 35), Size = UDim2.fromOffset(82, 28), ZIndex = 72 }, rbxTop)
+corner(rbxSend, UDim.new(0, 8))
+local rbxBody = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 74), Size = UDim2.new(1, 0, 1, -74), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, ZIndex = 71 }, rbxPage)
+new("UIPadding", { PaddingLeft = UDim.new(0, 18), PaddingRight = UDim.new(0, 18), PaddingTop = UDim.new(0, 10) }, rbxBody)
+new("UIListLayout", { Padding = UDim.new(0, 12), SortOrder = Enum.SortOrder.LayoutOrder }, rbxBody)
+local ft = label(rbxBody, "FAQ", 22, true, C.text, nil, UDim2.new(1, 0, 0, 30))
+ft.ZIndex = 71
+ft.LayoutOrder = 1
+for i, q in ipairs({ "What are Robux?", "How do I send Robux?", "Where can I use Robux?" }) do
+	local card = new("Frame", { BackgroundColor3 = Color3.fromRGB(255, 255, 255), BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 50), LayoutOrder = 1 + i, ZIndex = 71 }, rbxBody)
+	corner(card, UDim.new(0, 12))
+	new("UIStroke", { Color = Color3.fromRGB(215, 217, 223), Thickness = 1.2 }, card)
+	local ql = label(card, q, 15, true, C.text, UDim2.fromOffset(16, 0), UDim2.new(1, -50, 1, 0))
+	ql.ZIndex = 72
+	local ch = label(card, "\u{2304}", 20, false, C.text, UDim2.new(1, -36, 0, 0), UDim2.fromOffset(24, 50), Enum.TextXAlignment.Center)
+	ch.ZIndex = 72
+end
+rbxX.Activated:Connect(function() rbxPage.Visible = false end)
+rbxSend.Activated:Connect(function() if openSendSheet then openSendSheet() end end)
+openRobuxPage = function() rbxPage.Visible = true end
+
 -- ======== Panel lateral (menu de las 3 rayas) ========
 local DR_W = 333
 local drawerGui = new("Frame", { Name = "Drawer", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, ZIndex = 50 }, root)
@@ -839,9 +872,9 @@ do
 	hexIcon(card, 26, UDim2.fromOffset(14, 19), C.text).ZIndex = 51
 	local bl = label(card, tostring(simBalance), 24, true, C.text, UDim2.fromOffset(52, 16), UDim2.fromOffset(110, 32)); bl.ZIndex = 51
 	balanceLabels[#balanceLabels + 1] = bl
-	local sb = new("TextButton", { Text = "Send", TextSize = 16, Font = FONT, TextColor3 = C.text, BackgroundColor3 = C.gray, AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.fromOffset(86, 40), ZIndex = 51 }, card)
+	local sb = new("TextButton", { Text = "Robux", TextSize = 16, Font = FONT, TextColor3 = C.text, BackgroundColor3 = C.gray, AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.fromOffset(86, 40), ZIndex = 51 }, card)
 	corner(sb, UDim.new(0, 12))
-	sb.Activated:Connect(function() if openSendSheet then openSendSheet() end end)
+	sb.Activated:Connect(function() if openRobuxPage then openRobuxPage() end end)
 end
 gap(10)
 local function row(text, badge, key)
