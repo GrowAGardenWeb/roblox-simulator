@@ -116,6 +116,19 @@ local simBalance = 1000
 local profile = { name = player.DisplayName, plus = false, verified = false }
 local nameLabels = {}
 local balanceLabels = {}
+-- ancho de un texto (TextService:GetTextSize ya no existe en Roblox: se usa GetTextBoundsAsync)
+local function textWidth(text, size, fontEnum)
+	local ok, v = pcall(function()
+		local params = Instance.new("GetTextBoundsParams")
+		params.Text = text
+		params.Size = size
+		params.Font = Font.fromEnum(fontEnum)
+		params.Width = 100000
+		return game:GetService("TextService"):GetTextBoundsAsync(params).X
+	end)
+	if ok and v then return v end
+	return #tostring(text) * size * 0.56
+end
 local showErr = function(m) warn(m) end -- se redefine mas abajo para mostrar el error en pantalla
 local function fmtFull(n)
 	n = math.max(0, math.floor(tonumber(n) or 0))
@@ -143,7 +156,7 @@ local function applyBalance()
 		l.Text = (mode == "compact") and fmtCompact(simBalance) or fmtAdaptive(simBalance)
 		local fit = l:GetAttribute("fit")
 		if fit then
-			local ok, w = pcall(function() return game:GetService("TextService"):GetTextSize(l.Text, l.TextSize, l.Font, Vector2.new(1000, 100)).X end)
+			local ok, w = pcall(function() return textWidth(l.Text, l.TextSize, l.Font) end)
 			if ok then
 				local parent = l.Parent
 				parent.Size = UDim2.fromOffset(math.max(64, 36 + w + 14), parent.Size.Y.Offset)
@@ -784,7 +797,7 @@ makeBar = function(parent, z0)
 		buyGlyph.Visible = p > 0
 		buyTxt.Text = p > 0 and fmtFull(p) or "Free"
 		-- el icono se pega al numero
-		local w = game:GetService("TextService"):GetTextSize(buyTxt.Text, 12.6, Enum.Font.BuilderSansBold, Vector2.new(500, 40)).X
+		local w = textWidth(buyTxt.Text, 12.6, Enum.Font.BuilderSansBold)
 		buyGlyph.Position = UDim2.fromOffset((281.5 - (14 + 5 + w)) / 2 - 2, 7)
 		buyTxt.Position = UDim2.fromOffset((p > 0 and 9.5 or 0), 0)
 	end
@@ -817,7 +830,7 @@ openBuyPrompt = function(it, kind)
 	local cost = z(label(m, p > 0 and fmtFull(p) or "Free", 12.6, true, C.text, UDim2.fromOffset(78.5 + (p > 0 and 18 or 0), 94.5), UDim2.fromOffset(120, 16)))
 	if plusOn then
 		-- precio original tachado, como en la app
-		local w = game:GetService("TextService"):GetTextSize(fmtFull(p), 12.6, Enum.Font.BuilderSansBold, Vector2.new(300, 30)).X
+		local w = textWidth(fmtFull(p), 12.6, Enum.Font.BuilderSansBold)
 		z(new("TextLabel", { BackgroundTransparency = 1, RichText = true, Text = "<s>" .. fmtFull(base) .. "</s>", TextSize = 10.6, Font = FONT, TextColor3 = Color3.fromRGB(92, 95, 110), TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(78.5 + 18 + w + 8, 95.5), Size = UDim2.fromOffset(80, 14) }, m))
 	end
 	if p > 0 then glyph(m, "robux", 14.4, UDim2.fromOffset(77, 93.5), C.text).ZIndex = 202 end
@@ -1343,7 +1356,7 @@ aShow.Active = false
 local function layoutAmt()
 	local txt = aBox.Text ~= "" and fmtFull(tonumber(aBox.Text) or 0) or "0"
 	aShow.Text = txt
-	local w = TextService:GetTextSize(txt, 33, Enum.Font.BuilderSansBold, Vector2.new(1000, 60)).X
+	local w = textWidth(txt, 33, Enum.Font.BuilderSansBold)
 	local total = 25.4 + 6 + w
 	local W = pAmount.AbsoluteSize.X
 	aGlyph.Position = UDim2.fromOffset((W - total) / 2 - 2, 201)
@@ -1480,7 +1493,7 @@ aNext.Activated:Connect(function()
 	rvMut.Text = (d % 15) .. " mutual Friends"
 	rvJoined.Text = "Joined in " .. (2008 + d % 16)
 	rvAmt.Text = fmt(amount)
-	local w = TextService:GetTextSize(fmt(amount), 33, Enum.Font.BuilderSansBold, Vector2.new(1000, 60)).X
+	local w = textWidth(fmt(amount), 33, Enum.Font.BuilderSansBold)
 	local W = sSheet.AbsoluteSize.X
 	rvAmt.Position = UDim2.fromOffset(((25.4 + 6) / 2), 265.8)
 	rvGlyph.Position = UDim2.fromOffset((W - (25.4 + 6 + w)) / 2 - 2, 266.5)
