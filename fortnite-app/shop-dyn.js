@@ -243,7 +243,7 @@
           e.items.filter((i) => i !== lead && i.icon).slice(0, 6).forEach((i, k) => { const ic = document.createElement('div'); ic.className = 'ic'; ic.dataset.img = i.icon; ic.style.left = (10 + (k % 3) * 50 + (k > 2 ? 14 : 0)) + 'px'; ic.style.top = (16 + Math.floor(k / 3) * 62 + (k % 2) * 8) + 'px'; ic.style.rotate = (k % 2 ? 5 : -4) + 'deg'; cm.appendChild(ic); lazy.observe(ic); });
         }
         t.addEventListener('click', () => { window.curItem = e.devKey || key; });
-        t.addEventListener('mouseenter', () => { window.__shopPrev && window.__shopPrev(e, lead); });
+        t.addEventListener('mouseenter', () => { window.__shopPrev && window.__shopPrev(e, lead, t); });
         if (e.dev) { t.classList.add('dev', 'map'); const pr = t.querySelector('.pr'); pr.className = 'ownlbl'; pr.textContent = 'OWNED'; if (e.devKey === 'pirate') devTok = t; }
         g.appendChild(t);
       };
@@ -275,7 +275,7 @@
     const bgW = document.createElement('div'); bgW.id = 'shopbg'; bgW.innerHTML = '<i></i><i></i>'; shopScr.insertBefore(bgW, shopScr.firstChild);
     let bgI = 0, bgCur = '';
     // fondos de sección: se bajan una vez, se reducen a 960 px y se conservan máx. 3 (se libera el resto)
-    const bgCache = new Map();
+    const bgCache = new Map(), bgAvg = new Map();
     const getBg = (url) => new Promise((res) => {
       if (bgCache.has(url)) { res(bgCache.get(url)); return; }
       const im = new Image(); im.crossOrigin = 'anonymous'; im.decoding = 'async';
@@ -283,17 +283,41 @@
         try {
           const r = Math.min(1, 960 / im.naturalWidth), c = document.createElement('canvas'); c.width = Math.round(im.naturalWidth * r); c.height = Math.round(im.naturalHeight * r);
           c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
-          c.toBlob((bl) => { const u = bl ? URL.createObjectURL(bl) : url; c.width = c.height = 0; bgCache.set(url, u); while (bgCache.size > 3) { const k = bgCache.keys().next().value, old = bgCache.get(k); bgCache.delete(k); if (old.startsWith('blob:') && !Array.from(bgW.children).some((e) => e.style.background.includes(old))) URL.revokeObjectURL(old); } res(u); }, 'image/jpeg', 0.8);
+          try { const t8 = document.createElement('canvas'); t8.width = t8.height = 8; const tg = t8.getContext('2d'); tg.drawImage(c, 0, 0, 8, 8); const d8 = tg.getImageData(0, 0, 8, 8).data; let r8 = 0, g8 = 0, b8 = 0, n8 = 0; for (let i = 0; i < d8.length; i += 4) { r8 += d8[i]; g8 += d8[i + 1]; b8 += d8[i + 2]; n8++; } bgAvg.set(url, [r8 / n8, g8 / n8, b8 / n8]); } catch (e) {}
+          c.toBlob((bl) => { const u = bl ? URL.createObjectURL(bl) : url; c.width = c.height = 0; bgCache.set(url, u); while (bgCache.size > 8) { const k = bgCache.keys().next().value, old = bgCache.get(k); bgCache.delete(k); if (old.startsWith('blob:') && !Array.from(bgW.children).some((e) => e.style.background.includes(old))) URL.revokeObjectURL(old); } res(u); }, 'image/jpeg', 0.8);
         } catch (e) { bgCache.set(url, url); res(url); }
       };
       im.onerror = () => res(url); im.src = url;
     });
-    const setBg = (c, url) => { if (url) getBg(url).then((u) => rawSetBg(c, u, url)); else rawSetBg(c, '', ''); };
-    const rawSetBg = (c, url, orig) => { const key = (orig || url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key; const el = bgW.children[bgI = 1 - bgI]; el.style.background = url ? 'linear-gradient(rgba(4,14,52,.35),rgba(4,14,52,.6)),url("' + url + '") center/cover no-repeat' : 'none'; bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
+    const hex2rgb = (h) => { const m = /^#?([0-9a-f]{6})/i.exec(h || ''); if (!m) return [42, 88, 200]; const n = parseInt(m[1], 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    const rgb2hsl = ([r, g, b]) => { r /= 255; g /= 255; b /= 255; const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2; let h = 0, sa = 0; if (mx !== mn) { const d = mx - mn; sa = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; } return [h, sa * 100, l * 100]; };
+    const gradFor = (c) => { const [r, g, b] = hex2rgb(c), mix = (k, t) => Math.round(k + (t - k) * .3), dk = (k) => Math.round(k * .45); return 'linear-gradient(160deg,rgb(' + mix(r, 255) + ',' + mix(g, 255) + ',' + mix(b, 255) + '),rgb(' + dk(r) + ',' + dk(g) + ',' + dk(b) + '))'; };
+    // el color de la interfaz (botones de abajo, píldora de arriba, riel) sigue al fondo de la sección
+    const themeSt = document.createElement('style'); themeSt.textContent = '.screen[data-screen="shop"] .gl{background:var(--btn,rgba(80,150,240,.7))!important;transition:background .5s}#shoprail{background:var(--rail,rgba(5,22,84,.92))!important;transition:background .5s}'; document.head.appendChild(themeSt);
+    const navPills = () => [...document.querySelectorAll('#nav > div')].filter((e) => { const bg = getComputedStyle(e).backgroundColor; return /190, 206, 238/.test(bg) || e.dataset.pill === '1'; });
+    const filtImg = () => shopScr.querySelector(':scope > img.px');
+    const applyTheme = (c, avg) => {
+      const rgb = avg || hex2rgb(c), [h, sa] = rgb2hsl(rgb), S = Math.max(35, Math.min(80, sa));
+      const bd = document.body.style;
+      bd.setProperty('--btn', 'hsla(' + h.toFixed(0) + ',' + S.toFixed(0) + '%,58%,.78)');
+      bd.setProperty('--rail', 'hsla(' + h.toFixed(0) + ',' + Math.min(70, S).toFixed(0) + '%,22%,.9)');
+      bd.setProperty('--pill', 'hsla(' + h.toFixed(0) + ',45%,86%,.94)');
+      navPills().forEach((e) => { e.dataset.pill = '1'; e.style.background = 'var(--pill)'; e.style.transition = 'background .5s'; });
+      const fi = filtImg(); if (fi) { fi.style.transition = 'filter .5s'; fi.style.filter = 'hue-rotate(' + Math.round(h - 222) + 'deg)'; }
+    };
+    new MutationObserver(() => { if (document.body.dataset.screen !== 'shop') ['--btn', '--rail', '--pill'].forEach((k) => document.body.style.removeProperty(k)); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
+    let bgTok = 0;
+    const setBg = (c, url) => {
+      const tok = ++bgTok;
+      rawSetBg(c, '', ''); applyTheme(c, null);                       // al instante: color de la sección
+      if (url) getBg(url).then((u) => { if (tok !== bgTok) return; rawSetBg(c, u, url); applyTheme(c, bgAvg.get(url)); });
+    };
+    const rawSetBg = (c, url, orig) => { const key = (orig || url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key; const el = bgW.children[bgI = 1 - bgI]; el.style.background = url ? 'linear-gradient(rgba(4,14,52,.08),rgba(4,14,52,.26)),url("' + url + '") center/cover no-repeat' : gradFor(c); bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
+    const warmAhead = (idx) => { for (let k = Math.max(0, idx - 1); k <= idx + 3 && k < heads.length; k++) { const u = bgFor(heads[k][1]); if (u) getBg(u); } };
     // título de la sección actual
     const ttl = document.querySelector('[data-t="shop.title"]'); let last = '';
     let fHi = null;
-    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)], bgFor(cur[1])); heads.forEach((h) => { if (h) h[0].style.opacity = h === cur ? 0 : 1; }); if (fHi) fHi(heads.indexOf(cur)); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
+    const upd = () => { let cur = heads[0]; for (const h of heads) if (h[0].offsetTop <= sc.scrollTop + 70) cur = h; setBg(secCols[heads.indexOf(cur)], bgFor(cur[1])); warmAhead(heads.indexOf(cur)); heads.forEach((h) => { if (h) h[0].style.opacity = h === cur ? 0 : 1; }); if (fHi) fHi(heads.indexOf(cur)); if (ttl && cur && cur[1] !== last) { last = cur[1]; ttl.style.transition = 'opacity .18s'; ttl.style.opacity = 0; setTimeout(() => { ttl.textContent = cur[1]; ttl.style.opacity = 1; }, 180); } };
     sc.addEventListener('scroll', () => { window.__lastScroll = Date.now(); }, { passive: true });
     sc.addEventListener('scroll', upd, { passive: true }); setTimeout(upd, 50);
     // panel FILTERS: lista de secciones; al tocar una salta a ella y la actual queda marcada
@@ -353,12 +377,24 @@
     });
     // vista previa grande de lo seleccionado (al pasar el mouse por una casilla de la tienda): a la derecha, como en el juego
     { const shopScr = document.querySelector('.screen[data-screen="shop"]'); if (shopScr) {
-      const st = document.createElement('style'); st.textContent = '#shopprev{position:absolute;left:1330px;top:25px;width:560px;height:760px;pointer-events:none;z-index:3;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .22s ease}#shopprev.on{opacity:1}#shopprev img{display:block;max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 14px 22px rgba(0,0,0,.35))}#shopprev.tall img{height:750px;width:auto}#shopprev.sq img{width:440px;height:440px}#shopprev.cover{flex-direction:column}#shopprev.cover .cvf{width:400px;height:400px;border-radius:26px;padding:8px;background:linear-gradient(135deg,#ffffff,#b9a3ff 45%,#68e0ff);box-shadow:0 0 40px rgba(150,200,255,.55)}#shopprev.cover .cvf img{width:100%;height:100%;border-radius:20px;object-fit:cover;filter:none}#shopprev .ct{margin-top:22px;width:400px;background:rgba(20,16,40,.45);padding:10px 16px;color:#fff;font:400 22px Montserrat}#shopprev .ct b{display:block;font:800 22px Montserrat;margin-top:2px;letter-spacing:.02em}';
+      const st = document.createElement('style'); st.textContent = '#shopprev{position:absolute;left:1330px;top:25px;width:560px;height:760px;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .22s ease}#shopprev.on{opacity:1}#shopprev img{display:block;max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 14px 22px rgba(0,0,0,.35))}#shopprev.tall img{height:750px;width:auto}#shopprev.sq img{width:440px;height:440px}#shopprev.cover{flex-direction:column}#shopprev.cover .cvf{width:400px;height:400px;border-radius:26px;padding:8px;background:linear-gradient(135deg,#ffffff,#b9a3ff 45%,#68e0ff);box-shadow:0 0 40px rgba(150,200,255,.55)}#shopprev.cover .cvf img{width:100%;height:100%;border-radius:20px;object-fit:cover;filter:none}#shopprev .ct{margin-top:22px;width:400px;background:rgba(20,16,40,.45);padding:10px 16px;color:#fff;font:400 22px Montserrat}#shopprev .ct b{display:block;font:800 22px Montserrat;margin-top:2px;letter-spacing:.02em}';
       document.head.appendChild(st);
-      const pv = document.createElement('div'); pv.id = 'shopprev'; shopScr.appendChild(pv);
+      const pv = document.createElement('div'); pv.id = 'shopprev'; shopScr.insertBefore(pv, document.getElementById('shopbg') ? document.getElementById('shopbg').nextSibling : shopScr.firstChild);
       let cur = '';
-      window.__shopPrev = (e, lead) => {
+      const TYPE = { outfit: 'OUTFIT & BONUS', emote: 'EMOTE', pickaxe: 'PICKAXE', backpack: 'BACK BLING', glider: 'GLIDER', wrap: 'WRAP', loadingscreen: 'LOADING SCREEN', music: 'JAM TRACK', pet: 'COMPANION', contrail: 'CONTRAIL', spray: 'SPRAY', toy: 'TOY', shoes: 'KICKS', itemaccess: 'ACCESS', vehicle: 'CAR BODY & BONUS', wheel: 'WHEELS', 'vehicle-skin': 'CAR BODY', body: 'BODY', decal: 'DECAL', trail: 'TRAIL', booster: 'BOOST', engine: 'ENGINE AUDIO', bundle: 'BUNDLE' };
+      const typeLabel = (e) => {
+        if (e.kind === 'jam' || (e.tracks && e.tracks.length)) return 'JAM TRACK';
+        if (e.kind === 'bundle' || e.isBundle || (e.items && e.items.length > 3)) { const ex = []; if (e.items && e.items.some((i) => i.type === 'emote')) ex.push('EMOTE'); return 'BUNDLE' + (ex.length ? ' \u2022 ' + ex.join(', ') : ''); }
+        const it = e.items && e.items[0], ty = it && String(it.type || '').toLowerCase();
+        return TYPE[ty] || (ty ? ty.replace(/[-_]/g, ' ').toUpperCase() : 'ITEM');
+      };
+      let selT = null;
+      const selStyle = document.createElement('style'); selStyle.textContent = '#shoprow.dyn .dt.picked{z-index:5;transform:scale(1.03);box-shadow:0 0 0 3px #fff,0 0 22px 4px rgba(255,255,255,.55),inset 0 0 0 1px rgba(255,255,255,.6)!important}#shoprow.dyn .dt .typ{position:absolute;left:0;right:0;bottom:0;height:24px;line-height:24px;text-align:center;font:italic 800 11px Montserrat;letter-spacing:.03em;color:#fff;text-transform:uppercase;background:rgba(10,24,70,.82);border-radius:0 0 14px 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 8px;z-index:6;display:none}#shoprow.dyn .dt.picked .typ{display:block}#shoprow.dyn .dt .nm,#shoprow.dyn .dt .pr,#shoprow.dyn .dt .bd{transition:transform .16s ease}#shoprow.dyn .dt.picked .nm,#shoprow.dyn .dt.picked .pr,#shoprow.dyn .dt.picked .bd{transform:translateY(-24px)}#shoprow.dyn .dt{transition:transform .16s ease,box-shadow .16s ease}';
+      document.head.appendChild(selStyle);
+      const pick = (t, e) => { if (!t || selT === t) return; if (selT) selT.classList.remove('picked'); selT = t; let ty = t.querySelector('.typ'); if (!ty) { ty = document.createElement('div'); ty.className = 'typ'; t.appendChild(ty); } ty.textContent = typeLabel(e); t.classList.add('picked'); };
+      window.__shopPrev = (e, lead, tile) => {
         if (!e || !pv) return;
+        pick(tile, e);
         const trk = e.kind === 'jam' && e.tracks && e.tracks[0];
         const one = e.items && e.items.length === 1 ? e.items[0] : null;
         const url = trk ? (trk.art || e.image) : ((lead && lead.featured) || (one && one.featured) || (one && one.icon) || e.image);
