@@ -578,11 +578,11 @@ for i = 0, 2 do
 end
 
 local body = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 66), Size = UDim2.new(1, 0, 1, -66), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y }, sheet)
-new("UIPadding", { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14), PaddingBottom = UDim.new(0, 20) }, body)
+new("UIPadding", { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14), PaddingBottom = UDim.new(0, 80) }, body)
 new("UIListLayout", { Padding = UDim.new(0, 10), SortOrder = Enum.SortOrder.LayoutOrder }, body)
 local recTitle = label(body, "Recommended For You", 22, true, C.text, nil, UDim2.new(1, 0, 0, 30)); recTitle.LayoutOrder = 1
 local function itemRow(order)
-	local r = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 113), LayoutOrder = order }, body)
+	local r = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 186), LayoutOrder = order }, body)
 	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, r)
 	return r
 end
@@ -617,19 +617,22 @@ local function wear(assetId, kind)
 	buildRig()
 end
 
--- ======== Marketplace: detalles, comprar (saldo de juguete), equipar / desequipar ========
+-- ======== Marketplace como en la app: seleccionar (probar puesto), barra de compra, aviso "Buy item", detalles ========
 local owned, equipped = {}, {}
 local function setBalance(n)
 	simBalance = n
 	applyBalance()
 end
+local function vscale(w) return root.AbsoluteSize.X / (w or 360) end
+
+-- aviso de error visible (para depurar)
 local function toast(msg)
 	msg = tostring(msg)
-	local t = new("TextLabel", { BackgroundColor3 = Color3.fromRGB(32, 34, 39), Text = msg, TextSize = 15, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 20), Size = UDim2.new(0, math.min(340, 40 + #msg * 7.5), 0, 38), ZIndex = 130 }, root)
+	local t = new("TextLabel", { BackgroundColor3 = Color3.fromRGB(32, 34, 39), Text = msg, TextSize = 15, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 20), Size = UDim2.new(0, math.min(340, 40 + #msg * 7.5), 0, 38), ZIndex = 230 }, root)
 	corner(t)
 	t.BackgroundTransparency = 1; t.TextTransparency = 1
 	TweenService:Create(t, TweenInfo.new(0.2), { BackgroundTransparency = 0, TextTransparency = 0 }):Play()
-	task.delay(2.4, function()
+	task.delay(3.2, function()
 		TweenService:Create(t, TweenInfo.new(0.25), { BackgroundTransparency = 1, TextTransparency = 1 }):Play()
 		task.delay(0.3, function() t:Destroy() end)
 	end)
@@ -639,6 +642,22 @@ local function safe(fn, ...)
 	local ok, err = xpcall(fn, function(e) return tostring(e) end, ...)
 	if not ok then showErr("Error: " .. tostring(err):sub(1, 90)) end
 end
+
+-- aviso "Purchased!" (bi-toast: barra blanca arriba con el logo girado)
+local function purchasedToast()
+	local s = vscale()
+	local c = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 71.6 * s), Size = UDim2.fromOffset(360, 50), ZIndex = 220 }, root)
+	new("UIScale", { Scale = s }, c)
+	local f = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BackgroundTransparency = 0.1, BorderSizePixel = 0, Position = UDim2.fromOffset(16.4, 0), Size = UDim2.new(1, -32.8, 1, 0), ZIndex = 220 }, c)
+	local logo = new("Frame", { BackgroundColor3 = Color3.fromRGB(32, 34, 39), BorderSizePixel = 0, Position = UDim2.fromOffset(12.5, 12.75), Size = UDim2.fromOffset(24.5, 24.5), Rotation = 14, ZIndex = 221 }, f)
+	new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(5.4, 5.4), ZIndex = 222 }, logo)
+	label(f, "Purchased!", 15.3, true, C.text, UDim2.fromOffset(51.5, 0), UDim2.new(1, -60, 1, 0)).ZIndex = 221
+	task.delay(2.6, function()
+		TweenService:Create(f, TweenInfo.new(0.2), { BackgroundTransparency = 1 }):Play()
+		task.delay(0.25, function() c:Destroy() end)
+	end)
+end
+
 local function unwear(assetId, kind)
 	if not desc then return end
 	if kind == "Shirt" then desc.Shirt = 0
@@ -655,77 +674,218 @@ local function unwear(assetId, kind)
 	table.insert(history, desc:Clone()); hIndex = #history
 	buildRig()
 end
-local function openItemSheet(it, kind)
-	local EXT, H = 24, 500
-	local gi = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 100 }, root)
-	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 100 }, gi)
-	local sh = new("Frame", { BackgroundColor3 = Color3.fromRGB(248, 247, 247), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, H + EXT), Size = UDim2.new(1, 0, 0, H + EXT), ZIndex = 101, ClipsDescendants = true }, gi)
-	corner(sh, UDim.new(0, 12))
-	local function z(o) o.ZIndex = 102; return o end
-	new("Frame", { BackgroundColor3 = Color3.fromRGB(214, 216, 222), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 9), Size = UDim2.fromOffset(29, 3.3), ZIndex = 102 }, sh)
-	local img = z(new("ImageLabel", { BackgroundColor3 = C.gray, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=420&h=420", ScaleType = Enum.ScaleType.Fit, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 26), Size = UDim2.fromOffset(180, 180) }, sh))
-	corner(img, UDim.new(0, 14))
-	local title = z(label(sh, it.Name or "Item", 21, true, C.text, UDim2.fromOffset(18, 216), UDim2.new(1, -36, 0, 28)))
-	title.TextTruncate = Enum.TextTruncate.AtEnd
-	local by = z(label(sh, "", 14, false, C.sub, UDim2.fromOffset(18, 245), UDim2.new(1, -36, 0, 20)))
-	local priceHex = glyph(sh, "robux", 20, UDim2.fromOffset(16, 272), C.text); priceHex.ZIndex = 102
-	local price = z(label(sh, "...", 20, true, C.text, UDim2.fromOffset(42, 272), UDim2.new(1, -60, 0, 26)))
-	local desc_ = z(label(sh, "", 14, false, Color3.fromRGB(74, 77, 86), UDim2.fromOffset(18, 308), UDim2.new(1, -36, 0, 70)))
-	desc_.TextWrapped = true; desc_.TextYAlignment = Enum.TextYAlignment.Top; desc_.TextTruncate = Enum.TextTruncate.AtEnd
-	local main = z(new("TextButton", { Text = "", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, AutoButtonColor = true, Position = UDim2.fromOffset(18, 396), Size = UDim2.new(1, -36, 0, 50) }, sh))
-	corner(main, UDim.new(0, 12))
-	local cost = tonumber(it.Price) or 0
-	local function paint()
-		price.Text = cost > 0 and tostring(cost) or "Free"
-		priceHex.Visible = cost > 0
-		price.Position = cost > 0 and UDim2.fromOffset(42, 272) or UDim2.fromOffset(18, 272)
-		if not owned[it.Id] and cost > 0 then
-			main.Text = (cost > simBalance) and "Not enough Robux" or ("Buy  " .. utf8.char(0xE002) .. " " .. cost)
-			main.BackgroundColor3 = (cost > simBalance) and Color3.fromRGB(190, 200, 235) or C.blue
-		else
-			main.Text = equipped[it.Id] and "Unequip" or "Equip"
-			main.BackgroundColor3 = equipped[it.Id] and Color3.fromRGB(226, 227, 232) or C.blue
-			main.TextColor3 = equipped[it.Id] and C.text or Color3.new(1, 1, 1)
-		end
+
+local KIND_INFO = {
+	Hat = { "Head Accessories", "Accessories | Head" }, Hair = { "Hair Accessories", "Accessories | Hair" }, Face = { "Face Accessories", "Accessories | Face" },
+	Neck = { "Neck Accessories", "Accessories | Neck" }, Shoulder = { "Shoulder Accessories", "Accessories | Shoulder" }, Front = { "Front Accessories", "Accessories | Front" },
+	Back = { "Back Accessories", "Accessories | Back" }, Waist = { "Waist Accessories", "Accessories | Waist" }, Shirt = { "Shirts", "Clothing | Top" },
+	Pants = { "Pants", "Clothing | Bottom" }, TShirt = { "T-Shirts", "Clothing | Top" }, Jacket = { "Jackets", "Clothing | Outerwear" }, LeftShoe = { "Shoes", "Clothing | Shoes" },
+}
+
+-- ---- barra de compra (a-checkout): boton azul con el precio + "..." ----
+local selected = nil -- { it =, kind =, ui = }
+local bars = {}
+local openBuyPrompt, openDetails
+local function makeBar(parent, z0)
+	local s = vscale()
+	local wrap = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 0), Size = UDim2.new(1, 0, 0, 54 * s), ZIndex = z0, Visible = false }, parent)
+	local c = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0), Size = UDim2.fromOffset(360, 54), ZIndex = z0 }, wrap)
+	new("UIScale", { Scale = s }, c)
+	local buy = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(51, 95, 255), Position = UDim2.fromOffset(16.4, 3), Size = UDim2.fromOffset(281.5, 32.5), ZIndex = z0 + 1 }, c)
+	corner(buy, UDim.new(0, 6.5))
+	local buyGlyph = glyph(buy, "robux", 14, UDim2.fromOffset(0, 8), Color3.new(1, 1, 1)); buyGlyph.ZIndex = z0 + 2
+	local buyTxt = label(buy, "", 12.6, true, Color3.new(1, 1, 1), UDim2.fromOffset(0, 0), UDim2.fromScale(1, 1), Enum.TextXAlignment.Center); buyTxt.ZIndex = z0 + 2
+	local manage = new("TextButton", { Text = "Manage in Customize", TextSize = 12.8, Font = Enum.Font.BuilderSansMedium, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(227, 228, 233), AutoButtonColor = false, Position = UDim2.fromOffset(16.4, 3), Size = UDim2.fromOffset(281.5, 32.5), ZIndex = z0 + 1, Visible = false }, c)
+	corner(manage, UDim.new(0, 6.5))
+	local more = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(227, 228, 232), Position = UDim2.fromOffset(307.4, 3), Size = UDim2.fromOffset(36.2, 32.5), ZIndex = z0 + 1 }, c)
+	corner(more, UDim.new(0, 6.5))
+	for i = -1, 1 do
+		local d = new("Frame", { BackgroundColor3 = Color3.fromRGB(57, 59, 69), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, i * 4.5, 0.5, 0), Size = UDim2.fromOffset(2.6, 2.6), ZIndex = z0 + 2 }, more)
+		corner(d)
 	end
-	paint()
-	-- detalles reales (descripcion, creador, precio) desde Roblox
-	task.spawn(function()
-		local ok, info = pcall(function() return MarketplaceService:GetProductInfo(it.Id) end)
-		if ok and info and gi.Parent then
-			if info.Creator and info.Creator.Name then by.Text = "By " .. info.Creator.Name end
-			if info.Description then desc_.Text = info.Description end
-			if info.PriceInRobux and info.PriceInRobux > 0 then cost = info.PriceInRobux end
-			paint()
-		end
+	local bar = { frame = wrap, buy = buy, manage = manage }
+	function bar.refresh()
+		if not selected then wrap.Visible = false; return end
+		wrap.Visible = true
+		local it = selected.it
+		local own = owned[it.Id]
+		buy.Visible = not own
+		manage.Visible = own and true or false
+		local p = tonumber(it.Price) or 0
+		buyGlyph.Visible = p > 0
+		buyTxt.Text = p > 0 and fmtFull(p) or "Free"
+		-- el icono se pega al numero
+		local w = game:GetService("TextService"):GetTextSize(buyTxt.Text, 12.6, Enum.Font.BuilderSansBold, Vector2.new(500, 40)).X
+		buyGlyph.Position = UDim2.fromOffset((281.5 - (14 + 5 + w)) / 2 - 2, 7)
+		buyTxt.Position = UDim2.fromOffset((p > 0 and 9.5 or 0), 0)
+	end
+	buy.Activated:Connect(function() if selected then safe(openBuyPrompt, selected.it, selected.kind) end end)
+	bars[#bars + 1] = bar
+	return bar
+end
+local function refreshBars() for _, b in ipairs(bars) do b.refresh() end end
+local mainBar = makeBar(avScreen, 20)
+
+-- ---- aviso "Buy item" (bi-modal): medidas del CSS, base de 360 ----
+openBuyPrompt = function(it, kind)
+	local s = vscale()
+	local p = tonumber(it.Price) or 0
+	local g = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 200 }, root)
+	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 200 }, g)
+	local m = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 248), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0.3, 0), Size = UDim2.fromOffset(261, 257.1), ZIndex = 201 }, g)
+	corner(m, UDim.new(0, 13))
+	local us = new("UIScale", { Scale = s * 1.05 }, m)
+	local function z(o) o.ZIndex = 202; return o end
+	z(label(m, "Buy item", 18.4, true, C.text, UDim2.fromOffset(13, 16), UDim2.fromOffset(180, 24)))
+	local x = z(new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.new(1, -41, 0, 6), Size = UDim2.fromOffset(30, 30) }, m))
+	xMark(x, C.text, 15)
+	local img = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", ScaleType = Enum.ScaleType.Fit, Position = UDim2.fromOffset(19, 54), Size = UDim2.fromOffset(48, 48) }, m))
+	z(label(m, it.Name or "Item", 12.6, true, C.text, UDim2.fromOffset(78.5, 51.4), UDim2.new(1, -92.5, 0, 16))).TextTruncate = Enum.TextTruncate.AtEnd
+	z(label(m, "Permanent", 12.6, true, Color3.fromRGB(92, 95, 110), UDim2.fromOffset(78.5, 72.6), UDim2.new(1, -92.5, 0, 16)))
+	local cost = z(label(m, p > 0 and fmtFull(p) or "Free", 12.6, true, C.text, UDim2.fromOffset(78.5 + (p > 0 and 18 or 0), 94.5), UDim2.fromOffset(120, 16)))
+	if p > 0 then glyph(m, "robux", 14.4, UDim2.fromOffset(77, 93.5), C.text).ZIndex = 202 end
+	-- "Wear item after purchase"
+	local wearOn = true
+	local wearRow = z(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Position = UDim2.fromOffset(14, 130.3), Size = UDim2.new(1, -28, 0, 24) }, m))
+	local box = z(new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Position = UDim2.fromOffset(0, 5.85), Size = UDim2.fromOffset(12.3, 12.3) }, wearRow)); corner(box, UDim.new(0, 3))
+	local stroke = new("UIStroke", { Color = C.text, Thickness = 1.2 }, box)
+	local tick = z(label(box, "\u{2713}", 10, true, Color3.new(1, 1, 1), nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center))
+	z(label(wearRow, "Wear item after purchase", 11.7, false, C.text, UDim2.fromOffset(22.9, 0), UDim2.new(1, -30, 1, 0)))
+	wearRow.Activated:Connect(function()
+		wearOn = not wearOn
+		box.BackgroundTransparency = wearOn and 0 or 1
+		tick.Visible = wearOn
 	end)
-	main.Activated:Connect(function()
-		if not owned[it.Id] and cost > 0 then
-			if cost > simBalance then return end
-			setBalance(simBalance - cost)
-			owned[it.Id] = true
-			toast("Purchased!")
-		elseif not owned[it.Id] then
-			owned[it.Id] = true
-		end
-		if equipped[it.Id] then
-			equipped[it.Id] = nil; unwear(it.Id, kind)
-		elseif owned[it.Id] and (main.Text == "Equip" or main.Text:find("Buy")) then
-			equipped[it.Id] = true; wear(it.Id, kind)
-		end
-		paint()
-	end)
-	TweenService:Create(dim, TweenInfo.new(0.25), { BackgroundTransparency = 0.38 }):Play()
-	TweenService:Create(sh, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, EXT) }):Play()
+	-- boton Buy
+	local ok = (p <= simBalance)
+	local buy = z(new("TextButton", { Text = ok and (p > 0 and "Buy" or "Get") or "Not enough Robux", TextSize = 12.6, Font = FONT, TextColor3 = ok and Color3.new(1, 1, 1) or Color3.fromRGB(207, 215, 251), BackgroundColor3 = ok and Color3.fromRGB(51, 95, 255) or Color3.fromRGB(154, 171, 247), AutoButtonColor = false, Position = UDim2.fromOffset(13, 166.3), Size = UDim2.fromOffset(235, 32.7) }, m))
+	corner(buy, UDim.new(0, 6))
+	-- Roblox Plus
+	local up = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(13, 208), Size = UDim2.fromOffset(235, 32.7) }, m))
+	corner(up, UDim.new(0, 6)); new("UIStroke", { Color = Color3.fromRGB(215, 216, 221), Thickness = 1 }, up)
+	glyph(up, "plus", 11, UDim2.fromOffset(7, 9.5), Color3.fromRGB(57, 59, 69)).ZIndex = 202
+	z(label(up, "Get 10% off with Roblox Plus", 9.5, false, C.text, UDim2.fromOffset(24, 0), UDim2.fromOffset(140, 32.7)))
+	local trial = z(label(up, "Get free trial", 9.5, false, C.text, UDim2.new(1, -78, 0, 0), UDim2.fromOffset(70, 32.7), Enum.TextXAlignment.Right))
+	new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -9, 0.5, 6), Size = UDim2.fromOffset(52, 1), ZIndex = 202 }, up)
+	-- animaciones de la app: scrim .2s, aviso aparece con escala 1.05 -> 1
+	TweenService:Create(dim, TweenInfo.new(0.2), { BackgroundTransparency = 0.5 }):Play()
+	TweenService:Create(us, TweenInfo.new(0.22, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), { Scale = s }):Play()
 	local closing = false
-	dim.Activated:Connect(function()
+	local function close()
 		if closing then return end
 		closing = true
-		TweenService:Create(dim, TweenInfo.new(0.23), { BackgroundTransparency = 1 }):Play()
-		local tw = TweenService:Create(sh, TweenInfo.new(0.23, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 1, H + EXT) })
-		tw:Play()
-		tw.Completed:Once(function() gi:Destroy() end)
+		TweenService:Create(dim, TweenInfo.new(0.15), { BackgroundTransparency = 1 }):Play()
+		task.delay(0.16, function() g:Destroy() end)
+	end
+	dim.Activated:Connect(close)
+	x.Activated:Connect(close)
+	buy.Activated:Connect(function()
+		if not ok or closing then return end
+		if p > 0 then setBalance(simBalance - p) end
+		owned[it.Id] = true
+		if wearOn and not equipped[it.Id] then
+			equipped[it.Id] = true
+			safe(wear, it.Id, kind)
+		end
+		close()
+		purchasedToast()
+		refreshBars()
 	end)
+end
+
+-- ---- pagina de detalles (page-item) ----
+openDetails = function(it, kind)
+	local s = vscale(390)
+	local pg = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, ZIndex = 150 }, root)
+	local c = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(390, root.AbsoluteSize.Y / s), ZIndex = 150 }, pg)
+	new("UIScale", { Scale = s }, c)
+	local function z(o) o.ZIndex = 151; return o end
+	local x = z(new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.fromOffset(8, 46), Size = UDim2.fromOffset(44, 44) }, c))
+	xMark(x, C.text, 18)
+	z(label(c, it.Name or "Item", 24, true, C.text, UDim2.fromOffset(22, 112), UDim2.new(1, -44, 0, 32))).TextTruncate = Enum.TextTruncate.AtEnd
+	local im = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=420&h=420", ScaleType = Enum.ScaleType.Fit, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 198), Size = UDim2.fromOffset(186, 186) }, c))
+	local dsc = z(label(c, "", 15, false, Color3.fromRGB(74, 77, 90), UDim2.fromOffset(22, 420), UDim2.new(1, -44, 0, 44)))
+	dsc.TextWrapped = true; dsc.TextYAlignment = Enum.TextYAlignment.Top; dsc.TextTruncate = Enum.TextTruncate.AtEnd
+	z(label(c, "\u{2605}", 40, false, C.text, UDim2.fromOffset(32, 476), UDim2.fromOffset(46, 52), Enum.TextXAlignment.Center))
+	z(label(c, "0", 26, true, C.text, UDim2.fromOffset(86, 478), UDim2.fromOffset(120, 32)))
+	z(label(c, "Favorites", 12.5, false, C.text, UDim2.fromOffset(86, 508), UDim2.fromOffset(120, 18)))
+	local info = KIND_INFO[kind] or { "Accessories", "Accessories" }
+	local rows = { { "Creator", "", 560, true }, { "Type", info[1], 607, false }, { "Placement", info[2], 654, false }, { "Attributes", (kind == "Jacket" or kind == "LeftShoe") and "Layered" or "Basic", 700, false } }
+	local creatorVal
+	for _, r in ipairs(rows) do
+		z(label(c, r[1], 16, false, Color3.fromRGB(92, 96, 108), UDim2.fromOffset(22, r[3]), UDim2.fromOffset(140, 24)))
+		local v = z(label(c, r[2], 16, r[4], r[4] and C.text or Color3.fromRGB(74, 77, 90), UDim2.new(1, -44 - (r[4] and 36 or 0), 0, r[3]), UDim2.fromOffset(220, 24), Enum.TextXAlignment.Right))
+		v.AnchorPoint = Vector2.new(1, 0); v.Position = UDim2.new(1, -22 - (r[4] and 30 or 0), 0, r[3])
+		if r[4] then creatorVal = v end
+		if r[1] ~= "Attributes" then new("Frame", { BackgroundColor3 = Color3.fromRGB(226, 227, 231), BorderSizePixel = 0, Position = UDim2.fromOffset(22, r[3] + 39), Size = UDim2.new(1, -44, 0, 1.5), ZIndex = 151 }, c) end
+	end
+	z(label(c, "\u{2192}", 18, false, C.text, UDim2.new(1, -44, 0, 558), UDim2.fromOffset(26, 26), Enum.TextXAlignment.Center))
+	creatorVal.Text = (it.CreatorName or "Roblox") .. "  " .. GLYPH.verified
+	task.spawn(function()
+		local ok, inf = pcall(function() return MarketplaceService:GetProductInfo(it.Id) end)
+		if ok and inf and pg.Parent then
+			if inf.Description then dsc.Text = inf.Description end
+			if inf.Creator and inf.Creator.Name then creatorVal.Text = inf.Creator.Name .. "  " .. GLYPH.verified end
+		end
+	end)
+	local bar = makeBar(pg, 152)
+	bar.refresh()
+	x.Activated:Connect(function()
+		for i, b in ipairs(bars) do if b == bar then table.remove(bars, i) break end end
+		pg:Destroy()
+	end)
+end
+
+-- ---- tile del Marketplace (il-card): imagen cuadrada, nombre, creador, precio; seleccionado = borde + "Details" ----
+local cellsById = {}
+local function paintSelection()
+	for id, ui in pairs(cellsById) do
+		local on = selected and selected.it.Id == id
+		if ui.stroke.Parent then
+			ui.stroke.Enabled = on and true or false
+			ui.details.Visible = on and true or false
+		end
+	end
+end
+local function selectItem(it, kind)
+	if selected and selected.it.Id == it.Id then
+		safe(openDetails, it, kind)
+		return
+	end
+	-- probarlo puesto; el anterior (si no es tuyo) se quita
+	if selected and equipped[selected.it.Id] and not owned[selected.it.Id] then
+		equipped[selected.it.Id] = nil
+		safe(unwear, selected.it.Id, selected.kind)
+	end
+	selected = { it = it, kind = kind }
+	if not equipped[it.Id] then
+		equipped[it.Id] = true
+		safe(wear, it.Id, kind)
+	end
+	paintSelection()
+	refreshBars()
+end
+local function makeItemCell(parent, it, kind, order)
+	local p = tonumber(it.Price) or 0
+	local cell = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1 / 3, -7, 0, 186), LayoutOrder = order }, parent)
+	local img = new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", ScaleType = Enum.ScaleType.Fit, Size = UDim2.new(1, 0, 0, 110) }, cell)
+	corner(img, UDim.new(0, 8))
+	local stroke = new("UIStroke", { Color = Color3.fromRGB(32, 34, 39), Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Enabled = false }, img)
+	local det = new("TextLabel", { Text = "Details", TextSize = 11, Font = FONT, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(27, 29, 34), BorderSizePixel = 0, Position = UDim2.new(0, 3, 1, -20), Size = UDim2.new(1, -6, 0, 17), Visible = false, ZIndex = 3 }, img)
+	corner(det, UDim.new(0, 4))
+	local nm = label(cell, it.Name or "Item", 13.2, true, C.text, UDim2.fromOffset(0, 116), UDim2.new(1, 0, 0, 20)); nm.TextTruncate = Enum.TextTruncate.AtEnd
+	local by = label(cell, it.CreatorName or "Roblox", 12.2, false, Color3.fromRGB(106, 111, 129), UDim2.fromOffset(0, 136), UDim2.new(1, 0, 0, 20)); by.TextTruncate = Enum.TextTruncate.AtEnd
+	if p > 0 then
+		glyph(cell, "robux", 12.8, UDim2.fromOffset(-1, 156), C.text)
+		label(cell, fmtFull(p), 12.8, false, C.text, UDim2.fromOffset(17, 156), UDim2.new(1, -17, 0, 20))
+	else
+		label(cell, "Free", 14.2, true, Color3.fromRGB(106, 111, 129), UDim2.fromOffset(0, 156), UDim2.new(1, 0, 0, 20))
+	end
+	local btn = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 4 }, cell)
+	btn.Activated:Connect(function() safe(selectItem, it, kind) end)
+	cellsById[it.Id] = { stroke = stroke, details = det }
+	if selected and selected.it.Id == it.Id then stroke.Enabled = true; det.Visible = true end
+	return cell
 end
 
 local searchToken = 0
@@ -733,10 +893,7 @@ local function fillRow(row, items, from, to, cat)
 	for i = from, to do
 		local it = items[i]
 		if not it then break end
-		local cell = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, Size = UDim2.new(0.333, -7, 1, 0), LayoutOrder = i }, row)
-		corner(cell, UDim.new(0, 12))
-		new("ImageLabel", { BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit }, cell)
-		cell.Activated:Connect(function() safe(openItemSheet, it, cat[3]) end)
+		makeItemCell(row, it, cat[3], i)
 	end
 end
 local function loadCategory(cat)
@@ -826,7 +983,7 @@ local function tileRow()
 end
 local function catalogInto(cat)
 	local grid = czAdd(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y }))
-	new("UIGridLayout", { CellSize = UDim2.new(0.333, -7, 0, 113), CellPadding = UDim2.fromOffset(10, 10), SortOrder = Enum.SortOrder.LayoutOrder }, grid)
+	new("UIGridLayout", { CellSize = UDim2.new(1 / 3, -7, 0, 186), CellPadding = UDim2.fromOffset(10, 10), SortOrder = Enum.SortOrder.LayoutOrder }, grid)
 	local st = label(grid, "Loading...", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
 	task.spawn(function()
 		local ok, err = pcall(function()
@@ -839,10 +996,7 @@ local function catalogInto(cat)
 			st:Destroy()
 			for i, it in ipairs(items) do
 				if i > 12 then break end
-				local cell = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, LayoutOrder = i }, grid)
-				corner(cell, UDim.new(0, 12))
-				new("ImageLabel", { BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit }, cell)
-				cell.Activated:Connect(function() safe(openItemSheet, it, cat[3]) end)
+				makeItemCell(grid, it, cat[3], i)
 			end
 		end)
 		if not ok then warn(err); if st.Parent then st.Text = "Catalog unavailable." end end
