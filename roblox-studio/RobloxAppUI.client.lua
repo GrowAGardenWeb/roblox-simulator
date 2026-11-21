@@ -160,9 +160,8 @@ end
 local forYou = page("For you")
 -- usuario
 local userRow = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 56), LayoutOrder = 1 }, forYou)
-local av = new("Frame", { BackgroundColor3 = C.gray, Size = UDim2.fromOffset(52, 52) }, userRow); corner(av)
+local av = new("ImageLabel", { BackgroundColor3 = C.gray, Size = UDim2.fromOffset(52, 52), Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150" }, userRow); corner(av)
 new("UIStroke", { Color = C.line, Thickness = 1 }, av)
-local head = new("Frame", { BackgroundColor3 = Color3.fromRGB(245, 205, 160), Position = UDim2.fromOffset(14, 14), Size = UDim2.fromOffset(24, 26) }, av); corner(head, UDim.new(0.4, 0))
 label(userRow, player.DisplayName, 26, true, C.text, UDim2.fromOffset(66, 10), UDim2.new(1, -66, 0, 34))
 -- amigos
 local friends = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 150), LayoutOrder = 2 }, forYou)
@@ -918,13 +917,78 @@ hdMenuBtn.Activated:Connect(function() openDrawerFromAvatar() end)
 
 selectTab("For you")
 
+-- ======== Botones de la cabecera de Home y paginas que abren (como en la app) ========
+local PFP = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150"
+local function hit(parent, pos, size, fn)
+	local b = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = pos, Size = size, ZIndex = 6 }, parent)
+	b.Activated:Connect(fn)
+	return b
+end
+
+-- Buscar: campo + Cancel + "Try searching for" + chips
+local searchPage = new("Frame", { Name = "SearchPage", Size = UDim2.fromScale(1, 1), BackgroundColor3 = C.bg, BorderSizePixel = 0, Visible = false, ZIndex = 60 }, root)
+local spField = new("Frame", { BackgroundColor3 = Color3.fromRGB(236, 237, 241), Position = UDim2.fromOffset(12, 16), Size = UDim2.new(1, -92, 0, 34), ZIndex = 61 }, searchPage)
+corner(spField, UDim.new(0, 10))
+local spBox = new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "Search", PlaceholderColor3 = C.sub, TextSize = 17, Font = FONT, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(38, 0), Size = UDim2.new(1, -46, 1, 0), ZIndex = 62 }, spField)
+do
+	local c = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(11, 8), Size = UDim2.fromOffset(14, 14), ZIndex = 62 }, spField)
+	corner(c); new("UIStroke", { Color = C.text, Thickness = 1.8 }, c)
+	new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(24, 24), Size = UDim2.fromOffset(6, 2), Rotation = 45, ZIndex = 62 }, spField)
+end
+local spCancel = new("TextButton", { Text = "Cancel", TextSize = 17, Font = FONT, TextColor3 = C.text, BackgroundTransparency = 1, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -8, 0, 16), Size = UDim2.fromOffset(66, 34), ZIndex = 61 }, searchPage)
+local spTry = label(searchPage, "Try searching for", 22, true, C.text, UDim2.fromOffset(14, 72), UDim2.new(1, -28, 0, 30)); spTry.ZIndex = 61
+local spChips = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 112), Size = UDim2.new(1, 0, 0, 44), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, ZIndex = 61 }, searchPage)
+new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 8) }, spChips)
+new("UIPadding", { PaddingLeft = UDim.new(0, 14) }, spChips)
+for _, nm in ipairs({ "Tycoon", "Escape", "Survival", "Story", "Horror", "Obby", "Simulator", "Roleplay" }) do
+	local ch = new("TextButton", { Text = nm, TextSize = 16, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(236, 237, 241), AutoButtonColor = true, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 36), ZIndex = 62 }, spChips)
+	corner(ch); new("UIPadding", { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14) }, ch)
+	ch.Activated:Connect(function() spBox.Text = nm end)
+end
+spCancel.Activated:Connect(function() spBox.Text = ""; searchPage.Visible = false end)
+local function openSearchPage() searchPage.Visible = true; spBox:CaptureFocus() end
+
+-- botones de la cabecera: buscar, Robux, campana (la campana no abre nada, igual que en la app)
+hit(header, UDim2.new(1, -124, 0, 6), UDim2.fromOffset(40, 44), openSearchPage)
+hit(header, UDim2.new(1, -86, 0, 6), UDim2.fromOffset(40, 44), function() if openRobuxPage then openRobuxPage() end end)
+
+-- Chat: titulo, buscar, redactar, y dos filas
+local chatPage = new("Frame", { Name = "ChatPage", Size = UDim2.new(1, 0, 1, -64), BackgroundColor3 = C.bg, BorderSizePixel = 0, Visible = false }, root)
+icon(chatPage, "menu", UDim2.fromOffset(16, 22), UDim2.fromOffset(26, 24), function(h)
+	for i = 0, 2 do new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Position = UDim2.new(0, 0, 0, i * 10), Size = UDim2.new(1, 0, 0, 2) }, h) end
+	local dot = new("Frame", { BackgroundColor3 = C.blue, BorderSizePixel = 0, Position = UDim2.new(1, -6, 0, -8), Size = UDim2.fromOffset(9, 9) }, h)
+	corner(dot)
+end)
+hit(chatPage, UDim2.fromOffset(6, 12), UDim2.fromOffset(50, 44), function() if openDrawerFromAvatar then openDrawerFromAvatar() end end)
+label(chatPage, "Chat", 30, true, C.text, UDim2.fromOffset(58, 14), UDim2.fromOffset(140, 40))
+icon(chatPage, "search", UDim2.new(1, -78, 0, 21), UDim2.fromOffset(26, 26), function(h)
+	local c = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(20, 20) }, h)
+	corner(c); new("UIStroke", { Color = C.text, Thickness = 2.2 }, c)
+	new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(21, 21), Size = UDim2.fromOffset(8, 2.5), Rotation = 45 }, h)
+end)
+local compose = new("Frame", { BackgroundTransparency = 1, Position = UDim2.new(1, -40, 0, 22), Size = UDim2.fromOffset(22, 22) }, chatPage)
+corner(compose, UDim.new(0.2, 0)); new("UIStroke", { Color = C.text, Thickness = 2 }, compose)
+local function chatRow(y, title, sub)
+	local r = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 58) }, chatPage)
+	local ic = new("Frame", { BackgroundColor3 = Color3.fromRGB(236, 237, 241), Position = UDim2.fromOffset(14, 10), Size = UDim2.fromOffset(34, 34) }, r)
+	corner(ic, UDim.new(0, 8))
+	label(r, title, 16, true, C.text, UDim2.fromOffset(62, 8), UDim2.new(1, -110, 0, 20))
+	label(r, sub, 12.5, false, C.sub, UDim2.fromOffset(62, 29), UDim2.new(1, -110, 0, 16))
+	label(r, "\u{203A}", 26, false, C.text, UDim2.new(1, -40, 0, 8), UDim2.fromOffset(26, 36), Enum.TextXAlignment.Center)
+	new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Position = UDim2.fromOffset(62, 57), Size = UDim2.new(1, -76, 0, 1) }, r)
+end
+chatRow(76, "Start party", "Join experiences together")
+chatRow(134, "Communities", "Create and explore communities")
+
 -- ======== Barra inferior ========
 local nav = new("Frame", { AnchorPoint = Vector2.new(0, 1), Position = UDim2.fromScale(0, 1), Size = UDim2.new(1, 0, 0, 64), BackgroundColor3 = C.bg, BorderSizePixel = 0 }, root)
 new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 1) }, nav)
 local items = { { "Home", "home" }, { "Moments", "moments" }, { "Chat", "chat" }, { "Me", "me" } }
 local navLabels, navIcons = {}, {}
 local function selectNav(name)
+	if name == "Moments" then return end -- en la app original no abre nada
 	currentNav = name
+	chatPage.Visible = (name == "Chat")
 	for n, l in pairs(navLabels) do
 		l.TextColor3 = (n == name) and C.text or C.sub
 		l.Font = (n == name) and FONT_B or FONT
@@ -945,8 +1009,7 @@ for i, it in ipairs(items) do
 	local b = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.new((i - 1) / 4, 0, 0, 0), Size = UDim2.new(0.25, 0, 1, 0) }, nav)
 	local ic = icon(b, it[2], UDim2.new(0.5, -14, 0, 8), UDim2.fromOffset(28, 28), function(h)
 		if it[2] == "me" then
-			local c = new("Frame", { BackgroundColor3 = C.gray, Size = UDim2.fromScale(1, 1) }, h); corner(c)
-			local hd = new("Frame", { BackgroundColor3 = Color3.fromRGB(245, 205, 160), Position = UDim2.fromOffset(8, 7), Size = UDim2.fromOffset(12, 13) }, c); corner(hd, UDim.new(0.4, 0))
+			local c = new("ImageLabel", { BackgroundColor3 = C.gray, Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150", Size = UDim2.fromScale(1, 1) }, h); corner(c)
 		else
 			local sh = new("Frame", { BackgroundColor3 = (it[2] == "home") and C.text or Color3.fromRGB(0, 0, 0), BackgroundTransparency = (it[2] == "home") and 0 or 1, BorderSizePixel = 0, Position = UDim2.fromOffset(3, 5), Size = UDim2.fromOffset(22, 18) }, h)
 			corner(sh, UDim.new(0.2, 0))
