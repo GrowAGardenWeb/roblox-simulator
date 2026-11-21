@@ -26,7 +26,10 @@ local function build(player, data)
 	for _, a in ipairs(data.acc or {}) do
 		local okT, t = pcall(function() return Enum.AccessoryType[a.AccessoryType] end)
 		if okT and t and tonumber(a.AssetId) then
-			list[#list + 1] = { AssetId = tonumber(a.AssetId), AccessoryType = t, IsLayered = a.IsLayered and true or false, Order = tonumber(a.Order) or (#list + 1), Puffiness = a.Puffiness }
+			local layered = a.IsLayered and true or false
+			local entry = { AssetId = tonumber(a.AssetId), AccessoryType = t, IsLayered = layered, Puffiness = a.Puffiness }
+			if layered then entry.Order = tonumber(a.Order) or (#list + 1) end
+			list[#list + 1] = entry
 		end
 	end
 	pcall(function() desc:SetAccessories(list, true) end)

@@ -576,7 +576,7 @@ local function serializeDesc()
 		if tried[a.AssetId] then
 			extra[#extra + 1] = { AssetId = a.AssetId, Kind = tried[a.AssetId] }
 		end
-		acc[#acc + 1] = { AssetId = a.AssetId, AccessoryType = a.AccessoryType.Name, IsLayered = a.IsLayered, Order = a.Order, Puffiness = a.Puffiness }
+		acc[#acc + 1] = { AssetId = a.AssetId, AccessoryType = a.AccessoryType.Name, IsLayered = a.IsLayered, Order = a.IsLayered and a.Order or nil, Puffiness = a.Puffiness }
 	end
 	local shirt, pants, tee = desc.Shirt, desc.Pants, desc.GraphicTShirt
 	if tried[shirt] then extra[#extra + 1] = { AssetId = shirt, Kind = "Shirt" }; shirt = nil end
@@ -766,7 +766,7 @@ wear = function(assetId, kind)
 		if not ok or not t then return end
 		local layered = (kind == "Jacket" or kind == "LeftShoe")
 		local acc = desc:GetAccessories(true)
-		table.insert(acc, { AssetId = assetId, AccessoryType = t, IsLayered = layered, Order = #acc + 1 })
+		table.insert(acc, { AssetId = assetId, AccessoryType = t, IsLayered = layered, Order = layered and (#acc + 1) or nil })
 		local okA, errA = pcall(function() desc:SetAccessories(acc, true) end)
 		if not okA then showErr("Equip: " .. tostring(errA)); return end
 	end
