@@ -2351,8 +2351,9 @@ end
 passRow(86, "verified", "Verified Badge", "Shows the badge next to your name", 20, badgeIcon(GLYPH.verified), function() return profile.verified end, function(v) profile.verified = v end)
 passRow(142, "plus", "Roblox Plus Badge", "Free", nil, badgeIcon(GLYPH.plus), function() return profile.plus end, function(v) profile.plus = v end)
 
--- temas de la app (Custom UI Color): cada color repinta fondos, textos, bordes e iconos; el negro es el tema oscuro
-local origs = setmetatable({}, { __mode = "k" })
+-- temas de la app (Custom UI Color): cada color repinta fondos, textos, bordes e iconos; el negro es el tema oscuro.
+-- El color original de cada elemento se guarda en atributos del propio elemento (O*) junto con el color ya tematizado (T*),
+-- asi se puede volver al original sin errores aunque el codigo cambie el color despues.
 local themeMode, themeAccent = nil, nil -- nil | "dark" | "tint"
 local function tBg(c)
 	local h, sat, v = c:ToHSV()
@@ -2373,46 +2374,49 @@ local function tIc(c)
 	if themeMode == "dark" then return v < 0.55 and Color3.fromRGB(244, 245, 248) or Color3.fromRGB(196, 199, 208) end
 	return v < 0.55 and themeAccent or themeAccent:Lerp(Color3.new(1, 1, 1), 0.35)
 end
-local function themeInst(d)
-	if origs[d] then return end
-	local o = {}
-	origs[d] = o
-	if d:IsA("GuiObject") then
-		if d.BackgroundTransparency < 1 then local n = tBg(d.BackgroundColor3); if n ~= d.BackgroundColor3 then o.bg = d.BackgroundColor3; d.BackgroundColor3 = n end end
-		if d:IsA("TextLabel") or d:IsA("TextButton") or d:IsA("TextBox") then local n = tTx(d.TextColor3); if n ~= d.TextColor3 then o.tx = d.TextColor3; d.TextColor3 = n end end
-		if d:IsA("ImageLabel") or d:IsA("ImageButton") then local n = tIc(d.ImageColor3); if n ~= d.ImageColor3 then o.ic = d.ImageColor3; d.ImageColor3 = n end end
-	elseif d:IsA("UIStroke") then
-		local n = tBg(d.Color); if n ~= d.Color then o.st = d.Color; d.Color = n end
+local function syncProp(d, prop, fn)
+	local cur = d[prop]
+	local o, t = d:GetAttribute("O" .. prop), d:GetAttribute("T" .. prop)
+	if o ~= nil and t ~= nil and cur ~= t then o = nil end -- el codigo lo cambio despues: ese es el nuevo original
+	if o == nil then o = cur end
+	local target = themeMode and fn(o) or o
+	if target ~= cur then d[prop] = target end
+	if target ~= o then
+		d:SetAttribute("O" .. prop, o); d:SetAttribute("T" .. prop, target)
+	else
+		d:SetAttribute("O" .. prop, nil); d:SetAttribute("T" .. prop, nil)
 	end
+end
+local function themeInst(d)
+	if d:GetAttribute("KeepColor") then return end
+	if d:IsA("GuiObject") then
+		if d.BackgroundTransparency < 1 then syncProp(d, "BackgroundColor3", tBg) end
+		if d:IsA("TextLabel") or d:IsA("TextButton") or d:IsA("TextBox") then syncProp(d, "TextColor3", tTx) end
+		if d:IsA("ImageLabel") or d:IsA("ImageButton") then syncProp(d, "ImageColor3", tIc) end
+	elseif d:IsA("UIStroke") then
+		syncProp(d, "Color", tBg)
+	end
+end
+local function themeAll()
+	themeInst(root)
+	for _, d in ipairs(root:GetDescendants()) do themeInst(d) end
+	for _, d in ipairs(bgGui:GetDescendants()) do themeInst(d) end
 end
 local function setAccent(col)
 	local old = C.blue
 	if old == col then return end
 	for _, d in ipairs(root:GetDescendants()) do
-		if d:IsA("GuiObject") and d.BackgroundColor3 == old then d.BackgroundColor3 = col end
+		if d:IsA("GuiObject") and d.BackgroundColor3 == old and not d:GetAttribute("KeepColor") then d.BackgroundColor3 = col end
 	end
 	C.blue = col
 end
 local function setTheme(mode, accent)
-	-- 1) quitar el tema actual (vuelven los colores originales)
-	for d, o in pairs(origs) do
-		pcall(function()
-			if o.bg then d.BackgroundColor3 = o.bg end
-			if o.tx then d.TextColor3 = o.tx end
-			if o.ic then d.ImageColor3 = o.ic end
-			if o.st then d.Color = o.st end
-		end)
-		origs[d] = nil
-	end
-	-- 2) poner el nuevo
+	themeMode, themeAccent = nil, nil
+	themeAll() -- 1) vuelve todo al color original
 	themeMode, themeAccent = mode, accent
 	profile.dark = (mode == "dark")
 	if accent then setAccent(accent) end
-	if mode then
-		themeInst(root)
-		for _, d in ipairs(root:GetDescendants()) do themeInst(d) end
-		for _, d in ipairs(bgGui:GetDescendants()) do themeInst(d) end
-	end
+	if mode then themeAll() end -- 2) pone el tema nuevo
 end
 root.DescendantAdded:Connect(function(d) if themeMode then task.defer(themeInst, d) end end)
 
@@ -2425,19 +2429,24 @@ end, nil, nil)
 local swatchRow = ez(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, 252), Size = UDim2.new(1, -36, 0, 40), Visible = false }, eBody))
 new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10), VerticalAlignment = Enum.VerticalAlignment.Center }, swatchRow)
 do
+	-- { color, tipo }: blanco = la app normal, los colores = temas completos, negro = tema oscuro
 	local THEMES = {
-		{ Color3.fromRGB(51, 95, 255), nil }, { Color3.fromRGB(235, 64, 52), "tint" }, { Color3.fromRGB(30, 170, 90), "tint" }, { Color3.fromRGB(140, 70, 220), "tint" },
-		{ Color3.fromRGB(245, 140, 20), "tint" }, { Color3.fromRGB(240, 80, 160), "tint" }, { Color3.fromRGB(20, 21, 24), "dark" },
+		{ Color3.fromRGB(255, 255, 255), nil }, { Color3.fromRGB(51, 95, 255), "tint" }, { Color3.fromRGB(235, 64, 52), "tint" }, { Color3.fromRGB(30, 170, 90), "tint" },
+		{ Color3.fromRGB(140, 70, 220), "tint" }, { Color3.fromRGB(245, 140, 20), "tint" }, { Color3.fromRGB(240, 80, 160), "tint" }, { Color3.fromRGB(20, 21, 24), "dark" },
 	}
 	local rings = {}
 	for i, th in ipairs(THEMES) do
-		local sw = ez(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = th[1], Size = UDim2.fromOffset(34, 34) }, swatchRow))
+		local sw = ez(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = th[1], Size = UDim2.fromOffset(30, 30) }, swatchRow))
+		sw:SetAttribute("KeepColor", true)
 		corner(sw)
-		new("UIStroke", { Color = Color3.fromRGB(220, 221, 226), Thickness = 1.5 }, sw)
+		local edge = new("UIStroke", { Color = Color3.fromRGB(200, 202, 208), Thickness = 1.5 }, sw)
+		edge:SetAttribute("KeepColor", true)
 		rings[i] = new("UIStroke", { Color = Color3.fromRGB(51, 95, 255), Thickness = 3, Enabled = i == 1 }, sw)
+		rings[i]:SetAttribute("KeepColor", true)
 		sw.Activated:Connect(function()
-			-- el negro (tema oscuro) mantiene el acento azul; los colores usan su propio color
-			setTheme(th[2], th[2] == "dark" and Color3.fromRGB(51, 95, 255) or th[1])
+			-- blanco = por defecto (acento azul); negro mantiene el acento azul; los colores usan el suyo
+			local accent = (th[2] == "tint") and th[1] or Color3.fromRGB(51, 95, 255)
+			setTheme(th[2], accent)
 			for j, r in ipairs(rings) do r.Enabled = (j == i) end
 			for _, f in ipairs(passRefresh) do f() end
 		end)
