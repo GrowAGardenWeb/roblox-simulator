@@ -67,7 +67,7 @@
     if (it.reg) { const s = document.createElement('s'); s.textContent = String(it.reg); pb.appendChild(s); }
     const price = +String(it.price || 0).replace(/\D/g, ''), have = +bal().replace(/\D/g, '');
     const buy = document.getElementById('cfbuy'), poor = have < price;
-    buy.classList.toggle('poor', poor); buy.querySelector('b').textContent = poor ? 'GET V-BUCKS' : 'PURCHASE GIFT!';
+    buy.classList.toggle('poor', poor); buy.querySelector('b').textContent = poor ? 'PURCHASE' : 'PURCHASE GIFT!';
     const rf = C.querySelector('.refund'); rf.innerHTML = 'Gifts purchased are not refundable. For more info visit:<br>fn.gg/giftingpolicy'; rf.style.top = poor ? '782px' : '802px';
   };
   new MutationObserver(() => { if (C.classList.contains('on')) refreshC(); }).observe(C, { attributes: true, attributeFilter: ['class'] });
