@@ -1398,7 +1398,11 @@ do
 local sendGui = new("Frame", { Name = "SendRobux", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, ZIndex = 80 }, root)
 local sDim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 80 }, sendGui)
 local sSheet = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 249), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 24), Size = UDim2.new(1, 0, 1, -84), ZIndex = 81, ClipsDescendants = true }, sendGui)
-corner(sSheet, UDim.new(0, 10))
+corner(sSheet, UDim.new(0, 14))
+do -- barrita de arrastre del panel original
+	local hd = new("Frame", { BackgroundColor3 = Color3.fromRGB(106, 111, 129), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 6), Size = UDim2.fromOffset(33, 3.4), ZIndex = 83 }, sSheet)
+	corner(hd, UDim.new(0.5, 0))
+end
 z = function(o, n) o.ZIndex = n or 82; return o end
 -- cabecera
 local sHex = glyph(sSheet, "plus", 22, UDim2.fromOffset(15, 18), Color3.fromRGB(73, 77, 90))
@@ -1547,6 +1551,12 @@ end)
 
 -- 3) revisar (avatar 49, nombre/handle 12.5, datos, monto 33, Send y Edit lado a lado, nota 10)
 local pReview = sPage("review", 0)
+do -- tarjetas grises del panel original (perfil y monto)
+	for _, c in ipairs({ { 55.6, 180 }, { 248.7, 79.3 } }) do
+		local cd = new("Frame", { BackgroundColor3 = Color3.fromRGB(237, 239, 240), BorderSizePixel = 0, Position = UDim2.fromOffset(16.4, c[1]), Size = UDim2.new(1, -32.8, 0, c[2]), ZIndex = 81 }, pReview)
+		corner(cd, UDim.new(0, 8))
+	end
+end
 local rvAv = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 69.3), Size = UDim2.fromOffset(49, 49) }, pReview)); corner(rvAv)
 local rvName = z(label(pReview, "", 12.5, true, INK, UDim2.fromOffset(24, 128.1), UDim2.new(1, -48, 0, 16), Enum.TextXAlignment.Center))
 local rvHandle = z(label(pReview, "", 12.5, false, INK, UDim2.fromOffset(24, 145.6), UDim2.new(1, -48, 0, 16), Enum.TextXAlignment.Center))
