@@ -547,8 +547,9 @@ refreshCharts()
 end
 
 -- ---- Me: pantalla Avatar (3D real + catalogo real) ----
-local avScreen, world, desc, buildRig, history, hIndex, loadMyDescription, chip, sheet, CATS, tabsRow, body, recRow, exRow, status, wear, rig, yaw, openDrawerFromAvatar, setMode, isWorn, countAcc
+local avScreen, world, desc, buildRig, history, hIndex, loadMyDescription, chip, sheet, CATS, tabsRow, body, recRow, exRow, status, wear, rig, yaw, openDrawerFromAvatar, setMode, isWorn, countAcc, tried
 do
+tried = {} -- items probados (no son tuyos): se piden al servidor con LoadAsset
 avScreen = new("Frame", { Name = "AvatarScreen", Size = UDim2.new(1, 0, 1, -64), BackgroundColor3 = Color3.fromRGB(216, 217, 226), BorderSizePixel = 0, Visible = false, ClipsDescendants = true }, root)
 if ASSETS.scene ~= "" then
 	new("ImageLabel", { BackgroundTransparency = 1, Image = ASSETS.scene, ScaleType = Enum.ScaleType.Crop, Size = UDim2.new(1, 0, 0, 360) }, avScreen)
@@ -570,12 +571,20 @@ end
 local buildToken = 0
 -- datos del avatar que se mandan al servidor (el servidor SI puede cargar items que no son tuyos)
 local function serializeDesc()
-	local acc = {}
+	local acc, extra = {}, {}
 	for _, a in ipairs(desc:GetAccessories(true)) do
-		acc[#acc + 1] = { AssetId = a.AssetId, AccessoryType = a.AccessoryType.Name, IsLayered = a.IsLayered, Order = a.Order, Puffiness = a.Puffiness }
+		if tried[a.AssetId] then
+			extra[#extra + 1] = { AssetId = a.AssetId, Kind = tried[a.AssetId] }
+		else
+			acc[#acc + 1] = { AssetId = a.AssetId, AccessoryType = a.AccessoryType.Name, IsLayered = a.IsLayered, Order = a.Order, Puffiness = a.Puffiness }
+		end
 	end
+	local shirt, pants, tee = desc.Shirt, desc.Pants, desc.GraphicTShirt
+	if tried[shirt] then extra[#extra + 1] = { AssetId = shirt, Kind = "Shirt" }; shirt = nil end
+	if tried[pants] then extra[#extra + 1] = { AssetId = pants, Kind = "Pants" }; pants = nil end
+	if tried[tee] then extra[#extra + 1] = { AssetId = tee, Kind = "TShirt" }; tee = nil end
 	return {
-		acc = acc, Shirt = desc.Shirt, Pants = desc.Pants, GraphicTShirt = desc.GraphicTShirt,
+		acc = acc, extra = extra, Shirt = shirt, Pants = pants, GraphicTShirt = tee,
 		HeadColor = desc.HeadColor, TorsoColor = desc.TorsoColor, LeftArmColor = desc.LeftArmColor, RightArmColor = desc.RightArmColor, LeftLegColor = desc.LeftLegColor, RightLegColor = desc.RightLegColor,
 		HeightScale = desc.HeightScale, WidthScale = desc.WidthScale, DepthScale = desc.DepthScale, HeadScale = desc.HeadScale, ProportionScale = desc.ProportionScale, BodyTypeScale = desc.BodyTypeScale,
 	}
@@ -611,7 +620,7 @@ history, hIndex = {}, 0
 loadMyDescription = function()
 	task.spawn(function()
 		local ok, d = pcall(function() return Players:GetHumanoidDescriptionFromUserId(player.UserId) end)
-		if ok and d then desc = d; history = { d:Clone() }; hIndex = 1; buildRig() end
+		if ok and d then tried = {}; desc = d; history = { d:Clone() }; hIndex = 1; buildRig() end
 	end)
 end
 loadMyDescription()
@@ -757,6 +766,7 @@ wear = function(assetId, kind)
 		local okA, errA = pcall(function() desc:SetAccessories(acc, true) end)
 		if not okA then showErr("Equip: " .. tostring(errA)); return end
 	end
+	tried[assetId] = kind
 	local before = countAcc()
 	while #history > hIndex do table.remove(history) end
 	table.insert(history, desc:Clone()); hIndex = #history
@@ -838,6 +848,7 @@ purchasedToast = function()
 end
 
 unwear = function(assetId, kind)
+	tried[assetId] = nil
 	if not desc then return end
 	if kind == "Shirt" then desc.Shirt = 0
 	elseif kind == "Pants" then desc.Pants = 0

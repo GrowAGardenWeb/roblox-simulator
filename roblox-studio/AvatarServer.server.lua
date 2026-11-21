@@ -6,6 +6,7 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Debris = game:GetService("Debris")
+local InsertService = game:GetService("InsertService")
 
 local remote = Instance.new("RemoteFunction")
 remote.Name = "AvatarPreview"
@@ -50,6 +51,38 @@ local function build(player, data)
 	if not okM or not model then
 		warn("AvatarPreview: no se pudo construir el modelo: " .. tostring(model))
 		return nil
+	end
+	-- ITEMS DE PRUEBA (los que no son tuyos): se cargan con InsertService y se ponen con AddAccessory
+	local hum = model:FindFirstChildOfClass("Humanoid")
+	for _, e in ipairs(data.extra or {}) do
+		local id = tonumber(e.AssetId)
+		if id and hum then
+			local okL, loaded = pcall(function() return InsertService:LoadAsset(id) end)
+			if okL and loaded then
+				local acc = loaded:FindFirstChildWhichIsA("Accessory", true)
+				local shirt = loaded:FindFirstChildWhichIsA("Shirt", true)
+				local pants = loaded:FindFirstChildWhichIsA("Pants", true)
+				local tee = loaded:FindFirstChildWhichIsA("ShirtGraphic", true)
+				if acc then
+					acc.Parent = nil
+					hum:AddAccessory(acc)
+				elseif shirt then
+					local old = model:FindFirstChildOfClass("Shirt"); if old then old:Destroy() end
+					shirt.Parent = model
+				elseif pants then
+					local old = model:FindFirstChildOfClass("Pants"); if old then old:Destroy() end
+					pants.Parent = model
+				elseif tee then
+					local old = model:FindFirstChildOfClass("ShirtGraphic"); if old then old:Destroy() end
+					tee.Parent = model
+				else
+					warn("AvatarPreview: el item " .. id .. " no trae accesorio ni ropa")
+				end
+				loaded:Destroy()
+			else
+				warn("AvatarPreview: LoadAsset fallo para " .. tostring(id) .. ": " .. tostring(loaded))
+			end
+		end
 	end
 	model.Name = "Preview_" .. player.UserId
 	local root = model:FindFirstChild("HumanoidRootPart")
