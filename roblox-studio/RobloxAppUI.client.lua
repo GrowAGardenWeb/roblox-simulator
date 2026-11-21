@@ -2681,7 +2681,7 @@ end
 local holdToken, holdStart = 0, nil
 UserInputService.InputBegan:Connect(function(input)
 	if input.UserInputType ~= Enum.UserInputType.Touch and input.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
-	if editGui.Visible then return end
+	if editGui.Visible or root:FindFirstChild("Tutorial") then return end
 	holdToken += 1
 	local my = holdToken
 	holdStart = input.Position
@@ -2911,4 +2911,69 @@ for i, it in ipairs(items) do
 end
 selectNav("Home")
 applyBalance()
+
+-- ======== Tutorial de inicio (como abrir el panel de editar y lo demas) ========
+do
+	local steps = {
+		{ "Welcome!", "This is the Roblox app, rebuilt as a game. Take a quick tour.", "logo" },
+		{ "Hold to edit", "Press and hold anywhere on the screen for about 1 second to open the Edit panel.", "hold" },
+		{ "Edit panel", "Change your name and balance, and unlock passes: Verified badge, color themes, Custom Profile (morph into any player) and Custom Friends.", "badge" },
+		{ "Avatar & Robux", "Open Avatar > Customize to change your look. Tap your Robux balance to send Robux to other players.", "robux" },
+	}
+	local tut = new("Frame", { Name = "Tutorial", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 300 }, root)
+	new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.45, Size = UDim2.fromScale(1, 1), ZIndex = 300 }, tut)
+	local card = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(300, 320), ZIndex = 301 }, tut)
+	corner(card, UDim.new(0, 20))
+	local function tz(o) o.ZIndex = 302; return o end
+	local illus = tz(new("Frame", { BackgroundColor3 = Color3.fromRGB(240, 241, 244), BorderSizePixel = 0, Position = UDim2.fromOffset(20, 20), Size = UDim2.new(1, -40, 0, 110) }, card))
+	corner(illus, UDim.new(0, 14))
+	local title = tz(label(card, "", 22, true, C.text, UDim2.fromOffset(20, 144), UDim2.new(1, -40, 0, 28)))
+	local body = tz(label(card, "", 15, false, C.sub, UDim2.fromOffset(20, 176), UDim2.new(1, -40, 0, 64)))
+	body.TextWrapped = true; body.TextYAlignment = Enum.TextYAlignment.Top
+	local dots = tz(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(20, 252), Size = UDim2.fromOffset(80, 10) }, card))
+	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 6), VerticalAlignment = Enum.VerticalAlignment.Center }, dots)
+	local dotF = {}
+	for i = 1, #steps do
+		dotF[i] = tz(new("Frame", { BackgroundColor3 = Color3.fromRGB(205, 207, 214), BorderSizePixel = 0, Size = UDim2.fromOffset(8, 8) }, dots)); corner(dotF[i])
+	end
+	local skip = tz(new("TextButton", { Text = "Skip", TextSize = 15, Font = FONT, TextColor3 = C.sub, BackgroundTransparency = 1, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -20, 0, 246), Size = UDim2.fromOffset(60, 22) }, card))
+	local nextB = tz(new("TextButton", { Text = "Next", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, Position = UDim2.fromOffset(20, 266), Size = UDim2.new(1, -40, 0, 38) }, card))
+	corner(nextB, UDim.new(0, 12))
+	local idx = 0
+	local pulse
+	local function show(i)
+		idx = i
+		local st = steps[i]
+		title.Text, body.Text = st[1], st[2]
+		nextB.Text = (i == #steps) and "Got it!" or "Next"
+		skip.Visible = i < #steps
+		for j, d in ipairs(dotF) do d.BackgroundColor3 = (j == i) and C.blue or Color3.fromRGB(205, 207, 214) end
+		for _, c in ipairs(illus:GetChildren()) do
+			if not c:IsA("UICorner") then c:Destroy() end
+		end
+		if st[3] == "logo" then
+			hexIcon(illus, 56, UDim2.new(0.5, -28, 0.5, -28), C.text).ZIndex = 303
+		elseif st[3] == "hold" then
+			-- dedo manteniendo presionado: un punto con un anillo que se expande
+			local dot = tz(new("Frame", { BackgroundColor3 = C.blue, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(26, 26) }, illus)); corner(dot)
+			local ring = tz(new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(26, 26) }, illus)); corner(ring)
+			local rs = new("UIStroke", { Color = C.blue, Thickness = 3 }, ring)
+			TweenService:Create(ring, TweenInfo.new(1.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, -1), { Size = UDim2.fromOffset(92, 92) }):Play()
+			TweenService:Create(rs, TweenInfo.new(1.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, -1), { Transparency = 1 }):Play()
+			tz(label(illus, "1s", 13, true, C.sub, UDim2.new(1, -44, 1, -26), UDim2.fromOffset(34, 18), Enum.TextXAlignment.Right))
+		elseif st[3] == "badge" then
+			tz(label(illus, GLYPH.verified .. "  " .. GLYPH.plus, 42, false, C.text, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center))
+		else
+			tz(label(illus, GLYPH.robux .. " 1,000", 38, true, C.text, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center))
+		end
+	end
+	local function close()
+		tut:Destroy()
+	end
+	nextB.Activated:Connect(function()
+		if idx >= #steps then close() else show(idx + 1) end
+	end)
+	skip.Activated:Connect(close)
+	show(1)
+end
 end
