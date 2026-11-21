@@ -216,49 +216,81 @@ end
 local function openChartSheet(kind, current, onApply)
 	local isLoc = (kind == "loc")
 	local opts = isLoc and locOptions() or DEVICES
+	-- medidas de la app: handle 9+3.3, titulo 20px, lista a 14px, filas de 30.3px, pie 12 + boton 32.5 + 24
+	local ROW, EXT = 30.3, 24
+	local screenH = root.AbsoluteSize.Y
+	local H = math.min(screenH - 90, 12.3 + 20 + 30 + 14 + #opts * ROW + 68.5)
 	local g = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 85 }, root)
-	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.5, Size = UDim2.fromScale(1, 1), ZIndex = 85 }, g)
-	local sh = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 248), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 24), Size = UDim2.new(1, 0, isLoc and 0.78 or 0.62, 24), ZIndex = 86 }, g)
-	corner(sh, UDim.new(0, 20))
-	new("Frame", { BackgroundColor3 = Color3.fromRGB(200, 202, 208), BorderSizePixel = 0, Position = UDim2.new(0.5, -17, 0, 8), Size = UDim2.fromOffset(34, 4), ZIndex = 87 }, sh)
-	label(sh, isLoc and "Location" or "Device", 20, true, C.text, UDim2.fromOffset(18, 20), UDim2.fromOffset(200, 28)).ZIndex = 87
-	local x = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.new(1, -46, 0, 18), Size = UDim2.fromOffset(32, 32), ZIndex = 87 }, sh)
-	xMark(x, C.text, 14)
-	local list = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 60), Size = UDim2.new(1, 0, 1, -164), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, ZIndex = 87 }, sh)
+	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 85 }, g)
+	local sh = new("Frame", { BackgroundColor3 = Color3.fromRGB(248, 247, 247), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, H + EXT), Size = UDim2.new(1, 0, 0, H + EXT), ZIndex = 86, ClipsDescendants = true }, g)
+	corner(sh, UDim.new(0, 12))
+	new("Frame", { BackgroundColor3 = Color3.fromRGB(214, 216, 222), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 9), Size = UDim2.fromOffset(29, 3.3), ZIndex = 87 }, sh)
+	label(sh, isLoc and "Location" or "Device", 20, true, Color3.fromRGB(32, 34, 39), UDim2.fromOffset(20, 32.3), UDim2.fromOffset(200, 30)).ZIndex = 87
+	local x = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.new(1, -51, 0, 32.3), Size = UDim2.fromOffset(30, 30), ZIndex = 87 }, sh)
+	xMark(x, Color3.fromRGB(32, 34, 39), 13)
+	local listH = H - 76.3 - 68.5
+	local list = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 76.3), Size = UDim2.new(1, 0, 0, listH), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, ZIndex = 87 }, sh)
 	new("UIListLayout", { SortOrder = Enum.SortOrder.LayoutOrder }, list)
+	new("UIPadding", { PaddingLeft = UDim.new(0, 20), PaddingRight = UDim.new(0, 20) }, list)
 	local picked = current
 	local apply
 	local radios = {}
+	local nameLbls = {}
 	local function refresh()
 		for id, r in pairs(radios) do
-			r.dot.Visible = (id == picked)
-			r.ring.Color = (id == picked) and C.text or Color3.fromRGB(150, 153, 162)
+			local on = (id == picked)
+			r.outer.BackgroundColor3 = on and Color3.fromRGB(32, 34, 39) or Color3.fromRGB(58, 61, 70)
+			r.inner.Size = on and UDim2.fromOffset(8, 8) or UDim2.fromOffset(15.8, 15.8)
+			r.inner.BackgroundColor3 = on and Color3.new(1, 1, 1) or Color3.fromRGB(248, 247, 247)
+			nameLbls[id].TextColor3 = on and Color3.fromRGB(32, 34, 39) or Color3.fromRGB(74, 77, 86)
+			nameLbls[id].Font = on and FONT_B or Enum.Font.BuilderSansMedium
 		end
-		apply.BackgroundColor3 = (picked ~= current) and C.blue or Color3.fromRGB(190, 200, 235)
+		apply.BackgroundTransparency = (picked ~= current) and 0 or 0.5
 	end
-	apply = new("TextButton", { Text = "Apply", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(190, 200, 235), AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 18, 1, -40), Size = UDim2.new(1, -36, 0, 50), ZIndex = 87 }, sh)
-	corner(apply, UDim.new(0, 12))
+	apply = new("TextButton", { Text = "Apply", TextSize = 14.7, Font = Enum.Font.BuilderSansMedium, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(51, 95, 255), AutoButtonColor = false, Position = UDim2.fromOffset(19.5, H - 24 - 32.5), Size = UDim2.new(1, -39, 0, 32.5), ZIndex = 87 }, sh)
+	corner(apply, UDim.new(0, 8))
 	for i, o in ipairs(opts) do
-		local row = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 52), LayoutOrder = i, ZIndex = 87 }, list)
-		local rad = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(20, 15), Size = UDim2.fromOffset(22, 22), ZIndex = 87 }, row)
-		corner(rad)
-		local ring = new("UIStroke", { Color = Color3.fromRGB(150, 153, 162), Thickness = 2 }, rad)
-		local dot = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(10, 10), ZIndex = 88, Visible = false }, rad)
-		corner(dot)
-		radios[o[2]] = { dot = dot, ring = ring }
-		label(row, o[1], 17, false, C.text, UDim2.fromOffset(58, 0), UDim2.new(1, -120, 1, 0)).ZIndex = 87
+		local row = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, ROW), LayoutOrder = i, ZIndex = 87 }, list)
+		local outer = new("Frame", { BackgroundColor3 = Color3.fromRGB(58, 61, 70), BorderSizePixel = 0, Position = UDim2.fromOffset(0, (ROW - 19) / 2), Size = UDim2.fromOffset(19, 19), ZIndex = 87 }, row)
+		corner(outer)
+		local inner = new("Frame", { BackgroundColor3 = Color3.fromRGB(248, 247, 247), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(15.8, 15.8), ZIndex = 88 }, outer)
+		corner(inner)
+		radios[o[2]] = { outer = outer, inner = inner }
+		local nm = label(row, o[1], 14.7, false, Color3.fromRGB(74, 77, 86), UDim2.fromOffset(29, 0), UDim2.new(1, -60, 1, 0))
+		nm.ZIndex = 87
+		nameLbls[o[2]] = nm
 		if o[3] then
-			local tag = label(row, o[3], 12, false, C.sub, UDim2.new(1, -110, 0, 15), UDim2.fromOffset(94, 22), Enum.TextXAlignment.Right)
-			tag.ZIndex = 87
+			local tagTxt = o[3]
+			local tag = new("TextLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), Text = tagTxt, TextSize = 12.6, Font = Enum.Font.BuilderSansMedium, TextColor3 = Color3.fromRGB(32, 34, 39), AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 20), ZIndex = 88 }, row)
+			corner(tag)
+			new("UIPadding", { PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 10) }, tag)
+			if isLoc then
+				tag.AnchorPoint = Vector2.new(1, 0.5); tag.Position = UDim2.new(1, -28, 0.5, 0)
+			else
+				-- junto al nombre (10px despues del texto)
+				tag.Position = UDim2.fromOffset(29 + (#o[1] * 7.6) + 10, (ROW - 20) / 2)
+			end
 		end
 		row.Activated:Connect(function() picked = o[2]; refresh() end)
 	end
 	refresh()
-	local function close() g:Destroy() end
+	-- animaciones de la app: scrim .25s, hoja sube .3s (cubic .2,.8,.2,1); al cerrar baja .23s ease-in
+	TweenService:Create(dim, TweenInfo.new(0.25), { BackgroundTransparency = 0.38 }):Play()
+	TweenService:Create(sh, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, EXT) }):Play()
+	local closing = false
+	local function close()
+		if closing then return end
+		closing = true
+		TweenService:Create(dim, TweenInfo.new(0.23), { BackgroundTransparency = 1 }):Play()
+		local tw = TweenService:Create(sh, TweenInfo.new(0.23, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 1, H + EXT) })
+		tw:Play()
+		tw.Completed:Once(function() g:Destroy() end)
+	end
 	dim.Activated:Connect(close)
 	x.Activated:Connect(close)
 	apply.Activated:Connect(function()
-		if picked ~= current then onApply(picked) end
+		if picked == current then return end
+		onApply(picked)
 		close()
 	end)
 end
@@ -927,7 +959,7 @@ end)
 
 local function closeSend()
 	TweenService:Create(sDim, TweenInfo.new(0.2), { BackgroundTransparency = 1 }):Play()
-	local tw = TweenService:Create(sSheet, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 2, 0) })
+	local tw = TweenService:Create(sSheet, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 2, 0) })
 	tw:Play()
 	tw.Completed:Once(function() sendGui.Visible = false end)
 end
@@ -942,8 +974,8 @@ openSendSheet = function()
 	sendGui.Visible = true
 	sDim.BackgroundTransparency = 1
 	sSheet.Position = UDim2.new(0, 0, 1.4, 24)
-	TweenService:Create(sDim, TweenInfo.new(0.2), { BackgroundTransparency = 0.5 }):Play()
-	TweenService:Create(sSheet, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, 24) }):Play()
+	TweenService:Create(sDim, TweenInfo.new(0.2), { BackgroundTransparency = 0.6 }):Play()
+	TweenService:Create(sSheet, TweenInfo.new(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, 24) }):Play()
 end
 
 
@@ -1043,7 +1075,10 @@ corner(eDone, UDim.new(0, 12))
 local function closeEdit()
 	if nameBox:IsFocused() then nameBox:ReleaseFocus() end
 	if amtBox:IsFocused() then amtBox:ReleaseFocus() end
-	editGui.Visible = false
+	TweenService:Create(eDim, TweenInfo.new(0.23), { BackgroundTransparency = 1 }):Play()
+	local tw = TweenService:Create(eSheet, TweenInfo.new(0.23, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 1, 460) })
+	tw:Play()
+	tw.Completed:Once(function() editGui.Visible = false end)
 end
 eDim.Activated:Connect(closeEdit)
 eDone.Activated:Connect(closeEdit)
@@ -1051,6 +1086,10 @@ local function openEdit()
 	nameBox.Text = profile.name
 	amtBox.Text = tostring(simBalance)
 	editGui.Visible = true
+	eDim.BackgroundTransparency = 1
+	eSheet.Position = UDim2.new(0, 0, 1, 460)
+	TweenService:Create(eDim, TweenInfo.new(0.25), { BackgroundTransparency = 0.38 }):Play()
+	TweenService:Create(eSheet, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, 24) }):Play()
 end
 
 -- mantener presionado ~0.8 s en cualquier parte (sin mover el dedo) abre el panel
