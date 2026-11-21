@@ -390,8 +390,9 @@ local function fmtCompact(n)
 	return t(n / 1e9) .. "B"
 end
 -- completo mientras quepa; si es muy largo, compacto (asi nunca se sale de la interfaz)
+local UIX = {} -- ayudas de interfaz (skeleton, foto de perfil) en una tabla para no pasar el limite de 200 variables locales
 -- skeleton loading: cajas grises con un brillo que pasa de lado a lado (en lugar de texto "Loading...")
-local function skelBox(parent, size, pos, radius)
+function UIX.skelBox(parent, size, pos, radius)
 	local f = new("Frame", { Name = "Skel", BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, Size = size, Position = pos or UDim2.new() }, parent)
 	if radius ~= 0 then corner(f, UDim.new(0, radius or 8)) end
 	local g = new("UIGradient", { Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(228, 229, 233)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(244, 245, 247)), ColorSequenceKeypoint.new(1, Color3.fromRGB(228, 229, 233)) }), Offset = Vector2.new(-1, 0) }, f)
@@ -401,44 +402,60 @@ local function skelBox(parent, size, pos, radius)
 	return f
 end
 -- tarjeta de esqueleto con la forma de un item del Marketplace
-local function skelCard(parent, order)
+function UIX.skelCard(parent, order)
 	local c = new("Frame", { Name = "Skel", BackgroundTransparency = 1, Size = UDim2.new(1 / 3, -7, 0, 186), LayoutOrder = order }, parent)
-	skelBox(c, UDim2.new(1, 0, 0, 110), nil, 8)
-	skelBox(c, UDim2.new(0.8, 0, 0, 12), UDim2.fromOffset(0, 120), 6)
-	skelBox(c, UDim2.new(0.5, 0, 0, 11), UDim2.fromOffset(0, 140), 6)
-	skelBox(c, UDim2.new(0.35, 0, 0, 12), UDim2.fromOffset(0, 160), 6)
+	UIX.skelBox(c, UDim2.new(1, 0, 0, 110), nil, 8)
+	UIX.skelBox(c, UDim2.new(0.8, 0, 0, 12), UDim2.fromOffset(0, 120), 6)
+	UIX.skelBox(c, UDim2.new(0.5, 0, 0, 11), UDim2.fromOffset(0, 140), 6)
+	UIX.skelBox(c, UDim2.new(0.35, 0, 0, 12), UDim2.fromOffset(0, 160), 6)
 	return c
 end
 -- foto de perfil: se dibuja la cabeza del avatar 3D actual encima del thumbnail y se actualiza al cambiar de ropa
-local pfpList = {}
-local function registerPfp(img) pfpList[#pfpList + 1] = img end
-local function updatePfps(model)
-	if not model then return end
+-- (con el pase Fake Account se puede usar la foto de otro usuario: pfpOverride = userId)
+do
+local pfpList, pfpOverride, pfpModel = {}, nil, nil
+function UIX.registerPfp(img)
+	img:SetAttribute("OrigImage", img.Image)
+	pfpList[#pfpList + 1] = img
+end
+function UIX.updatePfps(model)
+	if model then pfpModel = model end
 	local keep = {}
 	for _, img in ipairs(pfpList) do
 		if img.Parent then
 			keep[#keep + 1] = img
 			local vp = img:FindFirstChild("PfpView")
-			if not vp then
-				vp = new("ViewportFrame", { Name = "PfpView", BackgroundColor3 = Color3.fromRGB(227, 228, 232), BackgroundTransparency = 0, Size = UDim2.fromScale(1, 1), ZIndex = img.ZIndex + 1, Ambient = Color3.fromRGB(190, 190, 190), LightColor = Color3.fromRGB(255, 255, 255) }, img)
-				corner(vp)
-				vp.CurrentCamera = new("Camera", { FieldOfView = 30 }, vp)
-			end
-			local old = vp:FindFirstChild("PfpModel")
-			if old then old:Destroy() end
-			local okC, m = pcall(function() return model:Clone() end)
-			if okC and m then
-				m.Name = "PfpModel"
-				m.Parent = vp
-				local head = m:FindFirstChild("Head")
-				if head then
-					local target = head.Position + Vector3.new(0, 0.2, 0)
-					vp.CurrentCamera.CFrame = CFrame.lookAt(target + Vector3.new(0, 0, 4.6), target)
+			if pfpOverride then
+				img.Image = "rbxthumb://type=AvatarHeadShot&id=" .. pfpOverride .. "&w=150&h=150"
+				if vp then vp.Visible = false end
+			elseif pfpModel then
+				img.Image = img:GetAttribute("OrigImage") or img.Image
+				if not vp then
+					vp = new("ViewportFrame", { Name = "PfpView", BackgroundColor3 = Color3.fromRGB(227, 228, 232), BackgroundTransparency = 0, Size = UDim2.fromScale(1, 1), ZIndex = img.ZIndex + 1, Ambient = Color3.fromRGB(190, 190, 190), LightColor = Color3.fromRGB(255, 255, 255) }, img)
+					corner(vp)
+					vp.CurrentCamera = new("Camera", { FieldOfView = 30 }, vp)
 				end
+				vp.Visible = true
+				local old = vp:FindFirstChild("PfpModel")
+				if old then old:Destroy() end
+				local okC, m = pcall(function() return pfpModel:Clone() end)
+				if okC and m then
+					m.Name = "PfpModel"
+					m.Parent = vp
+					local head = m:FindFirstChild("Head")
+					if head then
+						local target = head.Position + Vector3.new(0, 0.2, 0)
+						vp.CurrentCamera.CFrame = CFrame.lookAt(target + Vector3.new(0, 0, 4.6), target)
+					end
+				end
+			else
+				img.Image = img:GetAttribute("OrigImage") or img.Image
 			end
 		end
 	end
 	pfpList = keep
+end
+function UIX.setPfpOverride(uid) pfpOverride = uid; UIX.updatePfps(nil) end
 end
 -- partes del cuerpo que se pueden quitar/poner desde Customize (kind -> campo del HumanoidDescription)
 local BODYF = { HeadPart = "Head", Torso = "Torso", LeftArm = "LeftArm", RightArm = "RightArm", LeftLeg = "LeftLeg", RightLeg = "RightLeg", FacePart = "Face" }
@@ -621,7 +638,7 @@ do
 local forYou = page("For you")
 -- usuario
 userRow = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 56), LayoutOrder = 1 }, forYou)
-av = new("ImageLabel", { BackgroundColor3 = C.gray, Size = UDim2.fromOffset(52, 52), Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150" }, userRow); corner(av); registerPfp(av)
+av = new("ImageLabel", { BackgroundColor3 = C.gray, Size = UDim2.fromOffset(52, 52), Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150" }, userRow); corner(av); UIX.registerPfp(av)
 new("UIStroke", { Color = C.line, Thickness = 1 }, av)
 nameLabels[#nameLabels + 1] = label(userRow, profile.name, 26, true, C.text, UDim2.fromOffset(66, 10), UDim2.new(1, -66, 0, 34))
 -- amigos
@@ -899,7 +916,7 @@ buildRig = function()
 	rig:PivotTo(CFrame.new(0, 3, 0))
 	rig.Parent = world
 	placeCamera()
-	updatePfps(rig)
+	UIX.updatePfps(rig)
 end
 history, hIndex = {}, 0
 loadMyDescription = function()
@@ -960,7 +977,7 @@ end)
 local leftW = new("Frame", { BackgroundColor3 = WHITE_PILL, Position = UDim2.fromOffset(20, 53), Size = UDim2.fromOffset(40, 80), BorderSizePixel = 0 }, avScreen)
 corner(leftW)
 local thumb = new("ImageLabel", { BackgroundColor3 = C.gray, Position = UDim2.fromOffset(2, 2), Size = UDim2.fromOffset(36, 36), Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150" }, leftW)
-corner(thumb); registerPfp(thumb)
+corner(thumb); UIX.registerPfp(thumb)
 do
 	local gh = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(8, 46), Size = UDim2.fromOffset(24, 24) }, leftW)
 	if not uiImg(gh, "gear", 26, C.text, nil, true) then label(leftW, "\u{2699}", 20, false, C.text, UDim2.fromOffset(0, 44), UDim2.fromOffset(40, 30), Enum.TextXAlignment.Center) end
@@ -1500,7 +1517,7 @@ local function loadCategory(cat)
 		end
 	end
 	for _, row in ipairs({ recRow, exRow }) do
-		for i = 1, 3 do skelCard(row, i) end
+		for i = 1, 3 do UIX.skelCard(row, i) end
 	end
 	local ok, err = pcall(function()
 		local items, lastErr
@@ -1622,7 +1639,7 @@ catalogInto = function(cat)
 	local st = label(grid, "", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
 	st.Visible = false
 	for i = 1, 12 do
-		local sk = skelBox(grid, UDim2.fromOffset(side, side), nil, 9)
+		local sk = UIX.skelBox(grid, UDim2.fromOffset(side, side), nil, 9)
 		sk.LayoutOrder = i
 	end
 	local function clearSkel()
@@ -2294,32 +2311,54 @@ local function passRow(y, key, title, subtitle, price, drawIcon, get, set)
 	end)
 	if get then sw.Activated:Connect(function() set(not get()); paint(); applyProfile() end) end
 end
-local nameBox, amtBox, userBox
--- 1) cambiar nombre
-nameBox = field(60, "Change name", "Display name", profile.name, false, function(t)
-	t = t:gsub("^%s+", ""):gsub("%s+$", "")
-	if t ~= "" then profile.name = t; applyProfile() end
-end)
--- 2) pases (se pagan con el saldo de juguete)
-ez(label(eBody, "Passes", 14, false, C.sub, UDim2.fromOffset(18, 146), UDim2.new(1, -36, 0, 18)))
+local nameBox, amtBox, userBox, pfpBox
+ez(label(eBody, "Passes", 14, false, C.sub, UDim2.fromOffset(18, 60), UDim2.new(1, -36, 0, 18)))
 local function badgeIcon(g)
 	return function(ib)
 		local l = label(ib, g, 24, false, C.text, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center); l.ZIndex = 98
 	end
 end
-passRow(172, "verified", "Verified Badge", "Shows the badge next to your name", 20, badgeIcon(GLYPH.verified), function() return profile.verified end, function(v) profile.verified = v end)
-passRow(228, "plus", "Roblox Plus Badge", "Free", nil, badgeIcon(GLYPH.plus), function() return profile.plus end, function(v) profile.plus = v end)
-passRow(284, "dark", "Dark Mode", "Switch to a dark app theme", 60, function(ib)
-	local moon = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.45, 0.5), Size = UDim2.fromOffset(20, 20), ZIndex = 98 }, ib); corner(moon)
-	local cut = new("Frame", { BackgroundColor3 = Color3.fromRGB(231, 232, 236), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.62, 0.42), Size = UDim2.fromOffset(17, 17), ZIndex = 99 }, ib); corner(cut)
-end, function() return profile.dark end, function(v) profile.dark = v end)
--- Custom UI Color: de pago; ya comprado salen los colores para cambiar el color de la app
-passRow(340, "color", "Custom UI Color", "Pick the accent color of the app", 30, function(ib)
+passRow(86, "verified", "Verified Badge", "Shows the badge next to your name", 20, badgeIcon(GLYPH.verified), function() return profile.verified end, function(v) profile.verified = v end)
+passRow(142, "plus", "Roblox Plus Badge", "Free", nil, badgeIcon(GLYPH.plus), function() return profile.plus end, function(v) profile.plus = v end)
+
+-- tema oscuro: se repintan los colores claros de todos los elementos (y los que se creen despues)
+local origs = setmetatable({}, { __mode = "k" })
+local darkOn = false
+local function dkBg(c) local h, sat, v = c:ToHSV(); if sat > 0.3 or v < 0.55 then return c end return Color3.fromHSV(h, sat, (1 - v) * 0.9 + 0.09) end
+local function dkTx(c) local h, sat, v = c:ToHSV(); if sat > 0.3 or v >= 0.55 then return c end return Color3.fromHSV(h, sat, 1 - v * 0.55) end
+local function themeInst(d, on)
+	local o = origs[d]
+	if on then
+		if o then return end
+		o = {}; origs[d] = o
+		if d:IsA("GuiObject") then
+			if d.BackgroundTransparency < 1 then o.bg = d.BackgroundColor3; d.BackgroundColor3 = dkBg(o.bg) end
+			if d:IsA("TextLabel") or d:IsA("TextButton") or d:IsA("TextBox") then o.tx = d.TextColor3; d.TextColor3 = dkTx(o.tx) end
+		elseif d:IsA("UIStroke") then o.st = d.Color; d.Color = dkBg(o.st) end
+	elseif o then
+		pcall(function()
+			if o.bg then d.BackgroundColor3 = o.bg end
+			if o.tx then d.TextColor3 = o.tx end
+			if o.st then d.Color = o.st end
+		end)
+		origs[d] = nil
+	end
+end
+local function setDark(on)
+	darkOn = on; profile.dark = on
+	themeInst(root, on); themeInst(bgGui:FindFirstChildWhichIsA("Frame") or root, on)
+	for _, d in ipairs(root:GetDescendants()) do themeInst(d, on) end
+	for _, d in ipairs(bgGui:GetDescendants()) do themeInst(d, on) end
+end
+root.DescendantAdded:Connect(function(d) if darkOn then task.defer(themeInst, d, true) end end)
+
+-- Custom UI Color (de pago): colores de acento y el tema negro/oscuro
+passRow(198, "color", "Custom UI Color", "Accent color and black (dark) theme", 30, function(ib)
 	for i, col in ipairs({ Color3.fromRGB(235, 64, 52), Color3.fromRGB(51, 95, 255), Color3.fromRGB(30, 170, 90) }) do
 		local d = new("Frame", { BackgroundColor3 = col, BorderSizePixel = 0, Position = UDim2.fromOffset(5 + (i - 1) * 10, 12 + ((i == 2) and -4 or 4)), Size = UDim2.fromOffset(14, 14), ZIndex = 98 }, ib); corner(d)
 	end
 end, nil, nil)
-local swatchRow = ez(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, 394), Size = UDim2.new(1, -36, 0, 40), Visible = false }, eBody))
+local swatchRow = ez(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, 252), Size = UDim2.new(1, -36, 0, 40), Visible = false }, eBody))
 new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10), VerticalAlignment = Enum.VerticalAlignment.Center }, swatchRow)
 local function setAccent(col)
 	local old = C.blue
@@ -2329,46 +2368,82 @@ local function setAccent(col)
 	end
 	C.blue = col
 end
-for _, col in ipairs({ Color3.fromRGB(51, 95, 255), Color3.fromRGB(235, 64, 52), Color3.fromRGB(30, 170, 90), Color3.fromRGB(140, 70, 220), Color3.fromRGB(245, 140, 20), Color3.fromRGB(240, 80, 160), Color3.fromRGB(32, 34, 39) }) do
+for _, col in ipairs({ Color3.fromRGB(51, 95, 255), Color3.fromRGB(235, 64, 52), Color3.fromRGB(30, 170, 90), Color3.fromRGB(140, 70, 220), Color3.fromRGB(245, 140, 20), Color3.fromRGB(240, 80, 160) }) do
 	local sw = ez(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = col, Size = UDim2.fromOffset(34, 34) }, swatchRow))
 	corner(sw)
 	new("UIStroke", { Color = Color3.fromRGB(220, 221, 226), Thickness = 1.5 }, sw)
 	sw.Activated:Connect(function() setAccent(col); for _, f in ipairs(passRefresh) do f() end end)
 end
-accentRefresh[#accentRefresh + 1] = function() swatchRow.Visible = profile.passes.color and true or false end
--- Fake Account: de pago; ya comprado se puede cambiar el @usuario
-passRow(446, "account", "Fake Account", "Change your @username", 40, function(ib)
-	local hd = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.36), Size = UDim2.fromOffset(12, 12), ZIndex = 98 }, ib); corner(hd)
-	local bd = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.56), Size = UDim2.fromOffset(22, 12), ZIndex = 98 }, ib); corner(bd)
-end, nil, nil)
-local n0 = #eBody:GetChildren()
-userBox = field(500, "Username", "username", profile.username, false, function(t)
-	t = t:gsub("[^%w_]", ""):sub(1, 20)
-	if t ~= "" then profile.username = t:lower(); for _, l in ipairs(handleLabels) do l.Text = "@" .. profile.username end end
-end)
-local userGroup = {}
-for i, ch in ipairs(eBody:GetChildren()) do if i > n0 then userGroup[#userGroup + 1] = ch end end
-accentRefresh[#accentRefresh + 1] = function()
-	for _, ch in ipairs(userGroup) do ch.Visible = profile.passes.account and true or false end
+do -- el negro: tema oscuro
+	local bk = ez(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(20, 21, 24), Size = UDim2.fromOffset(34, 34) }, swatchRow))
+	corner(bk)
+	local ring = new("UIStroke", { Color = Color3.fromRGB(51, 95, 255), Thickness = 3, Enabled = false }, bk)
+	bk.Activated:Connect(function() setDark(not darkOn); ring.Enabled = darkOn end)
 end
 -- Fake Friends: de pago; ya comprado el boton "Add Friends" de Home deja agregar amigos (tambien verificados)
-passRow(590, "friends", "Fake Friends", "Add friends (even verified) on Home", 50, function(ib)
+passRow(304, "friends", "Fake Friends", "Add friends (even verified) on Home", 50, function(ib)
 	for i = 0, 1 do
 		local hd = new("Frame", { BackgroundColor3 = C.text, Position = UDim2.fromOffset(7 + i * 11, 9), Size = UDim2.fromOffset(9, 9), ZIndex = 98 }, ib); corner(hd)
 		local bd = new("Frame", { BackgroundColor3 = C.text, Position = UDim2.fromOffset(5 + i * 11, 20), Size = UDim2.fromOffset(13, 10), ZIndex = 98 }, ib); corner(bd)
 	end
 end, nil, nil)
--- 3) cambiar la cantidad
-amtBox = field(664, "Change amount", "0", tostring(simBalance), true, function(t)
+-- cambiar la cantidad
+amtBox = field(368, "Change amount", "0", tostring(simBalance), true, function(t)
 	local n = tonumber(t)
 	if n then simBalance = n; refreshBalances() end
 end)
-local eDone = ez(new("TextButton", { Text = "Done", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, Position = UDim2.fromOffset(18, 748), Size = UDim2.new(1, -36, 0, 50) }, eBody))
+-- Fake Account: de pago; ya comprado se cambian el nombre, el @usuario y la foto de perfil
+passRow(456, "account", "Fake Account", "Change name, @username and profile picture", 40, function(ib)
+	local hd = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.36), Size = UDim2.fromOffset(12, 12), ZIndex = 98 }, ib); corner(hd)
+	local bd = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.56), Size = UDim2.fromOffset(22, 12), ZIndex = 98 }, ib); corner(bd)
+end, nil, nil)
+local acctGroup = {}
+local function grab(fn)
+	local n0 = #eBody:GetChildren()
+	local box = fn()
+	for i, ch in ipairs(eBody:GetChildren()) do if i > n0 then acctGroup[#acctGroup + 1] = ch end end
+	return box
+end
+nameBox = grab(function()
+	return field(512, "Display name", "Display name", profile.name, false, function(t)
+		t = t:gsub("^%s+", ""):gsub("%s+$", "")
+		if t ~= "" then profile.name = t; applyProfile() end
+	end)
+end)
+userBox = grab(function()
+	return field(590, "Username", "username", profile.username, false, function(t)
+		t = t:gsub("[^%w_]", ""):sub(1, 20)
+		if t ~= "" then profile.username = t:lower(); applyProfile() end
+	end)
+end)
+pfpBox = grab(function()
+	return field(668, "Profile picture (Roblox username, empty = your avatar)", "username", "", false, function(t)
+		t = t:gsub("[^%w_]", ""):sub(1, 20)
+		if t == "" then UIX.setPfpOverride(nil); return end
+		task.spawn(function()
+			local okU, uid = pcall(function() return Players:GetUserIdFromNameAsync(t) end)
+			if okU and uid then UIX.setPfpOverride(uid) else showErr("No encontre ese usuario") end
+		end)
+	end)
+end)
+local doneRef
+accentRefresh[#accentRefresh + 1] = function()
+	swatchRow.Visible = profile.passes.color and true or false
+	local own = profile.passes.account and true or false
+	for _, ch in ipairs(acctGroup) do ch.Visible = own end
+	if doneRef then
+		doneRef.Position = UDim2.fromOffset(18, own and 750 or 530)
+		eBody.CanvasSize = UDim2.fromOffset(0, own and 830 or 620)
+	end
+end
+local eDone = ez(new("TextButton", { Text = "Done", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, Position = UDim2.fromOffset(18, 530), Size = UDim2.new(1, -36, 0, 50) }, eBody))
+doneRef = eDone
 corner(eDone, UDim.new(0, 12))
 local function closeEdit()
 	if nameBox:IsFocused() then nameBox:ReleaseFocus() end
 	if amtBox:IsFocused() then amtBox:ReleaseFocus() end
 	if userBox:IsFocused() then userBox:ReleaseFocus() end
+	if pfpBox:IsFocused() then pfpBox:ReleaseFocus() end
 	TweenService:Create(eDim, TweenInfo.new(0.23), { BackgroundTransparency = 1 }):Play()
 	local tw = TweenService:Create(eSheet, TweenInfo.new(0.23, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 1, 590) })
 	tw:Play()
@@ -2466,7 +2541,7 @@ local function nextOrd() ord += 1; return ord end
 -- perfil
 local prof = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 84), LayoutOrder = nextOrd(), ZIndex = 51 }, dScroll)
 local pAv = new("ImageLabel", { BackgroundColor3 = C.gray, Size = UDim2.fromOffset(60, 60), Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150", ZIndex = 51 }, prof)
-corner(pAv); registerPfp(pAv)
+corner(pAv); UIX.registerPfp(pAv)
 local pn = label(prof, profile.name, 22, true, C.text, UDim2.fromOffset(74, 8), UDim2.new(1, -74, 0, 28)); pn.ZIndex = 51
 nameLabels[#nameLabels + 1] = pn
 local pu = label(prof, "@" .. profile.username, 19, false, C.sub, UDim2.fromOffset(74, 36), UDim2.new(1, -74, 0, 24)); pu.ZIndex = 51
@@ -2647,7 +2722,7 @@ for i, it in ipairs(items) do
 	local b = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.new((i - 1) / 4, 0, 0, 0), Size = UDim2.new(0.25, 0, 1, 0) }, nav)
 	local ic = icon(b, it[2], UDim2.new(0.5, -14, 0, 8), UDim2.fromOffset(28, 28), function(h)
 		if it[2] == "me" then
-			local c = new("ImageLabel", { BackgroundColor3 = C.gray, Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150", Size = UDim2.fromScale(1, 1) }, h); corner(c); registerPfp(c)
+			local c = new("ImageLabel", { BackgroundColor3 = C.gray, Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150", Size = UDim2.fromScale(1, 1) }, h); corner(c); UIX.registerPfp(c)
 		else
 			local sh = new("Frame", { BackgroundColor3 = (it[2] == "home") and C.text or Color3.fromRGB(0, 0, 0), BackgroundTransparency = (it[2] == "home") and 0 or 1, BorderSizePixel = 0, Position = UDim2.fromOffset(3, 5), Size = UDim2.fromOffset(22, 18) }, h)
 			corner(sh, UDim.new(0.2, 0))
