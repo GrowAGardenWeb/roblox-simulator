@@ -157,17 +157,77 @@ local function section(parent, title, order)
 	label(f, title, 22, true, C.text, nil, UDim2.new(1, 0, 0, 28)).LayoutOrder = 0
 	return f
 end
+-- ======== Juegos (lista de ejemplo con iconos reales de Roblox) ========
+local GAMES = {
+	{ name = "Adopt Me!", place = 920587237, rating = 88, players = 148, desc = "Raise pets, decorate your home and trade with friends." },
+	{ name = "Brookhaven RP", place = 4924922222, rating = 85, players = 612, desc = "Roleplay in a town: houses, cars and jobs." },
+	{ name = "Blox Fruits", place = 2753915549, rating = 91, players = 389, desc = "Sail the seas, fight bosses and unlock powerful fruits." },
+	{ name = "Murder Mystery 2", place = 142823291, rating = 86, players = 74, desc = "Survive as an innocent, find the sheriff, avoid the murderer." },
+	{ name = "Tower of Hell", place = 1962086868, rating = 84, players = 41, desc = "Climb a randomly generated tower with no checkpoints." },
+	{ name = "Arsenal", place = 286090429, rating = 87, players = 33, desc = "Fast arcade shooter: every kill gives you a new weapon." },
+	{ name = "Jailbreak", place = 606849621, rating = 83, players = 52, desc = "Cops and robbers open world: escape, rob and chase." },
+	{ name = "DOORS", place = 6516141723, rating = 94, players = 190, desc = "Explore a mysterious hotel and survive what hides behind each door." },
+	{ name = "Natural Disaster Survival", place = 189707, rating = 89, players = 27, desc = "Survive tornadoes, earthquakes and more on a random map." },
+	{ name = "Pet Simulator 99", place = 8737899170, rating = 94, players = 255, desc = "Collect pets, break chests and explore new worlds." },
+	{ name = "BedWars", place = 6872265039, rating = 82, players = 95, desc = "Protect your bed and destroy the others." },
+}
+local function gameThumb(g) return "rbxthumb://type=Asset&id=" .. g.place .. "&w=420&h=420" end
+local function fmtK(n) return n >= 1000 and string.format("%.1fM", n / 1000) or (n .. "K") end
+
+local function openGameSheet(g)
+	local EXT, H = 24, 470
+	local gg = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 84 }, root)
+	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 84 }, gg)
+	local sh = new("Frame", { BackgroundColor3 = Color3.fromRGB(248, 247, 247), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, H + EXT), Size = UDim2.new(1, 0, 0, H + EXT), ZIndex = 85, ClipsDescendants = true }, gg)
+	corner(sh, UDim.new(0, 12))
+	local function z(o) o.ZIndex = 86; return o end
+	new("Frame", { BackgroundColor3 = Color3.fromRGB(214, 216, 222), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 9), Size = UDim2.fromOffset(29, 3.3), ZIndex = 86 }, sh)
+	local img = z(new("ImageLabel", { BackgroundColor3 = C.tile, Image = gameThumb(g), ScaleType = Enum.ScaleType.Crop, Position = UDim2.fromOffset(16, 28), Size = UDim2.new(1, -32, 0, 190) }, sh))
+	corner(img, UDim.new(0, 12))
+	z(label(sh, g.name, 22, true, C.text, UDim2.fromOffset(16, 230), UDim2.new(1, -32, 0, 30)))
+	z(label(sh, g.rating .. "% Rating   \u{00B7}   " .. fmtK(g.players) .. " playing", 14, false, C.sub, UDim2.fromOffset(16, 262), UDim2.new(1, -32, 0, 20)))
+	local play = z(new("TextButton", { Text = "Play", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(51, 95, 255), AutoButtonColor = true, Position = UDim2.fromOffset(16, 296), Size = UDim2.new(1, -32, 0, 48) }, sh))
+	corner(play, UDim.new(0, 10))
+	local d = z(label(sh, g.desc, 14, false, Color3.fromRGB(74, 77, 86), UDim2.fromOffset(16, 358), UDim2.new(1, -32, 0, 60)))
+	d.TextWrapped = true; d.TextYAlignment = Enum.TextYAlignment.Top
+	TweenService:Create(dim, TweenInfo.new(0.25), { BackgroundTransparency = 0.38 }):Play()
+	TweenService:Create(sh, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, EXT) }):Play()
+	local closing = false
+	local function close()
+		if closing then return end
+		closing = true
+		TweenService:Create(dim, TweenInfo.new(0.23), { BackgroundTransparency = 1 }):Play()
+		local tw = TweenService:Create(sh, TweenInfo.new(0.23, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 1, H + EXT) })
+		tw:Play()
+		tw.Completed:Once(function() gg:Destroy() end)
+	end
+	dim.Activated:Connect(close)
+	-- Play: pantalla de carga simulada (no entra a ningun juego)
+	play.Activated:Connect(function()
+		local ld = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(24, 25, 29), ZIndex = 120 }, root)
+		local li = new("ImageLabel", { BackgroundTransparency = 1, Image = gameThumb(g), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.42), Size = UDim2.fromOffset(150, 150), ZIndex = 121 }, ld)
+		corner(li, UDim.new(0, 16))
+		new("TextLabel", { BackgroundTransparency = 1, Text = g.name, TextSize = 22, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.42) + UDim2.fromOffset(0, 90), Size = UDim2.fromOffset(300, 30), ZIndex = 121 }, ld)
+		new("TextLabel", { BackgroundTransparency = 1, Text = "Joining...", TextSize = 15, Font = FONT, TextColor3 = Color3.fromRGB(170, 172, 180), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.42) + UDim2.fromOffset(0, 124), Size = UDim2.fromOffset(300, 22), ZIndex = 121 }, ld)
+		task.delay(2.2, function() ld:Destroy(); close() end)
+	end)
+end
+
 local chartLabels = {}
 local function tilesRow(parent, count, w, h, order, reg)
 	local row = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Size = UDim2.new(1, 0, 0, h + 44), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, LayoutOrder = order }, parent)
 	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, row)
 	for i = 1, count do
+		local game_ = GAMES[((order * 3 + i - 1) % #GAMES) + 1]
 		local t = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(w, h + 40) }, row)
-		local img = new("Frame", { BackgroundColor3 = C.tile, BorderSizePixel = 0, Size = UDim2.fromOffset(w, h) }, t)
+		local img = new("ImageLabel", { BackgroundColor3 = C.tile, BorderSizePixel = 0, Image = gameThumb(game_), ScaleType = Enum.ScaleType.Crop, Size = UDim2.fromOffset(w, h) }, t)
 		corner(img, UDim.new(0, 10))
-		label(t, "Experience " .. i, 15, true, C.text, UDim2.fromOffset(0, h + 4), UDim2.new(1, 0, 0, 20))
-		local pl = label(t, "-- players", 13, false, C.sub, UDim2.fromOffset(0, h + 22), UDim2.new(1, 0, 0, 16))
+		local nm = label(t, game_.name, 15, true, C.text, UDim2.fromOffset(0, h + 4), UDim2.new(1, 0, 0, 20))
+		nm.TextTruncate = Enum.TextTruncate.AtEnd
+		local pl = label(t, game_.rating .. "% Rating", 13, false, C.sub, UDim2.fromOffset(0, h + 22), UDim2.new(1, 0, 0, 16))
 		if reg then chartLabels[#chartLabels + 1] = pl end
+		local btn = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 3 }, t)
+		btn.Activated:Connect(function() openGameSheet(game_) end)
 	end
 	return row
 end
