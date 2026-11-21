@@ -11,6 +11,9 @@ local Players = game:GetService("Players")
 local AvatarEditorService = game:GetService("AvatarEditorService")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
+-- oculta la barra de arriba de Roblox (menu, chat, etc.) para que la UI ocupe toda la pantalla
+pcall(function() game:GetService("StarterGui"):SetCore("TopbarEnabled", false) end)
+pcall(function() game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All, false) end)
 
 -- ICONOS OPCIONALES (deja "" para usar la figura dibujada)
 -- Sube los PNG de la carpeta "assets" (Creator Hub > Assets > Images) y pega aquí los ids, p. ej. "rbxassetid://1234567890"
@@ -52,7 +55,7 @@ local function icon(parent, key, pos, size, draw)
 end
 
 -- ======== ScreenGui ========
-local gui = new("ScreenGui", { Name = "RobloxAppUI", ResetOnSpawn = false, IgnoreGuiInset = false, ZIndexBehavior = Enum.ZIndexBehavior.Sibling }, player:WaitForChild("PlayerGui"))
+local gui = new("ScreenGui", { Name = "RobloxAppUI", ResetOnSpawn = false, IgnoreGuiInset = true, ZIndexBehavior = Enum.ZIndexBehavior.Sibling }, player:WaitForChild("PlayerGui"))
 local root = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = C.bg, BorderSizePixel = 0 }, gui)
 
 -- ======== Cabecera ========
