@@ -955,7 +955,8 @@ exRow = itemRow(4)
 status = label(body, "", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20)); status.LayoutOrder = 5
 
 wear = function(assetId, kind)
-	if not desc or not kind then return end
+	if not desc then showErr("Tu avatar aun no carga, espera un momento"); return end
+	if not kind then showErr("Este item no tiene tipo para equiparlo"); return end
 	if kind == "HeadPart" or kind == "Bundle" then
 		if kind == "HeadPart" then
 			desc.Head = assetId
@@ -1348,7 +1349,9 @@ makeItemCell = function(parent, it, kind, order, cz)
 	corner(det, UDim.new(0, 4))
 	local nm = label(cell, it.Name or "Item", 13.2, true, C.text, UDim2.fromOffset(0, 116), UDim2.new(1, 0, 0, 20)); nm.TextTruncate = Enum.TextTruncate.AtEnd
 	local by = label(cell, it.CreatorName or "Roblox", 12.2, false, Color3.fromRGB(106, 111, 129), UDim2.fromOffset(0, 136), UDim2.new(1, 0, 0, 20)); by.TextTruncate = Enum.TextTruncate.AtEnd
-	if p > 0 then
+	if cz then
+		-- Customize = tu inventario: sin precio
+	elseif p > 0 then
 		glyph(cell, "robux", 12.8, UDim2.fromOffset(-1, 156), C.text)
 		label(cell, fmtFull(p), 12.8, false, C.text, UDim2.fromOffset(17, 156), UDim2.new(1, -17, 0, 20))
 	else
