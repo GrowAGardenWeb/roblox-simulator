@@ -67,10 +67,37 @@ end
 local function hexIcon(parent, px, pos, color)
 	return glyph(parent, "robux", px, pos, color)
 end
--- X dibujada (el caracter de la X no existe en la fuente y sale como un cuadrito)
+-- Iconos reales subidos (UI). Si falta alguno, se usan las figuras dibujadas de abajo.
+local UIIMG = {
+	arrow_up = "rbxthumb://type=Asset&id=79594183610429&w=150&h=150",
+	calendar = "rbxthumb://type=Asset&id=76622558998250&w=150&h=150",
+	check = "rbxthumb://type=Asset&id=129516865155295&w=150&h=150",
+	chevron_down = "rbxthumb://type=Asset&id=73499607793433&w=150&h=150",
+	chevron_left = "rbxthumb://type=Asset&id=89014188141058&w=150&h=150",
+	chevron_right = "rbxthumb://type=Asset&id=82851865754378&w=150&h=150",
+	close = "rbxthumb://type=Asset&id=72361208708734&w=150&h=150",
+	compose = "rbxthumb://type=Asset&id=94162717746374&w=150&h=150",
+	dots = "rbxthumb://type=Asset&id=123780680421921&w=150&h=150",
+	gear = "rbxthumb://type=Asset&id=108005348469496&w=150&h=150",
+	info = "rbxthumb://type=Asset&id=73805455724420&w=150&h=150",
+	party = "rbxthumb://type=Asset&id=90262229048097&w=150&h=150",
+	people = "rbxthumb://type=Asset&id=89765067599916&w=150&h=150",
+	redo = "rbxthumb://type=Asset&id=139062836727323&w=150&h=150",
+	star = "rbxthumb://type=Asset&id=79664842438870&w=150&h=150",
+	undo = "rbxthumb://type=Asset&id=103112398010687&w=150&h=150",
+}
+local function uiImg(parent, key, size, color, z, center)
+	local id = UIIMG[key]
+	if not id then return nil end
+	local img = new("ImageLabel", { BackgroundTransparency = 1, Image = id, ImageColor3 = color or C.text, Size = UDim2.fromOffset(size, size), ZIndex = z or (parent.ZIndex + 1) }, parent)
+	if center then img.AnchorPoint = Vector2.new(0.5, 0.5); img.Position = UDim2.fromScale(0.5, 0.5) end
+	return img
+end
+-- X (icono real; el caracter X no existe en la fuente y sale como un cuadrito)
 local function xMark(btn, color, len)
 	btn.Text = ""
 	len = len or 16
+	if uiImg(btn, "close", len * 1.7, color or C.text, btn.ZIndex + 1, true) then return end
 	for _, r in ipairs({ 45, -45 }) do
 		new("Frame", { BackgroundColor3 = color or C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(len, 2), Rotation = r, ZIndex = btn.ZIndex + 1 }, btn)
 	end
@@ -81,11 +108,17 @@ local function stroke(parent, color, len, thick, cx, cy, rot, z)
 	return new("Frame", { BackgroundColor3 = color, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0, cx, 0, cy), Size = UDim2.fromOffset(len, thick), Rotation = rot, ZIndex = z or (parent.ZIndex + 1) }, parent)
 end
 local function drawCheck(parent, color, sz, thick, z)
+	if uiImg(parent, "check", sz * 1.3, color, z, true) then return end
 	thick = thick or math.max(1.6, sz / 7)
 	stroke(parent, color, sz * 0.38, thick, sz * 0.34, sz * 0.62, 45, z)
 	stroke(parent, color, sz * 0.72, thick, sz * 0.58, sz * 0.46, -52, z)
 end
 local function drawChevron(parent, color, sz, dir, thick, z)
+	do
+		local key = (dir == "up") and "chevron_down" or ("chevron_" .. dir)
+		local img = uiImg(parent, key, sz * 1.5, color, z, true)
+		if img then if dir == "up" then img.Rotation = 180 end return end
+	end
 	thick = thick or math.max(1.5, sz / 7)
 	if dir == "down" then
 		stroke(parent, color, sz * 0.6, thick, sz * 0.32, sz * 0.45, 45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.68, sz * 0.45, -45, z)
@@ -98,6 +131,10 @@ local function drawChevron(parent, color, sz, dir, thick, z)
 	end
 end
 local function drawArrow(parent, color, sz, dir, thick, z)
+	do
+		local key = (dir == "up") and "arrow_up" or (dir == "left" and "undo" or "redo")
+		if uiImg(parent, key, sz * 1.35, color, z, true) then return end
+	end
 	thick = thick or math.max(1.6, sz / 8)
 	if dir == "up" then
 		stroke(parent, color, sz * 0.8, thick, sz * 0.5, sz * 0.52, 90, z)
@@ -492,8 +529,10 @@ local function chartSection(title, subtitle, order)
 	label(head, title .. "  \u{203A}", 24, true, C.text, UDim2.fromOffset(0, 0), UDim2.new(1, -40, 0, 30))
 	if subtitle then label(head, subtitle, 15, false, C.sub, UDim2.fromOffset(0, 28), UDim2.new(1, -40, 0, 20)) end
 	local info = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, 0, 0, 4), Size = UDim2.fromOffset(20, 20) }, head)
-	corner(info); new("UIStroke", { Color = C.text, Thickness = 1.6 }, info)
-	label(info, "i", 13, true, C.text, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
+	if not uiImg(info, "info", 24, C.text, nil, true) then
+		corner(info); new("UIStroke", { Color = C.text, Thickness = 1.6 }, info)
+		label(info, "i", 13, true, C.text, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
+	end
 	tilesRow(f, 6, 150, 150, 1, true)
 	return f
 end
@@ -597,7 +636,10 @@ local leftW = new("Frame", { BackgroundColor3 = WHITE_PILL, Position = UDim2.fro
 corner(leftW)
 local thumb = new("ImageLabel", { BackgroundColor3 = C.gray, Position = UDim2.fromOffset(2, 2), Size = UDim2.fromOffset(36, 36), Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150" }, leftW)
 corner(thumb)
-label(leftW, "\u{2699}", 20, false, C.text, UDim2.fromOffset(0, 44), UDim2.fromOffset(40, 30), Enum.TextXAlignment.Center)
+do
+	local gh = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(8, 46), Size = UDim2.fromOffset(24, 24) }, leftW)
+	if not uiImg(gh, "gear", 26, C.text, nil, true) then label(leftW, "\u{2699}", 20, false, C.text, UDim2.fromOffset(0, 44), UDim2.fromOffset(40, 30), Enum.TextXAlignment.Center) end
+end
 -- saldo (de juguete): abre Send
 chip = new("Frame", { BackgroundColor3 = WHITE_PILL, Position = UDim2.new(1, -82, 0, 53), Size = UDim2.fromOffset(64, 42), BorderSizePixel = 0 }, avScreen)
 corner(chip)
@@ -810,9 +852,11 @@ makeBar = function(parent, z0)
 	corner(manage, UDim.new(0, 6.5))
 	local more = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(227, 228, 232), Position = UDim2.fromOffset(307.4, 3), Size = UDim2.fromOffset(36.2, 32.5), ZIndex = z0 + 1 }, c)
 	corner(more, UDim.new(0, 6.5))
-	for i = -1, 1 do
-		local d = new("Frame", { BackgroundColor3 = Color3.fromRGB(57, 59, 69), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, i * 4.5, 0.5, 0), Size = UDim2.fromOffset(2.6, 2.6), ZIndex = z0 + 2 }, more)
-		corner(d)
+	if not uiImg(more, "dots", 24, Color3.fromRGB(57, 59, 69), z0 + 2, true) then
+		for i = -1, 1 do
+			local d = new("Frame", { BackgroundColor3 = Color3.fromRGB(57, 59, 69), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, i * 4.5, 0.5, 0), Size = UDim2.fromOffset(2.6, 2.6), ZIndex = z0 + 2 }, more)
+			corner(d)
+		end
 	end
 	local bar = { frame = wrap, buy = buy, manage = manage }
 	function bar.refresh()
@@ -932,7 +976,10 @@ openDetails = function(it, kind)
 	local im = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=420&h=420", ScaleType = Enum.ScaleType.Fit, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 198), Size = UDim2.fromOffset(186, 186) }, c))
 	local dsc = z(label(c, "", 15, false, Color3.fromRGB(74, 77, 90), UDim2.fromOffset(22, 420), UDim2.new(1, -44, 0, 44)))
 	dsc.TextWrapped = true; dsc.TextYAlignment = Enum.TextYAlignment.Top; dsc.TextTruncate = Enum.TextTruncate.AtEnd
-	z(label(c, "\u{2605}", 40, false, C.text, UDim2.fromOffset(32, 476), UDim2.fromOffset(46, 52), Enum.TextXAlignment.Center))
+	do
+		local sh = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(30, 478), Size = UDim2.fromOffset(46, 46) }, c))
+		if not uiImg(sh, "star", 46, C.text, 151, true) then z(label(c, "\u{2605}", 40, false, C.text, UDim2.fromOffset(32, 476), UDim2.fromOffset(46, 52), Enum.TextXAlignment.Center)) end
+	end
 	z(label(c, "0", 26, true, C.text, UDim2.fromOffset(86, 478), UDim2.fromOffset(120, 32)))
 	z(label(c, "Favorites", 12.5, false, C.text, UDim2.fromOffset(86, 508), UDim2.fromOffset(120, 18)))
 	local info = KIND_INFO[kind] or { "Accessories", "Accessories" }
@@ -1458,6 +1505,7 @@ local rvName = z(label(pReview, "", 12.5, true, INK, UDim2.fromOffset(24, 128.1)
 local rvHandle = z(label(pReview, "", 12.5, false, INK, UDim2.fromOffset(24, 145.6), UDim2.new(1, -48, 0, 16), Enum.TextXAlignment.Center))
 local function iconBox(parent, kind) -- iconos pequenos de 13px dibujados: calendario, personas, info
 	local f = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(13, 13), ZIndex = 82 }, parent)
+	if uiImg(f, kind, 15, SUB, 83, true) then return f end
 	if kind == "calendar" then
 		local body = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 1.5), Size = UDim2.fromOffset(13, 11.5), ZIndex = 82 }, f)
 		corner(body, UDim.new(0, 2.5)); new("UIStroke", { Color = SUB, Thickness = 1.3 }, body)
@@ -1914,21 +1962,27 @@ icon(chatPage, "search", UDim2.new(1, -78, 0, 21), UDim2.fromOffset(26, 26), fun
 	new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(21, 21), Size = UDim2.fromOffset(8, 2.5), Rotation = 45 }, h)
 end)
 local compose = new("Frame", { BackgroundTransparency = 1, Position = UDim2.new(1, -40, 0, 22), Size = UDim2.fromOffset(22, 22) }, chatPage)
-corner(compose, UDim.new(0.2, 0)); new("UIStroke", { Color = C.text, Thickness = 2 }, compose)
--- lapiz que cruza la esquina
-new("Frame", { BackgroundColor3 = C.bg, BorderSizePixel = 0, Position = UDim2.fromOffset(13, -3), Size = UDim2.fromOffset(12, 9) }, compose)
-new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(15, 7), Size = UDim2.fromOffset(15, 2.6), Rotation = -45 }, compose)
-local function chatRow(y, title, sub)
+if not uiImg(compose, "compose", 26, C.text, nil, true) then
+	corner(compose, UDim.new(0.2, 0)); new("UIStroke", { Color = C.text, Thickness = 2 }, compose)
+	-- lapiz que cruza la esquina
+	new("Frame", { BackgroundColor3 = C.bg, BorderSizePixel = 0, Position = UDim2.fromOffset(13, -3), Size = UDim2.fromOffset(12, 9) }, compose)
+	new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(15, 7), Size = UDim2.fromOffset(15, 2.6), Rotation = -45 }, compose)
+end
+local function chatRow(y, title, sub, iconKey)
 	local r = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 58) }, chatPage)
 	local ic = new("Frame", { BackgroundColor3 = Color3.fromRGB(236, 237, 241), Position = UDim2.fromOffset(14, 10), Size = UDim2.fromOffset(34, 34) }, r)
 	corner(ic, UDim.new(0, 8))
+	if iconKey then uiImg(ic, iconKey, 22, C.text, nil, true) end
 	label(r, title, 16, true, C.text, UDim2.fromOffset(62, 8), UDim2.new(1, -110, 0, 20))
 	label(r, sub, 12.5, false, C.sub, UDim2.fromOffset(62, 29), UDim2.new(1, -110, 0, 16))
-	label(r, "\u{203A}", 26, false, C.text, UDim2.new(1, -40, 0, 8), UDim2.fromOffset(26, 36), Enum.TextXAlignment.Center)
+	do
+		local cv = new("Frame", { BackgroundTransparency = 1, Position = UDim2.new(1, -34, 0, 18), Size = UDim2.fromOffset(16, 16) }, r)
+		if not uiImg(cv, "chevron_right", 22, C.text, nil, true) then label(r, "\u{203A}", 26, false, C.text, UDim2.new(1, -40, 0, 8), UDim2.fromOffset(26, 36), Enum.TextXAlignment.Center) end
+	end
 	new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Position = UDim2.fromOffset(62, 57), Size = UDim2.new(1, -76, 0, 1) }, r)
 end
-chatRow(76, "Start party", "Join experiences together")
-chatRow(134, "Communities", "Create and explore communities")
+chatRow(76, "Start party", "Join experiences together", "party")
+chatRow(134, "Communities", "Create and explore communities", "people")
 end
 
 -- ======== Barra inferior ========
