@@ -2341,7 +2341,7 @@ local function passRow(y, key, title, subtitle, price, drawIcon, get, set)
 	end
 	if get then sw.Activated:Connect(function() set(not get()); paint(); applyProfile() end) end
 end
-local nameBox, amtBox, userBox, pfpBox
+local nameBox, amtBox, userBox, pfpBox, morphBox
 ez(label(eBody, "Passes", 14, false, C.sub, UDim2.fromOffset(18, 60), UDim2.new(1, -36, 0, 18)))
 local function badgeIcon(g)
 	return function(ib)
@@ -2417,7 +2417,7 @@ end
 root.DescendantAdded:Connect(function(d) if themeMode then task.defer(themeInst, d) end end)
 
 -- Custom UI Color (de pago): cada color es un tema completo; el negro es el tema oscuro
-passRow(198, "color", "Custom UI Color", "Full color themes and black (dark) mode", 30, function(ib)
+passRow(198, "color", "Custom UI Color", "Full color themes and black (dark) mode", 40, function(ib)
 	for i, col in ipairs({ Color3.fromRGB(235, 64, 52), Color3.fromRGB(51, 95, 255), Color3.fromRGB(30, 170, 90) }) do
 		local d = new("Frame", { BackgroundColor3 = col, BorderSizePixel = 0, Position = UDim2.fromOffset(5 + (i - 1) * 10, 12 + ((i == 2) and -4 or 4)), Size = UDim2.fromOffset(14, 14), ZIndex = 98 }, ib); corner(d)
 	end
@@ -2444,7 +2444,7 @@ do
 	end
 end
 -- Fake Friends: de pago; ya comprado el boton "Add Friends" de Home deja agregar amigos (tambien verificados)
-passRow(304, "friends", "Fake Friends", "Add friends (even verified) on Home", 50, function(ib)
+passRow(304, "friends", "Fake Friends", "Add friends (even verified) on Home", 70, function(ib)
 	for i = 0, 1 do
 		local hd = new("Frame", { BackgroundColor3 = C.text, Position = UDim2.fromOffset(7 + i * 11, 9), Size = UDim2.fromOffset(9, 9), ZIndex = 98 }, ib); corner(hd)
 		local bd = new("Frame", { BackgroundColor3 = C.text, Position = UDim2.fromOffset(5 + i * 11, 20), Size = UDim2.fromOffset(13, 10), ZIndex = 98 }, ib); corner(bd)
@@ -2456,7 +2456,7 @@ amtBox = field(368, "Change amount", "0", tostring(simBalance), true, function(t
 	if n then simBalance = n; refreshBalances() end
 end)
 -- Fake Account: de pago; ya comprado se cambian el nombre, el @usuario y la foto de perfil
-passRow(456, "account", "Fake Account", "Change name, @username and profile picture", 40, function(ib)
+passRow(456, "account", "Custom Profile", "Change name, @username, picture and morph", 100, function(ib)
 	local hd = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.36), Size = UDim2.fromOffset(12, 12), ZIndex = 98 }, ib); corner(hd)
 	local bd = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.56), Size = UDim2.fromOffset(22, 12), ZIndex = 98 }, ib); corner(bd)
 end, nil, nil)
@@ -2538,11 +2538,42 @@ fAdd.Activated:Connect(function()
 	rebuildFriends()
 	if renderFriends then renderFriends() end
 end)
+morphBox = grab(function()
+	return field(746, "Morph into a player (Roblox username, empty = back to you)", "username", "", false, function(t)
+		t = t:gsub("[^%w_]", ""):sub(1, 20)
+		if t == "" then
+			UIX.setPfpOverride(nil)
+			loadMyDescription()
+			profile.name = player.DisplayName; profile.username = player.Name:lower(); profile.verified = false
+			nameBox.Text = profile.name; userBox.Text = profile.username
+			applyProfile()
+			return
+		end
+		task.spawn(function()
+			local okU, uid = pcall(function() return Players:GetUserIdFromNameAsync(t) end)
+			if not okU or not uid then showErr("No encontre ese usuario"); return end
+			local okD, d = pcall(function() return Players:GetHumanoidDescriptionFromUserId(uid) end)
+			if not okD or not d then showErr("No pude copiar el avatar de ese usuario"); return end
+			-- el avatar 3D pasa a ser el del otro jugador (se puede seguir editando)
+			tried = {}; desc = d; history = { d:Clone() }; hIndex = 1
+			buildRig()
+			-- nombre, @usuario, insignia y foto tambien
+			local okI, infos = pcall(function() return game:GetService("UserService"):GetUserInfosByUserIdsAsync({ uid }) end)
+			local info = okI and infos and infos[1]
+			profile.name = (info and info.DisplayName ~= "" and info.DisplayName) or t
+			profile.username = ((info and info.Username) or t):lower()
+			if info and info.HasVerifiedBadge then profile.verified = true end
+			nameBox.Text = profile.name; userBox.Text = profile.username
+			UIX.setPfpOverride(uid)
+			applyProfile()
+		end)
+	end)
+end)
 local doneRef
 relayout = function()
 	local acct = profile.passes.account and true or false
 	local frs = profile.passes.friends and true or false
-	local y = acct and 750 or 530
+	local y = acct and 830 or 530
 	fm.Visible = frs
 	if frs then
 		fm.Position = UDim2.fromOffset(0, y)
