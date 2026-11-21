@@ -567,11 +567,40 @@ local function placeCamera()
 	local dir = CFrame.Angles(0, math.rad(yaw), 0) * Vector3.new(0, 0, 9)
 	cam.CFrame = CFrame.lookAt(pos + dir, pos)
 end
+local buildToken = 0
+-- datos del avatar que se mandan al servidor (el servidor SI puede cargar items que no son tuyos)
+local function serializeDesc()
+	local acc = {}
+	for _, a in ipairs(desc:GetAccessories(true)) do
+		acc[#acc + 1] = { AssetId = a.AssetId, AccessoryType = a.AccessoryType.Name, IsLayered = a.IsLayered, Order = a.Order, Puffiness = a.Puffiness }
+	end
+	return {
+		acc = acc, Shirt = desc.Shirt, Pants = desc.Pants, GraphicTShirt = desc.GraphicTShirt,
+		HeadColor = desc.HeadColor, TorsoColor = desc.TorsoColor, LeftArmColor = desc.LeftArmColor, RightArmColor = desc.RightArmColor, LeftLegColor = desc.LeftLegColor, RightLegColor = desc.RightLegColor,
+		HeightScale = desc.HeightScale, WidthScale = desc.WidthScale, DepthScale = desc.DepthScale, HeadScale = desc.HeadScale, ProportionScale = desc.ProportionScale, BodyTypeScale = desc.BodyTypeScale,
+	}
+end
 buildRig = function()
 	if not desc then return end
-	local ok, model = pcall(function() return Players:CreateHumanoidModelFromDescription(desc, Enum.HumanoidRigType.R15) end)
-	if not ok then showErr("Avatar: " .. tostring(model)); return end
-	if not model then return end
+	buildToken += 1
+	local my = buildToken
+	local model
+	-- 1) servidor (carga cualquier item del catalogo)
+	local rf = game:GetService("ReplicatedStorage"):FindFirstChild("AvatarPreview")
+	if rf then
+		local okS, res = pcall(function() return rf:InvokeServer(serializeDesc()) end)
+		if okS and typeof(res) == "Instance" then
+			local okC, cl = pcall(function() return res:Clone() end)
+			if okC then model = cl end
+		end
+	end
+	-- 2) respaldo: construirlo aqui (solo carga lo tuyo o lo gratis)
+	if not model then
+		local ok, m = pcall(function() return Players:CreateHumanoidModelFromDescription(desc, Enum.HumanoidRigType.R15) end)
+		if not ok then showErr("Avatar: " .. tostring(m)); return end
+		model = m
+	end
+	if not model or my ~= buildToken then return end
 	if rig then rig:Destroy() end
 	rig = model
 	rig:PivotTo(CFrame.new(0, 3, 0))
