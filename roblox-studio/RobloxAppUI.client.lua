@@ -391,6 +391,9 @@ local function fmtCompact(n)
 end
 -- completo mientras quepa; si es muy largo, compacto (asi nunca se sale de la interfaz)
 local UIX = {} -- ayudas de interfaz (skeleton, foto de perfil) en una tabla para no pasar el limite de 200 variables locales
+-- IDs de los Game Passes REALES (se crean en create.roblox.com > tu experiencia > Monetization > Passes).
+-- 0 = ese pase usa el saldo de juguete. Con un ID > 0 se abre el cuadro de compra oficial de Roblox con Robux de verdad.
+UIX.PASS_IDS = { verified = 0, color = 0, account = 0, friends = 0 }
 -- skeleton loading: cajas grises con un brillo que pasa de lado a lado (en lugar de texto "Loading...")
 function UIX.skelBox(parent, size, pos, radius)
 	local f = new("Frame", { Name = "Skel", BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, Size = size, Position = pos or UDim2.new() }, parent)
@@ -2279,7 +2282,8 @@ local function passRow(y, key, title, subtitle, price, drawIcon, get, set)
 	local pill = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.blue, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 0, 0.5, 0), Size = UDim2.fromOffset(86, 34), ZIndex = 97 }, row)
 	corner(pill, UDim.new(0, 8))
 	local pg = glyph(pill, "robux", 15, UDim2.fromOffset(12, 9), Color3.new(1, 1, 1)); pg.ZIndex = 98
-	label(pill, tostring(price or 0), 15, true, Color3.new(1, 1, 1), UDim2.fromOffset(31, 0), UDim2.new(1, -33, 1, 0)).ZIndex = 98
+	local priceLbl = label(pill, tostring(price or 0), 15, true, Color3.new(1, 1, 1), UDim2.fromOffset(31, 0), UDim2.new(1, -33, 1, 0))
+	priceLbl.ZIndex = 98
 	local sw = new("TextButton", { Text = "", AutoButtonColor = false, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 0, 0.5, 0), Size = UDim2.fromOffset(52, 30), ZIndex = 97 }, row)
 	corner(sw)
 	local knob = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, Size = UDim2.fromOffset(24, 24), Position = UDim2.fromOffset(3, 3), ZIndex = 98 }, sw)
@@ -2297,18 +2301,44 @@ local function passRow(y, key, title, subtitle, price, drawIcon, get, set)
 	end
 	passRefresh[#passRefresh + 1] = paint
 	paint()
-	pill.Activated:Connect(function()
-		if simBalance < price then showErr("Not enough Robux"); return end
-		simBalance -= price
+	local function grant()
 		profile.passes[key] = true
 		if set then set(true) end
-		refreshBalances()
-		if amtBox then amtBox.Text = tostring(simBalance) end
 		for _, f in ipairs(passRefresh) do f() end
 		for _, f in ipairs(accentRefresh) do f() end
 		applyProfile()
 		purchasedToast()
-	end)
+	end
+	local gid = UIX.PASS_IDS[key]
+	if price and gid and gid > 0 then
+		-- Game Pass real: precio y propiedad vienen de Roblox; la compra usa el cuadro oficial
+		task.spawn(function()
+			local okI, info = pcall(function() return MarketplaceService:GetProductInfo(gid, Enum.InfoType.GamePass) end)
+			if okI and info and info.PriceInRobux then priceLbl.Text = tostring(info.PriceInRobux) end
+			local okO, owns = pcall(function() return MarketplaceService:UserOwnsGamePassAsync(player.UserId, gid) end)
+			if okO and owns then
+				profile.passes[key] = true
+				for _, f in ipairs(passRefresh) do f() end
+				for _, f in ipairs(accentRefresh) do f() end
+			end
+		end)
+		MarketplaceService.PromptGamePassPurchaseFinished:Connect(function(plr, passId, wasPurchased)
+			if plr == player and passId == gid and wasPurchased then grant() end
+		end)
+		pill.Activated:Connect(function()
+			local okP, errP = pcall(function() MarketplaceService:PromptGamePassPurchase(player, gid) end)
+			if not okP then showErr("No se pudo abrir la compra: " .. tostring(errP):sub(1, 60)) end
+		end)
+	else
+		-- sin Game Pass: se paga con el saldo de juguete
+		pill.Activated:Connect(function()
+			if simBalance < price then showErr("Not enough Robux"); return end
+			simBalance -= price
+			refreshBalances()
+			if amtBox then amtBox.Text = tostring(simBalance) end
+			grant()
+		end)
+	end
 	if get then sw.Activated:Connect(function() set(not get()); paint(); applyProfile() end) end
 end
 local nameBox, amtBox, userBox, pfpBox
@@ -2459,18 +2489,77 @@ pfpBox = grab(function()
 		end)
 	end)
 end)
+-- administrar amigos falsos (con el pase Fake Friends): agregar, marcar verificado y quitar, directo en el panel
+local fm = ez(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 530), Size = UDim2.new(1, 0, 0, 130), Visible = false }, eBody))
+local function fz(o) o.ZIndex = 97; return o end
+fz(label(fm, "Friends", 14, false, C.sub, UDim2.fromOffset(18, 0), UDim2.new(1, -36, 0, 18)))
+local fAddFrame = fz(new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, Position = UDim2.fromOffset(18, 22), Size = UDim2.new(1, -124, 0, 44) }, fm))
+corner(fAddFrame, UDim.new(0, 12)); new("UIStroke", { Color = Color3.fromRGB(207, 209, 215), Thickness = 1 }, fAddFrame)
+local fBox = fz(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "Add username", PlaceholderColor3 = C.sub, TextSize = 18, Font = FONT, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(14, 0), Size = UDim2.new(1, -28, 1, 0) }, fAddFrame))
+local fAdd = fz(new("TextButton", { Text = "Add", TextSize = 17, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 22), Size = UDim2.fromOffset(88, 44) }, fm))
+corner(fAdd, UDim.new(0, 12))
+fz(label(fm, GLYPH.verified .. "  Verified", 16, false, C.text, UDim2.fromOffset(18, 76), UDim2.fromOffset(160, 28)))
+local fVer = false
+local fSw = fz(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(200, 202, 208), AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 75), Size = UDim2.fromOffset(52, 30) }, fm))
+corner(fSw)
+local fKnob = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, Size = UDim2.fromOffset(24, 24), Position = UDim2.fromOffset(3, 3), ZIndex = 98 }, fSw)
+corner(fKnob)
+fSw.Activated:Connect(function()
+	fVer = not fVer
+	fSw.BackgroundColor3 = fVer and C.blue or Color3.fromRGB(200, 202, 208)
+	fKnob.Position = fVer and UDim2.fromOffset(25, 3) or UDim2.fromOffset(3, 3)
+end)
+local fList = fz(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 118), Size = UDim2.new(1, 0, 0, 0) }, fm))
+local relayout
+local function rebuildFriends()
+	for _, c in ipairs(fList:GetChildren()) do c:Destroy() end
+	for i, fr in ipairs(profile.friends) do
+		local r = fz(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, (i - 1) * 48), Size = UDim2.new(1, -36, 0, 44) }, fList))
+		local pic = fz(new("Frame", { BackgroundColor3 = Color3.fromRGB(200, 203, 211), Position = UDim2.fromOffset(0, 5), Size = UDim2.fromOffset(34, 34) }, r)); corner(pic)
+		label(pic, fr.name:sub(1, 1):upper(), 16, true, Color3.new(1, 1, 1), nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center).ZIndex = 98
+		local nm = label(r, fr.name .. (fr.verified and ("  " .. GLYPH.verified) or ""), 16, true, C.text, UDim2.fromOffset(44, 0), UDim2.new(1, -150, 1, 0))
+		nm.ZIndex = 97; nm.TextTruncate = Enum.TextTruncate.AtEnd
+		local vb = fz(new("TextButton", { Text = fr.verified and "Verified" or "Verify", TextSize = 12, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(231, 232, 236), AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -42, 0.5, 0), Size = UDim2.fromOffset(62, 28) }, r))
+		corner(vb, UDim.new(0, 8))
+		local xb = fz(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(231, 232, 236), AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 0, 0.5, 0), Size = UDim2.fromOffset(34, 28) }, r))
+		corner(xb, UDim.new(0, 8))
+		xMark(xb, C.text, 11)
+		vb.Activated:Connect(function() fr.verified = not fr.verified; rebuildFriends(); if renderFriends then renderFriends() end end)
+		xb.Activated:Connect(function() table.remove(profile.friends, i); rebuildFriends(); if renderFriends then renderFriends() end end)
+	end
+	fList.Size = UDim2.new(1, 0, 0, #profile.friends * 48)
+	if relayout then relayout() end
+end
+fAdd.Activated:Connect(function()
+	local n = fBox.Text:gsub("[^%w_]", ""):sub(1, 20)
+	if n == "" then return end
+	table.insert(profile.friends, { name = n, verified = fVer })
+	fBox.Text = ""
+	rebuildFriends()
+	if renderFriends then renderFriends() end
+end)
 local doneRef
+relayout = function()
+	local acct = profile.passes.account and true or false
+	local frs = profile.passes.friends and true or false
+	local y = acct and 750 or 530
+	fm.Visible = frs
+	if frs then
+		fm.Position = UDim2.fromOffset(0, y)
+		y += 118 + #profile.friends * 48 + 12
+	end
+	if doneRef then doneRef.Position = UDim2.fromOffset(18, y) end
+	eBody.CanvasSize = UDim2.fromOffset(0, y + 84)
+end
 accentRefresh[#accentRefresh + 1] = function()
 	swatchRow.Visible = profile.passes.color and true or false
 	local own = profile.passes.account and true or false
 	for _, ch in ipairs(acctGroup) do ch.Visible = own end
-	if doneRef then
-		doneRef.Position = UDim2.fromOffset(18, own and 750 or 530)
-		eBody.CanvasSize = UDim2.fromOffset(0, own and 830 or 620)
-	end
+	rebuildFriends()
 end
 local eDone = ez(new("TextButton", { Text = "Done", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, Position = UDim2.fromOffset(18, 530), Size = UDim2.new(1, -36, 0, 50) }, eBody))
 doneRef = eDone
+relayout()
 corner(eDone, UDim.new(0, 12))
 local function closeEdit()
 	if nameBox:IsFocused() then nameBox:ReleaseFocus() end
