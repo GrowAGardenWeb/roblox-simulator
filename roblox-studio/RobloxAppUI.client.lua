@@ -76,6 +76,41 @@ local function xMark(btn, color, len)
 	end
 end
 
+-- iconos dibujados: trazos (Frames girados). Los simbolos Unicode raros salen como un cuadrito en Roblox
+local function stroke(parent, color, len, thick, cx, cy, rot, z)
+	return new("Frame", { BackgroundColor3 = color, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0, cx, 0, cy), Size = UDim2.fromOffset(len, thick), Rotation = rot, ZIndex = z or (parent.ZIndex + 1) }, parent)
+end
+local function drawCheck(parent, color, sz, thick, z)
+	thick = thick or math.max(1.6, sz / 7)
+	stroke(parent, color, sz * 0.38, thick, sz * 0.34, sz * 0.62, 45, z)
+	stroke(parent, color, sz * 0.72, thick, sz * 0.58, sz * 0.46, -52, z)
+end
+local function drawChevron(parent, color, sz, dir, thick, z)
+	thick = thick or math.max(1.5, sz / 7)
+	if dir == "down" then
+		stroke(parent, color, sz * 0.6, thick, sz * 0.32, sz * 0.45, 45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.68, sz * 0.45, -45, z)
+	elseif dir == "up" then
+		stroke(parent, color, sz * 0.6, thick, sz * 0.32, sz * 0.55, -45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.68, sz * 0.55, 45, z)
+	elseif dir == "right" then
+		stroke(parent, color, sz * 0.6, thick, sz * 0.45, sz * 0.32, -45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.45, sz * 0.68, 45, z)
+	else
+		stroke(parent, color, sz * 0.6, thick, sz * 0.55, sz * 0.32, 45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.55, sz * 0.68, -45, z)
+	end
+end
+local function drawArrow(parent, color, sz, dir, thick, z)
+	thick = thick or math.max(1.6, sz / 8)
+	if dir == "up" then
+		stroke(parent, color, sz * 0.8, thick, sz * 0.5, sz * 0.52, 90, z)
+		stroke(parent, color, sz * 0.5, thick, sz * 0.32, sz * 0.3, -45, z); stroke(parent, color, sz * 0.5, thick, sz * 0.68, sz * 0.3, 45, z)
+	elseif dir == "left" then
+		stroke(parent, color, sz * 0.8, thick, sz * 0.52, sz * 0.5, 0, z)
+		stroke(parent, color, sz * 0.5, thick, sz * 0.3, sz * 0.32, 45, z); stroke(parent, color, sz * 0.5, thick, sz * 0.3, sz * 0.68, -45, z)
+	else
+		stroke(parent, color, sz * 0.8, thick, sz * 0.48, sz * 0.5, 0, z)
+		stroke(parent, color, sz * 0.5, thick, sz * 0.7, sz * 0.32, -45, z); stroke(parent, color, sz * 0.5, thick, sz * 0.7, sz * 0.68, 45, z)
+	end
+end
+
 -- saldo de JUGUETE (solo simulacion, no es Robux real)
 local simBalance = 1000
 local profile = { name = player.DisplayName, plus = false, verified = false }
@@ -414,8 +449,8 @@ local function chartSeed()
 	return h
 end
 local function refreshCharts()
-	pillDev.Text = nameOf(DEVICES, chartDevice) .. "  \u{2304}"
-	pillLoc.Text = nameOf(COUNTRIES, chartLoc) .. "  \u{2304}"
+	pillDev.Text = nameOf(DEVICES, chartDevice)
+	pillLoc.Text = nameOf(COUNTRIES, chartLoc)
 	local seed = chartSeed()
 	for i, l in ipairs(chartLabels) do
 		l.Text = ((seed * (i + 7)) % 940 + 12) .. "K playing"
@@ -424,7 +459,9 @@ end
 local function makePill(txt, onTap)
 	local b = new("TextButton", { Text = txt, TextSize = 16, Font = FONT, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(24, 25, 29), AutoButtonColor = true, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 32) }, filters)
 	corner(b)
-	new("UIPadding", { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14) }, b)
+	new("UIPadding", { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 34) }, b)
+	local cv = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 22, 0.5, 0), Size = UDim2.fromOffset(12, 12), ZIndex = 2 }, b)
+	drawChevron(cv, Color3.new(1, 1, 1), 12, "down", 1.6, 3)
 	b.Activated:Connect(onTap)
 	return b
 end
@@ -558,8 +595,10 @@ chipBtn.Activated:Connect(function() if openRobuxPage then openRobuxPage() end e
 -- deshacer / rehacer
 local urPill = new("Frame", { BackgroundColor3 = WHITE_PILL, BackgroundTransparency = 0.2, Position = UDim2.fromOffset(20, 282), Size = UDim2.fromOffset(80, 40), BorderSizePixel = 0 }, avScreen)
 corner(urPill)
-local undoB = new("TextButton", { Text = "\u{21B6}", TextSize = 22, Font = FONT, TextColor3 = C.sub, BackgroundTransparency = 1, Size = UDim2.fromOffset(40, 40) }, urPill)
-local redoB = new("TextButton", { Text = "\u{21B7}", TextSize = 22, Font = FONT, TextColor3 = C.sub, BackgroundTransparency = 1, Position = UDim2.fromOffset(40, 0), Size = UDim2.fromOffset(40, 40) }, urPill)
+local undoB = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromOffset(40, 40) }, urPill)
+drawArrow(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(11, 11), Size = UDim2.fromOffset(18, 18) }, undoB), C.sub, 18, "left", 2)
+local redoB = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.fromOffset(40, 0), Size = UDim2.fromOffset(40, 40) }, urPill)
+drawArrow(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(11, 11), Size = UDim2.fromOffset(18, 18) }, redoB), C.sub, 18, "right", 2)
 local function applyHistory()
 	if history[hIndex] then desc = history[hIndex]:Clone(); buildRig() end
 end
@@ -709,10 +748,12 @@ selected = nil -- { it =, kind =, ui = }
 bars = {}
 -- (hoisted) local openBuyPrompt, openDetails
 makeBar = function(parent, z0)
-	local s = vscale()
-	local wrap = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 0), Size = UDim2.new(1, 0, 0, 54 * s), ZIndex = z0, Visible = false }, parent)
-	local c = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0), Size = UDim2.fromOffset(360, 54), ZIndex = z0 }, wrap)
-	new("UIScale", { Scale = s }, c)
+	-- el marco mide 360 de ancho y se escala al ancho real; se recalcula si la ventana cambia de tamano
+	local c = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 1), Position = UDim2.fromScale(0.5, 1), Size = UDim2.fromOffset(360, 54), ZIndex = z0, Visible = false }, parent)
+	local us = new("UIScale", { Scale = vscale() }, c)
+	local conn = root:GetPropertyChangedSignal("AbsoluteSize"):Connect(function() us.Scale = vscale() end)
+	c.Destroying:Connect(function() conn:Disconnect() end)
+	local wrap = c
 	local buy = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(51, 95, 255), Position = UDim2.fromOffset(16.4, 3), Size = UDim2.fromOffset(281.5, 32.5), ZIndex = z0 + 1 }, c)
 	corner(buy, UDim.new(0, 6.5))
 	local buyGlyph = glyph(buy, "robux", 14, UDim2.fromOffset(0, 8), Color3.new(1, 1, 1)); buyGlyph.ZIndex = z0 + 2
@@ -772,7 +813,8 @@ openBuyPrompt = function(it, kind)
 	local wearRow = z(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Position = UDim2.fromOffset(14, 130.3), Size = UDim2.new(1, -28, 0, 24) }, m))
 	local box = z(new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Position = UDim2.fromOffset(0, 5.85), Size = UDim2.fromOffset(12.3, 12.3) }, wearRow)); corner(box, UDim.new(0, 3))
 	local stroke = new("UIStroke", { Color = C.text, Thickness = 1.2 }, box)
-	local tick = z(label(box, "\u{2713}", 10, true, Color3.new(1, 1, 1), nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center))
+	local tick = z(new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1) }, box))
+	drawCheck(tick, Color3.new(1, 1, 1), 12.3, 1.5, 203)
 	z(label(wearRow, "Wear item after purchase", 11.7, false, C.text, UDim2.fromOffset(22.9, 0), UDim2.new(1, -30, 1, 0)))
 	wearRow.Activated:Connect(function()
 		wearOn = not wearOn
@@ -1058,7 +1100,8 @@ local function subTile(sub, selected, onTap)
 	elseif sub[2] == "skin" then
 		local d = new("Frame", { BackgroundColor3 = Color3.fromRGB(150, 103, 74), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(34, 34) }, t); corner(d)
 	else
-		label(t, "\u{25CB}", 30, false, C.sub, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
+		local rc = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(30, 30) }, t)
+		corner(rc); new("UIStroke", { Color = C.sub, Thickness = 2 }, rc)
 	end
 	if sub[2] ~= "skin" and sub[2] ~= "clear" then
 		local plus = new("Frame", { BackgroundColor3 = C.gray, AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, -4, 1, -4), Size = UDim2.fromOffset(22, 22) }, t)
@@ -1351,7 +1394,10 @@ rvNote.TextWrapped = true; rvNote.TextYAlignment = Enum.TextYAlignment.Top
 local pSent = sPage("sent", 0)
 local ck = z(new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, 0, 0, 100), Size = UDim2.fromOffset(38, 38) }, pSent)); corner(ck)
 new("UIStroke", { Color = SUB, Thickness = 2 }, ck)
-z(label(ck, "\u{2713}", 22, true, SUB, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center))
+do
+	local ckBox = z(new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(20, 20) }, ck))
+	drawCheck(ckBox, SUB, 20, 2.2, 83)
+end
 local sentMsg = z(label(pSent, "", 17.5, false, INK, UDim2.fromOffset(0, 124), UDim2.new(1, 0, 0, 22), Enum.TextXAlignment.Center))
 local sDone = z(new("TextButton", { Text = "OK", TextSize = 13, Font = FONT, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(51, 95, 255), AutoButtonColor = false, Position = UDim2.fromOffset(17.7, 193.9), Size = UDim2.new(1, -35.4, 0, 35.2) }, pSent))
 corner(sDone, UDim.new(0, 4.7))
@@ -1454,7 +1500,9 @@ local rbxBal = label(rbxTop, tostring(simBalance), 26, true, C.text, UDim2.fromO
 rbxBal.TextTruncate = Enum.TextTruncate.AtEnd
 rbxBal.ZIndex = 72
 balanceLabels[#balanceLabels + 1] = rbxBal
-local rbxSend = new("TextButton", { Text = "\u{2191} Send", TextSize = 14, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(221, 222, 227), AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 35), Size = UDim2.fromOffset(66, 28), ZIndex = 72 }, rbxTop)
+local rbxSend = new("TextButton", { Text = "Send", TextSize = 14, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(221, 222, 227), AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 35), Size = UDim2.fromOffset(66, 28), ZIndex = 72 }, rbxTop)
+new("UIPadding", { PaddingLeft = UDim.new(0, 16) }, rbxSend)
+drawArrow(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(8, 8), Size = UDim2.fromOffset(12, 12), ZIndex = 73 }, rbxSend), C.text, 12, "up", 1.4, 74)
 corner(rbxSend, UDim.new(0, 8))
 local rbxBody = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 74), Size = UDim2.new(1, 0, 1, -74), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, ZIndex = 71 }, rbxPage)
 new("UIPadding", { PaddingLeft = UDim.new(0, 18), PaddingRight = UDim.new(0, 18), PaddingTop = UDim.new(0, 10) }, rbxBody)
@@ -1495,8 +1543,8 @@ for i, q in ipairs({ "What are Robux?", "How do I send Robux?", "Where can I use
 	new("UIStroke", { Color = Color3.fromRGB(215, 217, 223), Thickness = 1.2 }, card)
 	local ql = label(card, q, 15, true, C.text, UDim2.fromOffset(16, 0), UDim2.new(1, -50, 1, 0))
 	ql.ZIndex = 72
-	local ch = label(card, "\u{2304}", 20, false, C.text, UDim2.new(1, -36, 0, 0), UDim2.fromOffset(24, 50), Enum.TextXAlignment.Center)
-	ch.ZIndex = 72
+	local ch = new("Frame", { BackgroundTransparency = 1, Position = UDim2.new(1, -34, 0, 17), Size = UDim2.fromOffset(16, 16), ZIndex = 72 }, card)
+	drawChevron(ch, C.text, 16, "down", 1.8, 73)
 end
 rbxX.Activated:Connect(function() rbxPage.Visible = false end)
 rbxSend.Activated:Connect(function() if openSendSheet then openSendSheet() end end)
