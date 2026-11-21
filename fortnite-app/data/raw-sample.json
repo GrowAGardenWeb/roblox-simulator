@@ -7,71 +7,70 @@
  ],
  "sample": [
   {
-   "regularPrice": 4900,
-   "finalPrice": 3200,
-   "devName": "[VIRTUAL]1 x Roronoa Zoro, 1 x Zoro's Swords, 1 x Zoro's Training Gear, 1 x Test of Will, 1 x Sanji, 1 x Sanji's Utensils, 1 x Sanji's Utensils, 1 x Tony Tony Chopper for -1 MtxCurrency",
-   "offerId": "v2:/4d0c03e4c5f8f1749971c2bdba2f71e9c71ebaa423836266e63a1cd1ba585084",
-   "inDate": "2026-11-08T00:00:00Z",
-   "outDate": "2026-12-05T23:59:59.999Z",
+   "regularPrice": 2000,
+   "finalPrice": 1500,
+   "devName": "[VIRTUAL]1 x Greta Grim, 1 x Ivor, 1 x Demon Slashers for -1 MtxCurrency",
+   "offerId": "v2:/3b9bf71a8ff438e7499e79b089700560527b7c4521d2b8e02c0ef437d718bb94",
+   "inDate": "2026-11-20T00:00:00Z",
+   "outDate": "2026-11-26T23:59:59.999Z",
    "bundle": {
-    "name": "Straw Hats Bundle",
+    "name": "Hexed & Haunted Bundle",
     "info": "Bundle",
-    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/08e43d2736617a99/renderimage_0.png"
+    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/8bd8f4a3f94ca207/renderimage_0.png"
    },
    "banner": {
-    "value": "1700 V-Bucks Off",
+    "value": "500 V-Bucks Off",
     "intensity": "Low",
     "backendValue": "AmountOff"
    },
    "giftable": true,
    "refundable": false,
    "sortPriority": -1,
-   "layoutId": "ConclusionC111426.97",
+   "layoutId": "STWPack.97",
    "layout": {
-    "id": "ConclusionC111426",
-    "name": "One Piece ",
-    "index": 11,
-    "rank": 185,
+    "id": "STWPack",
+    "name": "Save The World",
+    "index": 13,
+    "rank": 184,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
    "colors": {
-    "color1": "8ed1eeff",
-    "color2": "ffffffff",
-    "color3": "0d74c4ff",
-    "textBackgroundColor": "0a67afff"
+    "color1": "a853d3ff",
+    "color3": "7a1bc7ff",
+    "textBackgroundColor": "6b0eb6ff"
    },
-   "tileBackgroundMaterial": "ShopTile_Pirates_Clouds",
-   "tileSize": "Size_2_x_1",
-   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_Brandcreed_Bundle",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S43/DAv2_Bundle_Featured_Brandcreed",
+   "tileBackgroundMaterial": "ShopTile_Rocks",
+   "tileSize": "Size_1_x_1",
+   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_Wingedeye_Bundle",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S43/DAv2_Bundle_Featured_Wingedeye",
    "newDisplayAsset": {
-    "id": "DAv2_Bundle_Featured_BrandCreed",
+    "id": "DAv2_Bundle_Featured_WingedEye",
     "materialInstances": [],
     "renderImages": [
      {
       "productTag": "Product.BR",
-      "fileName": "cosmo__08e43d2736617a99_29c0c4191e61fb71.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/08e43d2736617a99/renderimage_0.png"
+      "fileName": "cosmo__8bd8f4a3f94ca207_29c0c4191e61fb71.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/8bd8f4a3f94ca207/renderimage_0.png"
      },
      {
       "productTag": "Product.BR",
-      "fileName": "cosmo__08e43d2736617a99_d2e71b6320aa32c2.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/08e43d2736617a99/renderimage_1.png"
+      "fileName": "cosmo__8bd8f4a3f94ca207_d2e71b6320aa32c2.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/8bd8f4a3f94ca207/renderimage_1.png"
      },
      {
       "productTag": "Product.Juno",
-      "fileName": "cosmo__08e43d2736617a99_71e578208f570b02.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/08e43d2736617a99/renderimage_2.png"
+      "fileName": "cosmo__8bd8f4a3f94ca207_71e578208f570b02.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/8bd8f4a3f94ca207/renderimage_2.png"
      }
     ]
    },
    "brItems": [
     {
-     "id": "Character_BrandCreed",
-     "name": "Roronoa Zoro",
-     "description": "Master swordsman of the Straw Hat Pirates.",
+     "id": "Character_WingedEye",
+     "name": "Greta Grim",
+     "description": "The gloomy eye of the underworld.",
      "type": {
       "value": "outfit",
       "displayValue": "Outfit",
@@ -83,89 +82,59 @@
       "backendValue": "EFortRarity::Epic"
      },
      "set": {
-      "value": "One Piece",
-      "text": "Part of the One Piece set.",
-      "backendValue": "FrailShark"
+      "value": "Hexed & Haunted",
+      "text": "Part of the Hexed & Haunted set.",
+      "backendValue": "SuperCursed"
      },
      "introduction": {
-      "chapter": "7",
-      "season": "5",
-      "text": "Introduced in Chapter 7, Season 5.",
-      "backendValue": 43
+      "chapter": "6",
+      "season": "4",
+      "text": "Introduced in Chapter 6, Season 4.",
+      "backendValue": 36
      },
      "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/character_brandcreed/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/character_brandcreed/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/character_brandcreed/featured.png",
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/featured.png",
       "lego": {
-       "small": "https://fortnite-api.com/images/cosmetics/lego/character_brandcreed/small.png",
-       "large": "https://fortnite-api.com/images/cosmetics/lego/character_brandcreed/large.png",
-       "wide": "https://fortnite-api.com/images/cosmetics/lego/character_brandcreed/wide.png"
+       "small": "https://fortnite-api.com/images/cosmetics/lego/character_wingedeye/small.png",
+       "large": "https://fortnite-api.com/images/cosmetics/lego/character_wingedeye/large.png",
+       "wide": "https://fortnite-api.com/images/cosmetics/lego/character_wingedeye/wide.png"
+      },
+      "bean": {
+       "small": "https://fortnite-api.com/images/cosmetics/beans/bean_wingedeye/small.png",
+       "large": "https://fortnite-api.com/images/cosmetics/beans/bean_wingedeye/large.png"
       }
      },
      "variants": [
       {
-       "channel": "Parts",
-       "type": "Bandana",
+       "channel": "Material",
+       "type": "shading",
        "options": [
         {
-         "tag": "Stage1",
-         "name": "Off",
-         "image": "https://fortnite-api.com/images/cosmetics/br/character_brandcreed/variants/parts/stage1.png"
+         "tag": "Mat1",
+         "name": "cel",
+         "image": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/variants/material/mat1.png"
         },
         {
-         "tag": "Stage2",
-         "name": "On",
-         "image": "https://fortnite-api.com/images/cosmetics/br/character_brandcreed/variants/parts/stage2.png"
+         "tag": "Mat2",
+         "name": "outlined gradient",
+         "image": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/variants/material/mat2.png"
+        },
+        {
+         "tag": "Mat3",
+         "name": "gradient",
+         "image": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/variants/material/mat3.png"
         }
        ]
       }
      ],
-     "metaTags": [
-      "Cosmetics.MetaTags.BrandCreed"
-     ],
-     "showcaseVideo": "cn8i4g7rASA",
-     "added": "2026-11-01T23:10:43Z"
+     "added": "2025-07-29T08:28:45Z"
     },
     {
-     "id": "Pickaxe_BrandCreed",
-     "name": "Zoro's Swords",
-     "description": "Yubashiri & Sandai Kitetsu are ready for battle.",
-     "type": {
-      "value": "pickaxe",
-      "displayValue": "Pickaxe",
-      "backendValue": "AthenaPickaxe"
-     },
-     "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "set": {
-      "value": "One Piece",
-      "text": "Part of the One Piece set.",
-      "backendValue": "FrailShark"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "5",
-      "text": "Introduced in Chapter 7, Season 5.",
-      "backendValue": 43
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_brandcreed/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_brandcreed/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_brandcreed/featured.png"
-     },
-     "metaTags": [
-      "Cosmetics.MetaTags.BrandCreed"
-     ],
-     "added": "2026-11-01T23:10:43Z"
-    },
-    {
-     "id": "Backpack_BrandCreed",
-     "name": "Zoro's Training Gear",
-     "description": "Lift with your teeth.",
+     "id": "Backpack_WingedEye",
+     "name": "Ivor",
+     "description": "He's got his eye on you.",
      "type": {
       "value": "backpack",
       "displayValue": "Back Bling",
@@ -177,27 +146,196 @@
       "backendValue": "EFortRarity::Rare"
      },
      "set": {
-      "value": "One Piece",
-      "text": "Part of the One Piece set.",
-      "backendValue": "FrailShark"
+      "value": "Hexed & Haunted",
+      "text": "Part of the Hexed & Haunted set.",
+      "backendValue": "SuperCursed"
      },
      "introduction": {
-      "chapter": "7",
-      "season": "5",
-      "text": "Introduced in Chapter 7, Season 5.",
-      "backendValue": 43
+      "chapter": "6",
+      "season": "4",
+      "text": "Introduced in Chapter 6, Season 4.",
+      "backendValue": 36
      },
      "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_brandcreed/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_brandcreed/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_brandcreed/featured.png"
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/featured.png"
      },
-     "added": "2026-11-01T23:10:43Z"
+     "variants": [
+      {
+       "channel": "Material",
+       "type": "shading",
+       "options": [
+        {
+         "tag": "Mat1",
+         "name": "cel",
+         "image": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/variants/material/mat1.png"
+        },
+        {
+         "tag": "Mat2",
+         "name": "outlined gradient",
+         "image": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/variants/material/mat2.png"
+        },
+        {
+         "tag": "Mat3",
+         "name": "gradient",
+         "image": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/variants/material/mat3.png"
+        }
+       ]
+      }
+     ],
+     "added": "2025-07-29T08:28:45Z"
     },
     {
-     "id": "EID_BrandCreed",
-     "name": "Test of Will",
-     "description": "Prove you can wield three swords with ease.",
+     "id": "Pickaxe_WingedEye",
+     "name": "Demon Slashers",
+     "description": "On the wings of the underworld.",
+     "type": {
+      "value": "pickaxe",
+      "displayValue": "Pickaxe",
+      "backendValue": "AthenaPickaxe"
+     },
+     "rarity": {
+      "value": "rare",
+      "displayValue": "Rare",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "set": {
+      "value": "Hexed & Haunted",
+      "text": "Part of the Hexed & Haunted set.",
+      "backendValue": "SuperCursed"
+     },
+     "introduction": {
+      "chapter": "6",
+      "season": "4",
+      "text": "Introduced in Chapter 6, Season 4.",
+      "backendValue": 36
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/featured.png"
+     },
+     "variants": [
+      {
+       "channel": "Material",
+       "type": "Shading",
+       "options": [
+        {
+         "tag": "Mat0",
+         "name": "Cel",
+         "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/variants/material/mat0.png"
+        },
+        {
+         "tag": "Mat1",
+         "name": "Outlined Gradient",
+         "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/variants/material/mat1.png"
+        },
+        {
+         "tag": "Mat2",
+         "name": "Gradient",
+         "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/variants/material/mat2.png"
+        }
+       ]
+      }
+     ],
+     "added": "2025-07-29T08:28:45Z"
+    }
+   ]
+  },
+  {
+   "regularPrice": 500,
+   "finalPrice": 500,
+   "devName": "[VIRTUAL]1 x Therefore I Am for 500 MtxCurrency",
+   "offerId": "v2:/041922819b2f194fdbde94619f459449b2c8a4cbed8f0b401cae3da38c8c5bc2",
+   "inDate": "2026-11-01T00:00:00Z",
+   "outDate": "2026-11-30T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -27,
+   "layoutId": "JT112026noviolator.96",
+   "layout": {
+    "id": "JT112026noviolator",
+    "name": "Jam Tracks",
+    "index": 41,
+    "rank": 180,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "expandableList"
+   },
+   "colors": {
+    "color1": "3a306cff",
+    "color3": "5e40ceff",
+    "textBackgroundColor": "694fc3ff"
+   },
+   "tileSize": "Size_1_x_1",
+   "newDisplayAssetPath": "SparksCMSVisualTest135",
+   "tracks": [
+    {
+     "id": "sid_placeholder_135",
+     "devName": "thereforeiam",
+     "title": "Therefore I Am",
+     "artist": "Billie Eilish",
+     "releaseYear": 2020,
+     "bpm": 94,
+     "duration": 176,
+     "difficulty": {
+      "vocals": 3,
+      "guitar": 1,
+      "bass": 2,
+      "plasticBass": 1,
+      "drums": 1,
+      "plasticDrums": 1
+     },
+     "albumArt": "https://cdn.fortnite-api.com/tracks/5490d3a354f6f6c9.jpg",
+     "added": "2024-04-23T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "regularPrice": 400,
+   "finalPrice": 400,
+   "devName": "[VIRTUAL]1 x Oooohhh! for 400 MtxCurrency",
+   "offerId": "v2:/7da448c18979bb56f2b0abfa2a0ca2a06105702f661081e34f3dabc375b9bc89",
+   "inDate": "2026-11-19T00:00:00Z",
+   "outDate": "2026-11-23T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -6,
+   "layoutId": "RegularShow.97",
+   "layout": {
+    "id": "RegularShow",
+    "name": "Regular Show",
+    "index": 10,
+    "rank": 182,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "tileGrid"
+   },
+   "colors": {
+    "color1": "6e97f5ff",
+    "color3": "4e94d9ff",
+    "textBackgroundColor": "4e94d9ff"
+   },
+   "tileSize": "Size_1_x_1",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S39/DAv2_EID_VouchTrig",
+   "newDisplayAsset": {
+    "id": "DAv2_EID_VouchTrig",
+    "cosmeticId": "EID_VouchTrig",
+    "materialInstances": [],
+    "renderImages": [
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__09e514eabdc58994_13f82041d97e808f.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/09e514eabdc58994/renderimage_0.png"
+     }
+    ]
+   },
+   "brItems": [
+    {
+     "id": "EID_VouchTrig",
+     "name": "Oooohhh!",
+     "description": "Oooohhh!",
      "type": {
       "value": "emote",
       "displayValue": "Emote",
@@ -209,437 +347,66 @@
       "backendValue": "EFortRarity::Uncommon"
      },
      "set": {
-      "value": "One Piece",
-      "text": "Part of the One Piece set.",
-      "backendValue": "FrailShark"
+      "value": "Regular Show",
+      "text": "Part of the Regular Show set.",
+      "backendValue": "CenterCard"
      },
      "introduction": {
       "chapter": "7",
-      "season": "5",
-      "text": "Introduced in Chapter 7, Season 5.",
-      "backendValue": 43
+      "season": "1",
+      "text": "Introduced in Chapter 7, Season 1.",
+      "backendValue": 39
      },
      "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/eid_brandcreed/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_brandcreed/icon.png"
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/eid_vouchtrig/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_vouchtrig/icon.png"
      },
-     "showcaseVideo": "8DlbDYyqfUU",
-     "added": "2026-11-01T23:10:43Z"
-    },
-    {
-     "id": "Character_InsightBawl",
-     "name": "Sanji",
-     "description": "Chef in search of the All Blue.",
-     "type": {
-      "value": "outfit",
-      "displayValue": "Outfit",
-      "backendValue": "AthenaCharacter"
-     },
-     "rarity": {
-      "value": "epic",
-      "displayValue": "Epic",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "set": {
-      "value": "One Piece",
-      "text": "Part of the One Piece set.",
-      "backendValue": "FrailShark"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "5",
-      "text": "Introduced in Chapter 7, Season 5.",
-      "backendValue": 43
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/character_insightbawl/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/character_insightbawl/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/character_insightbawl/featured.png",
-      "lego": {
-       "small": "https://fortnite-api.com/images/cosmetics/lego/character_insightbawl/small.png",
-       "large": "https://fortnite-api.com/images/cosmetics/lego/character_insightbawl/large.png",
-       "wide": "https://fortnite-api.com/images/cosmetics/lego/character_insightbawl/wide.png"
-      }
-     },
-     "showcaseVideo": "CtBK2RxgQRU",
-     "added": "2026-11-01T23:10:43Z"
-    },
-    {
-     "id": "Pickaxe_InsightBawl",
-     "name": "Sanji's Utensils",
-     "description": "Keep the whole crew fed.",
-     "type": {
-      "value": "pickaxe",
-      "displayValue": "Pickaxe",
-      "backendValue": "AthenaPickaxe"
-     },
-     "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "set": {
-      "value": "One Piece",
-      "text": "Part of the One Piece set.",
-      "backendValue": "FrailShark"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "5",
-      "text": "Introduced in Chapter 7, Season 5.",
-      "backendValue": 43
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_insightbawl/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_insightbawl/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_insightbawl/featured.png"
-     },
-     "added": "2026-11-01T23:10:43Z"
-    },
-    {
-     "id": "Backpack_InsightBawl",
-     "name": "Sanji's Utensils",
-     "description": "Keep the whole crew fed.",
-     "type": {
-      "value": "backpack",
-      "displayValue": "Back Bling",
-      "backendValue": "AthenaBackpack"
-     },
-     "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "set": {
-      "value": "One Piece",
-      "text": "Part of the One Piece set.",
-      "backendValue": "FrailShark"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "5",
-      "text": "Introduced in Chapter 7, Season 5.",
-      "backendValue": 43
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_insightbawl/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_insightbawl/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_insightbawl/featured.png"
-     },
-     "added": "2026-11-01T23:10:43Z"
-    },
-    {
-     "id": "Companion_BloomScar",
-     "name": "Tony Tony Chopper",
-     "description": "A cotton candy-loving reindeer doctor.",
-     "type": {
-      "value": "sidekick",
-      "displayValue": "Sidekick",
-      "backendValue": "CosmeticCompanion"
-     },
-     "rarity": {
-      "value": "uncommon",
-      "displayValue": "Uncommon",
-      "backendValue": "EFortRarity::Uncommon"
-     },
-     "set": {
-      "value": "One Piece",
-      "text": "Part of the One Piece set.",
-      "backendValue": "FrailShark"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "5",
-      "text": "Introduced in Chapter 7, Season 5.",
-      "backendValue": 43
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/companion_bloomscar/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/companion_bloomscar/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/companion_bloomscar/featured.png"
-     },
-     "variants": [
-      {
-       "channel": "Emote",
-       "type": "Sidekick Emote",
-       "options": [
-        {
-         "tag": "CompanionEmote0",
-         "name": "Cotton Candy Lover - Chopper",
-         "image": "https://fortnite-api.com/images/cosmetics/br/companion_bloomscar/variants/emote/companionemote0.png"
-        }
-       ]
-      },
-      {
-       "channel": "Outfit",
-       "type": "Style",
-       "options": [
-        {
-         "tag": "Stage1",
-         "name": "Tony Tony Chopper",
-         "image": "https://fortnite-api.com/images/cosmetics/br/companion_bloomscar/variants/outfit/stage1.png"
-        },
-        {
-         "tag": "Stage2",
-         "name": "Chopper (Alabasta)",
-         "image": "https://fortnite-api.com/images/cosmetics/br/companion_bloomscar/variants/outfit/stage2.png"
-        }
-       ]
-      },
-      {
-       "channel": "Material",
-       "type": "Backpack",
-       "options": [
-        {
-         "tag": "Mat1",
-         "name": "On",
-         "image": "https://fortnite-api.com/images/cosmetics/br/companion_bloomscar/variants/material/mat1.png"
-        },
-        {
-         "tag": "Mat2",
-         "name": "Off",
-         "image": "https://fortnite-api.com/images/cosmetics/br/companion_bloomscar/variants/material/mat2.png"
-        }
-       ]
-      }
-     ],
-     "added": "2026-11-01T23:10:43Z"
-    }
-   ]
-  },
-  {
-   "regularPrice": 500,
-   "finalPrice": 500,
-   "devName": "[VIRTUAL]1 x TBD (SID_Placeholder_671) for 500 MtxCurrency",
-   "offerId": "v2:/f7dc51160db6326a32387e06f13b086106c8a6a987707a0a3d63edf509077d38",
-   "inDate": "2026-11-20T00:00:00Z",
-   "outDate": "2026-11-26T23:59:59.999Z",
-   "giftable": true,
-   "refundable": false,
-   "sortPriority": -1,
-   "layoutId": "JT112026.96",
-   "layout": {
-    "id": "JT112026",
-    "name": "Jam Tracks",
-    "index": 17,
-    "rank": 177,
-    "showIneligibleOffers": "always",
-    "useWidePreview": false,
-    "displayType": "expandableList"
-   },
-   "colors": {
-    "color1": "3a306cff",
-    "color3": "5e40ceff",
-    "textBackgroundColor": "694fc3ff"
-   },
-   "tileSize": "Size_1_x_1",
-   "newDisplayAssetPath": "sid_placeholder_671",
-   "tracks": [
-    {
-     "id": "sid_placeholder_671",
-     "devName": "asaliveasyouneed",
-     "title": "As Alive As You Need Me To Be",
-     "artist": "Nine Inch Nails",
-     "releaseYear": 2025,
-     "bpm": 107,
-     "duration": 239,
-     "difficulty": {
-      "vocals": 2,
-      "guitar": 2,
-      "bass": 3,
-      "plasticBass": 3,
-      "drums": 3,
-      "plasticDrums": 4
-     },
-     "albumArt": "https://cdn.fortnite-api.com/tracks/b3ffa70f132df6e6.jpg",
-     "added": "2025-09-20T00:00:00Z"
+     "showcaseVideo": "bXJZ5N2Ltwg",
+     "added": "2026-01-31T00:00:00Z"
     }
    ]
   },
   {
    "regularPrice": 400,
    "finalPrice": 400,
-   "devName": "[VIRTUAL]1 x Rebreather for 400 MtxCurrency",
-   "offerId": "v2:/bc690ee27f502c689fc8e0dc3cf23e5b780fc7f5bab083c29636efaf00262a3b",
-   "inDate": "2026-11-16T00:00:00Z",
-   "outDate": "2026-11-20T23:59:59.999Z",
+   "devName": "[VIRTUAL]1 x Void Gold for 400 MtxCurrency",
+   "offerId": "v2:/96281c85f3b3bdabfced5ab5352bbd53ffd9bdc5e9bd88ab2acece7a0c1fbe79",
+   "inDate": "2026-11-18T00:00:00Z",
+   "outDate": "2026-11-24T23:59:59.999Z",
    "giftable": true,
    "refundable": false,
    "sortPriority": -1,
    "layoutId": "alc.0",
    "colors": {
-    "color1": "6e03d8ff",
-    "color2": "fee1faff",
-    "color3": "faadffff",
-    "textBackgroundColor": "8235dcff"
+    "color1": "c86400ff",
+    "color3": "340d01ff",
+    "textBackgroundColor": "340d01ff"
    },
-   "tileBackgroundMaterial": "ShopTile_SketchedBorder",
-   "tileSize": "Size_1_x_1",
-   "displayAssetPath": "/Game/Catalog/DisplayAssets/DA_Featured_bid_176_nautilusmale",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S7/DAv2_bid_176_nautilusmale",
-   "brItems": [
+   "tileBackgroundMaterial": "vehicle_item",
+   "tileSize": "Size_3_x_1",
+   "displayAssetPath": "/Game/Catalog/DisplayAssets/DA_Wheel_Pickle",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S40/DAv2_Wheel_Pickle",
+   "cars": [
     {
-     "id": "BID_176_NautilusMale",
-     "name": "Rebreather",
-     "description": "Shelling out air on demand.",
+     "id": "Wheel_Pickle",
+     "vehicleId": "VCID_Wheel_Pickle",
+     "name": "Void Gold",
+     "description": "Gilded greatness.",
      "type": {
-      "value": "backpack",
-      "displayValue": "Back Bling",
-      "backendValue": "AthenaBackpack"
+      "value": "wheel",
+      "displayValue": "Wheel",
+      "backendValue": "VehicleCosmetics_Wheel"
      },
      "rarity": {
-      "value": "epic",
-      "displayValue": "Epic",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "set": {
-      "value": "Deep Sea",
-      "text": "Part of the Deep Sea set.",
-      "backendValue": "Nautilus"
-     },
-     "introduction": {
-      "chapter": "1",
-      "season": "7",
-      "text": "Introduced in Chapter 1, Season 7.",
-      "backendValue": 7
+      "value": "uncommon",
+      "displayValue": "Uncommon",
+      "backendValue": "EFortRarity::Uncommon"
      },
      "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/bid_176_nautilusmale/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_176_nautilusmale/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_176_nautilusmale/featured.png"
+      "small": "https://fortnite-api.com/images/cosmetics/cars/wheel_pickle/small.png",
+      "large": "https://fortnite-api.com/images/cosmetics/cars/wheel_pickle/large.png"
      },
-     "added": "2019-11-20T12:48:04Z"
-    }
-   ]
-  },
-  {
-   "regularPrice": 800,
-   "finalPrice": 800,
-   "devName": "[VIRTUAL]1 x Summer Snapper, 1 x Carnation of Carnage for 800 MtxCurrency",
-   "offerId": "v2:/d93fbede6864926e4770d7e781a68cfc787f0677a5f32ec5f71fc5d81c77049e",
-   "inDate": "2026-11-16T00:00:00Z",
-   "outDate": "2026-11-20T23:59:59.999Z",
-   "giftable": true,
-   "refundable": false,
-   "sortPriority": -1,
-   "layoutId": "SummerBatmanGCS.97",
-   "layout": {
-    "id": "SummerBatmanGCS",
-    "name": "Gotham City Summer",
-    "index": 6,
-    "rank": 186,
-    "showIneligibleOffers": "always",
-    "useWidePreview": false,
-    "displayType": "tileGrid"
-   },
-   "colors": {
-    "color1": "5fc9f1ff",
-    "color3": "ffe4a5ff",
-    "textBackgroundColor": "577a7bff"
-   },
-   "tileBackgroundMaterial": "ShopTile_ShopComic",
-   "tileSize": "Size_2_x_1",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S41/DAv2_backpack_crimpperfume",
-   "newDisplayAsset": {
-    "id": "DAv2_Backpack_CrimpPerfume",
-    "cosmeticId": "Backpack_CrimpPerfume",
-    "materialInstances": [],
-    "renderImages": [
-     {
-      "productTag": "Product.BR",
-      "fileName": "cosmo__6353c889cdabcac7_29c0c4191e61fb71.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/6353c889cdabcac7/renderimage_0.png"
-     }
-    ]
-   },
-   "brItems": [
-    {
-     "id": "Backpack_CrimpPerfume",
-     "name": "Summer Snapper",
-     "description": "Some extremely fly traps.",
-     "type": {
-      "value": "backpack",
-      "displayValue": "Back Bling",
-      "backendValue": "AthenaBackpack"
-     },
-     "rarity": {
-      "value": "dc",
-      "displayValue": "DC SERIES",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "series": {
-      "value": "DC SERIES",
-      "image": "https://fortnite-api.com/images/cosmetics/series/dcuseries.png",
-      "colors": [
-       "007af1ff",
-       "0053a9ff",
-       "003f82ff",
-       "003169ff",
-       "001f47ff"
-      ],
-      "backendValue": "DCUSeries"
-     },
-     "set": {
-      "value": "Gotham City Summer",
-      "text": "Part of the Gotham City Summer set.",
-      "backendValue": "RiverFall"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "3",
-      "text": "Introduced in Chapter 7, Season 3.",
-      "backendValue": 41
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_crimpperfume/featured.png"
-     },
-     "added": "2026-07-16T08:00:00Z"
-    },
-    {
-     "id": "Pickaxe_CrimpPerfume",
-     "name": "Carnation of Carnage",
-     "description": "Just as deadly, by any other name.",
-     "type": {
-      "value": "pickaxe",
-      "displayValue": "Pickaxe",
-      "backendValue": "AthenaPickaxe"
-     },
-     "rarity": {
-      "value": "dc",
-      "displayValue": "DC SERIES",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "series": {
-      "value": "DC SERIES",
-      "image": "https://fortnite-api.com/images/cosmetics/series/dcuseries.png",
-      "colors": [
-       "007af1ff",
-       "0053a9ff",
-       "003f82ff",
-       "003169ff",
-       "001f47ff"
-      ],
-      "backendValue": "DCUSeries"
-     },
-     "set": {
-      "value": "Gotham City Summer",
-      "text": "Part of the Gotham City Summer set.",
-      "backendValue": "RiverFall"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "3",
-      "text": "Introduced in Chapter 7, Season 3.",
-      "backendValue": 41
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_crimpperfume/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_crimpperfume/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_crimpperfume/featured.png"
-     },
-     "added": "2026-07-16T08:00:00Z"
+     "added": "2024-12-01T03:57:20Z"
     }
    ]
   }
