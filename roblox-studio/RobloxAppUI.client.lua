@@ -333,7 +333,11 @@ nameLabels[#nameLabels + 1] = label(userRow, profile.name, 26, true, C.text, UDi
 -- amigos
 friends = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 150), LayoutOrder = 2 }, forYou)
 local add = new("TextButton", { Text = "", AutoButtonColor = true, BackgroundColor3 = C.gray, Size = UDim2.fromOffset(88, 88) }, friends); corner(add)
-plus = label(add, "+", 34, false, C.text, UDim2.fromOffset(2, 2), UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
+if (ICONS.addfriend or "") ~= "" then
+	new("ImageLabel", { BackgroundTransparency = 1, Image = ICONS.addfriend, ImageColor3 = Color3.fromRGB(57, 59, 69), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(40, 40) }, add)
+else
+	plus = label(add, "+", 34, false, C.text, UDim2.fromOffset(2, 2), UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
+end
 label(friends, "Add Friends", 16, true, C.text, UDim2.fromOffset(-8, 98), UDim2.fromOffset(104, 22), Enum.TextXAlignment.Center)
 local hint = label(friends, "", 17, false, C.sub, UDim2.fromOffset(120, 22), UDim2.new(1, -124, 0, 48))
 hint.Text = "Let's play! Start by adding a friend."
@@ -1409,6 +1413,7 @@ local function layoutAmt()
 	local total = 25.4 + 6 + w
 	local W = pAmount.AbsoluteSize.X
 	aGlyph.Position = UDim2.fromOffset((W - total) / 2 - 2, 201)
+	aShow.Position = UDim2.fromOffset((25.4 + 6) / 2, 198.3)
 end
 local aChips = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 268.4), Size = UDim2.new(1, 0, 0, 31.1) }, pAmount))
 new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, Padding = UDim.new(0, 7.9) }, aChips)
@@ -1451,9 +1456,24 @@ local pReview = sPage("review", 0)
 local rvAv = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 69.3), Size = UDim2.fromOffset(49, 49) }, pReview)); corner(rvAv)
 local rvName = z(label(pReview, "", 12.5, true, INK, UDim2.fromOffset(24, 128.1), UDim2.new(1, -48, 0, 16), Enum.TextXAlignment.Center))
 local rvHandle = z(label(pReview, "", 12.5, false, INK, UDim2.fromOffset(24, 145.6), UDim2.new(1, -48, 0, 16), Enum.TextXAlignment.Center))
-local function iconBox(parent) -- icono pequeno gris de 13px
+local function iconBox(parent, kind) -- iconos pequenos de 13px dibujados: calendario, personas, info
 	local f = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(13, 13), ZIndex = 82 }, parent)
-	corner(f, UDim.new(0.3, 0)); new("UIStroke", { Color = SUB, Thickness = 1.3 }, f)
+	if kind == "calendar" then
+		local body = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 1.5), Size = UDim2.fromOffset(13, 11.5), ZIndex = 82 }, f)
+		corner(body, UDim.new(0, 2.5)); new("UIStroke", { Color = SUB, Thickness = 1.3 }, body)
+		new("Frame", { BackgroundColor3 = SUB, BorderSizePixel = 0, Position = UDim2.fromOffset(0, 5), Size = UDim2.fromOffset(13, 1.3), ZIndex = 83 }, f)
+		new("Frame", { BackgroundColor3 = SUB, BorderSizePixel = 0, Position = UDim2.fromOffset(3, 0), Size = UDim2.fromOffset(1.3, 3), ZIndex = 83 }, f)
+		new("Frame", { BackgroundColor3 = SUB, BorderSizePixel = 0, Position = UDim2.fromOffset(8.7, 0), Size = UDim2.fromOffset(1.3, 3), ZIndex = 83 }, f)
+	elseif kind == "people" then
+		for _, x in ipairs({ 0.5, 6.5 }) do
+			local head = new("Frame", { BackgroundColor3 = SUB, BorderSizePixel = 0, Position = UDim2.fromOffset(x + 0.5, 0.5), Size = UDim2.fromOffset(5, 5), ZIndex = 83 }, f); corner(head)
+			local bd = new("Frame", { BackgroundColor3 = SUB, BorderSizePixel = 0, Position = UDim2.fromOffset(x - 0.5, 7), Size = UDim2.fromOffset(7, 5.5), ZIndex = 83 }, f); corner(bd, UDim.new(0.5, 0))
+		end
+	else
+		corner(f); new("UIStroke", { Color = SUB, Thickness = 1.3 }, f)
+		new("Frame", { BackgroundColor3 = SUB, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromOffset(6.5, 5.5), Size = UDim2.fromOffset(1.5, 4.5), ZIndex = 83 }, f)
+		local dot = new("Frame", { BackgroundColor3 = SUB, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromOffset(6.5, 3), Size = UDim2.fromOffset(1.8, 1.8), ZIndex = 83 }, f); corner(dot)
+	end
 	return f
 end
 local function statRow(y)
@@ -1461,18 +1481,18 @@ local function statRow(y)
 	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, VerticalAlignment = Enum.VerticalAlignment.Center, Padding = UDim.new(0, 7.6) }, r)
 	return r
 end
-local function stat(parent, text)
+local function stat(parent, text, kind)
 	local f = new("Frame", { BackgroundTransparency = 1, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 14), ZIndex = 82 }, parent)
 	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, VerticalAlignment = Enum.VerticalAlignment.Center, Padding = UDim.new(0, 4.6) }, f)
-	iconBox(f)
+	iconBox(f, kind)
 	local t = new("TextLabel", { BackgroundTransparency = 1, Text = text, TextSize = 12.5, Font = FONT, TextColor3 = SUB, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 14), ZIndex = 82 }, f)
 	return t
 end
 local rvRow1 = statRow(178.7)
-local rvConn = stat(rvRow1, "")
-local rvMut = stat(rvRow1, "")
+local rvConn = stat(rvRow1, "", "calendar")
+local rvMut = stat(rvRow1, "", "people")
 local rvRow2 = statRow(206.3)
-local rvJoined = stat(rvRow2, "")
+local rvJoined = stat(rvRow2, "", "info")
 local rvGlyph = glyph(pReview, "robux", 25.4, UDim2.fromOffset(0, 266), INK); rvGlyph.ZIndex = 82
 local rvAmt = z(label(pReview, "", 33, true, INK, UDim2.fromOffset(0, 265.8), UDim2.new(1, 0, 0, 36), Enum.TextXAlignment.Center))
 local rvGet = z(label(pReview, "", 11.5, false, SUB, UDim2.fromOffset(0, 302.5), UDim2.new(1, 0, 0, 14), Enum.TextXAlignment.Center))
@@ -1895,6 +1915,9 @@ icon(chatPage, "search", UDim2.new(1, -78, 0, 21), UDim2.fromOffset(26, 26), fun
 end)
 local compose = new("Frame", { BackgroundTransparency = 1, Position = UDim2.new(1, -40, 0, 22), Size = UDim2.fromOffset(22, 22) }, chatPage)
 corner(compose, UDim.new(0.2, 0)); new("UIStroke", { Color = C.text, Thickness = 2 }, compose)
+-- lapiz que cruza la esquina
+new("Frame", { BackgroundColor3 = C.bg, BorderSizePixel = 0, Position = UDim2.fromOffset(13, -3), Size = UDim2.fromOffset(12, 9) }, compose)
+new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(15, 7), Size = UDim2.fromOffset(15, 2.6), Rotation = -45 }, compose)
 local function chatRow(y, title, sub)
 	local r = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 58) }, chatPage)
 	local ic = new("Frame", { BackgroundColor3 = Color3.fromRGB(236, 237, 241), Position = UDim2.fromOffset(14, 10), Size = UDim2.fromOffset(34, 34) }, r)
