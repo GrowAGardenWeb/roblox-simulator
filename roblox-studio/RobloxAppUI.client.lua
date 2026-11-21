@@ -389,6 +389,25 @@ local function fmtCompact(n)
 	return t(n / 1e9) .. "B"
 end
 -- completo mientras quepa; si es muy largo, compacto (asi nunca se sale de la interfaz)
+-- skeleton loading: cajas grises con un brillo que pasa de lado a lado (en lugar de texto "Loading...")
+local function skelBox(parent, size, pos, radius)
+	local f = new("Frame", { Name = "Skel", BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, Size = size, Position = pos or UDim2.new() }, parent)
+	if radius ~= 0 then corner(f, UDim.new(0, radius or 8)) end
+	local g = new("UIGradient", { Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(228, 229, 233)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(244, 245, 247)), ColorSequenceKeypoint.new(1, Color3.fromRGB(228, 229, 233)) }), Offset = Vector2.new(-1, 0) }, f)
+	local tw = TweenService:Create(g, TweenInfo.new(1.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1), { Offset = Vector2.new(1, 0) })
+	tw:Play()
+	f.Destroying:Connect(function() tw:Cancel() end)
+	return f
+end
+-- tarjeta de esqueleto con la forma de un item del Marketplace
+local function skelCard(parent, order)
+	local c = new("Frame", { Name = "Skel", BackgroundTransparency = 1, Size = UDim2.new(1 / 3, -7, 0, 186), LayoutOrder = order }, parent)
+	skelBox(c, UDim2.new(1, 0, 0, 110), nil, 8)
+	skelBox(c, UDim2.new(0.8, 0, 0, 12), UDim2.fromOffset(0, 120), 6)
+	skelBox(c, UDim2.new(0.5, 0, 0, 11), UDim2.fromOffset(0, 140), 6)
+	skelBox(c, UDim2.new(0.35, 0, 0, 12), UDim2.fromOffset(0, 160), 6)
+	return c
+end
 local function fmtAdaptive(n)
 	return (#tostring(math.floor(tonumber(n) or 0)) <= 9) and fmtFull(n) or fmtCompact(n)
 end
@@ -1413,10 +1432,20 @@ local function loadCategory(cat)
 		end
 	end
 	if not cat[2] then status.Text = "Nothing to show here yet."; return end
-	status.Text = "Loading..."
+	status.Text = ""
+	local function clearRows()
+		for _, row in ipairs({ recRow, exRow }) do
+			for _, c in ipairs(row:GetChildren()) do
+				if c:IsA("GuiObject") then c:Destroy() end
+			end
+		end
+	end
+	for _, row in ipairs({ recRow, exRow }) do
+		for i = 1, 3 do skelCard(row, i) end
+	end
 	local ok, err = pcall(function()
 		local items, lastErr
-		for attempt = 1, 4 do
+		for attempt = 1, 2 do
 			local okS, res = pcall(function()
 				local params = CatalogSearchParams.new()
 				params.AssetTypes = { cat[2] }
@@ -1427,8 +1456,7 @@ local function loadCategory(cat)
 			if okS and res and #res > 0 then items = res; break end
 			lastErr = okS and "sin resultados" or res
 			if my ~= searchToken then return end
-			status.Text = "Loading... (" .. attempt .. "/4)"
-			task.wait(1 + attempt * 0.5)
+			task.wait(0.6)
 		end
 		if not items then
 			items = FAKE_INV[cat[3]] or {}
@@ -1436,10 +1464,12 @@ local function loadCategory(cat)
 		end
 		if my ~= searchToken then return end
 		status.Text = ""
+		clearRows()
 		fillRow(recRow, items, 1, 3, cat)
 		fillRow(exRow, items, 4, 6, cat)
 	end)
 	if not ok then
+		clearRows()
 		status.Text = "Catalog unavailable (enable Studio access to API services in Game Settings > Security)."
 		warn(err)
 	end
@@ -1509,11 +1539,21 @@ catalogInto = function(cat)
 	local grid = czAdd(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y }))
 	local side = math.max(60, (czBody.AbsoluteSize.X - 28 - 3 * 7) / 4)
 	new("UIGridLayout", { CellSize = UDim2.fromOffset(side, side), CellPadding = UDim2.fromOffset(7, 7), SortOrder = Enum.SortOrder.LayoutOrder }, grid)
-	local st = label(grid, "Loading...", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
+	local st = label(grid, "", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
+	st.Visible = false
+	for i = 1, 12 do
+		local sk = skelBox(grid, UDim2.fromOffset(side, side), nil, 9)
+		sk.LayoutOrder = i
+	end
+	local function clearSkel()
+		for _, c in ipairs(grid:GetChildren()) do
+			if c.Name == "Skel" then c:Destroy() end
+		end
+	end
 	task.spawn(function()
 		local ok, err = pcall(function()
 			local items, lastErr
-			for attempt = 1, 4 do
+			for attempt = 1, 2 do
 				local okS, res = pcall(function()
 					local params = CatalogSearchParams.new()
 					if cat[5] == "bundle" then
@@ -1530,7 +1570,7 @@ catalogInto = function(cat)
 				if okS and res and #res > 0 then items = res; break end
 				lastErr = okS and "sin resultados" or res
 				if not grid.Parent then return end
-				task.wait(1 + attempt * 0.5)
+				task.wait(0.6)
 			end
 			if not items then
 				-- inventario de juguete: items reales del catalogo guardados en el script
@@ -1538,6 +1578,7 @@ catalogInto = function(cat)
 				warn("Catalogo no respondio, uso inventario de juguete: " .. tostring(lastErr))
 			end
 			if not grid.Parent then return end
+			clearSkel()
 			st:Destroy()
 			if #items == 0 then label(grid, "Not available yet", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20)) end
 			for i, it in ipairs(items) do
@@ -1547,7 +1588,9 @@ catalogInto = function(cat)
 		end)
 		if not ok then
 			warn(err)
+			clearSkel()
 			if st.Parent then
+				st.Visible = true
 				st.Text = "No cargo el inventario. Toca para reintentar"
 				local rb = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1) }, st)
 				rb.Activated:Connect(function() grid:Destroy(); catalogInto(cat) end)
