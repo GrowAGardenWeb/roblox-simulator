@@ -74,7 +74,10 @@ local openSendSheet
 local openRobuxPage
 
 -- ======== ScreenGui ========
-local gui = new("ScreenGui", { Name = "RobloxAppUI", ResetOnSpawn = false, IgnoreGuiInset = true, ZIndexBehavior = Enum.ZIndexBehavior.Sibling }, player:WaitForChild("PlayerGui"))
+-- fondo blanco detras de la barra de Roblox; la interfaz empieza DEBAJO de esa barra (deja el espacio libre)
+local bgGui = new("ScreenGui", { Name = "RobloxAppBG", ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = -5 }, player:WaitForChild("PlayerGui"))
+new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = C.bg, BorderSizePixel = 0 }, bgGui)
+local gui = new("ScreenGui", { Name = "RobloxAppUI", ResetOnSpawn = false, IgnoreGuiInset = false, ZIndexBehavior = Enum.ZIndexBehavior.Sibling }, player:WaitForChild("PlayerGui"))
 local root = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = C.bg, BorderSizePixel = 0 }, gui)
 
 -- ======== Cabecera ========
@@ -815,7 +818,7 @@ hexIcon(rbxTop, 22, UDim2.fromOffset(70, 40), C.text).ZIndex = 72
 local rbxBal = label(rbxTop, tostring(simBalance), 26, true, C.text, UDim2.fromOffset(98, 36), UDim2.fromOffset(150, 32))
 rbxBal.ZIndex = 72
 balanceLabels[#balanceLabels + 1] = rbxBal
-local rbxSend = new("TextButton", { Text = "Send", TextSize = 15, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(221, 222, 227), AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 35), Size = UDim2.fromOffset(82, 28), ZIndex = 72 }, rbxTop)
+local rbxSend = new("TextButton", { Text = "\u{2191} Send", TextSize = 14, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(221, 222, 227), AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 35), Size = UDim2.fromOffset(66, 28), ZIndex = 72 }, rbxTop)
 corner(rbxSend, UDim.new(0, 8))
 local rbxBody = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 74), Size = UDim2.new(1, 0, 1, -74), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, ZIndex = 71 }, rbxPage)
 new("UIPadding", { PaddingLeft = UDim.new(0, 18), PaddingRight = UDim.new(0, 18), PaddingTop = UDim.new(0, 10) }, rbxBody)
