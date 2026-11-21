@@ -37,6 +37,9 @@ local function build(player, data)
 	for _, k in ipairs({ "Shirt", "Pants", "GraphicTShirt" }) do
 		if tonumber(data[k]) then desc[k] = tonumber(data[k]) end
 	end
+	for _, k in ipairs({ "Head", "Torso", "LeftArm", "RightArm", "LeftLeg", "RightLeg", "Face" }) do
+		if tonumber(data[k]) then desc[k] = tonumber(data[k]) end
+	end
 	for _, k in ipairs({ "HeadColor", "TorsoColor", "LeftArmColor", "RightArmColor", "LeftLegColor", "RightLegColor" }) do
 		if typeof(data[k]) == "Color3" then desc[k] = data[k] end
 	end

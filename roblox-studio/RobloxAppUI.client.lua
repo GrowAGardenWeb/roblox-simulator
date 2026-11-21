@@ -583,6 +583,7 @@ local function serializeDesc()
 	if tried[pants] then extra[#extra + 1] = { AssetId = pants, Kind = "Pants" }; pants = nil end
 	if tried[tee] then extra[#extra + 1] = { AssetId = tee, Kind = "TShirt" }; tee = nil end
 	return {
+		Head = desc.Head, Torso = desc.Torso, LeftArm = desc.LeftArm, RightArm = desc.RightArm, LeftLeg = desc.LeftLeg, RightLeg = desc.RightLeg, Face = desc.Face,
 		acc = acc, extra = extra, Shirt = shirt, Pants = pants, GraphicTShirt = tee,
 		HeadColor = desc.HeadColor, TorsoColor = desc.TorsoColor, LeftArmColor = desc.LeftArmColor, RightArmColor = desc.RightArmColor, LeftLegColor = desc.LeftLegColor, RightLegColor = desc.RightLegColor,
 		HeightScale = desc.HeightScale, WidthScale = desc.WidthScale, DepthScale = desc.DepthScale, HeadScale = desc.HeadScale, ProportionScale = desc.ProportionScale, BodyTypeScale = desc.BodyTypeScale,
@@ -754,6 +755,30 @@ status = label(body, "", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20)); status.
 
 wear = function(assetId, kind)
 	if not desc or not kind then return end
+	if kind == "HeadPart" or kind == "Bundle" then
+		if kind == "HeadPart" then
+			desc.Head = assetId
+		else
+			-- cuerpo completo: el bundle trae cabeza, torso, brazos y piernas
+			local okB, det = pcall(function() return AvatarEditorService:GetItemDetails(assetId, Enum.AvatarItemType.Bundle) end)
+			local fields = { [17] = "Head", [79] = "Head", [18] = "Face", [27] = "Torso", [28] = "RightArm", [29] = "LeftArm", [30] = "LeftLeg", [31] = "RightLeg" }
+			local n = 0
+			if okB and type(det) == "table" then
+				for _, bi in ipairs(det.BundledItems or {}) do
+					if bi.Type == "Asset" then
+						local okP, inf = pcall(function() return MarketplaceService:GetProductInfo(bi.Id) end)
+						local f = okP and inf and fields[inf.AssetTypeId]
+						if f then desc[f] = bi.Id; n += 1 end
+					end
+				end
+			end
+			if n == 0 then showErr("No se pudo leer ese cuerpo"); return end
+		end
+		while #history > hIndex do table.remove(history) end
+		table.insert(history, desc:Clone()); hIndex = #history
+		buildRig()
+		return
+	end
 	if kind == "Shirt" then
 		desc.Shirt = assetId
 	elseif kind == "Pants" then
@@ -798,6 +823,8 @@ isWorn = function(assetId, kind)
 	if kind == "Shirt" then return desc.Shirt == assetId end
 	if kind == "Pants" then return desc.Pants == assetId end
 	if kind == "TShirt" then return desc.GraphicTShirt == assetId end
+	if kind == "HeadPart" then return desc.Head == assetId end
+	if kind == "Bundle" then return false end
 	for _, a in ipairs(desc:GetAccessories(true)) do
 		if a.AssetId == assetId then return true end
 	end
@@ -860,6 +887,8 @@ unwear = function(assetId, kind)
 	if kind == "Shirt" then desc.Shirt = 0
 	elseif kind == "Pants" then desc.Pants = 0
 	elseif kind == "TShirt" then desc.GraphicTShirt = 0
+	elseif kind == "HeadPart" then desc.Head = 0
+	elseif kind == "Bundle" then return
 	else
 		local keep = {}
 		for _, a in ipairs(desc:GetAccessories(true)) do
@@ -1172,12 +1201,22 @@ local function loadCategory(cat)
 	if not cat[2] then status.Text = "Nothing to show here yet."; return end
 	status.Text = "Loading..."
 	local ok, err = pcall(function()
-		local params = CatalogSearchParams.new()
-		params.AssetTypes = { cat[2] }
-		params.SortType = Enum.CatalogSortType.MostFavorited
-		params.IncludeOffSale = false
-		local result = AvatarEditorService:SearchCatalog(params)
-		local items = result:GetCurrentPage()
+		local items, lastErr
+		for attempt = 1, 4 do
+			local okS, res = pcall(function()
+				local params = CatalogSearchParams.new()
+				params.AssetTypes = { cat[2] }
+				params.SortType = Enum.CatalogSortType.MostFavorited
+				params.IncludeOffSale = false
+				return AvatarEditorService:SearchCatalog(params):GetCurrentPage()
+			end)
+			if okS and res and #res > 0 then items = res; break end
+			lastErr = okS and "sin resultados" or res
+			if my ~= searchToken then return end
+			status.Text = "Loading... (" .. attempt .. "/4)"
+			task.wait(1 + attempt * 0.5)
+		end
+		if not items then error(tostring(lastErr)) end
 		if my ~= searchToken then return end
 		status.Text = ""
 		fillRow(recRow, items, 1, 3, cat)
@@ -1255,11 +1294,25 @@ catalogInto = function(cat)
 	local st = label(grid, "Loading...", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
 	task.spawn(function()
 		local ok, err = pcall(function()
-			local params = CatalogSearchParams.new()
-			params.AssetTypes = { cat[2] }
-			params.SortType = Enum.CatalogSortType.MostFavorited
-			params.IncludeOffSale = false
-			local items = AvatarEditorService:SearchCatalog(params):GetCurrentPage()
+			local items, lastErr
+			for attempt = 1, 4 do
+				local okS, res = pcall(function()
+					local params = CatalogSearchParams.new()
+					if cat[5] == "bundle" then
+						params.BundleTypes = { Enum.BundleType.BodyParts }
+					else
+						params.AssetTypes = { cat[2] }
+					end
+					params.SortType = Enum.CatalogSortType.MostFavorited
+					params.IncludeOffSale = false
+					return AvatarEditorService:SearchCatalog(params):GetCurrentPage()
+				end)
+				if okS and res and #res > 0 then items = res; break end
+				lastErr = okS and "sin resultados" or res
+				if not grid.Parent then return end
+				task.wait(1 + attempt * 0.5)
+			end
+			if not items then error(tostring(lastErr)) end
 			if not grid.Parent then return end
 			st:Destroy()
 			for i, it in ipairs(items) do
@@ -1269,7 +1322,11 @@ catalogInto = function(cat)
 		end)
 		if not ok then
 			warn(err)
-			if st.Parent then st.Text = "Catalog unavailable: " .. tostring(err):sub(1, 70) end
+			if st.Parent then
+				st.Text = "No cargo el inventario. Toca para reintentar"
+				local rb = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1) }, st)
+				rb.Activated:Connect(function() grid:Destroy(); catalogInto(cat) end)
+			end
 		end
 	end)
 end
@@ -1283,7 +1340,7 @@ end
 local CZICONS = { full_body = "rbxthumb://type=Asset&id=91101726026716&w=150&h=150", hair = "rbxthumb://type=Asset&id=118739840803940&w=150&h=150", head = "rbxthumb://type=Asset&id=136107937180195&w=150&h=150", build = "rbxthumb://type=Asset&id=103953116552862&w=150&h=150", skin = "rbxthumb://type=Asset&id=87443355317967&w=150&h=150", clear = "rbxthumb://type=Asset&id=127690928912397&w=150&h=150", top = "rbxthumb://type=Asset&id=130138315041704&w=150&h=150", outerwear = "rbxthumb://type=Asset&id=73093717772456&w=150&h=150", bottom = "rbxthumb://type=Asset&id=134382518470665&w=150&h=150", shoes = "rbxthumb://type=Asset&id=102733805433566&w=150&h=150", classic_shirt = "rbxthumb://type=Asset&id=114424121198255&w=150&h=150", classic_pants = "rbxthumb://type=Asset&id=121159427580881&w=150&h=150", classic_tshirt = "rbxthumb://type=Asset&id=110283830445048&w=150&h=150", head_accessory = "rbxthumb://type=Asset&id=129250341922961&w=150&h=150", face_accessory = "rbxthumb://type=Asset&id=112709070368723&w=150&h=150", neck = "rbxthumb://type=Asset&id=101700200831280&w=150&h=150", back = "rbxthumb://type=Asset&id=112604318010709&w=150&h=150", waist = "rbxthumb://type=Asset&id=138257820302666&w=150&h=150", shoulder = "rbxthumb://type=Asset&id=80211604824950&w=150&h=150", front = "rbxthumb://type=Asset&id=117838130762162&w=150&h=150", gear = "rbxthumb://type=Asset&id=102855588751811&w=150&h=150" }
 -- { texto, icono, tipo de catalogo (nil = sin catalogo), clase para ponerlo }
 local CZ_SUBS = {
-	Body = { { "Full Body", "full_body" }, { "Hair", "hair", AT("HairAccessory"), "Hair" }, { "Head", "head" }, { "Build", "build" }, { "Skin", "skin" }, { "Clear", "clear" } },
+	Body = { { "Full Body", "full_body", true, "Bundle", "bundle" }, { "Hair", "hair", AT("HairAccessory"), "Hair" }, { "Head", "head", AT("DynamicHead") or AT("Head"), "HeadPart" }, { "Build", "build" }, { "Skin", "skin" }, { "Clear", "clear" } },
 	Clothing = { { "Top", "top", AT("Shirt"), "Shirt" }, { "Outerwear", "outerwear", AT("JacketAccessory"), "Jacket" }, { "Bottom", "bottom", AT("Pants"), "Pants" }, { "Shoes", "shoes", AT("LeftShoeAccessory"), "LeftShoe" }, { "Shirt Classic", "classic_shirt", AT("Shirt"), "Shirt" }, { "Pants Classic", "classic_pants", AT("Pants"), "Pants" }, { "T-Shirt Classic", "classic_tshirt", AT("TShirt"), "TShirt" }, { "Clear", "clear" } },
 	Accessories = { { "Head", "head_accessory", AT("Hat"), "Hat" }, { "Face", "face_accessory", AT("FaceAccessory"), "Face" }, { "Neck", "neck", AT("NeckAccessory"), "Neck" }, { "Back", "back", AT("BackAccessory"), "Back" }, { "Waist", "waist", AT("WaistAccessory"), "Waist" }, { "Shoulder", "shoulder", AT("ShoulderAccessory"), "Shoulder" }, { "Front", "front", AT("FrontAccessory"), "Front" }, { "Gear", "gear" }, { "Clear", "clear" } },
 }
@@ -1357,7 +1414,7 @@ local function subPanel(tab)
 	elseif chosen[3] then
 		catalogInto(chosen)
 	else
-		czAdd(label(czBody, "Loading...", 17, false, C.sub, nil, UDim2.new(1, 0, 0, 30), Enum.TextXAlignment.Center))
+		czAdd(label(czBody, "Not available yet", 17, false, C.sub, nil, UDim2.new(1, 0, 0, 30), Enum.TextXAlignment.Center))
 	end
 end
 buildCz = function()
@@ -1369,7 +1426,7 @@ buildCz = function()
 	elseif CZ_SUBS[czTab] then
 		subPanel(czTab)
 	else
-		czAdd(label(czBody, "Loading...", 17, false, C.sub, nil, UDim2.new(1, 0, 0, 30), Enum.TextXAlignment.Center))
+		czAdd(label(czBody, "Not available yet", 17, false, C.sub, nil, UDim2.new(1, 0, 0, 30), Enum.TextXAlignment.Center))
 	end
 end
 local CZ_TABS = { "Avatars", "Body", "Clothing", "Accessories", "Backgrounds", "Animations", "Emotes", "Makeup" }
