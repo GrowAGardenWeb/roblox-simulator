@@ -243,6 +243,7 @@
           e.items.filter((i) => i !== lead && i.icon).slice(0, 6).forEach((i, k) => { const ic = document.createElement('div'); ic.className = 'ic'; ic.dataset.img = i.icon; ic.style.left = (10 + (k % 3) * 50 + (k > 2 ? 14 : 0)) + 'px'; ic.style.top = (16 + Math.floor(k / 3) * 62 + (k % 2) * 8) + 'px'; ic.style.rotate = (k % 2 ? 5 : -4) + 'deg'; cm.appendChild(ic); lazy.observe(ic); });
         }
         t.addEventListener('click', () => { window.curItem = e.devKey || key; });
+        t.addEventListener('mouseenter', () => { window.__shopPrev && window.__shopPrev(e, lead); });
         if (e.dev) { t.classList.add('dev', 'map'); const pr = t.querySelector('.pr'); pr.className = 'ownlbl'; pr.textContent = 'OWNED'; if (e.devKey === 'pirate') devTok = t; }
         g.appendChild(t);
       };
@@ -350,6 +351,33 @@
       else viaImg();
       };
     });
+    // vista previa grande de lo seleccionado (al pasar el mouse por una casilla de la tienda): a la derecha, como en el juego
+    { const shopScr = document.querySelector('.screen[data-screen="shop"]'); if (shopScr) {
+      const st = document.createElement('style'); st.textContent = '#shopprev{position:absolute;left:1330px;top:25px;width:560px;height:760px;pointer-events:none;z-index:3;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .22s ease}#shopprev.on{opacity:1}#shopprev img{display:block;max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 14px 22px rgba(0,0,0,.35))}#shopprev.tall img{height:750px;width:auto}#shopprev.sq img{width:440px;height:440px}#shopprev.cover{flex-direction:column}#shopprev.cover .cvf{width:400px;height:400px;border-radius:26px;padding:8px;background:linear-gradient(135deg,#ffffff,#b9a3ff 45%,#68e0ff);box-shadow:0 0 40px rgba(150,200,255,.55)}#shopprev.cover .cvf img{width:100%;height:100%;border-radius:20px;object-fit:cover;filter:none}#shopprev .ct{margin-top:22px;width:400px;background:rgba(20,16,40,.45);padding:10px 16px;color:#fff;font:400 22px Montserrat}#shopprev .ct b{display:block;font:800 22px Montserrat;margin-top:2px;letter-spacing:.02em}';
+      document.head.appendChild(st);
+      const pv = document.createElement('div'); pv.id = 'shopprev'; shopScr.appendChild(pv);
+      let cur = '';
+      window.__shopPrev = (e, lead) => {
+        if (!e || !pv) return;
+        const trk = e.kind === 'jam' && e.tracks && e.tracks[0];
+        const one = e.items && e.items.length === 1 ? e.items[0] : null;
+        const url = trk ? (trk.art || e.image) : ((lead && lead.featured) || (one && one.featured) || (one && one.icon) || e.image);
+        if (!url || url === cur + '') { if (url === cur) { pv.classList.add('on'); } return; }
+        cur = url;
+        const tall = !trk && !!((lead && lead.featured) || (one && one.featured));
+        const render = (src) => {
+          if (cur !== url) return;
+          pv.className = (trk ? 'cover' : tall ? 'tall' : 'sq');
+          pv.innerHTML = trk
+            ? '<div class="cvf"><img alt="" src="' + src + '"></div><div class="ct">' + (trk.artist || '') + '<b>' + String(trk.title || e.name || '').toUpperCase() + '</b></div>'
+            : '<img alt="" src="' + src + '">';
+          requestAnimationFrame(() => pv.classList.add('on'));
+        };
+        pv.classList.remove('on');
+        shrink(url, 1000).then(render).catch(() => render(url));
+      };
+      document.addEventListener('mouseleave', () => { pv.classList.remove('on'); cur = ''; });
+    } }
     const detail = document.querySelector('.screen[data-screen="detail"]'); if (detail) { const f = detail.querySelector('.full'); f ? f.after(art) : detail.appendChild(art); }
     // al tocar una miniatura del bundle, se reproduce el video de esa pieza (personaje, mochila, pico…)
     document.addEventListener('click', (ev) => {
