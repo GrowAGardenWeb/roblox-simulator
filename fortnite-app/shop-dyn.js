@@ -57,6 +57,7 @@
   html.shoplite #shoprow.dyn .dt{animation:none!important}
   #shoprow.dyn .dt::before{content:'';position:absolute;inset:0;border-radius:14px;background:radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.28),rgba(255,255,255,0) 62%);pointer-events:none}
   #shoprow.dyn .dt.jam .di{inset:10px 10px auto 10px;aspect-ratio:1;border-radius:6px;box-shadow:0 6px 14px rgba(0,0,0,.4);background-size:cover;filter:none}
+  #shoprow.dyn .dt.jam.w2 .di,#shoprow.dyn .dt.jam.w3 .di,#shoprow.dyn .dt.jam.w4 .di{right:auto;bottom:10px;width:auto;height:auto;aspect-ratio:1}
   #shoprow.dyn .dt .sh{position:absolute;left:0;right:0;bottom:0;height:78px;border-radius:0 0 14px 14px;background:linear-gradient(transparent,rgba(5,15,50,.6))}
   #shoprow.dyn .dt .nm{position:absolute;left:12px;right:10px;bottom:34px;font:700 24px Montserrat,system-ui;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 4px rgba(0,0,30,.45)}
   #shoprow.dyn .dt .pr{position:absolute;left:12px;bottom:8px;display:flex;align-items:center;gap:6px;font:700 21px Montserrat,system-ui;color:#fff}
@@ -223,7 +224,7 @@
         const t = document.createElement('div'); t.className = 'dt ' + e.kind; t.dataset.go2 = 'detail'; t.dataset.key = key;
         const a = hex(e.colors?.color1), b = hex(e.colors?.color3) || hex(e.colors?.color2);
         if (a) t.style.setProperty('--a', mix(a, 1.12)); if (b || a) t.style.setProperty('--b', mix(b || a, .8));
-        const w = span(e.tileSize); t.style.gridColumn = 'span ' + w;
+        const w = span(e.tileSize); t.style.gridColumn = 'span ' + w; if (w > 1) t.classList.add('w' + w);
         const comp = e.kind === 'bundle' && e.items.length > 1 && (e.image === e.items[0].featured || e.image === e.items[0].icon);
         const isNew = e.inDate && (Date.now() - new Date(e.inDate)) < 36 * 3600e3;
         const lead = e.items.find((i) => i.type === 'outfit') || e.items[0];
@@ -415,9 +416,11 @@
       let offT = 0;
       const unpick = () => { if (selT) selT.classList.remove('picked'); selT = null; };
       window.__shopPrevOff = () => { clearTimeout(offT); offT = setTimeout(() => { pv.classList.remove('on'); cur = ''; unpick(); }, 90); };
+      new MutationObserver(() => { if (shopScr.classList.contains('fopen')) { clearTimeout(offT); pv.classList.remove('on'); cur = ''; unpick(); } }).observe(shopScr, { attributes: true, attributeFilter: ['class'] });
       window.__shopPrev = (e, lead, tile) => {
         if (!e || !pv) return;
         clearTimeout(offT);
+        if (shopScr.classList.contains('fopen')) { pv.classList.remove('on'); cur = ''; unpick(); return; }   // con FILTERS abierto no hay vista previa ni selección
         pick(tile, e);
         const trk = e.kind === 'jam' && e.tracks && e.tracks[0];
         const one = e.items && e.items.length === 1 ? e.items[0] : null;
