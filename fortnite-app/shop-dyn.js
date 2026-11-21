@@ -244,6 +244,7 @@
         }
         t.addEventListener('click', () => { window.curItem = e.devKey || key; });
         t.addEventListener('mouseenter', () => { window.__shopPrev && window.__shopPrev(e, lead, t); });
+        t.addEventListener('mouseleave', () => { window.__shopPrevOff && window.__shopPrevOff(); });
         if (e.dev) { t.classList.add('dev', 'map'); const pr = t.querySelector('.pr'); pr.className = 'ownlbl'; pr.textContent = 'OWNED'; if (e.devKey === 'pirate') devTok = t; }
         g.appendChild(t);
       };
@@ -392,8 +393,12 @@
       const selStyle = document.createElement('style'); selStyle.textContent = '#shoprow.dyn .dt.picked{z-index:5;transform:scale(1.03);box-shadow:0 0 0 3px #fff,0 0 22px 4px rgba(255,255,255,.55),inset 0 0 0 1px rgba(255,255,255,.6)!important}#shoprow.dyn .dt .typ{position:absolute;left:0;right:0;bottom:0;height:24px;line-height:24px;text-align:center;font:italic 800 11px Montserrat;letter-spacing:.03em;color:#fff;text-transform:uppercase;background:rgba(10,24,70,.82);border-radius:0 0 14px 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 8px;z-index:6;display:none}#shoprow.dyn .dt.picked .typ{display:block}#shoprow.dyn .dt .nm,#shoprow.dyn .dt .pr,#shoprow.dyn .dt .bd{transition:transform .16s ease}#shoprow.dyn .dt.picked .nm,#shoprow.dyn .dt.picked .pr,#shoprow.dyn .dt.picked .bd{transform:translateY(-24px)}#shoprow.dyn .dt{transition:transform .16s ease,box-shadow .16s ease}';
       document.head.appendChild(selStyle);
       const pick = (t, e) => { if (!t || selT === t) return; if (selT) selT.classList.remove('picked'); selT = t; let ty = t.querySelector('.typ'); if (!ty) { ty = document.createElement('div'); ty.className = 'typ'; t.appendChild(ty); } ty.textContent = typeLabel(e); t.classList.add('picked'); };
+      let offT = 0;
+      const unpick = () => { if (selT) selT.classList.remove('picked'); selT = null; };
+      window.__shopPrevOff = () => { clearTimeout(offT); offT = setTimeout(() => { pv.classList.remove('on'); cur = ''; unpick(); }, 90); };
       window.__shopPrev = (e, lead, tile) => {
         if (!e || !pv) return;
+        clearTimeout(offT);
         pick(tile, e);
         const trk = e.kind === 'jam' && e.tracks && e.tracks[0];
         const one = e.items && e.items.length === 1 ? e.items[0] : null;
@@ -407,10 +412,12 @@
           pv.innerHTML = trk
             ? '<div class="cvf"><img alt="" src="' + src + '"></div><div class="ct">' + (trk.artist || '') + '<b>' + String(trk.title || e.name || '').toUpperCase() + '</b></div>'
             : '<img alt="" src="' + src + '">';
-          requestAnimationFrame(() => pv.classList.add('on'));
+          setTimeout(() => { if (cur === url) pv.classList.add('on'); }, 30);
         };
+        const wasOn = pv.classList.contains('on'), t0 = Date.now();
         pv.classList.remove('on');
-        shrink(url, 1000).then(render).catch(() => render(url));
+        const go2 = (src) => setTimeout(() => render(src), wasOn ? Math.max(0, 230 - (Date.now() - t0)) : 0);
+        shrink(url, 1000).then(go2).catch(() => go2(url));
       };
       document.addEventListener('mouseleave', () => { pv.classList.remove('on'); cur = ''; });
     } }
