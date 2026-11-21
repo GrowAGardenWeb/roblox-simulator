@@ -2321,45 +2321,40 @@ end
 passRow(86, "verified", "Verified Badge", "Shows the badge next to your name", 20, badgeIcon(GLYPH.verified), function() return profile.verified end, function(v) profile.verified = v end)
 passRow(142, "plus", "Roblox Plus Badge", "Free", nil, badgeIcon(GLYPH.plus), function() return profile.plus end, function(v) profile.plus = v end)
 
--- tema oscuro: se repintan los colores claros de todos los elementos (y los que se creen despues)
+-- temas de la app (Custom UI Color): cada color repinta fondos, textos, bordes e iconos; el negro es el tema oscuro
 local origs = setmetatable({}, { __mode = "k" })
-local darkOn = false
-local function dkBg(c) local h, sat, v = c:ToHSV(); if sat > 0.3 or v < 0.55 then return c end return Color3.fromHSV(h, sat, (1 - v) * 0.9 + 0.09) end
-local function dkTx(c) local h, sat, v = c:ToHSV(); if sat > 0.3 or v >= 0.55 then return c end return Color3.fromHSV(h, sat, 1 - v * 0.55) end
-local function themeInst(d, on)
-	local o = origs[d]
-	if on then
-		if o then return end
-		o = {}; origs[d] = o
-		if d:IsA("GuiObject") then
-			if d.BackgroundTransparency < 1 then o.bg = d.BackgroundColor3; d.BackgroundColor3 = dkBg(o.bg) end
-			if d:IsA("TextLabel") or d:IsA("TextButton") or d:IsA("TextBox") then o.tx = d.TextColor3; d.TextColor3 = dkTx(o.tx) end
-		elseif d:IsA("UIStroke") then o.st = d.Color; d.Color = dkBg(o.st) end
-	elseif o then
-		pcall(function()
-			if o.bg then d.BackgroundColor3 = o.bg end
-			if o.tx then d.TextColor3 = o.tx end
-			if o.st then d.Color = o.st end
-		end)
-		origs[d] = nil
+local themeMode, themeAccent = nil, nil -- nil | "dark" | "tint"
+local function tBg(c)
+	local h, sat, v = c:ToHSV()
+	if sat > 0.3 or v < 0.55 or not themeMode then return c end
+	if themeMode == "dark" then return Color3.fromHSV(h, sat, (1 - v) * 0.9 + 0.09) end
+	return c:Lerp(themeAccent, v > 0.985 and 0.14 or 0.2)
+end
+local function tTx(c)
+	local h, sat, v = c:ToHSV()
+	if sat > 0.3 or v >= 0.55 or not themeMode then return c end
+	if themeMode == "dark" then return Color3.fromHSV(h, sat, 1 - v * 0.55) end
+	return c:Lerp(themeAccent, 0.3)
+end
+-- iconos (imagenes teñidas): blancos en modo negro, del color del tema en los demas; las fotos (ImageColor3 blanco) no se tocan
+local function tIc(c)
+	if c.R > 0.97 and c.G > 0.97 and c.B > 0.97 or not themeMode then return c end
+	local _, _, v = c:ToHSV()
+	if themeMode == "dark" then return v < 0.55 and Color3.fromRGB(244, 245, 248) or Color3.fromRGB(196, 199, 208) end
+	return v < 0.55 and themeAccent or themeAccent:Lerp(Color3.new(1, 1, 1), 0.35)
+end
+local function themeInst(d)
+	if origs[d] then return end
+	local o = {}
+	origs[d] = o
+	if d:IsA("GuiObject") then
+		if d.BackgroundTransparency < 1 then local n = tBg(d.BackgroundColor3); if n ~= d.BackgroundColor3 then o.bg = d.BackgroundColor3; d.BackgroundColor3 = n end end
+		if d:IsA("TextLabel") or d:IsA("TextButton") or d:IsA("TextBox") then local n = tTx(d.TextColor3); if n ~= d.TextColor3 then o.tx = d.TextColor3; d.TextColor3 = n end end
+		if d:IsA("ImageLabel") or d:IsA("ImageButton") then local n = tIc(d.ImageColor3); if n ~= d.ImageColor3 then o.ic = d.ImageColor3; d.ImageColor3 = n end end
+	elseif d:IsA("UIStroke") then
+		local n = tBg(d.Color); if n ~= d.Color then o.st = d.Color; d.Color = n end
 	end
 end
-local function setDark(on)
-	darkOn = on; profile.dark = on
-	themeInst(root, on); themeInst(bgGui:FindFirstChildWhichIsA("Frame") or root, on)
-	for _, d in ipairs(root:GetDescendants()) do themeInst(d, on) end
-	for _, d in ipairs(bgGui:GetDescendants()) do themeInst(d, on) end
-end
-root.DescendantAdded:Connect(function(d) if darkOn then task.defer(themeInst, d, true) end end)
-
--- Custom UI Color (de pago): colores de acento y el tema negro/oscuro
-passRow(198, "color", "Custom UI Color", "Accent color and black (dark) theme", 30, function(ib)
-	for i, col in ipairs({ Color3.fromRGB(235, 64, 52), Color3.fromRGB(51, 95, 255), Color3.fromRGB(30, 170, 90) }) do
-		local d = new("Frame", { BackgroundColor3 = col, BorderSizePixel = 0, Position = UDim2.fromOffset(5 + (i - 1) * 10, 12 + ((i == 2) and -4 or 4)), Size = UDim2.fromOffset(14, 14), ZIndex = 98 }, ib); corner(d)
-	end
-end, nil, nil)
-local swatchRow = ez(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, 252), Size = UDim2.new(1, -36, 0, 40), Visible = false }, eBody))
-new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10), VerticalAlignment = Enum.VerticalAlignment.Center }, swatchRow)
 local function setAccent(col)
 	local old = C.blue
 	if old == col then return end
@@ -2368,17 +2363,55 @@ local function setAccent(col)
 	end
 	C.blue = col
 end
-for _, col in ipairs({ Color3.fromRGB(51, 95, 255), Color3.fromRGB(235, 64, 52), Color3.fromRGB(30, 170, 90), Color3.fromRGB(140, 70, 220), Color3.fromRGB(245, 140, 20), Color3.fromRGB(240, 80, 160) }) do
-	local sw = ez(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = col, Size = UDim2.fromOffset(34, 34) }, swatchRow))
-	corner(sw)
-	new("UIStroke", { Color = Color3.fromRGB(220, 221, 226), Thickness = 1.5 }, sw)
-	sw.Activated:Connect(function() setAccent(col); for _, f in ipairs(passRefresh) do f() end end)
+local function setTheme(mode, accent)
+	-- 1) quitar el tema actual (vuelven los colores originales)
+	for d, o in pairs(origs) do
+		pcall(function()
+			if o.bg then d.BackgroundColor3 = o.bg end
+			if o.tx then d.TextColor3 = o.tx end
+			if o.ic then d.ImageColor3 = o.ic end
+			if o.st then d.Color = o.st end
+		end)
+		origs[d] = nil
+	end
+	-- 2) poner el nuevo
+	themeMode, themeAccent = mode, accent
+	profile.dark = (mode == "dark")
+	if accent then setAccent(accent) end
+	if mode then
+		themeInst(root)
+		for _, d in ipairs(root:GetDescendants()) do themeInst(d) end
+		for _, d in ipairs(bgGui:GetDescendants()) do themeInst(d) end
+	end
 end
-do -- el negro: tema oscuro
-	local bk = ez(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(20, 21, 24), Size = UDim2.fromOffset(34, 34) }, swatchRow))
-	corner(bk)
-	local ring = new("UIStroke", { Color = Color3.fromRGB(51, 95, 255), Thickness = 3, Enabled = false }, bk)
-	bk.Activated:Connect(function() setDark(not darkOn); ring.Enabled = darkOn end)
+root.DescendantAdded:Connect(function(d) if themeMode then task.defer(themeInst, d) end end)
+
+-- Custom UI Color (de pago): cada color es un tema completo; el negro es el tema oscuro
+passRow(198, "color", "Custom UI Color", "Full color themes and black (dark) mode", 30, function(ib)
+	for i, col in ipairs({ Color3.fromRGB(235, 64, 52), Color3.fromRGB(51, 95, 255), Color3.fromRGB(30, 170, 90) }) do
+		local d = new("Frame", { BackgroundColor3 = col, BorderSizePixel = 0, Position = UDim2.fromOffset(5 + (i - 1) * 10, 12 + ((i == 2) and -4 or 4)), Size = UDim2.fromOffset(14, 14), ZIndex = 98 }, ib); corner(d)
+	end
+end, nil, nil)
+local swatchRow = ez(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, 252), Size = UDim2.new(1, -36, 0, 40), Visible = false }, eBody))
+new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10), VerticalAlignment = Enum.VerticalAlignment.Center }, swatchRow)
+do
+	local THEMES = {
+		{ Color3.fromRGB(51, 95, 255), nil }, { Color3.fromRGB(235, 64, 52), "tint" }, { Color3.fromRGB(30, 170, 90), "tint" }, { Color3.fromRGB(140, 70, 220), "tint" },
+		{ Color3.fromRGB(245, 140, 20), "tint" }, { Color3.fromRGB(240, 80, 160), "tint" }, { Color3.fromRGB(20, 21, 24), "dark" },
+	}
+	local rings = {}
+	for i, th in ipairs(THEMES) do
+		local sw = ez(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = th[1], Size = UDim2.fromOffset(34, 34) }, swatchRow))
+		corner(sw)
+		new("UIStroke", { Color = Color3.fromRGB(220, 221, 226), Thickness = 1.5 }, sw)
+		rings[i] = new("UIStroke", { Color = Color3.fromRGB(51, 95, 255), Thickness = 3, Enabled = i == 1 }, sw)
+		sw.Activated:Connect(function()
+			-- el negro (tema oscuro) mantiene el acento azul; los colores usan su propio color
+			setTheme(th[2], th[2] == "dark" and Color3.fromRGB(51, 95, 255) or th[1])
+			for j, r in ipairs(rings) do r.Enabled = (j == i) end
+			for _, f in ipairs(passRefresh) do f() end
+		end)
+	end
 end
 -- Fake Friends: de pago; ya comprado el boton "Add Friends" de Home deja agregar amigos (tambien verificados)
 passRow(304, "friends", "Fake Friends", "Add friends (even verified) on Home", 50, function(ib)
