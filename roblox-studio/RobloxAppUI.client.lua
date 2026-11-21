@@ -59,18 +59,13 @@ local function icon(parent, key, pos, size, draw)
 	return holder
 end
 
--- icono hexagonal de Robux (figura dibujada)
+-- Caracteres Unicode OFICIALES de Roblox (funcionan en cualquier TextLabel)
+local GLYPH = { robux = utf8.char(0xE002), premium = utf8.char(0xE001), verified = utf8.char(0xE000), plus = utf8.char(0xE003) }
+local function glyph(parent, code, px, pos, color)
+	return new("TextLabel", { BackgroundTransparency = 1, Text = GLYPH[code], TextSize = px, Font = Enum.Font.BuilderSans, TextColor3 = color or C.text, Position = pos, Size = UDim2.fromOffset(px + 4, px + 4), TextXAlignment = Enum.TextXAlignment.Center, TextYAlignment = Enum.TextYAlignment.Center }, parent)
+end
 local function hexIcon(parent, px, pos, color)
-	local h = new("Frame", { BackgroundTransparency = 1, Position = pos, Size = UDim2.fromOffset(px, px) }, parent)
-	local k = px * 0.7
-	for _, r in ipairs({ 0, 45 }) do
-		local f = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(k, k), Rotation = r }, h)
-		new("UICorner", { CornerRadius = UDim.new(0.25, 0) }, f)
-		new("UIStroke", { Color = color or C.text, Thickness = math.max(1.5, px / 12) }, f)
-	end
-	local inner = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(px * 0.3, px * 0.3) }, h)
-	new("UIStroke", { Color = color or C.text, Thickness = math.max(1.5, px / 12) }, inner)
-	return h
+	return glyph(parent, "robux", px, pos, color)
 end
 -- saldo de JUGUETE (solo simulacion, no es Robux real)
 local simBalance = 1000
@@ -98,12 +93,7 @@ icon(header, "search", UDim2.new(1, -118, 0, 15), UDim2.fromOffset(26, 26), func
 	local handle = new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromOffset(21, 21), Size = UDim2.fromOffset(8, 2.5), Rotation = 45 }, h)
 end)
 icon(header, "robux", UDim2.new(1, -80, 0, 15), UDim2.fromOffset(26, 26), function(h)
-	for _, r in ipairs({ 0, 45 }) do
-		local f = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(18, 18), Rotation = r }, h)
-		new("UICorner", { CornerRadius = UDim.new(0.25, 0) }, f); new("UIStroke", { Color = C.text, Thickness = 2 }, f)
-	end
-	local inner = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(8, 8) }, h)
-	new("UIStroke", { Color = C.text, Thickness = 2 }, inner)
+	glyph(h, "robux", 24, UDim2.fromOffset(-1, -1), C.text)
 end)
 icon(header, "bell", UDim2.new(1, -42, 0, 15), UDim2.fromOffset(26, 26), function(h)
 	local b = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(3, 2), Size = UDim2.fromOffset(20, 20) }, h)
@@ -645,7 +635,7 @@ local sSheet = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 249), 
 corner(sSheet, UDim.new(0, 22))
 local function z(o, n) o.ZIndex = n or 82; return o end
 -- cabecera
-local sHex = hexIcon(sSheet, 22, UDim2.fromOffset(17, 20), Color3.fromRGB(73, 77, 90))
+local sHex = glyph(sSheet, "plus", 22, UDim2.fromOffset(15, 18), Color3.fromRGB(73, 77, 90))
 local sTitle = z(label(sSheet, "Send Robux", 19, true, Color3.fromRGB(73, 77, 90), UDim2.fromOffset(45, 19), UDim2.fromOffset(200, 26)))
 local sBalHex = hexIcon(sSheet, 16, UDim2.new(1, -104, 0, 23), Color3.fromRGB(32, 34, 39))
 local sBal = z(label(sSheet, "", 15, false, Color3.fromRGB(32, 34, 39), UDim2.new(1, -84, 0, 19), UDim2.fromOffset(46, 22)))
@@ -880,7 +870,9 @@ gap(10)
 local function row(text, badge, key)
 	local r = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 41), LayoutOrder = nextOrd(), ZIndex = 51 }, dScroll)
 	local ic = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(2, 9), Size = UDim2.fromOffset(22, 22), ZIndex = 51 }, r)
-	if key and (DICONS[key] or "") ~= "" then
+	if key == "plus" then
+		glyph(ic, "plus", 20, UDim2.fromOffset(-1, -1), C.text).ZIndex = 51
+	elseif key and (DICONS[key] or "") ~= "" then
 		new("ImageLabel", { BackgroundTransparency = 1, Image = DICONS[key], ImageColor3 = C.text, Size = UDim2.fromScale(1, 1), ZIndex = 51 }, ic)
 	else
 		corner(ic, UDim.new(0.3, 0)); new("UIStroke", { Color = C.text, Thickness = 1.8 }, ic)
