@@ -48,12 +48,14 @@ local function build(player, data)
 	end
 	-- ITEMS DE PRUEBA (los que no son tuyos): se cargan con InsertService y se ponen con AddAccessory
 	local hum = model:FindFirstChildOfClass("Humanoid")
+	local report = {}
 	for _, e in ipairs(data.extra or {}) do
 		local id = tonumber(e.AssetId)
 		if id and hum then
 			local okL, loaded = pcall(function() return InsertService:LoadAsset(id) end)
 			if okL and loaded then
 				local acc = loaded:FindFirstChildWhichIsA("Accessory", true)
+				if acc and model:FindFirstChild(acc.Name) then acc = nil; loaded:Destroy(); loaded = Instance.new("Folder") end
 				local shirt = loaded:FindFirstChildWhichIsA("Shirt", true)
 				local pants = loaded:FindFirstChildWhichIsA("Pants", true)
 				local tee = loaded:FindFirstChildWhichIsA("ShirtGraphic", true)
@@ -70,14 +72,16 @@ local function build(player, data)
 					local old = model:FindFirstChildOfClass("ShirtGraphic"); if old then old:Destroy() end
 					tee.Parent = model
 				else
-					warn("AvatarPreview: el item " .. id .. " no trae accesorio ni ropa")
+					report[#report + 1] = id .. ": ya cargado o sin accesorio"
 				end
 				loaded:Destroy()
 			else
 				warn("AvatarPreview: LoadAsset fallo para " .. tostring(id) .. ": " .. tostring(loaded))
+				report[#report + 1] = id .. ": " .. tostring(loaded):sub(1, 90)
 			end
 		end
 	end
+	model:SetAttribute("Report", table.concat(report, " | "))
 	model.Name = "Preview_" .. player.UserId
 	local root = model:FindFirstChild("HumanoidRootPart")
 	if root then root.Anchored = true end

@@ -575,9 +575,8 @@ local function serializeDesc()
 	for _, a in ipairs(desc:GetAccessories(true)) do
 		if tried[a.AssetId] then
 			extra[#extra + 1] = { AssetId = a.AssetId, Kind = tried[a.AssetId] }
-		else
-			acc[#acc + 1] = { AssetId = a.AssetId, AccessoryType = a.AccessoryType.Name, IsLayered = a.IsLayered, Order = a.Order, Puffiness = a.Puffiness }
 		end
+		acc[#acc + 1] = { AssetId = a.AssetId, AccessoryType = a.AccessoryType.Name, IsLayered = a.IsLayered, Order = a.Order, Puffiness = a.Puffiness }
 	end
 	local shirt, pants, tee = desc.Shirt, desc.Pants, desc.GraphicTShirt
 	if tried[shirt] then extra[#extra + 1] = { AssetId = shirt, Kind = "Shirt" }; shirt = nil end
@@ -777,7 +776,7 @@ wear = function(assetId, kind)
 	table.insert(history, desc:Clone()); hIndex = #history
 	buildRig()
 	if kind ~= "Shirt" and kind ~= "Pants" and kind ~= "TShirt" and countAcc() <= before then
-		showErr("Roblox no cargo este item en el avatar")
+		showErr("No cargo: " .. tostring(rig and rig:GetAttribute("Report") or "sin respuesta del servidor (revisa que el Script este en ServerScriptService)"))
 	end
 end
 -- cuantos accesorios tiene el personaje 3D ahora (para avisar si Roblox no pudo cargar un item)
