@@ -188,7 +188,27 @@ local GAMES = {
 	{ name = "Sol's RNG", place = 15532962292, rating = 89, players = 98, desc = "Roll for auras and unlock rare effects." },
 }
 local gameCursor = 0 -- cada fila toma juegos NUEVOS, sin repetir dentro de la fila ni con la fila de al lado
-local function gameThumb(g) return "rbxthumb://type=Asset&id=" .. g.place .. "&w=420&h=420" end
+-- el icono real del juego se pide a Roblox (MarketplaceService); mientras carga se ve gris, sin el cuadrito de "imagen no disponible"
+local MarketplaceService = game:GetService("MarketplaceService")
+local function applyIcon(g, img)
+	if g.icon then img.Image = g.icon; return end
+	img.Image = ""
+	task.spawn(function()
+		if g.iconTried then
+			while g.iconTried and not g.icon and not g.iconFailed do task.wait(0.3) end
+		else
+			g.iconTried = true
+			local ok, info = pcall(function() return MarketplaceService:GetProductInfo(g.place) end)
+			if ok and info and info.IconImageAssetId and info.IconImageAssetId ~= 0 then
+				g.icon = "rbxassetid://" .. info.IconImageAssetId
+				if info.Description and info.Description ~= "" and #info.Description < 400 then g.desc = info.Description end
+			else
+				g.iconFailed = true
+			end
+		end
+		if g.icon and img.Parent then img.Image = g.icon end
+	end)
+end
 local function fmtK(n) return n >= 1000 and string.format("%.1fM", n / 1000) or (n .. "K") end
 
 local function openGameSheet(g)
@@ -199,8 +219,9 @@ local function openGameSheet(g)
 	corner(sh, UDim.new(0, 12))
 	local function z(o) o.ZIndex = 86; return o end
 	new("Frame", { BackgroundColor3 = Color3.fromRGB(214, 216, 222), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 9), Size = UDim2.fromOffset(29, 3.3), ZIndex = 86 }, sh)
-	local img = z(new("ImageLabel", { BackgroundColor3 = C.tile, Image = gameThumb(g), ScaleType = Enum.ScaleType.Crop, Position = UDim2.fromOffset(16, 28), Size = UDim2.new(1, -32, 0, 190) }, sh))
+	local img = z(new("ImageLabel", { BackgroundColor3 = C.tile, Image = "", ScaleType = Enum.ScaleType.Crop, Position = UDim2.fromOffset(16, 28), Size = UDim2.new(1, -32, 0, 190) }, sh))
 	corner(img, UDim.new(0, 12))
+	applyIcon(g, img)
 	z(label(sh, g.name, 22, true, C.text, UDim2.fromOffset(16, 230), UDim2.new(1, -32, 0, 30)))
 	z(label(sh, g.rating .. "% Rating   \u{00B7}   " .. fmtK(g.players) .. " playing", 14, false, C.sub, UDim2.fromOffset(16, 262), UDim2.new(1, -32, 0, 20)))
 	local play = z(new("TextButton", { Text = "Play", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(51, 95, 255), AutoButtonColor = true, Position = UDim2.fromOffset(16, 296), Size = UDim2.new(1, -32, 0, 48) }, sh))
@@ -222,7 +243,7 @@ local function openGameSheet(g)
 	-- Play: pantalla de carga simulada (no entra a ningun juego)
 	play.Activated:Connect(function()
 		local ld = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(24, 25, 29), ZIndex = 120 }, root)
-		local li = new("ImageLabel", { BackgroundTransparency = 1, Image = gameThumb(g), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.42), Size = UDim2.fromOffset(150, 150), ZIndex = 121 }, ld)
+		local li = new("ImageLabel", { BackgroundTransparency = 1, Image = g.icon or "", AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.42), Size = UDim2.fromOffset(150, 150), ZIndex = 121 }, ld)
 		corner(li, UDim.new(0, 16))
 		new("TextLabel", { BackgroundTransparency = 1, Text = g.name, TextSize = 22, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.42) + UDim2.fromOffset(0, 90), Size = UDim2.fromOffset(300, 30), ZIndex = 121 }, ld)
 		new("TextLabel", { BackgroundTransparency = 1, Text = "Joining...", TextSize = 15, Font = FONT, TextColor3 = Color3.fromRGB(170, 172, 180), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.42) + UDim2.fromOffset(0, 124), Size = UDim2.fromOffset(300, 22), ZIndex = 121 }, ld)
@@ -238,8 +259,9 @@ local function tilesRow(parent, count, w, h, order, reg)
 		local game_ = GAMES[(gameCursor % #GAMES) + 1]
 		gameCursor += 1
 		local t = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(w, h + 40) }, row)
-		local img = new("ImageLabel", { BackgroundColor3 = C.tile, BorderSizePixel = 0, Image = gameThumb(game_), ScaleType = Enum.ScaleType.Crop, Size = UDim2.fromOffset(w, h) }, t)
+		local img = new("ImageLabel", { BackgroundColor3 = C.tile, BorderSizePixel = 0, Image = "", ScaleType = Enum.ScaleType.Crop, Size = UDim2.fromOffset(w, h) }, t)
 		corner(img, UDim.new(0, 10))
+		applyIcon(game_, img)
 		local nm = label(t, game_.name, 15, true, C.text, UDim2.fromOffset(0, h + 4), UDim2.new(1, 0, 0, 20))
 		nm.TextTruncate = Enum.TextTruncate.AtEnd
 		local pl = label(t, game_.rating .. "% Rating", 13, false, C.sub, UDim2.fromOffset(0, h + 22), UDim2.new(1, 0, 0, 16))
