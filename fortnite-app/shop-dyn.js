@@ -83,7 +83,7 @@
   #shoprow.dyn .dt .cmp .ic{position:absolute;width:56px;height:56px;border-radius:8px;background-size:cover;background-position:center;box-shadow:0 4px 8px rgba(0,0,30,.4)}
   #shoprow.dyn .dt .cmp .hero{position:absolute;right:-6px;top:-6px;bottom:0;width:62%;background-size:auto 112%;background-position:right 30%;background-repeat:no-repeat}
   #shopbg{position:absolute;inset:-70px -300px;pointer-events:none;z-index:0}
-  #shopbg i{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}#shopbg i.on{opacity:1}
+  #shopbg i{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}#shopbg i.on{opacity:1}
   #dynart{position:absolute;left:1020px;top:120px;width:820px;height:690px;object-fit:contain;display:none;z-index:1;pointer-events:none}`;
   document.head.appendChild(css);
 
@@ -313,7 +313,16 @@
       rawSetBg(c, '', ''); applyTheme(c, null);                       // al instante: color de la sección
       if (url) getBg(url).then((u) => { if (tok !== bgTok) return; rawSetBg(c, u, url); applyTheme(c, bgAvg.get(url)); });
     };
-    const rawSetBg = (c, url, orig) => { const key = (orig || url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key; const el = bgW.children[bgI = 1 - bgI]; el.style.background = url ? 'linear-gradient(rgba(4,14,52,.08),rgba(4,14,52,.26)),url("' + url + '") center/cover no-repeat' : gradFor(c); bgW.children[0].classList.toggle('on', bgI === 0); bgW.children[1].classList.toggle('on', bgI === 1); };
+    let bgZ = 1;
+    const rawSetBg = (c, url, orig) => {
+      const key = (orig || url || '') + '|' + c; if (!c || key === bgCur) return; bgCur = key;
+      const prev = bgW.children[bgI], el = bgW.children[bgI = 1 - bgI];
+      el.style.transition = 'none'; el.classList.remove('on'); void el.offsetWidth; el.style.transition = '';
+      el.style.background = url ? 'linear-gradient(rgba(4,14,52,.08),rgba(4,14,52,.26)),url("' + url + '") center/cover no-repeat' : gradFor(c);
+      el.style.zIndex = ++bgZ;                       // la nueva capa aparece ENCIMA de la anterior (que no se apaga hasta terminar): sin parpadeo ni salto
+      requestAnimationFrame(() => { el.classList.add('on'); });
+      clearTimeout(rawSetBg.t); rawSetBg.t = setTimeout(() => { prev.classList.remove('on'); }, 1000);
+    };
     const warmAhead = (idx) => { for (let k = Math.max(0, idx - 1); k <= idx + 3 && k < heads.length; k++) { const u = bgFor(heads[k][1]); if (u) getBg(u); } };
     // título de la sección actual
     const ttl = document.querySelector('[data-t="shop.title"]'); let last = '';
