@@ -501,7 +501,7 @@ refreshCharts()
 end
 
 -- ---- Me: pantalla Avatar (3D real + catalogo real) ----
-local avScreen, world, desc, buildRig, history, hIndex, loadMyDescription, chip, sheet, CATS, tabsRow, body, recRow, exRow, status, wear, rig, yaw
+local avScreen, world, desc, buildRig, history, hIndex, loadMyDescription, chip, sheet, CATS, tabsRow, body, recRow, exRow, status, wear, rig, yaw, openDrawerFromAvatar, setMode
 do
 avScreen = new("Frame", { Name = "AvatarScreen", Size = UDim2.new(1, 0, 1, -64), BackgroundColor3 = Color3.fromRGB(216, 217, 226), BorderSizePixel = 0, Visible = false, ClipsDescendants = true }, root)
 if ASSETS.scene ~= "" then
@@ -557,8 +557,7 @@ vp.InputChanged:Connect(function(i)
 end)
 
 local WHITE_PILL = Color3.fromRGB(255, 255, 255)
-local openDrawerFromAvatar -- se define mas abajo con el panel lateral
-local setMode -- Marketplace / Customize
+-- (openDrawerFromAvatar y setMode se declaran arriba del bloque)
 
 -- HUD: menu, Marketplace/Customize, buscar
 local avMenu = icon(avScreen, "menu", UDim2.fromOffset(20, 17), UDim2.fromOffset(26, 24), function(h)
@@ -687,7 +686,7 @@ end
 end
 
 -- ======== Marketplace como en la app: seleccionar (probar puesto), barra de compra, aviso "Buy item", detalles ========
-local owned, equipped, setBalance, vscale, safe, purchasedToast, unwear, KIND_INFO
+local owned, equipped, setBalance, vscale, safe, purchasedToast, unwear, KIND_INFO, effPrice
 do
 owned, equipped = {}, {}
 setBalance = function(n)
@@ -696,7 +695,7 @@ setBalance = function(n)
 end
 vscale = function(w) return root.AbsoluteSize.X / (w or 360) end
 -- con Roblox Plus activado el ítem cuesta 10% menos
-local function effPrice(p)
+effPrice = function(p)
 	p = tonumber(p) or 0
 	if p > 0 and profile.plus then return math.floor(p * 0.9) end
 	return p
