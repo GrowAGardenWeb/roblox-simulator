@@ -1054,11 +1054,38 @@ corner(rbxSend, UDim.new(0, 8))
 local rbxBody = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 74), Size = UDim2.new(1, 0, 1, -74), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, ZIndex = 71 }, rbxPage)
 new("UIPadding", { PaddingLeft = UDim.new(0, 18), PaddingRight = UDim.new(0, 18), PaddingTop = UDim.new(0, 10) }, rbxBody)
 new("UIListLayout", { Padding = UDim.new(0, 12), SortOrder = Enum.SortOrder.LayoutOrder }, rbxBody)
+local ptitle = label(rbxBody, "Robux packages", 22, true, C.text, nil, UDim2.new(1, 0, 0, 30))
+ptitle.ZIndex = 71
+ptitle.LayoutOrder = 1
+local pterms = label(rbxBody, "By purchasing Robux, you agree to our Terms of Use, including the arbitration clause and revocation policy.", 13, false, C.text, nil, UDim2.new(1, 0, 0, 34))
+pterms.ZIndex = 71
+pterms.LayoutOrder = 2
+pterms.TextWrapped = true
+pterms.TextYAlignment = Enum.TextYAlignment.Top
+-- lista de paquetes: SOLO interfaz, los botones no compran nada
+local pcard = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 248), BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 10 * 53 + 24), LayoutOrder = 3, ZIndex = 71 }, rbxBody)
+corner(pcard, UDim.new(0, 18))
+new("UIStroke", { Color = Color3.fromRGB(232, 233, 236), Thickness = 1 }, pcard)
+new("UIPadding", { PaddingTop = UDim.new(0, 12), PaddingLeft = UDim.new(0, 18), PaddingRight = UDim.new(0, 18) }, pcard)
+new("UIListLayout", { SortOrder = Enum.SortOrder.LayoutOrder }, pcard)
+local PACKS = { { 22500, "\u{20AC}239.99" }, { 10000, "\u{20AC}119.99" }, { 4500, "\u{20AC}59.99" }, { 3150, "\u{20AC}39.99" }, { 1700, "\u{20AC}23.99" }, { 1200, "\u{20AC}17.99", true }, { 800, "\u{20AC}11.99" }, { 400, "\u{20AC}5.99" }, { 80, "\u{20AC}1.19" }, { 40, "\u{20AC}0.60" } }
+local function commas(n) local t = tostring(n):reverse():gsub("(%d%d%d)", "%1,"):reverse(); return (t:gsub("^,", "")) end
+for i, pk in ipairs(PACKS) do
+	local r = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 53), LayoutOrder = i, ZIndex = 72 }, pcard)
+	glyph(r, "robux", 22, UDim2.fromOffset(0, 14), C.text).ZIndex = 72
+	local am = label(r, commas(pk[1]), 22, true, C.text, UDim2.fromOffset(28, 10), UDim2.fromOffset(110, 30)); am.ZIndex = 72
+	if pk[3] then
+		local chip = new("TextLabel", { BackgroundColor3 = Color3.fromRGB(231, 232, 236), Text = "For you", TextSize = 12, Font = FONT_B, TextColor3 = Color3.fromRGB(74, 77, 86), Position = UDim2.fromOffset(102, 17), Size = UDim2.fromOffset(66, 20), ZIndex = 72 }, r)
+		corner(chip)
+	end
+	local btn = new("TextButton", { Text = pk[2], TextSize = 15, Font = FONT_B, TextColor3 = pk[3] and Color3.new(1, 1, 1) or C.text, BackgroundColor3 = pk[3] and C.blue or Color3.fromRGB(221, 222, 227), AutoButtonColor = false, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 0, 0.5, 0), Size = UDim2.fromOffset(106, 35), ZIndex = 72 }, r)
+	corner(btn, UDim.new(0, 8))
+end
 local ft = label(rbxBody, "FAQ", 22, true, C.text, nil, UDim2.new(1, 0, 0, 30))
 ft.ZIndex = 71
-ft.LayoutOrder = 1
+ft.LayoutOrder = 10
 for i, q in ipairs({ "What are Robux?", "How do I send Robux?", "Where can I use Robux?" }) do
-	local card = new("Frame", { BackgroundColor3 = Color3.fromRGB(255, 255, 255), BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 50), LayoutOrder = 1 + i, ZIndex = 71 }, rbxBody)
+	local card = new("Frame", { BackgroundColor3 = Color3.fromRGB(255, 255, 255), BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 50), LayoutOrder = 10 + i, ZIndex = 71 }, rbxBody)
 	corner(card, UDim.new(0, 12))
 	new("UIStroke", { Color = Color3.fromRGB(215, 217, 223), Thickness = 1.2 }, card)
 	local ql = label(card, q, 15, true, C.text, UDim2.fromOffset(16, 0), UDim2.new(1, -50, 1, 0))
