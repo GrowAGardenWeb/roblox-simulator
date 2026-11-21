@@ -38,6 +38,8 @@ local FONT, FONT_B, FONT_LOGO = Enum.Font.BuilderSans, Enum.Font.BuilderSansBold
 local function new(class, props, parent)
 	local o = Instance.new(class)
 	for k, v in pairs(props or {}) do o[k] = v end
+	-- un UIStroke sobre un boton o texto se aplicaba a las LETRAS (mancha negra): siempre al borde
+	if class == "UIStroke" and not (props and props.ApplyStrokeMode) then o.ApplyStrokeMode = Enum.ApplyStrokeMode.Border end
 	if parent then o.Parent = parent end
 	return o
 end
