@@ -81,6 +81,41 @@ local simBalance = 1000
 local profile = { name = player.DisplayName, plus = false, verified = false }
 local nameLabels = {}
 local balanceLabels = {}
+local function fmtFull(n)
+	n = math.max(0, math.floor(tonumber(n) or 0))
+	local t = tostring(n):reverse():gsub("(%d%d%d)", "%1,"):reverse()
+	return (t:gsub("^,", ""))
+end
+local function fmtCompact(n)
+	n = math.max(0, tonumber(n) or 0)
+	local function t(x)
+		local r = math.floor(x * 10 + 0.5) / 10
+		return (string.format("%.1f", r):gsub("%.0$", ""))
+	end
+	if n < 1e3 then return tostring(math.floor(n)) end
+	if n < 1e6 and math.floor(n / 1e3 * 10 + 0.5) / 10 < 1e3 then return t(n / 1e3) .. "K" end
+	if n < 1e9 and math.floor(n / 1e6 * 10 + 0.5) / 10 < 1e3 then return t(n / 1e6) .. "M" end
+	return t(n / 1e9) .. "B"
+end
+-- completo mientras quepa; si es muy largo, compacto (asi nunca se sale de la interfaz)
+local function fmtAdaptive(n)
+	return (#tostring(math.floor(tonumber(n) or 0)) <= 9) and fmtFull(n) or fmtCompact(n)
+end
+local function applyBalance()
+	for _, l in ipairs(balanceLabels) do
+		local mode = l:GetAttribute("fmt")
+		l.Text = (mode == "compact") and fmtCompact(simBalance) or fmtAdaptive(simBalance)
+		local fit = l:GetAttribute("fit")
+		if fit then
+			local ok, w = pcall(function() return game:GetService("TextService"):GetTextSize(l.Text, l.TextSize, l.Font, Vector2.new(1000, 100)).X end)
+			if ok then
+				local parent = l.Parent
+				parent.Size = UDim2.fromOffset(math.max(64, 36 + w + 14), parent.Size.Y.Offset)
+				parent.Position = UDim2.new(1, -(parent.Size.X.Offset + 18), parent.Position.Y.Scale, parent.Position.Y.Offset)
+			end
+		end
+	end
+end
 local openSendSheet
 local openRobuxPage
 
@@ -496,6 +531,9 @@ local chip = new("Frame", { BackgroundColor3 = WHITE_PILL, Position = UDim2.new(
 corner(chip)
 hexIcon(chip, 22, UDim2.fromOffset(10, 10), C.text)
 local chipLbl = label(chip, tostring(simBalance), 17, false, C.text, UDim2.fromOffset(36, 8), UDim2.fromOffset(26, 26))
+chipLbl:SetAttribute("fmt", "compact")
+chipLbl:SetAttribute("fit", true)
+chipLbl.TextXAlignment = Enum.TextXAlignment.Left
 balanceLabels[#balanceLabels + 1] = chipLbl
 local chipBtn = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 5 }, chip)
 chipBtn.Activated:Connect(function() if openRobuxPage then openRobuxPage() end end)
@@ -580,7 +618,7 @@ end
 local owned, equipped = {}, {}
 local function setBalance(n)
 	simBalance = n
-	for _, l in ipairs(balanceLabels) do l.Text = tostring(n) end
+	applyBalance()
 end
 local function toast(msg)
 	local t = new("TextLabel", { BackgroundColor3 = Color3.fromRGB(32, 34, 39), Text = msg, TextSize = 15, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 20), Size = UDim2.fromOffset(170, 38), ZIndex = 130 }, root)
@@ -936,7 +974,14 @@ local function z(o, n) o.ZIndex = n or 82; return o end
 local sHex = glyph(sSheet, "plus", 22, UDim2.fromOffset(15, 18), Color3.fromRGB(73, 77, 90))
 local sTitle = z(label(sSheet, "Send Robux", 19, true, Color3.fromRGB(73, 77, 90), UDim2.fromOffset(45, 19), UDim2.fromOffset(200, 26)))
 local sBalHex = hexIcon(sSheet, 16, UDim2.new(1, -104, 0, 23), Color3.fromRGB(32, 34, 39))
-local sBal = z(label(sSheet, "", 15, false, Color3.fromRGB(32, 34, 39), UDim2.new(1, -84, 0, 19), UDim2.fromOffset(46, 22)))
+local sBal = z(label(sSheet, "", 15, false, Color3.fromRGB(32, 34, 39), UDim2.new(1, -44, 0, 19), UDim2.fromOffset(0, 22), Enum.TextXAlignment.Right))
+sBal.AnchorPoint = Vector2.new(1, 0)
+sBal.AutomaticSize = Enum.AutomaticSize.X
+local function placeSendBal()
+	local w = sBal.AbsoluteSize.X
+	sBalHex.Position = UDim2.new(1, -(44 + w + 6 + 18), 0, sBal.Position.Y.Offset + 1)
+end
+sBal:GetPropertyChangedSignal("AbsoluteSize"):Connect(placeSendBal)
 balanceLabels[#balanceLabels + 1] = sBal
 local sClose = z(new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.new(1, -44, 0, 16), Size = UDim2.fromOffset(32, 32) }, sSheet))
 xMark(sClose, Color3.fromRGB(32, 34, 39), 13)
@@ -1022,9 +1067,12 @@ local pAmount = sPage("amount", 0)
 local aAv = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 105.5), Size = UDim2.fromOffset(49, 49) }, pAmount)); corner(aAv)
 local aName = z(label(pAmount, "", 11.7, true, INK, UDim2.fromOffset(24, 164.4), UDim2.new(1, -48, 0, 14), Enum.TextXAlignment.Center))
 local aGlyph = glyph(pAmount, "robux", 25.4, UDim2.fromOffset(0, 200), INK); aGlyph.ZIndex = 82
-local aBox = z(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "0", PlaceholderColor3 = INK, TextSize = 33, Font = FONT_B, TextColor3 = INK, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Center, Position = UDim2.fromOffset(0, 198.3), Size = UDim2.new(1, 0, 0, 36) }, pAmount))
+local aBox = z(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "0", PlaceholderColor3 = INK, TextSize = 33, Font = FONT_B, TextColor3 = INK, TextTransparency = 1, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Center, Position = UDim2.fromOffset(0, 198.3), Size = UDim2.new(1, 0, 0, 36) }, pAmount))
+local aShow = z(label(pAmount, "0", 33, true, INK, UDim2.fromOffset(0, 198.3), UDim2.new(1, 0, 0, 36), Enum.TextXAlignment.Center))
+aShow.Active = false
 local function layoutAmt()
-	local txt = aBox.Text ~= "" and aBox.Text or "0"
+	local txt = aBox.Text ~= "" and fmtFull(tonumber(aBox.Text) or 0) or "0"
+	aShow.Text = txt
 	local w = TextService:GetTextSize(txt, 33, Enum.Font.BuilderSansBold, Vector2.new(1000, 60)).X
 	local total = 25.4 + 6 + w
 	local W = pAmount.AbsoluteSize.X
@@ -1113,14 +1161,10 @@ local sDone = z(new("TextButton", { Text = "OK", TextSize = 13, Font = FONT, Tex
 corner(sDone, UDim.new(0, 4.7))
 
 local function refreshBalances()
-	for _, l in ipairs(balanceLabels) do l.Text = tostring(simBalance) end
+	applyBalance()
 end
 refreshBalances()
-local function fmt(n)
-	local s = tostring(n)
-	local r = s:reverse():gsub("(%d%d%d)", "%1,"):reverse()
-	return (r:gsub("^,", ""))
-end
+local fmt = fmtFull
 -- altura de cada hoja = ancho x proporcion de las imagenes de la app (1320/1602, 1320/1721, 1320/998)
 local EXT = 24
 local function sheetSize(name)
@@ -1135,7 +1179,8 @@ local function headerFor(name)
 	if name == "amount" or name == "review" then top = 24.8 elseif name == "sent" then top, ts, bs = 23, 19, 15.5 end
 	sTitle.Position = UDim2.fromOffset(41.2, top - 1); sTitle.TextSize = ts
 	sHex.Position = UDim2.fromOffset(16, top - 2)
-	sBal.TextSize = bs; sBal.Position = UDim2.new(1, -84, 0, top + 0.5)
+	sBal.TextSize = bs; sBal.Position = UDim2.new(1, -44, 0, top + 0.5)
+	placeSendBal()
 end
 local SHEET_SIZE = setmetatable({}, { __index = function(_, k) return sheetSize(k) end })
 local function step(name)
@@ -1207,7 +1252,8 @@ local rbxX = new("TextButton", { Text = "", BackgroundColor3 = Color3.fromRGB(23
 xMark(rbxX, C.text, 16)
 corner(rbxX)
 hexIcon(rbxTop, 22, UDim2.fromOffset(70, 40), C.text).ZIndex = 72
-local rbxBal = label(rbxTop, tostring(simBalance), 26, true, C.text, UDim2.fromOffset(98, 36), UDim2.fromOffset(150, 32))
+local rbxBal = label(rbxTop, tostring(simBalance), 26, true, C.text, UDim2.fromOffset(98, 36), UDim2.new(1, -210, 0, 32))
+rbxBal.TextTruncate = Enum.TextTruncate.AtEnd
 rbxBal.ZIndex = 72
 balanceLabels[#balanceLabels + 1] = rbxBal
 local rbxSend = new("TextButton", { Text = "\u{2191} Send", TextSize = 14, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(221, 222, 227), AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 35), Size = UDim2.fromOffset(66, 28), ZIndex = 72 }, rbxTop)
@@ -1282,7 +1328,7 @@ local function field(y, title, placeholder, initial, numeric, onDone)
 	local box = ez(new("TextBox", { BackgroundTransparency = 1, Text = initial, PlaceholderText = placeholder, PlaceholderColor3 = C.sub, TextSize = 18, Font = FONT, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(14, 0), Size = UDim2.new(1, -28, 1, 0) }, f))
 	if numeric then
 		box:GetPropertyChangedSignal("Text"):Connect(function()
-			local t = box.Text:gsub("%D", ""):sub(1, 9)
+			local t = box.Text:gsub("%D", ""):sub(1, 12)
 			if t ~= box.Text then box.Text = t end
 		end)
 	end
@@ -1430,7 +1476,8 @@ do
 	new("UIStroke", { Color = C.line, Thickness = 1.5 }, card)
 	corner(card, UDim.new(0, 14))
 	hexIcon(card, 26, UDim2.fromOffset(14, 19), C.text).ZIndex = 51
-	local bl = label(card, tostring(simBalance), 24, true, C.text, UDim2.fromOffset(52, 16), UDim2.fromOffset(110, 32)); bl.ZIndex = 51
+	local bl = label(card, tostring(simBalance), 24, true, C.text, UDim2.fromOffset(52, 16), UDim2.new(1, -160, 0, 32)); bl.ZIndex = 51
+bl.TextTruncate = Enum.TextTruncate.AtEnd
 	balanceLabels[#balanceLabels + 1] = bl
 	local sb = new("TextButton", { Text = "Robux", TextSize = 16, Font = FONT, TextColor3 = C.text, BackgroundColor3 = C.gray, AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -12, 0.5, 0), Size = UDim2.fromOffset(86, 40), ZIndex = 51 }, card)
 	corner(sb, UDim.new(0, 12))
@@ -1596,3 +1643,4 @@ for i, it in ipairs(items) do
 	b.Activated:Connect(function() selectNav(it[1]) end)
 end
 selectNav("Home")
+applyBalance()
