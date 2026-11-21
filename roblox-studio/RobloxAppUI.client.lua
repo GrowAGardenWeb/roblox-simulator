@@ -502,7 +502,7 @@ refreshCharts()
 end
 
 -- ---- Me: pantalla Avatar (3D real + catalogo real) ----
-local avScreen, world, desc, buildRig, history, hIndex, loadMyDescription, chip, sheet, CATS, tabsRow, body, recRow, exRow, status, wear, rig, yaw, openDrawerFromAvatar, setMode
+local avScreen, world, desc, buildRig, history, hIndex, loadMyDescription, chip, sheet, CATS, tabsRow, body, recRow, exRow, status, wear, rig, yaw, openDrawerFromAvatar, setMode, isWorn, countAcc
 do
 avScreen = new("Frame", { Name = "AvatarScreen", Size = UDim2.new(1, 0, 1, -64), BackgroundColor3 = Color3.fromRGB(216, 217, 226), BorderSizePixel = 0, Visible = false, ClipsDescendants = true }, root)
 if ASSETS.scene ~= "" then
@@ -680,9 +680,34 @@ wear = function(assetId, kind)
 		local okA, errA = pcall(function() desc:SetAccessories(acc, true) end)
 		if not okA then showErr("Equip: " .. tostring(errA)); return end
 	end
+	local before = countAcc()
 	while #history > hIndex do table.remove(history) end
 	table.insert(history, desc:Clone()); hIndex = #history
 	buildRig()
+	if kind ~= "Shirt" and kind ~= "Pants" and kind ~= "TShirt" and countAcc() <= before then
+		showErr("Roblox no cargo este item en el avatar")
+	end
+end
+-- cuantos accesorios tiene el personaje 3D ahora (para avisar si Roblox no pudo cargar un item)
+countAcc = function()
+	local n = 0
+	if rig then
+		for _, d in ipairs(rig:GetDescendants()) do
+			if d:IsA("Accessory") then n += 1 end
+		end
+	end
+	return n
+end
+-- esta puesto este item? (lo que llevas desde tu avatar real tambien cuenta)
+isWorn = function(assetId, kind)
+	if not desc then return false end
+	if kind == "Shirt" then return desc.Shirt == assetId end
+	if kind == "Pants" then return desc.Pants == assetId end
+	if kind == "TShirt" then return desc.GraphicTShirt == assetId end
+	for _, a in ipairs(desc:GetAccessories(true)) do
+		if a.AssetId == assetId then return true end
+	end
+	return false
 end
 end
 
@@ -950,7 +975,7 @@ end
 local function selectItem(it, kind)
 	if selected and selected.it.Id == it.Id then
 		-- tocar la foto del ya seleccionado: se quita / se vuelve a probar (los detalles se abren con la tira "Details")
-		if equipped[it.Id] then
+		if isWorn(it.Id, kind) then
 			equipped[it.Id] = nil
 			safe(unwear, it.Id, kind)
 		else
@@ -966,7 +991,7 @@ local function selectItem(it, kind)
 		safe(unwear, selected.it.Id, selected.kind)
 	end
 	selected = { it = it, kind = kind }
-	if not equipped[it.Id] then
+	if not isWorn(it.Id, kind) then
 		equipped[it.Id] = true
 		safe(wear, it.Id, kind)
 	end
@@ -992,17 +1017,17 @@ makeItemCell = function(parent, it, kind, order, cz)
 	local btn = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 4 }, cell)
 	if cz then
 		-- Customize: tocar equipa / desequipa (sin barra de compra ni detalles); el borde marca lo que llevas puesto
-		stroke.Enabled = equipped[it.Id] and true or false
+		stroke.Enabled = isWorn(it.Id, kind)
 		btn.Activated:Connect(function()
 			safe(function()
-				if equipped[it.Id] then
+				if isWorn(it.Id, kind) then
 					equipped[it.Id] = nil
 					unwear(it.Id, kind)
 				else
 					equipped[it.Id] = true
 					wear(it.Id, kind)
 				end
-				stroke.Enabled = equipped[it.Id] and true or false
+				stroke.Enabled = isWorn(it.Id, kind)
 			end)
 		end)
 	else
@@ -1132,7 +1157,10 @@ catalogInto = function(cat)
 				makeItemCell(grid, it, cat[3], i, true)
 			end
 		end)
-		if not ok then warn(err); if st.Parent then st.Text = "Catalog unavailable." end end
+		if not ok then
+			warn(err)
+			if st.Parent then st.Text = "Catalog unavailable: " .. tostring(err):sub(1, 70) end
+		end
 	end)
 end
 end
@@ -1618,7 +1646,6 @@ openRobuxPage = function() rbxPage.Visible = true end
 end
 
 -- ======== Panel al mantener presionado: nombre, Plus / Verified y cantidad ========
-local openFriendsPage
 do
 local UserInputService = game:GetService("UserInputService")
 local editGui = new("Frame", { Name = "EditPanel", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, ZIndex = 95 }, root)
@@ -1724,52 +1751,7 @@ end)
 
 -- (hoisted) local openFriendsPage
 end
--- ======== Amigos (falsos) ========
 local closeDrawer
-do
-local FRIENDS = {
-	{ "Sakura", "sakura_x", 1, "Online" }, { "BlockMaster", "blockmaster", 156, "Playing Adopt Me!" }, { "NoobSlayer22", "noobslayer22", 261, "Online" },
-	{ "PixelFox", "pixelfox", 7, "Offline" }, { "Luna", "luna_rbx", 12, "Playing Blox Fruits" }, { "Juan", "therealjuan", 16, "Offline" },
-	{ "Mika", "mika123", 22, "Online" }, { "ProBuilder", "probuilder", 35, "Playing Bloxburg" }, { "Cami", "cami_play", 48, "Offline" }, { "Dani", "dani_games", 59, "Online" },
-}
-local friendsPage = new("Frame", { Name = "FriendsPage", Size = UDim2.fromScale(1, 1), BackgroundColor3 = C.bg, BorderSizePixel = 0, Visible = false, ZIndex = 75 }, root)
-local function fz(o) o.ZIndex = 76; return o end
-local fBack = fz(new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.fromOffset(6, 14), Size = UDim2.fromOffset(44, 44) }, friendsPage))
-for _, r in ipairs({ 40, -40 }) do
-	new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, -2, 0.5, r > 0 and -5 or 5), Size = UDim2.fromOffset(14, 2.4), Rotation = r, ZIndex = 77 }, fBack)
-end
-fz(label(friendsPage, "Friends", 26, true, C.text, UDim2.fromOffset(56, 18), UDim2.fromOffset(200, 36)))
-local fSearch = fz(new("Frame", { BackgroundColor3 = Color3.fromRGB(236, 237, 241), Position = UDim2.fromOffset(16, 70), Size = UDim2.new(1, -32, 0, 36) }, friendsPage))
-corner(fSearch, UDim.new(0, 10))
-local fBox = fz(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "Search friends", PlaceholderColor3 = C.sub, TextSize = 16, Font = FONT, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(14, 0), Size = UDim2.new(1, -28, 1, 0) }, fSearch))
-local fHead = fz(label(friendsPage, "Friends (" .. #FRIENDS .. ")", 17, true, C.text, UDim2.fromOffset(16, 122), UDim2.new(1, -32, 0, 24)))
-local fList = fz(new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 152), Size = UDim2.new(1, 0, 1, -152), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y }, friendsPage))
-new("UIListLayout", { SortOrder = Enum.SortOrder.LayoutOrder }, fList)
-local function renderFriends(filter)
-	for _, c in ipairs(fList:GetChildren()) do if c:IsA("GuiObject") then c:Destroy() end end
-	local n = 0
-	for i, f in ipairs(FRIENDS) do
-		if filter == "" or f[1]:lower():find(filter, 1, true) or f[2]:find(filter, 1, true) then
-			n += 1
-			local r = fz(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 64), LayoutOrder = i }, fList))
-			local av = fz(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), Image = "rbxthumb://type=AvatarHeadShot&id=" .. f[3] .. "&w=150&h=150", Position = UDim2.fromOffset(16, 8), Size = UDim2.fromOffset(48, 48) }, r))
-			corner(av)
-			if f[4] ~= "Offline" then
-				local dot = fz(new("Frame", { BackgroundColor3 = f[4] == "Online" and Color3.fromRGB(60, 190, 110) or C.blue, BorderSizePixel = 0, Position = UDim2.fromOffset(52, 44), Size = UDim2.fromOffset(14, 14) }, r))
-				corner(dot); new("UIStroke", { Color = C.bg, Thickness = 2 }, dot)
-			end
-			fz(label(r, f[1], 16, true, C.text, UDim2.fromOffset(76, 10), UDim2.new(1, -92, 0, 22)))
-			fz(label(r, f[4], 13, false, C.sub, UDim2.fromOffset(76, 33), UDim2.new(1, -92, 0, 18)))
-		end
-	end
-	fHead.Text = "Friends (" .. n .. ")"
-end
-renderFriends("")
-fBox:GetPropertyChangedSignal("Text"):Connect(function() renderFriends(fBox.Text:lower()) end)
-fBack.Activated:Connect(function() friendsPage.Visible = false end)
--- (hoisted) local closeDrawer
-openFriendsPage = function() friendsPage.Visible = true end
-end
 
 -- ======== Panel lateral (menu de las 3 rayas) ========
 local scrim, row
@@ -1825,7 +1807,6 @@ row = function(text, badge, key)
 end
 for _, it in ipairs({ { "Favorites", nil, "favorites" }, { "Continue Playing", nil, "continue" }, { "Friends", nil, "friends" }, { "Communities", nil, "communities" }, { "Inventory", nil, "inventory" }, { "Trades", nil, "trades" }, { "Messages", 4, "messages" }, { "Roblox Plus", nil, "plus" }, { "Settings", 1, "settings" }, { "Help & Safety", nil, "help" } }) do
 	local r = row(it[1], it[2], it[3])
-	if it[1] == "Friends" then r.Activated:Connect(function() if closeDrawer then closeDrawer() end; openFriendsPage() end) end
 end
 gap(8)
 new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 2), LayoutOrder = nextOrd(), ZIndex = 51 }, dScroll)
