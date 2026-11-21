@@ -393,7 +393,7 @@ end
 local UIX = {} -- ayudas de interfaz (skeleton, foto de perfil) en una tabla para no pasar el limite de 200 variables locales
 -- IDs de los Game Passes REALES (se crean en create.roblox.com > tu experiencia > Monetization > Passes).
 -- 0 = ese pase usa el saldo de juguete. Con un ID > 0 se abre el cuadro de compra oficial de Roblox con Robux de verdad.
-UIX.PASS_IDS = { verified = 0, color = 0, account = 0, friends = 0 }
+UIX.PASS_IDS = { verified = 2092373448, color = 2092679438, account = 2096449405, friends = 2093879538 }
 -- skeleton loading: cajas grises con un brillo que pasa de lado a lado (en lugar de texto "Loading...")
 function UIX.skelBox(parent, size, pos, radius)
 	local f = new("Frame", { Name = "Skel", BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, Size = size, Position = pos or UDim2.new() }, parent)
