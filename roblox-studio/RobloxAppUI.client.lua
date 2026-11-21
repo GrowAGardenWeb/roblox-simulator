@@ -212,7 +212,7 @@ end
 local function fmtK(n) return n >= 1000 and string.format("%.1fM", n / 1000) or (n .. "K") end
 
 local function openGameSheet(g)
-	local EXT, H = 24, 470
+	local EXT, H = 24, 380
 	local gg = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 84 }, root)
 	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 84 }, gg)
 	local sh = new("Frame", { BackgroundColor3 = Color3.fromRGB(248, 247, 247), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, H + EXT), Size = UDim2.new(1, 0, 0, H + EXT), ZIndex = 85, ClipsDescendants = true }, gg)
@@ -224,9 +224,7 @@ local function openGameSheet(g)
 	applyIcon(g, img)
 	z(label(sh, g.name, 22, true, C.text, UDim2.fromOffset(16, 230), UDim2.new(1, -32, 0, 30)))
 	z(label(sh, g.rating .. "% Rating   \u{00B7}   " .. fmtK(g.players) .. " playing", 14, false, C.sub, UDim2.fromOffset(16, 262), UDim2.new(1, -32, 0, 20)))
-	local play = z(new("TextButton", { Text = "Play", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(51, 95, 255), AutoButtonColor = true, Position = UDim2.fromOffset(16, 296), Size = UDim2.new(1, -32, 0, 48) }, sh))
-	corner(play, UDim.new(0, 10))
-	local d = z(label(sh, g.desc, 14, false, Color3.fromRGB(74, 77, 86), UDim2.fromOffset(16, 358), UDim2.new(1, -32, 0, 60)))
+	local d = z(label(sh, g.desc, 14, false, Color3.fromRGB(74, 77, 86), UDim2.fromOffset(16, 296), UDim2.new(1, -32, 0, 70)))
 	d.TextWrapped = true; d.TextYAlignment = Enum.TextYAlignment.Top
 	TweenService:Create(dim, TweenInfo.new(0.25), { BackgroundTransparency = 0.38 }):Play()
 	TweenService:Create(sh, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, EXT) }):Play()
@@ -240,15 +238,6 @@ local function openGameSheet(g)
 		tw.Completed:Once(function() gg:Destroy() end)
 	end
 	dim.Activated:Connect(close)
-	-- Play: pantalla de carga simulada (no entra a ningun juego)
-	play.Activated:Connect(function()
-		local ld = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(24, 25, 29), ZIndex = 120 }, root)
-		local li = new("ImageLabel", { BackgroundTransparency = 1, Image = g.icon or "", AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.42), Size = UDim2.fromOffset(150, 150), ZIndex = 121 }, ld)
-		corner(li, UDim.new(0, 16))
-		new("TextLabel", { BackgroundTransparency = 1, Text = g.name, TextSize = 22, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.42) + UDim2.fromOffset(0, 90), Size = UDim2.fromOffset(300, 30), ZIndex = 121 }, ld)
-		new("TextLabel", { BackgroundTransparency = 1, Text = "Joining...", TextSize = 15, Font = FONT, TextColor3 = Color3.fromRGB(170, 172, 180), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.42) + UDim2.fromOffset(0, 124), Size = UDim2.fromOffset(300, 22), ZIndex = 121 }, ld)
-		task.delay(2.2, function() ld:Destroy(); close() end)
-	end)
 end
 
 local chartLabels = {}
@@ -618,6 +607,111 @@ local function wear(assetId, kind)
 	buildRig()
 end
 
+-- ======== Marketplace: detalles, comprar (saldo de juguete), equipar / desequipar ========
+local owned, equipped = {}, {}
+local function setBalance(n)
+	simBalance = n
+	for _, l in ipairs(balanceLabels) do l.Text = tostring(n) end
+end
+local function toast(msg)
+	local t = new("TextLabel", { BackgroundColor3 = Color3.fromRGB(32, 34, 39), Text = msg, TextSize = 15, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 20), Size = UDim2.fromOffset(170, 38), ZIndex = 130 }, root)
+	corner(t)
+	t.BackgroundTransparency = 1; t.TextTransparency = 1
+	TweenService:Create(t, TweenInfo.new(0.2), { BackgroundTransparency = 0, TextTransparency = 0 }):Play()
+	task.delay(2.4, function()
+		TweenService:Create(t, TweenInfo.new(0.25), { BackgroundTransparency = 1, TextTransparency = 1 }):Play()
+		task.delay(0.3, function() t:Destroy() end)
+	end)
+end
+local function unwear(assetId, kind)
+	if not desc then return end
+	if kind == "Shirt" then desc.Shirt = 0
+	elseif kind == "Pants" then desc.Pants = 0
+	elseif kind == "TShirt" then desc.GraphicTShirt = 0
+	else
+		local keep = {}
+		for _, a in ipairs(desc:GetAccessories(true)) do
+			if a.AssetId ~= assetId then keep[#keep + 1] = a end
+		end
+		desc:SetAccessories(keep, true)
+	end
+	while #history > hIndex do table.remove(history) end
+	table.insert(history, desc:Clone()); hIndex = #history
+	buildRig()
+end
+local function openItemSheet(it, kind)
+	local EXT, H = 24, 500
+	local gi = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 100 }, root)
+	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 100 }, gi)
+	local sh = new("Frame", { BackgroundColor3 = Color3.fromRGB(248, 247, 247), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, H + EXT), Size = UDim2.new(1, 0, 0, H + EXT), ZIndex = 101, ClipsDescendants = true }, gi)
+	corner(sh, UDim.new(0, 12))
+	local function z(o) o.ZIndex = 102; return o end
+	new("Frame", { BackgroundColor3 = Color3.fromRGB(214, 216, 222), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 9), Size = UDim2.fromOffset(29, 3.3), ZIndex = 102 }, sh)
+	local img = z(new("ImageLabel", { BackgroundColor3 = C.gray, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=420&h=420", ScaleType = Enum.ScaleType.Fit, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 26), Size = UDim2.fromOffset(180, 180) }, sh))
+	corner(img, UDim.new(0, 14))
+	local title = z(label(sh, it.Name or "Item", 21, true, C.text, UDim2.fromOffset(18, 216), UDim2.new(1, -36, 0, 28)))
+	title.TextTruncate = Enum.TextTruncate.AtEnd
+	local by = z(label(sh, "", 14, false, C.sub, UDim2.fromOffset(18, 245), UDim2.new(1, -36, 0, 20)))
+	local priceHex = glyph(sh, "robux", 20, UDim2.fromOffset(16, 272), C.text); priceHex.ZIndex = 102
+	local price = z(label(sh, "...", 20, true, C.text, UDim2.fromOffset(42, 272), UDim2.new(1, -60, 0, 26)))
+	local desc_ = z(label(sh, "", 14, false, Color3.fromRGB(74, 77, 86), UDim2.fromOffset(18, 308), UDim2.new(1, -36, 0, 70)))
+	desc_.TextWrapped = true; desc_.TextYAlignment = Enum.TextYAlignment.Top; desc_.TextTruncate = Enum.TextTruncate.AtEnd
+	local main = z(new("TextButton", { Text = "", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, AutoButtonColor = true, Position = UDim2.fromOffset(18, 396), Size = UDim2.new(1, -36, 0, 50) }, sh))
+	corner(main, UDim.new(0, 12))
+	local cost = tonumber(it.Price) or 0
+	local function paint()
+		price.Text = cost > 0 and tostring(cost) or "Free"
+		priceHex.Visible = cost > 0
+		price.Position = cost > 0 and UDim2.fromOffset(42, 272) or UDim2.fromOffset(18, 272)
+		if not owned[it.Id] and cost > 0 then
+			main.Text = (cost > simBalance) and "Not enough Robux" or ("Buy  " .. utf8.char(0xE002) .. " " .. cost)
+			main.BackgroundColor3 = (cost > simBalance) and Color3.fromRGB(190, 200, 235) or C.blue
+		else
+			main.Text = equipped[it.Id] and "Unequip" or "Equip"
+			main.BackgroundColor3 = equipped[it.Id] and Color3.fromRGB(226, 227, 232) or C.blue
+			main.TextColor3 = equipped[it.Id] and C.text or Color3.new(1, 1, 1)
+		end
+	end
+	paint()
+	-- detalles reales (descripcion, creador, precio) desde Roblox
+	task.spawn(function()
+		local ok, info = pcall(function() return MarketplaceService:GetProductInfo(it.Id) end)
+		if ok and info and gi.Parent then
+			if info.Creator and info.Creator.Name then by.Text = "By " .. info.Creator.Name end
+			if info.Description then desc_.Text = info.Description end
+			if info.PriceInRobux and info.PriceInRobux > 0 then cost = info.PriceInRobux end
+			paint()
+		end
+	end)
+	main.Activated:Connect(function()
+		if not owned[it.Id] and cost > 0 then
+			if cost > simBalance then return end
+			setBalance(simBalance - cost)
+			owned[it.Id] = true
+			toast("Purchased!")
+		elseif not owned[it.Id] then
+			owned[it.Id] = true
+		end
+		if equipped[it.Id] then
+			equipped[it.Id] = nil; unwear(it.Id, kind)
+		elseif owned[it.Id] and (main.Text == "Equip" or main.Text:find("Buy")) then
+			equipped[it.Id] = true; wear(it.Id, kind)
+		end
+		paint()
+	end)
+	TweenService:Create(dim, TweenInfo.new(0.25), { BackgroundTransparency = 0.38 }):Play()
+	TweenService:Create(sh, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, EXT) }):Play()
+	local closing = false
+	dim.Activated:Connect(function()
+		if closing then return end
+		closing = true
+		TweenService:Create(dim, TweenInfo.new(0.23), { BackgroundTransparency = 1 }):Play()
+		local tw = TweenService:Create(sh, TweenInfo.new(0.23, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 1, H + EXT) })
+		tw:Play()
+		tw.Completed:Once(function() gi:Destroy() end)
+	end)
+end
+
 local searchToken = 0
 local function fillRow(row, items, from, to, cat)
 	for i = from, to do
@@ -626,7 +720,7 @@ local function fillRow(row, items, from, to, cat)
 		local cell = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, Size = UDim2.new(0.333, -7, 1, 0), LayoutOrder = i }, row)
 		corner(cell, UDim.new(0, 12))
 		new("ImageLabel", { BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit }, cell)
-		cell.Activated:Connect(function() wear(it.Id, cat[3]) end)
+		cell.Activated:Connect(function() openItemSheet(it, cat[3]) end)
 	end
 end
 local function loadCategory(cat)
@@ -732,7 +826,7 @@ local function catalogInto(cat)
 				local cell = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, LayoutOrder = i }, grid)
 				corner(cell, UDim.new(0, 12))
 				new("ImageLabel", { BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit }, cell)
-				cell.Activated:Connect(function() wear(it.Id, cat[3]) end)
+				cell.Activated:Connect(function() openItemSheet(it, cat[3]) end)
 			end
 		end)
 		if not ok then warn(err); if st.Parent then st.Text = "Catalog unavailable." end end
@@ -1240,6 +1334,51 @@ UserInputService.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then holdToken += 1; holdStart = nil end
 end)
 
+local openFriendsPage
+-- ======== Amigos (falsos) ========
+local FRIENDS = {
+	{ "Sakura", "sakura_x", 1, "Online" }, { "BlockMaster", "blockmaster", 156, "Playing Adopt Me!" }, { "NoobSlayer22", "noobslayer22", 261, "Online" },
+	{ "PixelFox", "pixelfox", 7, "Offline" }, { "Luna", "luna_rbx", 12, "Playing Blox Fruits" }, { "Juan", "therealjuan", 16, "Offline" },
+	{ "Mika", "mika123", 22, "Online" }, { "ProBuilder", "probuilder", 35, "Playing Bloxburg" }, { "Cami", "cami_play", 48, "Offline" }, { "Dani", "dani_games", 59, "Online" },
+}
+local friendsPage = new("Frame", { Name = "FriendsPage", Size = UDim2.fromScale(1, 1), BackgroundColor3 = C.bg, BorderSizePixel = 0, Visible = false, ZIndex = 75 }, root)
+local function fz(o) o.ZIndex = 76; return o end
+local fBack = fz(new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.fromOffset(6, 14), Size = UDim2.fromOffset(44, 44) }, friendsPage))
+for _, r in ipairs({ 40, -40 }) do
+	new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, -2, 0.5, r > 0 and -5 or 5), Size = UDim2.fromOffset(14, 2.4), Rotation = r, ZIndex = 77 }, fBack)
+end
+fz(label(friendsPage, "Friends", 26, true, C.text, UDim2.fromOffset(56, 18), UDim2.fromOffset(200, 36)))
+local fSearch = fz(new("Frame", { BackgroundColor3 = Color3.fromRGB(236, 237, 241), Position = UDim2.fromOffset(16, 70), Size = UDim2.new(1, -32, 0, 36) }, friendsPage))
+corner(fSearch, UDim.new(0, 10))
+local fBox = fz(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "Search friends", PlaceholderColor3 = C.sub, TextSize = 16, Font = FONT, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(14, 0), Size = UDim2.new(1, -28, 1, 0) }, fSearch))
+local fHead = fz(label(friendsPage, "Friends (" .. #FRIENDS .. ")", 17, true, C.text, UDim2.fromOffset(16, 122), UDim2.new(1, -32, 0, 24)))
+local fList = fz(new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 152), Size = UDim2.new(1, 0, 1, -152), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y }, friendsPage))
+new("UIListLayout", { SortOrder = Enum.SortOrder.LayoutOrder }, fList)
+local function renderFriends(filter)
+	for _, c in ipairs(fList:GetChildren()) do if c:IsA("GuiObject") then c:Destroy() end end
+	local n = 0
+	for i, f in ipairs(FRIENDS) do
+		if filter == "" or f[1]:lower():find(filter, 1, true) or f[2]:find(filter, 1, true) then
+			n += 1
+			local r = fz(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 64), LayoutOrder = i }, fList))
+			local av = fz(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), Image = "rbxthumb://type=AvatarHeadShot&id=" .. f[3] .. "&w=150&h=150", Position = UDim2.fromOffset(16, 8), Size = UDim2.fromOffset(48, 48) }, r))
+			corner(av)
+			if f[4] ~= "Offline" then
+				local dot = fz(new("Frame", { BackgroundColor3 = f[4] == "Online" and Color3.fromRGB(60, 190, 110) or C.blue, BorderSizePixel = 0, Position = UDim2.fromOffset(52, 44), Size = UDim2.fromOffset(14, 14) }, r))
+				corner(dot); new("UIStroke", { Color = C.bg, Thickness = 2 }, dot)
+			end
+			fz(label(r, f[1], 16, true, C.text, UDim2.fromOffset(76, 10), UDim2.new(1, -92, 0, 22)))
+			fz(label(r, f[4], 13, false, C.sub, UDim2.fromOffset(76, 33), UDim2.new(1, -92, 0, 18)))
+		end
+	end
+	fHead.Text = "Friends (" .. n .. ")"
+end
+renderFriends("")
+fBox:GetPropertyChangedSignal("Text"):Connect(function() renderFriends(fBox.Text:lower()) end)
+fBack.Activated:Connect(function() friendsPage.Visible = false end)
+local closeDrawer
+openFriendsPage = function() friendsPage.Visible = true end
+
 -- ======== Panel lateral (menu de las 3 rayas) ========
 local DR_W = 333
 local drawerGui = new("Frame", { Name = "Drawer", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, ZIndex = 50 }, root)
@@ -1289,7 +1428,10 @@ local function row(text, badge, key)
 	end
 	return r
 end
-for _, it in ipairs({ { "Favorites", nil, "favorites" }, { "Continue Playing", nil, "continue" }, { "Friends", nil, "friends" }, { "Communities", nil, "communities" }, { "Inventory", nil, "inventory" }, { "Trades", nil, "trades" }, { "Messages", 4, "messages" }, { "Roblox Plus", nil, "plus" }, { "Settings", 1, "settings" }, { "Help & Safety", nil, "help" } }) do row(it[1], it[2], it[3]) end
+for _, it in ipairs({ { "Favorites", nil, "favorites" }, { "Continue Playing", nil, "continue" }, { "Friends", nil, "friends" }, { "Communities", nil, "communities" }, { "Inventory", nil, "inventory" }, { "Trades", nil, "trades" }, { "Messages", 4, "messages" }, { "Roblox Plus", nil, "plus" }, { "Settings", 1, "settings" }, { "Help & Safety", nil, "help" } }) do
+	local r = row(it[1], it[2], it[3])
+	if it[1] == "Friends" then r.Activated:Connect(function() if closeDrawer then closeDrawer() end; openFriendsPage() end) end
+end
 gap(8)
 new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 2), LayoutOrder = nextOrd(), ZIndex = 51 }, dScroll)
 gap(8)
@@ -1313,6 +1455,7 @@ local function setDrawer(on)
 	if not on then tw.Completed:Once(function() if not drawerOpen then drawerGui.Visible = false end end) end
 end
 scrim.Activated:Connect(function() setDrawer(false) end)
+closeDrawer = function() setDrawer(false) end
 openDrawerFromAvatar = function() scrim.BackgroundTransparency = 1; setDrawer(true) end
 scrim.BackgroundTransparency = 1
 
