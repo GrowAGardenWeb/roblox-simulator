@@ -1343,13 +1343,15 @@ end
 makeItemCell = function(parent, it, kind, order, cz)
 	local p = tonumber(it.Price) or 0
 	local cell = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1 / 3, -7, 0, 186), LayoutOrder = order }, parent)
-	local img = new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=" .. (it.IsBundle and "BundleThumbnail" or "Asset") .. "&id=" .. it.Id .. "&w=150&h=150", ScaleType = Enum.ScaleType.Fit, Size = UDim2.new(1, 0, 0, 110) }, cell)
-	corner(img, UDim.new(0, 8))
+	local img = new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=" .. (it.IsBundle and "BundleThumbnail" or "Asset") .. "&id=" .. it.Id .. "&w=150&h=150", ScaleType = Enum.ScaleType.Fit, Size = cz and UDim2.fromScale(1, 1) or UDim2.new(1, 0, 0, 110) }, cell)
+	corner(img, UDim.new(0, cz and 9 or 8))
 	local stroke = new("UIStroke", { Color = Color3.fromRGB(32, 34, 39), Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Enabled = false }, img)
 	local det = new("TextLabel", { Text = "Details", TextSize = 11, Font = FONT, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(27, 29, 34), BorderSizePixel = 0, Position = UDim2.new(0, 3, 1, -20), Size = UDim2.new(1, -6, 0, 17), Visible = false, ZIndex = 3 }, img)
 	corner(det, UDim.new(0, 4))
-	local nm = label(cell, it.Name or "Item", 13.2, true, C.text, UDim2.fromOffset(0, 116), UDim2.new(1, 0, 0, 20)); nm.TextTruncate = Enum.TextTruncate.AtEnd
-	local by = label(cell, it.CreatorName or "Roblox", 12.2, false, Color3.fromRGB(106, 111, 129), UDim2.fromOffset(0, 136), UDim2.new(1, 0, 0, 20)); by.TextTruncate = Enum.TextTruncate.AtEnd
+	if not cz then
+		local nm = label(cell, it.Name or "Item", 13.2, true, C.text, UDim2.fromOffset(0, 116), UDim2.new(1, 0, 0, 20)); nm.TextTruncate = Enum.TextTruncate.AtEnd
+		local by = label(cell, it.CreatorName or "Roblox", 12.2, false, Color3.fromRGB(106, 111, 129), UDim2.fromOffset(0, 136), UDim2.new(1, 0, 0, 20)); by.TextTruncate = Enum.TextTruncate.AtEnd
+	end
 	if cz then
 		-- Customize = tu inventario: sin precio
 	elseif p > 0 then
@@ -1505,7 +1507,8 @@ tileRow = function()
 end
 catalogInto = function(cat)
 	local grid = czAdd(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y }))
-	new("UIGridLayout", { CellSize = UDim2.new(1 / 3, -7, 0, 186), CellPadding = UDim2.fromOffset(10, 10), SortOrder = Enum.SortOrder.LayoutOrder }, grid)
+	local side = math.max(60, (czBody.AbsoluteSize.X - 28 - 3 * 7) / 4)
+	new("UIGridLayout", { CellSize = UDim2.fromOffset(side, side), CellPadding = UDim2.fromOffset(7, 7), SortOrder = Enum.SortOrder.LayoutOrder }, grid)
 	local st = label(grid, "Loading...", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
 	task.spawn(function()
 		local ok, err = pcall(function()
