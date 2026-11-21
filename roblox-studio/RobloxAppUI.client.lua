@@ -8,11 +8,13 @@
 ]]
 
 local Players = game:GetService("Players")
+local AvatarEditorService = game:GetService("AvatarEditorService")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 
 -- ICONOS OPCIONALES (deja "" para usar la figura dibujada)
-local ICONS = { search = "", robux = "", bell = "", home = "", moments = "", chat = "", me = "", menu = "", addfriend = "" }
+-- Sube los PNG de la carpeta "assets" (Creator Hub > Assets > Images) y pega aquí los ids, p. ej. "rbxassetid://1234567890"
+local ICONS = { search = "", robux = "", bell = "", home = "", home_filled = "", moments = "", chat = "", me = "", menu = "", addfriend = "" }
 
 local C = {
 	bg = Color3.fromRGB(255, 255, 255),
@@ -41,8 +43,8 @@ local function label(parent, text, size, bold, color, pos, sz, align)
 end
 local function icon(parent, key, pos, size, draw)
 	local holder = new("Frame", { BackgroundTransparency = 1, Position = pos, Size = size }, parent)
-	if ICONS[key] ~= "" then
-		new("ImageLabel", { BackgroundTransparency = 1, Image = ICONS[key], Size = UDim2.fromScale(1, 1) }, holder)
+	if (ICONS[key] or "") ~= "" then
+		new("ImageLabel", { Name = "Img", BackgroundTransparency = 1, Image = ICONS[key], ImageColor3 = C.text, Size = UDim2.fromScale(1, 1) }, holder)
 	elseif draw then
 		draw(holder)
 	end
@@ -88,11 +90,16 @@ local tabsBar = new("Frame", { Position = UDim2.fromOffset(0, 56), Size = UDim2.
 new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Position = UDim2.new(0, 16, 1, -1), Size = UDim2.new(1, -32, 0, 1) }, tabsBar)
 local underline = new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Position = UDim2.new(0, 16, 1, -2), Size = UDim2.new(0.5, -16, 0, 2) }, tabsBar)
 local tabButtons, pages = {}, {}
-local function selectTab(name)
-	for n, b in pairs(tabButtons) do
-		b.TextColor3 = (n == name) and C.text or C.sub
-		pages[n].Visible = (n == name)
+local currentTab, currentNav = "For you", "Home"
+local function showPages()
+	for n, pg in pairs(pages) do
+		pg.Visible = (currentNav == "Home" and n == currentTab) or (currentNav == "Me" and n == "Me")
 	end
+end
+local function selectTab(name)
+	currentTab = name
+	for n, b in pairs(tabButtons) do b.TextColor3 = (n == name) and C.text or C.sub end
+	showPages()
 	local x = (name == "For you") and 0 or 0.5
 	TweenService:Create(underline, TweenInfo.new(0.2, Enum.EasingStyle.Quad), { Position = UDim2.new(x, x == 0 and 16 or 0, 1, -2) }):Play()
 end
@@ -161,20 +168,167 @@ local top = section(charts, "Top Trending", 1); tilesRow(top, 6, 150, 150, 1)
 local pop = section(charts, "Most Engaging", 2); tilesRow(pop, 6, 150, 150, 2)
 local up = section(charts, "Up-and-Coming", 3); tilesRow(up, 6, 150, 150, 3)
 
+-- ---- Me: avatar real (3D) + catalogo real ----
+local mePage = page("Me")
+local viewBox = new("Frame", { BackgroundColor3 = C.gray, Size = UDim2.new(1, 0, 0, 320), LayoutOrder = 1 }, mePage)
+corner(viewBox, UDim.new(0, 14))
+local vp = new("ViewportFrame", { BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), Ambient = Color3.fromRGB(190, 190, 190), LightColor = Color3.fromRGB(255, 255, 255) }, viewBox)
+local world = new("WorldModel", {}, vp)
+local cam = new("Camera", { FieldOfView = 40 }, vp)
+vp.CurrentCamera = cam
+local rig, yaw, desc = nil, 0, nil
+local function placeCamera()
+	if not rig then return end
+	local rootPart = rig:FindFirstChild("HumanoidRootPart")
+	if not rootPart then return end
+	local pos = rootPart.Position + Vector3.new(0, 0.6, 0)
+	local dir = CFrame.Angles(0, math.rad(yaw), 0) * Vector3.new(0, 0, 8.5)
+	cam.CFrame = CFrame.lookAt(pos + dir, pos)
+end
+local function buildRig()
+	if not desc then return end
+	local ok, model = pcall(function() return Players:CreateHumanoidModelFromDescription(desc, Enum.HumanoidRigType.R15) end)
+	if not ok or not model then return end
+	if rig then rig:Destroy() end
+	rig = model
+	rig:PivotTo(CFrame.new(0, 3, 0))
+	rig.Parent = world
+	placeCamera()
+end
+local function loadMyDescription()
+	task.spawn(function()
+		local ok, d = pcall(function() return Players:GetHumanoidDescriptionFromUserId(player.UserId) end)
+		if ok and d then desc = d; buildRig() end
+	end)
+end
+loadMyDescription()
+-- girar arrastrando
+local dragging, lastX = false, 0
+viewBox.InputBegan:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then dragging = true; lastX = i.Position.X end
+end)
+viewBox.InputEnded:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then dragging = false end
+end)
+viewBox.InputChanged:Connect(function(i)
+	if dragging and (i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch) then
+		yaw = yaw - (i.Position.X - lastX) * 0.8
+		lastX = i.Position.X
+		placeCamera()
+	end
+end)
+
+-- categorias
+local CATS = {
+	{ "Hats", Enum.AvatarAssetType.Hat, "Hat" },
+	{ "Hair", Enum.AvatarAssetType.HairAccessory, "Hair" },
+	{ "Face", Enum.AvatarAssetType.FaceAccessory, "Face" },
+	{ "Shirts", Enum.AvatarAssetType.Shirt, "Shirt" },
+	{ "Pants", Enum.AvatarAssetType.Pants, "Pants" },
+	{ "T-Shirts", Enum.AvatarAssetType.TShirt, "TShirt" },
+}
+local catRow = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Size = UDim2.new(1, 0, 0, 40), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, LayoutOrder = 2 }, mePage)
+new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 8), VerticalAlignment = Enum.VerticalAlignment.Center }, catRow)
+local grid = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, LayoutOrder = 3 }, mePage)
+new("UIGridLayout", { CellSize = UDim2.new(0.333, -8, 0, 150), CellPadding = UDim2.fromOffset(8, 8), SortOrder = Enum.SortOrder.LayoutOrder }, grid)
+local status = label(mePage, "", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
+status.LayoutOrder = 4
+
+local function wear(assetId, kind)
+	if not desc then return end
+	if kind == "Shirt" then
+		desc.Shirt = assetId
+	elseif kind == "Pants" then
+		desc.Pants = assetId
+	elseif kind == "TShirt" then
+		desc.GraphicTShirt = assetId
+	else
+		local t = Enum.AccessoryType.Face
+		if kind == "Hat" then t = Enum.AccessoryType.Hat elseif kind == "Hair" then t = Enum.AccessoryType.Hair end
+		local acc = desc:GetAccessories(true)
+		table.insert(acc, { AssetId = assetId, AccessoryType = t, IsLayered = false, Order = #acc + 1 })
+		desc:SetAccessories(acc, true)
+	end
+	buildRig()
+end
+
+local searchToken = 0
+local function loadCategory(cat)
+	searchToken += 1
+	local my = searchToken
+	for _, c in ipairs(grid:GetChildren()) do
+		if c:IsA("GuiObject") then c:Destroy() end
+	end
+	status.Text = "Loading..."
+	local ok, err = pcall(function()
+		local params = CatalogSearchParams.new()
+		params.AssetTypes = { cat[2] }
+		params.SortType = Enum.CatalogSortType.MostFavorited
+		params.IncludeOffSale = false
+		local result = AvatarEditorService:SearchCatalog(params)
+		local items = result:GetCurrentPage()
+		if my ~= searchToken then return end
+		status.Text = ""
+		for i, it in ipairs(items) do
+			if i > 18 then break end
+			local cell = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, LayoutOrder = i }, grid)
+			corner(cell, UDim.new(0, 10))
+			new("ImageLabel", { BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", Position = UDim2.fromOffset(6, 6), Size = UDim2.new(1, -12, 1, -42), ScaleType = Enum.ScaleType.Fit }, cell)
+			local nm = label(cell, it.Name or "", 13, true, C.text, UDim2.new(0, 6, 1, -34), UDim2.new(1, -12, 0, 30))
+			nm.TextWrapped = true
+			nm.TextYAlignment = Enum.TextYAlignment.Top
+			nm.TextTruncate = Enum.TextTruncate.AtEnd
+			cell.Activated:Connect(function() wear(it.Id, cat[3]) end)
+		end
+	end)
+	if not ok then
+		status.Text = "Catalog unavailable (enable Studio access to API services in Game Settings > Security)."
+		warn(err)
+	end
+end
+local catBtns = {}
+for i, cat in ipairs(CATS) do
+	local b = new("TextButton", { Text = cat[1], TextSize = 15, Font = FONT_B, TextColor3 = C.text, BackgroundColor3 = C.gray, AutoButtonColor = true, Size = UDim2.fromOffset(86, 34) }, catRow)
+	corner(b)
+	catBtns[i] = b
+	b.Activated:Connect(function()
+		for j, bb in ipairs(catBtns) do
+			bb.BackgroundColor3 = (j == i) and C.text or C.gray
+			bb.TextColor3 = (j == i) and C.bg or C.text
+		end
+		loadCategory(cat)
+	end)
+end
+local reset = new("TextButton", { Text = "Reset", TextSize = 15, Font = FONT_B, TextColor3 = C.blue, BackgroundColor3 = C.gray, Size = UDim2.fromOffset(70, 34) }, catRow)
+corner(reset)
+reset.Activated:Connect(loadMyDescription)
+task.defer(function() loadCategory(CATS[1]) end)
+
 selectTab("For you")
 
 -- ======== Barra inferior ========
 local nav = new("Frame", { AnchorPoint = Vector2.new(0, 1), Position = UDim2.fromScale(0, 1), Size = UDim2.new(1, 0, 0, 64), BackgroundColor3 = C.bg, BorderSizePixel = 0 }, root)
 new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 1) }, nav)
 local items = { { "Home", "home" }, { "Moments", "moments" }, { "Chat", "chat" }, { "Me", "me" } }
-local navLabels = {}
+local navLabels, navIcons = {}, {}
 local function selectNav(name)
+	currentNav = name
 	for n, l in pairs(navLabels) do
 		l.TextColor3 = (n == name) and C.text or C.sub
 		l.Font = (n == name) and FONT_B or FONT
 	end
-	content.Visible = (name == "Home")
+	for n, h in pairs(navIcons) do
+		local img = h:FindFirstChild("Img")
+		if img then
+			img.ImageColor3 = (n == name) and C.text or C.sub
+			if n == "Home" and ICONS.home_filled ~= "" and ICONS.home ~= "" then img.Image = (name == "Home") and ICONS.home_filled or ICONS.home end
+		end
+	end
+	content.Visible = (name == "Home" or name == "Me")
 	header.Visible = (name == "Home"); tabsBar.Visible = (name == "Home")
+	content.Position = (name == "Home") and UDim2.fromOffset(0, 100) or UDim2.fromOffset(0, 0)
+	content.Size = (name == "Home") and UDim2.new(1, 0, 1, -164) or UDim2.new(1, 0, 1, -64)
+	showPages()
 end
 for i, it in ipairs(items) do
 	local b = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.new((i - 1) / 4, 0, 0, 0), Size = UDim2.new(0.25, 0, 1, 0) }, nav)
@@ -188,6 +342,7 @@ for i, it in ipairs(items) do
 			if it[2] ~= "home" then new("UIStroke", { Color = C.sub, Thickness = 2 }, sh) end
 		end
 	end)
+	navIcons[it[1]] = ic
 	navLabels[it[1]] = label(b, it[1], 13, false, C.sub, UDim2.fromOffset(0, 40), UDim2.new(1, 0, 0, 18), Enum.TextXAlignment.Center)
 	b.Activated:Connect(function() selectNav(it[1]) end)
 end
