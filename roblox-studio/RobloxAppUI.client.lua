@@ -775,8 +775,11 @@ wear = function(assetId, kind)
 	while #history > hIndex do table.remove(history) end
 	table.insert(history, desc:Clone()); hIndex = #history
 	buildRig()
-	if kind ~= "Shirt" and kind ~= "Pants" and kind ~= "TShirt" and countAcc() <= before then
-		showErr("No cargo: " .. tostring(rig and rig:GetAttribute("Report") or "sin respuesta del servidor (revisa que el Script este en ServerScriptService)"))
+	local rep = rig and rig:GetAttribute("Report")
+	if rep == nil and rig and not rig:GetAttribute("FromServer") and kind ~= "Shirt" and kind ~= "Pants" and kind ~= "TShirt" then
+		showErr("No cargo: sin respuesta del servidor (el Script debe estar en ServerScriptService)")
+	elseif rep and rep ~= "" then
+		showErr("No cargo: " .. rep)
 	end
 end
 -- cuantos accesorios tiene el personaje 3D ahora (para avisar si Roblox no pudo cargar un item)

@@ -58,7 +58,7 @@ local function build(player, data)
 			local okL, loaded = pcall(function() return InsertService:LoadAsset(id) end)
 			if okL and loaded then
 				local acc = loaded:FindFirstChildWhichIsA("Accessory", true)
-				if acc and model:FindFirstChild(acc.Name) then acc = nil; loaded:Destroy(); loaded = Instance.new("Folder") end
+				if acc and model:FindFirstChild(acc.Name, true) then acc = nil; loaded:Destroy(); loaded = Instance.new("Folder"); e.dup = true end
 				local shirt = loaded:FindFirstChildWhichIsA("Shirt", true)
 				local pants = loaded:FindFirstChildWhichIsA("Pants", true)
 				local tee = loaded:FindFirstChildWhichIsA("ShirtGraphic", true)
@@ -75,7 +75,7 @@ local function build(player, data)
 					local old = model:FindFirstChildOfClass("ShirtGraphic"); if old then old:Destroy() end
 					tee.Parent = model
 				else
-					report[#report + 1] = id .. ": ya cargado o sin accesorio"
+					if not e.dup then report[#report + 1] = id .. ": sin accesorio ni ropa" end
 				end
 				loaded:Destroy()
 			else
