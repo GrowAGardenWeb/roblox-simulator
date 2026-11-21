@@ -354,7 +354,8 @@ end
 
 -- saldo de JUGUETE (solo simulacion, no es Robux real)
 local simBalance = 1000
-local profile = { name = player.DisplayName, plus = false, verified = false, dark = false, passes = {} }
+local profile = { name = player.DisplayName, username = player.Name:lower(), plus = false, verified = false, dark = false, passes = { plus = true }, friends = {} }
+local handleLabels, renderFriends, openAddFriend = {}, nil, nil -- @usuario visibles, lista de amigos falsos y dialogo para agregarlos
 local czMode = false -- true cuando esta abierta la pestana Customize (ahi no hay barra de compra)
 local nameLabels = {}
 local balanceLabels = {}
@@ -636,6 +637,30 @@ local hint = label(friends, "", 17, false, C.sub, UDim2.fromOffset(120, 22), UDi
 hint.Text = "Let's play! Start by adding a friend."
 hint.TextWrapped = true
 hint.TextYAlignment = Enum.TextYAlignment.Top
+add.Activated:Connect(function() if openAddFriend then openAddFriend() end end)
+local ffRow = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(104, 0), Size = UDim2.new(1, -104, 0, 130), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, Visible = false }, friends)
+new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, ffRow)
+renderFriends = function()
+	for _, c in ipairs(ffRow:GetChildren()) do
+		if c:IsA("GuiObject") then c:Destroy() end
+	end
+	ffRow.Visible = #profile.friends > 0
+	hint.Visible = #profile.friends == 0
+	for i, fr in ipairs(profile.friends) do
+		local t = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(84, 124), LayoutOrder = i }, ffRow)
+		local pic = new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(200, 203, 211), Position = UDim2.fromOffset(6, 2), Size = UDim2.fromOffset(72, 72) }, t); corner(pic)
+		label(pic, fr.name:sub(1, 1):upper(), 30, true, Color3.new(1, 1, 1), nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
+		local nm = label(t, fr.name .. (fr.verified and ("  " .. GLYPH.verified) or ""), 13, true, C.text, UDim2.fromOffset(-4, 82), UDim2.fromOffset(92, 20), Enum.TextXAlignment.Center)
+		nm.TextTruncate = Enum.TextTruncate.AtEnd
+		task.spawn(function()
+			local okU, uid = pcall(function() return Players:GetUserIdFromNameAsync(fr.name) end)
+			if okU and uid and pic.Parent then
+				pic.Image = "rbxthumb://type=AvatarHeadShot&id=" .. uid .. "&w=150&h=150"
+				for _, ch in ipairs(pic:GetChildren()) do if ch:IsA("TextLabel") then ch:Destroy() end end
+			end
+		end)
+	end
+end
 
 local rec = section(forYou, "Recommended For You", 3)
 tilesRow(rec, 6, 150, 150, 1)
@@ -2196,19 +2221,21 @@ local eDim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundC
 local eSheet = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 248), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 24), Size = UDim2.new(1, 0, 0, 548), ZIndex = 96 }, editGui)
 corner(eSheet, UDim.new(0, 20))
 new("Frame", { BackgroundColor3 = Color3.fromRGB(200, 202, 208), BorderSizePixel = 0, Position = UDim2.new(0.5, -17, 0, 8), Size = UDim2.fromOffset(34, 4), ZIndex = 97 }, eSheet)
+local eBody = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 16), Size = UDim2.new(1, 0, 1, -40), CanvasSize = UDim2.fromOffset(0, 820), ZIndex = 97 }, eSheet)
 local function ez(o) o.ZIndex = 97; return o end
-ez(label(eSheet, "Edit", 22, true, C.text, UDim2.fromOffset(18, 20), UDim2.fromOffset(200, 30)))
+ez(label(eBody, "Edit", 22, true, C.text, UDim2.fromOffset(18, 20), UDim2.fromOffset(200, 30)))
 
 local function applyProfile()
 	local t = profile.name
 	if profile.verified then t = t .. "  " .. GLYPH.verified end
 	if profile.plus then t = t .. "  " .. GLYPH.plus end
 	for _, l in ipairs(nameLabels) do l.Text = t end
+	for _, l in ipairs(handleLabels) do l.Text = "@" .. profile.username end
 end
 
 local function field(y, title, placeholder, initial, numeric, onDone)
-	ez(label(eSheet, title, 14, false, C.sub, UDim2.fromOffset(18, y), UDim2.new(1, -36, 0, 18)))
-	local f = ez(new("Frame", { BackgroundColor3 = Color3.fromRGB(255, 255, 255), BorderSizePixel = 0, Position = UDim2.fromOffset(18, y + 22), Size = UDim2.new(1, -36, 0, 44) }, eSheet))
+	ez(label(eBody, title, 14, false, C.sub, UDim2.fromOffset(18, y), UDim2.new(1, -36, 0, 18)))
+	local f = ez(new("Frame", { BackgroundColor3 = Color3.fromRGB(255, 255, 255), BorderSizePixel = 0, Position = UDim2.fromOffset(18, y + 22), Size = UDim2.new(1, -36, 0, 44) }, eBody))
 	corner(f, UDim.new(0, 12)); new("UIStroke", { Color = Color3.fromRGB(207, 209, 215), Thickness = 1 }, f)
 	local box = ez(new("TextBox", { BackgroundTransparency = 1, Text = initial, PlaceholderText = placeholder, PlaceholderColor3 = C.sub, TextSize = 18, Font = FONT, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(14, 0), Size = UDim2.new(1, -28, 1, 0) }, f))
 	if numeric then
@@ -2221,19 +2248,21 @@ local function field(y, title, placeholder, initial, numeric, onDone)
 	return box
 end
 local nameBox, amtBox
-local passRefresh = {}
--- pase de pago (con Robux de juguete): sin comprar sale el precio; ya comprado sale el interruptor para activarlo
+local passRefresh, accentRefresh = {}, {}
+-- pase de pago (con Robux de juguete): sin comprar sale el precio; ya comprado sale el interruptor (o lo que desbloquea)
+-- price == nil -> gratis. toggle == false -> no lleva interruptor (solo se desbloquea algo)
 local function passRow(y, key, title, subtitle, price, drawIcon, get, set)
-	local row = ez(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, y), Size = UDim2.new(1, -36, 0, 48) }, eSheet))
+	if not price then profile.passes[key] = true end
+	local row = ez(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, y), Size = UDim2.new(1, -36, 0, 48) }, eBody))
 	local ib = new("Frame", { BackgroundColor3 = Color3.fromRGB(231, 232, 236), Position = UDim2.fromOffset(0, 4), Size = UDim2.fromOffset(40, 40), ZIndex = 97 }, row)
 	corner(ib, UDim.new(0, 10))
 	drawIcon(ib)
 	label(row, title, 16, true, C.text, UDim2.fromOffset(52, 3), UDim2.new(1, -170, 0, 22)).ZIndex = 97
-	label(row, subtitle, 12, false, C.sub, UDim2.fromOffset(52, 26), UDim2.new(1, -170, 0, 18)).ZIndex = 97
+	label(row, subtitle, 12, false, C.sub, UDim2.fromOffset(52, 26), UDim2.new(1, -150, 0, 18)).ZIndex = 97
 	local pill = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.blue, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 0, 0.5, 0), Size = UDim2.fromOffset(86, 34), ZIndex = 97 }, row)
 	corner(pill, UDim.new(0, 8))
 	local pg = glyph(pill, "robux", 15, UDim2.fromOffset(12, 9), Color3.new(1, 1, 1)); pg.ZIndex = 98
-	label(pill, tostring(price), 15, true, Color3.new(1, 1, 1), UDim2.fromOffset(31, 0), UDim2.new(1, -33, 1, 0)).ZIndex = 98
+	label(pill, tostring(price or 0), 15, true, Color3.new(1, 1, 1), UDim2.fromOffset(31, 0), UDim2.new(1, -33, 1, 0)).ZIndex = 98
 	local sw = new("TextButton", { Text = "", AutoButtonColor = false, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 0, 0.5, 0), Size = UDim2.fromOffset(52, 30), ZIndex = 97 }, row)
 	corner(sw)
 	local knob = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, Size = UDim2.fromOffset(24, 24), Position = UDim2.fromOffset(3, 3), ZIndex = 98 }, sw)
@@ -2241,10 +2270,13 @@ local function passRow(y, key, title, subtitle, price, drawIcon, get, set)
 	local function paint()
 		local owned = profile.passes[key] and true or false
 		pill.Visible = not owned
-		sw.Visible = owned
-		local on = get()
-		sw.BackgroundColor3 = on and C.blue or Color3.fromRGB(200, 202, 208)
-		knob.Position = on and UDim2.fromOffset(25, 3) or UDim2.fromOffset(3, 3)
+		sw.Visible = owned and get ~= nil
+		if get then
+			local on = get()
+			sw.BackgroundColor3 = on and C.blue or Color3.fromRGB(200, 202, 208)
+			knob.Position = on and UDim2.fromOffset(25, 3) or UDim2.fromOffset(3, 3)
+		end
+		pill.BackgroundColor3 = C.blue
 	end
 	passRefresh[#passRefresh + 1] = paint
 	paint()
@@ -2252,42 +2284,91 @@ local function passRow(y, key, title, subtitle, price, drawIcon, get, set)
 		if simBalance < price then showErr("Not enough Robux"); return end
 		simBalance -= price
 		profile.passes[key] = true
-		set(true)
+		if set then set(true) end
 		refreshBalances()
 		if amtBox then amtBox.Text = tostring(simBalance) end
-		paint(); applyProfile()
+		for _, f in ipairs(passRefresh) do f() end
+		for _, f in ipairs(accentRefresh) do f() end
+		applyProfile()
 		purchasedToast()
 	end)
-	sw.Activated:Connect(function() set(not get()); paint(); applyProfile() end)
+	if get then sw.Activated:Connect(function() set(not get()); paint(); applyProfile() end) end
 end
+local nameBox, amtBox, userBox
 -- 1) cambiar nombre
 nameBox = field(60, "Change name", "Display name", profile.name, false, function(t)
 	t = t:gsub("^%s+", ""):gsub("%s+$", "")
 	if t ~= "" then profile.name = t; applyProfile() end
 end)
--- 2) pases de pago (se pagan con el saldo de juguete)
-ez(label(eSheet, "Passes", 14, false, C.sub, UDim2.fromOffset(18, 146), UDim2.new(1, -36, 0, 18)))
+-- 2) pases (se pagan con el saldo de juguete)
+ez(label(eBody, "Passes", 14, false, C.sub, UDim2.fromOffset(18, 146), UDim2.new(1, -36, 0, 18)))
 local function badgeIcon(g)
 	return function(ib)
 		local l = label(ib, g, 24, false, C.text, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center); l.ZIndex = 98
 	end
 end
 passRow(172, "verified", "Verified Badge", "Shows the badge next to your name", 20, badgeIcon(GLYPH.verified), function() return profile.verified end, function(v) profile.verified = v end)
-passRow(228, "plus", "Roblox Plus Badge", "Plus badge next to your name", 40, badgeIcon(GLYPH.plus), function() return profile.plus end, function(v) profile.plus = v end)
+passRow(228, "plus", "Roblox Plus Badge", "Free", nil, badgeIcon(GLYPH.plus), function() return profile.plus end, function(v) profile.plus = v end)
 passRow(284, "dark", "Dark Mode", "Switch to a dark app theme", 60, function(ib)
 	local moon = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.45, 0.5), Size = UDim2.fromOffset(20, 20), ZIndex = 98 }, ib); corner(moon)
 	local cut = new("Frame", { BackgroundColor3 = Color3.fromRGB(231, 232, 236), AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.62, 0.42), Size = UDim2.fromOffset(17, 17), ZIndex = 99 }, ib); corner(cut)
 end, function() return profile.dark end, function(v) profile.dark = v end)
+-- Custom UI Color: de pago; ya comprado salen los colores para cambiar el color de la app
+passRow(340, "color", "Custom UI Color", "Pick the accent color of the app", 30, function(ib)
+	for i, col in ipairs({ Color3.fromRGB(235, 64, 52), Color3.fromRGB(51, 95, 255), Color3.fromRGB(30, 170, 90) }) do
+		local d = new("Frame", { BackgroundColor3 = col, BorderSizePixel = 0, Position = UDim2.fromOffset(5 + (i - 1) * 10, 12 + ((i == 2) and -4 or 4)), Size = UDim2.fromOffset(14, 14), ZIndex = 98 }, ib); corner(d)
+	end
+end, nil, nil)
+local swatchRow = ez(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(18, 394), Size = UDim2.new(1, -36, 0, 40), Visible = false }, eBody))
+new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10), VerticalAlignment = Enum.VerticalAlignment.Center }, swatchRow)
+local function setAccent(col)
+	local old = C.blue
+	if old == col then return end
+	for _, d in ipairs(root:GetDescendants()) do
+		if d:IsA("GuiObject") and d.BackgroundColor3 == old then d.BackgroundColor3 = col end
+	end
+	C.blue = col
+end
+for _, col in ipairs({ Color3.fromRGB(51, 95, 255), Color3.fromRGB(235, 64, 52), Color3.fromRGB(30, 170, 90), Color3.fromRGB(140, 70, 220), Color3.fromRGB(245, 140, 20), Color3.fromRGB(240, 80, 160), Color3.fromRGB(32, 34, 39) }) do
+	local sw = ez(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = col, Size = UDim2.fromOffset(34, 34) }, swatchRow))
+	corner(sw)
+	new("UIStroke", { Color = Color3.fromRGB(220, 221, 226), Thickness = 1.5 }, sw)
+	sw.Activated:Connect(function() setAccent(col); for _, f in ipairs(passRefresh) do f() end end)
+end
+accentRefresh[#accentRefresh + 1] = function() swatchRow.Visible = profile.passes.color and true or false end
+-- Fake Account: de pago; ya comprado se puede cambiar el @usuario
+passRow(446, "account", "Fake Account", "Change your @username", 40, function(ib)
+	local hd = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.36), Size = UDim2.fromOffset(12, 12), ZIndex = 98 }, ib); corner(hd)
+	local bd = new("Frame", { BackgroundColor3 = C.text, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0.56), Size = UDim2.fromOffset(22, 12), ZIndex = 98 }, ib); corner(bd)
+end, nil, nil)
+local n0 = #eBody:GetChildren()
+userBox = field(500, "Username", "username", profile.username, false, function(t)
+	t = t:gsub("[^%w_]", ""):sub(1, 20)
+	if t ~= "" then profile.username = t:lower(); for _, l in ipairs(handleLabels) do l.Text = "@" .. profile.username end end
+end)
+local userGroup = {}
+for i, ch in ipairs(eBody:GetChildren()) do if i > n0 then userGroup[#userGroup + 1] = ch end end
+accentRefresh[#accentRefresh + 1] = function()
+	for _, ch in ipairs(userGroup) do ch.Visible = profile.passes.account and true or false end
+end
+-- Fake Friends: de pago; ya comprado el boton "Add Friends" de Home deja agregar amigos (tambien verificados)
+passRow(590, "friends", "Fake Friends", "Add friends (even verified) on Home", 50, function(ib)
+	for i = 0, 1 do
+		local hd = new("Frame", { BackgroundColor3 = C.text, Position = UDim2.fromOffset(7 + i * 11, 9), Size = UDim2.fromOffset(9, 9), ZIndex = 98 }, ib); corner(hd)
+		local bd = new("Frame", { BackgroundColor3 = C.text, Position = UDim2.fromOffset(5 + i * 11, 20), Size = UDim2.fromOffset(13, 10), ZIndex = 98 }, ib); corner(bd)
+	end
+end, nil, nil)
 -- 3) cambiar la cantidad
-amtBox = field(348, "Change amount", "0", tostring(simBalance), true, function(t)
+amtBox = field(664, "Change amount", "0", tostring(simBalance), true, function(t)
 	local n = tonumber(t)
 	if n then simBalance = n; refreshBalances() end
 end)
-local eDone = ez(new("TextButton", { Text = "Done", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, Position = UDim2.fromOffset(18, 462), Size = UDim2.new(1, -36, 0, 50) }, eSheet))
+local eDone = ez(new("TextButton", { Text = "Done", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, Position = UDim2.fromOffset(18, 748), Size = UDim2.new(1, -36, 0, 50) }, eBody))
 corner(eDone, UDim.new(0, 12))
 local function closeEdit()
 	if nameBox:IsFocused() then nameBox:ReleaseFocus() end
 	if amtBox:IsFocused() then amtBox:ReleaseFocus() end
+	if userBox:IsFocused() then userBox:ReleaseFocus() end
 	TweenService:Create(eDim, TweenInfo.new(0.23), { BackgroundTransparency = 1 }):Play()
 	local tw = TweenService:Create(eSheet, TweenInfo.new(0.23, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 1, 590) })
 	tw:Play()
@@ -2299,11 +2380,50 @@ local function openEdit()
 	nameBox.Text = profile.name
 	amtBox.Text = tostring(simBalance)
 	for _, f in ipairs(passRefresh) do f() end
+	for _, f in ipairs(accentRefresh) do f() end
 	editGui.Visible = true
 	eDim.BackgroundTransparency = 1
 	eSheet.Position = UDim2.new(0, 0, 1, 590)
 	TweenService:Create(eDim, TweenInfo.new(0.25), { BackgroundTransparency = 0.38 }):Play()
 	TweenService:Create(eSheet, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, 24) }):Play()
+end
+
+-- dialogo para agregar amigos falsos (necesita el pase Fake Friends)
+openAddFriend = function()
+	if not profile.passes.friends then showErr("Unlock Fake Friends: hold the screen > Passes"); return end
+	local dlg = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 110 }, root)
+	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.45, Size = UDim2.fromScale(1, 1), ZIndex = 110 }, dlg)
+	local card = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.45), Size = UDim2.fromOffset(300, 268), ZIndex = 111 }, dlg)
+	corner(card, UDim.new(0, 16))
+	local function dz(o) o.ZIndex = 112; return o end
+	dz(label(card, "Add Friend", 22, true, C.text, UDim2.fromOffset(20, 16), UDim2.new(1, -40, 0, 28)))
+	local fr = dz(new("Frame", { BackgroundColor3 = Color3.fromRGB(244, 244, 246), BorderSizePixel = 0, Position = UDim2.fromOffset(20, 56), Size = UDim2.new(1, -40, 0, 44) }, card))
+	corner(fr, UDim.new(0, 10))
+	local box = dz(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "Username", PlaceholderColor3 = C.sub, TextSize = 18, Font = FONT, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(14, 0), Size = UDim2.new(1, -28, 1, 0) }, fr))
+	local verified = false
+	dz(label(card, "Verified", 17, true, C.text, UDim2.fromOffset(20, 118), UDim2.fromOffset(120, 28)))
+	local sw = dz(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(200, 202, 208), AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -20, 0, 117), Size = UDim2.fromOffset(52, 30) }, card))
+	corner(sw)
+	local knob = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, Size = UDim2.fromOffset(24, 24), Position = UDim2.fromOffset(3, 3), ZIndex = 113 }, sw)
+	corner(knob)
+	sw.Activated:Connect(function()
+		verified = not verified
+		sw.BackgroundColor3 = verified and C.blue or Color3.fromRGB(200, 202, 208)
+		knob.Position = verified and UDim2.fromOffset(25, 3) or UDim2.fromOffset(3, 3)
+	end)
+	local addB = dz(new("TextButton", { Text = "Add", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, Position = UDim2.fromOffset(20, 168), Size = UDim2.new(1, -40, 0, 46) }, card))
+	corner(addB, UDim.new(0, 12))
+	local cancel = dz(new("TextButton", { Text = "Cancel", TextSize = 16, Font = FONT, TextColor3 = C.sub, BackgroundTransparency = 1, Position = UDim2.fromOffset(20, 220), Size = UDim2.new(1, -40, 0, 34) }, card))
+	local function close() dlg:Destroy() end
+	dim.Activated:Connect(close)
+	cancel.Activated:Connect(close)
+	addB.Activated:Connect(function()
+		local n = box.Text:gsub("[^%w_]", ""):sub(1, 20)
+		if n == "" then return end
+		table.insert(profile.friends, { name = n, verified = verified })
+		if renderFriends then renderFriends() end
+		close()
+	end)
 end
 
 -- mantener presionado ~0.8 s en cualquier parte (sin mover el dedo) abre el panel
@@ -2349,7 +2469,8 @@ local pAv = new("ImageLabel", { BackgroundColor3 = C.gray, Size = UDim2.fromOffs
 corner(pAv); registerPfp(pAv)
 local pn = label(prof, profile.name, 22, true, C.text, UDim2.fromOffset(74, 8), UDim2.new(1, -74, 0, 28)); pn.ZIndex = 51
 nameLabels[#nameLabels + 1] = pn
-local pu = label(prof, "@" .. player.Name:lower(), 19, false, C.sub, UDim2.fromOffset(74, 36), UDim2.new(1, -74, 0, 24)); pu.ZIndex = 51
+local pu = label(prof, "@" .. profile.username, 19, false, C.sub, UDim2.fromOffset(74, 36), UDim2.new(1, -74, 0, 24)); pu.ZIndex = 51
+handleLabels[#handleLabels + 1] = pu
 local function gap(h) new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, h), LayoutOrder = nextOrd() }, dScroll) end
 gap(10)
 do
