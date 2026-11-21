@@ -1029,7 +1029,15 @@ openDetails = function(it, kind)
 		local sh = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(30, 478), Size = UDim2.fromOffset(46, 46) }, c))
 		if not uiImg(sh, "star", 46, C.text, 151, true) then z(label(c, "\u{2605}", 40, false, C.text, UDim2.fromOffset(32, 476), UDim2.fromOffset(46, 52), Enum.TextXAlignment.Center)) end
 	end
-	z(label(c, "0", 26, true, C.text, UDim2.fromOffset(86, 478), UDim2.fromOffset(120, 32)))
+	local favNum = z(label(c, "0", 26, true, C.text, UDim2.fromOffset(86, 478), UDim2.fromOffset(120, 32)))
+	local function setFav(n) if tonumber(n) and favNum.Parent then favNum.Text = fmtCompact(tonumber(n)) end end
+	setFav(it.FavoriteCount or it.favoriteCount)
+	task.spawn(function()
+		local okF, det = pcall(function()
+			return game:GetService("AvatarEditorService"):GetItemDetails(it.Id, Enum.AvatarItemType.Asset)
+		end)
+		if okF and type(det) == "table" then setFav(det.FavoriteCount or det.favoriteCount) end
+	end)
 	z(label(c, "Favorites", 12.5, false, C.text, UDim2.fromOffset(86, 508), UDim2.fromOffset(120, 18)))
 	local info = KIND_INFO[kind] or { "Accessories", "Accessories" }
 	local rows = { { "Creator", "", 560, true }, { "Type", info[1], 607, false }, { "Placement", info[2], 654, false }, { "Attributes", (kind == "Jacket" or kind == "LeftShoe") and "Layered" or "Basic", 700, false } }
