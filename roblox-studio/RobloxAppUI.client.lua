@@ -2374,21 +2374,35 @@ local function tIc(c)
 	if themeMode == "dark" then return v < 0.55 and Color3.fromRGB(244, 245, 248) or Color3.fromRGB(196, 199, 208) end
 	return v < 0.55 and themeAccent or themeAccent:Lerp(Color3.new(1, 1, 1), 0.35)
 end
+local syncing = false
 local function syncProp(d, prop, fn)
 	local cur = d[prop]
 	local o, t = d:GetAttribute("O" .. prop), d:GetAttribute("T" .. prop)
 	if o ~= nil and t ~= nil and cur ~= t then o = nil end -- el codigo lo cambio despues: ese es el nuevo original
 	if o == nil then o = cur end
 	local target = themeMode and fn(o) or o
-	if target ~= cur then d[prop] = target end
+	if target ~= cur then syncing = true; d[prop] = target; syncing = false end
 	if target ~= o then
 		d:SetAttribute("O" .. prop, o); d:SetAttribute("T" .. prop, target)
 	else
 		d:SetAttribute("O" .. prop, nil); d:SetAttribute("T" .. prop, nil)
 	end
 end
-local function themeInst(d)
+local themeInst
+themeInst = function(d)
 	if d:GetAttribute("KeepColor") then return end
+	-- si el codigo cambia despues un color (por ejemplo el icono seleccionado de la barra de abajo), se vuelve a tematizar
+	if themeMode and not d:GetAttribute("THooked") then
+		d:SetAttribute("THooked", true)
+		local function hook(prop)
+			d:GetPropertyChangedSignal(prop):Connect(function() if themeMode and not syncing then themeInst(d) end end)
+		end
+		if d:IsA("GuiObject") then
+			hook("BackgroundColor3")
+			if d:IsA("TextLabel") or d:IsA("TextButton") or d:IsA("TextBox") then hook("TextColor3") end
+			if d:IsA("ImageLabel") or d:IsA("ImageButton") then hook("ImageColor3") end
+		elseif d:IsA("UIStroke") then hook("Color") end
+	end
 	if d:IsA("GuiObject") then
 		if d.BackgroundTransparency < 1 then syncProp(d, "BackgroundColor3", tBg) end
 		if d:IsA("TextLabel") or d:IsA("TextButton") or d:IsA("TextBox") then syncProp(d, "TextColor3", tTx) end
