@@ -597,10 +597,15 @@ buildRig = function()
 	-- 1) servidor (carga cualquier item del catalogo)
 	local rf = game:GetService("ReplicatedStorage"):FindFirstChild("AvatarPreview")
 	if rf then
-		local okS, res = pcall(function() return rf:InvokeServer(serializeDesc()) end)
-		if okS and typeof(res) == "Instance" then
-			local okC, cl = pcall(function() return res:Clone() end)
-			if okC then model = cl end
+		local payload = serializeDesc()
+		for attempt = 1, 3 do
+			local okS, res = pcall(function() return rf:InvokeServer(payload) end)
+			if okS and typeof(res) == "Instance" and res.Parent then
+				local okC, cl = pcall(function() return res:Clone() end)
+				if okC and cl then model = cl; break end
+			end
+			if my ~= buildToken then return end
+			task.wait(0.4)
 		end
 	end
 	-- 2) respaldo: construirlo aqui (solo carga lo tuyo o lo gratis)

@@ -16,13 +16,8 @@ local folder = workspace:FindFirstChild("AvatarPreviews") or Instance.new("Folde
 folder.Name = "AvatarPreviews"
 folder.Parent = workspace
 
-local busy = {}
-
 local function build(player, data)
 	if typeof(data) ~= "table" then return nil end
-	if busy[player] then return nil end
-	busy[player] = true
-
 	-- base: tu avatar real; encima se aplica lo que el cliente pide
 	local ok, base = pcall(function() return Players:GetHumanoidDescriptionFromUserId(player.UserId) end)
 	local desc = (ok and base) or Instance.new("HumanoidDescription")
@@ -47,7 +42,6 @@ local function build(player, data)
 	end
 
 	local okM, model = pcall(function() return Players:CreateHumanoidModelFromDescription(desc, Enum.HumanoidRigType.R15) end)
-	busy[player] = nil
 	if not okM or not model then
 		warn("AvatarPreview: no se pudo construir el modelo: " .. tostring(model))
 		return nil
@@ -89,10 +83,9 @@ local function build(player, data)
 	if root then root.Anchored = true end
 	model:PivotTo(CFrame.new(0, -500, 0))
 	model.Parent = folder
-	task.wait(0.35) -- deja que se replique al cliente
+	task.wait(0.6) -- deja que se replique al cliente
 	Debris:AddItem(model, 8)
 	return model
 end
 
 remote.OnServerInvoke = build
-Players.PlayerRemoving:Connect(function(p) busy[p] = nil end)
