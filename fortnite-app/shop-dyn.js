@@ -308,9 +308,14 @@
     };
     new MutationObserver(() => { if (document.body.dataset.screen !== 'shop') ['--btn', '--rail', '--pill'].forEach((k) => document.body.style.removeProperty(k)); }).observe(document.body, { attributes: true, attributeFilter: ['data-screen'] });
     let bgTok = 0;
+    let bgWant = '';
     const setBg = (c, url) => {
+      const want = (url || '') + '|' + c;
+      if (want === bgWant) return;                    // misma sección: no se toca el fondo (sin parpadeo al hacer scroll dentro de ella)
+      bgWant = want;
       const tok = ++bgTok;
-      rawSetBg(c, '', ''); applyTheme(c, null);                       // al instante: color de la sección
+      if (url && bgCache.has(url)) { rawSetBg(c, bgCache.get(url), url); applyTheme(c, bgAvg.get(url)); return; }   // ya cargado: directo
+      rawSetBg(c, '', ''); applyTheme(c, null);       // si no, primero el color de la sección y luego la imagen
       if (url) getBg(url).then((u) => { if (tok !== bgTok) return; rawSetBg(c, u, url); applyTheme(c, bgAvg.get(url)); });
     };
     let bgZ = 1;
