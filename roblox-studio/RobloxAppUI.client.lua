@@ -170,7 +170,24 @@ local GAMES = {
 	{ name = "Natural Disaster Survival", place = 189707, rating = 89, players = 27, desc = "Survive tornadoes, earthquakes and more on a random map." },
 	{ name = "Pet Simulator 99", place = 8737899170, rating = 94, players = 255, desc = "Collect pets, break chests and explore new worlds." },
 	{ name = "BedWars", place = 6872265039, rating = 82, players = 95, desc = "Protect your bed and destroy the others." },
+	{ name = "Grow a Garden", place = 126884695634066, rating = 92, players = 410, desc = "Plant seeds, grow your garden and sell your harvest." },
+	{ name = "Steal a Brainrot", place = 109983668079237, rating = 90, players = 520, desc = "Collect brainrots, build your base and steal from others." },
+	{ name = "Dress To Impress", place = 15101393044, rating = 87, players = 310, desc = "Dress up to the theme and compete on the runway." },
+	{ name = "Blade Ball", place = 13772394625, rating = 88, players = 120, desc = "Deflect the ball and be the last player standing." },
+	{ name = "Royale High", place = 735030788, rating = 86, players = 64, desc = "Go to school, dress up and explore a fantasy world." },
+	{ name = "Welcome to Bloxburg", place = 185655149, rating = 83, players = 78, desc = "Build your dream house, get a job and live your life." },
+	{ name = "Work at a Pizza Place", place = 192800, rating = 85, players = 29, desc = "Cook, deliver and serve pizza with your friends." },
+	{ name = "Piggy", place = 4623386862, rating = 84, players = 36, desc = "Escape the infected before they catch you." },
+	{ name = "Phantom Forces", place = 292439477, rating = 90, players = 22, desc = "Tactical first-person shooter with realistic weapons." },
+	{ name = "Bee Swarm Simulator", place = 1537690962, rating = 87, players = 45, desc = "Collect pollen, raise bees and fight bosses." },
+	{ name = "Mad City", place = 1224212277, rating = 82, players = 31, desc = "Heroes and villains fight for control of the city." },
+	{ name = "Theme Park Tycoon 2", place = 69184822, rating = 86, players = 19, desc = "Design and run your own amusement park." },
+	{ name = "Lumber Tycoon 2", place = 13822889, rating = 84, players = 17, desc = "Chop trees, sell wood and build your base." },
+	{ name = "Fisch", place = 16732694052, rating = 91, players = 160, desc = "Cast your line, catch rare fish and upgrade your gear." },
+	{ name = "Rivals", place = 17625359962, rating = 90, players = 140, desc = "Fast 1v1 and team duels with unique weapons." },
+	{ name = "Sol's RNG", place = 15532962292, rating = 89, players = 98, desc = "Roll for auras and unlock rare effects." },
 }
+local gameCursor = 0 -- cada fila toma juegos NUEVOS, sin repetir dentro de la fila ni con la fila de al lado
 local function gameThumb(g) return "rbxthumb://type=Asset&id=" .. g.place .. "&w=420&h=420" end
 local function fmtK(n) return n >= 1000 and string.format("%.1fM", n / 1000) or (n .. "K") end
 
@@ -218,7 +235,8 @@ local function tilesRow(parent, count, w, h, order, reg)
 	local row = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Size = UDim2.new(1, 0, 0, h + 44), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, LayoutOrder = order }, parent)
 	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, row)
 	for i = 1, count do
-		local game_ = GAMES[((order * 3 + i - 1) % #GAMES) + 1]
+		local game_ = GAMES[(gameCursor % #GAMES) + 1]
+		gameCursor += 1
 		local t = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(w, h + 40) }, row)
 		local img = new("ImageLabel", { BackgroundColor3 = C.tile, BorderSizePixel = 0, Image = gameThumb(game_), ScaleType = Enum.ScaleType.Crop, Size = UDim2.fromOffset(w, h) }, t)
 		corner(img, UDim.new(0, 10))
