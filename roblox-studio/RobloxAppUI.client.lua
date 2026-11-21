@@ -21,6 +21,8 @@ local ICONS = { search = "", robux = "", bell = "", home = "", home_filled = "",
 
 -- Imagen opcional del fondo del avatar: sube assets/avatar-scene.png y pega su id (ej. "rbxassetid://123")
 local ASSETS = { scene = "" }
+-- Iconos del panel lateral (assets/drawer_*.png). Deja "" para usar un cuadro de relleno
+local DICONS = { favorites = "", continue = "", friends = "", communities = "", inventory = "", trades = "", messages = "", plus = "", settings = "", help = "", moments = "", learn = "", create = "" }
 
 local C = {
 	bg = Color3.fromRGB(255, 255, 255),
@@ -413,10 +415,14 @@ local pn = label(prof, player.DisplayName, 22, true, C.text, UDim2.fromOffset(74
 local pu = label(prof, "@" .. player.Name:lower(), 19, false, C.sub, UDim2.fromOffset(74, 36), UDim2.new(1, -74, 0, 24)); pu.ZIndex = 51
 local function gap(h) new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, h), LayoutOrder = nextOrd() }, dScroll) end
 gap(10)
-local function row(text, badge)
+local function row(text, badge, key)
 	local r = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 41), LayoutOrder = nextOrd(), ZIndex = 51 }, dScroll)
 	local ic = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(2, 9), Size = UDim2.fromOffset(22, 22), ZIndex = 51 }, r)
-	corner(ic, UDim.new(0.3, 0)); new("UIStroke", { Color = C.text, Thickness = 1.8 }, ic)
+	if key and (DICONS[key] or "") ~= "" then
+		new("ImageLabel", { BackgroundTransparency = 1, Image = DICONS[key], ImageColor3 = C.text, Size = UDim2.fromScale(1, 1), ZIndex = 51 }, ic)
+	else
+		corner(ic, UDim.new(0.3, 0)); new("UIStroke", { Color = C.text, Thickness = 1.8 }, ic)
+	end
 	local t = label(r, text, 19, true, C.text, UDim2.fromOffset(42, 0), UDim2.new(1, -90, 1, 0)); t.ZIndex = 51
 	if badge then
 		local b = new("Frame", { BackgroundColor3 = C.blue, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -2, 0.5, 0), Size = UDim2.fromOffset(18, 18), ZIndex = 51 }, r)
@@ -425,11 +431,11 @@ local function row(text, badge)
 	end
 	return r
 end
-for _, it in ipairs({ { "Favorites" }, { "Continue Playing" }, { "Friends" }, { "Communities" }, { "Inventory" }, { "Trades" }, { "Messages", 4 }, { "Roblox Plus" }, { "Settings", 1 }, { "Help & Safety" } }) do row(it[1], it[2]) end
+for _, it in ipairs({ { "Favorites", nil, "favorites" }, { "Continue Playing", nil, "continue" }, { "Friends", nil, "friends" }, { "Communities", nil, "communities" }, { "Inventory", nil, "inventory" }, { "Trades", nil, "trades" }, { "Messages", 4, "messages" }, { "Roblox Plus", nil, "plus" }, { "Settings", 1, "settings" }, { "Help & Safety", nil, "help" } }) do row(it[1], it[2], it[3]) end
 gap(8)
 new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 2), LayoutOrder = nextOrd(), ZIndex = 51 }, dScroll)
 gap(8)
-for _, nm in ipairs({ "Moments", "Learn", "Create" }) do row(nm) end
+for _, it in ipairs({ { "Moments", "moments" }, { "Learn", "learn" }, { "Create", "create" } }) do row(it[1], nil, it[2]) end
 gap(10)
 for _, nm in ipairs({ "Switch Accounts", "Quick Sign-in", "Log Out" }) do
 	local b = new("TextButton", { Text = nm, TextSize = 17, Font = FONT, TextColor3 = C.text, BackgroundColor3 = C.gray, AutoButtonColor = true, Size = UDim2.new(1, 0, 0, 44), LayoutOrder = nextOrd(), ZIndex = 51 }, dScroll)
