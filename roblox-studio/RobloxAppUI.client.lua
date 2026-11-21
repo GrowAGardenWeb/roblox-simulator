@@ -92,9 +92,9 @@ local function drawChevron(parent, color, sz, dir, thick, z)
 	elseif dir == "up" then
 		stroke(parent, color, sz * 0.6, thick, sz * 0.32, sz * 0.55, -45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.68, sz * 0.55, 45, z)
 	elseif dir == "right" then
-		stroke(parent, color, sz * 0.6, thick, sz * 0.45, sz * 0.32, -45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.45, sz * 0.68, 45, z)
+		stroke(parent, color, sz * 0.6, thick, sz * 0.45, sz * 0.32, 45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.45, sz * 0.68, -45, z)
 	else
-		stroke(parent, color, sz * 0.6, thick, sz * 0.55, sz * 0.32, 45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.55, sz * 0.68, -45, z)
+		stroke(parent, color, sz * 0.6, thick, sz * 0.55, sz * 0.32, -45, z); stroke(parent, color, sz * 0.6, thick, sz * 0.55, sz * 0.68, 45, z)
 	end
 end
 local function drawArrow(parent, color, sz, dir, thick, z)
@@ -104,10 +104,10 @@ local function drawArrow(parent, color, sz, dir, thick, z)
 		stroke(parent, color, sz * 0.5, thick, sz * 0.32, sz * 0.3, -45, z); stroke(parent, color, sz * 0.5, thick, sz * 0.68, sz * 0.3, 45, z)
 	elseif dir == "left" then
 		stroke(parent, color, sz * 0.8, thick, sz * 0.52, sz * 0.5, 0, z)
-		stroke(parent, color, sz * 0.5, thick, sz * 0.3, sz * 0.32, 45, z); stroke(parent, color, sz * 0.5, thick, sz * 0.3, sz * 0.68, -45, z)
+		stroke(parent, color, sz * 0.5, thick, sz * 0.3, sz * 0.32, -45, z); stroke(parent, color, sz * 0.5, thick, sz * 0.3, sz * 0.68, 45, z)
 	else
 		stroke(parent, color, sz * 0.8, thick, sz * 0.48, sz * 0.5, 0, z)
-		stroke(parent, color, sz * 0.5, thick, sz * 0.7, sz * 0.32, -45, z); stroke(parent, color, sz * 0.5, thick, sz * 0.7, sz * 0.68, 45, z)
+		stroke(parent, color, sz * 0.5, thick, sz * 0.7, sz * 0.32, 45, z); stroke(parent, color, sz * 0.5, thick, sz * 0.7, sz * 0.68, -45, z)
 	end
 end
 
@@ -682,6 +682,12 @@ setBalance = function(n)
 	applyBalance()
 end
 vscale = function(w) return root.AbsoluteSize.X / (w or 360) end
+-- con Roblox Plus activado el ítem cuesta 10% menos
+local function effPrice(p)
+	p = tonumber(p) or 0
+	if p > 0 and profile.plus then return math.floor(p * 0.9) end
+	return p
+end
 
 -- aviso de error visible (para depurar)
 local function toast(msg)
@@ -774,7 +780,7 @@ makeBar = function(parent, z0)
 		local own = owned[it.Id]
 		buy.Visible = not own
 		manage.Visible = own and true or false
-		local p = tonumber(it.Price) or 0
+		local p = effPrice(it.Price)
 		buyGlyph.Visible = p > 0
 		buyTxt.Text = p > 0 and fmtFull(p) or "Free"
 		-- el icono se pega al numero
@@ -793,7 +799,9 @@ end
 -- ---- aviso "Buy item" (bi-modal): medidas del CSS, base de 360 ----
 openBuyPrompt = function(it, kind)
 	local s = vscale()
-	local p = tonumber(it.Price) or 0
+	local base = tonumber(it.Price) or 0
+	local p = effPrice(base)
+	local plusOn = profile.plus and base > 0
 	local g = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 200 }, root)
 	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 200 }, g)
 	local m = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 248), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0.3, 0), Size = UDim2.fromOffset(261, 257.1), ZIndex = 201 }, g)
@@ -807,6 +815,11 @@ openBuyPrompt = function(it, kind)
 	z(label(m, it.Name or "Item", 12.6, true, C.text, UDim2.fromOffset(78.5, 51.4), UDim2.new(1, -92.5, 0, 16))).TextTruncate = Enum.TextTruncate.AtEnd
 	z(label(m, "Permanent", 12.6, true, Color3.fromRGB(92, 95, 110), UDim2.fromOffset(78.5, 72.6), UDim2.new(1, -92.5, 0, 16)))
 	local cost = z(label(m, p > 0 and fmtFull(p) or "Free", 12.6, true, C.text, UDim2.fromOffset(78.5 + (p > 0 and 18 or 0), 94.5), UDim2.fromOffset(120, 16)))
+	if plusOn then
+		-- precio original tachado, como en la app
+		local w = game:GetService("TextService"):GetTextSize(fmtFull(p), 12.6, Enum.Font.BuilderSansBold, Vector2.new(300, 30)).X
+		z(new("TextLabel", { BackgroundTransparency = 1, RichText = true, Text = "<s>" .. fmtFull(base) .. "</s>", TextSize = 10.6, Font = FONT, TextColor3 = Color3.fromRGB(92, 95, 110), TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(78.5 + 18 + w + 8, 95.5), Size = UDim2.fromOffset(80, 14) }, m))
+	end
 	if p > 0 then glyph(m, "robux", 14.4, UDim2.fromOffset(77, 93.5), C.text).ZIndex = 202 end
 	-- "Wear item after purchase"
 	local wearOn = true
@@ -825,13 +838,19 @@ openBuyPrompt = function(it, kind)
 	local ok = (p <= simBalance)
 	local buy = z(new("TextButton", { Text = ok and (p > 0 and "Buy" or "Get") or "Not enough Robux", TextSize = 12.6, Font = FONT, TextColor3 = ok and Color3.new(1, 1, 1) or Color3.fromRGB(207, 215, 251), BackgroundColor3 = ok and Color3.fromRGB(51, 95, 255) or Color3.fromRGB(154, 171, 247), AutoButtonColor = false, Position = UDim2.fromOffset(13, 166.3), Size = UDim2.fromOffset(235, 32.7) }, m))
 	corner(buy, UDim.new(0, 6))
-	-- Roblox Plus
+	-- Roblox Plus: si esta activo muestra el ahorro; si no, la invitacion
 	local up = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(13, 208), Size = UDim2.fromOffset(235, 32.7) }, m))
 	corner(up, UDim.new(0, 6)); new("UIStroke", { Color = Color3.fromRGB(215, 216, 221), Thickness = 1 }, up)
 	glyph(up, "plus", 11, UDim2.fromOffset(7, 9.5), Color3.fromRGB(57, 59, 69)).ZIndex = 202
-	z(label(up, "Get 10% off with Roblox Plus", 9.5, false, C.text, UDim2.fromOffset(24, 0), UDim2.fromOffset(140, 32.7)))
-	local trial = z(label(up, "Get free trial", 9.5, false, C.text, UDim2.new(1, -78, 0, 0), UDim2.fromOffset(70, 32.7), Enum.TextXAlignment.Right))
-	new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -9, 0.5, 6), Size = UDim2.fromOffset(52, 1), ZIndex = 202 }, up)
+	if plusOn then
+		z(label(up, "Roblox Plus saves you " .. fmtFull(base - p) .. " Robux", 9.5, true, C.text, UDim2.fromOffset(24, 0), UDim2.fromOffset(190, 32.7)))
+		local cv = z(new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -8, 0.5, 0), Size = UDim2.fromOffset(11, 11) }, up))
+		drawChevron(cv, C.text, 11, "down", 1.4, 203)
+	else
+		z(label(up, "Get 10% off with Roblox Plus", 9.5, false, C.text, UDim2.fromOffset(24, 0), UDim2.fromOffset(140, 32.7)))
+		z(label(up, "Get free trial", 9.5, false, C.text, UDim2.new(1, -78, 0, 0), UDim2.fromOffset(70, 32.7), Enum.TextXAlignment.Right))
+		new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -9, 0.5, 6), Size = UDim2.fromOffset(52, 1), ZIndex = 202 }, up)
+	end
 	-- animaciones de la app: scrim .2s, aviso aparece con escala 1.05 -> 1
 	TweenService:Create(dim, TweenInfo.new(0.2), { BackgroundTransparency = 0.5 }):Play()
 	TweenService:Create(us, TweenInfo.new(0.22, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), { Scale = s }):Play()
@@ -911,12 +930,21 @@ local function paintSelection()
 		if ui.stroke.Parent then
 			ui.stroke.Enabled = on and true or false
 			ui.details.Visible = on and true or false
+			ui.detBtn.Visible = on and true or false
 		end
 	end
 end
 local function selectItem(it, kind)
 	if selected and selected.it.Id == it.Id then
-		safe(openDetails, it, kind)
+		-- tocar la foto del ya seleccionado: se quita / se vuelve a probar (los detalles se abren con la tira "Details")
+		if equipped[it.Id] then
+			equipped[it.Id] = nil
+			safe(unwear, it.Id, kind)
+		else
+			equipped[it.Id] = true
+			safe(wear, it.Id, kind)
+		end
+		refreshBars()
 		return
 	end
 	-- probarlo puesto; el anterior (si no es tuyo) se quita
@@ -950,8 +978,11 @@ makeItemCell = function(parent, it, kind, order)
 	end
 	local btn = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 4 }, cell)
 	btn.Activated:Connect(function() safe(selectItem, it, kind) end)
-	cellsById[it.Id] = { stroke = stroke, details = det }
-	if selected and selected.it.Id == it.Id then stroke.Enabled = true; det.Visible = true end
+	-- boton propio de la tira "Details" (solo existe mientras el ítem esta seleccionado)
+	local detBtn = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = UDim2.new(0, 3, 0, 110 - 20), Size = UDim2.new(1, -6, 0, 17), ZIndex = 7, Visible = false }, cell)
+	detBtn.Activated:Connect(function() safe(openDetails, it, kind) end)
+	cellsById[it.Id] = { stroke = stroke, details = det, detBtn = detBtn }
+	if selected and selected.it.Id == it.Id then stroke.Enabled = true; det.Visible = true; detBtn.Visible = true end
 	return cell
 end
 
