@@ -1565,10 +1565,11 @@ local rbxBal = label(rbxTop, tostring(simBalance), 26, true, C.text, UDim2.fromO
 rbxBal.TextTruncate = Enum.TextTruncate.AtEnd
 rbxBal.ZIndex = 72
 balanceLabels[#balanceLabels + 1] = rbxBal
-local rbxSend = new("TextButton", { Text = "Send", TextSize = 14, Font = FONT, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(221, 222, 227), AutoButtonColor = true, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 35), Size = UDim2.fromOffset(66, 28), ZIndex = 72 }, rbxTop)
-new("UIPadding", { PaddingLeft = UDim.new(0, 16) }, rbxSend)
-drawArrow(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(8, 8), Size = UDim2.fromOffset(12, 12), ZIndex = 73 }, rbxSend), C.text, 12, "up", 1.4, 74)
+local rbxSend = new("TextButton", { Text = "", AutoButtonColor = true, BackgroundColor3 = Color3.fromRGB(221, 222, 227), AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 35), Size = UDim2.fromOffset(68, 28), ZIndex = 72 }, rbxTop)
 corner(rbxSend, UDim.new(0, 8))
+-- flecha y texto separados (sin UIPadding, que movia la flecha encima del texto)
+drawArrow(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(9, 8), Size = UDim2.fromOffset(12, 12), ZIndex = 73 }, rbxSend), C.text, 12, "up", 1.4, 74)
+label(rbxSend, "Send", 14, false, C.text, UDim2.fromOffset(25, 0), UDim2.fromOffset(40, 28), Enum.TextXAlignment.Left).ZIndex = 73
 local rbxBody = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 74), Size = UDim2.new(1, 0, 1, -74), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, ZIndex = 71 }, rbxPage)
 new("UIPadding", { PaddingLeft = UDim.new(0, 18), PaddingRight = UDim.new(0, 18), PaddingTop = UDim.new(0, 10) }, rbxBody)
 new("UIListLayout", { Padding = UDim.new(0, 12), SortOrder = Enum.SortOrder.LayoutOrder }, rbxBody)
