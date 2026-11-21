@@ -17,12 +17,12 @@ pcall(function() game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiTyp
 
 -- ICONOS OPCIONALES (deja "" para usar la figura dibujada)
 -- Sube los PNG de la carpeta "assets" (Creator Hub > Assets > Images) y pega aquí los ids, p. ej. "rbxassetid://1234567890"
-local ICONS = { search = "", robux = "", bell = "", home = "", home_filled = "", moments = "", chat = "", me = "", menu = "", addfriend = "" }
+local ICONS = { search = "rbxassetid://86271731455715", robux = "", bell = "rbxassetid://113305856234116", home = "rbxassetid://91655953547515", home_filled = "rbxassetid://76164498555576", moments = "rbxassetid://110995398122015", chat = "rbxassetid://139257040784473", me = "", menu = "", addfriend = "rbxassetid://87598046746360" }
 
 -- Imagen opcional del fondo del avatar: sube assets/avatar-scene.png y pega su id (ej. "rbxassetid://123")
-local ASSETS = { scene = "" }
+local ASSETS = { scene = "rbxassetid://114483366744522" }
 -- Iconos del panel lateral (assets/drawer_*.png). Deja "" para usar un cuadro de relleno
-local DICONS = { favorites = "", continue = "", friends = "", communities = "", inventory = "", trades = "", messages = "", plus = "", settings = "", help = "", moments = "", learn = "", create = "" }
+local DICONS = { favorites = "rbxassetid://71964804162858", continue = "rbxassetid://119745976478474", friends = "rbxassetid://126269462748291", communities = "rbxassetid://106934809621366", inventory = "rbxassetid://106040069675827", trades = "rbxassetid://89295088018855", messages = "rbxassetid://109767095299004", plus = "rbxassetid://100364072192428", settings = "rbxassetid://129466567035785", help = "rbxassetid://81961541070933", moments = "rbxassetid://99057265244475", learn = "rbxassetid://132742961819214", create = "rbxassetid://111302726472300" }
 
 local C = {
 	bg = Color3.fromRGB(255, 255, 255),
@@ -1142,7 +1142,7 @@ local function AT(name)
 	local ok, v = pcall(function() return Enum.AvatarAssetType[name] end)
 	return ok and v or nil
 end
-local CZICONS = { full_body = "", hair = "", head = "", build = "", skin = "", clear = "", top = "", outerwear = "", bottom = "", shoes = "", classic_shirt = "", classic_pants = "", classic_tshirt = "", head_accessory = "", face_accessory = "", neck = "", back = "", waist = "", shoulder = "", front = "", gear = "" }
+local CZICONS = { full_body = "rbxassetid://91101726026716", hair = "rbxassetid://118739840803940", head = "rbxassetid://136107937180195", build = "rbxassetid://103953116552862", skin = "rbxassetid://87443355317967", clear = "rbxassetid://127690928912397", top = "rbxassetid://130138315041704", outerwear = "rbxassetid://73093717772456", bottom = "rbxassetid://134382518470665", shoes = "rbxassetid://102733805433566", classic_shirt = "rbxassetid://114424121198255", classic_pants = "rbxassetid://121159427580881", classic_tshirt = "rbxassetid://110283830445048", head_accessory = "rbxassetid://129250341922961", face_accessory = "rbxassetid://112709070368723", neck = "rbxassetid://101700200831280", back = "rbxassetid://112604318010709", waist = "rbxassetid://138257820302666", shoulder = "rbxassetid://80211604824950", front = "rbxassetid://117838130762162", gear = "rbxassetid://102855588751811" }
 -- { texto, icono, tipo de catalogo (nil = sin catalogo), clase para ponerlo }
 local CZ_SUBS = {
 	Body = { { "Full Body", "full_body" }, { "Hair", "hair", AT("HairAccessory"), "Hair" }, { "Head", "head" }, { "Build", "build" }, { "Skin", "skin" }, { "Clear", "clear" } },
