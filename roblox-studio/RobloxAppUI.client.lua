@@ -211,35 +211,6 @@ local function applyIcon(g, img)
 end
 local function fmtK(n) return n >= 1000 and string.format("%.1fM", n / 1000) or (n .. "K") end
 
-local function openGameSheet(g)
-	local EXT, H = 24, 380
-	local gg = new("Frame", { Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, ZIndex = 84 }, root)
-	local dim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 84 }, gg)
-	local sh = new("Frame", { BackgroundColor3 = Color3.fromRGB(248, 247, 247), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, H + EXT), Size = UDim2.new(1, 0, 0, H + EXT), ZIndex = 85, ClipsDescendants = true }, gg)
-	corner(sh, UDim.new(0, 12))
-	local function z(o) o.ZIndex = 86; return o end
-	new("Frame", { BackgroundColor3 = Color3.fromRGB(214, 216, 222), BorderSizePixel = 0, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 9), Size = UDim2.fromOffset(29, 3.3), ZIndex = 86 }, sh)
-	local img = z(new("ImageLabel", { BackgroundColor3 = C.tile, Image = "", ScaleType = Enum.ScaleType.Crop, Position = UDim2.fromOffset(16, 28), Size = UDim2.new(1, -32, 0, 190) }, sh))
-	corner(img, UDim.new(0, 12))
-	applyIcon(g, img)
-	z(label(sh, g.name, 22, true, C.text, UDim2.fromOffset(16, 230), UDim2.new(1, -32, 0, 30)))
-	z(label(sh, g.rating .. "% Rating   \u{00B7}   " .. fmtK(g.players) .. " playing", 14, false, C.sub, UDim2.fromOffset(16, 262), UDim2.new(1, -32, 0, 20)))
-	local d = z(label(sh, g.desc, 14, false, Color3.fromRGB(74, 77, 86), UDim2.fromOffset(16, 296), UDim2.new(1, -32, 0, 70)))
-	d.TextWrapped = true; d.TextYAlignment = Enum.TextYAlignment.Top
-	TweenService:Create(dim, TweenInfo.new(0.25), { BackgroundTransparency = 0.38 }):Play()
-	TweenService:Create(sh, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, EXT) }):Play()
-	local closing = false
-	local function close()
-		if closing then return end
-		closing = true
-		TweenService:Create(dim, TweenInfo.new(0.23), { BackgroundTransparency = 1 }):Play()
-		local tw = TweenService:Create(sh, TweenInfo.new(0.23, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Position = UDim2.new(0, 0, 1, H + EXT) })
-		tw:Play()
-		tw.Completed:Once(function() gg:Destroy() end)
-	end
-	dim.Activated:Connect(close)
-end
-
 local chartLabels = {}
 local function tilesRow(parent, count, w, h, order, reg)
 	local row = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Size = UDim2.new(1, 0, 0, h + 44), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, LayoutOrder = order }, parent)
@@ -255,8 +226,6 @@ local function tilesRow(parent, count, w, h, order, reg)
 		nm.TextTruncate = Enum.TextTruncate.AtEnd
 		local pl = label(t, game_.rating .. "% Rating", 13, false, C.sub, UDim2.fromOffset(0, h + 22), UDim2.new(1, 0, 0, 16))
 		if reg then chartLabels[#chartLabels + 1] = pl end
-		local btn = new("TextButton", { Text = "", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 3 }, t)
-		btn.Activated:Connect(function() openGameSheet(game_) end)
 	end
 	return row
 end
@@ -960,8 +929,8 @@ end
 -- ======== Send Robux (saldo de juguete, solo simulacion) ========
 local sendGui = new("Frame", { Name = "SendRobux", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, ZIndex = 80 }, root)
 local sDim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 80 }, sendGui)
-local sSheet = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 249), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 24), Size = UDim2.new(1, 0, 0.86, 24), ZIndex = 81, ClipsDescendants = true }, sendGui)
-corner(sSheet, UDim.new(0, 22))
+local sSheet = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 249), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 24), Size = UDim2.new(1, 0, 1, -84), ZIndex = 81, ClipsDescendants = true }, sendGui)
+corner(sSheet, UDim.new(0, 10))
 local function z(o, n) o.ZIndex = n or 82; return o end
 -- cabecera
 local sHex = glyph(sSheet, "plus", 22, UDim2.fromOffset(15, 18), Color3.fromRGB(73, 77, 90))
@@ -1046,34 +1015,49 @@ sBox.FocusLost:Connect(function(enter)
 	end)
 end)
 
--- 2) monto (como en la app: avatar + nombre, monto, chips 25/50/100/200, Next, nota)
-local pAmount = sPage("amount", 64)
-local aAv = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), Position = UDim2.fromOffset(17, 4), Size = UDim2.fromOffset(44, 44) }, pAmount)); corner(aAv)
-local aName = z(label(pAmount, "", 17, true, C.text, UDim2.fromOffset(70, 14), UDim2.new(1, -90, 0, 24)))
-glyph(pAmount, "robux", 34, UDim2.fromOffset(20, 78), C.text)
-local aBox = z(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "0", PlaceholderColor3 = Color3.fromRGB(190, 192, 200), TextSize = 40, Font = FONT_B, TextColor3 = C.text, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Left, Position = UDim2.fromOffset(64, 70), Size = UDim2.new(1, -90, 0, 52) }, pAmount))
-local aChips = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(17, 140), Size = UDim2.new(1, -34, 0, 38) }, pAmount))
-new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 8) }, aChips)
+-- 2) monto (medidas de la app: avatar 49, nombre 11.7, monto 33, chips 31, Next 32.7, nota 9)
+local TextService = game:GetService("TextService")
+local INK, SUB = Color3.fromRGB(32, 34, 39), Color3.fromRGB(73, 77, 90)
+local pAmount = sPage("amount", 0)
+local aAv = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 105.5), Size = UDim2.fromOffset(49, 49) }, pAmount)); corner(aAv)
+local aName = z(label(pAmount, "", 11.7, true, INK, UDim2.fromOffset(24, 164.4), UDim2.new(1, -48, 0, 14), Enum.TextXAlignment.Center))
+local aGlyph = glyph(pAmount, "robux", 25.4, UDim2.fromOffset(0, 200), INK); aGlyph.ZIndex = 82
+local aBox = z(new("TextBox", { BackgroundTransparency = 1, Text = "", PlaceholderText = "0", PlaceholderColor3 = INK, TextSize = 33, Font = FONT_B, TextColor3 = INK, ClearTextOnFocus = false, TextXAlignment = Enum.TextXAlignment.Center, Position = UDim2.fromOffset(0, 198.3), Size = UDim2.new(1, 0, 0, 36) }, pAmount))
+local function layoutAmt()
+	local txt = aBox.Text ~= "" and aBox.Text or "0"
+	local w = TextService:GetTextSize(txt, 33, Enum.Font.BuilderSansBold, Vector2.new(1000, 60)).X
+	local total = 25.4 + 6 + w
+	local W = pAmount.AbsoluteSize.X
+	aGlyph.Position = UDim2.fromOffset((W - total) / 2 - 2, 201)
+end
+local aChips = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 268.4), Size = UDim2.new(1, 0, 0, 31.1) }, pAmount))
+new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, Padding = UDim.new(0, 7.9) }, aChips)
+local chipBtns = {}
 for _, v in ipairs({ 25, 50, 100, 200 }) do
-	local ch = z(new("TextButton", { Text = "", AutoButtonColor = true, BackgroundColor3 = Color3.fromRGB(231, 232, 236), Size = UDim2.fromOffset(74, 36) }, aChips))
-	corner(ch)
-	glyph(ch, "robux", 15, UDim2.fromOffset(10, 8), C.text)
-	z(label(ch, tostring(v), 16, true, C.text, UDim2.fromOffset(32, 0), UDim2.fromOffset(40, 36)))
+	local ch = z(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(221, 222, 228), Size = UDim2.fromOffset(10 + 14.5 + 7.6 + (#tostring(v) * 6.5) + 10.1, 31.1) }, aChips))
+	corner(ch, UDim.new(0, 3.5))
+	local st = new("UIStroke", { Color = Color3.fromRGB(57, 59, 69), Thickness = 1, Enabled = false, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, ch)
+	glyph(ch, "robux", 14.5, UDim2.fromOffset(8, 5.5), INK)
+	z(label(ch, tostring(v), 11.5, false, INK, UDim2.fromOffset(10 + 14.5 + 7.6, 0), UDim2.new(1, -32, 1, 0)))
+	chipBtns[v] = { btn = ch, st = st }
 	ch.Activated:Connect(function() aBox.Text = tostring(v) end)
 end
-local aNext = z(new("TextButton", { Text = "Next", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, AutoButtonColor = true, Position = UDim2.fromOffset(17, 196), Size = UDim2.new(1, -34, 0, 50) }, pAmount))
-corner(aNext, UDim.new(0, 12))
-z(label(pAmount, "Robux are sent instantly with no fees", 13, false, C.sub, UDim2.fromOffset(0, 258), UDim2.new(1, 0, 0, 20), Enum.TextXAlignment.Center))
+local aNext = z(new("TextButton", { Text = "Next", TextSize = 11.5, Font = Enum.Font.BuilderSansMedium, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(51, 95, 255), AutoButtonColor = false, Position = UDim2.fromOffset(16.4, 329.5), Size = UDim2.new(1, -32.8, 0, 32.7) }, pAmount))
+corner(aNext, UDim.new(0, 6.5))
+z(label(pAmount, "Robux are sent instantly with no fees", 9, false, SUB, UDim2.fromOffset(0, 372.7), UDim2.new(1, 0, 0, 12), Enum.TextXAlignment.Center))
 local function amountNow() return tonumber(aBox.Text) or 0 end
 local function updateNext()
 	local n = amountNow()
-	if n > simBalance then
-		aNext.Text = "Not enough Robux"; aNext.BackgroundColor3 = Color3.fromRGB(190, 200, 235)
-	elseif n >= 1 then
-		aNext.Text = "Next"; aNext.BackgroundColor3 = C.blue
-	else
-		aNext.Text = "Next"; aNext.BackgroundColor3 = Color3.fromRGB(190, 200, 235)
+	local on = (n >= 1 and n <= simBalance)
+	aNext.Text = (n > simBalance) and "Not enough Robux" or "Next"
+	aNext.BackgroundColor3 = on and Color3.fromRGB(51, 95, 255) or Color3.fromRGB(154, 171, 247)
+	aNext.TextColor3 = on and Color3.new(1, 1, 1) or Color3.fromRGB(207, 215, 251)
+	for v, c in pairs(chipBtns) do
+		local sel = (n == v)
+		c.btn.BackgroundColor3 = sel and Color3.fromRGB(247, 247, 248) or Color3.fromRGB(221, 222, 228)
+		c.st.Enabled = sel
 	end
+	layoutAmt()
 end
 aBox:GetPropertyChangedSignal("Text"):Connect(function()
 	local t = aBox.Text:gsub("%D", ""):gsub("^0+", "")
@@ -1082,30 +1066,51 @@ aBox:GetPropertyChangedSignal("Text"):Connect(function()
 	updateNext()
 end)
 
--- 3) revisar (avatar, nombre, @usuario, datos, monto, "The recipient will get...", Send / Edit, nota)
-local pReview = sPage("review", 64)
-local rvAv = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 0), Size = UDim2.fromOffset(72, 72) }, pReview)); corner(rvAv)
-local rvName = z(label(pReview, "", 20, true, C.text, UDim2.fromOffset(0, 78), UDim2.new(1, 0, 0, 26), Enum.TextXAlignment.Center))
-local rvHandle = z(label(pReview, "", 14, false, Color3.fromRGB(106, 111, 129), UDim2.fromOffset(0, 104), UDim2.new(1, 0, 0, 20), Enum.TextXAlignment.Center))
-local rvStats = z(label(pReview, "", 13, false, C.sub, UDim2.fromOffset(0, 128), UDim2.new(1, 0, 0, 18), Enum.TextXAlignment.Center))
-local rvJoined = z(label(pReview, "", 13, false, C.sub, UDim2.fromOffset(0, 146), UDim2.new(1, 0, 0, 18), Enum.TextXAlignment.Center))
-local rvAmt = z(label(pReview, "", 32, true, C.text, UDim2.fromOffset(0, 174), UDim2.new(1, 0, 0, 40), Enum.TextXAlignment.Center))
-local rvGet = z(label(pReview, "", 14, false, C.sub, UDim2.fromOffset(0, 216), UDim2.new(1, 0, 0, 20), Enum.TextXAlignment.Center))
-local rvSend = z(new("TextButton", { Text = "Send", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, Position = UDim2.fromOffset(17, 248), Size = UDim2.new(1, -34, 0, 50) }, pReview))
-corner(rvSend, UDim.new(0, 12))
-local rvEdit = z(new("TextButton", { Text = "Edit", TextSize = 18, Font = FONT_B, TextColor3 = C.text, BackgroundColor3 = Color3.fromRGB(226, 227, 232), Position = UDim2.fromOffset(17, 306), Size = UDim2.new(1, -34, 0, 50) }, pReview))
-corner(rvEdit, UDim.new(0, 12))
-local rvNote = z(label(pReview, "You need an age check or parental consent to send Robux. Once you send, you cannot cancel.", 12, false, C.sub, UDim2.fromOffset(24, 366), UDim2.new(1, -48, 0, 34), Enum.TextXAlignment.Center))
-rvNote.TextWrapped = true
+-- 3) revisar (avatar 49, nombre/handle 12.5, datos, monto 33, Send y Edit lado a lado, nota 10)
+local pReview = sPage("review", 0)
+local rvAv = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 69.3), Size = UDim2.fromOffset(49, 49) }, pReview)); corner(rvAv)
+local rvName = z(label(pReview, "", 12.5, true, INK, UDim2.fromOffset(24, 128.1), UDim2.new(1, -48, 0, 16), Enum.TextXAlignment.Center))
+local rvHandle = z(label(pReview, "", 12.5, false, INK, UDim2.fromOffset(24, 145.6), UDim2.new(1, -48, 0, 16), Enum.TextXAlignment.Center))
+local function iconBox(parent) -- icono pequeno gris de 13px
+	local f = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(13, 13), ZIndex = 82 }, parent)
+	corner(f, UDim.new(0.3, 0)); new("UIStroke", { Color = SUB, Thickness = 1.3 }, f)
+	return f
+end
+local function statRow(y)
+	local r = z(new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(16, y), Size = UDim2.new(1, -32, 0, 14) }, pReview))
+	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, HorizontalAlignment = Enum.HorizontalAlignment.Center, VerticalAlignment = Enum.VerticalAlignment.Center, Padding = UDim.new(0, 7.6) }, r)
+	return r
+end
+local function stat(parent, text)
+	local f = new("Frame", { BackgroundTransparency = 1, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 14), ZIndex = 82 }, parent)
+	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, VerticalAlignment = Enum.VerticalAlignment.Center, Padding = UDim.new(0, 4.6) }, f)
+	iconBox(f)
+	local t = new("TextLabel", { BackgroundTransparency = 1, Text = text, TextSize = 12.5, Font = FONT, TextColor3 = SUB, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 14), ZIndex = 82 }, f)
+	return t
+end
+local rvRow1 = statRow(178.7)
+local rvConn = stat(rvRow1, "")
+local rvMut = stat(rvRow1, "")
+local rvRow2 = statRow(206.3)
+local rvJoined = stat(rvRow2, "")
+local rvGlyph = glyph(pReview, "robux", 25.4, UDim2.fromOffset(0, 266), INK); rvGlyph.ZIndex = 82
+local rvAmt = z(label(pReview, "", 33, true, INK, UDim2.fromOffset(0, 265.8), UDim2.new(1, 0, 0, 36), Enum.TextXAlignment.Center))
+local rvGet = z(label(pReview, "", 11.5, false, SUB, UDim2.fromOffset(0, 302.5), UDim2.new(1, 0, 0, 14), Enum.TextXAlignment.Center))
+local rvSend = z(new("TextButton", { Text = "Send", TextSize = 11.5, Font = Enum.Font.BuilderSansMedium, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(51, 95, 255), AutoButtonColor = false, Position = UDim2.fromOffset(16.4, 345.8), Size = UDim2.fromOffset(163.6, 32.5) }, pReview))
+corner(rvSend, UDim.new(0, 6.5))
+local rvEdit = z(new("TextButton", { Text = "Edit", TextSize = 11.5, Font = Enum.Font.BuilderSansMedium, TextColor3 = INK, BackgroundColor3 = Color3.fromRGB(220, 221, 226), AutoButtonColor = false, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -16.4, 0, 345.8), Size = UDim2.fromOffset(156.5, 32.5) }, pReview))
+corner(rvEdit, UDim.new(0, 6.5))
+local rvNote = z(label(pReview, "You need an age check or parental consent to send Robux. Once you send, you cannot cancel.", 10, false, SUB, UDim2.fromOffset(16.4, 388.3), UDim2.new(1, -32.8, 0, 24)))
+rvNote.TextWrapped = true; rvNote.TextYAlignment = Enum.TextYAlignment.Top
 
--- 4) enviado ("You sent N Robux" + OK)
-local pSent = sPage("sent", 64)
-local ck = z(new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 14), Size = UDim2.fromOffset(56, 56) }, pSent)); corner(ck)
-new("UIStroke", { Color = Color3.fromRGB(73, 77, 90), Thickness = 3 }, ck)
-z(label(ck, "\u{2713}", 30, true, Color3.fromRGB(73, 77, 90), nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center))
-local sentMsg = z(label(pSent, "", 20, true, C.text, UDim2.fromOffset(0, 82), UDim2.new(1, 0, 0, 28), Enum.TextXAlignment.Center))
-local sDone = z(new("TextButton", { Text = "OK", TextSize = 18, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = C.blue, Position = UDim2.fromOffset(17, 130), Size = UDim2.new(1, -34, 0, 50) }, pSent))
-corner(sDone, UDim.new(0, 12))
+-- 4) enviado (circulo con check, "You sent N Robux" 17.5, OK 35.2)
+local pSent = sPage("sent", 0)
+local ck = z(new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.new(0.5, 0, 0, 100), Size = UDim2.fromOffset(38, 38) }, pSent)); corner(ck)
+new("UIStroke", { Color = SUB, Thickness = 2 }, ck)
+z(label(ck, "\u{2713}", 22, true, SUB, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center))
+local sentMsg = z(label(pSent, "", 17.5, false, INK, UDim2.fromOffset(0, 124), UDim2.new(1, 0, 0, 22), Enum.TextXAlignment.Center))
+local sDone = z(new("TextButton", { Text = "OK", TextSize = 13, Font = FONT, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(51, 95, 255), AutoButtonColor = false, Position = UDim2.fromOffset(17.7, 193.9), Size = UDim2.new(1, -35.4, 0, 35.2) }, pSent))
+corner(sDone, UDim.new(0, 4.7))
 
 local function refreshBalances()
 	for _, l in ipairs(balanceLabels) do l.Text = tostring(simBalance) end
@@ -1116,10 +1121,27 @@ local function fmt(n)
 	local r = s:reverse():gsub("(%d%d%d)", "%1,"):reverse()
 	return (r:gsub("^,", ""))
 end
-local SHEET_SIZE = { search = UDim2.new(1, 0, 0.86, 24), amount = UDim2.new(1, 0, 0, 364), review = UDim2.new(1, 0, 0, 504), sent = UDim2.new(1, 0, 0, 284) }
+-- altura de cada hoja = ancho x proporcion de las imagenes de la app (1320/1602, 1320/1721, 1320/998)
+local EXT = 24
+local function sheetSize(name)
+	local W = sendGui.AbsoluteSize.X
+	if name == "search" then return UDim2.new(1, 0, 1, -108 + EXT) end
+	local ratio = ({ amount = 1602 / 1320, review = 1721 / 1320, sent = 998 / 1320 })[name]
+	return UDim2.new(1, 0, 0, W * ratio + EXT)
+end
+-- cabecera: la posicion del titulo cambia segun el paso, igual que en la app
+local function headerFor(name)
+	local top, ts, bs = 19, 16, 12.4
+	if name == "amount" or name == "review" then top = 24.8 elseif name == "sent" then top, ts, bs = 23, 19, 15.5 end
+	sTitle.Position = UDim2.fromOffset(41.2, top - 1); sTitle.TextSize = ts
+	sHex.Position = UDim2.fromOffset(16, top - 2)
+	sBal.TextSize = bs; sBal.Position = UDim2.new(1, -84, 0, top + 0.5)
+end
+local SHEET_SIZE = setmetatable({}, { __index = function(_, k) return sheetSize(k) end })
 local function step(name)
 	sShow(name)
-	TweenService:Create(sSheet, TweenInfo.new(0.2, Enum.EasingStyle.Quad), { Size = SHEET_SIZE[name] }):Play()
+	headerFor(name)
+	TweenService:Create(sSheet, TweenInfo.new(0.2, Enum.EasingStyle.Quad), { Size = sheetSize(name) }):Play()
 end
 goAmount = function(u)
 	target = u
@@ -1136,10 +1158,14 @@ aNext.Activated:Connect(function()
 	rvAv.Image = avatarOf(target.Id)
 	rvName.Text = (target.DisplayName ~= "" and target.DisplayName or target.Username)
 	rvHandle.Text = "@" .. target.Username
-	rvStats.Text = "Connected " .. (d % 23 + 1) .. " months  \u{00B7}  " .. (d % 15) .. " mutual Friends"
+	rvConn.Text = "Connected " .. (d % 23 + 1) .. " months"
+	rvMut.Text = (d % 15) .. " mutual Friends"
 	rvJoined.Text = "Joined in " .. (2008 + d % 16)
-	rvAmt.Text = utf8.char(0xE002) .. " " .. fmt(amount)
-	rvAmt.Font = Enum.Font.BuilderSansBold
+	rvAmt.Text = fmt(amount)
+	local w = TextService:GetTextSize(fmt(amount), 33, Enum.Font.BuilderSansBold, Vector2.new(1000, 60)).X
+	local W = sSheet.AbsoluteSize.X
+	rvAmt.Position = UDim2.fromOffset(((25.4 + 6) / 2), 265.8)
+	rvGlyph.Position = UDim2.fromOffset((W - (25.4 + 6 + w)) / 2 - 2, 266.5)
 	rvGet.Text = "The recipient will get " .. fmt(amount) .. " Robux."
 	step("review")
 end)
@@ -1162,7 +1188,8 @@ sDone.Activated:Connect(closeSend)
 sDim.Activated:Connect(closeSend)
 openSendSheet = function()
 	sBox.Text = ""
-	sSheet.Size = SHEET_SIZE.search
+	sSheet.Size = UDim2.new(1, 0, 1, -108 + 24)
+	headerFor("search")
 	sShow("search")
 	loadFriends()
 	sendGui.Visible = true
