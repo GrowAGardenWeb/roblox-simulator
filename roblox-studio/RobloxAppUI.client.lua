@@ -1078,10 +1078,12 @@ local function selectItem(it, kind)
 		if isWorn(it.Id, kind) then
 			equipped[it.Id] = nil
 			safe(unwear, it.Id, kind)
+			selected = nil -- al quitarlo se cierra tambien la tira "Details" y la barra de compra
 		else
 			equipped[it.Id] = true
 			safe(wear, it.Id, kind)
 		end
+		paintSelection()
 		refreshBars()
 		return
 	end
