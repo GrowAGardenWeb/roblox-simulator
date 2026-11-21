@@ -153,17 +153,19 @@ icon(header, "bell", UDim2.new(1, -42, 0, 15), UDim2.fromOffset(26, 26), functio
 end)
 
 -- ======== Pestañas For you / Charts ========
-local tabsBar = new("Frame", { Position = UDim2.fromOffset(0, 56), Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1 }, root)
+local tabsBar, pages, currentNav, showPages, selectTab, tabButtons, currentTab
+do
+tabsBar = new("Frame", { Position = UDim2.fromOffset(0, 56), Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1 }, root)
 new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Position = UDim2.new(0, 16, 1, -1), Size = UDim2.new(1, -32, 0, 1) }, tabsBar)
 local underline = new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Position = UDim2.new(0, 16, 1, -2), Size = UDim2.new(0.5, -16, 0, 2) }, tabsBar)
-local tabButtons, pages = {}, {}
-local currentTab, currentNav = "For you", "Home"
-local function showPages()
+tabButtons, pages = {}, {}
+currentTab, currentNav = "For you", "Home"
+showPages = function()
 	for n, pg in pairs(pages) do
 		pg.Visible = (currentNav == "Home" and n == currentTab)
 	end
 end
-local function selectTab(name)
+selectTab = function(name)
 	currentTab = name
 	for n, b in pairs(tabButtons) do b.TextColor3 = (n == name) and C.text or C.sub end
 	showPages()
@@ -174,6 +176,7 @@ for i, name in ipairs({ "For you", "Charts" }) do
 	local b = new("TextButton", { Text = name, TextSize = 18, Font = FONT, TextColor3 = C.sub, BackgroundTransparency = 1, Position = UDim2.new((i - 1) * 0.5, 0, 0, 0), Size = UDim2.new(0.5, 0, 1, -2), AutoButtonColor = false }, tabsBar)
 	tabButtons[name] = b
 	b.Activated:Connect(function() selectTab(name) end)
+end
 end
 
 -- ======== Contenido ========
@@ -194,6 +197,8 @@ local function section(parent, title, order)
 	return f
 end
 -- ======== Juegos (lista de ejemplo con iconos reales de Roblox) ========
+local MarketplaceService, chartLabels, tilesRow
+do
 local GAMES = {
 	{ name = "Adopt Me!", place = 920587237, rating = 88, players = 148, desc = "Raise pets, decorate your home and trade with friends." },
 	{ name = "Brookhaven RP", place = 4924922222, rating = 85, players = 612, desc = "Roleplay in a town: houses, cars and jobs." },
@@ -225,7 +230,7 @@ local GAMES = {
 }
 local gameCursor = 0 -- cada fila toma juegos NUEVOS, sin repetir dentro de la fila ni con la fila de al lado
 -- el icono real del juego se pide a Roblox (MarketplaceService); mientras carga se ve gris, sin el cuadrito de "imagen no disponible"
-local MarketplaceService = game:GetService("MarketplaceService")
+MarketplaceService = game:GetService("MarketplaceService")
 local function applyIcon(g, img)
 	if g.icon then img.Image = g.icon; return end
 	img.Image = ""
@@ -247,8 +252,8 @@ local function applyIcon(g, img)
 end
 local function fmtK(n) return n >= 1000 and string.format("%.1fM", n / 1000) or (n .. "K") end
 
-local chartLabels = {}
-local function tilesRow(parent, count, w, h, order, reg)
+chartLabels = {}
+tilesRow = function(parent, count, w, h, order, reg)
 	local row = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Size = UDim2.new(1, 0, 0, h + 44), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, LayoutOrder = order }, parent)
 	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, row)
 	for i = 1, count do
@@ -265,18 +270,21 @@ local function tilesRow(parent, count, w, h, order, reg)
 	end
 	return row
 end
+end
 
 -- ---- For you ----
+local userRow, av, friends, plus
+do
 local forYou = page("For you")
 -- usuario
-local userRow = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 56), LayoutOrder = 1 }, forYou)
-local av = new("ImageLabel", { BackgroundColor3 = C.gray, Size = UDim2.fromOffset(52, 52), Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150" }, userRow); corner(av)
+userRow = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 56), LayoutOrder = 1 }, forYou)
+av = new("ImageLabel", { BackgroundColor3 = C.gray, Size = UDim2.fromOffset(52, 52), Image = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150" }, userRow); corner(av)
 new("UIStroke", { Color = C.line, Thickness = 1 }, av)
 nameLabels[#nameLabels + 1] = label(userRow, profile.name, 26, true, C.text, UDim2.fromOffset(66, 10), UDim2.new(1, -66, 0, 34))
 -- amigos
-local friends = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 150), LayoutOrder = 2 }, forYou)
+friends = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 150), LayoutOrder = 2 }, forYou)
 local add = new("TextButton", { Text = "", AutoButtonColor = true, BackgroundColor3 = C.gray, Size = UDim2.fromOffset(88, 88) }, friends); corner(add)
-local plus = label(add, "+", 34, false, C.text, UDim2.fromOffset(2, 2), UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
+plus = label(add, "+", 34, false, C.text, UDim2.fromOffset(2, 2), UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
 label(friends, "Add Friends", 16, true, C.text, UDim2.fromOffset(-8, 98), UDim2.fromOffset(104, 22), Enum.TextXAlignment.Center)
 local hint = label(friends, "", 17, false, C.sub, UDim2.fromOffset(120, 22), UDim2.new(1, -124, 0, 48))
 hint.Text = "Let's play! Start by adding a friend."
@@ -287,17 +295,20 @@ local rec = section(forYou, "Recommended For You", 3)
 tilesRow(rec, 6, 150, 150, 1)
 local cont = section(forYou, "Continue  ›", 4)
 tilesRow(cont, 5, 150, 100, 1)
+end
 
 -- ======== Hoja de filtros de Charts (Device / Location), como en la app ========
-local DEVICES = { { "All Devices", "all" }, { "Entry-level Phone", "low_end_phone" }, { "Standard Phone", "phone", "My device" }, { "Entry-level Tablet", "low_end_tablet" }, { "Standard Tablet", "tablet" }, { "Computer", "computer" }, { "Console", "console" }, { "VR", "vr" } }
-local COUNTRIES = { { "Argentina", "ar" }, { "Australia", "au" }, { "Brazil", "br" }, { "Canada", "ca" }, { "Chile", "cl" }, { "Colombia", "co" }, { "France", "fr" }, { "Germany", "de" }, { "India", "in" }, { "Italy", "it" }, { "Japan", "jp" }, { "Mexico", "mx" }, { "Peru", "pe" }, { "Spain", "es" }, { "United Kingdom", "gb" }, { "United States", "us" } }
+local DEVICES, COUNTRIES, chartDevice, chartLoc, nameOf, openChartSheet
+do
+DEVICES = { { "All Devices", "all" }, { "Entry-level Phone", "low_end_phone" }, { "Standard Phone", "phone", "My device" }, { "Entry-level Tablet", "low_end_tablet" }, { "Standard Tablet", "tablet" }, { "Computer", "computer" }, { "Console", "console" }, { "VR", "vr" } }
+COUNTRIES = { { "Argentina", "ar" }, { "Australia", "au" }, { "Brazil", "br" }, { "Canada", "ca" }, { "Chile", "cl" }, { "Colombia", "co" }, { "France", "fr" }, { "Germany", "de" }, { "India", "in" }, { "Italy", "it" }, { "Japan", "jp" }, { "Mexico", "mx" }, { "Peru", "pe" }, { "Spain", "es" }, { "United Kingdom", "gb" }, { "United States", "us" } }
 local myCountry = "us"
 pcall(function()
 	local c = game:GetService("LocalizationService"):GetCountryRegionForPlayerAsync(player)
 	if c and #c == 2 then myCountry = c:lower() end
 end)
-local chartDevice, chartLoc = "phone", myCountry
-local function nameOf(list, id)
+chartDevice, chartLoc = "phone", myCountry
+nameOf = function(list, id)
 	for _, it in ipairs(list) do if it[2] == id then return it[1] end end
 	return id == "all" and "All Locations" or id:upper()
 end
@@ -307,7 +318,7 @@ local function locOptions()
 	for _, c in ipairs(COUNTRIES) do if c[2] ~= myCountry then o[#o + 1] = c end end
 	return o
 end
-local function openChartSheet(kind, current, onApply)
+openChartSheet = function(kind, current, onApply)
 	local isLoc = (kind == "loc")
 	local opts = isLoc and locOptions() or DEVICES
 	-- medidas de la app: handle 9+3.3, titulo 20px, lista a 14px, filas de 30.3px, pie 12 + boton 32.5 + 24
@@ -388,8 +399,10 @@ local function openChartSheet(kind, current, onApply)
 		close()
 	end)
 end
+end
 
 -- ---- Charts ----
+do
 local charts = page("Charts")
 -- filtros: dispositivo y pais (pildoras oscuras)
 local filters = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 36), LayoutOrder = 1 }, charts)
@@ -435,18 +448,21 @@ chartSection("Top Playing Now", "Results for all devices and locations", 4)
 chartSection("Fun with Friends", nil, 5)
 chartSection("Top Revisited", nil, 6)
 refreshCharts()
+end
 
 -- ---- Me: pantalla Avatar (3D real + catalogo real) ----
-local avScreen = new("Frame", { Name = "AvatarScreen", Size = UDim2.new(1, 0, 1, -64), BackgroundColor3 = Color3.fromRGB(216, 217, 226), BorderSizePixel = 0, Visible = false, ClipsDescendants = true }, root)
+local avScreen, world, desc, buildRig, history, hIndex, loadMyDescription, chip, sheet, CATS, tabsRow, body, recRow, exRow, status, wear, rig, yaw
+do
+avScreen = new("Frame", { Name = "AvatarScreen", Size = UDim2.new(1, 0, 1, -64), BackgroundColor3 = Color3.fromRGB(216, 217, 226), BorderSizePixel = 0, Visible = false, ClipsDescendants = true }, root)
 if ASSETS.scene ~= "" then
 	new("ImageLabel", { BackgroundTransparency = 1, Image = ASSETS.scene, ScaleType = Enum.ScaleType.Crop, Size = UDim2.new(1, 0, 0, 360) }, avScreen)
 end
 -- 3D: tu personaje real
 local vp = new("ViewportFrame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 360), Ambient = Color3.fromRGB(190, 190, 190), LightColor = Color3.fromRGB(255, 255, 255) }, avScreen)
-local world = new("WorldModel", {}, vp)
+world = new("WorldModel", {}, vp)
 local cam = new("Camera", { FieldOfView = 40 }, vp)
 vp.CurrentCamera = cam
-local rig, yaw, desc = nil, 0, nil
+rig, yaw, desc = nil, 0, nil
 local function placeCamera()
 	if not rig then return end
 	local rootPart = rig:FindFirstChild("HumanoidRootPart")
@@ -455,7 +471,7 @@ local function placeCamera()
 	local dir = CFrame.Angles(0, math.rad(yaw), 0) * Vector3.new(0, 0, 9)
 	cam.CFrame = CFrame.lookAt(pos + dir, pos)
 end
-local function buildRig()
+buildRig = function()
 	if not desc then return end
 	local ok, model = pcall(function() return Players:CreateHumanoidModelFromDescription(desc, Enum.HumanoidRigType.R15) end)
 	if not ok then showErr("Avatar: " .. tostring(model)); return end
@@ -466,8 +482,8 @@ local function buildRig()
 	rig.Parent = world
 	placeCamera()
 end
-local history, hIndex = {}, 0
-local function loadMyDescription()
+history, hIndex = {}, 0
+loadMyDescription = function()
 	task.spawn(function()
 		local ok, d = pcall(function() return Players:GetHumanoidDescriptionFromUserId(player.UserId) end)
 		if ok and d then desc = d; history = { d:Clone() }; hIndex = 1; buildRig() end
@@ -529,7 +545,7 @@ local thumb = new("ImageLabel", { BackgroundColor3 = C.gray, Position = UDim2.fr
 corner(thumb)
 label(leftW, "\u{2699}", 20, false, C.text, UDim2.fromOffset(0, 44), UDim2.fromOffset(40, 30), Enum.TextXAlignment.Center)
 -- saldo (de juguete): abre Send
-local chip = new("Frame", { BackgroundColor3 = WHITE_PILL, Position = UDim2.new(1, -82, 0, 53), Size = UDim2.fromOffset(64, 42), BorderSizePixel = 0 }, avScreen)
+chip = new("Frame", { BackgroundColor3 = WHITE_PILL, Position = UDim2.new(1, -82, 0, 53), Size = UDim2.fromOffset(64, 42), BorderSizePixel = 0 }, avScreen)
 corner(chip)
 hexIcon(chip, 22, UDim2.fromOffset(10, 10), C.text)
 local chipLbl = label(chip, tostring(simBalance), 17, false, C.text, UDim2.fromOffset(36, 8), UDim2.fromOffset(26, 26))
@@ -551,12 +567,12 @@ undoB.Activated:Connect(function() if hIndex > 1 then hIndex -= 1; applyHistory(
 redoB.Activated:Connect(function() if hIndex < #history then hIndex += 1; applyHistory() end end)
 
 -- hoja inferior
-local sheet = new("Frame", { BackgroundColor3 = C.bg, Position = UDim2.fromOffset(0, 335), Size = UDim2.new(1, 0, 1, -335), BorderSizePixel = 0 }, avScreen)
+sheet = new("Frame", { BackgroundColor3 = C.bg, Position = UDim2.fromOffset(0, 335), Size = UDim2.new(1, 0, 1, -335), BorderSizePixel = 0 }, avScreen)
 corner(sheet, UDim.new(0, 28))
 new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Position = UDim2.new(0.5, -17, 0, 10), Size = UDim2.fromOffset(34, 4) }, sheet)
 corner(sheet:FindFirstChildOfClass("Frame"), UDim.new(1, 0))
 
-local CATS = {
+CATS = {
 	{ "All", Enum.AvatarAssetType.Hat, "Hat" },
 	{ "Avatars", Enum.AvatarAssetType.FaceAccessory, "Face" },
 	{ "Backgrounds", nil, nil },
@@ -566,7 +582,7 @@ local CATS = {
 	{ "Animations", nil, nil },
 	{ "Makeup", nil, nil },
 }
-local tabsRow = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 22), Size = UDim2.new(1, -52, 0, 40), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X }, sheet)
+tabsRow = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 22), Size = UDim2.new(1, -52, 0, 40), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X }, sheet)
 new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 20) }, tabsRow)
 new("UIPadding", { PaddingLeft = UDim.new(0, 10) }, tabsRow)
 -- icono de filtros (3 rayas con puntos)
@@ -577,7 +593,7 @@ for i = 0, 2 do
 	corner(d); new("UIStroke", { Color = C.text, Thickness = 1.6 }, d)
 end
 
-local body = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 66), Size = UDim2.new(1, 0, 1, -66), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y }, sheet)
+body = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 66), Size = UDim2.new(1, 0, 1, -66), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y }, sheet)
 new("UIPadding", { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14), PaddingBottom = UDim.new(0, 80) }, body)
 new("UIListLayout", { Padding = UDim.new(0, 10), SortOrder = Enum.SortOrder.LayoutOrder }, body)
 local recTitle = label(body, "Recommended For You", 22, true, C.text, nil, UDim2.new(1, 0, 0, 30)); recTitle.LayoutOrder = 1
@@ -586,15 +602,15 @@ local function itemRow(order)
 	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, r)
 	return r
 end
-local recRow = itemRow(2)
+recRow = itemRow(2)
 local exHead = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 36), LayoutOrder = 3 }, body)
 label(exHead, "Explore Styles", 22, true, C.text, nil, UDim2.new(0.6, 0, 1, 0))
 local seeAll = new("TextButton", { Text = "See All", TextSize = 14, Font = FONT_B, TextColor3 = C.text, BackgroundTransparency = 1, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 0, 0.5, 0), Size = UDim2.fromOffset(74, 30) }, exHead)
 corner(seeAll, UDim.new(0.5, 0)); new("UIStroke", { Color = C.text, Thickness = 1.5 }, seeAll)
-local exRow = itemRow(4)
-local status = label(body, "", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20)); status.LayoutOrder = 5
+exRow = itemRow(4)
+status = label(body, "", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20)); status.LayoutOrder = 5
 
-local function wear(assetId, kind)
+wear = function(assetId, kind)
 	if not desc or not kind then return end
 	if kind == "Shirt" then
 		desc.Shirt = assetId
@@ -616,14 +632,17 @@ local function wear(assetId, kind)
 	table.insert(history, desc:Clone()); hIndex = #history
 	buildRig()
 end
+end
 
 -- ======== Marketplace como en la app: seleccionar (probar puesto), barra de compra, aviso "Buy item", detalles ========
-local owned, equipped = {}, {}
-local function setBalance(n)
+local owned, equipped, setBalance, vscale, safe, purchasedToast, unwear, KIND_INFO
+do
+owned, equipped = {}, {}
+setBalance = function(n)
 	simBalance = n
 	applyBalance()
 end
-local function vscale(w) return root.AbsoluteSize.X / (w or 360) end
+vscale = function(w) return root.AbsoluteSize.X / (w or 360) end
 
 -- aviso de error visible (para depurar)
 local function toast(msg)
@@ -638,13 +657,13 @@ local function toast(msg)
 	end)
 end
 showErr = function(m) toast(m); warn(m) end
-local function safe(fn, ...)
+safe = function(fn, ...)
 	local ok, err = xpcall(fn, function(e) return tostring(e) end, ...)
 	if not ok then showErr("Error: " .. tostring(err):sub(1, 90)) end
 end
 
 -- aviso "Purchased!" (bi-toast: barra blanca arriba con el logo girado)
-local function purchasedToast()
+purchasedToast = function()
 	local s = vscale()
 	local c = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 71.6 * s), Size = UDim2.fromOffset(360, 50), ZIndex = 220 }, root)
 	new("UIScale", { Scale = s }, c)
@@ -658,7 +677,7 @@ local function purchasedToast()
 	end)
 end
 
-local function unwear(assetId, kind)
+unwear = function(assetId, kind)
 	if not desc then return end
 	if kind == "Shirt" then desc.Shirt = 0
 	elseif kind == "Pants" then desc.Pants = 0
@@ -675,18 +694,21 @@ local function unwear(assetId, kind)
 	buildRig()
 end
 
-local KIND_INFO = {
+KIND_INFO = {
 	Hat = { "Head Accessories", "Accessories | Head" }, Hair = { "Hair Accessories", "Accessories | Hair" }, Face = { "Face Accessories", "Accessories | Face" },
 	Neck = { "Neck Accessories", "Accessories | Neck" }, Shoulder = { "Shoulder Accessories", "Accessories | Shoulder" }, Front = { "Front Accessories", "Accessories | Front" },
 	Back = { "Back Accessories", "Accessories | Back" }, Waist = { "Waist Accessories", "Accessories | Waist" }, Shirt = { "Shirts", "Clothing | Top" },
 	Pants = { "Pants", "Clothing | Bottom" }, TShirt = { "T-Shirts", "Clothing | Top" }, Jacket = { "Jackets", "Clothing | Outerwear" }, LeftShoe = { "Shoes", "Clothing | Shoes" },
 }
+end
 
 -- ---- barra de compra (a-checkout): boton azul con el precio + "..." ----
-local selected = nil -- { it =, kind =, ui = }
-local bars = {}
-local openBuyPrompt, openDetails
-local function makeBar(parent, z0)
+local selected, bars, openBuyPrompt, openDetails, makeBar, refreshBars
+do
+selected = nil -- { it =, kind =, ui = }
+bars = {}
+-- (hoisted) local openBuyPrompt, openDetails
+makeBar = function(parent, z0)
 	local s = vscale()
 	local wrap = new("Frame", { BackgroundColor3 = Color3.new(1, 1, 1), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 0), Size = UDim2.new(1, 0, 0, 54 * s), ZIndex = z0, Visible = false }, parent)
 	local c = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.fromScale(0.5, 0), Size = UDim2.fromOffset(360, 54), ZIndex = z0 }, wrap)
@@ -723,8 +745,9 @@ local function makeBar(parent, z0)
 	bars[#bars + 1] = bar
 	return bar
 end
-local function refreshBars() for _, b in ipairs(bars) do b.refresh() end end
+refreshBars = function() for _, b in ipairs(bars) do b.refresh() end end
 local mainBar = makeBar(avScreen, 20)
+end
 
 -- ---- aviso "Buy item" (bi-modal): medidas del CSS, base de 360 ----
 openBuyPrompt = function(it, kind)
@@ -837,6 +860,8 @@ openDetails = function(it, kind)
 end
 
 -- ---- tile del Marketplace (il-card): imagen cuadrada, nombre, creador, precio; seleccionado = borde + "Details" ----
+local makeItemCell, tabLine
+do
 local cellsById = {}
 local function paintSelection()
 	for id, ui in pairs(cellsById) do
@@ -865,7 +890,7 @@ local function selectItem(it, kind)
 	paintSelection()
 	refreshBars()
 end
-local function makeItemCell(parent, it, kind, order)
+makeItemCell = function(parent, it, kind, order)
 	local p = tonumber(it.Price) or 0
 	local cell = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1 / 3, -7, 0, 186), LayoutOrder = order }, parent)
 	local img = new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", ScaleType = Enum.ScaleType.Fit, Size = UDim2.new(1, 0, 0, 110) }, cell)
@@ -924,7 +949,7 @@ local function loadCategory(cat)
 	end
 end
 local tabBtns = {}
-local tabLine = new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Size = UDim2.fromOffset(20, 3) }, sheet)
+tabLine = new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Size = UDim2.fromOffset(20, 3) }, sheet)
 local function selectCat(i)
 	for j, b in ipairs(tabBtns) do b.TextColor3 = (j == i) and C.text or C.sub; b.Font = (j == i) and FONT_B or FONT end
 	loadCategory(CATS[i])
@@ -943,30 +968,33 @@ tabLine.Position = UDim2.fromOffset(10, 60)
 tabLine.Size = UDim2.fromOffset(30, 3)
 selectCat(1)
 task.defer(function() loadCategory(CATS[1]) end)
+end
 
 
 -- ======== Customize ========
-local czTabsRow = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 22), Size = UDim2.new(1, -52, 0, 40), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, Visible = false }, sheet)
+local czTabsRow, czLine, czBody, commit, czClear, czOrder, czAdd, bigTile, tileRow, catalogInto
+do
+czTabsRow = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 22), Size = UDim2.new(1, -52, 0, 40), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, Visible = false }, sheet)
 new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 20) }, czTabsRow)
 new("UIPadding", { PaddingLeft = UDim.new(0, 10) }, czTabsRow)
-local czLine = new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Size = UDim2.fromOffset(30, 3), Position = UDim2.fromOffset(10, 61), Visible = false }, sheet)
-local czBody = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 66), Size = UDim2.new(1, 0, 1, -66), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, Visible = false }, sheet)
+czLine = new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Size = UDim2.fromOffset(30, 3), Position = UDim2.fromOffset(10, 61), Visible = false }, sheet)
+czBody = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 66), Size = UDim2.new(1, 0, 1, -66), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, Visible = false }, sheet)
 new("UIPadding", { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14), PaddingTop = UDim.new(0, 8), PaddingBottom = UDim.new(0, 20) }, czBody)
 local czList = new("UIListLayout", { Padding = UDim.new(0, 12), SortOrder = Enum.SortOrder.LayoutOrder }, czBody)
 
-local function commit()
+commit = function()
 	while #history > hIndex do table.remove(history) end
 	table.insert(history, desc:Clone()); hIndex = #history
 	buildRig()
 end
-local function czClear()
+czClear = function()
 	for _, c in ipairs(czBody:GetChildren()) do
 		if c:IsA("GuiObject") then c:Destroy() end
 	end
 end
-local czOrder = 0
-local function czAdd(inst) czOrder += 1; inst.LayoutOrder = czOrder; inst.Parent = czBody; return inst end
-local function bigTile(text, onTap, content)
+czOrder = 0
+czAdd = function(inst) czOrder += 1; inst.LayoutOrder = czOrder; inst.Parent = czBody; return inst end
+bigTile = function(text, onTap, content)
 	local f = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(86, 112) })
 	local t = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, Size = UDim2.fromOffset(86, 86) }, f)
 	corner(t, UDim.new(0, 12))
@@ -976,12 +1004,12 @@ local function bigTile(text, onTap, content)
 	t.Activated:Connect(onTap)
 	return f
 end
-local function tileRow()
+tileRow = function()
 	local r = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 114) })
 	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, r)
 	return r
 end
-local function catalogInto(cat)
+catalogInto = function(cat)
 	local grid = czAdd(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y }))
 	new("UIGridLayout", { CellSize = UDim2.new(1 / 3, -7, 0, 186), CellPadding = UDim2.fromOffset(10, 10), SortOrder = Enum.SortOrder.LayoutOrder }, grid)
 	local st = label(grid, "Loading...", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
@@ -1002,7 +1030,9 @@ local function catalogInto(cat)
 		if not ok then warn(err); if st.Parent then st.Text = "Catalog unavailable." end end
 	end)
 end
+end
 -- ---- categorias de cada pestana de Customize (fila de iconos + lista debajo) ----
+do
 local function AT(name)
 	local ok, v = pcall(function() return Enum.AvatarAssetType[name] end)
 	return ok and v or nil
@@ -1125,14 +1155,17 @@ setMode = function(i)
 	czTabsRow.Visible = cz; czLine.Visible = cz; czBody.Visible = cz
 	if cz then selectCz(czTab) end
 end
+end
 
 
 -- ======== Send Robux (saldo de juguete, solo simulacion) ========
+local z, amount, userRow, TextService, refreshBalances, fmt, EXT, target
+do
 local sendGui = new("Frame", { Name = "SendRobux", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, ZIndex = 80 }, root)
 local sDim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 80 }, sendGui)
 local sSheet = new("Frame", { BackgroundColor3 = Color3.fromRGB(247, 247, 249), BorderSizePixel = 0, AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 0, 1, 24), Size = UDim2.new(1, 0, 1, -84), ZIndex = 81, ClipsDescendants = true }, sendGui)
 corner(sSheet, UDim.new(0, 10))
-local function z(o, n) o.ZIndex = n or 82; return o end
+z = function(o, n) o.ZIndex = n or 82; return o end
 -- cabecera
 local sHex = glyph(sSheet, "plus", 22, UDim2.fromOffset(15, 18), Color3.fromRGB(73, 77, 90))
 local sTitle = z(label(sSheet, "Send Robux", 19, true, Color3.fromRGB(73, 77, 90), UDim2.fromOffset(45, 19), UDim2.fromOffset(200, 26)))
@@ -1159,9 +1192,9 @@ end
 local function sShow(name)
 	for n, f in pairs(sPages) do f.Visible = (n == name) end
 end
-local target, amount = nil, 0
+target, amount = nil, 0
 local function avatarOf(id) return "rbxthumb://type=AvatarHeadShot&id=" .. id .. "&w=150&h=150" end
-local function userRow(parent, u, y, onTap)
+userRow = function(parent, u, y, onTap)
 	local r = z(new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Position = UDim2.fromOffset(0, y), Size = UDim2.new(1, 0, 0, 56) }, parent))
 	local av = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), Image = avatarOf(u.Id), Position = UDim2.fromOffset(17, 8), Size = UDim2.fromOffset(39, 39) }, r))
 	corner(av)
@@ -1224,7 +1257,7 @@ sBox.FocusLost:Connect(function(enter)
 end)
 
 -- 2) monto (medidas de la app: avatar 49, nombre 11.7, monto 33, chips 31, Next 32.7, nota 9)
-local TextService = game:GetService("TextService")
+TextService = game:GetService("TextService")
 local INK, SUB = Color3.fromRGB(32, 34, 39), Color3.fromRGB(73, 77, 90)
 local pAmount = sPage("amount", 0)
 local aAv = z(new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(227, 228, 232), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 105.5), Size = UDim2.fromOffset(49, 49) }, pAmount)); corner(aAv)
@@ -1323,13 +1356,13 @@ local sentMsg = z(label(pSent, "", 17.5, false, INK, UDim2.fromOffset(0, 124), U
 local sDone = z(new("TextButton", { Text = "OK", TextSize = 13, Font = FONT, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(51, 95, 255), AutoButtonColor = false, Position = UDim2.fromOffset(17.7, 193.9), Size = UDim2.new(1, -35.4, 0, 35.2) }, pSent))
 corner(sDone, UDim.new(0, 4.7))
 
-local function refreshBalances()
+refreshBalances = function()
 	applyBalance()
 end
 refreshBalances()
-local fmt = fmtFull
+fmt = fmtFull
 -- altura de cada hoja = ancho x proporcion de las imagenes de la app (1320/1602, 1320/1721, 1320/998)
-local EXT = 24
+EXT = 24
 local function sheetSize(name)
 	local W = sendGui.AbsoluteSize.X
 	if name == "search" then return UDim2.new(1, 0, 1, -108 + EXT) end
@@ -1406,9 +1439,11 @@ openSendSheet = function()
 	TweenService:Create(sDim, TweenInfo.new(0.2), { BackgroundTransparency = 0.6 }):Play()
 	TweenService:Create(sSheet, TweenInfo.new(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 1, 24) }):Play()
 end
+end
 
 
 -- ======== Pantalla Robux (solo saldo de juguete y Send; sin paquetes ni compras) ========
+do
 local rbxPage = new("Frame", { Name = "RobuxPage", Size = UDim2.fromScale(1, 1), BackgroundColor3 = Color3.fromRGB(247, 247, 248), BorderSizePixel = 0, Visible = false, ZIndex = 70 }, root)
 local rbxTop = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 74), ZIndex = 71 }, rbxPage)
 local rbxX = new("TextButton", { Text = "", BackgroundColor3 = Color3.fromRGB(231, 232, 236), AutoButtonColor = true, Position = UDim2.fromOffset(18, 34), Size = UDim2.fromOffset(34, 34), ZIndex = 72 }, rbxTop)
@@ -1466,8 +1501,11 @@ end
 rbxX.Activated:Connect(function() rbxPage.Visible = false end)
 rbxSend.Activated:Connect(function() if openSendSheet then openSendSheet() end end)
 openRobuxPage = function() rbxPage.Visible = true end
+end
 
 -- ======== Panel al mantener presionado: nombre, Plus / Verified y cantidad ========
+local openFriendsPage
+do
 local UserInputService = game:GetService("UserInputService")
 local editGui = new("Frame", { Name = "EditPanel", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, ZIndex = 95 }, root)
 local eDim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.5, Size = UDim2.fromScale(1, 1), ZIndex = 95 }, editGui)
@@ -1570,8 +1608,11 @@ UserInputService.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then holdToken += 1; holdStart = nil end
 end)
 
-local openFriendsPage
+-- (hoisted) local openFriendsPage
+end
 -- ======== Amigos (falsos) ========
+local closeDrawer
+do
 local FRIENDS = {
 	{ "Sakura", "sakura_x", 1, "Online" }, { "BlockMaster", "blockmaster", 156, "Playing Adopt Me!" }, { "NoobSlayer22", "noobslayer22", 261, "Online" },
 	{ "PixelFox", "pixelfox", 7, "Offline" }, { "Luna", "luna_rbx", 12, "Playing Blox Fruits" }, { "Juan", "therealjuan", 16, "Offline" },
@@ -1612,13 +1653,16 @@ end
 renderFriends("")
 fBox:GetPropertyChangedSignal("Text"):Connect(function() renderFriends(fBox.Text:lower()) end)
 fBack.Activated:Connect(function() friendsPage.Visible = false end)
-local closeDrawer
+-- (hoisted) local closeDrawer
 openFriendsPage = function() friendsPage.Visible = true end
+end
 
 -- ======== Panel lateral (menu de las 3 rayas) ========
+local scrim, row
+do
 local DR_W = 333
 local drawerGui = new("Frame", { Name = "Drawer", Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false, ZIndex = 50 }, root)
-local scrim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.45, Size = UDim2.fromScale(1, 1), ZIndex = 50 }, drawerGui)
+scrim = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.45, Size = UDim2.fromScale(1, 1), ZIndex = 50 }, drawerGui)
 local drawer = new("Frame", { BackgroundColor3 = C.bg, BorderSizePixel = 0, Position = UDim2.fromOffset(-DR_W, 0), Size = UDim2.new(0, DR_W, 1, 0), ZIndex = 51, ClipsDescendants = true }, drawerGui)
 local dScroll = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Size = UDim2.fromScale(1, 1), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, ZIndex = 51 }, drawer)
 new("UIPadding", { PaddingLeft = UDim.new(0, 18), PaddingRight = UDim.new(0, 18), PaddingTop = UDim.new(0, 40), PaddingBottom = UDim.new(0, 24) }, dScroll)
@@ -1647,7 +1691,7 @@ bl.TextTruncate = Enum.TextTruncate.AtEnd
 	sb.Activated:Connect(function() if openRobuxPage then openRobuxPage() end end)
 end
 gap(10)
-local function row(text, badge, key)
+row = function(text, badge, key)
 	local r = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 41), LayoutOrder = nextOrd(), ZIndex = 51 }, dScroll)
 	local ic = new("Frame", { BackgroundTransparency = 1, Position = UDim2.fromOffset(2, 9), Size = UDim2.fromOffset(22, 22), ZIndex = 51 }, r)
 	if key == "plus" then
@@ -1701,8 +1745,11 @@ local hdMenuBtn = new("TextButton", { Text = "", BackgroundTransparency = 1, Pos
 hdMenuBtn.Activated:Connect(function() openDrawerFromAvatar() end)
 
 selectTab("For you")
+end
 
 -- ======== Botones de la cabecera de Home y paginas que abren (como en la app) ========
+local chatPage
+do
 local PFP = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150"
 local function hit(parent, pos, size, fn)
 	local b = new("TextButton", { Text = "", BackgroundTransparency = 1, Position = pos, Size = size, ZIndex = 6 }, parent)
@@ -1738,7 +1785,7 @@ hit(header, UDim2.new(1, -124, 0, 6), UDim2.fromOffset(40, 44), openSearchPage)
 hit(header, UDim2.new(1, -86, 0, 6), UDim2.fromOffset(40, 44), function() if openRobuxPage then openRobuxPage() end end)
 
 -- Chat: titulo, buscar, redactar, y dos filas
-local chatPage = new("Frame", { Name = "ChatPage", Size = UDim2.new(1, 0, 1, -64), BackgroundColor3 = C.bg, BorderSizePixel = 0, Visible = false }, root)
+chatPage = new("Frame", { Name = "ChatPage", Size = UDim2.new(1, 0, 1, -64), BackgroundColor3 = C.bg, BorderSizePixel = 0, Visible = false }, root)
 icon(chatPage, "menu", UDim2.fromOffset(16, 22), UDim2.fromOffset(26, 24), function(h)
 	for i = 0, 2 do new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Position = UDim2.new(0, 0, 0, i * 10), Size = UDim2.new(1, 0, 0, 2) }, h) end
 	local dot = new("Frame", { BackgroundColor3 = C.blue, BorderSizePixel = 0, Position = UDim2.new(1, -6, 0, -8), Size = UDim2.fromOffset(9, 9) }, h)
@@ -1764,11 +1811,14 @@ local function chatRow(y, title, sub)
 end
 chatRow(76, "Start party", "Join experiences together")
 chatRow(134, "Communities", "Create and explore communities")
+end
 
 -- ======== Barra inferior ========
+local items
+do
 local nav = new("Frame", { AnchorPoint = Vector2.new(0, 1), Position = UDim2.fromScale(0, 1), Size = UDim2.new(1, 0, 0, 64), BackgroundColor3 = C.bg, BorderSizePixel = 0 }, root)
 new("Frame", { BackgroundColor3 = C.line, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 1) }, nav)
-local items = { { "Home", "home" }, { "Moments", "moments" }, { "Chat", "chat" }, { "Me", "me" } }
+items = { { "Home", "home" }, { "Moments", "moments" }, { "Chat", "chat" }, { "Me", "me" } }
 local navLabels, navIcons = {}, {}
 local function selectNav(name)
 	if name == "Moments" then return end -- en la app original no abre nada
@@ -1807,3 +1857,4 @@ for i, it in ipairs(items) do
 end
 selectNav("Home")
 applyBalance()
+end
