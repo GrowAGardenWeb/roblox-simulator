@@ -23,6 +23,207 @@ local ICONS = { search = "rbxthumb://type=Asset&id=86271731455715&w=150&h=150", 
 local ASSETS = { scene = "rbxthumb://type=Asset&id=114483366744522&w=420&h=420" }
 -- Iconos del panel lateral (assets/drawer_*.png). Deja "" para usar un cuadro de relleno
 local DICONS = { favorites = "rbxthumb://type=Asset&id=71964804162858&w=150&h=150", continue = "rbxthumb://type=Asset&id=119745976478474&w=150&h=150", friends = "rbxthumb://type=Asset&id=126269462748291&w=150&h=150", communities = "rbxthumb://type=Asset&id=106934809621366&w=150&h=150", inventory = "rbxthumb://type=Asset&id=106040069675827&w=150&h=150", trades = "rbxthumb://type=Asset&id=89295088018855&w=150&h=150", messages = "rbxthumb://type=Asset&id=109767095299004&w=150&h=150", plus = "rbxthumb://type=Asset&id=100364072192428&w=150&h=150", settings = "rbxthumb://type=Asset&id=129466567035785&w=150&h=150", help = "rbxthumb://type=Asset&id=81961541070933&w=150&h=150", moments = "rbxthumb://type=Asset&id=99057265244475&w=150&h=150", learn = "rbxthumb://type=Asset&id=132742961819214&w=150&h=150", create = "rbxthumb://type=Asset&id=111302726472300&w=150&h=150" }
+-- inventario de juguete (items reales del catalogo) por si el catalogo/inventario real no responde
+local FAKE_INV = {
+	Hat = {
+		{ Id = 607702162, Name = "Roblox Baseball Cap", Price = 0, CreatorName = "Roblox" },
+		{ Id = 617605556, Name = "Medieval Hood of Mystery", Price = 0, CreatorName = "Roblox" },
+		{ Id = 417457461, Name = "ROBLOX 'R' Baseball Cap", Price = 0, CreatorName = "Roblox" },
+		{ Id = 4819740796, Name = "Robox", Price = 0, CreatorName = "Roblox" },
+		{ Id = 607700713, Name = "Roblox Logo Visor", Price = 0, CreatorName = "Roblox" },
+		{ Id = 2646473721, Name = "Roblox Visor", Price = 0, CreatorName = "Roblox" },
+		{ Id = 1772336109, Name = "Down to Earth Hair", Price = 0, CreatorName = "Roblox" },
+		{ Id = 48474313, Name = "Red Roblox Cap", Price = 0, CreatorName = "Roblox" },
+		{ Id = 3403874988, Name = "The Encierro Cap", Price = 0, CreatorName = "Roblox" },
+		{ Id = 4047554959, Name = "International Fedora - Brazil", Price = 0, CreatorName = "Roblox" },
+		{ Id = 3033910400, Name = "International Fedora - Germany", Price = 0, CreatorName = "Roblox" },
+		{ Id = 3438342658, Name = "International Fedora - Argenti", Price = 0, CreatorName = "Roblox" },
+	},
+	Face = {
+		{ Id = 376527500, Name = "Orange Shades", Price = 0, CreatorName = "Roblox" },
+		{ Id = 376526673, Name = "Stylish Aviators", Price = 0, CreatorName = "Roblox" },
+		{ Id = 1192464705, Name = "Bear Face Mask", Price = 100, CreatorName = "Roblox" },
+		{ Id = 20642008, Name = "Bandit", Price = 95, CreatorName = "Roblox" },
+		{ Id = 11884330, Name = "Nerd Glasses", Price = 95, CreatorName = "Roblox" },
+		{ Id = 6105519422, Name = "BubbleGum Candy (1.0)", Price = 95, CreatorName = "OceanOrbs" },
+		{ Id = 4143016822, Name = "Vintage Glasses", Price = 125, CreatorName = "WhoToTrus" },
+		{ Id = 4528880486, Name = "Black Eyepatch", Price = 95, CreatorName = "DieSoft" },
+		{ Id = 5700137935, Name = "Medical Mask (Black)", Price = 95, CreatorName = "Ellzd" },
+		{ Id = 6134532324, Name = "NewSide Bangs in Black", Price = 95, CreatorName = "MissRossiie" },
+		{ Id = 4936055418, Name = "Retro Sunglasses", Price = 95, CreatorName = "Ayzria" },
+		{ Id = 5700133881, Name = "Medical Mask (White)", Price = 95, CreatorName = "Ellzd" },
+	},
+	Neck = {
+		{ Id = 376527115, Name = "Jade Necklace with Shell Penda", Price = 0, CreatorName = "Roblox" },
+		{ Id = 18112476810, Name = "User Ads Backstage Pass", Price = 0, CreatorName = "Roblox" },
+		{ Id = 18112503797, Name = "Living Art: User Ads", Price = 0, CreatorName = "Roblox" },
+		{ Id = 107016726530712, Name = "Roblox Learn Heart Necklace", Price = 0, CreatorName = "Roblox" },
+		{ Id = 4378579302, Name = "Black Turtle Neck", Price = 55, CreatorName = "Yourius" },
+		{ Id = 5591898874, Name = "Black Hoodie", Price = 100, CreatorName = "DieSoft" },
+		{ Id = 99860652, Name = "Crimson Winter Scarf", Price = 55, CreatorName = "Roblox" },
+		{ Id = 9324091278, Name = "Y2K Heart Necklace", Price = 55, CreatorName = "MissRossiie" },
+		{ Id = 5355321395, Name = "Silver Link Chain", Price = 75, CreatorName = "genkroco" },
+		{ Id = 6682341755, Name = "Miau Butterfly Necklace Gold a", Price = 70, CreatorName = "cyaleys" },
+		{ Id = 5270699726, Name = "Iced Out Chain", Price = 100, CreatorName = "genkroco" },
+		{ Id = 5314000093, Name = "Cartoony Rainbow Bow Tie", Price = 55, CreatorName = "CodyDevv" },
+	},
+	Shoulder = {
+		{ Id = 119934643965525, Name = "Starwisp", Price = 0, CreatorName = "Roblox" },
+		{ Id = 5634362258, Name = "Rainbow Flame Aura - Top", Price = 55, CreatorName = "nezko" },
+		{ Id = 5067271347, Name = "TanqR Shoulder Buddy", Price = 55, CreatorName = "TanqR" },
+		{ Id = 3339372724, Name = "Overseer Oversleeper: Terrible", Price = 100, CreatorName = "Roblox" },
+		{ Id = 13386099479, Name = "Catalog Avatar Creator: Mascot", Price = 0, CreatorName = "Muneeb" },
+		{ Id = 13345169760, Name = "Hazem Shoulder Pal", Price = 0, CreatorName = "haz3mn" },
+		{ Id = 5004362849, Name = "Foxy from LankyBox", Price = 55, CreatorName = "LankyBoxGamesJustin" },
+		{ Id = 150381051, Name = "Spring Fairy", Price = 300, CreatorName = "Roblox" },
+		{ Id = 4710303488, Name = "Bacon Buddy", Price = 55, CreatorName = "TanqR" },
+		{ Id = 4879168489, Name = "Bat Buddy", Price = 55, CreatorName = "Lukacors" },
+		{ Id = 5548638720, Name = "Red Flame Aura - Top", Price = 55, CreatorName = "nezko" },
+		{ Id = 5548531343, Name = "Neon Flame Aura - Top", Price = 55, CreatorName = "nezko" },
+	},
+	Front = {
+		{ Id = 3756389957, Name = "Cursed Flames", Price = 55, CreatorName = "Roblox" },
+		{ Id = 16290585600, Name = "Earbuds", Price = 55, CreatorName = "yumari" },
+		{ Id = 5165283690, Name = "Pride Crossbody Bag", Price = 55, CreatorName = "MissRossiie" },
+		{ Id = 8208605869, Name = "Fluffy Feather Boa White 3.0", Price = 75, CreatorName = "PureSweetener" },
+		{ Id = 6741572545, Name = "Y2K Grunge Black Shoulder Bag", Price = 55, CreatorName = "Sarabxlla" },
+		{ Id = 5508770029, Name = "Fashionable White Shoulder Pur", Price = 95, CreatorName = "NUTEST" },
+		{ Id = 5410262465, Name = "Laid-back Earbuds", Price = 80, CreatorName = "genkroco" },
+		{ Id = 7104069343, Name = "Black Rabbit Bag", Price = 55, CreatorName = "DIDIgamedev" },
+		{ Id = 8715048013, Name = "White Luxury Heart Purse (3.0)", Price = 55, CreatorName = "Junozy" },
+		{ Id = 6871237205, Name = "[3.0 version] Tote Bag", Price = 55, CreatorName = "genkroco" },
+		{ Id = 5104122288, Name = "Mini Shoulder Bag", Price = 90, CreatorName = "Ayzria" },
+		{ Id = 81108098355950, Name = "POINT Skateboard", Price = 55, CreatorName = "Point UGC" },
+	},
+	Back = {
+		{ Id = 106690045, Name = "Classic Swordpack Throwback", Price = 150, CreatorName = "Roblox" },
+		{ Id = 5313324044, Name = "Gamer Wings", Price = 140, CreatorName = "TheShipArchitect" },
+		{ Id = 4436710326, Name = "Duffel Bag", Price = 170, CreatorName = "WhoToTrus" },
+		{ Id = 4623728953, Name = "Black Demon Trident", Price = 140, CreatorName = "Jazzyx3" },
+		{ Id = 4962552589, Name = "Banana Suit", Price = 115, CreatorName = "Reverse_Polarity" },
+		{ Id = 5255905993, Name = "Cartoony Rainbow Sword", Price = 140, CreatorName = "CodyDevv" },
+		{ Id = 4641740149, Name = "Skateboard #12: Checker Chase", Price = 140, CreatorName = "maplestick" },
+		{ Id = 4487802862, Name = "Black Drawstring Bag", Price = 140, CreatorName = "WhoToTrus" },
+		{ Id = 5315452348, Name = "White Bunny Backpack", Price = 140, CreatorName = "Lukacors" },
+		{ Id = 5063549346, Name = "Leggy Dino Suit", Price = 115, CreatorName = "Reverse_Polarity" },
+		{ Id = 5063577434, Name = "| COLD STARE | SKATEBOARD", Price = 140, CreatorName = "Injanity" },
+		{ Id = 6472661790, Name = "Black Feather Void Wings [Dark", Price = 140, CreatorName = "ZeFerusGT" },
+	},
+	Waist = {
+		{ Id = 5634369034, Name = "Rainbow Flame Aura", Price = 65, CreatorName = "nezko" },
+		{ Id = 5727822995, Name = "80s Hanging Suspenders", Price = 75, CreatorName = "Rush_X" },
+		{ Id = 5861465755, Name = "Wheelchair", Price = 65, CreatorName = "lIIIllIIlIlllIIll" },
+		{ Id = 6572651845, Name = "Cartoony Rainbow Followers: Ba", Price = 65, CreatorName = "penguim2" },
+		{ Id = 4604288766, Name = "Demon Tail", Price = 65, CreatorName = "supernob123" },
+		{ Id = 6419516033, Name = "Pink Flamingo Floaty", Price = 65, CreatorName = "mollyxian" },
+		{ Id = 6934118068, Name = "Fashionable Silver Ring Chain ", Price = 66, CreatorName = "Junozy" },
+		{ Id = 4250792791, Name = "Dark Katana", Price = 65, CreatorName = "maplestick" },
+		{ Id = 4239772630, Name = "Black Pleated Skirt", Price = 120, CreatorName = "Erythia" },
+		{ Id = 11701552350, Name = "Realistic Capybara Mount", Price = 65, CreatorName = "marinusss" },
+		{ Id = 7172656303, Name = "Duck Floaty", Price = 65, CreatorName = "S_Viper" },
+		{ Id = 4876469013, Name = "Destructive Aura", Price = 65, CreatorName = "maplestick" },
+	},
+	Hair = {
+		{ Id = 451221329, Name = "True Blue Hair", Price = 0, CreatorName = "Roblox" },
+		{ Id = 1103003368, Name = "Orange Beanie with Black Hair", Price = 0, CreatorName = "Roblox" },
+		{ Id = 2956239660, Name = "Belle Of Belfast Long Red Hair", Price = 0, CreatorName = "Roblox" },
+		{ Id = 63690008, Name = "Pal Hair", Price = 0, CreatorName = "Roblox" },
+		{ Id = 376524487, Name = "Blonde Spiked Hair", Price = 0, CreatorName = "Roblox" },
+		{ Id = 376526888, Name = "Straight Blonde Hair", Price = 0, CreatorName = "Roblox" },
+		{ Id = 376548738, Name = "Brown Charmer Hair", Price = 0, CreatorName = "Roblox" },
+		{ Id = 16630147, Name = "Beautiful Hair for Beautiful P", Price = 95, CreatorName = "Roblox" },
+		{ Id = 62234425, Name = "Brown Hair", Price = 0, CreatorName = "Roblox" },
+		{ Id = 7193455510, Name = "Braided Hair - Red", Price = 0, CreatorName = "Roblox" },
+		{ Id = 9244148336, Name = "Braided Hair - Blonde", Price = 0, CreatorName = "Roblox" },
+		{ Id = 7193454569, Name = "Braided Hair - Black", Price = 0, CreatorName = "Roblox" },
+	},
+	TShirt = {
+		{ Id = 1593719, Name = "Wolf & Moon", Price = 0, CreatorName = "hyperz" },
+		{ Id = 1376925, Name = "penguin hoodie", Price = 0, CreatorName = "Nalonkuru" },
+		{ Id = 1719488, Name = "Scatman Johns Vest", Price = 0, CreatorName = "superyoshi64" },
+		{ Id = 1351714, Name = "blinggg", Price = 0, CreatorName = "kennos" },
+		{ Id = 1600307, Name = "Patriot Jersey", Price = 0, CreatorName = "ViacomIsPoo" },
+		{ Id = 1649722, Name = "Black/Yellow Smiley!", Price = 0, CreatorName = "RockerAAAAnnnn" },
+		{ Id = 1627363, Name = "wool hood So cute X3 FREEEE!", Price = 0, CreatorName = "Nalonkuru" },
+		{ Id = 1551714, Name = "Demon Naruto [shuippen].", Price = 0, CreatorName = "DarkSpineSonic321" },
+		{ Id = 1000003, Name = "Smiley Flower", Price = 0, CreatorName = "Matt Dusek" },
+		{ Id = 1514887, Name = "Super Sonic", Price = 0, CreatorName = "Tetrakarn" },
+		{ Id = 1725635, Name = "[ Content Deleted ]", Price = 0, CreatorName = "naranjo" },
+		{ Id = 1381009, Name = "superman shirt", Price = 0, CreatorName = "coolman0" },
+	},
+	Shirt = {
+		{ Id = 607785314, Name = "ROBLOX Jacket", Price = 0, CreatorName = "Roblox" },
+		{ Id = 398633584, Name = "Denim Jacket with White Hoodie", Price = 0, CreatorName = "Roblox" },
+		{ Id = 3670737444, Name = "Roblox Shirt - Simple Pattern", Price = 0, CreatorName = "Roblox" },
+		{ Id = 398635081, Name = "Blue Plaid Shirt ", Price = 0, CreatorName = "Roblox" },
+		{ Id = 398634295, Name = "Pastel Starburst Top with Gray", Price = 0, CreatorName = "Roblox" },
+		{ Id = 144076358, Name = "Blue and Black Motorcycle Shir", Price = 0, CreatorName = "Roblox" },
+		{ Id = 382538059, Name = "Green Jersey", Price = 0, CreatorName = "Roblox" },
+		{ Id = 4047884939, Name = "My Favorite Pizza Shirt", Price = 0, CreatorName = "Roblox" },
+		{ Id = 4047884046, Name = "Guitar Tee with Black Jacket", Price = 0, CreatorName = "Roblox" },
+		{ Id = 4047886060, Name = "Purple and Teal Top", Price = 0, CreatorName = "Roblox" },
+		{ Id = 144076436, Name = "Grey Striped Shirt with Denim ", Price = 0, CreatorName = "Roblox" },
+		{ Id = 382538295, Name = "Guitar Tee with Black Jacket", Price = 0, CreatorName = "Roblox" },
+	},
+	Pants = {
+		{ Id = 398633812, Name = "Black Jeans with White Shoes", Price = 0, CreatorName = "Roblox" },
+		{ Id = 398634487, Name = "Beautiful You Jeans", Price = 0, CreatorName = "Roblox" },
+		{ Id = 398635338, Name = "Ripped Skater Pants", Price = 0, CreatorName = "Roblox" },
+		{ Id = 144076760, Name = "Dark Green Jeans", Price = 0, CreatorName = "Roblox" },
+		{ Id = 382537950, Name = "Jean Shorts with White Shoes", Price = 0, CreatorName = "Roblox" },
+		{ Id = 382538503, Name = "Black Jeans with Sneakers", Price = 0, CreatorName = "Roblox" },
+		{ Id = 382537569, Name = "Black Jeans", Price = 0, CreatorName = "Roblox" },
+		{ Id = 382537806, Name = "Jean Shorts", Price = 0, CreatorName = "Roblox" },
+		{ Id = 129459077, Name = "Black Slacks", Price = 5, CreatorName = "Roblox" },
+		{ Id = 129458426, Name = "Jeans", Price = 5, CreatorName = "Roblox" },
+		{ Id = 5197702014, Name = "Cute ripped Jeans Y2k aestheti", Price = 5, CreatorName = "uaeu" },
+		{ Id = 7581780596, Name = "vamp emo cyber y2k streetwear ", Price = 10, CreatorName = "сrіme" },
+	},
+	Jacket = {
+		{ Id = 7192549218, Name = "Leather Jacket - Black", Price = 0, CreatorName = "Roblox" },
+		{ Id = 8516609675, Name = "Denim Jacket - Light Wash", Price = 0, CreatorName = "Roblox" },
+		{ Id = 8516620262, Name = "Hooded Jacket - Gray", Price = 0, CreatorName = "Roblox" },
+		{ Id = 8516612751, Name = "Denim Jacket - White", Price = 0, CreatorName = "Roblox" },
+		{ Id = 7192546798, Name = "Collared Leather Jacket - Whit", Price = 0, CreatorName = "Roblox" },
+		{ Id = 6984767443, Name = "Leather Jacket - Brown", Price = 0, CreatorName = "Roblox" },
+		{ Id = 7192547628, Name = "Collared Leather Jacket - Brow", Price = 0, CreatorName = "Roblox" },
+		{ Id = 9122110415, Name = "Off-Shoulder Jacket White", Price = 70, CreatorName = "Spiraxy" },
+		{ Id = 9059176760, Name = "Off-Shoulder Jacket Pink", Price = 70, CreatorName = "Spiraxy" },
+		{ Id = 14213412547, Name = "Cropped Oversized Off Shoulder", Price = 70, CreatorName = "cyutsee" },
+		{ Id = 9122099141, Name = "Off-Shoulder Jacket Black", Price = 70, CreatorName = "Spiraxy" },
+		{ Id = 14213406515, Name = "Cropped Oversized Off Shoulder", Price = 70, CreatorName = "cyutsee" },
+	},
+	LeftShoe = {
+	},
+	Bundle = {
+		{ Id = 1656, Name = "Cube Avatar", Price = 175, CreatorName = "MagicalV", IsBundle = true },
+		{ Id = 6247, Name = "Small Excited Kemono Avatar Bu", Price = 175, CreatorName = "Epic_RedPandas", IsBundle = true },
+		{ Id = 6243, Name = "Excited Kemono Avatar Bundle", Price = 175, CreatorName = "Epic_RedPandas", IsBundle = true },
+		{ Id = 310626, Name = "Goose avatar", Price = 175, CreatorName = "marinusss", IsBundle = true },
+		{ Id = 2049, Name = "Sentinel_Avatar_23_Skeleton(1)", Price = 175, CreatorName = "Soulskor", IsBundle = true },
+		{ Id = 39825, Name = "Dynamic Kemono Shiba Bundle", Price = 175, CreatorName = "Epic_RedPandas", IsBundle = true },
+		{ Id = 295597, Name = "Capybara Bundle", Price = 175, CreatorName = "FireAtacck", IsBundle = true },
+		{ Id = 3325, Name = "Wolf Bundle", Price = 175, CreatorName = "jqy_j", IsBundle = true },
+		{ Id = 75783439819431, Name = "Mini Me R6 Bundle", Price = 175, CreatorName = "Flobodos", IsBundle = true },
+		{ Id = 155316837905488, Name = "Thin Tall Black Skeleton Bundl", Price = 175, CreatorName = "Ecstatic Bundles", IsBundle = true },
+		{ Id = 300926, Name = "Biggest Bundle [RECOLORABLE]", Price = 175, CreatorName = "Clockset", IsBundle = true },
+		{ Id = 1598410, Name = "bundle", Price = 175, CreatorName = "bnjibrael", IsBundle = true },
+	},
+	HeadBundle = {
+		{ Id = 3711, Name = "Blushing Head w/ Pores Head", Price = 75, CreatorName = "SIEGFRlED", IsBundle = true },
+		{ Id = 2735, Name = "AlterDemon Head", Price = 75, CreatorName = "Sziczi", IsBundle = true },
+		{ Id = 3712, Name = "Freckled Face Head", Price = 75, CreatorName = "SIEGFRlED", IsBundle = true },
+		{ Id = 4989, Name = "Bruh Face Head", Price = 75, CreatorName = "BUNNIHOUPI", IsBundle = true },
+		{ Id = 4678, Name = "Frog Meme Head", Price = 75, CreatorName = "RedLegendDev", IsBundle = true },
+		{ Id = 6488, Name = "🎃Pumpkin Dynamic Head", Price = 75, CreatorName = "Coldbe3D", IsBundle = true },
+		{ Id = 40756, Name = "Trick Or Treat Head", Price = 75, CreatorName = "RandomReecee", IsBundle = true },
+		{ Id = 4985, Name = "Chibi Eyes Head", Price = 75, CreatorName = "BUNNIHOUPI", IsBundle = true },
+		{ Id = 5647, Name = "Kawaii Head", Price = 75, CreatorName = "copuni", IsBundle = true },
+		{ Id = 5302, Name = "Lucky Block Head", Price = 75, CreatorName = "Titanicmesh", IsBundle = true },
+		{ Id = 1904, Name = "Robot Head", Price = 75, CreatorName = "idelww", IsBundle = true },
+		{ Id = 8914, Name = "Red Gradient Head [Color Chang", Price = 75, CreatorName = "idelww", IsBundle = true },
+	},
+}
 
 local C = {
 	bg = Color3.fromRGB(255, 255, 255),
@@ -1140,7 +1341,7 @@ end
 makeItemCell = function(parent, it, kind, order, cz)
 	local p = tonumber(it.Price) or 0
 	local cell = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1 / 3, -7, 0, 186), LayoutOrder = order }, parent)
-	local img = new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", ScaleType = Enum.ScaleType.Fit, Size = UDim2.new(1, 0, 0, 110) }, cell)
+	local img = new("ImageLabel", { BackgroundColor3 = Color3.fromRGB(233, 234, 238), Image = "rbxthumb://type=" .. (it.IsBundle and "BundleThumbnail" or "Asset") .. "&id=" .. it.Id .. "&w=150&h=150", ScaleType = Enum.ScaleType.Fit, Size = UDim2.new(1, 0, 0, 110) }, cell)
 	corner(img, UDim.new(0, 8))
 	local stroke = new("UIStroke", { Color = Color3.fromRGB(32, 34, 39), Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Enabled = false }, img)
 	local det = new("TextLabel", { Text = "Details", TextSize = 11, Font = FONT, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(27, 29, 34), BorderSizePixel = 0, Position = UDim2.new(0, 3, 1, -20), Size = UDim2.new(1, -6, 0, 17), Visible = false, ZIndex = 3 }, img)
@@ -1216,7 +1417,10 @@ local function loadCategory(cat)
 			status.Text = "Loading... (" .. attempt .. "/4)"
 			task.wait(1 + attempt * 0.5)
 		end
-		if not items then error(tostring(lastErr)) end
+		if not items then
+			items = FAKE_INV[cat[3]] or {}
+			warn("Catalogo no respondio, uso inventario de juguete: " .. tostring(lastErr))
+		end
 		if my ~= searchToken then return end
 		status.Text = ""
 		fillRow(recRow, items, 1, 3, cat)
@@ -1300,8 +1504,10 @@ catalogInto = function(cat)
 					local params = CatalogSearchParams.new()
 					if cat[5] == "bundle" then
 						params.BundleTypes = { Enum.BundleType.BodyParts }
+					elseif cat[5] == "headbundle" then
+						params.BundleTypes = { Enum.BundleType.DynamicHead }
 					else
-						params.AssetTypes = { cat[2] }
+						params.AssetTypes = { cat[3] }
 					end
 					params.SortType = Enum.CatalogSortType.MostFavorited
 					params.IncludeOffSale = false
@@ -1312,12 +1518,17 @@ catalogInto = function(cat)
 				if not grid.Parent then return end
 				task.wait(1 + attempt * 0.5)
 			end
-			if not items then error(tostring(lastErr)) end
+			if not items then
+				-- inventario de juguete: items reales del catalogo guardados en el script
+				items = FAKE_INV[cat[5] == "headbundle" and "HeadBundle" or cat[4]] or {}
+				warn("Catalogo no respondio, uso inventario de juguete: " .. tostring(lastErr))
+			end
 			if not grid.Parent then return end
 			st:Destroy()
+			if #items == 0 then label(grid, "Not available yet", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20)) end
 			for i, it in ipairs(items) do
 				if i > 12 then break end
-				makeItemCell(grid, it, cat[3], i, true)
+				makeItemCell(grid, it, cat[4], i, true)
 			end
 		end)
 		if not ok then
@@ -1340,7 +1551,7 @@ end
 local CZICONS = { full_body = "rbxthumb://type=Asset&id=91101726026716&w=150&h=150", hair = "rbxthumb://type=Asset&id=118739840803940&w=150&h=150", head = "rbxthumb://type=Asset&id=136107937180195&w=150&h=150", build = "rbxthumb://type=Asset&id=103953116552862&w=150&h=150", skin = "rbxthumb://type=Asset&id=87443355317967&w=150&h=150", clear = "rbxthumb://type=Asset&id=127690928912397&w=150&h=150", top = "rbxthumb://type=Asset&id=130138315041704&w=150&h=150", outerwear = "rbxthumb://type=Asset&id=73093717772456&w=150&h=150", bottom = "rbxthumb://type=Asset&id=134382518470665&w=150&h=150", shoes = "rbxthumb://type=Asset&id=102733805433566&w=150&h=150", classic_shirt = "rbxthumb://type=Asset&id=114424121198255&w=150&h=150", classic_pants = "rbxthumb://type=Asset&id=121159427580881&w=150&h=150", classic_tshirt = "rbxthumb://type=Asset&id=110283830445048&w=150&h=150", head_accessory = "rbxthumb://type=Asset&id=129250341922961&w=150&h=150", face_accessory = "rbxthumb://type=Asset&id=112709070368723&w=150&h=150", neck = "rbxthumb://type=Asset&id=101700200831280&w=150&h=150", back = "rbxthumb://type=Asset&id=112604318010709&w=150&h=150", waist = "rbxthumb://type=Asset&id=138257820302666&w=150&h=150", shoulder = "rbxthumb://type=Asset&id=80211604824950&w=150&h=150", front = "rbxthumb://type=Asset&id=117838130762162&w=150&h=150", gear = "rbxthumb://type=Asset&id=102855588751811&w=150&h=150" }
 -- { texto, icono, tipo de catalogo (nil = sin catalogo), clase para ponerlo }
 local CZ_SUBS = {
-	Body = { { "Full Body", "full_body", true, "Bundle", "bundle" }, { "Hair", "hair", AT("HairAccessory"), "Hair" }, { "Head", "head", AT("DynamicHead") or AT("Head"), "HeadPart" }, { "Build", "build" }, { "Skin", "skin" }, { "Clear", "clear" } },
+	Body = { { "Full Body", "full_body", true, "Bundle", "bundle" }, { "Hair", "hair", AT("HairAccessory"), "Hair" }, { "Head", "head", true, "Bundle", "headbundle" }, { "Build", "build" }, { "Skin", "skin" }, { "Clear", "clear" } },
 	Clothing = { { "Top", "top", AT("Shirt"), "Shirt" }, { "Outerwear", "outerwear", AT("JacketAccessory"), "Jacket" }, { "Bottom", "bottom", AT("Pants"), "Pants" }, { "Shoes", "shoes", AT("LeftShoeAccessory"), "LeftShoe" }, { "Shirt Classic", "classic_shirt", AT("Shirt"), "Shirt" }, { "Pants Classic", "classic_pants", AT("Pants"), "Pants" }, { "T-Shirt Classic", "classic_tshirt", AT("TShirt"), "TShirt" }, { "Clear", "clear" } },
 	Accessories = { { "Head", "head_accessory", AT("Hat"), "Hat" }, { "Face", "face_accessory", AT("FaceAccessory"), "Face" }, { "Neck", "neck", AT("NeckAccessory"), "Neck" }, { "Back", "back", AT("BackAccessory"), "Back" }, { "Waist", "waist", AT("WaistAccessory"), "Waist" }, { "Shoulder", "shoulder", AT("ShoulderAccessory"), "Shoulder" }, { "Front", "front", AT("FrontAccessory"), "Front" }, { "Gear", "gear" }, { "Clear", "clear" } },
 }
