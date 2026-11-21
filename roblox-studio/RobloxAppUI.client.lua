@@ -913,7 +913,7 @@ buildRig = function()
 	if not model or my ~= buildToken then return end
 	if rig then rig:Destroy() end
 	rig = model
-	rig:PivotTo(CFrame.new(0, 3, 0))
+	rig:PivotTo(CFrame.new(0, 3, 0) * CFrame.Angles(0, math.pi, 0)) -- de frente a la camara
 	rig.Parent = world
 	placeCamera()
 	UIX.updatePfps(rig)
