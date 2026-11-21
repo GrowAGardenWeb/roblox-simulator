@@ -81,6 +81,7 @@ local simBalance = 1000
 local profile = { name = player.DisplayName, plus = false, verified = false }
 local nameLabels = {}
 local balanceLabels = {}
+local showErr = function(m) warn(m) end -- se redefine mas abajo para mostrar el error en pantalla
 local function fmtFull(n)
 	n = math.max(0, math.floor(tonumber(n) or 0))
 	local t = tostring(n):reverse():gsub("(%d%d%d)", "%1,"):reverse()
@@ -457,7 +458,8 @@ end
 local function buildRig()
 	if not desc then return end
 	local ok, model = pcall(function() return Players:CreateHumanoidModelFromDescription(desc, Enum.HumanoidRigType.R15) end)
-	if not ok or not model then return end
+	if not ok then showErr("Avatar: " .. tostring(model)); return end
+	if not model then return end
 	if rig then rig:Destroy() end
 	rig = model
 	rig:PivotTo(CFrame.new(0, 3, 0))
@@ -607,7 +609,8 @@ local function wear(assetId, kind)
 		local layered = (kind == "Jacket" or kind == "LeftShoe")
 		local acc = desc:GetAccessories(true)
 		table.insert(acc, { AssetId = assetId, AccessoryType = t, IsLayered = layered, Order = #acc + 1 })
-		desc:SetAccessories(acc, true)
+		local okA, errA = pcall(function() desc:SetAccessories(acc, true) end)
+		if not okA then showErr("Equip: " .. tostring(errA)); return end
 	end
 	while #history > hIndex do table.remove(history) end
 	table.insert(history, desc:Clone()); hIndex = #history
@@ -621,7 +624,8 @@ local function setBalance(n)
 	applyBalance()
 end
 local function toast(msg)
-	local t = new("TextLabel", { BackgroundColor3 = Color3.fromRGB(32, 34, 39), Text = msg, TextSize = 15, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 20), Size = UDim2.fromOffset(170, 38), ZIndex = 130 }, root)
+	msg = tostring(msg)
+	local t = new("TextLabel", { BackgroundColor3 = Color3.fromRGB(32, 34, 39), Text = msg, TextSize = 15, Font = FONT_B, TextColor3 = Color3.new(1, 1, 1), AnchorPoint = Vector2.new(0.5, 0), Position = UDim2.new(0.5, 0, 0, 20), Size = UDim2.new(0, math.min(340, 40 + #msg * 7.5), 0, 38), ZIndex = 130 }, root)
 	corner(t)
 	t.BackgroundTransparency = 1; t.TextTransparency = 1
 	TweenService:Create(t, TweenInfo.new(0.2), { BackgroundTransparency = 0, TextTransparency = 0 }):Play()
@@ -629,6 +633,11 @@ local function toast(msg)
 		TweenService:Create(t, TweenInfo.new(0.25), { BackgroundTransparency = 1, TextTransparency = 1 }):Play()
 		task.delay(0.3, function() t:Destroy() end)
 	end)
+end
+showErr = function(m) toast(m); warn(m) end
+local function safe(fn, ...)
+	local ok, err = xpcall(fn, function(e) return tostring(e) end, ...)
+	if not ok then showErr("Error: " .. tostring(err):sub(1, 90)) end
 end
 local function unwear(assetId, kind)
 	if not desc then return end
@@ -727,7 +736,7 @@ local function fillRow(row, items, from, to, cat)
 		local cell = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, Size = UDim2.new(0.333, -7, 1, 0), LayoutOrder = i }, row)
 		corner(cell, UDim.new(0, 12))
 		new("ImageLabel", { BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit }, cell)
-		cell.Activated:Connect(function() openItemSheet(it, cat[3]) end)
+		cell.Activated:Connect(function() safe(openItemSheet, it, cat[3]) end)
 	end
 end
 local function loadCategory(cat)
@@ -833,7 +842,7 @@ local function catalogInto(cat)
 				local cell = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, LayoutOrder = i }, grid)
 				corner(cell, UDim.new(0, 12))
 				new("ImageLabel", { BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit }, cell)
-				cell.Activated:Connect(function() openItemSheet(it, cat[3]) end)
+				cell.Activated:Connect(function() safe(openItemSheet, it, cat[3]) end)
 			end
 		end)
 		if not ok then warn(err); if st.Parent then st.Text = "Catalog unavailable." end end
