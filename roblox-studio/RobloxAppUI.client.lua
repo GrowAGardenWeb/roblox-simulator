@@ -172,9 +172,31 @@ tilesRow(cont, 5, 150, 100, 1)
 
 -- ---- Charts ----
 local charts = page("Charts")
-local top = section(charts, "Top Trending", 1); tilesRow(top, 6, 150, 150, 1)
-local pop = section(charts, "Most Engaging", 2); tilesRow(pop, 6, 150, 150, 2)
-local up = section(charts, "Up-and-Coming", 3); tilesRow(up, 6, 150, 150, 3)
+-- filtros: dispositivo y pais (pildoras oscuras)
+local filters = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 36), LayoutOrder = 1 }, charts)
+new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 6) }, filters)
+for _, nm in ipairs({ "Standard Phone", "United States" }) do
+	local b = new("TextButton", { Text = nm .. "  \u{2304}", TextSize = 16, Font = FONT, TextColor3 = Color3.new(1, 1, 1), BackgroundColor3 = Color3.fromRGB(24, 25, 29), AutoButtonColor = true, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 32) }, filters)
+	corner(b)
+	new("UIPadding", { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14) }, b)
+end
+local function chartSection(title, subtitle, order)
+	local f = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, LayoutOrder = order }, charts)
+	new("UIListLayout", { Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder }, f)
+	local head = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, subtitle and 50 or 32), LayoutOrder = 0 }, f)
+	label(head, title .. "  \u{203A}", 24, true, C.text, UDim2.fromOffset(0, 0), UDim2.new(1, -40, 0, 30))
+	if subtitle then label(head, subtitle, 15, false, C.sub, UDim2.fromOffset(0, 28), UDim2.new(1, -40, 0, 20)) end
+	local info = new("Frame", { BackgroundTransparency = 1, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, 0, 0, 4), Size = UDim2.fromOffset(20, 20) }, head)
+	corner(info); new("UIStroke", { Color = C.text, Thickness = 1.6 }, info)
+	label(info, "i", 13, true, C.text, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
+	tilesRow(f, 6, 150, 150, 1)
+	return f
+end
+chartSection("Top Trending", nil, 2)
+chartSection("Up-and-Coming", nil, 3)
+chartSection("Top Playing Now", "Results for all devices and locations", 4)
+chartSection("Fun with Friends", nil, 5)
+chartSection("Top Revisited", nil, 6)
 
 -- ---- Me: pantalla Avatar (3D real + catalogo real) ----
 local avScreen = new("Frame", { Name = "AvatarScreen", Size = UDim2.new(1, 0, 1, -64), BackgroundColor3 = Color3.fromRGB(216, 217, 226), BorderSizePixel = 0, Visible = false, ClipsDescendants = true }, root)
@@ -231,6 +253,7 @@ end)
 
 local WHITE_PILL = Color3.fromRGB(255, 255, 255)
 local openDrawerFromAvatar -- se define mas abajo con el panel lateral
+local setMode -- Marketplace / Customize
 
 -- HUD: menu, Marketplace/Customize, buscar
 local avMenu = icon(avScreen, "menu", UDim2.fromOffset(20, 17), UDim2.fromOffset(26, 24), function(h)
@@ -250,7 +273,8 @@ for i, nm in ipairs({ "Marketplace", "Customize" }) do
 	local b = new("TextButton", { Text = nm, TextSize = 13, Font = FONT, TextColor3 = C.text, BackgroundTransparency = 1, Position = UDim2.new((i - 1) * 0.5, 0, 0, 0), Size = UDim2.new(0.5, 0, 1, 0), AutoButtonColor = false }, seg)
 	segBtns[i] = b
 	b.Activated:Connect(function()
-		TweenService:Create(segSel, TweenInfo.new(0.18, Enum.EasingStyle.Quad), { Position = UDim2.fromOffset(i == 1 and 4 or 70, 3), Size = UDim2.fromOffset(i == 1 and 76 or 76, 28) }):Play()
+		TweenService:Create(segSel, TweenInfo.new(0.18, Enum.EasingStyle.Quad), { Position = UDim2.fromOffset(i == 1 and 4 or 70, 3), Size = UDim2.fromOffset(76, 28) }):Play()
+		if setMode then setMode(i) end
 	end)
 end
 icon(avScreen, "search", UDim2.new(1, -52, 0, 14), UDim2.fromOffset(26, 26), function(h)
@@ -396,6 +420,193 @@ tabLine.Position = UDim2.fromOffset(10, 60)
 tabLine.Size = UDim2.fromOffset(30, 3)
 selectCat(1)
 task.defer(function() loadCategory(CATS[1]) end)
+
+
+-- ======== Customize ========
+local czTabsRow = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 22), Size = UDim2.new(1, -52, 0, 40), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X, Visible = false }, sheet)
+new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 20) }, czTabsRow)
+new("UIPadding", { PaddingLeft = UDim.new(0, 10) }, czTabsRow)
+local czLine = new("Frame", { BackgroundColor3 = C.text, BorderSizePixel = 0, Size = UDim2.fromOffset(30, 3), Position = UDim2.fromOffset(10, 61), Visible = false }, sheet)
+local czBody = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Position = UDim2.fromOffset(0, 66), Size = UDim2.new(1, 0, 1, -66), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, Visible = false }, sheet)
+new("UIPadding", { PaddingLeft = UDim.new(0, 14), PaddingRight = UDim.new(0, 14), PaddingTop = UDim.new(0, 8), PaddingBottom = UDim.new(0, 20) }, czBody)
+local czList = new("UIListLayout", { Padding = UDim.new(0, 12), SortOrder = Enum.SortOrder.LayoutOrder }, czBody)
+
+local function commit()
+	while #history > hIndex do table.remove(history) end
+	table.insert(history, desc:Clone()); hIndex = #history
+	buildRig()
+end
+local function czClear()
+	for _, c in ipairs(czBody:GetChildren()) do
+		if c:IsA("GuiObject") then c:Destroy() end
+	end
+end
+local czOrder = 0
+local function czAdd(inst) czOrder += 1; inst.LayoutOrder = czOrder; inst.Parent = czBody; return inst end
+local function bigTile(text, onTap, content)
+	local f = new("Frame", { BackgroundTransparency = 1, Size = UDim2.fromOffset(86, 112) })
+	local t = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, Size = UDim2.fromOffset(86, 86) }, f)
+	corner(t, UDim.new(0, 12))
+	new("UIStroke", { Color = C.line, Thickness = 1.5 }, t)
+	if content then content(t) end
+	label(f, text, 14, false, C.text, UDim2.fromOffset(0, 90), UDim2.fromOffset(86, 20), Enum.TextXAlignment.Center)
+	t.Activated:Connect(onTap)
+	return f
+end
+local function tileRow()
+	local r = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 114) })
+	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, r)
+	return r
+end
+local function catalogInto(cat)
+	local grid = czAdd(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y }))
+	new("UIGridLayout", { CellSize = UDim2.new(0.333, -7, 0, 113), CellPadding = UDim2.fromOffset(10, 10), SortOrder = Enum.SortOrder.LayoutOrder }, grid)
+	local st = label(grid, "Loading...", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
+	task.spawn(function()
+		local ok, err = pcall(function()
+			local params = CatalogSearchParams.new()
+			params.AssetTypes = { cat[2] }
+			params.SortType = Enum.CatalogSortType.MostFavorited
+			params.IncludeOffSale = false
+			local items = AvatarEditorService:SearchCatalog(params):GetCurrentPage()
+			if not grid.Parent then return end
+			st:Destroy()
+			for i, it in ipairs(items) do
+				if i > 12 then break end
+				local cell = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, LayoutOrder = i }, grid)
+				corner(cell, UDim.new(0, 12))
+				new("ImageLabel", { BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id=" .. it.Id .. "&w=150&h=150", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit }, cell)
+				cell.Activated:Connect(function() wear(it.Id, cat[3]) end)
+			end
+		end)
+		if not ok then warn(err); if st.Parent then st.Text = "Catalog unavailable." end end
+	end)
+end
+local SKINS = { Color3.fromRGB(255, 204, 153), Color3.fromRGB(234, 184, 146), Color3.fromRGB(205, 133, 63), Color3.fromRGB(150, 103, 74), Color3.fromRGB(98, 66, 47), Color3.fromRGB(245, 205, 160), Color3.fromRGB(160, 195, 230), Color3.fromRGB(120, 200, 140) }
+local function setSkin(col)
+	if not desc then return end
+	desc.HeadColor = col; desc.TorsoColor = col; desc.LeftArmColor = col; desc.RightArmColor = col; desc.LeftLegColor = col; desc.RightLegColor = col
+	commit()
+end
+local bodySub = "Full Body"
+local czTab = "Avatars"
+local buildCz
+local function bodyContent()
+	local subs = { "Full Body", "Hair", "Head", "Build", "Skin", "Clear" }
+	local row = tileRow()
+	row.Size = UDim2.new(1, 0, 0, 114)
+	local sc = new("ScrollingFrame", { BackgroundTransparency = 1, BorderSizePixel = 0, ScrollBarThickness = 0, Size = UDim2.new(1, 0, 0, 114), CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.X, ScrollingDirection = Enum.ScrollingDirection.X })
+	new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, sc)
+	for _, nm in ipairs(subs) do
+		local tile = bigTile(nm, function()
+			if nm == "Clear" then loadMyDescription() else bodySub = nm; buildCz() end
+		end, function(t)
+			if nm == "Skin" then
+				local d = new("Frame", { BackgroundColor3 = SKINS[4], AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.fromOffset(34, 34) }, t); corner(d)
+			else
+				label(t, "+", 28, false, C.sub, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center)
+			end
+		end)
+		tile.Parent = sc
+		if nm == bodySub then
+			local sel = new("UIStroke", { Color = C.text, Thickness = 2.5 }, tile:FindFirstChildOfClass("TextButton"))
+		end
+	end
+	czAdd(sc)
+	local hdr = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 40) })
+	label(hdr, "Body Parts", 15, false, C.sub, UDim2.fromOffset(0, 8), UDim2.fromOffset(90, 24))
+	local pill = new("TextButton", { Text = bodySub .. "  \u{2304}", TextSize = 16, Font = FONT, TextColor3 = C.text, BackgroundColor3 = C.gray, AutoButtonColor = false, Position = UDim2.fromOffset(92, 2), Size = UDim2.fromOffset(150, 36) }, hdr)
+	corner(pill)
+	czAdd(hdr)
+	if bodySub == "Hair" then
+		catalogInto({ "Hair", Enum.AvatarAssetType.HairAccessory, "Hair" })
+	elseif bodySub == "Skin" then
+		local g = czAdd(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 60) }))
+		new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 12) }, g)
+		for _, col in ipairs(SKINS) do
+			local sw = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = col, Size = UDim2.fromOffset(40, 40) }, g)
+			corner(sw); new("UIStroke", { Color = C.line, Thickness = 1.5 }, sw)
+			sw.Activated:Connect(function() setSkin(col) end)
+		end
+	elseif bodySub == "Build" then
+		local g = czAdd(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 44) }))
+		new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 10) }, g)
+		for _, b in ipairs({ { "Slim", 0.9, 0.85 }, { "Normal", 1, 1 }, { "Tall", 1.05, 1 }, { "Wide", 1, 1.1 } }) do
+			local btn = new("TextButton", { Text = b[1], TextSize = 16, Font = FONT_B, TextColor3 = C.text, BackgroundColor3 = C.gray, AutoButtonColor = true, Size = UDim2.fromOffset(78, 40) }, g)
+			corner(btn)
+			btn.Activated:Connect(function()
+				if not desc then return end
+				desc.HeightScale = b[2]; desc.WidthScale = b[3]; desc.DepthScale = b[3]
+				commit()
+			end)
+		end
+	else
+		local m = label(czBody, bodySub == "Head" and "Choose face and head items in Marketplace > Avatars." or "Your current body.", 15, false, C.sub, nil, UDim2.new(1, 0, 0, 24))
+		czAdd(m)
+	end
+end
+local function wornAccessories()
+	local list = czAdd(new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y }))
+	new("UIGridLayout", { CellSize = UDim2.new(0.333, -7, 0, 113), CellPadding = UDim2.fromOffset(10, 10), SortOrder = Enum.SortOrder.LayoutOrder }, list)
+	if not desc then return end
+	local acc = desc:GetAccessories(true)
+	if #acc == 0 then label(list, "Nothing equipped.", 15, false, C.sub, nil, UDim2.new(1, 0, 0, 24)) end
+	for i, a in ipairs(acc) do
+		local cell = new("TextButton", { Text = "", AutoButtonColor = false, BackgroundColor3 = C.gray, LayoutOrder = i }, list)
+		corner(cell, UDim.new(0, 12))
+		new("ImageLabel", { BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id=" .. a.AssetId .. "&w=150&h=150", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit }, cell)
+		cell.Activated:Connect(function()
+			table.remove(acc, i)
+			desc:SetAccessories(acc, true)
+			commit(); buildCz()
+		end)
+	end
+	local tip = label(czBody, "Tap an item to take it off.", 14, false, C.sub, nil, UDim2.new(1, 0, 0, 20))
+	czAdd(tip)
+end
+buildCz = function()
+	czClear(); czOrder = 0
+	if czTab == "Avatars" then
+		local r = tileRow()
+		bigTile("Add/Edit", function() loadMyDescription() end, function(t) label(t, "+", 34, false, C.text, nil, UDim2.fromScale(1, 1), Enum.TextXAlignment.Center) end).Parent = r
+		czAdd(r)
+	elseif czTab == "Body" then
+		bodyContent()
+	elseif czTab == "Clothing" then
+		catalogInto({ "Shirts", Enum.AvatarAssetType.Shirt, "Shirt" })
+	elseif czTab == "Accessories" then
+		wornAccessories()
+	else
+		czAdd(label(czBody, "Nothing here yet.", 15, false, C.sub, nil, UDim2.new(1, 0, 0, 24)))
+	end
+end
+local CZ_TABS = { "Avatars", "Body", "Clothing", "Accessories", "Backgrounds", "Animations", "Emotes", "Makeup" }
+local czBtns = {}
+local function selectCz(name)
+	czTab = name
+	for _, b in ipairs(czBtns) do b.TextColor3 = (b.Text == name) and C.text or C.sub; b.Font = (b.Text == name) and FONT_B or FONT end
+	buildCz()
+	task.defer(function()
+		for _, b in ipairs(czBtns) do
+			if b.Text == name then
+				czLine.Position = UDim2.fromOffset(b.AbsolutePosition.X - sheet.AbsolutePosition.X, 61)
+				czLine.Size = UDim2.fromOffset(b.AbsoluteSize.X, 3)
+			end
+		end
+	end)
+end
+for _, nm in ipairs(CZ_TABS) do
+	local b = new("TextButton", { Text = nm, TextSize = 19, Font = FONT, TextColor3 = C.sub, BackgroundTransparency = 1, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.fromOffset(0, 40), AutoButtonColor = false }, czTabsRow)
+	czBtns[#czBtns + 1] = b
+	b.Activated:Connect(function() selectCz(nm) end)
+end
+
+setMode = function(i)
+	local cz = (i == 2)
+	tabsRow.Visible = not cz; tabLine.Visible = not cz; body.Visible = not cz
+	czTabsRow.Visible = cz; czLine.Visible = cz; czBody.Visible = cz
+	if cz then selectCz(czTab) end
+end
 
 -- ======== Panel lateral (menu de las 3 rayas) ========
 local DR_W = 333
