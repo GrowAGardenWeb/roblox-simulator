@@ -52,6 +52,9 @@
   #shoprow.dyn .dt.map{background:url(assets/maptex_soft.webp) center/cover,linear-gradient(160deg,var(--a,#3a63c4),var(--b,#1b3a8a));background-blend-mode:overlay}
   #shoprow.dyn .dt.solid{clip-path:inset(0 round 14px)}
   #shoprow.dyn .dt.dev{height:262px}
+  @keyframes fxFloat{0%,100%{transform:translateY(0) rotate(-.6deg)}50%{transform:translateY(-10px) rotate(.6deg)}}
+  #shoprow.dyn .dt.dev .di{animation:fxFloat 3.8s ease-in-out infinite;animation-delay:calc(var(--i,0)*-.9s);will-change:transform}
+  body.owneditem #dynart,#ptbigD,#ptbigG{animation-name:fxArt,fxFloat;animation-duration:.6s,4s;animation-delay:0s,.6s;animation-timing-function:cubic-bezier(.2,1.2,.4,1),ease-in-out;animation-iteration-count:1,infinite;animation-fill-mode:both,none}
   #shoprow.dyn .dt .ownlbl{position:absolute;left:12px;bottom:10px;font:800 14px Montserrat;color:#5cff7a;letter-spacing:.03em;text-shadow:0 1px 3px rgba(0,0,0,.5)}
   #shoprow.dyn .dt.bundle.wide{height:262px;margin-bottom:34px}
   html.shoplite #shoprow.dyn .dt{animation:none!important}
