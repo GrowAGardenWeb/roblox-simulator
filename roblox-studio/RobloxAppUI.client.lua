@@ -894,7 +894,8 @@ buildRig = function()
 	local my = buildToken
 	local model
 	-- 1) servidor (carga cualquier item del catalogo)
-	local rf = game:GetService("ReplicatedStorage"):FindFirstChild("AvatarPreview")
+	local RS = game:GetService("ReplicatedStorage")
+	local rf = RS:FindFirstChild("AvatarPreview") or RS:WaitForChild("AvatarPreview", 4) -- espera un poco por si el Script del servidor aun no lo creo
 	if rf then
 		local payload = serializeDesc()
 		for attempt = 1, 3 do
