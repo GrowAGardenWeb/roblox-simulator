@@ -7,257 +7,160 @@
  ],
  "sample": [
   {
-   "regularPrice": 2000,
-   "finalPrice": 1500,
-   "devName": "[VIRTUAL]1 x Greta Grim, 1 x Ivor, 1 x Demon Slashers for -1 MtxCurrency",
-   "offerId": "v2:/3b9bf71a8ff438e7499e79b089700560527b7c4521d2b8e02c0ef437d718bb94",
-   "inDate": "2026-11-20T00:00:00Z",
-   "outDate": "2026-11-26T23:59:59.999Z",
+   "regularPrice": 1000,
+   "finalPrice": 1000,
+   "devName": "[VIRTUAL]1 x Wilson, 1 x Moon Flame for 1000 MtxCurrency",
+   "offerId": "v2:/22159ba91ade6c183282a15485b110e45338edfbd7496ef9e797c6f014fa93cc",
+   "inDate": "2026-11-22T00:00:00Z",
+   "outDate": "2026-11-24T23:59:59.999Z",
    "bundle": {
-    "name": "Hexed & Haunted Bundle",
+    "name": "Wilson Gear Bundle",
     "info": "Bundle",
-    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/8bd8f4a3f94ca207/renderimage_0.png"
-   },
-   "banner": {
-    "value": "500 V-Bucks Off",
-    "intensity": "Low",
-    "backendValue": "AmountOff"
+    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/3afa7ecaf2b2475e/renderimage_0.png"
    },
    "giftable": true,
    "refundable": false,
-   "sortPriority": -1,
-   "layoutId": "STWPack.97",
+   "sortPriority": -2,
+   "layoutId": "ElRubius.98",
    "layout": {
-    "id": "STWPack",
-    "name": "Save The World",
-    "index": 13,
-    "rank": 184,
+    "id": "ElRubius",
+    "name": "Rubius",
+    "category": "Icons",
+    "index": 41,
+    "rank": 176,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
     "displayType": "tileGrid"
    },
    "colors": {
-    "color1": "a853d3ff",
-    "color3": "7a1bc7ff",
-    "textBackgroundColor": "6b0eb6ff"
+    "color1": "57239bff",
+    "color3": "08bcbaff",
+    "textBackgroundColor": "147574ff"
    },
-   "tileBackgroundMaterial": "ShopTile_Rocks",
    "tileSize": "Size_1_x_1",
-   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_Wingedeye_Bundle",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S43/DAv2_Bundle_Featured_Wingedeye",
+   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_LivelyDomino_Gear_Bundle",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S31/DAv2_Bundle_Featured_LivelyDomino_Gear",
    "newDisplayAsset": {
-    "id": "DAv2_Bundle_Featured_WingedEye",
+    "id": "DAv2_Bundle_Featured_LivelyDomino_Gear",
     "materialInstances": [],
     "renderImages": [
      {
       "productTag": "Product.BR",
-      "fileName": "cosmo__8bd8f4a3f94ca207_29c0c4191e61fb71.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/8bd8f4a3f94ca207/renderimage_0.png"
-     },
-     {
-      "productTag": "Product.BR",
-      "fileName": "cosmo__8bd8f4a3f94ca207_d2e71b6320aa32c2.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/8bd8f4a3f94ca207/renderimage_1.png"
-     },
-     {
-      "productTag": "Product.Juno",
-      "fileName": "cosmo__8bd8f4a3f94ca207_71e578208f570b02.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/8bd8f4a3f94ca207/renderimage_2.png"
+      "fileName": "cosmo__3afa7ecaf2b2475e_5653d169a0bb070f.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/3afa7ecaf2b2475e/renderimage_0.png"
      }
     ]
    },
    "brItems": [
     {
-     "id": "Character_WingedEye",
-     "name": "Greta Grim",
-     "description": "The gloomy eye of the underworld.",
-     "type": {
-      "value": "outfit",
-      "displayValue": "Outfit",
-      "backendValue": "AthenaCharacter"
-     },
-     "rarity": {
-      "value": "epic",
-      "displayValue": "Epic",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "set": {
-      "value": "Hexed & Haunted",
-      "text": "Part of the Hexed & Haunted set.",
-      "backendValue": "SuperCursed"
-     },
-     "introduction": {
-      "chapter": "6",
-      "season": "4",
-      "text": "Introduced in Chapter 6, Season 4.",
-      "backendValue": 36
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/featured.png",
-      "lego": {
-       "small": "https://fortnite-api.com/images/cosmetics/lego/character_wingedeye/small.png",
-       "large": "https://fortnite-api.com/images/cosmetics/lego/character_wingedeye/large.png",
-       "wide": "https://fortnite-api.com/images/cosmetics/lego/character_wingedeye/wide.png"
-      },
-      "bean": {
-       "small": "https://fortnite-api.com/images/cosmetics/beans/bean_wingedeye/small.png",
-       "large": "https://fortnite-api.com/images/cosmetics/beans/bean_wingedeye/large.png"
-      }
-     },
-     "variants": [
-      {
-       "channel": "Material",
-       "type": "shading",
-       "options": [
-        {
-         "tag": "Mat1",
-         "name": "cel",
-         "image": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/variants/material/mat1.png"
-        },
-        {
-         "tag": "Mat2",
-         "name": "outlined gradient",
-         "image": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/variants/material/mat2.png"
-        },
-        {
-         "tag": "Mat3",
-         "name": "gradient",
-         "image": "https://fortnite-api.com/images/cosmetics/br/character_wingedeye/variants/material/mat3.png"
-        }
-       ]
-      }
-     ],
-     "added": "2025-07-29T08:28:45Z"
-    },
-    {
-     "id": "Backpack_WingedEye",
-     "name": "Ivor",
-     "description": "He's got his eye on you.",
+     "id": "Backpack_LivelyDomino",
+     "name": "Wilson",
+     "description": "Now Wilson will be eternal.",
      "type": {
       "value": "backpack",
       "displayValue": "Back Bling",
       "backendValue": "AthenaBackpack"
      },
      "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
+      "value": "icon",
+      "displayValue": "Icon Series",
       "backendValue": "EFortRarity::Rare"
      },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
      "set": {
-      "value": "Hexed & Haunted",
-      "text": "Part of the Hexed & Haunted set.",
-      "backendValue": "SuperCursed"
+      "value": "Rubius",
+      "text": "Part of the Rubius set.",
+      "backendValue": "LockDose"
      },
      "introduction": {
-      "chapter": "6",
+      "chapter": "5",
       "season": "4",
-      "text": "Introduced in Chapter 6, Season 4.",
-      "backendValue": 36
+      "text": "Introduced in Chapter 5, Season 4.",
+      "backendValue": 31
      },
      "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/featured.png"
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_livelydomino/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_livelydomino/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_livelydomino/featured.png"
      },
-     "variants": [
-      {
-       "channel": "Material",
-       "type": "shading",
-       "options": [
-        {
-         "tag": "Mat1",
-         "name": "cel",
-         "image": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/variants/material/mat1.png"
-        },
-        {
-         "tag": "Mat2",
-         "name": "outlined gradient",
-         "image": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/variants/material/mat2.png"
-        },
-        {
-         "tag": "Mat3",
-         "name": "gradient",
-         "image": "https://fortnite-api.com/images/cosmetics/br/backpack_wingedeye/variants/material/mat3.png"
-        }
-       ]
-      }
-     ],
-     "added": "2025-07-29T08:28:45Z"
+     "showcaseVideo": "lz8-sRMI18M",
+     "added": "2024-09-17T08:31:42Z"
     },
     {
-     "id": "Pickaxe_WingedEye",
-     "name": "Demon Slashers",
-     "description": "On the wings of the underworld.",
+     "id": "Pickaxe_LivelyDomino",
+     "name": "Moon Flame",
+     "description": "The only claw a MadKat ever needs.",
      "type": {
       "value": "pickaxe",
       "displayValue": "Pickaxe",
       "backendValue": "AthenaPickaxe"
      },
      "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
+      "value": "icon",
+      "displayValue": "Icon Series",
       "backendValue": "EFortRarity::Rare"
      },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
      "set": {
-      "value": "Hexed & Haunted",
-      "text": "Part of the Hexed & Haunted set.",
-      "backendValue": "SuperCursed"
+      "value": "Rubius",
+      "text": "Part of the Rubius set.",
+      "backendValue": "LockDose"
      },
      "introduction": {
-      "chapter": "6",
+      "chapter": "5",
       "season": "4",
-      "text": "Introduced in Chapter 6, Season 4.",
-      "backendValue": 36
+      "text": "Introduced in Chapter 5, Season 4.",
+      "backendValue": 31
      },
      "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/featured.png"
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_livelydomino/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_livelydomino/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_livelydomino/featured.png"
      },
-     "variants": [
-      {
-       "channel": "Material",
-       "type": "Shading",
-       "options": [
-        {
-         "tag": "Mat0",
-         "name": "Cel",
-         "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/variants/material/mat0.png"
-        },
-        {
-         "tag": "Mat1",
-         "name": "Outlined Gradient",
-         "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/variants/material/mat1.png"
-        },
-        {
-         "tag": "Mat2",
-         "name": "Gradient",
-         "image": "https://fortnite-api.com/images/cosmetics/br/pickaxe_wingedeye/variants/material/mat2.png"
-        }
-       ]
-      }
+     "metaTags": [
+      "Cosmetics.MetaTags.LivelyDomino"
      ],
-     "added": "2025-07-29T08:28:45Z"
+     "added": "2024-09-17T08:31:42Z"
     }
    ]
   },
   {
    "regularPrice": 500,
    "finalPrice": 500,
-   "devName": "[VIRTUAL]1 x Therefore I Am for 500 MtxCurrency",
-   "offerId": "v2:/041922819b2f194fdbde94619f459449b2c8a4cbed8f0b401cae3da38c8c5bc2",
-   "inDate": "2026-11-01T00:00:00Z",
-   "outDate": "2026-11-30T23:59:59.999Z",
+   "devName": "[VIRTUAL]1 x TBD (SID_Placeholder_671) for 500 MtxCurrency",
+   "offerId": "v2:/f7dc51160db6326a32387e06f13b086106c8a6a987707a0a3d63edf509077d38",
+   "inDate": "2026-11-20T00:00:00Z",
+   "outDate": "2026-11-26T23:59:59.999Z",
    "giftable": true,
    "refundable": false,
-   "sortPriority": -27,
+   "sortPriority": -1,
    "layoutId": "JT112026noviolator.96",
    "layout": {
     "id": "JT112026noviolator",
     "name": "Jam Tracks",
-    "index": 41,
+    "index": 14,
     "rank": 180,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
@@ -269,26 +172,26 @@
     "textBackgroundColor": "694fc3ff"
    },
    "tileSize": "Size_1_x_1",
-   "newDisplayAssetPath": "SparksCMSVisualTest135",
+   "newDisplayAssetPath": "sid_placeholder_671",
    "tracks": [
     {
-     "id": "sid_placeholder_135",
-     "devName": "thereforeiam",
-     "title": "Therefore I Am",
-     "artist": "Billie Eilish",
-     "releaseYear": 2020,
-     "bpm": 94,
-     "duration": 176,
+     "id": "sid_placeholder_671",
+     "devName": "asaliveasyouneed",
+     "title": "As Alive As You Need Me To Be",
+     "artist": "Nine Inch Nails",
+     "releaseYear": 2025,
+     "bpm": 107,
+     "duration": 239,
      "difficulty": {
-      "vocals": 3,
-      "guitar": 1,
-      "bass": 2,
-      "plasticBass": 1,
-      "drums": 1,
-      "plasticDrums": 1
+      "vocals": 2,
+      "guitar": 2,
+      "bass": 3,
+      "plasticBass": 3,
+      "drums": 3,
+      "plasticDrums": 4
      },
-     "albumArt": "https://cdn.fortnite-api.com/tracks/5490d3a354f6f6c9.jpg",
-     "added": "2024-04-23T00:00:00Z"
+     "albumArt": "https://cdn.fortnite-api.com/tracks/b3ffa70f132df6e6.jpg",
+     "added": "2025-09-20T00:00:00Z"
     }
    ]
   },
@@ -306,8 +209,8 @@
    "layout": {
     "id": "RegularShow",
     "name": "Regular Show",
-    "index": 10,
-    "rank": 182,
+    "index": 0,
+    "rank": 183,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
     "displayType": "tileGrid"
@@ -367,46 +270,646 @@
    ]
   },
   {
-   "regularPrice": 400,
-   "finalPrice": 400,
-   "devName": "[VIRTUAL]1 x Void Gold for 400 MtxCurrency",
-   "offerId": "v2:/96281c85f3b3bdabfced5ab5352bbd53ffd9bdc5e9bd88ab2acece7a0c1fbe79",
-   "inDate": "2026-11-18T00:00:00Z",
-   "outDate": "2026-11-24T23:59:59.999Z",
+   "regularPrice": 7100,
+   "finalPrice": 3200,
+   "devName": "[VIRTUAL]1 x Lil Uzi Vert, 1 x Uzi's Wings, 1 x Pink Star Lil Uzi Vert, 1 x Lil Uzi Star, 1 x Picco-Axe, 1 x XO Tour Llif3, 1 x What You Saying, 1 x Uzi's Tour Guitar, 1 x Uzi's Tour Guitar, 1 x Uzi's Tour Guitar, 1 x Vans x Lil Uzi Vert LX Old Skool 36, 1 x Uzi On Tour, 1 x Cap'n Lil Uzi Vert for -1 MtxCurrency",
+   "offerId": "v2:/68cd6682741636a3ab0b9fae18d0823e04b5975570fc8a58c519e11af496c0f5",
+   "inDate": "2026-11-13T00:00:00Z",
+   "outDate": "2026-12-12T23:59:59.999Z",
+   "bundle": {
+    "name": "Lil Uzi Vert Bundle",
+    "info": "Bundle",
+    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/d561e5f2b0adcf56/renderimage_0.png"
+   },
+   "banner": {
+    "value": "3900 V-Bucks Off",
+    "intensity": "Low",
+    "backendValue": "AmountOff"
+   },
    "giftable": true,
    "refundable": false,
    "sortPriority": -1,
-   "layoutId": "alc.0",
-   "colors": {
-    "color1": "c86400ff",
-    "color3": "340d01ff",
-    "textBackgroundColor": "340d01ff"
+   "layoutId": "LilRook2.99",
+   "layout": {
+    "id": "LilRook2",
+    "name": "Lil Uzi Vert ",
+    "category": "Icons",
+    "index": 39,
+    "rank": 174,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "tileGrid"
    },
-   "tileBackgroundMaterial": "vehicle_item",
-   "tileSize": "Size_3_x_1",
-   "displayAssetPath": "/Game/Catalog/DisplayAssets/DA_Wheel_Pickle",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S40/DAv2_Wheel_Pickle",
-   "cars": [
+   "colors": {
+    "color1": "2b2f34ff",
+    "color2": "1a1c1fff",
+    "color3": "3c4148ff",
+    "textBackgroundColor": "1a1c1fff"
+   },
+   "tileBackgroundMaterial": "ShopTile_Pirates_Brush",
+   "tileSize": "Size_4_x_1",
+   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_RookGecko_Bundle",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S43/DAv2_Bundle_Featured_RookGecko",
+   "newDisplayAsset": {
+    "id": "DAv2_Bundle_Featured_RookGecko",
+    "materialInstances": [],
+    "renderImages": [
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__d561e5f2b0adcf56_29c0c4191e61fb71.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/d561e5f2b0adcf56/renderimage_0.png"
+     },
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__d561e5f2b0adcf56_d2e71b6320aa32c2.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/d561e5f2b0adcf56/renderimage_1.png"
+     }
+    ]
+   },
+   "brItems": [
     {
-     "id": "Wheel_Pickle",
-     "vehicleId": "VCID_Wheel_Pickle",
-     "name": "Void Gold",
-     "description": "Gilded greatness.",
+     "id": "Character_RookGeckoRod",
+     "name": "Lil Uzi Vert",
+     "description": "Uzi vs. the Island.",
      "type": {
-      "value": "wheel",
-      "displayValue": "Wheel",
-      "backendValue": "VehicleCosmetics_Wheel"
+      "value": "outfit",
+      "displayValue": "Outfit",
+      "backendValue": "AthenaCharacter"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Epic"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/character_rookgeckorod/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/character_rookgeckorod/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/character_rookgeckorod/featured.png"
+     },
+     "variants": [
+      {
+       "channel": "Emissive",
+       "type": "Reactivity",
+       "options": [
+        {
+         "tag": "Emissive0",
+         "name": "On",
+         "image": "https://fortnite-api.com/images/cosmetics/br/character_rookgeckorod/variants/emissive/emissive0.png"
+        },
+        {
+         "tag": "Emissive1",
+         "name": "Off",
+         "image": "https://fortnite-api.com/images/cosmetics/br/character_rookgeckorod/variants/emissive/emissive1.png"
+        }
+       ]
+      }
+     ],
+     "showcaseVideo": "gdhv9FOxpFQ",
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    },
+    {
+     "id": "Backpack_RookGeckoRod",
+     "name": "Uzi's Wings",
+     "description": "Who flyer?",
+     "type": {
+      "value": "backpack",
+      "displayValue": "Back Bling",
+      "backendValue": "AthenaBackpack"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_rookgeckorod/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_rookgeckorod/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_rookgeckorod/featured.png"
+     },
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    },
+    {
+     "id": "Character_RookGeckoRye",
+     "name": "Pink Star Lil Uzi Vert",
+     "description": "Diamond in the rough.",
+     "type": {
+      "value": "outfit",
+      "displayValue": "Outfit",
+      "backendValue": "AthenaCharacter"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Epic"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/character_rookgeckorye/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/character_rookgeckorye/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/character_rookgeckorye/featured.png"
+     },
+     "showcaseVideo": "8rP4Cn3BGbY",
+     "dynamicPakId": "1041",
+     "added": "2026-11-01T23:10:43Z"
+    },
+    {
+     "id": "Backpack_RookGeckoRye",
+     "name": "Lil Uzi Star",
+     "description": "Never out of rotation.",
+     "type": {
+      "value": "backpack",
+      "displayValue": "Back Bling",
+      "backendValue": "AthenaBackpack"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_rookgeckorye/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_rookgeckorye/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_rookgeckorye/featured.png"
+     },
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    },
+    {
+     "id": "Pickaxe_RookGeckoRod",
+     "name": "Picco-Axe",
+     "description": "The pickaxe from space.",
+     "type": {
+      "value": "pickaxe",
+      "displayValue": "Pickaxe",
+      "backendValue": "AthenaPickaxe"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_rookgeckorod/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_rookgeckorod/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_rookgeckorod/featured.png"
+     },
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    },
+    {
+     "id": "EID_RookGeckoRod",
+     "name": "XO Tour Llif3",
+     "description": "Don't be afraid.",
+     "type": {
+      "value": "emote",
+      "displayValue": "Emote",
+      "backendValue": "AthenaDance"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Uncommon"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/eid_rookgeckorod/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_rookgeckorod/icon.png"
+     },
+     "showcaseVideo": "FcLAP8tI6mA",
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    },
+    {
+     "id": "EID_RookGeckoRye",
+     "name": "What You Saying",
+     "description": "Excuse my French.",
+     "type": {
+      "value": "emote",
+      "displayValue": "Emote",
+      "backendValue": "AthenaDance"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Uncommon"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/eid_rookgeckorye/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_rookgeckorye/icon.png"
+     },
+     "showcaseVideo": "L75Zmb9Pg0M",
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    },
+    {
+     "id": "Backpack_RookGeckoRye_Guitar",
+     "name": "Uzi's Tour Guitar",
+     "description": "Wanna rock?",
+     "type": {
+      "value": "backpack",
+      "displayValue": "Back Bling",
+      "backendValue": "AthenaBackpack"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_rookgeckorye_guitar/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_rookgeckorye_guitar/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_rookgeckorye_guitar/featured.png"
+     },
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    },
+    {
+     "id": "Pickaxe_RookGeckoRye_Guitar",
+     "name": "Uzi's Tour Guitar",
+     "description": "Wanna rock?",
+     "type": {
+      "value": "pickaxe",
+      "displayValue": "Pickaxe",
+      "backendValue": "AthenaPickaxe"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_rookgeckorye_guitar/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_rookgeckorye_guitar/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_rookgeckorye_guitar/featured.png"
+     },
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    },
+    {
+     "id": "Shoes_LemonJump",
+     "name": "Vans x Lil Uzi Vert LX Old Skool 36",
+     "description": "Show 'em off.",
+     "type": {
+      "value": "shoe",
+      "displayValue": "Shoes",
+      "backendValue": "CosmeticShoes"
      },
      "rarity": {
       "value": "uncommon",
       "displayValue": "Uncommon",
       "backendValue": "EFortRarity::Uncommon"
      },
-     "images": {
-      "small": "https://fortnite-api.com/images/cosmetics/cars/wheel_pickle/small.png",
-      "large": "https://fortnite-api.com/images/cosmetics/cars/wheel_pickle/large.png"
+     "set": {
+      "value": "Vans Shoes",
+      "text": "Part of the Vans Shoes set.",
+      "backendValue": "PowerTether"
      },
-     "added": "2024-12-01T03:57:20Z"
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/shoes_lemonjump/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/shoes_lemonjump/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/shoes_lemonjump/featured.png"
+     },
+     "added": "2026-11-03T00:00:00Z"
+    },
+    {
+     "id": "Wrap_RookGecko",
+     "name": "Uzi On Tour",
+     "description": "Show your style.",
+     "type": {
+      "value": "wrap",
+      "displayValue": "Wrap",
+      "backendValue": "AthenaItemWrap"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/wrap_rookgecko/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/wrap_rookgecko/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/wrap_rookgecko/featured.png"
+     },
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    },
+    {
+     "id": "LoadingScreen_RookGecko",
+     "name": "Cap'n Lil Uzi Vert",
+     "description": "Feels like victory.\n\nArt by Pixmilk.",
+     "type": {
+      "value": "loadingscreen",
+      "displayValue": "Loading Screen",
+      "backendValue": "AthenaLoadingScreen"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Uncommon"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "set": {
+      "value": "Lil Uzi Vert",
+      "text": "Part of the Lil Uzi Vert set.",
+      "backendValue": "TwinWillow"
+     },
+     "introduction": {
+      "chapter": "7",
+      "season": "5",
+      "text": "Introduced in Chapter 7, Season 5.",
+      "backendValue": 43
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/loadingscreen_rookgecko/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/loadingscreen_rookgecko/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/loadingscreen_rookgecko/featured.png",
+      "other": {
+       "background": "https://fortnite-api.com/images/cosmetics/br/loadingscreen_rookgecko/background.png"
+      }
+     },
+     "dynamicPakId": "1041",
+     "added": "2026-11-12T14:00:23Z"
+    }
+   ],
+   "instruments": [
+    {
+     "id": "Sparks_RookGeckoRye_Guitar",
+     "name": "Uzi's Tour Guitar",
+     "description": "Wanna rock?",
+     "type": {
+      "value": "guitar",
+      "displayValue": "Guitar",
+      "backendValue": "SparksGuitar"
+     },
+     "rarity": {
+      "value": "icon",
+      "displayValue": "Icon Series",
+      "backendValue": "EFortRarity::Common"
+     },
+     "images": {
+      "small": "https://fortnite-api.com/images/cosmetics/instruments/sparks_rookgeckorye_guitar/small.png",
+      "large": "https://fortnite-api.com/images/cosmetics/instruments/sparks_rookgeckorye_guitar/large.png"
+     },
+     "series": {
+      "value": "Icon Series",
+      "image": "https://fortnite-api.com/images/cosmetics/series/creatorcollabseries.png",
+      "colors": [
+       "5cf2f3ff",
+       "2bc9caff",
+       "004c71ff",
+       "025253ff",
+       "000f2bff"
+      ],
+      "backendValue": "CreatorCollabSeries"
+     },
+     "added": "2026-11-12T14:00:23Z"
     }
    ]
   }
