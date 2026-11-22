@@ -14,24 +14,6 @@ local player = Players.LocalPlayer
 -- oculta la barra de arriba de Roblox (menu, chat, etc.) para que la UI ocupe toda la pantalla
 pcall(function() game:GetService("StarterGui"):SetCore("TopbarEnabled", false) end)
 pcall(function() game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.All, false) end)
--- sin movimiento: se apaga el joystick, el boton de saltar y el teclado (esto es solo una app)
-task.spawn(function()
-	local okC, controls = pcall(function()
-		return require(player:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule", 10)):GetControls()
-	end)
-	if okC and controls then pcall(function() controls:Disable() end) end
-end)
-local function freezeCharacter(char)
-	local hum = char:WaitForChild("Humanoid", 10)
-	if hum then
-		hum.WalkSpeed = 0
-		hum.JumpPower = 0
-		hum.JumpHeight = 0
-		hum.UseJumpPower = true
-	end
-end
-if player.Character then task.spawn(freezeCharacter, player.Character) end
-player.CharacterAdded:Connect(function(char) task.spawn(freezeCharacter, char) end)
 
 -- ICONOS OPCIONALES (deja "" para usar la figura dibujada)
 -- Los ids son de Decal (asi los sube Creator Hub), por eso se usan como rbxthumb://type=Asset&id=ID
