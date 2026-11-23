@@ -422,7 +422,20 @@ function UIX.registerPfp(img)
 	pfpList[#pfpList + 1] = img
 end
 function UIX.updatePfps(model)
-	if model then pfpModel = model end
+	if model then
+		-- segundo personaje (invisible, solo para la foto): copia de tu avatar actual, siempre derecho y quieto
+		local okC, src = pcall(function() return model:Clone() end)
+		if okC and src then
+			src.Name = "PfpSource"
+			for _, d in ipairs(src:GetDescendants()) do
+				if d:IsA("BasePart") then d.Anchored = true
+				elseif d:IsA("Motor6D") then d.Transform = CFrame.new()
+				elseif d:IsA("Script") or d:IsA("LocalScript") then d:Destroy() end
+			end
+			src:PivotTo(CFrame.new(0, 0, 0)) -- sin giro ni inclinacion; el frente se saca del propio personaje
+			pfpModel = src
+		end
+	end
 	local keep = {}
 	for _, img in ipairs(pfpList) do
 		if img.Parent then
@@ -446,9 +459,13 @@ function UIX.updatePfps(model)
 					m.Name = "PfpModel"
 					m.Parent = vp
 					local head = m:FindFirstChild("Head")
+					local root = m:FindFirstChild("HumanoidRootPart")
 					if head then
+						-- la camara se pone SIEMPRE al frente de la cara (da igual como este girado el modelo)
+						local front = ((root or head).CFrame.LookVector * Vector3.new(1, 0, 1))
+						front = front.Magnitude > 0.01 and front.Unit or Vector3.new(0, 0, -1)
 						local target = head.Position + Vector3.new(0, 0.2, 0)
-						vp.CurrentCamera.CFrame = CFrame.lookAt(target + Vector3.new(0, 0, 4.6), target)
+						vp.CurrentCamera.CFrame = CFrame.lookAt(target + front * 4.6, target)
 					end
 				end
 			else
