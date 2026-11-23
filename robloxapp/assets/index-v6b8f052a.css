@@ -318,3 +318,6 @@ html.tbw-av .page.avatar .il-scroll{height:180px}
 html.tbw-av .page.avatar .il-all>.il-row:first-child .il-scroll{height:auto}
 html.tbw-av .page.avatar .il-all>.il-row:first-child .il-row-in{width:auto;flex-wrap:wrap;row-gap:14px}
 html.tbw-av .page.avatar .il-all>.il-row:first-child .il-card:nth-child(n+11){display:none}
+
+/* avatar big (sheet tucked away): no haze on the 3D avatar, it keeps its normal colors */
+.page.avatar .av-view[data-full=true] .av-engine .roav canvas,html.room3d .page.avatar .av-view[data-full=true] .av-engine .roav canvas,html:not(.dark) .page.avatar .av-view[data-full=true] .av-engine .roav canvas{filter:none!important}
