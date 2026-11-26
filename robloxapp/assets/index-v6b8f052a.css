@@ -350,3 +350,6 @@ html.dark img.ro-fail{background:#2a2c33}
 /* profile picture still loading: instead of the gray default head, show the skeleton shimmer */
 img[src$="head-B-MnZgKb.png"],img[src$="profile_head-Pw6l4Ce5.png"]{content:url("data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==")!important;background:linear-gradient(90deg,#e3e4e8 30%,#f2f3f6 50%,#e3e4e8 70%) 0 0/300% 100%!important;animation:1.4s linear infinite ro-sk;object-fit:cover}
 html.dark img[src$="head-B-MnZgKb.png"],html.dark img[src$="profile_head-Pw6l4Ce5.png"]{background:linear-gradient(90deg,#2a2c33 30%,#383b44 50%,#2a2c33 70%) 0 0/300% 100%!important}
+
+/* Send Robux: the dark backdrop stays while each step's panel slides up from the bottom (no new fade when the amount panel opens) */
+.srb-root[data-testid=send-robux-amount]{animation:none}
