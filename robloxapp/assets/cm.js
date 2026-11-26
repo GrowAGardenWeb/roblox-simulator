@@ -22,7 +22,7 @@
     };
   }
   function norm(c) {
-    c.posts = c.posts || []; c.store = c.store || []; c.rev = c.rev || {};
+    c.posts = c.posts || []; c.store = c.store || []; c.games = c.games || []; c.gen = c.gen || { min: 100000, max: 1000000 }; c.rev = c.rev || {};
     REV.forEach(function (k) { if (!c.rev[k]) c.rev[k] = [0, 0, 0, 0, 0]; });
     c.members = Number(c.members) || 0; c.funds = Number(c.funds) || 0; c.pending = Number(c.pending) || 0;
     c.by = c.by || 'munfuja'; c.gid = c.gid || String(800000000 + Math.floor(Math.random() * 99999999)); c.bio = c.bio || ''; c.emblem = c.emblem || ''; c.cover = c.cover || '';
@@ -62,6 +62,15 @@
       im.src = u;
     }
     if (/^\d+$/.test(val)) thumb(val, put); else put(val);
+  }
+
+  function gameIcon(box, id) {
+    if (!/^\d+$/.test(String(id))) return;
+    try {
+      fetch('/rbx/thumbs/v1/games/icons?universeIds=' + id + '&returnPolicy=PlaceHolder&size=256x256&format=Png&isCircular=false').then(function (r) { return r.json(); }).then(function (j) {
+        var u = j && j.data && j.data[0] && j.data[0].imageUrl; if (u) setImg(box, u);
+      }).catch(function () {});
+    } catch (e) {}
   }
 
   /* ---- navigation stack ---- */
@@ -212,6 +221,17 @@
     if (en.tab === 'Home') {
       pane.innerHTML = '<div class="cm-ph"><h2>Announcements</h2>' + (owner ? '<button class="cm-gbtn">Create</button>' : '') + '</div>' + (c.posts.length ? postsHtml() : '<p class="cm-empty">No announcements yet...</p>');
       var cr = pane.querySelector('.cm-gbtn'); if (cr) cr.addEventListener('click', newPost);
+      if (c.games.length) {
+        pane.appendChild(h('div', 'cm-ph', '<h2>Games</h2>'));
+        var gg = h('div', 'cm-grid');
+        c.games.forEach(function (g) {
+          var b = h('button', 'cm-it', '<div class="cm-img"></div><b>' + esc(g.name || 'Game') + '</b>');
+          gameIcon(b.querySelector('.cm-img'), g.id);
+          b.addEventListener('click', function () { window.dispatchEvent(new CustomEvent('ro-opengame', { detail: { id: g.id, title: g.name || '' } })); });
+          gg.appendChild(b);
+        });
+        pane.appendChild(gg);
+      }
     } else if (en.tab === 'Posts') {
       pane.innerHTML = '<span class="cm-chip">Announcements</span>' + (c.posts.length ? postsHtml() : ic('speech-bubble-align-center', 'cm-bub') + '<p class="cm-empty cm-pe">No announcements yet...</p>');
       if (owner) { bar = h('div', 'cm-bar', '<button>Create post</button>'); bar.querySelector('button').addEventListener('click', newPost); en.el.appendChild(bar); }
@@ -225,32 +245,13 @@
       c.store.forEach(function (it) {
         var b = h('button', 'cm-it', '<div class="cm-img">' + (it.limited ? '<span class="cm-lim">Limited</span>' : '') + '</div><b>' + esc(it.name) + '</b><span>' + icf('robux') + fmt(it.price) + '</span>');
         setImg(b.querySelector('.cm-img'), it.asset);
-        b.addEventListener('click', function () { if (owner) itemSheet(en, c, it); else toast(it.name + ' - ' + fmt(it.price) + ' Robux'); });
+        b.addEventListener('click', function () { toast(it.name + ' - ' + fmt(it.price) + ' Robux'); });
         g.appendChild(b);
       });
-      if (owner) {
-        var a = h('button', 'cm-it cm-add', '<div class="cm-img">' + ic('plus-large') + '</div><b>Add item</b>');
-        a.addEventListener('click', function () { itemSheet(en, c, null); });
-        g.appendChild(a);
-      } else if (!c.store.length) pane.appendChild(h('p', 'cm-empty', 'No items for sale yet'));
+      if (!c.store.length) pane.appendChild(h('p', 'cm-empty', 'No items for sale yet'));
       pane.appendChild(g);
       var sa = pane.querySelector('.cm-sa'); if (sa) sa.addEventListener('click', function () { toast('Showing all ' + c.store.length + ' items'); });
     }
-  }
-  function itemSheet(en, c, it) {
-    var isNew = !it; it = it || { id: 's' + Date.now().toString(36), name: '', price: 0, limited: false, asset: '' };
-    sheet(en, isNew ? 'Add item' : 'Edit item',
-      '<label>Name</label><input type="text" id="cin" maxlength="60" value="' + esc(it.name) + '"><label>Price (Robux)</label><input type="number" id="cip" min="0" value="' + esc(it.price) + '"><label>Roblox asset ID (for the picture, optional)</label><input type="text" id="cia" inputmode="numeric" value="' + esc(it.asset) + '"><label class="cm-chk"><input type="checkbox" id="cil"' + (it.limited ? ' checked' : '') + '> Limited item</label>' +
-      '<div class="cm-bts">' + (isNew ? '' : '<button class="del cmd">Delete</button>') + '<button class="cmc">Cancel</button><button class="pri cmo">Save</button></div>', function (sh, close) {
-        sh.querySelector('.cmc').addEventListener('click', close);
-        var d = sh.querySelector('.cmd'); if (d) d.addEventListener('click', function () { c.store = c.store.filter(function (x) { return x !== it; }); save(); close(); refreshAll(); });
-        sh.querySelector('.cmo').addEventListener('click', function () {
-          var n = sh.querySelector('#cin').value.trim(); if (!n) return;
-          it.name = n; it.price = Math.max(0, Math.floor(Number(sh.querySelector('#cip').value) || 0)); it.asset = sh.querySelector('#cia').value.replace(/\D/g, ''); it.limited = sh.querySelector('#cil').checked;
-          if (isNew) c.store.push(it);
-          save(); close(); refreshAll();
-        });
-      });
   }
   function openMenu(en, c) {
     var owner = c.role === 'owner';
@@ -494,6 +495,29 @@
             save(); refreshAll(); if (k === 'prim' || k === 'own' || k === 'name') draw();
           });
         });
+        // revenue generator: pick a range and the numbers are made realistic automatically
+        var gn = h('div', 'st'); gn.innerHTML = '<label>Generate revenue (realistic) - pick a range for Sale of Goods</label><div class="r"><label>From<input type="number" min="0" data-g="min"></label><label>To<input type="number" min="0" data-g="max"></label><label>Period<select data-g="per"></select></label></div><div class="r fit"><button class="pri" data-g="one">Generate this period</button><button class="pri" data-g="all">Generate all periods</button></div>';
+        var sel = gn.querySelector('select'); PERIODS.forEach(function (p) { var o = document.createElement('option'); o.value = p[0]; o.textContent = p[1]; sel.appendChild(o); }); sel.value = 'yr';
+        gn.querySelector('[data-g=min]').value = c.gen.min; gn.querySelector('[data-g=max]').value = c.gen.max;
+        ['min', 'max'].forEach(function (k) { gn.querySelector('[data-g=' + k + ']').addEventListener('change', function (e) { c.gen[k] = Math.max(0, Math.floor(Number(e.target.value) || 0)); save(); }); });
+        function rr(a, b) { return a + Math.random() * (b - a); }
+        function row(sale) {
+          sale = Math.round(sale);
+          var reb = Math.round(sale * rr(0.25, 0.7)), com = Math.random() < 0.4 ? Math.round(sale * rr(0, 0.04)) : 0, rew = Math.random() < 0.5 ? Math.round(sale * rr(0, 0.03)) : 0;
+          var pay = -Math.round((sale + reb + com + rew) * rr(0.6, 1.1));
+          return [sale, reb, com, pay, rew];
+        }
+        gn.querySelector('[data-g=one]').addEventListener('click', function () {
+          var lo = Math.min(c.gen.min, c.gen.max), hi = Math.max(c.gen.min, c.gen.max);
+          c.rev[sel.value] = row(rr(lo, hi)); save(); refreshAll(); draw();
+        });
+        gn.querySelector('[data-g=all]').addEventListener('click', function () {
+          // the range is for the whole year; month, week and day come out as realistic fractions of it
+          var lo = Math.min(c.gen.min, c.gen.max), hi = Math.max(c.gen.min, c.gen.max);
+          var yr = rr(lo, hi), m = yr * rr(0.07, 0.11), w = m * rr(0.2, 0.3), d = w * rr(0.11, 0.16);
+          c.rev.yr = row(yr); c.rev.d30 = row(m); c.rev.d7 = row(w); c.rev.day = row(d); save(); refreshAll(); draw();
+        });
+        card.appendChild(gn);
         // revenue
         var rv = h('div', 'st'); rv.innerHTML = '<label>Revenue by period: Sale of Goods / Advance Rebates / Commissions / Payouts / Creator Rewards</label>';
         REV.forEach(function (rk, ri) {
@@ -506,6 +530,16 @@
           rv.appendChild(row);
         });
         card.appendChild(rv);
+        // games of this community (they open the real game page when tapped)
+        var gm = h('div', 'st'); gm.innerHTML = '<label>Games (universe ID / name) - shown in Home</label>';
+        c.games.forEach(function (g) {
+          var r = h('div', 'sti', '<input type="text" inputmode="numeric" data-q="id" placeholder="universe ID"><input type="text" data-q="name" placeholder="name"><span></span><span></span><button class="del">x</button>');
+          r.querySelectorAll('[data-q]').forEach(function (i) { var k = i.getAttribute('data-q'); i.value = g[k] || ''; i.addEventListener('change', function () { g[k] = k === 'id' ? i.value.replace(/\D/g, '') : i.value; save(); refreshAll(); }); });
+          r.querySelector('.del').addEventListener('click', function () { c.games = c.games.filter(function (x) { return x !== g; }); save(); refreshAll(); draw(); });
+          gm.appendChild(r);
+        });
+        var ga = h('button', 'pri', '+ Add game'); ga.addEventListener('click', function () { c.games.push({ id: '', name: '' }); save(); draw(); });
+        gm.appendChild(ga); card.appendChild(gm);
         // store items
         var st = h('div', 'st'); st.innerHTML = '<label>Store items (name / price / asset ID / limited)</label>';
         c.store.forEach(function (it) {
