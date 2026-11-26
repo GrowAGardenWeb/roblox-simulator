@@ -401,7 +401,10 @@
     var sc = h('div', 'cm-sc'), box = h('div', 'cm-cfg');
     sc.appendChild(box); en.el.appendChild(hd); en.el.appendChild(sc);
     if (en.loading) {
-      box.innerHTML = '<h1>Configure</h1><div class="cm-by2">By No One!</div><div class="cm-sp">' + [0, 1, 2, 3, 4, 5, 6, 7].map(function (i) { return '<i style="transform:rotate(' + (i * 45) + 'deg);animation-delay:' + (-0.9 + i * 0.1125).toFixed(3) + 's"></i>'; }).join('') + '</div>';
+      // skeleton loading (same shimmer as the rest of the app)
+      function skb(l, t, w, hh, r) { return '<div class="cm-sk" style="position:absolute;left:' + l + 'px;top:' + t + 'px;width:' + w + ';height:' + hh + 'px' + (r ? ';border-radius:' + r + 'px' : '') + '"></div>'; }
+      box.innerHTML = skb(12.5, 27, '215px', 22) + skb(12.5, 58, '90px', 13) + skb(12.5, 76, '150px', 13) + skb(12.5, 193, 'calc(100% - 25px)', 32, 8) +
+        '<div style="position:absolute;left:12.5px;right:12.5px;top:262px">' + [0, 1, 2, 3, 4].map(function (i) { return '<div class="cm-sk" style="height:' + (i === 0 ? 120 : 30) + 'px;margin-bottom:14px;width:' + (i === 0 ? '100%' : (92 - i * 9) + '%') + '"></div>'; }).join('') + '</div>';
       setTimeout(function () { en.loading = false; if (stack.indexOf(en) >= 0) refresh(en); }, 650);
       return;
     }
@@ -419,7 +422,7 @@
         if (v === 'Payouts') { refresh(en); setTimeout(function () { if (stack.indexOf(en) < 0) return; en.rev = 'Summary'; push({ type: 'pay', id: c.id }); refresh(en); }, 900); }
         else refresh(en);
       }, en, en.rev)); sec.appendChild(sp);
-      if (en.rev === 'Payouts') { sec.appendChild(h('div', 'cm-ld', '<i></i><i></i><i></i>')); return; }
+      if (en.rev === 'Payouts') { sec.appendChild(h('div', 'cm-skl', [0, 1, 2, 3, 4].map(function (i) { return '<div class="cm-sk" style="height:' + (i === 0 ? 26 : 22) + 'px;width:' + (i === 0 ? '55%' : (96 - i * 12) + '%') + '"></div>'; }).join(''))); return; }
       var rv = h('div', 'cm-rev'), hh = h('div', 'cm-rvh', '<h2>' + esc(en.rev) + '</h2>');
       var pn = ''; PERIODS.forEach(function (p) { if (p[0] === en.period) pn = p[1]; });
       hh.appendChild(dd('sm', pn, PERIODS, function (v) { en.period = v; refresh(en); }, en));
