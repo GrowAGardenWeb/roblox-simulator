@@ -324,9 +324,9 @@ html.tbw-av .page.avatar .il-all>.il-row:first-child .il-card:nth-child(n+11){di
 
 /* avatar page: full screen button, Share to Moments, and the bottom bar that hides while the sheet scrolls down */
 .v-expand{z-index:4;color:#202227;background:#fdfdfef7;border:0;border-radius:9px;justify-content:center;align-items:center;width:35.9px;height:35.9px;padding:0;transition:opacity .2s;display:flex;position:absolute;top:259.2px;right:16.5px}
-.v-expand svg{width:22px;height:22px}
+.v-expand svg{width:26px;height:26px}
 .v-share{z-index:4;color:#fff;white-space:nowrap;opacity:0;pointer-events:none;background:#335fff;border:0;border-radius:11px;align-items:center;gap:7px;height:35px;padding:0 14px;font:600 14px/35px RoSans,var(--font);transition:opacity .2s;display:flex;position:absolute;left:50%;transform:translate(-50%)}
-.v-share svg{flex:none;width:19px;height:19px}
+.v-share svg{flex:none;width:22px;height:22px}
 .page.avatar.down .v-share{opacity:1;pointer-events:auto}
 .page.avatar.down .v-expand,.page.avatar.srch .v-expand{opacity:0;pointer-events:none}
 .page.avatar.adj .v-expand,.page.avatar.adj .v-share,.page.avatar.srch .v-share{visibility:hidden!important}
