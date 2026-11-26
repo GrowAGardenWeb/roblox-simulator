@@ -474,6 +474,24 @@
     sec.appendChild(inf);
   }
 
+  /* ---- load everything public about a Roblox group from its ID ---- */
+  function loadGroup(c, done) {
+    var id = String(c.gid || '').replace(/\D/g, ''); if (!id) return done('Enter a Group ID first');
+    function jget(u) { return fetch(u).then(function (r) { return r.json(); }); }
+    jget('/rbx/groups/v1/groups/' + id).then(function (g) {
+      if (!g || !g.name) return done('Group not found');
+      c.name = g.name; c.bio = g.description || ''; c.members = Number(g.memberCount) || 0; c.by = (g.owner && (g.owner.username || g.owner.displayName)) || c.by; c.gid = id;
+      var p1 = jget('/rbx/thumbs/v1/groups/icons?groupIds=' + id + '&size=420x420&format=Png&isCircular=false').then(function (j) { var u = j.data && j.data[0] && j.data[0].imageUrl; if (u) c.emblem = u; }).catch(function () {});
+      var p2 = jget('/rbx/games/v2/groups/' + id + '/games?accessFilter=Public&limit=10&sortOrder=Desc').then(function (j) { c.games = (j.data || []).map(function (x) { return { id: String(x.id), name: x.name }; }); }).catch(function () {});
+      var p3 = jget('/rbx/catalog/v1/search/items/details?CreatorTargetId=' + id + '&CreatorType=2&Limit=30&SortType=3').then(function (j) {
+        c.store = (j.data || []).filter(function (i) { return i.itemType === 'Asset'; }).slice(0, 12).map(function (i) {
+          return { id: 's' + i.id, name: i.name, price: Number(i.price != null ? i.price : i.lowestPrice) || 0, limited: (i.itemRestrictions || []).some(function (x) { return /Limited|Collectible/.test(x); }), asset: String(i.id) };
+        });
+      }).catch(function () {});
+      Promise.all([p1, p2, p3]).then(function () { save(); refreshAll(); done('Loaded "' + g.name + '": name, owner, members, bio, emblem, games and store'); });
+    }).catch(function () { done('Could not load that group'); });
+  }
+
   /* ---- editor section (used by the app's Edit panel) ---- */
   function editor(root) {
     function draw() {
@@ -483,7 +501,7 @@
         var card = h('div', 'cmc');
         card.innerHTML = '<h5>' + esc(c.name) + '</h5>' +
           '<div class="r"><label>Name<input type="text" data-k="name"></label><label>By (owner)<input type="text" data-k="by"></label></div>' +
-          '<div class="r"><label>Group ID<input type="text" data-k="gid"></label></div><div class="r"><label>Members<input type="number" min="0" data-k="members"></label><label>Funds (Robux)<input type="number" data-k="funds"></label><label>Pending Robux<input type="number" data-k="pending"></label></div>' +
+          '<div class="r"><label>Group ID<input type="text" data-k="gid"></label></div><div class="r fit"><button class="pri" data-act="load">Load from Roblox</button><span class="gmsg" style="font-size:11.5px;color:#6a6f81"></span></div><label style="font-size:11px">Funds, Pending and Revenue are private on Roblox, so they stay editable here.</label><div class="r"><label>Members<input type="number" min="0" data-k="members"></label><label>Funds (Robux)<input type="number" data-k="funds"></label><label>Pending Robux<input type="number" data-k="pending"></label></div>' +
           '<label>Bio<textarea data-k="bio"></textarea></label><label>Emblem (image URL or asset ID)<input type="text" data-k="emblem"></label>' +
           '<div class="r fit"><label class="chk"><input type="checkbox" data-k="own"> Owned by me</label><label class="chk"><input type="checkbox" data-k="prim"> Primary</label></div>';
         card.querySelectorAll('[data-k]').forEach(function (i) {
@@ -497,6 +515,10 @@
             else c[k] = i.value;
             save(); refreshAll(); if (k === 'prim' || k === 'own' || k === 'name') draw();
           });
+        });
+        card.querySelector('[data-act=load]').addEventListener('click', function (ev) {
+          var btn = ev.currentTarget, msg = card.querySelector('.gmsg'); btn.disabled = true; msg.textContent = 'Loading...';
+          loadGroup(c, function (m) { btn.disabled = false; msg.textContent = m; setTimeout(draw, 1400); });
         });
         // revenue generator: pick a range and the numbers are made realistic automatically
         var gn = h('div', 'st'); gn.innerHTML = '<label>Generate revenue (realistic) - pick a range for Sale of Goods</label><div class="r"><label>From<input type="number" min="0" data-g="min"></label><label>To<input type="number" min="0" data-g="max"></label><label>Period<select data-g="per"></select></label></div><div class="r fit"><button class="pri" data-g="one">Generate this period</button><button class="pri" data-g="all">Generate all periods</button></div>';
