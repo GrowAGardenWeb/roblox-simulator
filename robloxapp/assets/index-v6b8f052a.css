@@ -353,3 +353,5 @@ html.dark img[src$="head-B-MnZgKb.png"],html.dark img[src$="profile_head-Pw6l4Ce
 
 /* Send Robux: the dark backdrop stays while each step's panel slides up from the bottom (no new fade when the amount panel opens) */
 .srb-root[data-testid=send-robux-amount]{animation:none}
+/* profile "3D" / "2D" button: label centered in the box */
+.fp-3db{display:flex!important;align-items:center;justify-content:center;padding:0!important;line-height:1!important;text-align:center}
