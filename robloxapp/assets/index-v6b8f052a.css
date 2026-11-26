@@ -321,3 +321,21 @@ html.tbw-av .page.avatar .il-all>.il-row:first-child .il-card:nth-child(n+11){di
 
 /* avatar big (sheet tucked away): no haze on the 3D avatar, it keeps its normal colors */
 .page.avatar .av-view[data-full=true] .av-engine .roav canvas,html.room3d .page.avatar .av-view[data-full=true] .av-engine .roav canvas,html:not(.dark) .page.avatar .av-view[data-full=true] .av-engine .roav canvas{filter:none!important}
+
+/* avatar page: full screen button, Share to Moments, and the bottom bar that hides while the sheet scrolls down */
+.v-expand{z-index:4;color:#202227;background:#fdfdfef7;border:0;border-radius:9px;justify-content:center;align-items:center;width:35.9px;height:35.9px;padding:0;transition:opacity .2s;display:flex;position:absolute;top:259.2px;right:16.5px}
+.v-expand svg{width:22px;height:22px}
+.v-share{z-index:4;color:#fff;white-space:nowrap;opacity:0;pointer-events:none;background:#335fff;border:0;border-radius:11px;align-items:center;gap:7px;height:35px;padding:0 14px;font:600 14px/35px RoSans,var(--font);transition:opacity .2s;display:flex;position:absolute;left:50%;transform:translate(-50%)}
+.v-share svg{flex:none;width:19px;height:19px}
+.page.avatar.down .v-share{opacity:1;pointer-events:auto}
+.page.avatar.down .v-expand,.page.avatar.srch .v-expand{opacity:0;pointer-events:none}
+.page.avatar.adj .v-expand,.page.avatar.adj .v-share,.page.avatar.srch .v-share{visibility:hidden!important}
+.page.avatar .a-sheet{transition:top .3s cubic-bezier(.2,0,0,1),bottom .22s}
+html.nav-hid .bottomnav{transform:translateY(90px)}
+html.nav-hid .page.avatar .a-sheet:not(.down){bottom:0}
+html.nav-hid .page.avatar :is(.v-undo,.up21,.v-expand,[data-testid=avatar-undo],[data-testid=avatar-redo]){opacity:0;pointer-events:none}
+.ro-share-toast{z-index:60;color:#fff;text-align:center;opacity:1;pointer-events:none;background:#202227ee;border-radius:12px;padding:10px 16px;font:600 14px RoSans,var(--font);transition:opacity .3s;position:absolute;top:92px;left:50%;transform:translate(-50%)}
+.ro-share-toast.out{opacity:0}
+/* full screen avatar: the bottom bar is tucked away too and the sheet reaches the bottom of the screen */
+html:has(.page.avatar.down) .bottomnav{transform:translateY(90px)}
+.page.avatar .a-sheet.down{bottom:0}
