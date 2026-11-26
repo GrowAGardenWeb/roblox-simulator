@@ -173,7 +173,7 @@
     }
     inp.addEventListener('input', function () { en.q = inp.value; fill(); });
     cb.addEventListener('click', function () {
-      var c = norm({ id: uid(), name: 'New Community', by: 'munfuja', members: 1, role: 'owner', primary: false });
+      var c = norm({ id: uid(), name: 'New Community', by: 'munfuja', members: 1, role: 'owner', primary: false, manual: true });
       S.list.push(c); save(); refresh(en); push({ type: 'cfg', id: c.id, loading: true });
     });
     fill();
@@ -497,6 +497,9 @@
     function draw() {
       root.innerHTML = '';
       var wrap = h('div', 'cmed');
+      var top = h('div', 'r fit', '<button class="pri">Reload groups of the logged-in account</button><span class="tmsg" style="font-size:11.5px;color:#6a6f81"></span>');
+      top.querySelector('button').addEventListener('click', function () { var m = top.querySelector('.tmsg'); m.textContent = 'Loading...'; syncGroups(true, function (msg) { m.textContent = msg || ''; setTimeout(draw, 1200); }); });
+      wrap.appendChild(top);
       S.list.forEach(function (c) {
         var card = h('div', 'cmc');
         card.innerHTML = '<h5>' + esc(c.name) + '</h5>' +
@@ -587,12 +590,49 @@
         wrap.appendChild(card);
       });
       var nb = h('button', 'pri', '+ Add community');
-      nb.addEventListener('click', function () { S.list.push(norm({ id: uid(), name: 'New Community', by: 'munfuja', members: 1, role: 'member', primary: false })); save(); draw(); });
+      nb.addEventListener('click', function () { S.list.push(norm({ id: uid(), name: 'New Community', by: 'munfuja', members: 1, role: 'member', primary: false, manual: true })); save(); draw(); });
       wrap.appendChild(nb);
       root.appendChild(wrap);
     }
     draw();
   }
+
+
+  /* ---- the account's own groups: owned group (or its primary) first, the rest below ---- */
+  function curUser() { try { var p = JSON.parse(localStorage.getItem('profile.v1') || '{}'); return p.lookFrom && p.lookFrom.id ? String(p.lookFrom.id) : ''; } catch (e) { return ''; } }
+  var syncing = false;
+  function syncGroups(force, cb) {
+    var uid = curUser();
+    if (!uid || syncing || (!force && S.syncedFor === uid)) { if (cb) cb(); return; }
+    syncing = true;
+    function fin(msg) { syncing = false; if (cb) cb(msg); }
+    fetch('/rbx/groups/v1/users/' + uid + '/groups/roles').then(function (r) { return r.json(); }).then(function (j) {
+      var rows = (j && j.data) || [];
+      if (!rows.length) { S.syncedFor = uid; save(); return fin('This account is in no groups'); }
+      var list = rows.map(function (r) {
+        var g = r.group, own = (g.owner && String(g.owner.userId) === uid) || (r.role && r.role.rank === 255);
+        var old = null; S.list.forEach(function (x) { if (String(x.gid) === String(g.id)) old = x; });
+        var c = old || norm({ id: uid_(), gid: String(g.id) });
+        c.gid = String(g.id); c.name = g.name; c.members = Number(g.memberCount) || 0; c.by = (g.owner && (g.owner.username || g.owner.displayName)) || c.by;
+        if (!old) c.bio = g.description || ''; c.role = own ? 'owner' : 'member'; c.primary = !!r.isPrimaryGroup; c.manual = false;
+        return c;
+      });
+      var prim = list.filter(function (c) { return c.primary; })[0] || list.filter(function (c) { return c.role === 'owner'; })[0] || list[0];
+      list.forEach(function (c) { c.primary = (c === prim); });
+      var ids = list.map(function (c) { return c.gid; }).join(',');
+      var done = function () {
+        var have = {}; list.forEach(function (c) { have[c.gid] = 1; });
+        S.list = list.concat(S.list.filter(function (c) { return c.manual && !have[c.gid]; }));
+        S.syncedFor = uid; save(); refreshAll(); fin('Loaded ' + list.length + ' group' + (list.length === 1 ? '' : 's') + ' from this account');
+      };
+      fetch('/rbx/thumbs/v1/groups/icons?groupIds=' + ids + '&size=420x420&format=Png&isCircular=false').then(function (r) { return r.json(); }).then(function (t) {
+        (t.data || []).forEach(function (d) { list.forEach(function (c) { if (String(c.gid) === String(d.targetId) && d.imageUrl && !/^data:/.test(c.emblem || '')) c.emblem = d.imageUrl; }); }); done();
+      }).catch(done);
+    }).catch(function () { fin('Could not load the groups of this account'); });
+  }
+  function uid_() { return uid(); }
+  setTimeout(function () { syncGroups(false); }, 2500);
+  setInterval(function () { if (curUser() && S.syncedFor !== curUser()) syncGroups(false); }, 3000);
 
   /* ---- hook: Drawer > Communities opens this ---- */
   function open() {
@@ -606,5 +646,5 @@
     if (t) { e.stopPropagation(); e.preventDefault(); open(); }
   }, true);
 
-  window.RoCm = { open: open, editor: editor, state: function () { return S; } };
+  window.RoCm = { open: open, editor: editor, state: function () { return S; }, sync: syncGroups };
 })();
