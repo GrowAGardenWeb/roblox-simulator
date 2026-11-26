@@ -339,3 +339,10 @@ html.nav-hid .page.avatar :is(.v-undo,.up21,.v-expand,[data-testid=avatar-undo],
 /* full screen avatar: the bottom bar is tucked away too and the sheet reaches the bottom of the screen */
 html:has(.page.avatar.down) .bottomnav{transform:translateY(90px)}
 .page.avatar .a-sheet.down{bottom:0}
+
+/* image skeleton (shimmer) + never show the broken-image icon */
+@keyframes ro-sk{0%{background-position:150% 0}100%{background-position:-150% 0}}
+img.ro-pend{color:#0000;background:linear-gradient(90deg,#e3e4e8 30%,#f2f3f6 50%,#e3e4e8 70%) 0 0/300% 100%;animation:1.4s linear infinite ro-sk}
+img.ro-fail{content:url("data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==")!important;color:#0000;background:#e3e4e8}
+html.dark img.ro-pend{background:linear-gradient(90deg,#2a2c33 30%,#383b44 50%,#2a2c33 70%) 0 0/300% 100%}
+html.dark img.ro-fail{background:#2a2c33}
