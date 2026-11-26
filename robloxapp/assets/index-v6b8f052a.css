@@ -355,3 +355,12 @@ html.dark img[src$="head-B-MnZgKb.png"],html.dark img[src$="profile_head-Pw6l4Ce
 .srb-root[data-testid=send-robux-amount]{animation:none}
 /* profile "3D" / "2D" button: label centered in the box */
 .fp-3db{display:flex!important;align-items:center;justify-content:center;padding:0!important;line-height:1!important;text-align:center}
+
+/* Inventory top bar like the real app / full profile: white, X and back at the left, centered title, thin line; reaches the top of the screen */
+.page.mi{background:#fff;top:calc(-1 * var(--safe-top) / var(--s))}
+.mi-bar{display:block;background:#fff;height:94.6px;border-bottom:.8px solid #d8d9de;font-size:17.4px}
+.mi-bar b{color:#393b3d;text-align:center;font-size:17.4px;font-weight:700;line-height:24px;position:absolute;top:56.8px;left:100px;right:100px}
+.mi-x{width:36px;height:36px;top:50.8px;left:16.4px}
+.mi-back{left:62px}
+.mi-x svg{width:20px;height:20px}.mi-back svg{width:11px;height:18px}
+.mi-scroll{top:95.4px}

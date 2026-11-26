@@ -1,0 +1,440 @@
+/* Communities for the Roblox app clone (Drawer > Communities).
+   Plain JS overlay (no React): list -> community page -> "..." menu -> Configure, all editable.
+   Data lives in localStorage ("comm.v1"); the app's Edit panel has a "Communities" section that edits everything. */
+(function () {
+  'use strict';
+  if (window.RoCm) return;
+  var KEY = 'comm.v1';
+  var REV = ['day', 'd7', 'd30', 'yr'];
+  var REV_LAB = ['Sale of Goods', 'Publishing Advance Rebates', 'Commissions', 'Community Revenue Payouts', 'Community Creator Rewards'];
+  var PERIODS = [['day', 'Past Day'], ['d7', 'Past 7 Days'], ['d30', 'Past 30 Days'], ['yr', 'Past Year']];
+
+  function uid() { return 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function seed() {
+    return {
+      list: [
+        { id: 'c1', name: 'Munfuja UGC', by: 'munfuja', members: 136, role: 'owner', primary: true, bio: '', emblem: '', cover: '', funds: 555, pending: 5222,
+          posts: [], store: [{ id: 's1', name: 'friks', price: 76, limited: false, asset: '' }, { id: 's2', name: 'Cocardo', price: 72, limited: false, asset: '' }, { id: 's3', name: 'Ben Steal an egg Shirt', price: 5, limited: false, asset: '' }, { id: 's4', name: 'Chonky Shoulder Kitty', price: 52, limited: false, asset: '' }],
+          rev: { day: [246, 0, 0, 0, 0], d7: [1200, 310, 0, -850, 0], d30: [3150, 980, 0, -2400, 0], yr: [6415, 3532, 0, -9392, 0] } },
+        { id: 'c2', name: 'Munfujitas', by: 'munfuja', members: 270, role: 'member', primary: false, bio: '', emblem: '', cover: '', funds: 0, pending: 0,
+          posts: [], store: [], rev: { day: [0, 0, 0, 0, 0], d7: [0, 0, 0, 0, 0], d30: [0, 0, 0, 0, 0], yr: [0, 0, 0, 0, 0] } }
+      ]
+    };
+  }
+  function norm(c) {
+    c.posts = c.posts || []; c.store = c.store || []; c.rev = c.rev || {};
+    REV.forEach(function (k) { if (!c.rev[k]) c.rev[k] = [0, 0, 0, 0, 0]; });
+    c.members = Number(c.members) || 0; c.funds = Number(c.funds) || 0; c.pending = Number(c.pending) || 0;
+    c.by = c.by || 'munfuja'; c.bio = c.bio || ''; c.emblem = c.emblem || ''; c.cover = c.cover || '';
+    return c;
+  }
+  function load() {
+    try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.list)) { s.list.forEach(norm); return s; } } catch (e) {}
+    var d = seed(); d.list.forEach(norm); return d;
+  }
+  var S = load();
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  function find(id) { for (var i = 0; i < S.list.length; i++) if (S.list[i].id === id) return S.list[i]; return null; }
+  function fmt(n) { return Number(n).toLocaleString('en-US'); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
+  function h(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function ic(name, cls) { return '<i class="cm-i' + (cls ? ' ' + cls : '') + '" style="--m:url(/robloxapp/icons/roblox/regular/' + name + '.svg)"></i>'; }
+  function icf(name, cls) { return '<i class="cm-i' + (cls ? ' ' + cls : '') + '" style="--m:url(/robloxapp/icons/roblox/filled/' + name + '.svg)"></i>'; }
+
+  /* ---- images: URL / data URL / Roblox asset id (thumbnail) ---- */
+  var thumbCache = {};
+  function thumb(id, cb) {
+    if (thumbCache[id] !== undefined) return cb(thumbCache[id]);
+    try {
+      fetch('/rbx/thumbs/v1/assets?assetIds=' + id + '&size=420x420&format=Png&isCircular=false').then(function (r) { return r.json(); }).then(function (j) {
+        var u = j && j.data && j.data[0] && j.data[0].imageUrl || null; thumbCache[id] = u; cb(u);
+      }).catch(function () { cb(null); });
+    } catch (e) { cb(null); }
+  }
+  function setImg(box, val) {
+    if (!box) return;
+    val = String(val || '').trim();
+    if (!val) return;
+    function put(u) {
+      if (!u || !box.isConnected) return;
+      var im = new Image(); im.alt = ''; im.draggable = false;
+      im.onload = function () { if (box.isConnected) { var o = box.querySelector('img'); if (o) o.remove(); box.insertBefore(im, box.firstChild); } };
+      im.src = u;
+    }
+    if (/^\d+$/.test(val)) thumb(val, put); else put(val);
+  }
+
+  /* ---- navigation stack ---- */
+  var rootEl = null, stack = [], ddEl = null;
+  function frame() { return document.querySelector('#root > div'); }
+  function ensureRoot() {
+    if (rootEl && rootEl.isConnected) return rootEl;
+    var f = frame(); if (!f) return null;
+    rootEl = h('div', 'cm-root'); f.appendChild(rootEl); return rootEl;
+  }
+  function top() { return stack[stack.length - 1]; }
+  function push(en) {
+    if (!ensureRoot()) return;
+    en.hist = en.hist || [];
+    en.el = h('div', 'cm-screen cm-in');
+    en.el.addEventListener('click', closeDD);
+    build(en);
+    rootEl.appendChild(en.el); stack.push(en);
+    setTimeout(function () { en.el.classList.remove('cm-in'); }, 320);
+  }
+  function pop() {
+    var en = stack.pop(); if (!en) return;
+    closeDD();
+    en.el.classList.add('cm-out');
+    setTimeout(function () { en.el.remove(); }, 230);
+    if (!stack.length) { var r = rootEl; rootEl = null; setTimeout(function () { r && r.remove(); }, 240); }
+  }
+  function closeAll() { while (stack.length) pop(); }
+  function refresh(en) {
+    if (!en || !en.el) return;
+    var sc = en.el.querySelector('.cm-sc,.cm-lb'), t = sc ? sc.scrollTop : 0;
+    en.el.innerHTML = ''; build(en);
+    var sc2 = en.el.querySelector('.cm-sc,.cm-lb'); if (sc2) sc2.scrollTop = t;
+  }
+  function refreshAll() { stack.forEach(function (en) { if (en.type !== 'cfg' || !en.loading) { if (en.id && !find(en.id)) return; refresh(en); } }); }
+  function build(en) { if (en.type === 'list') buildList(en); else if (en.type === 'comm') buildComm(en); else buildCfg(en); }
+
+  function toast(msg) {
+    if (!rootEl) return;
+    var t = h('div', 'cm-toast', esc(msg)); rootEl.appendChild(t);
+    setTimeout(function () { t.remove(); }, 2000);
+  }
+  function closeDD() { if (ddEl) { ddEl.remove(); ddEl = null; } }
+
+  /* ---- sheet (bottom panel) ---- */
+  function sheet(en, title, bodyHtml, wire) {
+    var sc = h('div', 'cm-sheet-scrim'), sh = h('div', 'cm-sheet', '<h3>' + esc(title) + '</h3>' + bodyHtml);
+    function close() { sc.remove(); sh.remove(); }
+    sc.addEventListener('click', close);
+    en.el.appendChild(sc); en.el.appendChild(sh);
+    wire(sh, close);
+  }
+
+  /* ---- dropdown ---- */
+  function dd(cls, text, opts, onPick, en) {
+    var b = h('button', 'cm-dd ' + (cls || ''), esc(text) + ic('chevron-small-down'));
+    b.addEventListener('click', function (ev) {
+      ev.stopPropagation(); var had = ddEl; closeDD(); if (had) return;
+      var l = h('div', 'cm-ddl');
+      opts.forEach(function (o) {
+        var x = h('button', null, esc(o[1] != null ? o[1] : o));
+        x.addEventListener('click', function (e2) { e2.stopPropagation(); closeDD(); onPick(o[0] != null && o.length ? o[0] : o); });
+        l.appendChild(x);
+      });
+      var sr = en.el.getBoundingClientRect(), r = b.getBoundingClientRect(), s = sr.width / 360 || 1;
+      l.style.left = ((r.left - sr.left) / s) + 'px'; l.style.top = ((r.bottom - sr.top) / s + 2) + 'px'; l.style.minWidth = (r.width / s) + 'px';
+      en.el.appendChild(l); ddEl = l;
+    });
+    return b;
+  }
+
+  /* ---- list ---- */
+  function rowHtml(c) {
+    return '<span class="cm-em"></span><span class="cm-rn"><b>' + esc(c.name) + '</b><span>' + fmt(c.members) + ' member' + (c.members === 1 ? '' : 's') + '</span></span><span class="cm-pill' + (c.role === 'owner' ? ' on' : '') + '">' + (c.role === 'owner' ? 'Owned' : 'Member') + '</span>';
+  }
+  function buildList(en) {
+    var el = en.el;
+    var hd = h('div', 'cm-lh', '<button class="cm-bk" aria-label="Back">' + ic('arrow-large-left') + '</button><b>Communities</b><button class="cm-all">See All</button>');
+    hd.querySelector('.cm-bk').addEventListener('click', function () { pop(); });
+    hd.querySelector('.cm-all').addEventListener('click', function () { var lb = el.querySelector('.cm-lb'); if (lb) lb.scrollTop = 0; });
+    var lb = h('div', 'cm-lb');
+    var sb = h('label', 'cm-search', ic('magnifying-glass') + '<input type="text" placeholder="Search My Communities" autocomplete="off" autocapitalize="off" spellcheck="false">');
+    var inp = sb.querySelector('input'); inp.value = en.q || '';
+    var cb = h('button', 'cm-create', 'Create Community');
+    var rows = h('div');
+    lb.appendChild(sb); lb.appendChild(cb); lb.appendChild(rows);
+    function fill() {
+      rows.innerHTML = '';
+      var q = (en.q || '').trim().toLowerCase();
+      var all = S.list.filter(function (c) { return !q || c.name.toLowerCase().indexOf(q) >= 0; });
+      var prim = all.filter(function (c) { return c.primary; }), rest = all.filter(function (c) { return !c.primary; });
+      function add(c) {
+        var b = h('button', 'cm-row', rowHtml(c)); setImg(b.querySelector('.cm-em'), c.emblem);
+        b.addEventListener('click', function () { push({ type: 'comm', id: c.id, tab: 'Home' }); });
+        rows.appendChild(b);
+      }
+      if (prim.length) { rows.appendChild(h('div', 'cm-h3', 'Primary')); prim.forEach(add); }
+      if (rest.length) { rows.appendChild(h('div', 'cm-h3', 'My Communities')); rest.forEach(add); }
+      if (!all.length) rows.appendChild(h('div', 'cm-none', q ? 'No communities found' : 'You are not in any communities yet'));
+    }
+    inp.addEventListener('input', function () { en.q = inp.value; fill(); });
+    cb.addEventListener('click', function () {
+      var c = norm({ id: uid(), name: 'New Community', by: 'munfuja', members: 1, role: 'owner', primary: false });
+      S.list.push(c); save(); refresh(en); push({ type: 'cfg', id: c.id, loading: true });
+    });
+    fill();
+    el.appendChild(hd); el.appendChild(lb);
+  }
+
+  /* ---- community page ---- */
+  function header(en, withBack, onBack) {
+    var hd = h('div', 'cm-hd', '<button class="cm-x" aria-label="Close">' + ic('x') + '</button>' + (withBack ? '<button class="cm-bk" aria-label="Back">' + ic('chevron-small-left') + '</button>' : ''));
+    hd.querySelector('.cm-x').addEventListener('click', closeAll);
+    var bk = hd.querySelector('.cm-bk'); if (bk) bk.addEventListener('click', onBack);
+    return hd;
+  }
+  function buildComm(en) {
+    var c = find(en.id); if (!c) { pop(); return; }
+    var owner = c.role === 'owner';
+    var hd = header(en, en.hist.length > 0, function () { en.tab = en.hist.pop(); refresh(en); });
+    var sc = h('div', 'cm-sc');
+    var tp = h('div', 'cm-top', '<div class="cm-em2"></div><h1>' + esc(c.name) + '</h1><div class="cm-by">By ' + esc(c.by) + '</div><button class="cm-dots" aria-label="More">' + ic('three-dots-horizontal') + '</button>' +
+      '<div class="cm-chips"><span>' + fmt(c.members) + ' Member' + (c.members === 1 ? '' : 's') + '</span><span>Member Rank</span></div><div class="cm-bio">' + (c.bio ? esc(c.bio) : 'No bio yet.') + '</div>');
+    setImg(tp.querySelector('.cm-em2'), c.emblem);
+    tp.querySelector('.cm-dots').addEventListener('click', function (ev) { ev.stopPropagation(); openMenu(en, c); });
+    var tabs = h('div', 'cm-tabs');
+    ['Home', 'Posts', 'Events', 'Store'].forEach(function (t) {
+      var b = h('button', t === en.tab ? 'on' : '', t);
+      b.addEventListener('click', function () { if (t === en.tab) return; en.hist.push(en.tab); en.tab = t; refresh(en); });
+      tabs.appendChild(b);
+    });
+    var pane = h('div', 'cm-pane');
+    sc.appendChild(tp); sc.appendChild(tabs); sc.appendChild(pane);
+    en.el.appendChild(hd); en.el.appendChild(sc);
+    var bar = null;
+    function postsHtml() {
+      return c.posts.slice().reverse().map(function (p) { return '<div class="cm-post"><p>' + esc(p.text) + '</p><small>' + esc(p.date) + '</small></div>'; }).join('');
+    }
+    function newPost() {
+      sheet(en, 'Create post', '<label>Announcement</label><textarea id="cmp" maxlength="500" placeholder="What do you want to tell your community?"></textarea><div class="cm-bts"><button class="cmc">Cancel</button><button class="pri cmo">Post</button></div>', function (sh, close) {
+        sh.querySelector('.cmc').addEventListener('click', close);
+        sh.querySelector('.cmo').addEventListener('click', function () {
+          var t = sh.querySelector('#cmp').value.trim(); if (!t) return;
+          c.posts.push({ text: t, date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) }); save(); close(); refresh(en);
+        });
+      });
+    }
+    if (en.tab === 'Home') {
+      pane.innerHTML = '<div class="cm-ph"><h2>Announcements</h2>' + (owner ? '<button class="cm-gbtn">Create</button>' : '') + '</div>' + (c.posts.length ? postsHtml() : '<p class="cm-empty">No announcements yet...</p>');
+      var cr = pane.querySelector('.cm-gbtn'); if (cr) cr.addEventListener('click', newPost);
+    } else if (en.tab === 'Posts') {
+      pane.innerHTML = '<span class="cm-chip">Announcements</span>' + (c.posts.length ? postsHtml() : ic('speech-bubble-align-center', 'cm-bub') + '<p class="cm-empty cm-pe">No announcements yet...</p>');
+      if (owner) { bar = h('div', 'cm-bar', '<button>Create post</button>'); bar.querySelector('button').addEventListener('click', newPost); en.el.appendChild(bar); }
+    } else if (en.tab === 'Events') {
+      pane.innerHTML = '<div class="cm-ph"><h2>Events</h2></div><div class="cm-evt"><div class="cm-tilt">' + ic('calendar-star') + '</div>' +
+        (owner ? '<h3>Engage your community with events</h3><p>Visit the Creator Hub to begin creating events for your members</p><button>Create event</button>' : '<h3>No events yet</h3><p>Events from this community will show up here</p>') + '</div>';
+      var ce = pane.querySelector('.cm-evt button'); if (ce) ce.addEventListener('click', function () { toast('Events are created in the Creator Hub'); });
+    } else {
+      pane.innerHTML = '<div class="cm-ph"><h2>Store</h2><button class="cm-sa">See All ' + ic('arrow-small-right') + '</button></div>';
+      var g = h('div', 'cm-grid');
+      c.store.forEach(function (it) {
+        var b = h('button', 'cm-it', '<div class="cm-img">' + (it.limited ? '<span class="cm-lim">Limited</span>' : '') + '</div><b>' + esc(it.name) + '</b><span>' + icf('robux') + fmt(it.price) + '</span>');
+        setImg(b.querySelector('.cm-img'), it.asset);
+        b.addEventListener('click', function () { if (owner) itemSheet(en, c, it); else toast(it.name + ' - ' + fmt(it.price) + ' Robux'); });
+        g.appendChild(b);
+      });
+      if (owner) {
+        var a = h('button', 'cm-it cm-add', '<div class="cm-img">' + ic('plus-large') + '</div><b>Add item</b>');
+        a.addEventListener('click', function () { itemSheet(en, c, null); });
+        g.appendChild(a);
+      } else if (!c.store.length) pane.appendChild(h('p', 'cm-empty', 'No items for sale yet'));
+      pane.appendChild(g);
+      var sa = pane.querySelector('.cm-sa'); if (sa) sa.addEventListener('click', function () { toast('Showing all ' + c.store.length + ' items'); });
+    }
+  }
+  function itemSheet(en, c, it) {
+    var isNew = !it; it = it || { id: 's' + Date.now().toString(36), name: '', price: 0, limited: false, asset: '' };
+    sheet(en, isNew ? 'Add item' : 'Edit item',
+      '<label>Name</label><input type="text" id="cin" maxlength="60" value="' + esc(it.name) + '"><label>Price (Robux)</label><input type="number" id="cip" min="0" value="' + esc(it.price) + '"><label>Roblox asset ID (for the picture, optional)</label><input type="text" id="cia" inputmode="numeric" value="' + esc(it.asset) + '"><label class="cm-chk"><input type="checkbox" id="cil"' + (it.limited ? ' checked' : '') + '> Limited item</label>' +
+      '<div class="cm-bts">' + (isNew ? '' : '<button class="del cmd">Delete</button>') + '<button class="cmc">Cancel</button><button class="pri cmo">Save</button></div>', function (sh, close) {
+        sh.querySelector('.cmc').addEventListener('click', close);
+        var d = sh.querySelector('.cmd'); if (d) d.addEventListener('click', function () { c.store = c.store.filter(function (x) { return x !== it; }); save(); close(); refreshAll(); });
+        sh.querySelector('.cmo').addEventListener('click', function () {
+          var n = sh.querySelector('#cin').value.trim(); if (!n) return;
+          it.name = n; it.price = Math.max(0, Math.floor(Number(sh.querySelector('#cip').value) || 0)); it.asset = sh.querySelector('#cia').value.replace(/\D/g, ''); it.limited = sh.querySelector('#cil').checked;
+          if (isNew) c.store.push(it);
+          save(); close(); refreshAll();
+        });
+      });
+  }
+  function openMenu(en, c) {
+    var owner = c.role === 'owner';
+    var items = [];
+    if (owner) items.push(['Configure Community', function () { push({ type: 'cfg', id: c.id, loading: true }); }]);
+    items.push([c.primary ? 'Remove Primary' : 'Set as Primary', function () { var was = c.primary; S.list.forEach(function (x) { x.primary = false; }); c.primary = !was; save(); refreshAll(); toast(c.primary ? 'Set as primary community' : 'Primary removed'); }]);
+    if (owner) { items.push(['Transfer Group', function () { toast('This opens roblox.com in the real app'); }, 1]); items.push(['Deactivate Group', function () { toast('This opens roblox.com in the real app'); }, 1]); }
+    else items.push(['Leave Community', function () { S.list = S.list.filter(function (x) { return x !== c; }); save(); closeAll(); }]);
+    items.push(['Copy link', function () { try { navigator.clipboard && navigator.clipboard.writeText('https://www.roblox.com/communities/' + c.id); } catch (e) {} toast('Link copied'); }]);
+    items.push(['Report abuse', function () { toast('Thanks, we will review it'); }]);
+    var sc = h('div', 'cm-pop-scrim'), pp = h('div', 'cm-pop');
+    function close() { sc.remove(); pp.remove(); }
+    sc.addEventListener('click', close);
+    items.forEach(function (it) {
+      var b = h('button', null, esc(it[0]) + (it[2] ? ic('arrow-up-right-from-square') : ''));
+      b.addEventListener('click', function () { close(); it[1](); });
+      pp.appendChild(b);
+    });
+    en.el.appendChild(sc); en.el.appendChild(pp);
+  }
+
+  /* ---- configure ---- */
+  function pickFile(cb) {
+    var f = document.createElement('input'); f.type = 'file'; f.accept = 'image/*';
+    f.onchange = function () {
+      var file = f.files && f.files[0]; if (!file) return;
+      var r = new FileReader();
+      r.onload = function () {
+        var im = new Image();
+        im.onload = function () {
+          var s = Math.min(1, 320 / Math.max(im.width, im.height)), cv = document.createElement('canvas'); cv.width = Math.round(im.width * s); cv.height = Math.round(im.height * s);
+          cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height); cb(cv.toDataURL('image/jpeg', 0.85));
+        };
+        im.src = r.result;
+      };
+      r.readAsDataURL(file);
+    };
+    f.click();
+  }
+  function buildCfg(en) {
+    var c = find(en.id); if (!c) { pop(); return; }
+    var hd = header(en, true, function () { pop(); });
+    var sc = h('div', 'cm-sc'), box = h('div', 'cm-cfg');
+    sc.appendChild(box); en.el.appendChild(hd); en.el.appendChild(sc);
+    if (en.loading) {
+      box.innerHTML = '<h1>Configure</h1><div class="cm-by2">By No One!</div><div class="cm-sp">' + [0, 1, 2, 3, 4, 5, 6, 7].map(function (i) { return '<i style="transform:rotate(' + (i * 45) + 'deg);animation-delay:' + (-0.9 + i * 0.1125).toFixed(3) + 's"></i>'; }).join('') + '</div>';
+      setTimeout(function () { en.loading = false; if (stack.indexOf(en) >= 0) refresh(en); }, 650);
+      return;
+    }
+    en.section = en.section || 'Information';
+    box.innerHTML = '<h1>Configure ' + esc(c.name) + '</h1><div class="cm-by2">By ' + esc(c.by) + '</div><div class="cm-fund">Community Funds: ' + icf('robux') + '<b>' + fmt(c.funds) + '</b></div><button class="cm-back2">Back to Community ' + ic('arrow-small-right') + '</button>';
+    box.querySelector('.cm-back2').addEventListener('click', function () { pop(); });
+    var body = h('div', 'cm-body'), sec = h('div', 'cm-sec');
+    body.appendChild(sec); box.appendChild(body);
+    sec.appendChild(dd('', en.section, [['Information', 'Information'], ['Revenue', 'Revenue']], function (v) { en.section = v; refresh(en); }, en));
+    if (en.section === 'Revenue') {
+      en.period = en.period || 'day'; en.rev = en.rev || 'Summary';
+      var sp = h('div'); sp.style.marginTop = '14px';
+      sp.appendChild(dd('', en.rev, [['Summary', 'Summary']], function (v) { en.rev = v; refresh(en); }, en)); sec.appendChild(sp);
+      var rv = h('div', 'cm-rev'), hh = h('div', 'cm-rvh', '<h2>Summary</h2>');
+      var pn = ''; PERIODS.forEach(function (p) { if (p[0] === en.period) pn = p[1]; });
+      hh.appendChild(dd('sm', pn, PERIODS, function (v) { en.period = v; refresh(en); }, en));
+      rv.appendChild(hh);
+      var vals = c.rev[en.period], total = 0; vals.forEach(function (v) { total += Number(v) || 0; });
+      var tb = h('div', 'cm-tbl', '<div class="cm-tr cm-th"><div>Categories</div><div>Community Amount</div></div>' +
+        REV_LAB.map(function (l, i) { return '<div class="cm-tr"><div>' + l + '</div><div>' + icf('robux') + fmt(vals[i]) + '</div></div>'; }).join('') +
+        '<div class="cm-tr cm-tt"><div>Total</div><div>' + icf('robux') + fmt(total) + '</div></div><div class="cm-tr cm-tp"><div>Pending Robux</div><div>' + icf('robux') + fmt(c.pending) + '</div></div>');
+      rv.appendChild(tb); sec.appendChild(rv);
+      return;
+    }
+    // Information: Emblem, Cover Photo, Description, Information
+    var pend = { emblem: null, cover: null };
+    function imgBlock(label, key, cap, note, canDelete) {
+      var w = h('div');
+      w.innerHTML = '<div class="cm-lab">' + label + '</div>' + (note ? '<div class="cm-note">' + note + '</div>' : '') +
+        '<div class="cm-drop"><div class="cm-prev"><div class="cm-cap">' + cap + '</div></div><button class="cm-sel">Select an image from your device</button></div>' +
+        '<div class="cm-acts"><button class="cm-sv">Save</button>' + (canDelete ? '<button class="cm-sv cmdel">Delete</button>' : '') + '</div>';
+      var prev = w.querySelector('.cm-prev'), save_ = w.querySelector('.cm-sv');
+      setImg(prev, c[key]);
+      w.querySelector('.cm-sel').addEventListener('click', function () {
+        pickFile(function (d) { pend[key] = d; var o = prev.querySelector('img'); if (o) o.remove(); setImg(prev, d); save_.classList.add('on'); });
+      });
+      save_.addEventListener('click', function () { if (pend[key]) { c[key] = pend[key]; pend[key] = null; save(); save_.classList.remove('on'); toast(label + ' saved'); refreshAll(); } });
+      var dl = w.querySelector('.cmdel'); if (dl) { dl.classList.toggle('on', !!c[key]); dl.addEventListener('click', function () { if (!c[key]) return; c[key] = ''; save(); refreshAll(); }); }
+      return w;
+    }
+    sec.appendChild(imgBlock('Emblem', 'emblem', 'Emblem', '', false));
+    sec.appendChild(imgBlock('Cover Photo', 'cover', 'Cover Photo', 'Cover photo must be one of the available dimensions: 720x228, 1440x456', true));
+    var dsc = h('div');
+    dsc.innerHTML = '<div class="cm-lab">Description</div><textarea class="cm-ta" maxlength="1000"></textarea><div class="cm-cnt"><span class="cn">' + (c.bio || '').length + '</span> / 1000</div><div class="cm-acts"><button class="cm-sv">Save</button></div>';
+    var ta = dsc.querySelector('textarea'); ta.value = c.bio || '';
+    var dsv = dsc.querySelector('.cm-sv');
+    ta.addEventListener('input', function () { dsc.querySelector('.cn').textContent = ta.value.length; dsv.classList.toggle('on', ta.value !== (c.bio || '')); });
+    dsv.addEventListener('click', function () { if (ta.value === (c.bio || '')) return; c.bio = ta.value; save(); dsv.classList.remove('on'); toast('Description saved'); refreshAll(); });
+    sec.appendChild(dsc);
+    var inf = h('div', 'cm-info');
+    inf.innerHTML = '<h2>Information</h2><div class="cm-ir"><span>Owner</span><div class="cm-bt"><button class="cm-ob cmt">Transfer Group ' + ic('arrow-up-right-from-square') + '</button><button class="cm-ob red cmd">Deactivate Group ' + ic('arrow-up-right-from-square') + '</button></div></div><div class="cm-val">' + esc(c.by) + '</div>' +
+      '<div class="cm-ir"><span>Name</span><button class="cm-edit" aria-label="Edit name">' + ic('pencil-square', 'cm-edit') + '</button></div><div class="cm-val cmname">' + esc(c.name) + '</div>';
+    inf.querySelector('.cmt').addEventListener('click', function () { toast('This opens roblox.com in the real app'); });
+    inf.querySelector('.cmd').addEventListener('click', function () { toast('This opens roblox.com in the real app'); });
+    inf.querySelector('.cm-edit').addEventListener('click', function () {
+      var v = inf.querySelector('.cmname'); v.innerHTML = '<input type="text" maxlength="50"> <button class="cm-sv on" style="height:30px;padding:0 10px">Save</button>';
+      var i = v.querySelector('input'); i.value = c.name; i.focus();
+      v.querySelector('button').addEventListener('click', function () { var n = i.value.trim(); if (!n) return; c.name = n; save(); refreshAll(); });
+    });
+    sec.appendChild(inf);
+  }
+
+  /* ---- editor section (used by the app's Edit panel) ---- */
+  function editor(root) {
+    function draw() {
+      root.innerHTML = '';
+      var wrap = h('div', 'cmed');
+      S.list.forEach(function (c) {
+        var card = h('div', 'cmc');
+        card.innerHTML = '<h5>' + esc(c.name) + '</h5>' +
+          '<div class="r"><label>Name<input type="text" data-k="name"></label><label>By (owner)<input type="text" data-k="by"></label></div>' +
+          '<div class="r"><label>Members<input type="number" min="0" data-k="members"></label><label>Funds (Robux)<input type="number" data-k="funds"></label><label>Pending Robux<input type="number" data-k="pending"></label></div>' +
+          '<label>Bio<textarea data-k="bio"></textarea></label><label>Emblem (image URL or asset ID)<input type="text" data-k="emblem"></label>' +
+          '<div class="r fit"><label class="chk"><input type="checkbox" data-k="own"> Owned by me</label><label class="chk"><input type="checkbox" data-k="prim"> Primary</label></div>';
+        card.querySelectorAll('[data-k]').forEach(function (i) {
+          var k = i.getAttribute('data-k');
+          if (k === 'own') i.checked = c.role === 'owner'; else if (k === 'prim') i.checked = !!c.primary; else i.value = c[k] == null ? '' : (k === 'emblem' && /^data:/.test(c[k]) ? '(uploaded image)' : c[k]);
+          i.addEventListener('change', function () {
+            if (k === 'own') c.role = i.checked ? 'owner' : 'member';
+            else if (k === 'prim') { S.list.forEach(function (x) { x.primary = false; }); c.primary = i.checked; }
+            else if (k === 'members' || k === 'funds' || k === 'pending') c[k] = Math.max(0, Math.floor(Number(i.value) || 0));
+            else if (k === 'emblem') { if (i.value === '(uploaded image)') return; c.emblem = i.value.trim(); }
+            else c[k] = i.value;
+            save(); refreshAll(); if (k === 'prim' || k === 'own' || k === 'name') draw();
+          });
+        });
+        // revenue
+        var rv = h('div', 'st'); rv.innerHTML = '<label>Revenue by period: Sale of Goods / Advance Rebates / Commissions / Payouts / Creator Rewards</label>';
+        REV.forEach(function (rk, ri) {
+          var row = h('div', 'rv'); row.appendChild(h('span', null, PERIODS[ri][1]));
+          REV_LAB.forEach(function (l, li) {
+            var i = h('input'); i.type = 'number'; i.title = l; i.value = c.rev[rk][li];
+            i.addEventListener('change', function () { c.rev[rk][li] = Math.floor(Number(i.value) || 0); save(); refreshAll(); });
+            row.appendChild(i);
+          });
+          rv.appendChild(row);
+        });
+        card.appendChild(rv);
+        // store items
+        var st = h('div', 'st'); st.innerHTML = '<label>Store items (name / price / asset ID / limited)</label>';
+        c.store.forEach(function (it) {
+          var r = h('div', 'sti', '<input type="text" data-s="name"><input type="number" min="0" data-s="price"><input type="text" inputmode="numeric" data-s="asset" placeholder="asset ID"><label class="chk"><input type="checkbox" data-s="limited"> Ltd</label><button class="del">x</button>');
+          r.querySelectorAll('[data-s]').forEach(function (i) {
+            var k = i.getAttribute('data-s');
+            if (k === 'limited') i.checked = !!it.limited; else i.value = it[k] == null ? '' : it[k];
+            i.addEventListener('change', function () {
+              if (k === 'limited') it.limited = i.checked; else if (k === 'price') it.price = Math.max(0, Math.floor(Number(i.value) || 0)); else if (k === 'asset') it.asset = i.value.replace(/\D/g, ''); else it.name = i.value;
+              save(); refreshAll();
+            });
+          });
+          r.querySelector('.del').addEventListener('click', function () { c.store = c.store.filter(function (x) { return x !== it; }); save(); refreshAll(); draw(); });
+          st.appendChild(r);
+        });
+        var add = h('button', 'pri', '+ Add item'); add.addEventListener('click', function () { c.store.push({ id: 's' + Date.now().toString(36), name: 'New item', price: 0, limited: false, asset: '' }); save(); refreshAll(); draw(); });
+        st.appendChild(add); card.appendChild(st);
+        var del = h('button', 'del', 'Delete community'); del.addEventListener('click', function () { S.list = S.list.filter(function (x) { return x !== c; }); save(); closeAll(); draw(); });
+        card.appendChild(del);
+        wrap.appendChild(card);
+      });
+      var nb = h('button', 'pri', '+ Add community');
+      nb.addEventListener('click', function () { S.list.push(norm({ id: uid(), name: 'New Community', by: 'munfuja', members: 1, role: 'member', primary: false })); save(); draw(); });
+      wrap.appendChild(nb);
+      root.appendChild(wrap);
+    }
+    draw();
+  }
+
+  /* ---- hook: Drawer > Communities opens this ---- */
+  function open() {
+    closeAll();
+    var scrim = document.querySelector('[data-testid="drawer-scrim"]');
+    if (scrim) scrim.click();
+    setTimeout(function () { push({ type: 'list', q: '' }); }, 60);
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target && e.target.closest && e.target.closest('[data-testid="drawer-communities"]');
+    if (t) { e.stopPropagation(); e.preventDefault(); open(); }
+  }, true);
+
+  window.RoCm = { open: open, editor: editor, state: function () { return S; } };
+})();
