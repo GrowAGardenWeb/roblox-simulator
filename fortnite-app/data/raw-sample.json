@@ -7,6 +7,339 @@
  ],
  "sample": [
   {
+   "regularPrice": 2500,
+   "finalPrice": 2300,
+   "devName": "[VIRTUAL]1 x Oro, 1 x Radiant Mantle, 1 x Hail To The King for -1 MtxCurrency",
+   "offerId": "v2:/aff6dfd78531b888f5c63750144fcff6f54717eb2179be7fb09b4c9ec7c6244a",
+   "inDate": "2026-11-28T00:00:00Z",
+   "outDate": "2026-11-29T23:59:59.999Z",
+   "bundle": {
+    "name": "Hail To The King Bundle",
+    "info": "Bundle",
+    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/857bf9aadc50591b/renderimage_0.png"
+   },
+   "banner": {
+    "value": "200 V-Bucks Off",
+    "intensity": "Low",
+    "backendValue": "AmountOff"
+   },
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -1,
+   "layoutId": "BR112826.99",
+   "layout": {
+    "id": "BR112826",
+    "name": "Main Character Energy ",
+    "index": 14,
+    "rank": 177,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "tileGrid"
+   },
+   "colors": {
+    "color1": "290f07ff",
+    "color3": "824100ff",
+    "textBackgroundColor": "824100ff"
+   },
+   "tileSize": "Size_2_x_1",
+   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_Jam_TheGoldenSkeleton_Bundle",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S37/DAv2_Bundle_Featured_Jam_TheGoldenSkeleton",
+   "newDisplayAsset": {
+    "id": "DAv2_Bundle_Featured_Jam_TheGoldenSkeleton",
+    "materialInstances": [],
+    "renderImages": [
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__857bf9aadc50591b_99a52ccd5a9255c7.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/857bf9aadc50591b/renderimage_0.png"
+     },
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__857bf9aadc50591b_049c04bf7db272bb.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/857bf9aadc50591b/renderimage_1.png"
+     },
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__857bf9aadc50591b_ec3a5ff902ba83ca.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/857bf9aadc50591b/renderimage_2.png"
+     },
+     {
+      "productTag": "Product.Juno",
+      "fileName": "cosmo__857bf9aadc50591b_8372ffb4cd628b5e.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/857bf9aadc50591b/renderimage_3.png"
+     }
+    ]
+   },
+   "brItems": [
+    {
+     "id": "CID_675_Athena_Commando_M_TheGoldenSkeleton",
+     "name": "Oro",
+     "description": "Golden treasure, an eternal obsession.",
+     "type": {
+      "value": "outfit",
+      "displayValue": "Outfit",
+      "backendValue": "AthenaCharacter"
+     },
+     "rarity": {
+      "value": "legendary",
+      "displayValue": "Legendary",
+      "backendValue": "EFortRarity::Legendary"
+     },
+     "set": {
+      "value": "Midas' Revenge",
+      "text": "Part of the Midas' Revenge set.",
+      "backendValue": "GoldScore"
+     },
+     "introduction": {
+      "chapter": "2",
+      "season": "2",
+      "text": "Introduced in Chapter 2, Season 2.",
+      "backendValue": 12
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/cid_675_athena_commando_m_thegoldenskeleton/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/cid_675_athena_commando_m_thegoldenskeleton/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/cid_675_athena_commando_m_thegoldenskeleton/featured.png",
+      "lego": {
+       "small": "https://fortnite-api.com/images/cosmetics/lego/cid_675_athena_commando_m_thegoldenskeleton/small.png",
+       "large": "https://fortnite-api.com/images/cosmetics/lego/cid_675_athena_commando_m_thegoldenskeleton/large.png",
+       "wide": "https://fortnite-api.com/images/cosmetics/lego/cid_675_athena_commando_m_thegoldenskeleton/wide.png"
+      },
+      "bean": {
+       "small": "https://fortnite-api.com/images/cosmetics/beans/bean_thegoldenskeletona/small.png",
+       "large": "https://fortnite-api.com/images/cosmetics/beans/bean_thegoldenskeletona/large.png"
+      }
+     },
+     "variants": [
+      {
+       "channel": "Parts",
+       "type": "STYLE",
+       "options": [
+        {
+         "tag": "Stage1",
+         "name": "GOLDEN KING",
+         "image": "https://fortnite-api.com/images/cosmetics/br/cid_675_athena_commando_m_thegoldenskeleton/variants/parts/stage1.png"
+        },
+        {
+         "tag": "Stage2",
+         "name": "NO GLOW",
+         "image": "https://fortnite-api.com/images/cosmetics/br/cid_675_athena_commando_m_thegoldenskeleton/variants/parts/stage2.png"
+        },
+        {
+         "tag": "Stage3",
+         "name": "SKELETON KING",
+         "image": "https://fortnite-api.com/images/cosmetics/br/cid_675_athena_commando_m_thegoldenskeleton/variants/parts/stage3.png"
+        }
+       ]
+      }
+     ],
+     "showcaseVideo": "CLM-ZX3d6Ag",
+     "added": "2020-01-15T09:35:51Z"
+    },
+    {
+     "id": "BID_458_TheGoldenSkeleton",
+     "name": "Radiant Mantle",
+     "description": "The frozen rays of an ancient star.",
+     "type": {
+      "value": "backpack",
+      "displayValue": "Back Bling",
+      "backendValue": "AthenaBackpack"
+     },
+     "rarity": {
+      "value": "legendary",
+      "displayValue": "Legendary",
+      "backendValue": "EFortRarity::Legendary"
+     },
+     "set": {
+      "value": "Midas' Revenge",
+      "text": "Part of the Midas' Revenge set.",
+      "backendValue": "GoldScore"
+     },
+     "introduction": {
+      "chapter": "2",
+      "season": "2",
+      "text": "Introduced in Chapter 2, Season 2.",
+      "backendValue": 12
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/bid_458_thegoldenskeleton/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_458_thegoldenskeleton/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_458_thegoldenskeleton/featured.png"
+     },
+     "variants": [
+      {
+       "channel": "Parts",
+       "type": "STYLE",
+       "options": [
+        {
+         "tag": "Stage1",
+         "name": "GOLDEN KING",
+         "image": "https://fortnite-api.com/images/cosmetics/br/bid_458_thegoldenskeleton/variants/parts/stage1.png"
+        },
+        {
+         "tag": "Stage2",
+         "name": "NO GLOW",
+         "image": "https://fortnite-api.com/images/cosmetics/br/bid_458_thegoldenskeleton/variants/parts/stage2.png"
+        },
+        {
+         "tag": "Stage3",
+         "name": "SKELETON KING",
+         "image": "https://fortnite-api.com/images/cosmetics/br/bid_458_thegoldenskeleton/variants/parts/stage3.png"
+        }
+       ]
+      }
+     ],
+     "added": "2020-01-15T09:35:49Z"
+    }
+   ],
+   "tracks": [
+    {
+     "id": "sid_placeholder_208",
+     "devName": "hailtotheking",
+     "title": "Hail To The King",
+     "artist": "Avenged Sevenfold",
+     "releaseYear": 2013,
+     "bpm": 118,
+     "duration": 307,
+     "difficulty": {
+      "vocals": 1,
+      "guitar": 6,
+      "bass": 1,
+      "plasticBass": 1,
+      "drums": 1,
+      "plasticDrums": 1
+     },
+     "albumArt": "https://cdn.fortnite-api.com/tracks/9eae77e1113bbeb0.jpg",
+     "added": "2024-05-14T14:56:14Z"
+    }
+   ]
+  },
+  {
+   "regularPrice": 500,
+   "finalPrice": 500,
+   "devName": "[VIRTUAL]1 x TBD (SID_Placeholder_629) for 500 MtxCurrency",
+   "offerId": "v2:/59b66485b374b19d2fdd88a69b4a847dd643e7ab4c92677258ee337e4ae96d69",
+   "inDate": "2026-11-01T00:00:00Z",
+   "outDate": "2026-11-30T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -100,
+   "layoutId": "JT112726.96",
+   "layout": {
+    "id": "JT112726",
+    "name": "Jam Tracks",
+    "index": 29,
+    "rank": 174,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "expandableList"
+   },
+   "colors": {
+    "color1": "3a306cff",
+    "color3": "5e40ceff",
+    "textBackgroundColor": "694fc3ff"
+   },
+   "tileSize": "Size_1_x_1",
+   "newDisplayAssetPath": "sid_placeholder_629",
+   "tracks": [
+    {
+     "id": "sid_placeholder_629",
+     "devName": "cheguei",
+     "title": "Cheguei",
+     "artist": "LUDMILLA",
+     "releaseYear": 2016,
+     "bpm": 130,
+     "duration": 175,
+     "difficulty": {
+      "vocals": 3,
+      "guitar": 3,
+      "bass": 1,
+      "plasticBass": 1,
+      "drums": 3,
+      "plasticDrums": 3
+     },
+     "albumArt": "https://cdn.fortnite-api.com/tracks/88bbf94a498679e5.jpg",
+     "added": "2025-09-17T09:33:34Z"
+    }
+   ]
+  },
+  {
+   "regularPrice": 800,
+   "finalPrice": 800,
+   "devName": "[VIRTUAL]1 x Gold Digger for 800 MtxCurrency",
+   "offerId": "v2:/34c1de1acb6b74b99103ed15c0f46e0e1796fcd0385bc436a0c54d6bc1af6c82",
+   "inDate": "2026-11-23T00:00:00Z",
+   "outDate": "2026-11-30T23:59:59.999Z",
+   "giftable": true,
+   "refundable": false,
+   "sortPriority": -4,
+   "layoutId": "Autumn43.92",
+   "layout": {
+    "id": "Autumn43",
+    "name": "Harvest Season",
+    "index": 36,
+    "rank": 181,
+    "showIneligibleOffers": "always",
+    "useWidePreview": false,
+    "displayType": "tileGrid"
+   },
+   "colors": {
+    "color1": "d9bb7fff",
+    "color3": "b47940ff",
+    "textBackgroundColor": "b27744ff"
+   },
+   "tileSize": "Size_1_x_1",
+   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_Pickaxe_ID_169_Farmer",
+   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/DAv2_Pickaxe_ID_169_Farmer",
+   "newDisplayAsset": {
+    "id": "DAv2_Pickaxe_ID_169_Farmer",
+    "cosmeticId": "Pickaxe_ID_169_Farmer",
+    "materialInstances": [],
+    "renderImages": [
+     {
+      "productTag": "Product.BR",
+      "fileName": "cosmo__f966ea60e679bb25_1cd438105bb6b534.png",
+      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/f966ea60e679bb25/renderimage_0.png"
+     }
+    ]
+   },
+   "brItems": [
+    {
+     "id": "Pickaxe_ID_169_Farmer",
+     "name": "Gold Digger",
+     "description": "The gold standard.",
+     "type": {
+      "value": "pickaxe",
+      "displayValue": "Pickaxe",
+      "backendValue": "AthenaPickaxe"
+     },
+     "rarity": {
+      "value": "rare",
+      "displayValue": "Rare",
+      "backendValue": "EFortRarity::Rare"
+     },
+     "set": {
+      "value": "Fatal Fielders",
+      "text": "Part of the Fatal Fielders set.",
+      "backendValue": "Farmer"
+     },
+     "introduction": {
+      "chapter": "1",
+      "season": "8",
+      "text": "Introduced in Chapter 1, Season 8.",
+      "backendValue": 8
+     },
+     "images": {
+      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_169_farmer/smallicon.png",
+      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_169_farmer/icon.png",
+      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_169_farmer/featured.png"
+     },
+     "showcaseVideo": "x4MNRki1oHI",
+     "added": "2019-11-20T12:48:03Z"
+    }
+   ]
+  },
+  {
    "regularPrice": 7100,
    "finalPrice": 3200,
    "devName": "[VIRTUAL]1 x Lil Uzi Vert, 1 x Uzi's Wings, 1 x Pink Star Lil Uzi Vert, 1 x Lil Uzi Star, 1 x Picco-Axe, 1 x XO Tour Llif3, 1 x What You Saying, 1 x Uzi's Tour Guitar, 1 x Uzi's Tour Guitar, 1 x Uzi's Tour Guitar, 1 x Vans x Lil Uzi Vert LX Old Skool 36, 1 x Uzi On Tour, 1 x Cap'n Lil Uzi Vert for -1 MtxCurrency",
@@ -31,8 +364,8 @@
     "id": "LilUzi3",
     "name": "Lil Uzi Vert ",
     "category": "Icons",
-    "index": 26,
-    "rank": 170,
+    "index": 23,
+    "rank": 168,
     "showIneligibleOffers": "always",
     "useWidePreview": false,
     "displayType": "tileGrid"
@@ -647,496 +980,6 @@
       "backendValue": "CreatorCollabSeries"
      },
      "added": "2026-11-12T14:00:23Z"
-    }
-   ]
-  },
-  {
-   "regularPrice": 500,
-   "finalPrice": 500,
-   "devName": "[VIRTUAL]1 x TBD (SID_Placeholder_629) for 500 MtxCurrency",
-   "offerId": "v2:/59b66485b374b19d2fdd88a69b4a847dd643e7ab4c92677258ee337e4ae96d69",
-   "inDate": "2026-11-01T00:00:00Z",
-   "outDate": "2026-11-30T23:59:59.999Z",
-   "giftable": true,
-   "refundable": false,
-   "sortPriority": -100,
-   "layoutId": "JT1127261.95",
-   "layout": {
-    "id": "JT1127261",
-    "name": "Jam Tracks",
-    "index": 24,
-    "rank": 175,
-    "showIneligibleOffers": "always",
-    "useWidePreview": false,
-    "displayType": "expandableList"
-   },
-   "colors": {
-    "color1": "3a306cff",
-    "color3": "5e40ceff",
-    "textBackgroundColor": "694fc3ff"
-   },
-   "tileSize": "Size_1_x_1",
-   "newDisplayAssetPath": "sid_placeholder_629",
-   "tracks": [
-    {
-     "id": "sid_placeholder_629",
-     "devName": "cheguei",
-     "title": "Cheguei",
-     "artist": "LUDMILLA",
-     "releaseYear": 2016,
-     "bpm": 130,
-     "duration": 175,
-     "difficulty": {
-      "vocals": 3,
-      "guitar": 3,
-      "bass": 1,
-      "plasticBass": 1,
-      "drums": 3,
-      "plasticDrums": 3
-     },
-     "albumArt": "https://cdn.fortnite-api.com/tracks/88bbf94a498679e5.jpg",
-     "added": "2025-09-17T09:33:34Z"
-    }
-   ]
-  },
-  {
-   "regularPrice": 500,
-   "finalPrice": 500,
-   "devName": "[VIRTUAL]1 x Bomber bag for 500 MtxCurrency",
-   "offerId": "v2:/b88252317763ff73035c40492a5a4ad7f09c509445f1c3c767442696091f4acd",
-   "inDate": "2026-11-27T00:00:00Z",
-   "outDate": "2026-11-27T23:59:59.999Z",
-   "giftable": true,
-   "refundable": false,
-   "sortPriority": -1,
-   "layoutId": "alc.0",
-   "colors": {
-    "color1": "290f07ff",
-    "color3": "824100ff",
-    "textBackgroundColor": "824100ff"
-   },
-   "tileSize": "Size_1_x_1",
-   "displayAssetPath": "/Game/Catalog/DisplayAssets/DA_Featured_Backpack_Bid269Raptorfemale",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S9/DAv2_bid_269_raptorfemale",
-   "brItems": [
-    {
-     "id": "BID_269_RaptorFemale",
-     "name": "Bomber bag",
-     "description": "High flying. ",
-     "type": {
-      "value": "backpack",
-      "displayValue": "Back Bling",
-      "backendValue": "AthenaBackpack"
-     },
-     "rarity": {
-      "value": "legendary",
-      "displayValue": "Legendary",
-      "backendValue": "EFortRarity::Legendary"
-     },
-     "introduction": {
-      "chapter": "1",
-      "season": "9",
-      "text": "Introduced in Chapter 1, Season 9.",
-      "backendValue": 9
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/bid_269_raptorfemale/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/bid_269_raptorfemale/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/bid_269_raptorfemale/featured.png"
-     },
-     "added": "2019-11-20T12:50:34Z"
-    }
-   ]
-  },
-  {
-   "regularPrice": 5500,
-   "finalPrice": 2300,
-   "devName": "[VIRTUAL]1 x Esme, 1 x Tough Targetbunny, 1 x Healed Heartshield, 1 x Esme's Heartstruck, 1 x Ennui, 1 x Soft Targetbunny, 1 x Hurt Heartshield, 1 x Ennui's Heartbeat, 1 x Love Flare, 1 x Heartstompers for -1 MtxCurrency",
-   "offerId": "v2:/5fbfa6617d97ad501ea5301d2e996be1f6bd8ab2a3710456d0dcb02944fd98f6",
-   "inDate": "2026-11-27T00:00:00Z",
-   "outDate": "2026-11-29T23:59:59.999Z",
-   "bundle": {
-    "name": "Sisters of the Heart Bundle",
-    "info": "Bundle",
-    "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/4d10eb200ece1781/renderimage_0.png"
-   },
-   "banner": {
-    "value": "3200 V-Bucks Off",
-    "intensity": "Low",
-    "backendValue": "AmountOff"
-   },
-   "giftable": true,
-   "refundable": false,
-   "sortPriority": -1,
-   "layoutId": "BoC71.92",
-   "layout": {
-    "id": "BoC71",
-    "name": "Chapter 7 Highlights",
-    "index": 29,
-    "rank": 196,
-    "showIneligibleOffers": "always",
-    "useWidePreview": false,
-    "displayType": "tileGrid"
-   },
-   "colors": {
-    "color1": "441703ff",
-    "color2": "ffe08aff",
-    "color3": "9c6711ff",
-    "textBackgroundColor": "6e400dff"
-   },
-   "tileBackgroundMaterial": "ShopTile_Snowfall",
-   "tileSize": "Size_2_x_1",
-   "displayAssetPath": "/OfferCatalog/DisplayAssets/DA_Featured_FondAimBreak_Bundle",
-   "newDisplayAssetPath": "/OfferCatalog/NewDisplayAssets/S39/DAv2_Bundle_Featured_FondAimBreak",
-   "newDisplayAsset": {
-    "id": "DAv2_Bundle_Featured_FondAimBreak",
-    "materialInstances": [],
-    "renderImages": [
-     {
-      "productTag": "Product.BR",
-      "fileName": "cosmo__4d10eb200ece1781_ac2441c813ac835a.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/4d10eb200ece1781/renderimage_0.png"
-     },
-     {
-      "productTag": "Product.Juno",
-      "fileName": "cosmo__4d10eb200ece1781_bbb4d27db24e325e.png",
-      "image": "https://fortnite-api.com/images/cosmetics/br/newdisplayassets/4d10eb200ece1781/renderimage_1.png"
-     }
-    ]
-   },
-   "brItems": [
-    {
-     "id": "Character_FondAim",
-     "name": "Esme",
-     "description": "The spark of something special.",
-     "type": {
-      "value": "outfit",
-      "displayValue": "Outfit",
-      "backendValue": "AthenaCharacter"
-     },
-     "rarity": {
-      "value": "epic",
-      "displayValue": "Epic",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "set": {
-      "value": "Sisters of the Heart",
-      "text": "Part of the Sisters of the Heart set.",
-      "backendValue": "SoulSibling"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/character_fondaim/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/character_fondaim/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/character_fondaim/featured.png",
-      "lego": {
-       "small": "https://fortnite-api.com/images/cosmetics/lego/character_fondaim/small.png",
-       "large": "https://fortnite-api.com/images/cosmetics/lego/character_fondaim/large.png",
-       "wide": "https://fortnite-api.com/images/cosmetics/lego/character_fondaim/wide.png"
-      },
-      "bean": {
-       "small": "https://fortnite-api.com/images/cosmetics/beans/bean_fondaim/small.png",
-       "large": "https://fortnite-api.com/images/cosmetics/beans/bean_fondaim/large.png"
-      }
-     },
-     "added": "2026-02-05T15:01:36Z"
-    },
-    {
-     "id": "Backpack_FondAim",
-     "name": "Tough Targetbunny",
-     "description": "Go ahead. Line up the shot.",
-     "type": {
-      "value": "backpack",
-      "displayValue": "Back Bling",
-      "backendValue": "AthenaBackpack"
-     },
-     "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "set": {
-      "value": "Sisters of the Heart",
-      "text": "Part of the Sisters of the Heart set.",
-      "backendValue": "SoulSibling"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_fondaim/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_fondaim/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_fondaim/featured.png"
-     },
-     "added": "2026-02-05T15:01:36Z"
-    },
-    {
-     "id": "Pickaxe_FondAim",
-     "name": "Healed Heartshield",
-     "description": "Ready to break.",
-     "type": {
-      "value": "pickaxe",
-      "displayValue": "Pickaxe",
-      "backendValue": "AthenaPickaxe"
-     },
-     "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "set": {
-      "value": "Sisters of the Heart",
-      "text": "Part of the Sisters of the Heart set.",
-      "backendValue": "SoulSibling"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_fondaim/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_fondaim/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_fondaim/featured.png"
-     },
-     "added": "2026-02-05T15:01:36Z"
-    },
-    {
-     "id": "Wrap_FondAim",
-     "name": "Esme's Heartstruck",
-     "description": "Show your style.",
-     "type": {
-      "value": "wrap",
-      "displayValue": "Wrap",
-      "backendValue": "AthenaItemWrap"
-     },
-     "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "set": {
-      "value": "Sisters of the Heart",
-      "text": "Part of the Sisters of the Heart set.",
-      "backendValue": "SoulSibling"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/wrap_fondaim/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/wrap_fondaim/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/wrap_fondaim/featured.png"
-     },
-     "added": "2026-02-05T15:01:36Z"
-    },
-    {
-     "id": "Character_FondBreak",
-     "name": "Ennui",
-     "description": "The echo of something lost.",
-     "type": {
-      "value": "outfit",
-      "displayValue": "Outfit",
-      "backendValue": "AthenaCharacter"
-     },
-     "rarity": {
-      "value": "epic",
-      "displayValue": "Epic",
-      "backendValue": "EFortRarity::Epic"
-     },
-     "set": {
-      "value": "Sisters of the Heart",
-      "text": "Part of the Sisters of the Heart set.",
-      "backendValue": "SoulSibling"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/character_fondbreak/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/character_fondbreak/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/character_fondbreak/featured.png",
-      "lego": {
-       "small": "https://fortnite-api.com/images/cosmetics/lego/character_fondbreak/small.png",
-       "large": "https://fortnite-api.com/images/cosmetics/lego/character_fondbreak/large.png",
-       "wide": "https://fortnite-api.com/images/cosmetics/lego/character_fondbreak/wide.png"
-      },
-      "bean": {
-       "small": "https://fortnite-api.com/images/cosmetics/beans/bean_fondbreak/small.png",
-       "large": "https://fortnite-api.com/images/cosmetics/beans/bean_fondbreak/large.png"
-      }
-     },
-     "added": "2026-02-05T15:01:36Z"
-    },
-    {
-     "id": "Backpack_FondBreak",
-     "name": "Soft Targetbunny",
-     "description": "Please, aim anywhere else!",
-     "type": {
-      "value": "backpack",
-      "displayValue": "Back Bling",
-      "backendValue": "AthenaBackpack"
-     },
-     "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "set": {
-      "value": "Sisters of the Heart",
-      "text": "Part of the Sisters of the Heart set.",
-      "backendValue": "SoulSibling"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/backpack_fondbreak/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/backpack_fondbreak/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/backpack_fondbreak/featured.png"
-     },
-     "added": "2026-02-05T15:01:36Z"
-    },
-    {
-     "id": "Pickaxe_FondBreak",
-     "name": "Hurt Heartshield",
-     "description": "Give it time. ",
-     "type": {
-      "value": "pickaxe",
-      "displayValue": "Pickaxe",
-      "backendValue": "AthenaPickaxe"
-     },
-     "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "set": {
-      "value": "Sisters of the Heart",
-      "text": "Part of the Sisters of the Heart set.",
-      "backendValue": "SoulSibling"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_fondbreak/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/pickaxe_fondbreak/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/pickaxe_fondbreak/featured.png"
-     },
-     "added": "2026-02-05T15:01:36Z"
-    },
-    {
-     "id": "Wrap_FondBreak",
-     "name": "Ennui's Heartbeat",
-     "description": "Show your style.",
-     "type": {
-      "value": "wrap",
-      "displayValue": "Wrap",
-      "backendValue": "AthenaItemWrap"
-     },
-     "rarity": {
-      "value": "rare",
-      "displayValue": "Rare",
-      "backendValue": "EFortRarity::Rare"
-     },
-     "set": {
-      "value": "Sisters of the Heart",
-      "text": "Part of the Sisters of the Heart set.",
-      "backendValue": "SoulSibling"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/wrap_fondbreak/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/wrap_fondbreak/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/wrap_fondbreak/featured.png"
-     },
-     "added": "2026-02-05T15:01:36Z"
-    },
-    {
-     "id": "EID_LoveAFlare",
-     "name": "Love Flare",
-     "description": "Here's that love and affection you ordered.",
-     "type": {
-      "value": "emote",
-      "displayValue": "Emote",
-      "backendValue": "AthenaDance"
-     },
-     "rarity": {
-      "value": "uncommon",
-      "displayValue": "Uncommon",
-      "backendValue": "EFortRarity::Uncommon"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/eid_loveaflare/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/eid_loveaflare/icon.png"
-     },
-     "showcaseVideo": "UfWQpwm76To",
-     "added": "2026-02-05T15:01:36Z"
-    },
-    {
-     "id": "Shoes_HeartThrobs",
-     "name": "Heartstompers",
-     "description": "Show 'em off.",
-     "type": {
-      "value": "shoe",
-      "displayValue": "Shoes",
-      "backendValue": "CosmeticShoes"
-     },
-     "rarity": {
-      "value": "uncommon",
-      "displayValue": "Uncommon",
-      "backendValue": "EFortRarity::Uncommon"
-     },
-     "set": {
-      "value": "Sisters of the Heart",
-      "text": "Part of the Sisters of the Heart set.",
-      "backendValue": "SoulSibling"
-     },
-     "introduction": {
-      "chapter": "7",
-      "season": "1",
-      "text": "Introduced in Chapter 7, Season 1.",
-      "backendValue": 39
-     },
-     "images": {
-      "smallIcon": "https://fortnite-api.com/images/cosmetics/br/shoes_heartthrobs/smallicon.png",
-      "icon": "https://fortnite-api.com/images/cosmetics/br/shoes_heartthrobs/icon.png",
-      "featured": "https://fortnite-api.com/images/cosmetics/br/shoes_heartthrobs/featured.png"
-     },
-     "added": "2026-02-07T00:00:02Z"
     }
    ]
   }
