@@ -364,3 +364,7 @@ html.dark img[src$="head-B-MnZgKb.png"],html.dark img[src$="profile_head-Pw6l4Ce
 .mi-back{left:62px}
 .mi-x svg{width:20px;height:20px}.mi-back svg{width:11px;height:18px}
 .mi-scroll{top:95.4px}
+
+/* Christmas puzzle: blue night instead of The Hollow red, and the Christmas picture */
+.hpz.xm{background:radial-gradient(120% 80% at 50% 0,#2a5fe0,#0d2b7a 60%,#050f2e)}
+.hpz.xm .hpz-pc{background-color:#0d2b7a;background-image:url(/robloxapp/site-assets/christmas-puzzle.webp)}
